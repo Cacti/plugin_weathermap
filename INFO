@@ -1,0 +1,10 @@
+[info]
+name = weathermap
+version = 0.98.01-us
+longname = Weathermap Plugin
+author = Urban-Software.de
+email = support@urban-software.de
+homepage = https://www.urban-software.com/
+compat = 1.0.0
+nosync = true
+capabilities = online_view:1, online_mgmt:1, offline_view:0, offline_mgmt:0, remote_collect:0
