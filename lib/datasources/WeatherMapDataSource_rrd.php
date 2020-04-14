@@ -244,7 +244,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$args[] = "graph";
 		$args[] = "/dev/null";
 		$args[] = "-f";
-		$args[] = "''";
+		$args[] = "'%s %lu %lu'";
 		$args[] = "--start";
 		$args[] = $start;
 		$args[] = "--end";
