@@ -139,8 +139,8 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 							// Include the local_data_id as well, to make life easier in poller_output
 							// (and to allow the cacti: DS plugin to use the same table, too)
                             wm_debug("RRD ReadData: poller_output - Adding new weathermap_data row for data source ID " . $result['local_data_id'] . "\n");
-                            $statement_insert = $pdo->prepare("INSERT INTO weathermap_data (rrdfile, data_source_name, sequence, local_data_id) VALUES (?,?, 0,?)");
-                            $statement_insert->execute(array($db_rrdname, $dsnames[$dir], $result['local_data_id']));
+                            $statement_insert = $pdo->prepare("INSERT INTO weathermap_data (rrdfile, data_source_name, sequence, local_data_id, last_value) VALUES (?,?, 0,?,'')");
+			    $statement_insert->execute(array($db_rrdname, $dsnames[$dir], $result['local_data_id']));
 
 //							$SQLins = "insert into weathermap_data (rrdfile, data_source_name, sequence, local_data_id) values ('".mysql_real_escape_string($db_rrdname)."','".mysql_real_escape_string($dsnames[$dir])."', 0,".$result['local_data_id'].")";
 //							db_execute($SQLins);
