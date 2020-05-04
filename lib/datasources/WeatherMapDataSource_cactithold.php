@@ -106,10 +106,10 @@ $thold_present = false;
 			// use target aggregation to build these up into a 'badness' percentage
 			// takes the same two values that are visible in thold's own URLs (the actual thold ID isn't shown anywhere)
 			
-			$rra_id = intval($matches[1]);
-			$data_id = intval($matches[2]);
+			$local_data_id = intval($matches[1]);
+			$data_template_rrd_id = intval($matches[2]);
 			
-			$SQL2 = "select thold_alert from thold_data where rra_id=$rra_id and data_id=$data_id and thold_enabled='on'";
+			$SQL2 = "select thold_alert from thold_data where local_data_id=$local_data_id and data_template_rrd_id=$data_template_rrd_id and thold_enabled='on'";
 			$result = db_fetch_row($SQL2);
 			if(isset($result))
 			{
@@ -179,13 +179,13 @@ $thold_present = false;
 				wm_debug("CactiTHold ReadData: Checking threshold states for host $id\n");
 				$numthresh = 0;
 				$numfailing = 0;
-				$SQL2 = "select rra_id, data_id, thold_alert from thold_data,data_local where thold_data.rra_id=data_local.id and data_local.host_id=$id and thold_enabled='on'";
+				$SQL2 = "select local_data_id, data_template_rrd_id, thold_alert from thold_data,data_local where thold_data.local_data_id=data_local.id and data_local.host_id=$id and thold_enabled='on'";
 				# $result = db_fetch_row($SQL2);
 				$queryrows = db_fetch_assoc($SQL2);
 				if( is_array($queryrows) )
 				{
 					foreach ($queryrows as $th) {					
-						$desc = $th['rra_id']."/".$th['data_id'];
+						$desc = $th['local_data_id']."/".$th['data_template_rrd_id'];
 						$v = $th['thold_alert'];
 						$numthresh++;
 						if(intval($th['thold_alert']) > 0) 

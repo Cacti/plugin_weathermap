@@ -799,7 +799,7 @@
                                             }
                                         ?>
                                     </select>
-                                    &nbsp;<input type="image" src="../../images/button_go.gif" alt="Go" border="0"
+                                    &nbsp;<input type="image" src="../../images/enable_icon.png" alt="Go" border="0"
                                                  align="absmiddle">
                                 </td>
                             </tr>

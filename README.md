@@ -11,7 +11,7 @@ See COPYING for the license under which php-weathermap is released.
 There is much more information, tutorials and updates available at:
     http://www.network-weathermap.com/
 
-*IMPORTANT NOTE*: This version only works with Cacti 0.8.8 (not 1.x.x)
+*IMPORTANT NOTE*: This version only works with Cacti 1.x.x
 
 ------
 

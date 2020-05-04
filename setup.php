@@ -277,21 +277,21 @@
 
             if ( !in_array( 'weathermap_maps', $tables ) ) {
                 $sql[] = "CREATE TABLE weathermap_maps (
-				id int(11) NOT NULL auto_increment,
-				sortorder int(11) NOT NULL default 0,
-				group_id int(11) NOT NULL default 1,
-				active set('on','off') NOT NULL default 'on',
-				configfile text NOT NULL,
-				imagefile text NOT NULL,
-				htmlfile text NOT NULL,
-				titlecache text NOT NULL,
-				filehash varchar (40) NOT NULL default '',
-				warncount int(11) NOT NULL default 0,
-				config text NOT NULL,
-				thumb_width int(11) NOT NULL default 0,
-				thumb_height int(11) NOT NULL default 0,
-				schedule varchar(32) NOT NULL default '*',
-				archiving set('on','off') NOT NULL default 'off',
+				`id` int(11) NOT NULL auto_increment,
+				`sortorder` int(11) NOT NULL default 0,
+				`group_id` int(11) NOT NULL default 1,
+				`active` set('on','off') NOT NULL default 'on',
+				`configfile` text NOT NULL,
+				`imagefile` text NOT NULL,
+				`htmlfile` text NOT NULL,
+				`titlecache` text NOT NULL,
+				`filehash` varchar (40) NOT NULL default '',
+				`warncount` int(11) NOT NULL default 0,
+				`config` text NOT NULL,
+				`thumb_width` int(11) NOT NULL default 0,
+				`thumb_height` int(11) NOT NULL default 0,
+				`schedule` varchar(32) NOT NULL default '*',
+				`archiving` set('on','off') NOT NULL default 'off',
 				PRIMARY KEY  (id)
 			) ENGINE=MyISAM;";
             } else {
@@ -335,12 +335,12 @@
                 }
             }
 
-            $sql[] = "update weathermap_maps set filehash=LEFT(MD5(concat(id,configfile,rand())),20) where filehash = '';";
+            $sql[] = "update weathermap_maps set `filehash`=LEFT(MD5(concat(id,configfile,rand())),20) where `filehash` = '';";
 
             if ( !in_array( 'weathermap_auth', $tables ) ) {
                 $sql[] = "CREATE TABLE weathermap_auth (
-				userid mediumint(9) NOT NULL default '0',
-				mapid int(11) NOT NULL default '0'
+				`userid` mediumint(9) NOT NULL default '0',
+				`mapid` int(11) NOT NULL default '0'
 			) ENGINE=MyISAM;";
             }
 
@@ -357,21 +357,30 @@
 
             if ( !in_array( 'weathermap_settings', $tables ) ) {
                 $sql[] = "CREATE TABLE weathermap_settings (
-				id int(11) NOT NULL auto_increment,
-				mapid int(11) NOT NULL default '0',
-				groupid int(11) NOT NULL default '0',
-				optname varchar(128) NOT NULL default '',
-				optvalue varchar(128) NOT NULL default '',
+				`id` int(11) NOT NULL auto_increment,
+				`mapid` int(11) NOT NULL default '0',
+				`groupid` int(11) NOT NULL default '0',
+				`optname` varchar(128) NOT NULL default '',
+				`optvalue` varchar(128) NOT NULL default '',
 				PRIMARY KEY  (id)
 			) ENGINE=MyISAM;";
             }
 
             if ( !in_array( 'weathermap_data', $tables ) ) {
-                $sql[] = "CREATE TABLE IF NOT EXISTS weathermap_data (id int(11) NOT NULL auto_increment,
-				rrdfile varchar(255) NOT NULL,data_source_name varchar(19) NOT NULL,
-				  last_time int(11) NOT NULL,last_value varchar(255) NOT NULL,
-				last_calc varchar(255) NOT NULL, sequence int(11) NOT NULL, local_data_id int(11) NOT NULL DEFAULT 0, PRIMARY KEY  (id), KEY rrdfile (rrdfile),
-				  KEY local_data_id (local_data_id), KEY data_source_name (data_source_name) ) ENGINE=MyISAM";
+                $sql[] = "CREATE TABLE IF NOT EXISTS weathermap_data (
+				`id` int(11) NOT NULL auto_increment,
+				`rrdfile` varchar(255) NOT NULL,
+				`data_source_name` varchar(19) NOT NULL,
+				`last_time` int(11) NOT NULL DEFAULT -1,
+				`last_value` varchar(255) NOT NULL DEFAULT '',
+				`last_calc` varchar(255) NOT NULL DEFAULT '', 
+				`sequence` int(11) NOT NULL DEFAULT 0, 
+				`local_data_id` int(11) NOT NULL DEFAULT 0, 
+				PRIMARY KEY  (id), 
+				KEY rrdfile (rrdfile(250)),
+				KEY local_data_id (local_data_id), 
+				KEY data_source_name (data_source_name) 
+				) ENGINE=MyISAM";
             } else {
                 $stmt = $pdo->prepare( "show columns from weathermap_data" );
                 $stmt->execute();
@@ -733,7 +742,7 @@
                             break;
                     }
                 }
-                db_execute( "UPDATE weathermap_data SET last_time=$newtime, last_calc='$newvalue', last_value='$newlastvalue',sequence=sequence+1  where id = " . $required[ 'id' ] );
+                db_execute( "UPDATE weathermap_data SET `last_time`=$newtime, `last_calc`='$newvalue', `last_value`='$newlastvalue',`sequence`=`sequence`+1  where `id` = " . $required[ 'id' ] );
                 if ( $logging >= POLLER_VERBOSITY_DEBUG ) cacti_log( "WM poller_output: Final value is $newvalue (was $lastval, period was $period)\n", TRUE, "WEATHERMAP" );
             } else {
                 if ( 1 == 0 && $logging >= POLLER_VERBOSITY_DEBUG ) {
