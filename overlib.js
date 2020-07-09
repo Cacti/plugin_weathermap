@@ -327,7 +327,8 @@ function overlib() {
 	if (o3_delay == 0) {
 		return runHook("olMain", FREPLACE);
  	} else {
-		o3_delayid = setTimeout("runHook('olMain', FREPLACE)", o3_delay);
+		// o3_delayid = setTimeout("runHook('olMain', FREPLACE)", o3_delay);
+		o3_delayid = setTimeout(runHook, o3_delay, 'olMain', FREPLACE);
 		return false;
 	}
 }
@@ -522,7 +523,8 @@ function disp(statustext) {
 	
 	if (o3_allowmove == 0) {
 		runHook("placeLayer", FREPLACE);
-		(olNs6&&olShowId<0) ? olShowId=setTimeout("runHook('showObject', FREPLACE, over)", 1) : runHook("showObject", FREPLACE, over);
+		// (olNs6&&olShowId<0) ? olShowId=setTimeout("runHook('showObject', FREPLACE, over)", 1) : runHook("showObject", FREPLACE, over);
+		(olNs6&&olShowId<0) ? olShowId=setTimeout(runHook, 1 ,'showObject', FREPLACE, over) : runHook("showObject", FREPLACE, over);
 		o3_allowmove = (o3_sticky || o3_followmouse==0) ? 0 : 1;
 	}
 	
@@ -688,8 +690,10 @@ function parseTokens(pf, ar) {
 			if (ar[i]==STICKY) { if (pf!='ol_') eval(pf+'sticky=1'); continue; }
 			if (ar[i]==BACKGROUND) { eval(pf+'background="'+ar[++i]+'"'); continue; }
 			if (ar[i]==NOCLOSE) { if (pf!='ol_') opt_NOCLOSE(); continue; }
-			if (ar[i]==CAPTION) { eval(pf+"cap='"+escSglQuote(ar[++i])+"'"); continue; }
-			if (ar[i]==CENTER || ar[i]==LEFT || ar[i]==RIGHT) { eval(pf+'hpos='+ar[i]); if(pf!='ol_') olHautoFlag=1; continue; }
+			// if (ar[i]==CAPTION) { eval(pf+"cap='"+escSglQuote(ar[++i])+"'"); continue; }
+			if (ar[i]==CAPTION) { window[pf+"cap"]=escSglQuote(ar[++i]); continue; }
+			// if (ar[i]==CENTER || ar[i]==LEFT || ar[i]==RIGHT) { eval(pf+'hpos='+ar[i]); if(pf!='ol_') olHautoFlag=1; continue; }
+			if (ar[i]==CENTER || ar[i]==LEFT || ar[i]==RIGHT) { window[pf+'hpos']=ar[i]; if(pf!='ol_') olHautoFlag=1; continue; }
 			if (ar[i]==OFFSETX) { eval(pf+'offsetx='+ar[++i]); continue; }
 			if (ar[i]==OFFSETY) { eval(pf+'offsety='+ar[++i]); continue; }
 			if (ar[i]==FGCOLOR) { eval(pf+'fgcolor="'+ar[++i]+'"'); continue; }
@@ -697,13 +701,15 @@ function parseTokens(pf, ar) {
 			if (ar[i]==TEXTCOLOR) { eval(pf+'textcolor="'+ar[++i]+'"'); continue; }
 			if (ar[i]==CAPCOLOR) { eval(pf+'capcolor="'+ar[++i]+'"'); continue; }
 			if (ar[i]==CLOSECOLOR) { eval(pf+'closecolor="'+ar[++i]+'"'); continue; }
-			if (ar[i]==WIDTH) { eval(pf+'width='+ar[++i]); continue; }
+			// if (ar[i]==WIDTH) { eval(pf+'width='+ar[++i]); continue; }
+			if (ar[i]==WIDTH) { window[pf+'width']=ar[++i]; continue; }
 			if (ar[i]==BORDER) { eval(pf+'border='+ar[++i]); continue; }
 			if (ar[i]==CELLPAD) { i=opt_MULTIPLEARGS(++i,ar,(pf+'cellpad')); continue; }
 			if (ar[i]==STATUS) { eval(pf+"status='"+escSglQuote(ar[++i])+"'"); continue; }
 			if (ar[i]==AUTOSTATUS) { eval(pf +'autostatus=('+pf+'autostatus == 1) ? 0 : 1'); continue; }
 			if (ar[i]==AUTOSTATUSCAP) { eval(pf +'autostatus=('+pf+'autostatus == 2) ? 0 : 2'); continue; }
-			if (ar[i]==HEIGHT) { eval(pf+'height='+pf+'aboveheight='+ar[++i]); continue; } // Same param again.
+			// if (ar[i]==HEIGHT) { eval(pf+'height='+pf+'aboveheight='+ar[++i]); continue; } // Same param again.
+			if (ar[i]==HEIGHT) { window[pf+'height']=window[pf+'aboveheight']=ar[++i]; continue; } // Same param again.
 			if (ar[i]==CLOSETEXT) { eval(pf+"close='"+escSglQuote(ar[++i])+"'"); continue; }
 			if (ar[i]==SNAPX) { eval(pf+'snapx='+ar[++i]); continue; }
 			if (ar[i]==SNAPY) { eval(pf+'snapy='+ar[++i]); continue; }
@@ -716,7 +722,8 @@ function parseTokens(pf, ar) {
 			if (ar[i]==PADX) { eval(pf+'padxl='+ar[++i]); eval(pf+'padxr='+ar[++i]); continue; }
 			if (ar[i]==PADY) { eval(pf+'padyt='+ar[++i]); eval(pf+'padyb='+ar[++i]); continue; }
 			if (ar[i]==FULLHTML) { if (pf!='ol_') eval(pf+'fullhtml=1'); continue; }
-			if (ar[i]==BELOW || ar[i]==ABOVE) { eval(pf+'vpos='+ar[i]); if (pf!='ol_') olVautoFlag=1; continue; }
+			// if (ar[i]==BELOW || ar[i]==ABOVE) { eval(pf+'vpos='+ar[i]); if (pf!='ol_') olVautoFlag=1; continue; }
+			if (ar[i]==BELOW || ar[i]==ABOVE) { window[pf+'vpos']=ar[i]; if (pf!='ol_') olVautoFlag=1; continue; }
 			if (ar[i]==CAPICON) { eval(pf+'capicon="'+ar[++i]+'"'); continue; }
 			if (ar[i]==TEXTFONT) { eval(pf+"textfont='"+escSglQuote(ar[++i])+"'"); continue; }
 			if (ar[i]==CAPTIONFONT) { eval(pf+"captionfont='"+escSglQuote(ar[++i])+"'"); continue; }
@@ -726,7 +733,8 @@ function parseTokens(pf, ar) {
 			if (ar[i]==CLOSESIZE) { eval(pf+'closesize="'+ar[++i]+'"'); continue; }
 			if (ar[i]==TIMEOUT) { eval(pf+'timeout='+ar[++i]); continue; }
 			if (ar[i]==FUNCTION) { if (pf=='ol_') { if (typeof ar[i+1]!='number') { v=ar[++i]; ol_function=(typeof v=='function' ? v : null); }} else {fnMark = 0; v = null; if (typeof ar[i+1]!='number') v = ar[++i];  opt_FUNCTION(v); } continue; }
-			if (ar[i]==DELAY) { eval(pf+'delay='+ar[++i]); continue; }
+			// if (ar[i]==DELAY) { eval(pf+'delay='+ar[++i]); continue; }
+			if (ar[i]==DELAY) { window[pf+'delay']=ar[++i]; continue; }
 			if (ar[i]==HAUTO) { eval(pf+'hauto=('+pf+'hauto == 0) ? 1 : 0'); continue; }
 			if (ar[i]==VAUTO) { eval(pf+'vauto=('+pf+'vauto == 0) ? 1 : 0'); continue; }
 			if (ar[i]==CLOSECLICK) { eval(pf +'closeclick=('+pf+'closeclick == 0) ? 1 : 0'); continue; }
@@ -935,8 +943,11 @@ function wrapStr(endWrap,fontSizeStr,whichString) {
 	if (endWrap) return (hasDims&&!olNs4) ? (isClose ? '</span>' : '</div>') : '</font>';
 	else {
 		fontStr='o3_'+whichString+'font';
+		fontStrStr = window[fontStr];
 		fontColor='o3_'+((whichString=='caption')? 'cap' : whichString)+'color';
-		return (hasDims&&!olNs4) ? (isClose ? '<span style="font-family: '+quoteMultiNameFonts(eval(fontStr))+'; color: '+eval(fontColor)+'; font-size: '+fontSizeStr+';">' : '<div style="font-family: '+quoteMultiNameFonts(eval(fontStr))+'; color: '+eval(fontColor)+'; font-size: '+fontSizeStr+';">') : '<font face="'+eval(fontStr)+'" color="'+eval(fontColor)+'" size="'+(parseInt(fontSizeStr)>7 ? '7' : fontSizeStr)+'">';
+		fontColorStr = window[fontColor];
+		// return (hasDims&&!olNs4) ? (isClose ? '<span style="font-family: '+quoteMultiNameFonts(eval(fontStr))+'; color: '+eval(fontColor)+'; font-size: '+fontSizeStr+';">' : '<div style="font-family: '+quoteMultiNameFonts(eval(fontStr))+'; color: '+eval(fontColor)+'; font-size: '+fontSizeStr+';">') : '<font face="'+eval(fontStr)+'" color="'+eval(fontColor)+'" size="'+(parseInt(fontSizeStr)>7 ? '7' : fontSizeStr)+'">';
+		return (hasDims&&!olNs4) ? (isClose ? '<span style="font-family: '+quoteMultiNameFonts(fontStrStr)+'; color: '+fontColorStr+'; font-size: '+fontSizeStr+';">' : '<div style="font-family: '+quoteMultiNameFonts(fontStrStr)+'; color: '+fontColorStr+'; font-size: '+fontSizeStr+';">') : '<font face="'+fontStrStr+'" color="'+fontColorStr+'" size="'+(parseInt(fontSizeStr)>7 ? '7' : fontSizeStr)+'">';
 	}
 }
 
@@ -1307,7 +1318,8 @@ function registerCommands(cmdStr) {
 	pms = pms.concat(pM);
 
 	for (var i = 0; i< pM.length; i++) {
-		eval(pM[i].toUpperCase()+'='+pmCount++);
+		// eval(pM[i].toUpperCase()+'='+pmCount++);
+		window[pM[i].toUpperCase()] = pmCount++;
 	}
 }
 
@@ -1396,34 +1408,46 @@ function runHook(fnHookTo, hookType) {
 	var l = hookPts[fnHookTo], k, rtnVal = null, optPm, arS, ar = runHook.arguments;
 
 	if (hookType == FREPLACE) {
-		arS = argToString(ar, 2);
+		// arS = argToString(ar, 2);
+		// console.log(ar);
+		myArgs = Array.prototype.slice.call(ar).slice(2);
+		// console.log(myArgs);
 
-		if (typeof l == 'undefined' || !(l = l.ovload)) rtnVal = eval(fnHookTo+'('+arS+')');
-		else rtnVal = eval('l('+arS+')');
+		// if (typeof l == 'undefined' || !(l = l.ovload)) rtnVal = eval(fnHookTo+'('+arS+')');
+		// else rtnVal = eval('l('+arS+')');
+		if (typeof l == 'undefined' || !(l = l.ovload)) rtnVal = window[fnHookTo].apply(null, myArgs);
+		else rtnVal = l.apply(null, myArgs);
 
 	} else if (hookType == FBEFORE || hookType == FAFTER) {
 		if (typeof l != 'undefined') {
 			l=(hookType == 1 ? l.before : l.after);
 	
 			if (l.length) {
-				arS = argToString(ar, 2);
-				for (var k = 0; k < l.length; k++) eval('l[k]('+arS+')');
+				// arS = argToString(ar, 2);
+				myArgs = Array.prototype.slice.call(ar).slice(2);
+				// for (var k = 0; k < l.length; k++) eval('l[k]('+arS+')');
+				for (var k = 0; k < l.length; k++) l[k].apply(null, myArgs);
 			}
 		}
 	} else if (hookType == FALTERNATE) {
 		optPm = ar[2];
-		arS = argToString(ar, 3);
+		// arS = argToString(ar, 3);
+		myArgs = Array.prototype.slice.call(ar).slice(3);
 
 		if (typeof l == 'undefined' || (l = l.alt[pms[optPm-1-pmStart]]) == 'undefined') {
-			rtnVal = eval(fnHookTo+'('+arS+')');
+			// rtnVal = eval(fnHookTo+'('+arS+')');
+			rtnVal = window[fnHookTo].apply(null, myArgs);
 		} else {
-			rtnVal = eval('l('+arS+')');
+			// rtnVal = eval('l('+arS+')');
+			rtnVal = l.apply(null, myArgs);
 		}
 	} else if (hookType == FCHAIN) {
-		arS=argToString(ar,2);
+		// arS=argToString(ar,2);
+		myArgs = Array.prototype.slice.call(ar).slice(2);
 		l=l.chain;
 
-		for (k=l.length; k > 0; k--) if((rtnVal=eval('l[k-1]('+arS+')'))!=void(0)) break;
+		// for (k=l.length; k > 0; k--) if((rtnVal=eval('l[k-1]('+arS+')'))!=void(0)) break;
+		for (k=l.length; k > 0; k--) if((rtnVal=l[k-1].apply(null, myArgs))!=void(0)) break;
 	}
 
 	return rtnVal;
