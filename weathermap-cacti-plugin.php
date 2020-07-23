@@ -526,7 +526,7 @@
         if ( $fullscreen ) {
             print "<script src='" . $config[ 'url_path' ] . "plugins/weathermap/vendor/jquery/dist/jquery.min.js'></script>";
         }
-        print "<script src='" . $config[ 'url_path' ] . "plugins/weathermap/vendor/jquery-/dist/idle-timer.min.js'></script>";
+        print "<script src='" . $config[ 'url_path' ] . "plugins/weathermap/vendor/jquery-idletimer/dist/idle-timer.min.js'></script>";
         $extra = "";
         if ( $limit_to_group > 0 ) $extra = " in this group";
         ?>
