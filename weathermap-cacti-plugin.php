@@ -359,7 +359,9 @@
             print "<tr><td>";
 
             if ( file_exists( $htmlfile ) ) {
+		echo "<div class='fixscroll' style='overflow:auto'>";
                 include( $htmlfile );
+		echo "</div>";
             } else {
                 print "<div align=\"center\" style=\"padding:20px\"><em>This map hasn't been created yet.";
 
@@ -629,7 +631,9 @@
             }
 
             if ( file_exists( $htmlfile ) ) {
+		echo "<div class='fixscroll' style='overflow:auto'>";
                 include( $htmlfile );
+		echo "</div>";
             } else {
                 print "<div align=\"center\" style=\"padding:20px\"><em>This map hasn't been created yet.</em></div>";
             }
