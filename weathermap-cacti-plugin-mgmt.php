@@ -555,7 +555,7 @@
                 if ( $map[ 'warncount' ] > 0 ) {
                     $had_warnings++;
 
-                    print '<a href="../../utilities.php?tail_lines=500&message_type=2&action=view_logfile&filter=' . urlencode( $map[ 'configfile' ] ) . '" title="Check cacti.log for this map"><img border=0 src="'.$config[ 'url_path' ].'/plugins/weathermap/images/exclamation.png" title="' . $map[ 'warncount' ] . ' warnings last time this map was run. Check your logs.">' . $map[ 'warncount' ] . "</a>";
+                    print '<a href="../../utilities.php?tail_lines=500&message_type=2&action=view_logfile&filter=' . urlencode( $map[ 'configfile' ] ) . '" title="Check cacti.log for this map"><img border=0 src=".'.$config[ 'url_path' ].'/images/exclamation.png" title="' . $map[ 'warncount' ] . ' warnings last time this map was run. Check your logs.">' . $map[ 'warncount' ] . "</a>";
                 }
                 print "</td>";
 
