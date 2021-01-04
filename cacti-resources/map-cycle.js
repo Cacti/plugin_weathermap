@@ -86,7 +86,7 @@ var WMcycler = {
             now.hide(1, function () {
                 // now that we're done with it, force a reload on the image just
                 // passed
-                // WMcycler.forceReload();
+                WMcycler.forceReload(this);
             });
             next.show(1);
         }
