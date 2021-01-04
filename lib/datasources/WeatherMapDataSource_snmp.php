@@ -126,7 +126,7 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 					} 
 					else
 					{
-						$this->down_cache{$host}++; 
+						$this->down_cache[$host]++; 
 					}
 				}
 				
