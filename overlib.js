@@ -566,7 +566,7 @@ function placeLayer() {
 	iwidth = windowWidth();
 
 	// Horizontal scroll offset
-	winoffset=(olIe4) ? eval('o3_frame.'+docRoot+'.scrollLeft') : o3_frame.pageXOffset;
+	winoffset = document.getElementsByClassName("fixscroll")[0].scrollLeft;
 
 	placeX = runHook('horizontalPlacement',FCHAIN,iwidth,winoffset,widthFix);
 
@@ -578,7 +578,7 @@ function placeLayer() {
 	}			
 
 	// Vertical scroll offset
-	scrolloffset=(olIe4) ? eval('o3_frame.'+docRoot+'.scrollTop') : o3_frame.pageYOffset;
+	scrolloffset = document.getElementsByClassName("fixscroll")[0].scrollTop;
 	placeY = runHook('verticalPlacement',FCHAIN,iheight,scrolloffset);
 
 	// Actually move the object.
@@ -593,8 +593,8 @@ function olMouseMove(e) {
 		o3_x = e.pageX;
 		o3_y = e.pageY;
 	} else if (e.clientX) {
-		o3_x = eval('e.clientX+o3_frame.'+docRoot+'.scrollLeft');
-		o3_y = eval('e.clientY+o3_frame.'+docRoot+'.scrollTop');
+		o3_x = document.getElementsByClassName("fixscroll")[0].scrollLeft;
+        	o3_y = document.getElementsByClassName("fixscroll")[0].scrollTop;
 	}
 	
 	if (o3_allowmove == 1) runHook("placeLayer", FREPLACE);
@@ -824,9 +824,32 @@ function hideObject(obj) {
 
 // Move a layer
 function repositionTo(obj, xL, yL) {
-	var theObj=(olNs4 ? obj : obj.style);
-	theObj.left = xL + (!olNs4 ? 'px' : 0);
-	theObj.top = yL + (!olNs4 ? 'px' : 0);
+    var theObj=(olNs4 ? obj : obj.style);
+    theObj.left = xL + (!olNs4 ? 'px' : 0);
+    theObj.top = yL + (!olNs4 ? 'px' : 0);
+	
+    var w = document.getElementsByClassName("fixscroll")[0],
+        wW = w.clientWidth,
+        wH = w.clientHeight,
+        iW = parseInt($(obj).find("img").css("width")),
+        iH = 0;
+
+    $(obj).find("img").each(function() {
+        iH += parseInt($(this).css("height"));
+    });
+
+    if (o3_x + iW > wW)
+        theObj.left = (o3_x - iW - 20) + "px";
+    else
+        theObj.left = o3_x + "px";
+
+    if (o3_y + iH > wH)
+        theObj.top = (o3_y - iH - 80) + "px";
+    else
+        theObj.top = (o3_y - 60) + "px";
+
+    if (parseInt(theObj.top) < 0)
+        theObj.top = "0px";
 }
 
 // Check position of cursor relative to overDiv DIVision; mouseOut function
@@ -1109,11 +1132,7 @@ function checkPositionFlags() {
 
 // get Browser window width
 function windowWidth() {
-	var w;
-	if (o3_frame.innerWidth) w=o3_frame.innerWidth;
-	else if (eval('o3_frame.'+docRoot)&&eval("typeof o3_frame."+docRoot+".clientWidth=='number'")&&eval('o3_frame.'+docRoot+'.clientWidth')) 
-		w=eval('o3_frame.'+docRoot+'.clientWidth');
-	return w;			
+	return document.getElementsByClassName("fixscroll")[0].clientWidth;			
 }
 
 // create the div container for popup content if it doesn't exist
@@ -1489,3 +1508,33 @@ if ((olNs4 || olNs6 || olIe4)) {
 	nd = no_overlib;
 	ver3fix = true;
 }
+
+// Fix Scroll
+$(function() {
+
+    $(window).on("resize", function() {
+        var wW = $(window).width() - 15,
+            wH = $(window).height() - 220;
+
+        // Fix div map view scroll
+        $(".fixscroll").css({
+            width: wW + "px",
+            height: wH + "px",
+        });
+
+        // Fix map menu select scroll height
+        $("#ui-id-1-menu").css("max-height", wH);
+
+    }).trigger("resize");
+
+    $('.maintabs a.lefttab').not('[href^="http"], [href^="https"], [href^="#"], [target="_blank"]').on('click',
+        function(e) {
+            page = basename($(this).attr('href'));
+
+            if ($(this).hasClass('selected') && page.indexOf("weathermap") != -1) {
+                e.stopImmediatePropagation();
+                location.href = page + "?group_id=-2";
+            }
+        });
+
+});
