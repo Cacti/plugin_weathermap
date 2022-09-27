@@ -1,4 +1,40 @@
 <?php
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2005-2022 Howard Jones and contributors                   |
+ |                                                                         |
+ | Permission is hereby granted, free of charge, to any person obtaining   |
+ | a copy of this software and associated documentation files              |
+ | (the "Software"), to deal in the Software without restriction,          |
+ | including without limitation the rights to use, copy, modify, merge,    |
+ | publish, distribute, sublicense, and/or sell copies of the Software,    |
+ | and to permit persons to whom the Software is furnished to do so,       |
+ | subject to the following conditions:                                    |
+ |                                                                         |
+ | The above copyright notice and this permission notice shall be          |
+ | included in all copies or substantial portions of the Software.         |
+ |                                                                         |
+ | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,         |
+ | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES         |
+ | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND                |
+ | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS     |
+ | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN      |
+ | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN       |
+ | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE        |
+ | SOFTWARE.                                                               |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+ | Extensions to Howard Jones' original work are designed, written, and    |
+ | maintained by the Cacti Group.                                          |
+ |                                                                         |
+ | Howard Jones was the original author of Weathermap.  You can reach      |
+ | him at: howie@thingy.com                                                |
+ +-------------------------------------------------------------------------+
+ | http://www.network-weathermap.com/                                      |
+ | http://www.cacti.net/                                                   |
+ +-------------------------------------------------------------------------+
+*/
 
 // ******************************************
 // sensible defaults
@@ -38,18 +74,18 @@ else
 }
 
 // ******************************************
-if (isset($_SESSION['cacti']['weathermap']['last_used_host_id'][0]) ) 
+if (isset($_SESSION['cacti']['weathermap']['last_used_host_id'][0]) )
 	{
 	print "<b>Last Host Selected:</b><br>";
 	$last['id'] = array_reverse($_SESSION['cacti']['weathermap']['last_used_host_id']);
 	$last['name'] = array_reverse($_SESSION['cacti']['weathermap']['last_used_host_name']);
-	
+
 	foreach ($last['id'] as $key => $id)
 		{
 		list($name) = explode(" - ", $last['name'][$key], 2);
 		print "<a href=cacti-pick.php?host_id=".$id."&command=link_step1&overlib=1&aggregate=0>[".$name."]</a><br>";
 		}
-	} 
+	}
 
 function js_escape($str)
 {
@@ -133,16 +169,16 @@ if(isset($_REQUEST['command']) && $_REQUEST["command"]=='link_step1')
 
 	function filterlist(previous)
 	{
-		var filterstring = $('input#filterstring').val();	
-		
+		var filterstring = $('input#filterstring').val();
+
 		if(filterstring=='')
 		{
 			$('ul#dslist > li').show();
 			return;
 		}
-		
+
 		if(filterstring!=previous)
-		{	
+		{
 				$('ul#dslist > li').hide();
 				$("ul#dslist > li:contains('" + filterstring + "')").show();
 		}
@@ -183,7 +219,7 @@ if(isset($_REQUEST['command']) && $_REQUEST["command"]=='link_step1')
 			self.close();
 		}
 	}
-	
+
 	function applyDSFilterChange(objForm) {
                 strURL = '?host_id=' + objForm.host_id.value;
                 strURL = strURL + '&command=link_step1';
@@ -206,7 +242,7 @@ if(isset($_REQUEST['command']) && $_REQUEST["command"]=='link_step1')
 				}
                 document.location = strURL;
         }
-	
+
 	</script>
 <style type="text/css">
 	body { font-family: sans-serif; font-size: 10pt; }
@@ -242,7 +278,7 @@ if(isset($_REQUEST['overlib'])) $overlib= ( $_REQUEST['overlib']==0 ? false : tr
 <h3>Pick a data source:</h3>
 
 <form name="mini">
-<?php 
+<?php
 if(sizeof($hosts) > 0) {
 	print 'Host: <select name="host_id"  onChange="applyDSFilterChange(document.mini)">';
 
@@ -297,7 +333,7 @@ if(isset($_REQUEST['host_id']))
 			$key = $line['local_data_id']."','".$line['data_source_path'];
 			echo "<a href=\"#\" onclick=\"update_source_step1('$key','$host_id')\">". $line['name_cache'] . "</a>";
 			echo "</li>\n";
-			
+
 			$i++;
 		}
 	}
@@ -326,7 +362,7 @@ if(isset($_REQUEST['command']) && $_REQUEST["command"]=='node_step1')
 
     $pdo = weathermap_get_pdo();
 
-	
+
 //	 $hosts = db_fetch_assoc("select id,CONCAT_WS('',description,' (',hostname,')') as name from host order by description,hostname");
 
     $stmt = $pdo->prepare("select id,CONCAT_WS('',description,' (',hostname,')') as name from host order by description,hostname");
@@ -341,16 +377,16 @@ if(isset($_REQUEST['command']) && $_REQUEST["command"]=='node_step1')
 
 	function filterlist(previous)
 	{
-		var filterstring = $('input#filterstring').val();	
-		
+		var filterstring = $('input#filterstring').val();
+
 		if(filterstring=='')
 		{
 			$('ul#dslist > li').show();
 			return;
 		}
-		
+
 		if(filterstring!=previous)
-		{	
+		{
 				$('ul#dslist > li').hide();
 				$('ul#dslist > li').contains(filterstring).show();
 		}
@@ -374,7 +410,7 @@ if(isset($_REQUEST['command']) && $_REQUEST["command"]=='node_step1')
 				{
 					strURL = strURL + "&overlib=0";
 				}
-				
+
 				//if( objForm.aggregate.checked)
 				//{
 				//	strURL = strURL + "&aggregate=1";
@@ -385,7 +421,7 @@ if(isset($_REQUEST['command']) && $_REQUEST["command"]=='node_step1')
 				//}
                 document.location = strURL;
         }
-	
+
 	</script>
 	<script type="text/javascript">
 
@@ -407,7 +443,7 @@ if(isset($_REQUEST['command']) && $_REQUEST["command"]=='node_step1')
 			}
 			opener.document.forms["frmMain"].node_hover.value = graph_url;
 		}
-		self.close();		
+		self.close();
 	}
 	</script>
 <style type="text/css">
@@ -426,7 +462,7 @@ if(isset($_REQUEST['command']) && $_REQUEST["command"]=='node_step1')
 <h3>Pick a graph:</h3>
 
 <form name="mini">
-<?php 
+<?php
 if(sizeof($hosts) > 0) {
 	print 'Host: <select name="host_id"  onChange="applyDSFilterChange(document.mini)">';
 

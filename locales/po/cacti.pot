@@ -1,0 +1,209 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2022-09-26 22:09-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>>\n"
+"Language-Team: Cacti Developers <developers@cacti.net>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: setup.php:166
+msgid "Misc"
+msgstr ""
+
+#: setup.php:170
+msgid "Network Weathermap"
+msgstr ""
+
+#: setup.php:174
+msgid "Page style"
+msgstr ""
+
+#: setup.php:175
+msgid "How to display multiple maps."
+msgstr ""
+
+#: setup.php:178
+msgid "Thumbnail Overview"
+msgstr ""
+
+#: setup.php:179
+msgid "Full Images"
+msgstr ""
+
+#: setup.php:180
+msgid "Show Only First"
+msgstr ""
+
+#: setup.php:184
+msgid "Thumbnail Maximum Size"
+msgstr ""
+
+#: setup.php:185
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr ""
+
+#: setup.php:190
+msgid "Refresh Time"
+msgstr ""
+
+#: setup.php:191
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr ""
+
+#: setup.php:194
+msgid "Automatic"
+msgstr ""
+
+#: setup.php:195 setup.php:196 setup.php:197
+#, php-format
+msgid "%d Seconds"
+msgstr ""
+
+#: setup.php:198
+#, php-format
+msgid "%d Minute"
+msgstr ""
+
+#: setup.php:199 setup.php:200
+#, php-format
+msgid "%d Minutes"
+msgstr ""
+
+#: setup.php:204
+msgid "Output Format"
+msgstr ""
+
+#: setup.php:205
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr ""
+
+#: setup.php:208
+msgid "PNG (default)"
+msgstr ""
+
+#: setup.php:209
+msgid "JPEG"
+msgstr ""
+
+#: setup.php:210
+msgid "GIF"
+msgstr ""
+
+#: setup.php:214
+msgid "Map Rendering Interval"
+msgstr ""
+
+#: setup.php:215
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr ""
+
+#: setup.php:218
+msgid "Never (manual updates)"
+msgstr ""
+
+#: setup.php:219
+msgid "Every Poller Cycle (default)"
+msgstr ""
+
+#: setup.php:220 setup.php:221 setup.php:222 setup.php:223 setup.php:224
+#: setup.php:225 setup.php:226 setup.php:227 setup.php:228 setup.php:229
+#: setup.php:230
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr ""
+
+#: setup.php:234
+msgid "Show 'All' Tab"
+msgstr ""
+
+#: setup.php:235
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr ""
+
+#: setup.php:238
+msgid "No (default)"
+msgstr ""
+
+#: setup.php:239
+msgid "Yes"
+msgstr ""
+
+#: setup.php:243
+msgid "Show Map Selector"
+msgstr ""
+
+#: setup.php:244
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr ""
+
+#: setup.php:247
+msgid "No"
+msgstr ""
+
+#: setup.php:248
+msgid "Yes (default)"
+msgstr ""
+
+#: setup.php:252
+msgid "Quiet Logging"
+msgstr ""
+
+#: setup.php:253
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr ""
+
+#: setup.php:256
+msgid "Chatty (default)"
+msgstr ""
+
+#: setup.php:257
+msgid "Quiet"
+msgstr ""
+
+#: setup.php:460
+msgid "Weathermap"
+msgstr ""
+
+#: setup.php:474
+msgid "Management"
+msgstr ""
+
+#: setup.php:496 setup.php:536
+#, php-format
+msgid "Map for config file: %s"
+msgstr ""
+
+#: setup.php:554
+msgid "Choose which weathermap to add to the tree."
+msgstr ""
+
+#: setup.php:554
+msgid "Map"
+msgstr ""
+
+#: setup.php:562
+msgid "How should the map be displayed?"
+msgstr ""
+
+#: setup.php:562
+msgid "Style"
+msgstr ""
+
+#: setup.php:565
+msgid "Thumbnail"
+msgstr ""
+
+#: setup.php:566
+msgid "Full Size"
+msgstr ""
