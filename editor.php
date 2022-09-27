@@ -50,7 +50,7 @@ $ignore_cacti=TRUE;
 
 // If we're embedded in the Cacti UI (included from weathermap-cacti-plugin-editor.php), then authentication has happened. Enable the editor.
 if (isset($FROM_CACTI) && $FROM_CACTI == true) {
-    $ENABLED = true;
+	$ENABLED = true;
 	$editor_name = "weathermap-cacti-plugin-editor.php";
 	$cacti_base = $config["base_path"];
 	$cacti_url = $config['url_path'];
@@ -64,11 +64,11 @@ if (isset($FROM_CACTI) && $FROM_CACTI == true) {
 	$cacti_found = false;
 }
 
-if(! $ENABLED)
-{
-    print "<p>The editor has not been enabled yet. You need to set ENABLED=true at the top of editor.php</p>";
-    print "<p>Before you do that, you should consider using FilesMatch (in Apache) or similar to limit who can access the editor. There is more information in the install guide section of the manual.</p>";
-    exit();
+if(!$ENABLED) {
+	print "<p>The editor has not been enabled yet. You need to set ENABLED=true at the top of editor.php</p>";
+	print "<p>Before you do that, you should consider using FilesMatch (in Apache) or similar to limit who can access the editor. There is more information in the install guide section of the manual.</p>";
+
+	exit();
 }
 
 // sensible defaults
@@ -80,79 +80,69 @@ $use_overlay = FALSE; // set to TRUE to enable experimental overlay showing VIAs
 $use_relative_overlay = FALSE; // set to TRUE to enable experimental overlay showing relative-positioning
 $grid_snap_value = 0; // set non-zero to snap to a grid of that spacing
 
-if( isset($_COOKIE['wmeditor']))
-{
-    $parts = explode(":",$_COOKIE['wmeditor']);
+if(isset($_COOKIE['wmeditor'])) {
+	$parts = explode(":",$_COOKIE['wmeditor']);
 
-    if( (isset($parts[0])) && (intval($parts[0]) == 1) ) { $use_overlay = TRUE; }
-    if( (isset($parts[1])) && (intval($parts[1]) == 1) ) { $use_relative_overlay = TRUE; }
-    if( (isset($parts[2])) && (intval($parts[2]) != 0) ) { $grid_snap_value = intval($parts[2]); }
+	if((isset($parts[0])) && (intval($parts[0]) == 1)) {
+		$use_overlay = TRUE;
+	}
+
+	if((isset($parts[1])) && (intval($parts[1]) == 1)) {
+		$use_relative_overlay = TRUE;
+	}
+
+	if((isset($parts[2])) && (intval($parts[2]) != 0)) {
+		$grid_snap_value = intval($parts[2]);
+	}
 }
 
-if ($FROM_CACTI==false) {
+$cacti_found = true;
+include(__DIR__ . '/../../include/cli_check.php');
 
-// check if the goalposts have moved
-if( is_dir($cacti_base) && file_exists($cacti_base."/include/global.php") )
-{
-	// include the cacti-config, so we know about the database
-	include_once($cacti_base."/include/global.php");
-	$config['base_url'] = $cacti_url;
-	$cacti_found = TRUE;
-}
-elseif( is_dir($cacti_base) && file_exists($cacti_base."/include/config.php") )
-{
-	// include the cacti-config, so we know about the database
-	include_once($cacti_base."/include/config.php");
+chdir(__DIR__);
 
-	$config['base_url'] = $cacti_url;
-	$cacti_found = TRUE;
-}
-else
-{
-	$cacti_found = FALSE;
-}
-}
-
-chdir(dirname(__FILE__));
-
-if(! is_writable($mapdir))
-{
+if(!is_writable($mapdir)) {
 	$configerror = "The map config directory ($mapdir) is not writable by the web server user. You will not be able to edit any files until this is corrected. [WMEDIT01]";
 }
 
-
-$action = '';
-$mapname = '';
+$action   = '';
+$mapname  = '';
 $selected = '';
 
 $newaction = '';
-$param = '';
-$param2 = '';
-$log = '';
+$param     = '';
+$param2    = '';
+$log       = '';
 
-if(!wm_module_checks())
-{
+if(!wm_module_checks()) {
 	print "<b>Required PHP extensions are not present in your mod_php/ISAPI PHP module. Please check your PHP setup to ensure you have the GD extension installed and enabled.</b><p>";
 	print "If you find that the weathermap tool itself is working, from the command-line or Cacti poller, then it is possible that you have two different PHP installations. The Editor uses the same PHP that webpages on your server use, but the main weathermap tool uses the command-line PHP interpreter.<p>";
 	print "<p>You should also run <a href=\"check.php\">check.php</a> to help make sure that there are no problems.</p><hr/>";
 	print "Here is a copy of the phpinfo() from your PHP web module, to help debugging this...<hr>";
+
 	phpinfo();
+
 	exit();
 }
 
-if(isset($_REQUEST['action'])) { $action = $_REQUEST['action']; }
-if(isset($_REQUEST['mapname'])) { $mapname = $_REQUEST['mapname'];  $mapname = wm_editor_sanitize_conffile($mapname); }
-if(isset($_REQUEST['selected'])) { $selected = wm_editor_sanitize_selected($_REQUEST['selected']); }
+if(isset($_REQUEST['action'])) {
+	$action = $_REQUEST['action'];
+}
+
+if(isset($_REQUEST['mapname'])) {
+	$mapname = $_REQUEST['mapname'];  $mapname = wm_editor_sanitize_conffile($mapname);
+}
+
+if(isset($_REQUEST['selected'])) {
+	$selected = wm_editor_sanitize_selected($_REQUEST['selected']);
+}
 
 $weathermap_debugging=FALSE;
 
-if($mapname == '')
-{
+if($mapname == '') {
 	// this is the file-picker/welcome page
 	show_editor_startpage();
-}
-else
-{
+} else {
 	// everything else in this file is inside this else
 	$mapfile = $mapdir.'/'.$mapname;
 
@@ -167,180 +157,193 @@ else
 	$map->context = 'editor';
 
 	$fromplug = FALSE;
-	if(isset($_REQUEST['plug']) && (intval($_REQUEST['plug'])==1) ) { $fromplug = TRUE; }
+	if(isset($_REQUEST['plug']) && (intval($_REQUEST['plug'])==1)) {
+		$fromplug = TRUE;
+	}
+
 	if($FROM_CACTI) {
 		$fromplug = TRUE;
 	}
 
-	switch($action)
-	{
-	case 'newmap':
-		$map->WriteConfig($mapfile);
-		break;
-
-	case 'newmapcopy':
-		if(isset($_REQUEST['sourcemap'])) { $sourcemapname = $_REQUEST['sourcemap']; }
-
-		$sourcemapname = wm_editor_sanitize_conffile($sourcemapname);
-
-		if($sourcemapname != "") {
-		    $sourcemap = $mapdir.'/'.$sourcemapname;
-		    if( file_exists($sourcemap) && is_readable($sourcemap) ) {
-			$map->ReadConfig($sourcemap);
+	switch($action) {
+		case 'newmap':
 			$map->WriteConfig($mapfile);
-		    }
-		}
-		break;
 
-	case 'font_samples':
-		$map->ReadConfig($mapfile);
-		ksort($map->fonts);
-		header('Content-type: image/png');
-
-		$keyfont = 2;
-		$keyheight = imagefontheight($keyfont)+2;
-
-		$sampleheight = 32;
-		// $im = imagecreate(250,imagefontheight(5)+5);
-		$im = imagecreate(2000,$sampleheight);
-		$imkey = imagecreate(2000,$keyheight);
-
-		$white = imagecolorallocate($im,255,255,255);
-		$black = imagecolorallocate($im,0,0,0);
-		$whitekey = imagecolorallocate($imkey,255,255,255);
-		$blackkey = imagecolorallocate($imkey,0,0,0);
-
-		$x = 3;
-		#for($i=1; $i< 6; $i++)
-		foreach ($map->fonts as $fontnumber => $font)
-		{
-			$string = "Abc123%";
-			$keystring = "Font $fontnumber";
-			list($width,$height) = $map->myimagestringsize($fontnumber,$string);
-			list($kwidth,$kheight) = $map->myimagestringsize($keyfont,$keystring);
-
-			if($kwidth > $width) $width = $kwidth;
-
-			$y = ($sampleheight/2) + $height/2;
-			$map->myimagestring($im, $fontnumber, $x, $y, $string, $black);
-			$map->myimagestring($imkey, $keyfont,$x,$keyheight,"Font $fontnumber",$blackkey);
-
-			$x = $x + $width + 6;
-		}
-		$im2 = imagecreate($x,$sampleheight + $keyheight);
-		imagecopy($im2,$im, 0,0, 0,0, $x, $sampleheight);
-		imagecopy($im2,$imkey, 0,$sampleheight, 0,0,  $x, $keyheight);
-		imagedestroy($im);
-		imagepng($im2);
-		imagedestroy($im2);
-
-		exit();
-		break;
-
-	case 'draw':
-		header('Content-type: image/png');
-		$map->ReadConfig($mapfile);
-
-		if($selected != '')
-		{
-			if(substr($selected,0,5) == 'NODE:')
-			{
-				$nodename = substr($selected,5);
-				$map->nodes[$nodename]->selected=1;
+			break;
+		case 'newmapcopy':
+			if(isset($_REQUEST['sourcemap'])) {
+				$sourcemapname = $_REQUEST['sourcemap'];
 			}
 
-			if(substr($selected,0,5) == 'LINK:')
-			{
-				$linkname = substr($selected,5);
-				$map->links[$linkname]->selected=1;
+			$sourcemapname = wm_editor_sanitize_conffile($sourcemapname);
+
+			if($sourcemapname != "") {
+				$sourcemap = $mapdir.'/'.$sourcemapname;
+
+				if(file_exists($sourcemap) && is_readable($sourcemap)) {
+					$map->ReadConfig($sourcemap);
+					$map->WriteConfig($mapfile);
+				}
 			}
-		}
 
-		$map->sizedebug = TRUE;
-		$map->DrawMap('','',250,TRUE,$use_overlay,$use_relative_overlay);
-		exit();
-		break;
+			break;
+		case 'font_samples':
+			$map->ReadConfig($mapfile);
+			ksort($map->fonts);
+			header('Content-type: image/png');
 
-	case 'show_config':
-		header('Content-type: text/plain');
+			$keyfont = 2;
+			$keyheight = imagefontheight($keyfont)+2;
 
-		$fd = fopen($mapfile,'r');
-		while (!feof($fd))
-		{
-			$buffer = fgets($fd, 4096);
-			echo $buffer;
-		}
-		fclose($fd);
+			$sampleheight = 32;
+			// $im = imagecreate(250,imagefontheight(5)+5);
+			$im = imagecreate(2000,$sampleheight);
+			$imkey = imagecreate(2000,$keyheight);
 
-		exit();
-		break;
+			$white = imagecolorallocate($im,255,255,255);
+			$black = imagecolorallocate($im,0,0,0);
+			$whitekey = imagecolorallocate($imkey,255,255,255);
+			$blackkey = imagecolorallocate($imkey,0,0,0);
 
-    case 'fetch_config':
-	    $map->ReadConfig($mapfile);
-	    header('Content-type: text/plain');
-	    $item_name = $_REQUEST['item_name'];
-	    $item_type = $_REQUEST['item_type'];
+			$x = 3;
+			#for($i=1; $i< 6; $i++)
+			foreach ($map->fonts as $fontnumber => $font) {
+				$string = "Abc123%";
+				$keystring = "Font $fontnumber";
 
-	    $ok=FALSE;
+				list($width,$height) = $map->myimagestringsize($fontnumber,$string);
+				list($kwidth,$kheight) = $map->myimagestringsize($keyfont,$keystring);
 
-	    if($item_type == 'node'){
-		if (isset($map->nodes[$item_name])) {
-		    print $map->nodes[$item_name]->WriteConfig();
-		    $ok = TRUE;
-		}
-	    }
-	    if($item_type == 'link') {
-		if(isset($map->links[$item_name])) {
-		    print $map->links[$item_name]->WriteConfig();
-		    $ok = TRUE;
-		}
-	    }
+				if($kwidth > $width) {
+					$width = $kwidth;
+				}
 
-	    if (! $ok) {
-	        print "# the request item didn't exist. That's probably a bug.\n";
-	    }
+				$y = ($sampleheight/2) + $height/2;
+				$map->myimagestring($im, $fontnumber, $x, $y, $string, $black);
+				$map->myimagestring($imkey, $keyfont,$x,$keyheight,"Font $fontnumber",$blackkey);
 
-	    exit();
-	    break;
+				$x = $x + $width + 6;
+			}
 
-	case "set_link_config":
-		$map->ReadConfig($mapfile);
+			$im2 = imagecreate($x,$sampleheight + $keyheight);
+			imagecopy($im2,$im, 0,0, 0,0, $x, $sampleheight);
+			imagecopy($im2,$imkey, 0,$sampleheight, 0,0,  $x, $keyheight);
+			imagedestroy($im);
+			imagepng($im2);
+			imagedestroy($im2);
 
-		$link_name = $_REQUEST['link_name'];
-		$link_config = fix_gpc_string($_REQUEST['item_configtext']);
+			exit();
 
-		if(isset($map->links[$link_name])) {
-		    $map->links[$link_name]->config_override = $link_config;
+			break;
+		case 'draw':
+			header('Content-type: image/png');
+			$map->ReadConfig($mapfile);
 
-		    $map->WriteConfig($mapfile);
-		    // now clear and reload the map object, because the in-memory one is out of sync
-		    // - we don't know what changes the user made here, so we just have to reload.
-		    unset($map);
-		    $map = new WeatherMap;
-		    $map->context = 'editor';
-		    $map->ReadConfig($mapfile);
-		}
-		break;
+			if($selected != '') {
+				if(substr($selected,0,5) == 'NODE:') {
+					$nodename = substr($selected,5);
+					$map->nodes[$nodename]->selected=1;
+				}
 
-	case "set_node_config":
-		$map->ReadConfig($mapfile);
+				if(substr($selected,0,5) == 'LINK:') {
+					$linkname = substr($selected,5);
+					$map->links[$linkname]->selected=1;
+				}
+			}
 
-		$node_name = $_REQUEST['node_name'];
-		$node_config = fix_gpc_string($_REQUEST['item_configtext']);
+			$map->sizedebug = TRUE;
+			$map->DrawMap('','',250,TRUE,$use_overlay,$use_relative_overlay);
+			exit();
 
-		if(isset($map->nodes[$node_name])) {
-		    $map->nodes[$node_name]->config_override = $node_config;
+			break;
+		case 'show_config':
+			header('Content-type: text/plain');
 
-		    $map->WriteConfig($mapfile);
-		    // now clear and reload the map object, because the in-memory one is out of sync
-		    // - we don't know what changes the user made here, so we just have to reload.
-		    unset($map);
-		    $map = new WeatherMap;
-		    $map->context = 'editor';
-		    $map->ReadConfig($mapfile);
-		}
-		break;
+			$fd = fopen($mapfile,'r');
 
+			while (!feof($fd)) {
+				$buffer = fgets($fd, 4096);
+				echo $buffer;
+			}
+
+			fclose($fd);
+
+			exit();
+
+			break;
+		case 'fetch_config':
+			$map->ReadConfig($mapfile);
+
+			header('Content-type: text/plain');
+
+			$item_name = $_REQUEST['item_name'];
+			$item_type = $_REQUEST['item_type'];
+
+			$ok=FALSE;
+
+			if($item_type == 'node'){
+				if (isset($map->nodes[$item_name])) {
+					print $map->nodes[$item_name]->WriteConfig();
+					$ok = TRUE;
+				}
+			}
+
+			if($item_type == 'link') {
+				if(isset($map->links[$item_name])) {
+					print $map->links[$item_name]->WriteConfig();
+					$ok = TRUE;
+				}
+			}
+
+			if (!$ok) {
+				print "# the request item didn't exist. That's probably a bug.\n";
+			}
+
+			exit();
+
+			break;
+		case "set_link_config":
+			$map->ReadConfig($mapfile);
+
+			$link_name = $_REQUEST['link_name'];
+			$link_config = fix_gpc_string($_REQUEST['item_configtext']);
+
+			if(isset($map->links[$link_name])) {
+				$map->links[$link_name]->config_override = $link_config;
+
+			    $map->WriteConfig($mapfile);
+
+			    // now clear and reload the map object, because the in-memory one is out of sync
+			    // - we don't know what changes the user made here, so we just have to reload.
+			    unset($map);
+
+			    $map = new WeatherMap;
+			    $map->context = 'editor';
+			    $map->ReadConfig($mapfile);
+			}
+
+			break;
+		case "set_node_config":
+			$map->ReadConfig($mapfile);
+
+			$node_name = $_REQUEST['node_name'];
+			$node_config = fix_gpc_string($_REQUEST['item_configtext']);
+
+			if(isset($map->nodes[$node_name])) {
+				$map->nodes[$node_name]->config_override = $node_config;
+
+				$map->WriteConfig($mapfile);
+
+				// now clear and reload the map object, because the in-memory one is out of sync
+				// - we don't know what changes the user made here, so we just have to reload.
+				unset($map);
+
+				$map = new WeatherMap;
+				$map->context = 'editor';
+				$map->ReadConfig($mapfile);
+			}
+
+			break;
 	case "set_node_properties":
 		$map->ReadConfig($mapfile);
 

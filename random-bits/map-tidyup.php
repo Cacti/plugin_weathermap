@@ -47,14 +47,13 @@ $cacti_base = dirname(__FILE__) . '/../../';
 
 // check if the goalposts have moved
 if (is_dir($cacti_base) && file_exists($cacti_base . '/include/global.php')) {
-    // include the cacti-config, so we know about the database
-    require_once $cacti_base . '/include/global.php';
+	// include the cacti-config, so we know about the database
+	require_once $cacti_base . '/include/global.php';
 } elseif (is_dir($cacti_base) && file_exists($cacti_base . '/include/config.php')) {
-    // include the cacti-config, so we know about the database
-    require_once $cacti_base . '/include/config.php';
+	// include the cacti-config, so we know about the database
+	require_once $cacti_base . '/include/config.php';
 } else {
-    die("Couldn't find a usable Cacti config - check the first few lines of " . __FILE__
-        . "\n");
+	die("Couldn't find a usable Cacti config - check the first few lines of " . __FILE__ . "\n");
 }
 
 require_once 'Weathermap.class.php';
@@ -80,43 +79,44 @@ $args = $cg->readPHPArgv();
 $ret = $cg->getopt($args, $short_opts, $long_opts);
 
 if (PEAR::isError($ret)) {
-    die('Error in command line: ' . $ret->getMessage() . "\n (try --help)\n");
+	die('Error in command line: ' . $ret->getMessage() . "\n (try --help)\n");
 }
 
 $gopts = $ret[0];
 
 if (count($gopts) > 0) {
-    foreach ($gopts as $o) {
-        switch ($o[0]) {
-            case '--debug':
-                $weathermap_debugging = true;
-                break;
+	foreach ($gopts as $o) {
+		switch ($o[0]) {
+			case '--debug':
+				$weathermap_debugging = true;
 
-            case '--input':
-                $inputfile = $o[1];
-                break;
+				break;
+			case '--input':
+				$inputfile = $o[1];
 
-            case '--output':
-                $outputfile = $o[1];
-                break;
+				break;
+			case '--output':
+				$outputfile = $o[1];
 
-            case 'help':
-            default:
-                print "Weathermap DSStats converter. Converts rrd targets to DSStats\n";
-                print "-------------------------------------------------------------\n";
-                print "Usage: php convert-to-dstats.php [options]\n\n";
-                print " --input {filename}         - File to read from\n";
-                print " --output {filename}        - File to write to\n";
-                print " --debug                    - Enable debugging output\n";
-                print " --help                    - Show this message\n";
+				break;
+			case 'help':
+			default:
+				print "Weathermap DSStats converter. Converts rrd targets to DSStats\n";
+				print "-------------------------------------------------------------\n";
+				print "Usage: php convert-to-dstats.php [options]\n\n";
+				print " --input {filename}         - File to read from\n";
+				print " --output {filename}        - File to write to\n";
+				print " --debug                    - Enable debugging output\n";
+				print " --help                    - Show this message\n";
+
                 exit();
-        }
-    }
+		}
+	}
 }
 
 if ($inputfile === '' || $outputfile === '') {
-    print "You must specify an input and output file. See --help.\n";
-    exit();
+	print "You must specify an input and output file. See --help.\n";
+	exit();
 }
 
 $map = new WeatherMap;
@@ -139,3 +139,4 @@ $map->DrawMap(null);
 $map->WriteConfig($outputfile);
 
 print 'Wrote new config to '.$outputfile."\n";
+
