@@ -36,16 +36,6 @@
  +-------------------------------------------------------------------------+
 */
 
-/*******************************************************************************
- *
- * Author ......... Howard Jones
- * Contact ........ howie@thingy.com
- * Home Site ...... http://wotsit.thingy.com/haj/
- * Program ........ Network Weathermap for Cacti
- * Version ........ See code below
- * Purpose ........ Network Usage Overview
- *******************************************************************************/
-
 include_once( dirname( __FILE__ ) . '/lib/database.php' );
 include_once( dirname( __FILE__ ) . '/lib/compat.php' );
 
@@ -1058,4 +1048,3 @@ function weathermap_poller_bottom() {
 	}
 }
 
-// vim:ts=4:sw=4:
