@@ -781,16 +781,14 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 }
 
 function weathermap_translate_id($idname) {
-	$pdo = weathermap_get_pdo();
+	$map = db_fetch_cell_prepared("SELECT id
+		FROM weathermap_maps
+		WHERE configfile = ?
+		OR filehash = ?
+		LIMIT 1",
+		array($idname, $idname));
 
-	$stmt = $pdo->prepare("select id from weathermap_maps where configfile=? or filehash=?");
-	$stmt->execute(array($idname, $idname));
-	$map = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		$SQL = "select id from weathermap_maps where configfile='".mysql_real_escape_string($idname)."' or filehash='".mysql_real_escape_string($idname)."'";
-		$map = db_fetch_assoc($SQL);
-
-	return ($map[0]['id']);
+	return $map;
 }
 
 function weathermap_versionbox() {

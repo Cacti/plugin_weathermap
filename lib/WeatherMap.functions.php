@@ -42,29 +42,31 @@
  */
 function wm_module_checks() {
 	if (!extension_loaded('gd')) {
-		wm_warn ("\n\nNo image (gd) extension is loaded. This is required by weathermap. [WMWARN20]\n\n");
-		wm_warn ("\nrun check.php to check PHP requirements.\n\n");
+		wm_warn("No image (gd) extension is loaded. This is required by weathermap. [WMWARN20]");
+		wm_warn("Run check.php to check PHP requirements.");
 
-		return (false);
+		return(false);
 	}
 
 	if (!function_exists('imagecreatefrompng')) {
-		wm_warn ("Your GD php module doesn't support PNG format. [WMWARN21]\n");
-		wm_warn ("\nrun check.php to check PHP requirements.\n\n");
-		return (false);
+		wm_warn("Your GD php module doesn't support PNG format. [WMWARN21]");
+		wm_warn("Run check.php to check PHP requirements.");
+
+		return(false);
 	}
 
 	if (!function_exists('imagecreatetruecolor')) {
-		wm_warn ("Your GD php module doesn't support truecolor. [WMWARN22]\n");
-		wm_warn ("\nrun check.php to check PHP requirements.\n\n");
-		return (false);
+		wm_warn("Your GD php module doesn't support truecolor. [WMWARN22]");
+		wm_warn("Run check.php to check PHP requirements.");
+
+		return(false);
 	}
 
 	if (!function_exists('imagecopyresampled')) {
-		wm_warn ("Your GD php module doesn't support thumbnail creation (imagecopyresampled). [WMWARN23]\n");
+		wm_warn("Your GD php module doesn't support thumbnail creation (imagecopyresampled). [WMWARN23]");
 	}
 
-	return (true);
+	return(true);
 }
 
 function wm_debug($string) {
@@ -73,15 +75,18 @@ function wm_debug($string) {
 	global $weathermap_debug_suppress;
 
 	if ($weathermap_debugging) {
-		$calling_fn = "";
-		if (function_exists("debug_backtrace")) {
-			$bt = debug_backtrace();
+		$calling_fn = '';
+
+		if (function_exists('debug_backtrace')) {
+			$bt    = debug_backtrace();
 			$index = 1;
+
 		# 	$class = (isset($bt[$index]['class']) ? $bt[$index]['class'] : '');
         		$function = (isset($bt[$index]['function']) ? $bt[$index]['function'] : '');
+
 			$index = 0;
-			$file = (isset($bt[$index]['file']) ? basename($bt[$index]['file']) : '');
-        		$line = (isset($bt[$index]['line']) ? $bt[$index]['line'] : '');
+			$file  = (isset($bt[$index]['file']) ? basename($bt[$index]['file']) : '');
+			$line  = (isset($bt[$index]['line']) ? $bt[$index]['line'] : '');
 
 			$calling_fn = " [$function@$file:$line]";
 
@@ -90,29 +95,31 @@ function wm_debug($string) {
 
 		// use Cacti's debug log, if we are running from the poller
 		if (function_exists('debug_log_insert') && (!function_exists('show_editor_startpage'))) {
-			cacti_log("DEBUG:$calling_fn " . ($weathermap_map==''?'':$weathermap_map.": ") . rtrim($string), true, "WEATHERMAP");
+			cacti_log("DEBUG:$calling_fn " . ($weathermap_map == '' ? '':$weathermap_map . ': ') . rtrim($string), true, 'WEATHERMAP');
 		} else {
-			$stderr=fopen('php://stderr', 'w');
-			fwrite($stderr, "DEBUG:$calling_fn " . ($weathermap_map==''?'':$weathermap_map.": ") . $string);
-			fclose ($stderr);
+			$stderr = fopen('php://stderr', 'w');
+
+			fwrite($stderr, "DEBUG:$calling_fn " . ($weathermap_map == '' ? '':$weathermap_map . ': ') . $string . PHP_EOL);
+			fclose($stderr);
 
 			// mostly this is overkill, but it's sometimes useful (mainly in the editor)
 			if (1==0) {
-				$log=fopen('debug.log', 'a');
-				fwrite($log, "DEBUG:$calling_fn " . ($weathermap_map==''?'':$weathermap_map.": ") . $string);
-				fclose ($log);
+				$log = fopen('debug.log', 'a');
+
+				fwrite($log, "DEBUG:$calling_fn " . ($weathermap_map == '' ? '':$weathermap_map . ': ') . $string . PHP_EOL);
+				fclose($log);
 			}
 		}
 	}
 }
 
-function wm_warn($string,$notice_only=false) {
+function wm_warn($string, $notice_only = false) {
 	global $weathermap_map;
 	global $weathermap_warncount;
     global $weathermap_error_suppress;
 
-	$message = "";
-	$code = "";
+	$message = '';
+	$code    = '';
 
 	if (preg_match('/\[(WM\w+)\]/', $string, $matches)) {
         $code = $matches[1];
@@ -125,17 +132,18 @@ function wm_warn($string,$notice_only=false) {
 
 	if (!$notice_only) {
 		$weathermap_warncount++;
-		$message .= "WARNING: ";
+		$message .= 'WARNING: ';
 	}
 
-	$message .= ($weathermap_map==''?'':$weathermap_map.": ") . rtrim($string);
+	$message .= ($weathermap_map == '' ? '':$weathermap_map . ': ') . rtrim($string);
 
 	// use Cacti's debug log, if we are running from the poller
 	if (function_exists('cacti_log') && (!function_exists('show_editor_startpage'))) {
-		cacti_log($message, true, "WEATHERMAP");
+		cacti_log($message, true, 'WEATHERMAP');
 	} else {
-		$stderr=fopen('php://stderr', 'w');
-		fwrite($stderr, $message."\n");
+		$stderr = fopen('php://stderr', 'w');
+
+		fwrite($stderr, $message . "\n");
 		fclose ($stderr);
 	}
 }
@@ -148,13 +156,13 @@ function js_escape($str, $wrap=true) {
 		$str='"' . $str . '"';
 	}
 
-	return ($str);
+	return($str);
 }
 
 function mysprintf($format, $value, $kilo = 1000) {
-	$output = "";
+	$output = '';
 
-	wm_debug("mysprintf: $format $value\n");
+	wm_debug("mysprintf: $format $value");
 
 	if (preg_match('/%(\d*\.?\d*)k/', $format, $matches)) {
 		$spec = $matches[1];
@@ -170,48 +178,48 @@ function mysprintf($format, $value, $kilo = 1000) {
 			// we don't really need the justification (pre-.) part...
 		}
 
-		wm_debug("KMGT formatting $value with $spec.\n");
+		wm_debug("KMGT formatting $value with $spec.");
 
 		$result = nice_scalar($value, $kilo, $places);
-		$output = preg_replace("/%" . $spec . "k/", $format, $result);
+		$output = preg_replace('/%' . $spec . 'k/', $format, $result);
 	} elseif (preg_match('/%(-*)(\d*)([Tt])/', $format, $matches)) {
 		$spec = $matches [3];
 		$precision = ($matches [2] == '' ? 10 : intval($matches [2]));
-		$joinchar = " ";
+		$joinchar = ' ';
 
-		if ($matches [1] == "-") {
-			$joinchar = " ";
+		if ($matches [1] == '-') {
+			$joinchar = ' ';
 		}
 
 		// special formatting for time_t (t) and SNMP TimeTicks (T)
-		if ($spec == "T") {
+		if ($spec == 'T') {
 			$value = $value / 100;
 		}
 
 		$results = array();
 		$periods = array(
-			"y" => 24 * 60 * 60 * 365,
-			"d" => 24 * 60 * 60,
-			"h" => 60 * 60,
-			"m" => 60,
-			"s" => 1
+			'y' => 24 * 60 * 60 * 365,
+			'd' => 24 * 60 * 60,
+			'h' => 60 * 60,
+			'm' => 60,
+			's' => 1
 		);
 
 		foreach ($periods as $periodsuffix => $timeperiod) {
 			$slot = floor($value / $timeperiod);
 			$value = $value - $slot * $timeperiod;
 			if ($slot > 0) {
-				$results [] = sprintf("%d%s", $slot, $periodsuffix);
+				$results [] = sprintf('%d%s', $slot, $periodsuffix);
 			}
 		}
 
 		if (cacti_sizeof($results) == 0) {
-			$results [] = "0s";
+			$results [] = '0s';
 		}
 
 		$output = implode($joinchar, array_slice($results, 0, $precision));
 	} else {
-		wm_debug("Falling through to standard sprintf\n");
+		wm_debug("Falling through to standard sprintf");
 
 		$output = sprintf($format, $value);
 	}
@@ -290,13 +298,13 @@ function myimagecolorallocate($image, $red, $green, $blue) {
 		return(-1);
 	}
 
-	$existing=imagecolorexact($image, $red, $green, $blue);
+	$existing = imagecolorexact($image, $red, $green, $blue);
 
 	if ($existing > -1) {
 		return $existing;
 	}
 
-	return (imagecolorallocate($image, $red, $green, $blue));
+	return(imagecolorallocate($image, $red, $green, $blue));
 }
 
 // PHP < 5.3 doesn't support anonymous functions, so here's a little function for screenshotify
@@ -306,10 +314,10 @@ function screenshotify_xxx($matches) {
 
 function screenshotify($input) {
 	$output = $input;
-	$output = preg_replace ( '/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/', "127.0.0.1", $output );
-	$output = preg_replace_callback ( '/([A-Za-z]{3,})/', "screenshotify_xxx", $output );
+	$output = preg_replace ( '/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/', '127.0.0.1', $output );
+	$output = preg_replace_callback ( '/([A-Za-z]{3,})/', 'screenshotify_xxx', $output );
 
-	return ($output);
+	return($output);
 }
 
 function is_copy($arr) {
@@ -344,7 +352,7 @@ function render_colour($col) {
 	} elseif (($col[0] == -3) && ($col[1] == -3) && ($col[1] == -3)) {
 		return 'contrast';
 	} else {
-		return sprintf("%d %d %d", $col[0], $col[1], $col[2]);
+		return sprintf('%d %d %d', $col[0], $col[1], $col[2]);
 	}
 }
 
@@ -357,33 +365,33 @@ function imagepolyline($image, $points, $npoints, $color) {
 
 // draw a filled round-cornered rectangle
 function imagefilledroundedrectangle($image  , $x1  , $y1  , $x2  , $y2  , $radius, $color) {
-	imagefilledrectangle($image, $x1,$y1+$radius, $x2,$y2-$radius, $color);
-	imagefilledrectangle($image, $x1+$radius,$y1, $x2-$radius,$y2, $color);
+	imagefilledrectangle($image, $x1, $y1 + $radius, $x2, $y2 - $radius, $color);
+	imagefilledrectangle($image, $x1 + $radius, $y1, $x2 - $radius, $y2, $color);
 
-	imagefilledarc($image, $x1+$radius, $y1+$radius, $radius*2, $radius*2, 0, 360, $color, IMG_ARC_PIE);
-	imagefilledarc($image, $x2-$radius, $y1+$radius, $radius*2, $radius*2, 0, 360, $color, IMG_ARC_PIE);
+	imagefilledarc($image, $x1 + $radius, $y1 + $radius, $radius * 2, $radius * 2, 0, 360, $color, IMG_ARC_PIE);
+	imagefilledarc($image, $x2 - $radius, $y1 + $radius, $radius * 2, $radius * 2, 0, 360, $color, IMG_ARC_PIE);
 
-	imagefilledarc($image, $x1+$radius, $y2-$radius, $radius*2, $radius*2, 0, 360, $color, IMG_ARC_PIE);
-	imagefilledarc($image, $x2-$radius, $y2-$radius, $radius*2, $radius*2, 0, 360, $color, IMG_ARC_PIE);
+	imagefilledarc($image, $x1 + $radius, $y2 - $radius, $radius * 2, $radius * 2, 0, 360, $color, IMG_ARC_PIE);
+	imagefilledarc($image, $x2 - $radius, $y2 - $radius, $radius * 2, $radius * 2, 0, 360, $color, IMG_ARC_PIE);
 
 	# bool imagefilledarc  ( resource $image  , int $cx  , int $cy  , int $width  , int $height  , int $start  , int $end  , int $color  , int $style  )
 }
 
 // draw a round-cornered rectangle
-function imageroundedrectangle( $image  , $x1  , $y1  , $x2  , $y2  , $radius, $color ) {
-	imageline($image, $x1+$radius, $y1, $x2-$radius, $y1, $color);
-	imageline($image, $x1+$radius, $y2, $x2-$radius, $y2, $color);
-	imageline($image, $x1, $y1+$radius, $x1, $y2-$radius, $color);
-	imageline($image, $x2, $y1+$radius, $x2, $y2-$radius, $color);
+function imageroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color) {
+	imageline($image, $x1 + $radius, $y1, $x2 - $radius, $y1, $color);
+	imageline($image, $x1 + $radius, $y2, $x2 - $radius, $y2, $color);
+	imageline($image, $x1, $y1 + $radius, $x1, $y2 - $radius, $color);
+	imageline($image, $x2, $y1 + $radius, $x2, $y2 - $radius, $color);
 
-	imagearc($image, $x1+$radius, $y1+$radius, $radius*2, $radius*2, 180, 270, $color);
-	imagearc($image, $x2-$radius, $y1+$radius, $radius*2, $radius*2, 270, 360, $color);
-	imagearc($image, $x1+$radius, $y2-$radius, $radius*2, $radius*2, 90, 180, $color);
-	imagearc($image, $x2-$radius, $y2-$radius, $radius*2, $radius*2, 0, 90, $color);
+	imagearc($image, $x1 + $radius, $y1 + $radius, $radius * 2, $radius * 2, 180, 270, $color);
+	imagearc($image, $x2 - $radius, $y1 + $radius, $radius * 2, $radius * 2, 270, 360, $color);
+	imagearc($image, $x1 + $radius, $y2 - $radius, $radius * 2, $radius * 2, 90, 180, $color);
+	imagearc($image, $x2 - $radius, $y2 - $radius, $radius * 2, $radius * 2, 0, 90, $color);
 }
 
 function imagecreatefromfile($filename) {
-	$bgimage=NULL;
+	$bgimage = null;
 	$formats = imagetypes();
 
 	if (is_readable($filename)) {
@@ -394,7 +402,7 @@ function imagecreatefromfile($filename) {
 				if (imagetypes() & IMG_GIF) {
 					$bgimage=imagecreatefromgif ($filename);
 				} else {
-					wm_warn("Image file $filename is GIF, but GIF is not supported by your GD library. [WMIMG01]\n");
+					wm_warn("Image file $filename is GIF, but GIF is not supported by your GD library. [WMIMG01]");
 				}
 
 				break;
@@ -402,7 +410,7 @@ function imagecreatefromfile($filename) {
 				if (imagetypes() & IMG_JPEG) {
 					$bgimage=imagecreatefromjpeg($filename);
 				} else {
-					wm_warn("Image file $filename is JPEG, but JPEG is not supported by your GD library. [WMIMG02]\n");
+					wm_warn("Image file $filename is JPEG, but JPEG is not supported by your GD library. [WMIMG02]");
 				}
 
 				break;
@@ -410,17 +418,17 @@ function imagecreatefromfile($filename) {
 				if (imagetypes() & IMG_PNG) {
 					$bgimage=imagecreatefrompng($filename);
 				} else {
-					wm_warn("Image file $filename is PNG, but PNG is not supported by your GD library. [WMIMG03]\n");
+					wm_warn("Image file $filename is PNG, but PNG is not supported by your GD library. [WMIMG03]");
 				}
 
 				break;
 			default:
-				wm_warn("Image file $filename wasn't recognised (type=$type). Check format is supported by your GD library. [WMIMG04]\n");
+				wm_warn("Image file $filename wasn't recognised (type=$type). Check format is supported by your GD library. [WMIMG04]");
 
 				break;
 		}
 	} else {
-		wm_warn("Image file $filename is unreadable. Check permissions. [WMIMG05]\n");
+		wm_warn("Image file $filename is unreadable. Check permissions. [WMIMG05]");
 	}
 
 	return $bgimage;
@@ -518,33 +526,38 @@ function imagecolorize($im, $r, $g, $b) {
  * - doesn't handle parallel lines. In our case we will never get them.
  * - make sure we remove colinear points, or this will not be true!
  */
-function line_crossing($x1,$y1,$x2,$y2, $x3,$y3,$x4,$y4) {
+function line_crossing($x1, $y1, $x2, $y2, $x3, $y3, $x4, $y4) {
     // First, check that the slope isn't infinite.
     // if it is, tweak it to be merely huge
     if ($x1 != $x2) {
-		$slope1 = ($y2-$y1)/($x2-$x1);
+		$slope1 = ($y2 - $y1) / ($x2 - $x1);
 	} else {
-		$slope1 = 1e10; wm_debug("Slope1 is infinite.\n");
+		$slope1 = 1e10;
+
+		wm_debug("Slope1 is infinite.");
 	}
 
     if ($x3 != $x4) {
 		$slope2 = ($y4-$y3)/($x4-$x3);
 	} else {
-		$slope2 = 1e10; wm_debug("Slope2 is infinite.\n");
+		$slope2 = 1e10;
+
+		wm_debug("Slope2 is infinite.");
 	}
 
 	$a1 = $slope1;
 	$a2 = $slope2;
 	$b1 = -1;
 	$b2 = -1;
-	$c1 = ($y1 - $slope1 * $x1 );
-	$c2 = ($y3 - $slope2 * $x3 );
+	$c1 = $y1 - ($slope1 * $x1);
+	$c2 = $y3 - ($slope2 * $x3);
 
-	$f = $a1 * $b2 - $a2 * $b1;
-	$det_inv = 1/ $f;
+	$f = ($a1 * $b2) - ($a2 * $b1);
 
-	$xi = (($b1*$c2 - $b2*$c1)*$det_inv);
-	$yi = (($a2*$c1 - $a1*$c2)*$det_inv);
+	$det_inv = 1 / $f;
+
+	$xi = (($b1 * $c2) - ($b2 * $c1)) * $det_inv;
+	$yi = (($a2 * $c1) - ($a1 * $c2)) * $det_inv;
 
 	return(array($xi,$yi));
 }
@@ -581,15 +594,16 @@ function calculate_catmull_rom_span($startn, $startdistance, $numsteps, $x0, $y0
 	);
 
 	for ($i=0; $i <= $numsteps; $i++) {
-		$t=$i / $numsteps;
-		$t2=$t * $t;
-		$t3=$t2 * $t;
-		$x=(($Ap_x * $t3) + ($Bp_x * $t2) + ($Cp_x * $t) + $Dp_x) / $d;
-		$y=(($Ap_y * $t3) + ($Bp_y * $t2) + ($Cp_y * $t) + $Dp_y) / $d;
+		$t  = $i / $numsteps;
+		$t2 = $t * $t;
+		$t3 = $t2 * $t;
+		$x  = (($Ap_x * $t3) + ($Bp_x * $t2) + ($Cp_x * $t) + $Dp_x) / $d;
+		$y  = (($Ap_y * $t3) + ($Bp_y * $t2) + ($Cp_y * $t) + $Dp_y) / $d;
 
 		if ($i > 0) {
-			$step=sqrt((($x - $lx) * ($x - $lx)) + (($y - $ly) * ($y - $ly)));
-			$distance=$distance + $step;
+			$step     = sqrt((($x - $lx) * ($x - $lx)) + (($y - $ly) * ($y - $ly)));
+			$distance = $distance + $step;
+
 			$allpoints[$n] = array(
 				$x,
 				$y,
@@ -599,8 +613,8 @@ function calculate_catmull_rom_span($startn, $startdistance, $numsteps, $x0, $y0
 			$n++;
 		}
 
-		$lx=$x;
-		$ly=$y;
+		$lx = $x;
+		$ly = $y;
 	}
 
 	return array($allpoints, $distance, $n);
@@ -611,14 +625,14 @@ function find_distance_coords(&$pointarray,$distance) {
 	// then linearly interpolate to get a more accurate point
 	// this saves having quite so many points-per-curve
 
-	$index=find_distance($pointarray, $distance);
+	$index = find_distance($pointarray, $distance);
 
-	$ratio=($distance - $pointarray[$index][2]) / ($pointarray[$index + 1][2] - $pointarray[$index][2]);
+	$ratio = ($distance - $pointarray[$index][2]) / ($pointarray[$index + 1][2] - $pointarray[$index][2]);
 
 	$x = $pointarray[$index][0] + $ratio * ($pointarray[$index + 1][0] - $pointarray[$index][0]);
 	$y = $pointarray[$index][1] + $ratio * ($pointarray[$index + 1][1] - $pointarray[$index][1]);
 
-	return(array($x,$y,$index));
+	return(array($x, $y, $index));
 }
 
 function find_distance_coords_angle(&$pointarray,$distance) {
@@ -627,8 +641,8 @@ function find_distance_coords_angle(&$pointarray,$distance) {
 
 	// now to find one either side of it, to get a line to find the angle of
 	$left  = $index;
-	$right = $left+1;
-	$max   = count($pointarray)-1;
+	$right = $left + 1;
+	$max   = count($pointarray) - 1;
 
 	// if we're right up against the last point, then step backwards one
 	if ($right>=$max) {
@@ -647,9 +661,9 @@ function find_distance_coords_angle(&$pointarray,$distance) {
 	$dx = $x2 - $x1;
 	$dy = $y2 - $y1;
 
-	$angle = rad2deg(atan2(-$dy,$dx));
+	$angle = rad2deg(atan2(-$dy, $dx));
 
-	return(array($x,$y,$index,$angle));
+	return(array($x, $y, $index, $angle));
 }
 
 /**
@@ -658,41 +672,41 @@ function find_distance_coords_angle(&$pointarray,$distance) {
  * array of 3-tuples produced by the function above
  */
 function find_distance(&$pointarray, $distance) {
-	$left=0;
-	$right=count($pointarray) - 1;
+	$left  = 0;
+	$right = count($pointarray) - 1;
 
 	if ($left == $right) {
-		return ($left);
+		return($left);
 	}
 
 	// if the distance is zero, there's no need to search (and it doesn't work anyway)
-	if ($distance==0) {
+	if ($distance == 0) {
 		return($left);
 	}
 
 	// if it's a point past the end of the line, then just return the end of the line
 	// Weathermap should *never* ask for this, anyway
 	if ($pointarray[$right][2] < $distance) {
-		return ($right);
+		return($right);
 	}
 
 	// if somehow we have a 0-length curve, then don't try and search, just give up
 	// in a somewhat predictable manner
 	if ($pointarray[$left][2] == $pointarray[$right][2]) {
-		return ($left);
+		return($left);
 	}
 
 	while ($left <= $right) {
-		$mid=floor(($left + $right) / 2);
+		$mid = floor(($left + $right) / 2);
 
 		if (($pointarray[$mid][2] < $distance) && ($pointarray[$mid + 1][2] >= $distance)) {
 			return $mid;
 		}
 
 		if ($distance <= $pointarray[$mid][2]) {
-			$right=$mid - 1;
+			$right = $mid - 1;
 		} else {
-			$left=$mid + 1;
+			$left  = $mid + 1;
 		}
 	}
 
@@ -710,26 +724,26 @@ function calc_curve(&$in_xarray, &$in_yarray,$pointsperspan = 32) {
 	// (most common case will be a straight link with both NODEs at the same place, I think)
 	// strip those out, because they'll break the binary search/centre-point stuff
 
-	$last_x=NULL;
-	$last_y=NULL;
+	$last_x = null;
+	$last_y = null;
 
 	for ($i=0; $i < count($in_xarray); $i++) {
 		if (($in_xarray[$i] == $last_x) && ($in_yarray[$i] == $last_y)) {
 			wm_debug("Dumping useless duplicate point on curve\n");
 		} else {
-			$xarray[]=$in_xarray[$i];
-			$yarray[]=$in_yarray[$i];
+			$xarray[] = $in_xarray[$i];
+			$yarray[] = $in_yarray[$i];
 		}
 
-		$last_x=$in_xarray[$i];
-		$last_y=$in_yarray[$i];
+		$last_x = $in_xarray[$i];
+		$last_y = $in_yarray[$i];
 	}
 
 	// only proceed if we still have at least two points!
 	if (count($xarray) <= 1) {
-		wm_warn ("Arrow not drawn, as it's 1-dimensional.\n");
+		wm_warn("Arrow not drawn, as it's 1-dimensional.");
 
-		return (array(NULL, NULL, NULL, NULL));
+		return(array(null, null, null, null));
 	}
 
 	// duplicate the first and last points, so that all points are drawn
@@ -737,14 +751,15 @@ function calc_curve(&$in_xarray, &$in_yarray,$pointsperspan = 32) {
 	array_unshift($xarray, $xarray[0]);
 	array_unshift($yarray, $yarray[0]);
 
-	$x=array_pop($xarray);
-	$y=array_pop($yarray);
+	$x = array_pop($xarray);
+	$y = array_pop($yarray);
+
 	array_push($xarray, $x);
 	array_push($xarray, $x);
 	array_push($yarray, $y);
 	array_push($yarray, $y);
 
-	$npoints=count($xarray);
+	$npoints = count($xarray);
 
 	$curvepoints = array();
 
@@ -755,21 +770,18 @@ function calc_curve(&$in_xarray, &$in_yarray,$pointsperspan = 32) {
 		0
 	);
 
-	$np=0;
-	$distance=0;
+	$np       = 0;
+	$distance = 0;
 
 	for ($i=0; $i < ($npoints - 3); $i++) {
-		list($newpoints,
-			$distance,
-			$np)=calculate_catmull_rom_span($np,     $distance,  $pointsperspan,  $xarray[$i],
-			$yarray[$i],     $xarray[$i + 1], $yarray[$i + 1], $xarray[$i + 2],
-			$yarray[$i + 2], $xarray[$i + 3], $yarray[$i + 3]
-		);
+		list($newpoints, $distance, $np) = calculate_catmull_rom_span($np, $distance, $pointsperspan, $xarray[$i],
+			$yarray[$i], $xarray[$i + 1], $yarray[$i + 1], $xarray[$i + 2],
+			$yarray[$i + 2], $xarray[$i + 3], $yarray[$i + 3]);
 
-		$curvepoints=$curvepoints + $newpoints;
+		$curvepoints = $curvepoints + $newpoints;
 	}
 
-	return ($curvepoints);
+	return($curvepoints);
 }
 
 /**
@@ -782,50 +794,50 @@ function calc_straight(&$in_xarray, &$in_yarray,$pointsperspan = 12) {
 	// search through the point list, for consecutive duplicate points
 	// (most common case will be a straight link with both NODEs at the same place, I think)
 	// strip those out, because they'll break the binary search/centre-point stuff
-	$last_x=NULL;
-	$last_y=NULL;
+	$last_x = null;
+	$last_y = null;
 
 	for ($i=0; $i < count($in_xarray); $i++) {
 		if (($in_xarray[$i] == $last_x) && ($in_yarray[$i] == $last_y)) {
-			wm_debug("Dumping useless duplicate point on curve\n");
+			wm_debug("Dumping useless duplicate point on curve");
 		} else {
-			$xarray[]=$in_xarray[$i];
-			$yarray[]=$in_yarray[$i];
+			$xarray[] = $in_xarray[$i];
+			$yarray[] = $in_yarray[$i];
 		}
 
-		$last_x=$in_xarray[$i];
-		$last_y=$in_yarray[$i];
+		$last_x = $in_xarray[$i];
+		$last_y = $in_yarray[$i];
 	}
 
 	// only proceed if we still have at least two points!
 	if (count($xarray) <= 1) {
-		wm_warn ("Arrow not drawn, as it's 1-dimensional.\n");
+		wm_warn("Arrow not drawn, as it's 1-dimensional.");
 
-		return (array(NULL, NULL, NULL, NULL));
+		return(array(null, null, null, null));
 	}
 
-	$npoints=count($xarray);
+	$npoints     = count($xarray);
+	$curvepoints = array();
 
-	$curvepoints=array();
-
-	$np=0;
-	$distance=0;
+	$np       = 0;
+	$distance = 0;
 
 	for ($i=0; $i < ($npoints -1); $i++) {
 		// still subdivide the straight line, becuase other stuff makes assumptions about
 		// how often there is a point - at least find_distance_coords_angle breaks
 		$newdistance = sqrt(pow($xarray[$i+1] - $xarray[$i],2) + pow($yarray[$i+1] - $yarray[$i],2));
 
-		$dx = ($xarray[$i+1] - $xarray[$i])/$pointsperspan;
-		$dy = ($yarray[$i+1] - $yarray[$i])/$pointsperspan;
-		$dd = $newdistance/$pointsperspan;
+		$dx = ($xarray[$i+1] - $xarray[$i]) / $pointsperspan;
+		$dy = ($yarray[$i+1] - $yarray[$i]) / $pointsperspan;
+		$dd = $newdistance / $pointsperspan;
 
 		for($j=0; $j< $pointsperspan; $j++) {
-			$x = $xarray[$i]+$j*$dx;
-			$y = $yarray[$i]+$j*$dy;
-			$d = $distance + $j*$dd;
+			$x = $xarray[$i] + ($j * $dx);
+			$y = $yarray[$i] + ($j * $dy);
+			$d = $distance   + ($j * $dd);
 
 			$curvepoints[] = array($x,$y,$d);
+
 			$np++;
 		}
 
@@ -836,30 +848,30 @@ function calc_straight(&$in_xarray, &$in_yarray,$pointsperspan = 12) {
 
 #	print_r($curvepoints);
 
-	return ($curvepoints);
+	return($curvepoints);
 }
 
 function calc_arrowsize($width,&$map,$linkname) {
-	$arrowlengthfactor=4;
-	$arrowwidthfactor=2;
+	$arrowlengthfactor = 4;
+	$arrowwidthfactor  = 2;
 
 	// this is so I can use it in some test code - sorry!
-	if ($map !== NULL) {
+	if ($map !== null) {
 		if ($map->links[$linkname]->arrowstyle == 'compact') {
-			$arrowlengthfactor=1;
-			$arrowwidthfactor=1;
+			$arrowlengthfactor = 1;
+			$arrowwidthfactor  = 1;
 		}
 
 		if (preg_match('/(\d+) (\d+)/', $map->links[$linkname]->arrowstyle, $matches)) {
-			$arrowlengthfactor=$matches[1];
-			$arrowwidthfactor=$matches[2];
+			$arrowlengthfactor = $matches[1];
+			$arrowwidthfactor  = $matches[2];
 		}
 	}
 
-	$arrowsize = $width * $arrowlengthfactor;
+	$arrowsize  = $width * $arrowlengthfactor;
 	$arrowwidth = $width * $arrowwidthfactor;
 
-	return( array($arrowsize,$arrowwidth) );
+	return(array($arrowsize, $arrowwidth));
 }
 
 function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolours, $linkname, &$map, $q2_percent=50, $unidirectional=false) {
@@ -867,43 +879,45 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 
 	if ($unidirectional) {
 		$halfway = $totaldistance;
-		$dirs = array(OUT);
+		$dirs    = array(OUT);
+
 		$q2_percent = 100;
-		$halfway = $totaldistance * ($q2_percent/100);
-		list($halfway_x,$halfway_y,$halfwayindex) = find_distance_coords($curvepoints,$halfway);
+		$halfway    = $totaldistance * ($q2_percent/100);
+
+		list($halfway_x, $halfway_y, $halfwayindex) = find_distance_coords($curvepoints, $halfway);
 
 		$spine[OUT] = $curvepoints;
 	} else {
-	    // we'll split the spine in half here.
-	  #  $q2_percent = 50;
-	    $halfway = $totaldistance * ($q2_percent/100);
+		// we'll split the spine in half here.
+		#  $q2_percent = 50;
+		$halfway = $totaldistance * ($q2_percent/100);
 
-	    $dirs = array(OUT,IN);
+		$dirs = array(OUT,IN);
 		# $dirs = array(IN);
 
-	    list($halfway_x,$halfway_y,$halfwayindex) = find_distance_coords($curvepoints,$halfway);
+		list($halfway_x, $halfway_y, $halfwayindex) = find_distance_coords($curvepoints, $halfway);
 
-	#    print "Midpoint is: $totaldistance  $halfway  $halfwayindex   $halfway_x,$halfway_y\n";
+		# print "Midpoint is: $totaldistance  $halfway  $halfwayindex   $halfway_x,$halfway_y\n";
 
-	    $spine[OUT] = array();
-	    $spine[IN] = array();
-	    $npoints = count($curvepoints)-1;
+		$spine[OUT] = array();
+		$spine[IN]  = array();
+		$npoints    = count($curvepoints)-1;
 
-	    for($i=0; $i<=$halfwayindex; $i++) {
-			$spine[OUT] []= $curvepoints[$i];
-	    }
+		for($i=0; $i<=$halfwayindex; $i++) {
+			$spine[OUT][] = $curvepoints[$i];
+		}
 
-	    // finally, add the actual midpoint
-	    $spine[OUT] []= array($halfway_x,$halfway_y, $halfway);
+		// finally, add the actual midpoint
+		$spine[OUT][] = array($halfway_x,$halfway_y, $halfway);
 
-	    // and then from the end to the middle for the other arrow
-	    for($i=$npoints; $i>$halfwayindex; $i--) {
+		// and then from the end to the middle for the other arrow
+		for($i=$npoints; $i>$halfwayindex; $i--) {
 			// copy the original spine, but reversing the distance calculation
-			$spine[IN] []= array($curvepoints[$i][X], $curvepoints[$i][Y], $totaldistance - $curvepoints[$i][DISTANCE]);
-	    }
+			$spine[IN][] = array($curvepoints[$i][X], $curvepoints[$i][Y], $totaldistance - $curvepoints[$i][DISTANCE]);
+		}
 
-	    // finally, add the actual midpoint
-	    $spine[IN] []= array($halfway_x,$halfway_y, $totaldistance - $halfway);
+		// finally, add the actual midpoint
+		$spine[IN] []= array($halfway_x,$halfway_y, $totaldistance - $halfway);
 	}
 
 	# wm_draw_marker_box($image,$map->selected, $halfway_x, $halfway_y );
@@ -920,31 +934,33 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 
 	// the 1.2 here is empirical. It ought to be 1 in theory.
 	// in practice, a link this short is useless anyway, especially with bwlabels.
-	$minimumlength = 1.2*($arrowsize[IN]+$arrowsize[OUT]);
+	$minimumlength = 1.2 * ($arrowsize[IN] + $arrowsize[OUT]);
 
 	foreach ($dirs as $dir) {
 		# draw_spine($image, $spine[$dir],$map->selected);
 		#draw_spine_chain($image, $spine[$dir],$map->selected,3);
 		#print "=================\n$linkname/$dir\n";
 		#dump_spine($spine[$dir]);
-	    $n = count($spine[$dir]) - 1;
-	    $l = $spine[$dir][$n][DISTANCE];
+
+		$n = count($spine[$dir]) - 1;
+		$l = $spine[$dir][$n][DISTANCE];
 
 		#print "L=$l N=$n\n";
 
-	    // loop increment, start point, width, labelpos, fillcolour, outlinecolour, commentpos
-	    $arrowsettings = array(+1, 0, $widths[$dir], 0, $fillcolours[$dir], $outlinecolour, 5);
+		// loop increment, start point, width, labelpos, fillcolour, outlinecolour, commentpos
+		$arrowsettings = array(+1, 0, $widths[$dir], 0, $fillcolours[$dir], $outlinecolour, 5);
 
-	    # print "Line is $n points to a distance of $l\n";
-	    if ($l < $minimumlength) {
-			wm_warn("Skipping too-short line.\n");
-	    } else {
+		# print "Line is $n points to a distance of $l\n";
+		if ($l < $minimumlength) {
+			wm_warn("Skipping too-short line.");
+		} else {
 			$arrow_d = $l - $arrowsize[$dir];
 			# print "LENGTHS $l $arrow_d ".$arrowsize[$dir]."\n";
 			list($pre_mid_x,$pre_mid_y,$pre_midindex) = find_distance_coords($spine[$dir], $arrow_d);
+
 			# print "POS $pre_mid_x,$pre_mid_y  $pre_midindex\n";
-			$out = array_slice($spine[$dir], 0, $pre_midindex);
-			$out []= array($pre_mid_x, $pre_mid_y, $arrow_d);
+			$out   = array_slice($spine[$dir], 0, $pre_midindex);
+			$out[] = array($pre_mid_x, $pre_mid_y, $arrow_d);
 
 			# wm_draw_marker_diamond($image, $map->selected, $pre_mid_x, $pre_mid_y, 5);
 			# imagearc($image,$pre_mid_x, $pre_mid_y ,15,15,0,360,$map->selected);
@@ -956,9 +972,9 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 
 			$spine[$dir] = $out;
 
-			$adx=($halfway_x - $pre_mid_x);
-			$ady=($halfway_y - $pre_mid_y);
-			$ll=sqrt(($adx * $adx) + ($ady * $ady));
+			$adx = ($halfway_x - $pre_mid_x);
+			$ady = ($halfway_y - $pre_mid_y);
+			$ll  = sqrt(($adx * $adx) + ($ady * $ady));
 
 			$anx = $ady / $ll;
 			$any = -$adx / $ll;
@@ -981,7 +997,7 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 			# draw_spine($image,$spine[$dir],$map->selected);
 
 			$simple = simplify_spine($spine[$dir]);
-			$newn = count($simple);
+			$newn   = count($simple);
 
 			# draw_spine($image,$simple,$map->selected);
 
@@ -995,18 +1011,20 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 
 			// now do the actual drawing....
 
-			$numpoints=0;
-			$numrpoints=0;
+			$numpoints  = 0;
+			$numrpoints = 0;
 
-			$finalpoints = array();
+			$finalpoints   = array();
 			$reversepoints = array();
 
 			$finalpoints[] = $simple[0][X];
 			$finalpoints[] = $simple[0][Y];
+
 			$numpoints++;
 
 			$reversepoints[] = $simple[0][X];
 			$reversepoints[] = $simple[0][Y];
+
 			$numrpoints++;
 
 			// before the main loop, add in the jump out to the corners
@@ -1020,10 +1038,12 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 
 			$finalpoints[] = $simple[$i][X] + $n1->dx*$widths[$dir];
 			$finalpoints[] = $simple[$i][Y] + $n1->dy*$widths[$dir];
+
 			$numpoints++;
 
 			$reversepoints[] = $simple[$i][X] - $n1->dx*$widths[$dir];
 			$reversepoints[] = $simple[$i][Y] - $n1->dy*$widths[$dir];
+
 			$numrpoints++;
 
 			$max_start = count($simple)-2;
@@ -1100,26 +1120,32 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 					if ($angle < 0) {
 						$finalpoints[] = $xi3;
 						$finalpoints[] = $yi3;
+
 						$numpoints++;
 
 						$finalpoints[] = $xi4;
 						$finalpoints[] = $yi4;
+
 						$numpoints++;
 
 						$reversepoints[] = $xi2;
 						$reversepoints[] = $yi2;
+
 						$numrpoints++;
 					} else {
 						$reversepoints[] = $xi4;
 						$reversepoints[] = $yi4;
+
 						$numrpoints++;
 
 						$reversepoints[] = $xi3;
 						$reversepoints[] = $yi3;
+
 						$numrpoints++;
 
 						$finalpoints[] = $xi1;
 						$finalpoints[] = $yi1;
+
 						$numpoints++;
 					}
 				}
@@ -1146,6 +1172,7 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 
 				$finalpoints[] = $x;
 				$finalpoints[] = $y;
+
 				$numpoints++;
 			}
 
@@ -1160,18 +1187,18 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 			if (!is_null($fillcolours[$dir])) {
 				wimagefilledpolygon($image, $finalpoints, count($finalpoints) / 2, $arrowsettings[4]);
 			} else {
-				wm_debug("Not drawing $linkname ($dir) fill because there is no fill colour\n");
+				wm_debug("Not drawing $linkname ($dir) fill because there is no fill colour");
 			}
 
 			$areaname = "LINK:L" . $map->links[$linkname]->id . ":$dir";
 			$map->imap->addArea("Polygon", $areaname, '', $finalpoints);
 
-			wm_debug ("Adding Poly imagemap for $areaname\n");
+			wm_debug("Adding Poly imagemap for $areaname");
 
 			if (!is_null($outlinecolour)) {
 				wimagepolygon($image, $finalpoints, count($finalpoints) / 2, $arrowsettings[5]);
 			} else {
-				wm_debug("Not drawing $linkname ($dir) outline because there is no outline colour\n");
+				wm_debug("Not drawing $linkname ($dir) outline because there is no outline colour");
 			}
 	    }
 	}
@@ -1199,30 +1226,30 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 	// for a unidirectional map, we just ignore the second half (direction = -1)
 	if ($unidirectional) {
 		$halfway = $totaldistance;
-		$dirs = array(OUT);
+		$dirs    = array(OUT);
 	}
 
 	// loop increment, start point, width, labelpos, fillcolour, outlinecolour, commentpos
 	$arrowsettings[OUT] = array(+1, 0, $widths[OUT], 0, $fillcolours[OUT], $outlinecolour, 5);
-	$arrowsettings[IN] = array(-1, count($curvepoints) - 1, $widths[IN], 0, $fillcolours[IN], $outlinecolour, 95);
+	$arrowsettings[IN]  = array(-1, count($curvepoints) - 1, $widths[IN], 0, $fillcolours[IN], $outlinecolour, 95);
 
 	// we calculate the arrow size up here, so that we can decide on the
 	// minimum length for a link. The arrowheads are the limiting factor.
-	list($arrowsize[IN],$arrowwidth[IN]) = calc_arrowsize($widths[IN], $map, $linkname);
-	list($arrowsize[OUT],$arrowwidth[OUT]) = calc_arrowsize($widths[OUT], $map, $linkname);
+	list($arrowsize[IN], $arrowwidth[IN])   = calc_arrowsize($widths[IN], $map, $linkname);
+	list($arrowsize[OUT], $arrowwidth[OUT]) = calc_arrowsize($widths[OUT], $map, $linkname);
 
 	// the 1.2 here is empirical. It ought to be 1 in theory.
 	// in practice, a link this short is useless anyway, especially with bwlabels.
-	$minimumlength = 1.2*($arrowsize[IN]+$arrowsize[OUT]);
+	$minimumlength = 1.2 * ($arrowsize[IN]+$arrowsize[OUT]);
 
 	# warn("$linkname: Total: $totaldistance $arrowsize $arrowwidth $minimumlength\n");
 	if ($totaldistance <= $minimumlength) {
-		wm_warn("Skipping drawing very short link ($linkname). Impossible to draw! Try changing WIDTH or ARROWSTYLE? [WMWARN01]\n");
+		wm_warn("Skipping drawing very short link ($linkname). Impossible to draw! Try changing WIDTH or ARROWSTYLE? [WMWARN01]");
 
 		return;
 	}
 
-	list($halfway_x,$halfway_y,$halfwayindex) = find_distance_coords($curvepoints,$halfway);
+	list($halfway_x, $halfway_y, $halfwayindex) = find_distance_coords($curvepoints, $halfway);
 
 	// loop over direction here
 	// direction is 1.0 for the first half (forwards through the pointlist), and -1.0 for the second half (backwards from the end)
@@ -1233,11 +1260,11 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 
 		// $width = $widths[$dir];
 		// this is the last index before the arrowhead starts
-		list($pre_mid_x,$pre_mid_y,$pre_midindex) = find_distance_coords($curvepoints,$halfway - $direction * $arrowsize[$dir]);
+		list($pre_mid_x, $pre_mid_y, $pre_midindex) = find_distance_coords($curvepoints, $halfway - $direction * $arrowsize[$dir]);
 
-		$there_points=array();
-		$back_points=array();
-		$arrowpoints=array();
+		$there_points = array();
+		$back_points  = array();
+		$arrowpoints  = array();
 
 		# if ($direction < 0) { $start=count($curvepoints) - 1; }
 		# else { $start=0; }
@@ -1248,78 +1275,82 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 			// each is $width away from the spine, but we build up the two lists in the opposite order,
 			// so that when they are joined together, we get one continuous line
 
-			$dx=$curvepoints[$i + $direction][0] - $curvepoints[$i][0];
-			$dy=$curvepoints[$i + $direction][1] - $curvepoints[$i][1];
-			$l=sqrt(($dx * $dx) + ($dy * $dy));
-			$nx=$dy / $l;
-			$ny=-$dx / $l;
+			$dx = $curvepoints[$i + $direction][0] - $curvepoints[$i][0];
+			$dy = $curvepoints[$i + $direction][1] - $curvepoints[$i][1];
+			$l  = sqrt(($dx * $dx) + ($dy * $dy));
+			$nx = $dy / $l;
+			$ny = -$dx / $l;
 
-			$there_points[]=$curvepoints[$i][0] + $direction * $widths[$dir] * $nx;
-			$there_points[]=$curvepoints[$i][1] + $direction * $widths[$dir] * $ny;
+			$there_points[] = $curvepoints[$i][0] + $direction * $widths[$dir] * $nx;
+			$there_points[] = $curvepoints[$i][1] + $direction * $widths[$dir] * $ny;
 
-			$back_points[]=$curvepoints[$i][0] - $direction * $widths[$dir] * $nx;
-			$back_points[]=$curvepoints[$i][1] - $direction * $widths[$dir] * $ny;
+			$back_points[]  = $curvepoints[$i][0] - $direction * $widths[$dir] * $nx;
+			$back_points[]  = $curvepoints[$i][1] - $direction * $widths[$dir] * $ny;
 		}
 
 		// all the normal line is done, now lets add an arrowhead on
 
-		$adx=($halfway_x - $pre_mid_x);
-		$ady=($halfway_y - $pre_mid_y);
-		$l=sqrt(($adx * $adx) + ($ady * $ady));
+		$adx = ($halfway_x - $pre_mid_x);
+		$ady = ($halfway_y - $pre_mid_y);
+		$l   = sqrt(($adx * $adx) + ($ady * $ady));
 
-		$anx=$ady / $l;
-		$any=-$adx / $l;
+		$anx = $ady / $l;
+		$any = -$adx / $l;
 
-		$there_points[]=$pre_mid_x + $direction * $widths[$dir] * $anx;
-		$there_points[]=$pre_mid_y + $direction * $widths[$dir] * $any;
+		$there_points[] = $pre_mid_x + $direction * $widths[$dir] * $anx;
+		$there_points[] = $pre_mid_y + $direction * $widths[$dir] * $any;
 
-		$there_points[]=$pre_mid_x + $direction * $arrowwidth[$dir] * $anx;
-		$there_points[]=$pre_mid_y + $direction * $arrowwidth[$dir] * $any;
+		$there_points[] = $pre_mid_x + $direction * $arrowwidth[$dir] * $anx;
+		$there_points[] = $pre_mid_y + $direction * $arrowwidth[$dir] * $any;
 
-		$there_points[]=$halfway_x;
-		$there_points[]=$halfway_y;
+		$there_points[] = $halfway_x;
+		$there_points[] = $halfway_y;
 
-		$there_points[]=$pre_mid_x - $direction * $arrowwidth[$dir] * $anx;
-		$there_points[]=$pre_mid_y - $direction * $arrowwidth[$dir] * $any;
+		$there_points[] = $pre_mid_x - $direction * $arrowwidth[$dir] * $anx;
+		$there_points[] = $pre_mid_y - $direction * $arrowwidth[$dir] * $any;
 
-		$there_points[]=$pre_mid_x - $direction * $widths[$dir] * $anx;
-		$there_points[]=$pre_mid_y - $direction * $widths[$dir] * $any;
+		$there_points[] = $pre_mid_x - $direction * $widths[$dir] * $anx;
+		$there_points[] = $pre_mid_y - $direction * $widths[$dir] * $any;
 
 		// all points done, now combine the lists, and produce the final result.
 		$metapts = "";
-		$y=array_pop($back_points);
-		$x=array_pop($back_points);
+
+		$y = array_pop($back_points);
+		$x = array_pop($back_points);
 
 		do {
 			$metapts .= " $x $y";
-			$there_points[]=$x;
-			$there_points[]=$y;
-			$y=array_pop($back_points);
-			$x=array_pop($back_points);
+
+			$there_points[] = $x;
+			$there_points[] = $y;
+
+			$y = array_pop($back_points);
+			$x = array_pop($back_points);
 		} while (!is_null($y));
 
-		$arrayindex=1;
+		$arrayindex = 1;
 
 		if ($direction < 0) {
-			$arrayindex=0;
+			$arrayindex = 0;
 		}
 
 		if (!is_null($fillcolours[$arrayindex])) {
 			wimagefilledpolygon($image, $there_points, count($there_points) / 2, $arrowsettings[$dir][4]);
 		} else {
-			wm_debug("Not drawing $linkname ($dir) fill because there is no fill colour\n");
+			wm_debug("Not drawing $linkname ($dir) fill because there is no fill colour");
 		}
 
 		# $areaname = "LINK:" . $linkname. ":$dir";
 		$areaname = "LINK:L" . $map->links[$linkname]->id . ":$dir";
+
 		$map->imap->addArea("Polygon", $areaname, '', $there_points);
 
-		wm_debug ("Adding Poly imagemap for $areaname\n");
+		wm_debug("Adding Poly imagemap for $areaname");
 
 		if (!is_null($outlinecolour)) {
 			wimagepolygon($image, $there_points, count($there_points) / 2, $arrowsettings[$dir][5]);
 		} else {
-			wm_debug("Not drawing $linkname ($dir) outline because there is no outline colour\n");
+			wm_debug("Not drawing $linkname ($dir) outline because there is no outline colour");
 		}
 	}
 }
@@ -1328,10 +1359,11 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 function simplify_spine(&$input, $epsilon=1e-8) {
     $output = array();
 
-    $output []= $input[0];
-    $n=1;
-    $c = count($input)-2;
-    $skip=0;
+    $output[] = $input[0];
+
+    $n    = 1;
+    $c    = count($input)-2;
+    $skip = 0;
 
     for($n=1; $n<=$c; $n++) {
 		$x = $input[$n][X];
@@ -1356,51 +1388,51 @@ function simplify_spine(&$input, $epsilon=1e-8) {
 		# print "\n";
 	}
 
-	wm_debug("Skipped $skip points of $c\n");
+	wm_debug("Skipped $skip points of $c");
 
 	# print "------------------------\n";
 
-	$output []= $input[$c+1];
+	$output[] = $input[$c+1];
 
 	return $output;
 }
 
 function unformat_number($instring, $kilo = 1000) {
-	$matches=0;
-	$number=0;
+	$matches = 0;
+	$number  = 0;
 
 	if (preg_match("/([0-9\.]+)(M|G|K|T|m|u)/", $instring, $matches)) {
-		$number=floatval($matches[1]);
+		$number = floatval($matches[1]);
 
 		if ($matches[2] == 'K') {
-			$number=$number * $kilo;
+			$number = $number * $kilo;
 		}
 
 		if ($matches[2] == 'M') {
-			$number=$number * $kilo * $kilo;
+			$number = $number * $kilo * $kilo;
 		}
 
 		if ($matches[2] == 'G') {
-			$number=$number * $kilo * $kilo * $kilo;
+			$number = $number * $kilo * $kilo * $kilo;
 		}
 
 		if ($matches[2] == 'T') {
-			$number=$number * $kilo * $kilo * $kilo * $kilo;
+			$number = $number * $kilo * $kilo * $kilo * $kilo;
 		}
 
 		// new, for absolute datastyle. Think seconds.
 		if ($matches[2] == 'm') {
-			$number=$number / $kilo;
+			$number = $number / $kilo;
 		}
 
 		if ($matches[2] == 'u') {
-			$number=$number / ($kilo * $kilo);
+			$number = $number / ($kilo * $kilo);
 		}
 	} else {
-		$number=floatval($instring);
+		$number = floatval($instring);
 	}
 
-	return ($number);
+	return($number);
 }
 
 /**
@@ -1408,7 +1440,7 @@ function unformat_number($instring, $kilo = 1000) {
  */
 function calc_offset($offsetstring, $width, $height) {
 	if (preg_match("/^([-+]?\d+):([-+]?\d+)$/",$offsetstring,$matches)) {
-		wm_debug("Numeric Offset found\n");
+		wm_debug("Numeric Offset found");
 
 		return(array($matches[1],$matches[2]));
 	} elseif (preg_match("/(NE|SE|NW|SW|N|S|E|W|C)(\d+)?$/i",$offsetstring,$matches)) {
@@ -1421,44 +1453,44 @@ function calc_offset($offsetstring, $width, $height) {
 		}
 
 		$height = $height * $multiply;
-		$width = $width * $multiply;
+		$width  = $width * $multiply;
 
 		switch (strtoupper($matches[1])) {
 			case 'N':
-				return (array(0, -$height / 2));
+				return(array(0, -$height / 2));
 
 				break;
 			case 'S':
-				return (array(0, $height / 2));
+				return(array(0, $height / 2));
 
 				break;
 			case 'E':
-				return (array(+$width / 2, 0));
+				return(array(+$width / 2, 0));
 
 				break;
 			case 'W':
-				return (array(-$width / 2, 0));
+				return(array(-$width / 2, 0));
 
 				break;
 			case 'NW':
-				return (array(-$width / 2, -$height / 2));
+				return(array(-$width / 2, -$height / 2));
 
 				break;
 			case 'NE':
-				return (array($width / 2, -$height / 2));
+				return(array($width / 2, -$height / 2));
 
 				break;
 			case 'SW':
-				return (array(-$width / 2, $height / 2));
+				return(array(-$width / 2, $height / 2));
 
 				break;
 			case 'SE':
-				return (array($width / 2, $height / 2));
+				return(array($width / 2, $height / 2));
 
 				break;
 			case 'C':
 			default:
-				return (array(0, 0));
+				return(array(0, 0));
 
 				break;
 		}
@@ -1469,11 +1501,11 @@ function calc_offset($offsetstring, $width, $height) {
 		$x = $distance * sin(deg2rad($angle));
 		$y = - $distance * cos(deg2rad($angle));
 
-		return (array($x,$y));
+		return(array($x,$y));
 	} else {
 		wm_warn("Got a position offset that didn't make sense ($offsetstring).");
 
-		return (array(0, 0));
+		return(array(0, 0));
 	}
 }
 
@@ -1482,77 +1514,77 @@ function calc_offset($offsetstring, $width, $height) {
  * by William R. Ward, chopped down to just what I needed
  */
 function format_number($number, $precision = 2, $trailing_zeroes = 0) {
-	$sign=1;
+	$sign = 1;
 
 	if ($number < 0) {
-		$number=abs($number);
-		$sign=-1;
+		$number = abs($number);
+		$sign   = -1;
 	}
 
-	$number=round($number, $precision);
-	$integer=intval($number);
+	$number  = round($number, $precision);
+	$integer = intval($number);
 
 	if (strlen($integer) < strlen($number)) {
-		$decimal=substr($number, strlen($integer) + 1);
+		$decimal = substr($number, strlen($integer) + 1);
 	}
 
 	if (!isset($decimal)) {
-		$decimal='';
+		$decimal = '';
 	}
 
-	$integer=$sign * $integer;
+	$integer = $sign * $integer;
 
 	if ($decimal == '') {
-		return ($integer);
+		return($integer);
 	} else {
-		return ($integer . "." . $decimal);
+		return($integer . "." . $decimal);
 	}
 }
 
-function nice_bandwidth($number, $kilo = 1000,$decimals=1,$below_one=true) {
-	$suffix='';
+function nice_bandwidth($number, $kilo = 1000, $decimals = 1, $below_one = true) {
+	$suffix = '';
 
 	if ($number == 0) {
 		return '0';
 	}
 
-	$mega=$kilo * $kilo;
-	$giga=$mega * $kilo;
-	$tera=$giga * $kilo;
+	$mega = $kilo * $kilo;
+	$giga = $mega * $kilo;
+	$tera = $giga * $kilo;
 
-	$milli = 1/$kilo;
-	$micro = 1/$mega;
-	$nano = 1/$giga;
+	$milli = 1 / $kilo;
+	$micro = 1 / $mega;
+	$nano  = 1 / $giga;
 
 	if ($number >= $tera) {
-		$number/=$tera;
-		$suffix="T";
+		$number /= $tera;
+		$suffix  = "T";
 	} elseif ($number >= $giga) {
-		$number/=$giga;
-		$suffix="G";
+		$number /= $giga;
+		$suffix  = "G";
 	} elseif ($number >= $mega) {
-		$number/=$mega;
-		$suffix="M";
+		$number /= $mega;
+		$suffix  = "M";
 	} elseif ($number >= $kilo) {
-		$number/=$kilo;
-		$suffix="K";
+		$number /= $kilo;
+		$suffix  = "K";
 	} elseif ($number >= 1) {
 		$number = $number;
-		$suffix="";
+		$suffix = "";
 	} elseif (($below_one==true) && ($number >= $milli)) {
-		$number/=$milli;
-		$suffix="m";
+		$number /= $milli;
+		$suffix  = "m";
 	} elseif (($below_one==true) && ($number >= $micro)) {
-		$number/=$micro;
-		$suffix="u";
+		$number /= $micro;
+		$suffix  = "u";
 	} elseif (($below_one==true) && ($number >= $nano)) {
-		$number/=$nano;
-		$suffix="n";
+		$number /= $nano;
+		$suffix  = "n";
 	}
 
-	$result=format_number($number, $decimals) . $suffix;
+	$result = format_number($number, $decimals) . $suffix;
 
-	return ($result);
+	return($result);
 }
 
 function nice_scalar($number, $kilo = 1000, $decimals=1) {
@@ -1563,43 +1595,44 @@ function nice_scalar($number, $kilo = 1000, $decimals=1) {
 		return '0';
 	}
 
+	$number = (float) $number;
+
 	if ($number < 0) {
 		$number = -$number;
 		$prefix = '-';
 	}
 
-	$mega=$kilo * $kilo;
-	$giga=$mega * $kilo;
-	$tera=$giga * $kilo;
+	$mega = $kilo * $kilo;
+	$giga = $mega * $kilo;
+	$tera = $giga * $kilo;
 
 	if ($number > $tera) {
-		$number/=$tera;
-		$suffix="T";
+		$number /= $tera;
+		$suffix  = "T";
 	} elseif ($number > $giga) {
-		$number/=$giga;
-		$suffix="G";
+		$number /= $giga;
+		$suffix  = "G";
 	} elseif ($number > $mega) {
-		$number/=$mega;
-		$suffix="M";
+		$number /= $mega;
+		$suffix  = "M";
 	} elseif ($number > $kilo) {
-		$number/=$kilo;
-		$suffix="K";
+		$number /= $kilo;
+		$suffix  = "K";
 	} elseif ($number > 1) {
 		$number = $number;
-		$suffix="";
+		$suffix = "";
 	} elseif ($number < (1 / ($kilo))) {
-		$number=$number * $mega;
-		$suffix="u";
+		$number = $number * $mega;
+		$suffix = "u";
 	} elseif ($number < 1) {
-		$number=$number * $kilo;
-		$suffix="m";
+		$number = $number * $kilo;
+		$suffix = "m";
 	}
 
 	$result = $prefix . format_number($number, $decimals) . $suffix;
 
-	return ($result);
+	return($result);
 }
-
 
 // ***********************************************
 
@@ -1615,7 +1648,7 @@ class WMFont {
 class Point {
 	var $x, $y;
 
-	function __construct($x=0,$y=0) {
+	function __construct($x = 0, $y = 0) {
 		$this->x = $x;
 		$this->y = $y;
 	}
@@ -1625,7 +1658,7 @@ class Point {
 class Vector {
 	var $dx, $dy;
 
-	function __construct($dx=0,$dy=0) {
+	function __construct($dx = 0, $dy = 0) {
 		$this->dx = $dx;
 		$this->dy = $dy;
 	}
@@ -1636,22 +1669,23 @@ class Vector {
 		$nx1 = $this->dy / $len;
 		$ny1 = -$this->dx / $len;
 
-		return( new Vector($nx1, $ny1));
+		return(new Vector($nx1, $ny1));
 	}
 
 	function normalise() {
 		$len = $this->length();
-		$this->dx = $this->dx/$len;
-		$this->dy = $this->dy/$len;
+
+		$this->dx = $this->dx / $len;
+		$this->dy = $this->dy / $len;
 	}
 
 	function length() {
-		return( sqrt(($this->dx)*($this->dx) + ($this->dy)*($this->dy)) );
+		return(sqrt(($this->dx * $this->dx) + ($this->dy * $this->dy)));
 	}
 }
 
 class Colour {
-	var $r,$g,$b, $alpha;
+	var $r, $g, $b, $alpha;
 
 	// take in an existing value and create a Colour object for it
 	function __construct() {
@@ -1676,7 +1710,7 @@ class Colour {
 
 	// Is this a transparent/none colour?
 	function is_real() {
-		if ($this->r >= 0 && $this->g >=0 && $this->b >= 0) {
+		if ($this->r >= 0 && $this->g >= 0 && $this->b >= 0) {
 			return true;
 		} else {
 			return false;
@@ -1714,7 +1748,7 @@ class Colour {
 	// - things like scale colours are used in multiple images now (the scale, several nodes, the main map...)
 	function gdallocate($image_ref) {
 		if ($this->is_none()) {
-			return NULL;
+			return null;
 		} else {
 			return(myimagecolorallocate($image_ref, $this->r, $this->g, $this->b));
 		}
@@ -1722,21 +1756,21 @@ class Colour {
 
 	// based on an idea from: http://www.bennadel.com/index.cfm?dax=blog:902.view
 	function contrast_ary() {
-		if ( (($this->r + $this->g + $this->b) > 500) || ($this->g > 140)) {
-			return( array(0,0,0) );
+		if ((($this->r + $this->g + $this->b) > 500) || ($this->g > 140)) {
+			return(array(0,0,0));
 		} else {
-			return( array(255,255,255) );
+			return(array(255,255,255));
 		}
 	}
 
 	function contrast() {
-		return( new Colour($this->contrast_ary() ) );
+		return(new Colour($this->contrast_ary()));
 	}
 
 	// make a printable version, for debugging
 	// - optionally take a format string, so we can use it for other things (like WriteConfig, or hex in stylesheets)
-	function as_string($format = "RGB(%d,%d,%d)") {
-		return (sprintf($format, $this->r, $this->g, $this->b));
+	function as_string($format = 'RGB(%d,%d,%d)') {
+		return(sprintf($format, $this->r, $this->g, $this->b));
 	}
 
 	function __toString() {
@@ -1744,14 +1778,14 @@ class Colour {
 	}
 
 	function as_config() {
-		return $this->as_string("%d %d %d");
+		return $this->as_string('%d %d %d');
 	}
 
 	function as_html() {
 		if ($this->is_real()) {
-			return $this->as_string("#%02x%02x%02x");
+			return $this->as_string('#%02x%02x%02x');
 		} else {
-			return "";
+			return '';
 		}
 	}
 }
@@ -1761,98 +1795,135 @@ class Colour {
 //   drawing commands for a map. I have a basic Perl-Cairo script that makes
 //   anti-aliased maps from these, using Cairo instead of GD.
 
-function metadump($string, $truncate=false) {
+function metadump($string, $truncate = false) {
 	// comment this line to get a metafile for this map
 	return;
 
 	if ($truncate) {
-		$fd = fopen("metadump.txt","w+");
+		$fd = fopen('metadump.txt', 'w+');
 	} else {
-		$fd = fopen("metadump.txt","a");
+		$fd = fopen('metadump.txt', 'a');
 	}
 
-	fputs($fd,$string."\n");
+	fputs($fd, $string. PHP_EOL);
 
 	fclose($fd);
 }
 
 function metacolour(&$col) {
-	return ($col['red1']." ".$col['green1']." ".$col['blue1']);
+	return($col['red1'] . ' ' . $col['green1'] . ' ' . $col['blue1']);
 }
 
 function wimagecreate($width,$height) {
 	metadump("NEWIMAGE $width $height");
+
 	return(imagecreate($width,$height));
 }
 
 function wimagefilledrectangle( $image ,$x1, $y1, $x2, $y2, $color ) {
-	if ($color===NULL) {
+	if ($color === null) {
 		return;
 	}
 
 	$col = imagecolorsforindex($image, $color);
-	$r = $col['red']; $g = $col['green']; $b = $col['blue']; $a = $col['alpha'];
-	$r = $r/255; $g=$g/255; $b=$b/255; $a=(127-$a)/127;
+	$r   = $col['red'];
+	$g   = $col['green'];
+	$b   = $col['blue'];
+	$a   = $col['alpha'];
+
+	$r   = $r / 255;
+	$g   = $g / 255;
+	$b   = $b / 255;
+	$a   = (127 - $a) / 127;
 
 	metadump("FRECT $x1 $y1 $x2 $y2 $r $g $b $a");
 
-	return(imagefilledrectangle($image ,$x1, $y1, $x2, $y2, $color));
+	return(imagefilledrectangle($image, (int) $x1, (int) $y1, (int) $x2, (int) $y2, $color));
 }
 
-function wimagerectangle( $image ,$x1, $y1, $x2, $y2, $color ) {
-	if ($color===NULL) {
+function wimagerectangle($image ,$x1, $y1, $x2, $y2, $color) {
+	if ($color === null) {
 		return;
 	}
 
 	$col = imagecolorsforindex($image, $color);
-	$r = $col['red']; $g = $col['green']; $b = $col['blue']; $a = $col['alpha'];
-	$r = $r/255; $g=$g/255; $b=$b/255; $a=(127-$a)/127;
+	$r   = $col['red'];
+	$g   = $col['green'];
+	$b   = $col['blue'];
+	$a   = $col['alpha'];
+
+	$r   = $r / 255;
+	$g   = $g / 255;
+	$b   = $b / 255;
+	$a   = (127 - $a) / 127;
 
 	metadump("RECT $x1 $y1 $x2 $y2 $r $g $b $a");
 
-	return(imagerectangle($image, $x1, $y1, $x2, $y2, $color));
+	return(imagerectangle($image, (int) $x1, (int) $y1, (int) $x2, (int) $y2, $color));
 }
 
 function wimagepolygon($image, $points, $num_points, $color) {
-	if ($color===NULL) {
+	if ($color === null) {
 		return;
 	}
 
 	$col = imagecolorsforindex($image, $color);
-	$r = $col['red']; $g = $col['green']; $b = $col['blue']; $a = $col['alpha'];
-	$r = $r/255; $g=$g/255; $b=$b/255; $a=(127-$a)/127;
+	$r   = $col['red'];
+	$g   = $col['green'];
+	$b   = $col['blue'];
+	$a   = $col['alpha'];
 
-	$pts = "";
+	$r   = $r / 255;
+	$g   = $g / 255;
+	$b   = $b / 255;
+	$a   = (127 - $a) / 127;
+
+	$pts = '';
 
 	for ($i=0; $i < $num_points; $i++) {
-		$pts .= $points[$i * 2]." ";
-		$pts .= $points[$i * 2+1]." ";
+		$pts .= $points[$i * 2]   . ' ';
+		$pts .= $points[$i * 2 + 1] . ' ';
 	}
 
-	metadump("POLY $num_points ".$pts." $r $g $b $a");
+	metadump("POLY $num_points " . $pts . " $r $g $b $a");
 
-	return(imagepolygon($image, $points, $num_points, $color));
+	if (version_compare(PHP_VERSION, '8.0', '>')) {
+		return(imagepolygon($image, $points, $color));
+	} else {
+		return(imagepolygon($image, $points, $num_points, $color));
+	}
 }
 
 function wimagefilledpolygon($image, $points, $num_points, $color) {
-	if ($color===NULL) {
+	if ($color === null) {
 		return;
 	}
 
 	$col = imagecolorsforindex($image, $color);
-	$r = $col['red']; $g = $col['green']; $b = $col['blue']; $a = $col['alpha'];
-	$r = $r/255; $g=$g/255; $b=$b/255; $a=(127-$a)/127;
+	$r   = $col['red'];
+	$g   = $col['green'];
+	$b   = $col['blue'];
+	$a   = $col['alpha'];
 
-	$pts = "";
+	$r   = $r / 255;
+	$g   = $g / 255;
+	$b   = $b / 255;
+	$a   = (127 - $a) / 127;
+
+	$pts = '';
 
 	for ($i=0; $i < $num_points; $i++) {
-		$pts .= $points[$i * 2]." ";
-		$pts .= $points[$i * 2+1]." ";
+		$pts .= $points[$i * 2]     . ' ';
+		$pts .= $points[$i * 2 + 1] . ' ';
 	}
 
 	metadump("FPOLY $num_points ".$pts." $r $g $b $a");
 
-	return(imagefilledpolygon($image, $points, $num_points, $color));
+	if (version_compare(PHP_VERSION, '8.0', '>')) {
+		return(imagefilledpolygon($image, $points, $color));
+	} else {
+		return(imagefilledpolygon($image, $points, $num_points, $color));
+	}
 }
 
 function wimagecreatetruecolor($width, $height) {
@@ -1862,68 +1933,83 @@ function wimagecreatetruecolor($width, $height) {
 }
 
 function wimagettftext($image, $size, $angle, $x, $y, $color, $file, $string) {
-	if ($color===NULL) {
+	if ($color === null) {
 		return;
 	}
 
 	$col = imagecolorsforindex($image, $color);
-	$r = $col['red']; $g = $col['green']; $b = $col['blue']; $a = $col['alpha'];
-	$r = $r/255; $g=$g/255; $b=$b/255; $a=(127-$a)/127;
+	$r   = $col['red'];
+	$g   = $col['green'];
+	$b   = $col['blue'];
+	$a   = $col['alpha'];
+
+	$r   = $r / 255;
+	$g   = $g / 255;
+	$b   = $b / 255;
+	$a   = (127 - $a) / 127;
 
 	metadump("TEXT $x $y $angle $size $file $r $g $b $a $string");
 
-	return(imagettftext($image, $size, $angle, $x, $y, $color, $file, $string));
+	return(imagettftext($image, $size, $angle, (int) $x, (int) $y, (int) $color, $file, $string));
 }
 
 function wm_draw_marker_diamond($im, $col, $x, $y, $size=10) {
 	$points = array();
 
-	$points []= $x-$size;
-	$points []= $y;
+	$points[] = $x - $size;
+	$points[] = $y;
 
-	$points []= $x;
-	$points []= $y-$size;
+	$points[] = $x;
+	$points[] = $y - $size;
 
-	$points []= $x+$size;
-	$points []= $y;
+	$points[] = $x + $size;
+	$points[] = $y;
 
-	$points []= $x;
-	$points []= $y+$size;
+	$points[] = $x;
+	$points[] = $y + $size;
 
 	$num_points = 4;
 
-	imagepolygon($im, $points, $num_points, $col);
+	if (version_compare(PHP_VERSION, '8.0', '>')) {
+		imagepolygon($im, $points, $col);
+	} else {
+		imagepolygon($im, $points, $num_points, $col);
+	}
 }
 
 function wm_draw_marker_box($im, $col, $x, $y, $size=10) {
 	$points = array();
 
-	$points []= $x-$size;
-	$points []= $y-$size;
+	$points[] = $x - $size;
+	$points[] = $y - $size;
 
-	$points []= $x+$size;
-	$points []= $y-$size;
+	$points[] = $x + $size;
+	$points[] = $y - $size;
 
-	$points []= $x+$size;
-	$points []= $y+$size;
+	$points[] = $x + $size;
+	$points[] = $y + $size;
 
-	$points []= $x-$size;
-	$points []= $y+$size;
+	$points[] = $x - $size;
+	$points[] = $y + $size;
 
 	$num_points = 4;
 
-	imagepolygon($im, $points, $num_points, $col);
+	if (version_compare(PHP_VERSION, '8.0', '>')) {
+		imagepolygon($im, $points, $col);
+	} else {
+		imagepolygon($im, $points, $num_points, $col);
+	}
 }
 
-function wm_draw_marker_circle($im, $col, $x, $y, $size=10) {
-	imagearc($im,$x, $y ,$size,$size,0,360,$col);
+function wm_draw_marker_circle($im, $col, $x, $y, $size = 10) {
+	imagearc($im, $x, $y, $size, $size, 0, 360, $col);
 }
 
-function draw_spine_chain($im,$spine,$col, $size=10) {
+function draw_spine_chain($im, $spine, $col, $size = 10) {
     $newn = count($spine);
 
     for ($i=0; $i < $newn; $i++) {
-		imagearc($im,$spine[$i][X],$spine[$i][Y],$size,$size,0,360,$col);
+		imagearc($im, $spine[$i][X], $spine[$i][Y], $size, $size, 0, 360, $col);
     }
 }
 
@@ -1941,11 +2027,7 @@ function draw_spine($im, $spine, $col) {
     $max_i = count($spine)-1;
 
     for ($i=0; $i <$max_i; $i++) {
-		imageline($im,
-			$spine[$i][X],$spine[$i][Y],
-			$spine[$i+1][X],$spine[$i+1][Y],
-			$col
-		);
+		imageline($im, $spine[$i][X], $spine[$i][Y], $spine[$i+1][X], $spine[$i+1][Y], $col);
     }
 }
 
@@ -1960,10 +2042,13 @@ function draw_spine($im, $spine, $col) {
 function TestOutput_HTML($htmlfile, &$map) {
 	global $WEATHERMAP_VERSION;
 
-	$fd=fopen($htmlfile, 'w');
+	$fd = fopen($htmlfile, 'w');
 	fwrite($fd, '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>');
 
-	if ($map->htmlstylesheet != '') fwrite($fd,'<link rel="stylesheet" type="text/css" href="'.$map->htmlstylesheet.'" />');
+	if ($map->htmlstylesheet != '') {
+		fwrite($fd,'<link rel="stylesheet" type="text/css" href="'.$map->htmlstylesheet.'" />');
+	}
+
 	fwrite($fd,'<meta http-equiv="refresh" content="300" /><title>' . $map->ProcessString($map->title, $map) . '</title></head><body>');
 
 	if ($map->htmlstyle == "overlib") {
@@ -1972,9 +2057,11 @@ function TestOutput_HTML($htmlfile, &$map) {
 	}
 
 	fwrite($fd, $map->MakeHTML());
+
 	fwrite($fd, '<hr /><span id="byline">Network Map created with <a href="http://www.network-weathermap.com/?vs='
 		. $WEATHERMAP_VERSION . '">PHP Network Weathermap v' . $WEATHERMAP_VERSION
 		. '</a></span></body></html>');
+
 	fclose ($fd);
 }
 
@@ -2006,19 +2093,21 @@ function TestOutput_RunTest($conffile, $imagefile, $htmlfile, $newconffile, $cov
 	}
 
 	$weathermap_map = $conffile;
+
 	$map->ReadConfig($conffile);
-	$skip = 0;
+
+	$skip   = 0;
 	$nwarns = 0;
 
-	if (!strstr($WEATHERMAP_VERSION, "dev")) {
+	if (!strstr($WEATHERMAP_VERSION, 'dev')) {
 		# Allow tests to be from the future. Global SET in test file can excempt test from running
 		# SET REQUIRES_VERSION 0.98
 		# but don't check if the current version is a dev version
-		$required_version = $map->get_hint("REQUIRES_VERSION");
+		$required_version = $map->get_hint('REQUIRES_VERSION');
 
-		if ($required_version != "") {
+		if ($required_version != '') {
 			// doesan't need to be complete, just in the right order
-			$known_versions = array("0.97","0.97a","0.97b","0.98","0.98a");
+			$known_versions = array('0.97','0.97a','0.97b','0.98','0.98a');
 			$my_version = array_search($WEATHERMAP_VERSION,$known_versions);
 			$req_version = array_search($required_version,$known_versions);
 
@@ -2032,7 +2121,8 @@ function TestOutput_RunTest($conffile, $imagefile, $htmlfile, $newconffile, $cov
 	if ($skip == 0) {
 		$map->ReadData();
 		$map->DrawMap($imagefile);
-		$map->imagefile=$imagefile;
+
+		$map->imagefile = $imagefile;
 
 		if ($htmlfile != '') {
 			TestOutput_HTML($htmlfile, $map);
@@ -2050,6 +2140,7 @@ function TestOutput_RunTest($conffile, $imagefile, $htmlfile, $newconffile, $cov
 	}
 
 	$map->CleanUp();
+
 	unset ($map);
 
 	return intval($nwarns);

@@ -53,6 +53,8 @@
  * (that is, TARGET snmp:community:host:in_oid:out_oid
  */
 class WeatherMapDataSource_snmp extends WeatherMapDataSource {
+	var $down_cache;
+
 	function Init(&$map) {
 		// We can keep a list of unresponsive nodes, so we can give up earlier
 		$this->down_cache = array();

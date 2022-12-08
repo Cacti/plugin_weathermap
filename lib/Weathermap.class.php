@@ -43,9 +43,9 @@ require_once 'geometry.php';
 require_once 'WeatherMapNode.class.php';
 require_once 'WeatherMapLink.class.php';
 
-$WEATHERMAP_VERSION    = '0.98a';
+$WEATHERMAP_VERSION    = '1.0';
 $weathermap_debugging  = false;
-$weathermap_map        ='';
+$weathermap_map        = '';
 $weathermap_warncount  = 0;
 $weathemap_lazycounter = 0;
 
@@ -223,62 +223,73 @@ class WeatherMap extends WeatherMapBase {
 	var $imap;
 	var $colours;
 	var $configfile;
-	var $imagefile,
-		$imageuri;
+	var $imagefile;
+	var $imageuri;
 	var $rrdtool;
-	var $title,
-		$titlefont;
+	var $title;
+	var $titlefont;
 	var $kilo;
-	var $sizedebug,
-		$widthmod,
-		$debugging;
-	var $linkfont,
-		$nodefont,
-		$keyfont,
-		$timefont;
+	var $sizedebug;
+	var $widthmod;
+	var $debugging;
+	var $linkfont;
+	var $nodefont;
+	var $keyfont;
+	var $timefont;
+
 	// var $bg_r, $bg_g, $bg_b;
-	var $timex,
-		$timey;
-	var $width,
-		$height;
-	var $keyx,
-		$keyy, $keyimage;
-	var $titlex,
-		$titley;
-	var $keytext,
-		$stamptext, $datestamp;
-	var $min_data_time, $max_data_time;
-	var $htmloutputfile,
-		$imageoutputfile;
+	var $timex;
+	var $timey;
+	var $width;
+	var $height;
+	var $keyx;
+	var $keyy;
+	var $keyimage;
+	var $titlex;
+	var $titley;
+	var $keytext;
+	var $stamptext;
+	var $datestamp;
+	var $min_data_time;
+	var $max_data_time;
+	var $htmloutputfile;
+	var $imageoutputfile;
 	var $dataoutputfile;
 	var $htmlstylesheet;
-	var $defaultlink,
-		$defaultnode;
+	var $defaultlink;
+	var $defaultnode;
 	var $need_size_precalc;
-	var $keystyle,$keysize;
+	var $keystyle;
+	var $keysize;
 	var $rrdtool_check;
 	var $inherit_fieldlist;
-	var $mintimex, $maxtimex;
-	var $mintimey, $maxtimey;
-	var $minstamptext, $maxstamptext;
+	var $mintimex;
+	var $maxtimex;
+	var $mintimey;
+	var $maxtimey;
+	var $minstamptext;
+	var $maxstamptext;
 	var $context;
-	var $cachefolder,$mapcache,$cachefile_version;
+	var $cachefolder;
+	var $mapcache;
+	var $cachefile_version;
 	var $name;
-	var $black,
-		$white,
-		$grey,
-		$selected;
+	var $black;
+	var $white;
+	var $grey;
+	var $selected;
 
 	var $datasourceclasses;
 	var $preprocessclasses;
 	var $postprocessclasses;
 	var $activedatasourceclasses;
-	var $thumb_width, $thumb_height;
+	var $thumb_width;
+	var $thumb_height;
 	var $has_includes;
 	var $has_overlibs;
 	var $node_template_tree;
 	var $link_template_tree;
-    var $dsinfocache=array();
+    var $dsinfocache = array();
 
 	var $plugins = array();
 	var $included_files = array();
@@ -287,9 +298,16 @@ class WeatherMap extends WeatherMapBase {
     var $colourtable = array();
     var $warncount = 0;
 
+	// PHP 8.1 QA
+	var $numscales;
+	var $dumpconfig;
+	var $labelstyle;
+	var $fonts;
+	var $scales;
+	var $image;
 
 	function __construct() {
-		$this->inherit_fieldlist=array (
+		$this->inherit_fieldlist = array (
 			'width' => 800,
 			'height' => 600,
 			'kilo' => 1000,
@@ -730,7 +748,7 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		# $this->datasourceclasses = array();
-		$dh=@opendir($dir);
+		$dh = @opendir($dir);
 
 		if (!$dh) {
 			// try to find it with the script, if the relative path fails
@@ -1527,16 +1545,16 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	function DrawLegend_Classic($im,$scalename="DEFAULT",$use_tags=false) {
-		$title=$this->keytext[$scalename];
+		$title = $this->keytext[$scalename];
 
-		$colours=$this->colours[$scalename];
+		$colours = $this->colours[$scalename];
 		usort($colours, array("Weathermap", "coloursort"));
 
-		$nscales=$this->numscales[$scalename];
+		$nscales = $this->numscales[$scalename];
 
 		wm_debug("Drawing $nscales colours into SCALE");
 
-		$hide_zero = intval($this->get_hint("key_hidezero_".$scalename));
+		$hide_zero    = intval($this->get_hint("key_hidezero_".$scalename));
 		$hide_percent = intval($this->get_hint("key_hidepercent_".$scalename));
 
 		// did we actually hide anything?
@@ -1552,7 +1570,7 @@ class WeatherMap extends WeatherMapBase {
 		$x = $this->keyx[$scalename];
 		$y = $this->keyy[$scalename];
 
-		list($tilewidth, $tileheight)=$this->myimagestringsize($font, "MMMM");
+		list($tilewidth, $tileheight) = $this->myimagestringsize($font, "MMMM");
 
 		$tileheight  = $tileheight * 1.1;
 		$tilespacing = $tileheight + 2;
@@ -1561,16 +1579,17 @@ class WeatherMap extends WeatherMapBase {
 			# $minwidth = imagefontwidth($font) * strlen('XX 100%-100%')+10;
 			# $boxwidth = imagefontwidth($font) * strlen($title) + 10;
 
-			list($minwidth, $junk)=$this->myimagestringsize($font, 'MMMM 100%-100%');
-			list($minminwidth, $junk)=$this->myimagestringsize($font, 'MMMM ');
-			list($boxwidth, $junk)=$this->myimagestringsize($font, $title);
+			list($minwidth, $junk)    = $this->myimagestringsize($font, 'MMMM 100%-100%');
+			list($minminwidth, $junk) = $this->myimagestringsize($font, 'MMMM ');
+			list($boxwidth, $junk)    = $this->myimagestringsize($font, $title);
 
 			if ($use_tags) {
 				$max_tag = 0;
 
 				foreach ($colours as $colour) {
 					if ( isset($colour['tag']) ) {
-						list($w, $junk)=$this->myimagestringsize($font, $colour['tag']);
+						list($w, $junk) = $this->myimagestringsize($font, $colour['tag']);
+
 						# print $colour['tag']." $w \n";
 						if ($w > $max_tag) $max_tag = $w;
 					}
@@ -1585,30 +1604,31 @@ class WeatherMap extends WeatherMapBase {
 				# print "minwidth is now $minwidth\n";
 			}
 
-			$minwidth+=10;
-			$boxwidth+=10;
+			$minwidth += 10;
+			$boxwidth += 10;
 
 			if ($boxwidth < $minwidth) {
-				$boxwidth=$minwidth;
+				$boxwidth = $minwidth;
 			}
 
-			$boxheight=$tilespacing * ($nscales + 1) + 10;
+			$boxheight = $tilespacing * ($nscales + 1) + 10;
 
-			$boxx=$x; $boxy=$y;
-			$boxx=0;
-			$boxy=0;
+			$boxx = $x;
+			$boxy = $y;
+			$boxx = 0;
+			$boxy = 0;
 
 			// allow for X11-style negative positioning
 			if ($boxx < 0) {
-				$boxx+=$this->width;
+				$boxx += $this->width;
 			}
 
 			if ($boxy < 0) {
-				$boxy+=$this->height;
+				$boxy += $this->height;
 			}
 
-			$scale_im = imagecreatetruecolor($boxwidth+1, $boxheight+1);
-			$scale_ref = 'gdref_legend_'.$scalename;
+			$scale_im  = imagecreatetruecolor((int) $boxwidth+1, (int) $boxheight+1);
+			$scale_ref = 'gdref_legend_' . $scalename;
 
 			// Start with a transparent box, in case the fill or outline colour is 'none'
 			imageSaveAlpha($scale_im, true);
@@ -1720,13 +1740,15 @@ class WeatherMap extends WeatherMapBase {
 
 		switch($which) {
 			case "MIN":
-				$stamp = strftime($this->minstamptext, $this->min_data_time);
+				//$stamp = strftime($this->minstamptext, $this->min_data_time);
+				$stamp = date_format(date_create(date('Y-m-d H:i:s', $this->min_data_time)), $this->minstamptext);
 				$pos_x = $this->mintimex;
 				$pos_y = $this->mintimey;
 
 				break;
 			case "MAX":
-				$stamp = strftime($this->maxstamptext, $this->max_data_time);
+				//$stamp = strftime($this->maxstamptext, $this->max_data_time);
+				$stamp = date_format(date_create(date('Y-m-d H:i:s', $this->max_data_time)), $this->maxstamptext);
 				$pos_x = $this->maxtimex;
 				$pos_y = $this->maxtimey;
 
@@ -1776,17 +1798,18 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	function ReadConfig($input, $is_include=false) {
-		global $weathermap_error_suppress;
+		global $config, $weathermap_error_suppress;
 
-		$curnode=null;
-		$curlink=null;
-		$matches=0;
-		$nodesseen=0;
-		$linksseen=0;
-		$scalesseen=0;
-		$last_seen="GLOBAL";
-		$filename = "";
-		$objectlinecount=0;
+		$curnode    = null;
+		$curlink    = null;
+		$matches    = 0;
+		$nodesseen  = 0;
+		$linksseen  = 0;
+		$scalesseen = 0;
+		$last_seen  = "GLOBAL";
+		$filename   = "";
+
+		$objectlinecount = 0;
 
 		// check if $input is more than one line. if it is, it's a text of a config file
 		// if it isn't, it's the filename
@@ -1796,8 +1819,8 @@ class WeatherMap extends WeatherMapBase {
 			wm_debug("ReadConfig Detected that this is a config fragment.");
 
 			// strip out any Windows line-endings that have gotten in here
-			$input=str_replace("\r", "", $input);
-			$lines = explode("/n",$input);
+			$input    = str_replace("\r", "", $input);
+			$lines    = explode("/n",$input);
 			$filename = "{text insert}";
 		} else {
 			wm_debug("ReadConfig Detected that this is a config filename.");
@@ -1821,9 +1844,10 @@ class WeatherMap extends WeatherMapBase {
 
 			if ($fd) {
 				while (!feof($fd)) {
-					$buffer=fgets($fd, 4096);
+					$buffer = fgets($fd, 4096);
+
 					// strip out any Windows line-endings that have gotten in here
-					$buffer=str_replace("\r", "", $buffer);
+					$buffer  = str_replace("\r", "", $buffer);
 					$lines[] = $buffer;
 				}
 
@@ -1835,7 +1859,8 @@ class WeatherMap extends WeatherMapBase {
 		$objectlinecount = 0;
 
 		foreach($lines as $buffer) {
-			$linematched=0;
+			$linematched = 0;
+
 			$linecount++;
 
 			if (preg_match("/^\s*#/", $buffer)) {
@@ -3166,7 +3191,8 @@ class WeatherMap extends WeatherMapBase {
 			$maptime = time();
 		}
 
-		$this->datestamp = strftime($this->stamptext, $maptime);
+		//$this->datestamp = strftime($this->stamptext, $maptime);
+		$this->datestamp = date_format(date_create(date('Y-m-d H:i:s', $maptime)), $this->stamptext);
 
 		// do the basic prep work
 		if ($this->background != '') {
@@ -3420,8 +3446,8 @@ class WeatherMap extends WeatherMapBase {
 						$factor=($thumbnailmax / $this->height);
 					}
 
-					$this->thumb_width  = $this->width * $factor;
-					$this->thumb_height = $this->height * $factor;
+					$this->thumb_width  = ceil($this->width * $factor);
+					$this->thumb_height = ceil($this->height * $factor);
 
 					$imagethumb=imagecreatetruecolor($this->thumb_width, $this->thumb_height);
 
@@ -3601,7 +3627,7 @@ class WeatherMap extends WeatherMapBase {
 							$overlibhtml .= $note;
 						}
 
-						$overlibhtml .= "',DELAY,250,${left}${above}CAPTION,'" . $caption . "');\"  onmouseout=\"return nd();\"";
+						$overlibhtml .= "',DELAY,250,{$left}{$above}CAPTION,'" . $caption . "');\"  onmouseout=\"return nd();\"";
 
 						foreach ($parts as $part) {
 							$areaname = $type.":" . $prefix . $myobj->id. ":" . $part;

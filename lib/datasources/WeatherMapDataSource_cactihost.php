@@ -38,9 +38,9 @@
 
 class WeatherMapDataSource_cactihost extends WeatherMapDataSource {
 	function Init(&$map) {
-		if($map->context == 'cacti') {
-			if(function_exists('db_fetch_row')) {
-				return(TRUE);
+		if ($map->context == 'cacti') {
+			if (function_exists('db_fetch_row')) {
+				return(true);
 			} else {
 				wm_debug('ReadData CactiHost: Cacti database library not found.');
 			}
@@ -48,14 +48,14 @@ class WeatherMapDataSource_cactihost extends WeatherMapDataSource {
 			wm_debug("ReadData CactiHost: Can only run from Cacti environment.");
 		}
 
-		return(FALSE);
+		return(false);
 	}
 
 	function Recognise($targetstring) {
-		if(preg_match("/^cactihost:(\d+)$/",$targetstring,$matches)) {
-			return TRUE;
+		if (preg_match("/^cactihost:(\d+)$/",$targetstring,$matches)) {
+			return true;
 		} else {
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -64,36 +64,38 @@ class WeatherMapDataSource_cactihost extends WeatherMapDataSource {
 		$data[OUT] = NULL;
 		$data_time = 0;
 
-		if(preg_match("/^cactihost:(\d+)$/",$targetstring,$matches)) {
+		if (preg_match("/^cactihost:(\d+)$/",$targetstring,$matches)) {
 			$cacti_id = intval($matches[1]);
+			$state    = -1;
 
-			$SQL = "select * from host where id=$cacti_id";
 			// 0=disabled
 			// 1=down
 			// 2=recovering
 			// 3=up
 
-			$state = -1;
-			$result = db_fetch_row($SQL);
+			$result = db_fetch_row_prepared("SELECT *
+				FROM host
+				WHERE id = ?",
+				array($cacti_id));
 
-			if(isset($result)) {
+			if (cacti_sizeof($result)) {
 				// create a note, which can be used in icon filenames or labels more nicely
-				if($result['status'] == 1) {
+				if ($result['status'] == 1) {
 					$state = 1;
 					$statename = 'down';
 				}
 
-				if($result['status'] == 2) {
+				if ($result['status'] == 2) {
 					$state = 2;
 					$statename = 'recovering';
 				}
 
-				if($result['status'] == 3) {
+				if ($result['status'] == 3) {
 					$state = 3;
 					$statename = 'up';
 				}
 
-				if($result['disabled']) {
+				if ($result['disabled']) {
 					$state = 0;
 					$statename = 'disabled';
 				}

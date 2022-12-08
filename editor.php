@@ -36,15 +36,18 @@
  +-------------------------------------------------------------------------+
 */
 
-require_once 'lib/editor.inc.php';
-require_once 'lib/Weathermap.class.php';
-require_once 'lib/geometry.php';
-require_once 'lib/WMPoint.class.php';
-require_once 'lib/WMVector.class.php';
-require_once 'lib/WMLine.class.php';
+chdir(__DIR__);
+require_once(__DIR__ . '/../../include/global.php');
+require_once('lib/editor.inc.php');
+require_once('lib/Weathermap.class.php');
+require_once('lib/geometry.php');
+require_once('lib/WMPoint.class.php');
+require_once('lib/WMVector.class.php');
+require_once('lib/WMLine.class.php');
 
 // so that you can't have the editor active, and not know about it.
 $ENABLED=true;
+$cacti_found = true;
 
 $ignore_cacti=true;
 
@@ -96,10 +99,6 @@ if (isset($_COOKIE['wmeditor'])) {
 	}
 }
 
-$cacti_found = true;
-include(__DIR__ . '/../../include/cli_check.php');
-
-chdir(__DIR__);
 
 if (!is_writable($mapdir)) {
 	$configerror = "The map config directory ($mapdir) is not writable by the web server user. You will not be able to edit any files until this is corrected. [WMEDIT01]";
@@ -948,10 +947,11 @@ if ($mapname == '') {
 
 	$fontlist = array();
 
-	setcookie("wmeditor", ($use_overlay ? "1":"0") .":". ($use_relative_overlay ? "1":"0") . ":" . intval($grid_snap_value), time()+60*60*24*30 );
+	cacti_cookie_set('wmeditor', ($use_overlay ? "1":"0") .":". ($use_relative_overlay ? "1":"0") . ":" . intval($grid_snap_value));
+//	setcookie("wmeditor", ($use_overlay ? "1":"0") .":". ($use_relative_overlay ? "1":"0") . ":" . intval($grid_snap_value), time()+60*60*24*30 );
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 	<style type="text/css">

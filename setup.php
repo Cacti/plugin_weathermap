@@ -331,7 +331,7 @@ function weathermap_setup_table() {
 			db_execute('ALTER TABLE weathermap_maps ADD COLUMN group_id int(11) NOT NULL default 1 AFTER sortorder');
 		}
 
-		if (!db_column_exists('weathermap_settings', 'group_id')) {
+		if (!db_column_exists('weathermap_settings', 'groupid')) {
 			db_execute('ALTER TABLE `weathermap_settings` ADD COLUMN `groupid` INT NOT NULL DEFAULT "0" AFTER `mapid`');
 		}
 
@@ -1016,7 +1016,7 @@ function weathermap_poller_bottom() {
 	global $weathermap_debugging, $WEATHERMAP_VERSION;
 
 	include_once($config['library_path'] . '/database.php');
-	include_once(dirname(__FILE__) . '/lib/poller-common.php');
+	include_once(__DIR__ . '/lib/poller-common.php');
 
 	weathermap_setup_table();
 
@@ -1034,7 +1034,7 @@ function weathermap_poller_bottom() {
 	} else {
 		// if we're due, run the render updates
 		if (($renderperiod == 0) || (($rendercounter % $renderperiod) == 0)) {
-			weathermap_run_maps( dirname( __FILE__ ) );
+			weathermap_run_maps(__DIR__);
 		} elseif ($quietlogging == 0) {
 			cacti_log("WM Version: $WEATHERMAP_VERSION - no update in this cycle ($rendercounter)", true, 'WEATHERMAP');
 		}

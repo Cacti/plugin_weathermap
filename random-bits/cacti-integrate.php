@@ -190,7 +190,7 @@ $stmt = $pdo->prepare("select id from data_template where name=?");
 $stmt->execute( array($data_template));
 $data_template_id = $stmt->fetchColumn();
 //$data_template_id =
-//    db_fetch_cell("select id from data_template where name='" . mysql_real_escape_string($data_template) . "'");
+//    db_fetch_cell("select id from data_template where name='" . db_qstr($data_template) . "'");
 
 $map = new WeatherMap;
 
@@ -240,7 +240,7 @@ foreach ($map->nodes as $node) {
 			$stmt->execute(array($address));
 			$res2 = $stmt->fetch(PDO::FETCH_ASSOC);
 
-			// $res2 = db_fetch_row("select id,description from host where hostname='" . mysql_real_escape_string($address) . "'");
+			// $res2 = db_fetch_row("select id,description from host where hostname='" . db_qstr($address) . "'");
 
 			if ($res2) {
 				$host_id = $res2['id'];
@@ -255,7 +255,7 @@ foreach ($map->nodes as $node) {
 			$stmt = $pdo->prepare("select id,description from host where description=?");
 			$stmt->execute(array($hostname));
 			$res3 = $stmt->fetch(PDO::FETCH_ASSOC);
-			// $res3 = db_fetch_row("select id,hostname from host where description='" . mysql_real_escape_string($hostname) . "'");
+			// $res3 = db_fetch_row("select id,hostname from host where description='" . db_qstr($hostname) . "'");
 
 			if ($res3) {
 				$host_id = $res3['id'];
@@ -348,7 +348,7 @@ foreach ($map->links as $link) {
 //                        $SQL =
 //                            sprintf(
 //                                "select data_local.id, data_source_path, host_snmp_cache.snmp_index from data_template_data, data_local,snmp_query, host_snmp_cache where data_template_data.local_data_id=data_local.id and host_snmp_cache.snmp_query_id = snmp_query.id and data_local.host_id=host_snmp_cache.host_id and data_local.snmp_query_id=host_snmp_cache.snmp_query_id  and data_local.snmp_index=host_snmp_cache.snmp_index and host_snmp_cache.host_id=%d and host_snmp_cache.field_name='%s' and host_snmp_cache.field_value='%s' and data_local.data_template_id=%d order by data_template_data.id desc limit 1;",
-//                                $tgt_host, $field, mysql_real_escape_string($interface), $data_template_id);
+//                                $tgt_host, $field, db_qstr($interface), $data_template_id);
 //                        $res4 = db_fetch_row($SQL);
 
 						if ($res4) {

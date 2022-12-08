@@ -99,57 +99,50 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		wm_debug("RRD ReadData: poller_output style");
 
 		if (isset($config)) {
-		    $pdo = weathermap_get_pdo();
-
 			// take away the cacti bit, to get the appropriate path for the table
 			// $db_rrdname = realpath($rrdfile);
-			$path_rra = $config["rra_path"];
+			$path_rra   = $config['rra_path'];
 			$db_rrdname = $rrdfile;
-			$db_rrdname = str_replace($path_rra,"<path_rra>",$db_rrdname);
+			$db_rrdname = str_replace($path_rra, '<path_rra>', $db_rrdname);
 
-			wm_debug("******************************************************************");
-			wm_debug("Checking weathermap_data");
+			wm_debug('******************************************************************');
+			wm_debug('Checking weathermap_data');
 
-			foreach (array(IN,OUT) as $dir) {
+			foreach (array(IN, OUT) as $dir) {
 				wm_debug("RRD ReadData: poller_output - looking for $dir value");
 
 				if ($dsnames[$dir] != '-') {
-					wm_debug("RRD ReadData: poller_output - DS name is ".$dsnames[$dir]);
-
-//					$SQL = "select * from weathermap_data where rrdfile='".mysql_real_escape_string($db_rrdname)."' and data_source_name='".mysql_real_escape_string($dsnames[$dir])."'";
-
-//					$SQLcheck = "select data_template_data.local_data_id from data_template_data,data_template_rrd where data_template_data.local_data_id=data_template_rrd.local_data_id and data_template_data.data_source_path='".mysql_real_escape_string($db_rrdname)."' and data_template_rrd.data_source_name='".mysql_real_escape_string($dsnames[$dir])."'";
-//					$SQLvalid = "select data_template_rrd.data_source_name from data_template_data,data_template_rrd where data_template_data.local_data_id=data_template_rrd.local_data_id and data_template_data.data_source_path='".mysql_real_escape_string($db_rrdname)."'";
-
-                    $statement_check = $pdo->prepare("select data_template_data.local_data_id from data_template_data,data_template_rrd where data_template_data.local_data_id=data_template_rrd.local_data_id and data_template_data.data_source_path=? and data_template_rrd.data_source_name=?");
-                    $statement_valid = $pdo->prepare("select data_template_rrd.data_source_name from data_template_data,data_template_rrd where data_template_data.local_data_id=data_template_rrd.local_data_id and data_template_data.data_source_path=?");
-                    $statement_search = $pdo->prepare("select * from weathermap_data where rrdfile=? and data_source_name=?");
-
-                    $statement_search->execute(array($db_rrdname, $dsnames[$dir]));
-                    $result = $statement_search->fetch(PDO::FETCH_ASSOC);
+					wm_debug('RRD ReadData: poller_output - DS name is ' . $dsnames[$dir]);
 
                     $worst_time = time() - 8*60;
-//					$result = db_fetch_row($SQL);
+
+					$result = db_fetch_row_prepared('SELECT *
+						FROM weathermap_data
+						WHERE rrdfile = ?
+						AND data_source_name = ?',
+						array($db_rrdname, $dsnames[$dir]));
 
 					// OK, the straightforward query for data failed, let's work out why, and add the new data source if necessary
-					if (!isset($result['id'])) {
+					if (!cacti_sizeof($result)) {
 						wm_debug("RRD ReadData: poller_output - Adding new weathermap_data row for $db_rrdname:".$dsnames[$dir]);
 
-                        $statement_check->execute(array($db_rrdname,$dsnames[$dir]));
-                        $result = $statement_check->fetch(PDO::FETCH_ASSOC);
-//						$result = db_fetch_row($SQLcheck);
-						if (!isset($result['local_data_id'])) {
+						$result = db_fetch_assoc_prepared("SELECT DISTINCT dtd.local_data_id, dtr.data_source_name
+							FROM data_template_data AS dtd
+							INNER JOIN data_template_rrd AS dtr
+							ON dtd.local_data_id = dtr.local_data_id
+							WHERE dtd.data_source_path = ?
+							AND dtr.data_source_name = ?",
+							array($db_rrdname, $dsnames[$dir]));
+
+						if (cacti_sizeof($result)) {
 							$fields = array();
 
-                            $statement_valid->execute(array($db_rrdname));
-                            $results = $statement_valid->fetchAll(PDO::FETCH_ASSOC);
-//                            $results = db_fetch_assoc($SQLvalid);
-							foreach ($results as $result) {
-								$fields[] = $result['data_source_name'];
+							foreach($result as $row) {
+								$fields[] = $row['data_source_name'];
 							}
 
-							if (count($fields) > 0) {
-								wm_warn("RRD ReadData: poller_output: ".$dsnames[$dir]." is not a valid DS name for $db_rrdname - valid names are: ".join(", ",$fields)." [WMRRD07]");
+							if (cacti_sizeof($fields)) {
+								wm_warn('RRD ReadData: poller_output: ' . $dsnames[$dir] . " is not a valid DS name for $db_rrdname - valid names are: " . join(', ', $fields) . ' [WMRRD07]');
 							} else {
 								wm_warn("RRD ReadData: poller_output: $db_rrdname is not a valid RRD filename within this Cacti install. <path_rra> is $path_rra [WMRRD08]");
 							}
@@ -157,46 +150,49 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 							// add the new data source (which we just checked exists) to the table.
 							// Include the local_data_id as well, to make life easier in poller_output
 							// (and to allow the cacti: DS plugin to use the same table, too)
-                            wm_debug("RRD ReadData: poller_output - Adding new weathermap_data row for data source ID " . $result['local_data_id']);
-                            $statement_insert = $pdo->prepare("INSERT INTO weathermap_data (rrdfile, data_source_name, sequence, local_data_id, last_value) VALUES (?,?, 0,?,'')");
-			    $statement_insert->execute(array($db_rrdname, $dsnames[$dir], $result['local_data_id']));
+                            wm_debug('RRD ReadData: poller_output - Adding new weathermap_data row for data source ID ' . $result['local_data_id']);
 
-//							$SQLins = "insert into weathermap_data (rrdfile, data_source_name, sequence, local_data_id) values ('".mysql_real_escape_string($db_rrdname)."','".mysql_real_escape_string($dsnames[$dir])."', 0,".$result['local_data_id'].")";
-//							db_execute($SQLins);
+                            db_execute_prepared('INSERT INTO weathermap_data
+								(rrdfile, data_source_name, sequence, local_data_id, last_value)
+								VALUES (?, ?, 0, ?, "")',
+								array($db_rrdname, $dsnames[$dir], $result['local_data_id']));
 						}
 					} else {
 						// the data table line already exists
-						wm_debug("RRD ReadData: poller_output - found weathermap_data row");
+						wm_debug('RRD ReadData: poller_output - found weathermap_data row');
 
 						// if the result is valid, then use it
-						if ( ($result['sequence'] > 2) && ( $result['last_time'] > $worst_time) ) {
+						if (($result['sequence'] > 2) && ($result['last_time'] > $worst_time)) {
 							$data[$dir] = $result['last_calc'];
-							$data_time = $result['last_time'];
-							wm_debug("RRD ReadData: poller_output - data looks valid");
+							$data_time  = $result['last_time'];
+
+							wm_debug('RRD ReadData: poller_output - data looks valid');
 						} else {
 							$data[$dir] = 0;
-							wm_debug("RRD ReadData: poller_output - data is either too old, or too new");
+
+							wm_debug('RRD ReadData: poller_output - data is either too old, or too new');
 						}
 
 						// now, we can use the local_data_id to get some other useful info
 						// first, see if the weathermap_data entry *has* a local_data_id. If not, we need to update this entry.
 						$ldi = 0;
 
-						if (!isset($result['local_data_id']) || $result['local_data_id']==0) {
-                            $statement_check->execute(array($db_rrdname,$dsnames[$dir]));
-                            $r2 = $statement_check->fetch(PDO::FETCH_ASSOC);
-//							$r2 = db_fetch_row($SQLcheck);
-							if (isset($r2['local_data_id'])) {
-								$ldi = $r2['local_data_id'];
+						if ($result['local_data_id'] == 0) {
+							$local_data_id = db_fetch_cell_prepared('SELECT DISTINCT dtd.local_data_id
+								FROM data_template_data AS dtd
+								INNER JOIN data_template_rrd AS dtr
+								ON dtd.local_data_id = dtr.local_data_id
+								WHERE dtd.data_source_path = ?
+								AND dtr.data_source_name = ?',
+								array($db_rrdname, $dsnames[$dir]));
 
-								wm_debug("RRD ReadData: updated  local_data_id for wmdata.id=" . $result['id'] . "to $ldi");
+							if ($local_data_id > 0) {
+								wm_debug('RRD ReadData: updated  local_data_id for wmdata.id = ' . $result['id'] . "to $local_data_id");
 
-								// put that in now, so that we can skip this step next time
-                                $statement_update = $pdo->prepare("update weathermap_data set local_data_id=? where id=?");
-                                $statement_update->execute(array($r2['local_data_id'], $result['id']));
-
-//								db_execute("update weathermap_data set local_data_id=".$r2['local_data_id']." where id=".$result['id']);
-
+								db_execute_prepared('UPDATE weathermap_data
+									SET local_data_id = ?
+									WHERE id = ?',
+									array($local_data_id, $result['id']));
 							}
 						} else {
 							$ldi = $result['local_data_id'];
@@ -211,11 +207,11 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 				}
 			}
 		} else {
-			wm_warn("RRD ReadData: poller_output - Cacti environment is not right [WMRRD12]");
+			wm_warn('RRD ReadData: poller_output - Cacti environment is not right [WMRRD12]');
 		}
 
-		wm_debug("RRD ReadData: poller_output - result is ".($data[IN]===NULL?'NULL':$data[IN]).",".($data[OUT]===NULL?'NULL':$data[OUT]));
-		wm_debug("RRD ReadData: poller_output - ended");
+		wm_debug('RRD ReadData: poller_output - result is ' . ($data[IN] === NULL ? 'NULL':$data[IN]) . ',' . ($data[OUT] === NULL ? 'NULL':$data[OUT]));
+		wm_debug('RRD ReadData: poller_output - ended');
 	}
 
 	function wmrrd_read_from_php_rrd($rrdfile,$cf,$start,$end,$dsnames, &$data ,&$map, &$data_time,&$item) {
@@ -223,8 +219,8 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		if ((1==0) && extension_loaded('RRDTool')) {
 			// fetch the values via the RRDtool Extension
 			// for the php-rrdtool module, we use an array instead...
-			$rrdparams = array("AVERAGE","--start",$start,"--end",$end);
-			$rrdreturn = rrd_fetch ($rrdfile,$rrdparams,count($rrdparams));
+			$rrdparams = array("AVERAGE", "--start", $start, "--end", $end);
+			$rrdreturn = rrd_fetch($rrdfile, $rrdparams, count($rrdparams));
 
 			print_r($rrdreturn);
 

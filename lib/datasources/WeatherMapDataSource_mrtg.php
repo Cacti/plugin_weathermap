@@ -75,10 +75,10 @@ class WeatherMapDataSource_mrtg extends WeatherMapDataSource {
 		if ($fd) {
 			while (!feof($fd)) {
 				$buffer=fgets($fd, 4096);
-				wm_debug("MRTG ReadData: Matching on '${matchvalue}in $matchperiod' and '${matchvalue}out $matchperiod'");
+				wm_debug("MRTG ReadData: Matching on '{$matchvalue}in $matchperiod' and '{$matchvalue}out $matchperiod'");
 
-				if (preg_match("/<\!-- ${matchvalue}in $matchperiod ([-+]?\d+\.?\d*) -->/", $buffer, $matches)) { $data[IN] = $matches[1] * 8; }
-				if (preg_match("/<\!-- ${matchvalue}out $matchperiod ([-+]?\d+\.?\d*) -->/", $buffer, $matches)) { $data[OUT] = $matches[1] * 8; }
+				if (preg_match("/<\!-- {$matchvalue}in $matchperiod ([-+]?\d+\.?\d*) -->/", $buffer, $matches)) { $data[IN] = $matches[1] * 8; }
+				if (preg_match("/<\!-- {$matchvalue}out $matchperiod ([-+]?\d+\.?\d*) -->/", $buffer, $matches)) { $data[OUT] = $matches[1] * 8; }
 			}
 
 			fclose($fd);

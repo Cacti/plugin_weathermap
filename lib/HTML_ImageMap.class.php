@@ -135,7 +135,7 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		return ($c);
 	}
 
-	function __construct ( $name="", $href="",$coords) {
+	function __construct($name='', $href='', $coords = '') {
 		$c = $coords[0];
 
 		$this->name = $name;
@@ -167,7 +167,7 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	var $x1,$x2,$y1,$y2;
 
-	function __construct ($name="", $href="", $coords) {
+	function __construct ($name='', $href='', $coords = '') {
 		$c = $coords[0];
 
 		$x1 = round($c[0]);
@@ -233,7 +233,7 @@ class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 		return ($radius2 <= $radius1);
 	}
 
-	function __construct($name="", $href="",$coords) {
+	function __construct($name='', $href='', $coords = '') {
 		$c = $coords[0];
 
 		$this->name = $name;
@@ -250,7 +250,7 @@ class HTML_ImageMap {
 	var $nshapes;
 	var $name;
 
-	function __construct($name="") {
+	function __construct($name = '') {
 		$this->Reset();
 		$this->name = $name;
 	}
