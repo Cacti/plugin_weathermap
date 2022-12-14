@@ -45,7 +45,6 @@
  */
 
 include_once(dirname(__FILE__) . '/../ds-common.php');
-include_once(dirname(__FILE__) . '/../database.php');
 
 class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	function Init(&$map) {

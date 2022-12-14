@@ -56,7 +56,6 @@ ini_set('include_path',
 );
 
 require_once 'lib/Weathermap.class.php';
-require_once 'lib/database.php';
 require_once 'Console/Getopt.php';
 
 include_once 'include/global.php';
@@ -84,8 +83,6 @@ $width_map = array (
 
 $config['base_url'] = (isset($config['url_path']) ? $config['url_path'] : $cacti_url);
 $cacti_found = true;
-
-$pdo = weathermap_get_pdo();
 
 // the following are defaults. You can change those from the command-line
 // options now.
@@ -185,19 +182,15 @@ if ($inputmapfile == '' || $outputmapfile == '') {
 }
 
 // figure out which template has interface traffic. This might be wrong for you.
-$data_template = "Interface - Traffic";
-$stmt = $pdo->prepare("select id from data_template where name=?");
-$stmt->execute( array($data_template));
-$data_template_id = $stmt->fetchColumn();
-//$data_template_id =
-//    db_fetch_cell("select id from data_template where name='" . db_qstr($data_template) . "'");
+$data_template    = "Interface - Traffic";
+$data_template_id = db_fetch_cell_prepared("SELECT id FROM data_template WHERE name = ?", array($data_template));
 
 $map = new WeatherMap;
 
 $map->ReadConfig($inputmapfile);
 
-$fmt_cacti_graph = $cacti_url . "graph_image.php?local_graph_id=%d&rra_id=0&graph_nolegend=true&graph_height=100&graph_width=300";
-$fmt_cacti_graphpage = $cacti_url . "graph.php?rra_id=all&local_graph_id=%d";
+$fmt_cacti_graph     = $cacti_url . 'graph_image.php?local_graph_id=%d&rra_id=0&graph_nolegend=true&graph_height=100&graph_width=300';
+$fmt_cacti_graphpage = $cacti_url . 'graph.php?rra_id=all&local_graph_id=%d';
 
 //
 // Try and populate all three SET vars for each NODE
@@ -211,36 +204,29 @@ foreach ($map->nodes as $node) {
 
 	print "NODE $name\n";
 
-	$host_id = $node->get_hint("cacti_id");
-	$hostname = $node->get_hint("hostname");
-	$address = $node->get_hint("address");
+	$host_id  = $node->get_hint('cacti_id');
+	$hostname = $node->get_hint('hostname');
+	$address  = $node->get_hint('address');
 
 	if ($host_id != '') {
-		$stmt = $pdo->prepare("select hostname,description from host where id=?");
-		$stmt->execute(array(intval($host_id)));
-		$res1 = $stmt->fetch(PDO::FETCH_ASSOC);
-		// $res1 = db_fetch_row("select hostname,description from host where id=" . intval($host_id));
+		$res1 = db_fetch_row_prepared('SELECT hostname, description FROM host WHERE id = ?', array(intval($host_id)));
 
 		if ($res1) {
 			if ($hostname == '') {
 				$hostname = $res1['description'];
-				$map->nodes[$node->name]->add_hint("hostname", $hostname);
+				$map->nodes[$node->name]->add_hint('hostname', $hostname);
 			}
 
 			if ($address == '') {
 				$address = $res1['hostname'];
-				$map->nodes[$node->name]->add_hint("address", $address);
+				$map->nodes[$node->name]->add_hint('address', $address);
 			}
 		}
 	} else {
 		// by now, if there was a host_id, all 3 are populated. If not, then we should try one of the others to get a host_id
 
 		if ($address != '') {
-			$stmt = $pdo->prepare("select id,description from host where hostname=?");
-			$stmt->execute(array($address));
-			$res2 = $stmt->fetch(PDO::FETCH_ASSOC);
-
-			// $res2 = db_fetch_row("select id,description from host where hostname='" . db_qstr($address) . "'");
+			$res2 = db_fetch_row_prepared("SELECT id, description FROM host WHERE hostname = ?", array($address));
 
 			if ($res2) {
 				$host_id = $res2['id'];
@@ -252,10 +238,7 @@ foreach ($map->nodes as $node) {
 				}
 			}
 		} elseif ($hostname != '') {
-			$stmt = $pdo->prepare("select id,description from host where description=?");
-			$stmt->execute(array($hostname));
-			$res3 = $stmt->fetch(PDO::FETCH_ASSOC);
-			// $res3 = db_fetch_row("select id,hostname from host where description='" . db_qstr($hostname) . "'");
+			$res3 = db_fetch_row_prepared("SELECT id, description FROM host WHERE description = ?", array($hostname));
 
 			if ($res3) {
 				$host_id = $res3['id'];
@@ -340,29 +323,31 @@ foreach ($map->links as $link) {
 				foreach ($int_list as $interface) {
 					print "  Interface: $interface\n";
 
-					foreach (array ('ifName', 'ifDescr', 'ifAlias') as $field) {
-						$stmt = $pdo->prepare("select data_local.id, data_source_path, host_snmp_cache.snmp_index from data_template_data, data_local,snmp_query, host_snmp_cache where data_template_data.local_data_id=data_local.id and host_snmp_cache.snmp_query_id = snmp_query.id and data_local.host_id=host_snmp_cache.host_id and data_local.snmp_query_id=host_snmp_cache.snmp_query_id  and data_local.snmp_index=host_snmp_cache.snmp_index and host_snmp_cache.host_id=? and host_snmp_cache.field_name=? and host_snmp_cache.field_value=? and data_local.data_template_id=? order by data_template_data.id desc limit 1;");
-						$stmt->execute(array($tgt_host, $field, $interface, $data_template_id));
-						$res4 = $stmt->fetch(PDO::FETCH_ASSOC);
-
-//                        $SQL =
-//                            sprintf(
-//                                "select data_local.id, data_source_path, host_snmp_cache.snmp_index from data_template_data, data_local,snmp_query, host_snmp_cache where data_template_data.local_data_id=data_local.id and host_snmp_cache.snmp_query_id = snmp_query.id and data_local.host_id=host_snmp_cache.host_id and data_local.snmp_query_id=host_snmp_cache.snmp_query_id  and data_local.snmp_index=host_snmp_cache.snmp_index and host_snmp_cache.host_id=%d and host_snmp_cache.field_name='%s' and host_snmp_cache.field_value='%s' and data_local.data_template_id=%d order by data_template_data.id desc limit 1;",
-//                                $tgt_host, $field, db_qstr($interface), $data_template_id);
-//                        $res4 = db_fetch_row($SQL);
-
-						if ($res4) {
-                            break;
-						}
-					}
+					$res4 = db_fetch_row_prepared("SELECT dl.id, data_source_path, dl.snmp_index
+						FROM data_template_data AS dtd
+						INNER JOIN data_local AS dl
+						ON dl.id = dtd.local_data_id
+						INNER JOIN snmp_query AS sq
+						ON dl.snmp_query_id = sq.id
+						INNER JOIN host_snmp_cache AS hsc
+						ON dl.snmp_query_id = hsc.snmp_query_id
+						AND dl.host_id = hsc.host_id
+						AND dl.snmp_index = hsc.snmp_index
+						WHERE dl.host_id = ?
+						AND hsc.field_name IN (?, ?, ?)
+						AND hsc.field_value = ?
+						AND dl.data_template_id = ?
+						ORDER BY dtd.id DESC
+						LIMIT 1",
+						array($tgt_host, 'ifName', 'ifDescr', 'ifAlias', $interface, $data_template_id));
 
 					// if we found one, add the interface to the targets for this link
 					if ($res4) {
-						$target = $res4['data_source_path'];
+						$target        = $res4['data_source_path'];
 						$local_data_id = $res4['id'];
-						$snmp_index = $res4['snmp_index'];
-						$tgt = str_replace("<path_rra>", $config["rra_path"], $target);
-						$tgt = $tgt . $ds_names;
+						$snmp_index    = $res4['snmp_index'];
+						$tgt           = str_replace("<path_rra>", $config["rra_path"], $target);
+						$tgt           = $tgt . $ds_names;
 
 						if ($use_dsstats) {
 							$map->links[$link->name]->targets[] = array (
@@ -384,21 +369,19 @@ foreach ($map->links as $link) {
 							);
 						}
 
-						$stmt_speed = $pdo->prepare("select field_value from host_snmp_cache where field_name='ifSpeed' and host_id=? and snmp_index=?");
-						$stmt_speed->execute(array($tgt_host, $snmp_index));
-						$speed = $stmt_speed->fetchColumn();
+						$speed = db_fetch_cell_prepared("SELECT field_value
+							FROM host_snmp_cache
+							WHERE field_name = 'ifSpeed'
+							AND host_id = ?
+							AND snmp_index = ?",
+							array($tgt_host, $snmp_index));
 
-						$stmt_hspeed = $pdo->prepare("select field_value from host_snmp_cache where field_name='ifHighSpeed' and host_id=? and snmp_index=?");
-						$stmt_hspeed->execute(array($tgt_host, $snmp_index));
-						$hspeed = $stmt_hspeed->fetchColumn();
-
-//                        $SQL_speed =
-//                            "select field_value from host_snmp_cache where field_name='ifSpeed' and host_id=$tgt_host and snmp_index=$snmp_index";
-//                        $speed = db_fetch_cell($SQL_speed);
-
-//                        $SQL_hspeed =
-//                            "select field_value from host_snmp_cache where field_name='ifHighSpeed' and host_id=$tgt_host and snmp_index=$snmp_index";
-//                        $hspeed = db_fetch_cell($SQL_hspeed);
+						$hspeed = db_fetch_cell_prepared("SELECT field_value
+							FROM host_snmp_cache
+							WHERE field_name = 'ifHighSpeed'
+							AND host_id = ?
+							AND snmp_index = ?",
+							array($tgt_host, $snmp_index));
 
 						if ($hspeed && intval($hspeed) > 20) {
 							$total_speed += ($hspeed * 1000000);
@@ -406,13 +389,13 @@ foreach ($map->links as $link) {
 							$total_speed += intval($speed);
 						}
 
-						$stmt_graph = $pdo->prepare("select graph_templates_item.local_graph_id FROM graph_templates_item,graph_templates_graph,data_template_rrd where graph_templates_graph.local_graph_id = graph_templates_item.local_graph_id  and task_item_id=data_template_rrd.id and local_data_id=? LIMIT 1;");
-						$stmt_graph->execute(array($local_data_id));
-						$graph_id = $stmt_graph->fetchColumn();
-
-//                        $SQL_graphid =
-//                            "select graph_templates_item.local_graph_id FROM graph_templates_item,graph_templates_graph,data_template_rrd where graph_templates_graph.local_graph_id = graph_templates_item.local_graph_id  and task_item_id=data_template_rrd.id and local_data_id=$local_data_id LIMIT 1;";
-//                        $graph_id = db_fetch_cell($SQL_graphid);
+						$graph_id = db_fetch_cell_prepared("SELECT gti.local_graph_id
+							FROM graph_templates_item
+							INNER JOIN data_template_rrd AS dtr
+							ON gti.task_item_id = dtr.id
+							WHERE local_data_id = ?
+							LIMIT 1",
+							array($local_data_id));
 
 						if ($graph_id) {
 							$overlib = sprintf($fmt_cacti_graph, $graph_id);

@@ -36,8 +36,7 @@
  +-------------------------------------------------------------------------+
 */
 
-include_once( dirname( __FILE__ ) . '/lib/database.php' );
-include_once( dirname( __FILE__ ) . '/lib/compat.php' );
+include_once(__DIR__ . '/lib/compat.php' );
 
 function plugin_weathermap_install() {
 	api_plugin_register_hook('weathermap', 'config_arrays',   'weathermap_config_arrays',   'setup.php');
@@ -110,8 +109,6 @@ function weathermap_page_head() {
 
 // ToDo - Convert to Cacti DB API.
 function weathermap_page_title($t) {
-	$pdo = weathermap_get_pdo();
-
 	if (preg_match('/plugins\/weathermap\//', $_SERVER['REQUEST_URI'], $matches)) {
 		$t .= ' - Weathermap';
 
@@ -119,13 +116,9 @@ function weathermap_page_title($t) {
 			$mapid = $matches[1];
 
 			if (preg_match('/^\d+$/', $mapid)) {
-				$stmt = $pdo->prepare('SELECT titlecache from weathermap_maps where ID=?');
-				$stmt->execute(array(intval($mapid)));
-				$title = $stmt->fetchColumn();
+				$title = db_fetch_cell_prepared('SELECT titlecache FROM weathermap_maps WHERE id = ?', array(intval($mapid)));
 			} else {
-				$stmt = $pdo->prepare('SELECT titlecache from weathermap_maps where filehash=?');
-				$stmt->execute(array($mapid));
-				$title = $stmt->fetchColumn();
+				$title = db_fetch_cell_prepared('SELECT titlecache FROM weathermap_maps WHERE filehash = ?', array($mapid));
 			}
 
 			if (isset($title)) {
@@ -260,10 +253,8 @@ function weathermap_config_settings() {
 function weathermap_setup_table() {
 	global $config, $database_default;
 	global $WEATHERMAP_VERSION;
-	include_once($config['library_path'] . DIRECTORY_SEPARATOR . 'database.php');
 
-	$dbversion = read_config_option('weathermap_db_version');
-	$pdo       = weathermap_get_pdo();
+	$dbversion     = read_config_option('weathermap_db_version');
 
 	$myversioninfo = weathermap_version();
 	$myversion     = $myversioninfo['version'];
@@ -1015,7 +1006,6 @@ function weathermap_poller_bottom() {
 	global $config;
 	global $weathermap_debugging, $WEATHERMAP_VERSION;
 
-	include_once($config['library_path'] . '/database.php');
 	include_once(__DIR__ . '/lib/poller-common.php');
 
 	weathermap_setup_table();

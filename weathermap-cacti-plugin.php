@@ -39,30 +39,11 @@
  $guest_account = true;
 
  chdir('../../');
- include_once("./include/auth.php");
- // include_once("./include/config.php");
+ include_once('./include/auth.php');
 
  // include the weathermap class so that we can get the version
- include_once(dirname(__FILE__) . "/lib/Weathermap.class.php");
- include_once(dirname(__FILE__) . "/lib/database.php");
- include_once(dirname(__FILE__) . "/lib/compat.php");
-
-$colors = array();
-/* colors */
-$colors["dark_outline"]         = "454E53";
-$colors["dark_bar"]             = "AEB4B7";
-$colors["panel"]                = "E5E5E5";
-$colors["panel_text"]           = "000000";
-$colors["panel_link"]           = "000000";
-$colors["light"]                = "F5F5F5";
-$colors["alternate"]            = "E7E9F2";
-$colors["panel_dark"]           = "C5C5C5";
-$colors["header"]               = "00438C";
-$colors["header_panel"]         = "6d88ad";
-$colors["header_text"]          = "ffffff";
-$colors["form_background_dark"] = "E1E1E1";
-$colors["form_alternate1"]      = "F5F5F5";
-$colors["form_alternate2"]      = "E5E5E5";
+ include_once(dirname(__FILE__) . '/lib/Weathermap.class.php');
+ include_once(dirname(__FILE__) . '/lib/compat.php');
 
 set_default_action();
 
@@ -187,7 +168,7 @@ switch ($action) {
 				print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='1'>\n";
 
 				?>
-				<tr bgcolor="<?php print $colors["panel"]; ?>">
+				<tr class="even noprint">
 					<td>
 						<table width="100%" cellpadding="0" cellspacing="0">
 							<tr>
@@ -379,8 +360,6 @@ function weathermap_cycleview() {
 }
 
 function weathermap_singleview($mapid) {
-	global $colors;
-
 	$is_wm_admin = false;
 
 	$outdir  = dirname(__FILE__) . '/output/';
@@ -411,7 +390,7 @@ function weathermap_singleview($mapid) {
 
 		print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='1'>\n";
 		?>
-		<tr bgcolor="<?php print $colors["panel"]; ?>">
+		<tr class="even noprint">
 			<td>
 				<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
@@ -483,7 +462,7 @@ function weathermap_show_manage_tab() {
 }
 
 function weathermap_thumbview($limit_to_group = -1) {
-	global $colors, $config;
+	global $config;
 
 	$total_map_count_SQL = "select count(*) as total from weathermap_maps";
 	$total_map_count     = db_fetch_cell($total_map_count_SQL);
@@ -510,7 +489,7 @@ function weathermap_thumbview($limit_to_group = -1) {
 		print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='2'>\n";
 
 		?>
-		<tr bgcolor="<?php print $colors["panel"]; ?>">
+		<tr class="even noprint">
 			<td>
 				<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
@@ -593,7 +572,7 @@ function weathermap_thumbview($limit_to_group = -1) {
 }
 
 function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group = -1, $fullscreen = 0) {
-	global $colors, $config;
+	global $config;
 
 	$_SESSION['custom'] = false;
 
@@ -674,7 +653,7 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 		print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='2'>\n";
 
 		?>
-		<tr bgcolor="<?php print $colors["panel"]; ?>">
+		<tr class="even">
 			<td>
 				<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
@@ -724,7 +703,7 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 				print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='1'>\n";
 
 				?>
-				<tr bgcolor="#<?php print $colors["header_panel"] ?>">
+				<tr class="even">
 					<td colspan="3">
 						<table width="100%" cellspacing="0" cellpadding="3" border="0">
 							<tr>
@@ -792,7 +771,7 @@ function weathermap_translate_id($idname) {
 }
 
 function weathermap_versionbox() {
-	global $WEATHERMAP_VERSION, $colors;
+	global $WEATHERMAP_VERSION;
 	global $config, $user_auth_realms, $user_auth_realm_filenames;
 
 	$pagefoot = "Powered by <a href=\"http://www.network-weathermap.com/?v=$WEATHERMAP_VERSION\">PHP Weathermap version $WEATHERMAP_VERSION</a>";
@@ -814,7 +793,7 @@ function weathermap_versionbox() {
 	print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='1'>\n";
 
 	?>
-	<tr bgcolor="<?php print $colors["panel"]; ?>">
+	<tr class="even">
 		<td>
 			<table width="100%" cellpadding="0" cellspacing="0">
 				<tr>
@@ -850,18 +829,15 @@ function readfile_chunked($filename) {
 }
 
 function weathermap_footer_links() {
-	global $colors;
 	global $WEATHERMAP_VERSION;
 
 	print '<br />';
 
-	html_start_box("<center><a target=\"_blank\" class=\"linkOverDark\" href=\"docs/\">Local Documentation</a> -- <a target=\"_blank\" class=\"linkOverDark\" href=\"http://www.network-weathermap.com/\">Weathermap Website</a> -- <a target=\"_target\" class=\"linkOverDark\" href=\"weathermap-cacti-plugin-editor.php?plug=1\">Weathermap Editor</a> -- This is version $WEATHERMAP_VERSION</center>", "78%", $colors["header"], "2", "center", "");
+	html_start_box("<center><a target=\"_blank\" class=\"linkOverDark\" href=\"docs/\">Local Documentation</a> -- <a target=\"_blank\" class=\"linkOverDark\" href=\"http://www.network-weathermap.com/\">Weathermap Website</a> -- <a target=\"_target\" class=\"linkOverDark\" href=\"weathermap-cacti-plugin-editor.php?plug=1\">Weathermap Editor</a> -- This is version $WEATHERMAP_VERSION</center>", '100%', '', '3', 'center', '');
 	html_end_box();
 }
 
 function weathermap_mapselector($current_id = 0) {
-	global $colors;
-
 	$show_selector = intval(read_config_option("weathermap_map_selector"));
 
 	if ($show_selector == 0) {
@@ -883,7 +859,7 @@ function weathermap_mapselector($current_id = 0) {
 		print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='3'>\n";
 
 		?>
-		<tr bgcolor="<?php print $colors["panel"]; ?>" class="noprint">
+		<tr class="even noprint">
 			<form name="weathermap_select" method="post" action="">
 				<input name="action" value="viewmap" type="hidden">
 				<td class="noprint">
@@ -965,7 +941,7 @@ function weathermap_get_valid_tabs() {
 }
 
 function weathermap_tabs($current_tab) {
-	global $colors, $config;
+	global $config;
 
 	// $current_tab=2;
 

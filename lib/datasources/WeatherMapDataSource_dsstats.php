@@ -37,7 +37,6 @@
 */
 
 include_once dirname(__FILE__) . '/../ds-common.php';
-include_once dirname(__FILE__) . '/../database.php';
 
 class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 	function Init(&$map) {
@@ -115,8 +114,6 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 		$keyfield = 'rrd_name';
 		$datatype = '';
 		$field    = '';
-
-		$pdo = weathermap_get_pdo();
 
 		if (preg_match('/^dsstats:(\d+):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/',$targetstring,$matches)) {
 			$local_data_id = $matches[1];

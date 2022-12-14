@@ -47,7 +47,6 @@ $config['base_url'] = $cacti_url;
 
 include(__DIR__ . '/../../include/cli_check.php');
 include_once('editor-config.php');
-require_once('lib/database.php');
 
 $config['base_url'] = (isset($config['url_path'])? $config['url_path'] : $cacti_url);
 $cacti_found = true;
@@ -78,40 +77,40 @@ function js_escape($str) {
 if (isset($_REQUEST['command']) && $_REQUEST["command"]=='link_step2') {
 	$dataid = intval($_REQUEST['dataid']);
 
-	//	$SQL_graphid = sprintf("select graph_templates_item.local_graph_id, title_cache FROM graph_templates_item,graph_templates_graph,data_template_rrd where graph_templates_graph.local_graph_id = graph_templates_item.local_graph_id  and task_item_id=data_template_rrd.id and local_data_id=%d LIMIT 1;",$dataid);
+	$line = db_fetch_row_prepared("SELECT gti.local_graph_id, title_cache
+		FROM graph_templates_item AS gti
+		INNER JOIN graph_templates_graph AS gtg
+		ON gti.local_graph_id = gtg.local_graph_id
+		INNER JOIN data_template_rrd AS dtr
+		ON gti.task_item_id = dtr.id
+		WHERE local_data_id = ?
+		LIMIT 1",
+		array($dataid));
 
-	//	$link = mysql_connect($database_hostname,$database_username,$database_password)
-	//		or die('Could not connect: ' . mysql_error());
-	$pdo = weathermap_get_pdo();
-	//	mysql_selectdb($database_default,$link) or die('Could not select database: '.mysql_error());
-
-	$stmt = $pdo->prepare("select graph_templates_item.local_graph_id, title_cache FROM graph_templates_item,graph_templates_graph,data_template_rrd where graph_templates_graph.local_graph_id = graph_templates_item.local_graph_id  and task_item_id=data_template_rrd.id and local_data_id=? LIMIT 1;");
-	$stmt->execute(array($dataid));
-	$line = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	//	$result = mysql_query($SQL_graphid) or die('Query failed: ' . mysql_error());
-	//	$line = mysql_fetch_array($result, MYSQL_ASSOC);
-	$graphid = $line['local_graph_id'];
-	$hostid = $_REQUEST['host_id'];
+	$local_graph_id = $line['local_graph_id'];
+	$host_id = $_REQUEST['host_id'];
 ?>
 <html>
 <head>
 	<script type="text/javascript">
 	function update_source_step2(graphid) {
 		var graph_url, hover_url;
-		var base_url = '<?php print isset($config['base_url'])?$config['base_url']:''; ?>';
+		var base_url = '<?php print isset($config['base_url']) ? $config['base_url']:''; ?>';
 
-		if (typeof window.opener == "object") {
+		if (typeof window.opener == 'object') {
 			graph_url = base_url + 'graph_image.php?local_graph_id=' + graphid + '&rra_id=0&graph_nolegend=true&graph_height=100&graph_width=300';
-			info_url = base_url + 'graph.php?rra_id=all&local_graph_id=' + graphid;
+			info_url  = base_url + 'graph.php?rra_id=all&local_graph_id=' + graphid;
 
-			opener.document.forms["frmMain"].link_infourl.value = info_url;
-			opener.document.forms["frmMain"].link_hover.value = graph_url;
+			opener.document.forms['frmMain'].link_infourl.value = info_url;
+			opener.document.forms['frmMain'].link_hover.value = graph_url;
 		}
 		self.close();
 	}
 
-	window.onload = update_source_step2(<?php print $graphid ?>);
+	$(function() {
+		update_source_step2(<?php print $local_graph_id ?>);
+	});
+
 	</script>
 </head>
 <body>
@@ -119,24 +118,21 @@ This window should disappear in a moment.
 </body>
 </html>
 	<?php
-	if ($hostid > 0 && !in_array($hostid, $_SESSION['cacti']['weathermap']['last_used_host_id'])) {
-		$_SESSION['cacti']['weathermap']['last_used_host_id'][] = $hostid;
+	if ($host_id > 0 && !in_array($host_id, $_SESSION['cacti']['weathermap']['last_used_host_id'])) {
+		$_SESSION['cacti']['weathermap']['last_used_host_id'][] = $host_id;
 		$_SESSION['cacti']['weathermap']['last_used_host_name'][] = $line['title_cache'];
 
-		$_SESSION['cacti']['weathermap']['last_used_host_id'] = array_slice($_SESSION['cacti']['weathermap']['last_used_host_id'],
-			-5);
-		$_SESSION['cacti']['weathermap']['last_used_host_name'] = array_slice($_SESSION['cacti']['weathermap']['last_used_host_name'],
-			-5);
+		$_SESSION['cacti']['weathermap']['last_used_host_id'] = array_slice($_SESSION['cacti']['weathermap']['last_used_host_id'], -5);
+		$_SESSION['cacti']['weathermap']['last_used_host_name'] = array_slice($_SESSION['cacti']['weathermap']['last_used_host_name'], -5);
 	}
 	// end of link step 2
 }
 
-if (isset($_REQUEST['command']) && $_REQUEST["command"]=='link_step1') {
+if (isset($_REQUEST['command']) && $_REQUEST['command'] == 'link_step1') {
 ?>
 <html>
 <head>
-	<!-- <script type="text/javascript" src="vendor/jquery/dist/jquery.min.js"></script> -->
-	<script type="text/javascript">
+	<script type='text/javascript'>
 
 	function filterlist(previous) {
 		var filterstring = $('input#filterstring').val();
@@ -165,13 +161,13 @@ if (isset($_REQUEST['command']) && $_REQUEST["command"]=='link_step1') {
 
 		var rra_path = <?php print js_escape($config['rra_path']); ?>;
 
-		if (typeof window.opener == "object") {
+		if (typeof window.opener == 'object') {
 			fullpath = datasource.replace(/<path_rra>/, rra_path);
 
 			if (document.forms['mini'].aggregate.checked) {
-				opener.document.forms["frmMain"].link_target.value = opener.document.forms["frmMain"].link_target.value  + " " + fullpath;
+				opener.document.forms['frmMain'].link_target.value = opener.document.forms['frmMain'].link_target.value  + ' ' + fullpath;
 			} else {
-				opener.document.forms["frmMain"].link_target.value = fullpath;
+				opener.document.forms['frmMain'].link_target.value = fullpath;
 			}
 		}
 
@@ -188,21 +184,21 @@ if (isset($_REQUEST['command']) && $_REQUEST["command"]=='link_step1') {
 		strURL = strURL + '&command=link_step1';
 
 		if (objForm.overlib.checked) {
-			strURL = strURL + "&overlib=1";
+			strURL = strURL + '&overlib=1';
 		} else {
-			strURL = strURL + "&overlib=0";
+			strURL = strURL + '&overlib=0';
 		}
 
 		// document.frmMain.link_bandwidth_out_cb.checked
 		if ( objForm.aggregate.checked) {
-			strURL = strURL + "&aggregate=1";
+			strURL = strURL + '&aggregate=1';
 		} else {
-			strURL = strURL + "&aggregate=0";
+			strURL = strURL + '&aggregate=0';
 		}
 		document.location = strURL;
 	}
 	</script>
-	<style type="text/css">
+	<style type='text/css'>
 		body { font-family: sans-serif; font-size: 10pt; }
 		ul { list-style: none;  margin: 0; padding: 0; }
 		ul { border: 1px solid black; }
@@ -220,36 +216,38 @@ $host_id   = -1;
 $overlib   = true;
 $aggregate = false;
 
-$pdo = weathermap_get_pdo();
-
 if (isset($_REQUEST['aggregate'])) {
-	$aggregate = ( $_REQUEST['aggregate']==0 ? false : true);
+	$aggregate = ($_REQUEST['aggregate'] == 0 ? false : true);
 }
 
 if (isset($_REQUEST['overlib'])) {
-	$overlib= ( $_REQUEST['overlib']==0 ? false : true);
+	$overlib = ($_REQUEST['overlib'] == 0 ? false : true);
 }
 
-$stmt = $pdo->prepare("select id,CONCAT_WS('',description,' (',hostname,')') as name from host order by description,hostname");
-$stmt->execute();
-$hosts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//	 $hosts = db_fetch_assoc("select id,CONCAT_WS('',description,' (',hostname,')') as name from host order by description,hostname");
+$hosts = db_fetch_assoc_prepared("SELECT id, CONCAT_WS('',description,' (',hostname,')') AS name
+	FROM host
+	ORDER BY description,hostname");
+
 ?>
 
 <h3>Pick a data source:</h3>
 
-<form name="mini">
+<form name='mini'>
 <?php
 if (cacti_sizeof($hosts) > 0) {
 	print 'Host: <select name="host_id"  onChange="applyDSFilterChange(document.mini)">';
 
-	print '<option '.($host_id==-1 ? 'SELECTED' : '' ).' value="-1">Any</option>';
-	print '<option '.($host_id==0 ? 'SELECTED' : '' ).' value="0">None</option>';
+	print '<option ' . ($host_id == -1 ? 'SELECTED' : '' ).' value="-1">Any</option>';
+	print '<option ' . ($host_id == 0  ? 'SELECTED' : '' ).' value="0">None</option>';
 
 	foreach ($hosts as $host) {
 		print '<option ';
-		if ($host_id==$host['id']) print " SELECTED ";
-		print 'value="'.$host['id'].'">'.$host['name'].'</option>';
+
+		if ($host_id == $host['id']) {
+			print ' selected ';
+		}
+
+		print 'value="' . $host['id'] . '">' . html_escape($host['name']) . '</option>';
 	}
 
 	print '</select><br />';
@@ -260,26 +258,23 @@ print '<input id="overlib" name="overlib" type="checkbox" value="yes" '.($overli
 print '<input id="aggregate" name="aggregate" type="checkbox" value="yes" '.($aggregate ? 'CHECKED' : '' ).'> <label for="aggregate">Append TARGET to existing one (Aggregate)</label>';
 print '</form><div class="listcontainer"><ul id="dslist">';
 
-//$SQL_picklist = "select data_local.host_id, data_template_data.local_data_id, data_template_data.name_cache, data_template_data.active, data_template_data.data_source_path from data_local,data_template_data,data_input,data_template where data_local.id=data_template_data.local_data_id and data_input.id=data_template_data.data_input_id and data_local.data_template_id=data_template.id ";
+if (isset_request_var('host_id') && get_filter_request_var('host_id') >= 0) {
+	$host_id = get_filter_request_var('host_id');
 
-if (isset($_REQUEST['host_id'])) {
-	$host_id = intval($_REQUEST['host_id']);
-
-	if ($host_id>=0) {
-		$stmt = $pdo->prepare("select data_local.host_id, data_template_data.local_data_id, data_template_data.name_cache, data_template_data.active, data_template_data.data_source_path from data_local,data_template_data,data_input,data_template where data_local.id=data_template_data.local_data_id and data_input.id=data_template_data.data_input_id and data_local.data_template_id=data_template.id  and data_local.host_id=? order by name_cache;");
-		$stmt->execute(array($host_id));
-	} else {
-		$stmt = $pdo->prepare("select data_local.host_id, data_template_data.local_data_id, data_template_data.name_cache, data_template_data.active, data_template_data.data_source_path from data_local,data_template_data,data_input,data_template where data_local.id=data_template_data.local_data_id and data_input.id=data_template_data.data_input_id and data_local.data_template_id=data_template.id  order by name_cache;");
-		$stmt->execute();
-    }
-	//        $SQL_picklist .= " and data_local.host_id=$host_id ";
+	$queryrows = db_fetch_assoc_prepared("SELECT dl.host_id, dtd.local_data_id, dtd.name_cache, dtd.active, dtd.data_source_path
+		FROM data_local AS dl
+		INNER JOIN data_template_data AS dtd
+		ON dl.id = dtd.local_data_id
+		WHERE data_local.host_id = ?
+		ORDER BY name_cache",
+		array($host_id));
 } else {
-	$stmt = $pdo->prepare("select data_local.host_id, data_template_data.local_data_id, data_template_data.name_cache, data_template_data.active, data_template_data.data_source_path from data_local,data_template_data,data_input,data_template where data_local.id=data_template_data.local_data_id and data_input.id=data_template_data.data_input_id and data_local.data_template_id=data_template.id  order by name_cache;");
-	$stmt->execute();
+	$queryrows = db_fetch_assoc_prepared("SELECT dl.host_id, dtd.local_data_id, dtd.name_cache, dtd.active, dtd.data_source_path
+		FROM data_local AS dl
+		INNER JOIN data_template_data AS dtd
+		ON dl.id = dtd.local_data_id
+		ORDER BY name_cache");
 }
-
-$queryrows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//	$queryrows = db_fetch_assoc($SQL_picklist);
 
 $i=0;
 
@@ -304,28 +299,23 @@ if (is_array($queryrows) && sizeof($queryrows) > 0) {
 <?php
 } // end of link step 1
 
-if (isset($_REQUEST['command']) && $_REQUEST["command"]=='node_step1') {
+if (isset($_REQUEST['command']) && $_REQUEST['command']=='node_step1') {
 	$host_id = -1;
 
 	$overlib = true;
 	$aggregate = false;
 
 	if (isset($_REQUEST['aggregate'])) {
-		$aggregate = ( $_REQUEST['aggregate']==0 ? false : true);
+		$aggregate = ($_REQUEST['aggregate'] == 0 ? false : true);
 	}
 
 	if (isset($_REQUEST['overlib'])) {
-		$overlib= ( $_REQUEST['overlib']==0 ? false : true);
+		$overlib = ($_REQUEST['overlib'] == 0 ? false : true);
 	}
 
-	$pdo = weathermap_get_pdo();
-
-
-	//	 $hosts = db_fetch_assoc("select id,CONCAT_WS('',description,' (',hostname,')') as name from host order by description,hostname");
-
-	$stmt = $pdo->prepare("select id,CONCAT_WS('',description,' (',hostname,')') as name from host order by description,hostname");
-	$stmt->execute();
-	$hosts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$hosts = db_fetch_assoc_prepared("SELECT id, CONCAT_WS('',description,' (',hostname,')') AS name
+		FROM host
+		ORDER BY description, hostname");
 ?>
 <html>
 <head>
@@ -394,7 +384,7 @@ if (isset($_REQUEST['command']) && $_REQUEST["command"]=='node_step1') {
 		self.close();
 	}
 	</script>
-	<style type="text/css">
+	<style type='text/css'>
 		body { font-family: sans-serif; font-size: 10pt; }
 		ul { list-style: none;  margin: 0; padding: 0; }
 		ul { border: 1px solid black; }
@@ -414,8 +404,8 @@ if (isset($_REQUEST['command']) && $_REQUEST["command"]=='node_step1') {
 if (cacti_sizeof($hosts) > 0) {
 	print 'Host: <select name="host_id"  onChange="applyDSFilterChange(document.mini)">';
 
-	print '<option '.($host_id==-1 ? 'SELECTED' : '' ).' value="-1">Any</option>';
-	print '<option '.($host_id==0 ? 'SELECTED' : '' ).' value="0">None</option>';
+	print '<option ' . ($host_id == -1 ? 'SELECTED' : '' ) . ' value="-1">Any</option>';
+	print '<option ' . ($host_id == 0  ? 'SELECTED' : '' ) . ' value="0">None</option>';
 
 	foreach ($hosts as $host) {
 		print '<option ';
@@ -424,7 +414,7 @@ if (cacti_sizeof($hosts) > 0) {
 			print " selected ";
 		}
 
-		print 'value="'.$host['id'].'">'.$host['name'].'</option>';
+		print 'value="' . $host['id'] . '">' . html_escape($host['name']) . '</option>';
 	}
 
 	print '</select><br />';
@@ -436,26 +426,27 @@ print '<input id="overlib" name="overlib" type="checkbox" value="yes" '.($overli
 print '</form><div class="listcontainer"><ul id="dslist">';
 
 //$SQL_picklist = "SELECT graph_templates_graph.id, graph_local.host_id, graph_templates_graph.local_graph_id, graph_templates_graph.height, graph_templates_graph.width, graph_templates_graph.title_cache, graph_templates.name, graph_local.host_id	FROM (graph_local,graph_templates_graph) LEFT JOIN graph_templates ON (graph_local.graph_template_id=graph_templates.id) WHERE graph_local.id=graph_templates_graph.local_graph_id ";
-if (isset($_REQUEST['host_id'])) {
-	$host_id = intval($_REQUEST['host_id']);
+if (isset_request_var('host_id') && get_filter_request_var('host_id') > 0) {
+	$host_id = get_request_var('host_id');
 
-	if ($host_id>=0) {
-		//        $SQL_picklist .= " and graph_local.host_id=$host_id ";
-		$stmt = $pdo->prepare("SELECT graph_templates_graph.id, graph_local.host_id, graph_templates_graph.local_graph_id, graph_templates_graph.height, graph_templates_graph.width, graph_templates_graph.title_cache, graph_templates.name, graph_local.host_id	FROM (graph_local,graph_templates_graph) LEFT JOIN graph_templates ON (graph_local.graph_template_id=graph_templates.id) WHERE graph_local.id=graph_templates_graph.local_graph_id  and graph_local.host_id=? order by title_cache");
-		$stmt->execute(array($host_id));
-	} else {
-		$stmt = $pdo->prepare("SELECT graph_templates_graph.id, graph_local.host_id, graph_templates_graph.local_graph_id, graph_templates_graph.height, graph_templates_graph.width, graph_templates_graph.title_cache, graph_templates.name, graph_local.host_id	FROM (graph_local,graph_templates_graph) LEFT JOIN graph_templates ON (graph_local.graph_template_id=graph_templates.id) WHERE graph_local.id=graph_templates_graph.local_graph_id order by title_cache");
-		$stmt->execute();
-	}
+	$queryrows = db_fetch_assoc_prepared("SELECT gtg.id, gl.host_id, gtg.local_graph_id, gtg.height, gtg.width, gtg.title_cache, gt.name
+		FROM graph_local AS gl
+		INNER JOIN graph_templates_graph AS gtg
+		ON gl.id = gtg.local_graph_id
+		LEFT JOIN graph_templates AS gt
+		ON gl.graph_template_id = gt.id
+		WHERE gl.host_id = ?
+		ORDER BY title_cache",
+		array($host_id));
 } else {
-	$stmt = $pdo->prepare("SELECT graph_templates_graph.id, graph_local.host_id, graph_templates_graph.local_graph_id, graph_templates_graph.height, graph_templates_graph.width, graph_templates_graph.title_cache, graph_templates.name, graph_local.host_id	FROM (graph_local,graph_templates_graph) LEFT JOIN graph_templates ON (graph_local.graph_template_id=graph_templates.id) WHERE graph_local.id=graph_templates_graph.local_graph_id order by title_cache");
-	$stmt->execute();
+	$queryrows = db_fetch_assoc_prepared("SELECT gtg.id, gl.host_id, gtg.local_graph_id, gtg.height, gtg.width, gtg.title_cache, gt.name
+		FROM graph_local AS gl
+		INNER JOIN graph_templates_graph AS gtg
+		ON gl.id = gtg.local_graph_id
+		LEFT JOIN graph_templates AS gt
+		ON gl.graph_template_id = gt.id
+		ORDER BY title_cache");
 }
-
-//$SQL_picklist .= " order by title_cache";
-
-//	$queryrows = db_fetch_assoc($SQL_picklist);
-$queryrows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $i=0;
 
