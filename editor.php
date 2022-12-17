@@ -37,7 +37,9 @@
 */
 
 chdir(__DIR__);
+
 require_once(__DIR__ . '/../../include/global.php');
+
 require_once('lib/editor.inc.php');
 require_once('lib/Weathermap.class.php');
 require_once('lib/geometry.php');
@@ -46,7 +48,7 @@ require_once('lib/WMVector.class.php');
 require_once('lib/WMLine.class.php');
 
 // so that you can't have the editor active, and not know about it.
-$ENABLED=true;
+$ENABLED     = true;
 $cacti_found = true;
 
 $ignore_cacti=true;
@@ -75,7 +77,7 @@ if (!$ENABLED) {
 }
 
 // sensible defaults
-$mapdir='configs';
+$mapdir      = 'configs';
 $configerror = '';
 
 // these are all set via the Editor Settings dialog, in the editor, now.
