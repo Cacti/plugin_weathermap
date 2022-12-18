@@ -577,12 +577,12 @@ function wm_filter() {
 					loadPageNoHeader(urlPath + 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=groupadmin&header=false');
 				});
 
-				$('#wm_group_settings').click(function() {
-					loadPageNoHeader(urlPath + 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=rebuildnow&header=false');
-				});
-
 				$('#wm_map_settings').click(function() {
 					loadPageNoHeader(urlPath + 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=map_settings&id=0&header=false');
+				});
+
+				$('#wm_rebuild').click(function() {
+					loadPageNoHeader(urlPath + 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=rebuildnow&header=false');
 				});
 
 				$('#wm_settings').click(function() {
@@ -808,9 +808,9 @@ function maplist() {
 
 			print '<td>';
 
-			print '<a class="pic" href="?action=move_map_up&order=' . $map['sortorder'] . '&id=' . $map['id'] . '"><img src="../../images/move_up.gif" width="14" height="10" border="0" title="" title="Move Map Up"></a>';
+			print '<a class="pic" href="?action=move_map_up&order=' . $map['sortorder'] . '&id=' . $map['id'] . '" title="Move Map Up"><i class="fa fa-caret-up moveArrow"></i></a>';
 
-			print '<a class="pic" href="?action=move_map_down&order=' . $map['sortorder'] . '&id=' . $map['id'] . '"><img src="../../images/move_down.gif" width="14" height="10" border="0" title="" title="Move Map Down"></a>';
+			print '<a class="pic" href="?action=move_map_down&order=' . $map['sortorder'] . '&id=' . $map['id'] . '" title="Move Map Down"><i class="fa fa-caret-down moveArrow"></i></a>';
 
 			print '</td>';
 
@@ -1159,11 +1159,12 @@ function perms_list($id) {
 	html_header(array('Username', ''));
 
 	$n = 0;
+
 	foreach ($mapuserids as $user) {
 		form_alternate_row();
 
 		print '<td>' . html_escape($users[$user]) . '</td>';
-		print '<td><a href="?action=perms_delete_user&mapid=' . $id . '&userid=' . $user . '"><img src="../../images/delete_icon.gif" width="10" height="10" border="0" title="Remove permissions for this user to see this map"></a></td>';
+		print '<td class="right"><a class="delete deleteMarker fa fa-times" href="?action=perms_delete_user&mapid=' . $id . '&userid=' . $user . '" title="Remove permissions for this user to see this map"></a></td>';
 
 		print '</tr>';
 
@@ -1183,7 +1184,7 @@ function perms_list($id) {
 	if ($userselect == '') {
 		print '<td><em>There aren\'t any users left to add!</em></td></tr>';
 	} else {
-		print '<td><form action="">Allow <input type="hidden" name="action" value="perms_add_user"><input type="hidden" name="mapid" value="$id"><select name="userid">';
+		print '<td><form action="">Allow <input type="hidden" name="action" value="perms_add_user"><input type="hidden" name="mapid" value="' . $id . '"><select name="userid">';
 		print $userselect;
 		print '</select> to see this map <input type="submit" value="Update"></form></td>';
 		print '</tr>';
@@ -1248,12 +1249,12 @@ function weathermap_map_settings($id) {
 			foreach ($settingrows as $setting) {
 				form_alternate_row();
 
-				print '<td><a href="?action=map_settings_form&mapid=' . $id . '&id=' . intval($setting['id']) . '"><img src="../../images/graph_properties.gif" width="16" height="16" border="0" title="Edit this definition">Edit</a></td>';
+				print '<td><a class="pic href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings_form&mapid=' . $id . '&id=' . $setting['id']) . '" title="Edit this definition"><i class="fas fa-wrench"></i></a></td>';
 
 				print '<td>' . html_escape($setting['optname']) . '</td>';
 				print '<td>' . html_escape($setting['optvalue']) . '</td>';
 
-				print '<td><a href="?action=map_settings_delete&mapid=' . $id . '&id=' . intval($setting['id']) . '"><img src="../../images/delete_icon_large.gif" width="12" height="12" border="0" title="Remove this definition from this map"></a></td>';
+				print '<td class="right"><a class="pic" href="?action=map_settings_delete&mapid=' . $id . '&id=' . intval($setting['id']) . '" title="Remove this definition from this map"><i class="delete deleteMarker fa fa-times"></i></a></td>';
 
 				print '</tr>';
 
@@ -1565,15 +1566,15 @@ function weathermap_group_editor() {
 			print '</a>';
 			print '</td>';
 			print '<td>';
-			print '<a href="weathermap-cacti-plugin-mgmt.php?action=move_group_up&order=' . $group['sortorder'] . '&id=' . $group['id'] . '"><img src="../../images/move_up.gif" width="14" height="10" border="0" title="Move Group Up"></a>';
-			print '<a href="weathermap-cacti-plugin-mgmt.php?action=move_group_down&order=' . $group['sortorder'] . '&id=' . $group['id'] . '"><img src="../../images/move_down.gif" width="14" height="10" border="0" title="Move Group Down"></a>';
+			print '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=move_group_up&order=' . $group['sortorder'] . '&id=' . $group['id'] . '" title="Move Group Up"><i class="fa fa-caret-up moveArrow"></i></a>';
+			print '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=move_group_down&order=' . $group['sortorder'] . '&id=' . $group['id'] . '" title="Move Group Down"><i class=""fa fa-caret-down moveArrow"></i></a>';
 			// print $map['sortorder'];
 
 			print '</td>';
-			print '<td>';
+			print '<td class="right">';
 
 			if ($group['id'] > 1) {
-				print '<a href="weathermap-cacti-plugin-mgmt.php?action=groupadmin_delete&id=' . intval($group['id']) . '"><img src="../../images/delete_icon.gif" width="10" height="10" border="0" title="Remove this definition from this map"></a>';
+				print '<a class="delete deleteMarker fa fa-times" href="weathermap-cacti-plugin-mgmt.php?action=groupadmin_delete&id=' . intval($group['id']) . '" title="Remove this definition from this map"></a>';
 			}
 
 			print '</td>';
