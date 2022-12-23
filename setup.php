@@ -54,9 +54,9 @@ function plugin_weathermap_install() {
 	api_plugin_register_hook('weathermap', 'poller_output', 'weathermap_poller_output', 'setup.php');
 	api_plugin_register_hook('weathermap', 'poller_bottom', 'weathermap_poller_bottom', 'setup.php');
 
-	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin.php', 'Weathermap - View', 1);
-	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php', 'Weathermap - Configure/Manage', 1);
-	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-editor.php', 'Weathermap - Edit Maps', 1);
+	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin.php', 'View Weathermaps', 1);
+	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php', 'Manage Weathermap', 1);
+	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-editor.php', 'Edit Weathermaps', 1);
 
 	weathermap_setup_table();
 }
@@ -67,20 +67,62 @@ function plugin_weathermap_uninstall() {
 
 function plugin_weathermap_version() {
 	global $config;
+
 	$info = parse_ini_file($config['base_path'] . '/plugins/weathermap/INFO', true);
+
 	return $info['info'];
 }
 
-/* somehow this function is still required in PA 3.x, even though it checks for plugin_weathermap_version() */
-function weathermap_version() {
-	return plugin_weathermap_version();
-}
-
 function plugin_weathermap_check_config() {
+	plugin_weathermap_upgrade();
+
 	return true;
 }
 
 function plugin_weathermap_upgrade() {
+	$files = array('index.php', 'plugins.php');
+	if (!in_array(get_current_page(), $files) && strpos(get_current_page(), 'weathermap-cacti') === false) {
+		return;
+	}
+
+    $current = plugin_weathermap_version();
+    $current = $current['version'];
+    $old     = db_fetch_row("SELECT * FROM plugin_config WHERE directory='weathermap'");
+
+	if ($current != $old) {
+		db_execute_prepared('UPDATE plugin_realms
+			SET display = ? WHERE file = ?',
+			array('View Weathermaps', 'weathermap-cacti-plugin.php'));
+
+		db_execute_prepared('UPDATE plugin_realms
+			SET display = ? WHERE file = ?',
+			array('Edit Weathermaps', 'weathermap-cacti-plugin-editor.php'));
+
+		db_execute_prepared('UPDATE plugin_realms
+			SET display = ? WHERE file = ?',
+			array('Manage Weathermap', 'weathermap-cacti-plugin-mgmt.php'));
+
+		db_execute_prepared('UPDATE plugin_realms
+			SET file = ? WHERE file = ?',
+			array('weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php', 'weathermap-cacti-plugin-mgmt.php'));
+
+		/* update the plugin information */
+		$info = plugin_weathermap_version();
+		$id   = db_fetch_cell("SELECT id FROM plugin_config WHERE directory='weathermap'");
+
+		db_execute_prepared('UPDATE plugin_config
+			SET name = ?, author = ?, webpage = ?, version = ?
+			WHERE id = ?',
+			array(
+				$info['longname'],
+				$info['author'],
+				$info['homepage'],
+				$info['version'],
+				$id
+			)
+		);
+	}
+
 	return false;
 }
 
@@ -145,6 +187,7 @@ function weathermap_top_graph_refresh($refresh) {
 
 function weathermap_config_settings() {
 	global $tabs, $settings;
+
 	$tabs['misc'] = __('Misc');
 
 	$temp = array(
@@ -251,11 +294,12 @@ function weathermap_config_settings() {
 
 function weathermap_setup_table() {
 	global $config, $database_default;
+
 	global $WEATHERMAP_VERSION;
 
-	$dbversion     = read_config_option('weathermap_db_version');
+	$dbversion = read_config_option('weathermap_db_version');
 
-	$myversioninfo = weathermap_version();
+	$myversioninfo = plugin_weathermap_version();
 	$myversion     = $myversioninfo['version'];
 
 	// only bother with all this if it's a new install, a new version, or we're in a development version
@@ -424,7 +468,7 @@ function weathermap_setup_table() {
 		}
 
 		// update the version, so we can skip this next time
-		set_config_option('weathermap_db_version','$myversion');
+		set_config_option('weathermap_db_version', $myversion);
 
 		// patch up the sortorder for any maps that don't have one.
 		db_execute('UPDATE weathermap_maps SET sortorder = id WHERE sortorder IS NULL OR sortorder = 0');
@@ -434,6 +478,8 @@ function weathermap_setup_table() {
 function weathermap_config_arrays() {
 	global $user_auth_realms, $user_auth_realm_filenames, $menu;
 	global $tree_item_types, $tree_item_handlers;
+
+	plugin_weathermap_upgrade();
 
 	// if there is support for custom graph tree types, then register ourselves
 	if (isset($tree_item_handlers)) {
@@ -453,8 +499,15 @@ function weathermap_config_arrays() {
 
 	$menu[__('Management')]['plugins/weathermap/weathermap-cacti-plugin-mgmt.php'] = $wm_menu;
 
+	// These simply need to be declared for i18n the realm names
+	$realm_array = array(
+		__('View Weathermaps', 'weathermap'),
+		__('Edit Weathermaps', 'weathermap'),
+		__('Manage Weathermap', 'weathermap')
+	);
+
 	if (function_exists('auth_augment_roles')) {
-		auth_augment_roles(__('General Administration'), array('weathermap-cacti-plugin-editor.php', 'weathermap-cacti-plugin-mgmt.php.php', 'weathermap-cacti-plugin-mgmt-groups.php'));
+		auth_augment_roles(__('General Administration'), array('weathermap-cacti-plugin-editor.php', 'weathermap-cacti-plugin-mgmt.php', 'weathermap-cacti-plugin-mgmt-groups.php'));
 		auth_augment_roles(__('Normal User'), array('weathermap-cacti-plugin.php'));
     }
 }
