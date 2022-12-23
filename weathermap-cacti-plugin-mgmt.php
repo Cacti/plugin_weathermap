@@ -669,7 +669,7 @@ function maplist() {
 
 			print __('This <strong>may</strong> have affected other plugins that run during the poller process.', 'weathermap') . '</p><p>';
 
-			print __('You should either disable this map, or fault-find. Possible causes include memory_limit issues. The log may have more information.', 'weathermap');
+			print __('You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information.', 'weathermap');
 
 			print '</p></div>';
 		}
@@ -782,7 +782,7 @@ function maplist() {
 			if ($map['warncount'] > 0) {
 				$had_warnings++;
 
-				print '<a class="pic" title="' . __esc('Check cacti.log for this map', 'weathermap') . '"
+				print '<a class="pic" title="' . __esc('Check cacti.log for this Map', 'weathermap') . '"
 					href="' . html_escape('../../utilities.php?tail_lines=500&message_type=2&action=view_logfile&filter=' . $map['configfile']) . '">
 					<i class="deviceRecovering fa fa-exclamation-triangle"></i>
 				</a>';
@@ -1250,15 +1250,15 @@ function perms_list($id) {
 }
 
 function weathermap_map_settings($id) {
-	global $colors, $config;
+	global $config;
 
 	if ($id == 0) {
 		$title       = __('Additional settings for ALL maps', 'weathermap');
-		$nonemsg     = __('There are no settings for all maps yet. You can add some by pressing the plus sign \'+\' in the top-right, or choose a single map from the management screen to add settings for that map.', 'weathermap');
+		$nonemsg     = __('There are no settings for all maps yet. You can add some by pressing the plus sign \'+\' in the top-right, or choose a single Map from the management screen to add settings for that map.', 'weathermap');
 
 		$type        = 'global';
 
-		$settingrows = db_fetch_assoc('SELECT * FROM weathermap_settings WHERE mapid = 0 ANS groupid = 0');
+		$settingrows = db_fetch_assoc('SELECT * FROM weathermap_settings WHERE mapid = 0 AND groupid = 0');
 	} elseif ($id < 0) {
 		$group_id    = -$id;
 
@@ -1276,75 +1276,98 @@ function weathermap_map_settings($id) {
 		$groupname   = db_fetch_cell_prepared('SELECT name FROM weathermap_groups WHERE id = ?' . array($map['group_id']));
 
 		$title       = __('Edit per Map settings for Weathermap %d: %s', $id, $map['titlecache'], 'weathermap');
-		$nonemsg     = __('There are no per Map settings for this map yet. You can add some by pressing the plus sign \'+\' in the top-right.', 'weathermap');
+		$nonemsg     = __('There are no per Map settings for this Map yet. You can add some by pressing the plus sign \'+\' in the top-right.', 'weathermap');
 
 		$type        = 'map';
 
 		$settingrows = db_fetch_assoc_prepared('SELECT * FROM weathermap_settings WHERE mapid = ?', array($id));
 	}
 
-	if ($type == 'group') {
-		print '<p>' . __('All maps in this group are also affected by the following GLOBAL settings (group overrides global, map overrides group, but BOTH override SET commands within the map config file):', 'weathermap') . '</p>';
+	$do_grp_settings = false;
+	$do_map_settings = false;
 
-		weathermap_readonly_settings(0, __('Global Settings [ All Maps ]', 'weathermap'));
-	}
+	if ($type == 'group' || $type == 'map') {
+		html_start_box(__('Usage Notes', 'weathermap'), '100%', '', '3', 'center', '');
 
-	if ($type == 'map') {
-		print '<p>' . __('This map is also affected by the following GLOBAL and GROUP settings (group overrides global, map overrides group, but BOTH override SET commands within the map config file):', 'weathermap') . '</p>';
+		print '<tr class="even"><td>';
 
-		weathermap_readonly_settings(0, __('Global Settings [ All Maps ]', 'weathermap'));
+		if ($type == 'group') {
+			$do_grp_settings = true;
 
-		weathermap_readonly_settings($map['group_id'], __esc('Group Settings [ %s ]', ($groupname != '' ? $groupname:__('No Group', 'weathermap')), 'weathermap'));
-	}
+			print __('All Maps in this Group are also affected by the following GLOBAL settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)', 'weathermap');
 
-	html_start_box($title, '100%', '', '2', 'center', 'weathermap-cacti-plugin-mgmt.php?action=map_settings_form&mapid=' . intval($id));
-
-	html_header(array(__('Action', 'weathermap'), __('Name', 'weathermap'), __('Value', 'weathermap')), 2);
-
-	$n = 0;
-
-	if (is_array($settingrows)) {
-		if (cacti_sizeof($settingrows)) {
-			foreach ($settingrows as $setting) {
-				form_alternate_row();
-
-				print '<td>
-					<a class="pic title="' . __('Edit this definition', 'weathermap') . '"
-						href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings_form&mapid=' . $id . '&id=' . $setting['id']) . '">
-						<i class="fas fa-wrench"></i>
-					</a>
-				</td>';
-
-				print '<td>' . html_escape($setting['optname']) . '</td>';
-				print '<td>' . html_escape($setting['optvalue']) . '</td>';
-
-				print '<td class="right">
-					<a class="pic" title="' . __('Remove this definition from this map', 'weathermap') . '"
-						href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings_delete&mapid=' . $id . '&id=' . $setting['id']) . '">
-						<i class="delete deleteMarker fa fa-times"></i>
-					</a>
-				</td>';
-
-				print '</tr>';
-
-				$n++;
-			}
-		} else {
-			print '<tr class="even tableRow">';
-			print '<td colspan="4"><em>' . html_escape($nonemsg) . '</em></td>';
-			print '</tr>';
 		}
+
+		if ($type == 'map') {
+			$do_grp_settings = true;
+			$do_map_settings = true;
+
+			print __('This Map is also affected by the following Global and Group settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)', 'weathermap');
+		}
+
+		print '</td></tr>';
+
+		html_end_box();
+
+		if ($do_grp_settings) {
+			weathermap_readonly_settings(0, __('Global Settings [ All Maps ]', 'weathermap'));
+		}
+
+		if ($do_map_settings) {
+			weathermap_readonly_settings($map['group_id'], __esc('Group Settings [ %s ]', ($groupname != '' ? $groupname:__('No Group', 'weathermap')), 'weathermap'));
+		}
+	}
+
+	html_start_box($title, '100%', '', '3', 'center', 'weathermap-cacti-plugin-mgmt.php?action=map_settings_form&mapid=' . intval($id));
+
+	if (cacti_sizeof($settingrows)) {
+		html_header(array(__('Action', 'weathermap'), __('Name', 'weathermap'), __('Value', 'weathermap')), 2);
+
+		$n = 0;
+
+		foreach ($settingrows as $setting) {
+			form_alternate_row();
+
+			print '<td>
+				<a class="pic title="' . __('Edit this definition', 'weathermap') . '"
+					href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings_form&mapid=' . $id . '&id=' . $setting['id']) . '">
+					<i class="fas fa-wrench"></i>
+				</a>
+			</td>';
+
+			print '<td>' . html_escape($setting['optname']) . '</td>';
+			print '<td>' . html_escape($setting['optvalue']) . '</td>';
+
+			print '<td class="right">
+				<a class="pic" title="' . __('Remove this definition from this map', 'weathermap') . '"
+					href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings_delete&mapid=' . $id . '&id=' . $setting['id']) . '">
+					<i class="delete deleteMarker fa fa-times"></i>
+				</a>
+			</td>';
+
+			print '</tr>';
+
+			$n++;
+		}
+	} else {
+		print '<tr class="even tableRow">';
+		print '<td colspan="4"><em>' . html_escape($nonemsg) . '</em></td>';
+		print '</tr>';
 	}
 
 	html_end_box();
 
+	weathermap_back_to($type);
+}
+
+function weathermap_back_to($type = 'global') {
 	print '<div align=center>';
 
 	if ($type == 'group') {
 		print '<a href="weathermap-cacti-plugin-mgmt.php?action=groupadmin">' . __('Back to Group Admin', 'weathermap') . '</a>';
 	}
 
-	if ($type == 'global') {
+	if ($type == 'global' || $type == 'map') {
 		print '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=">' . __('Back to Map Admin', 'weathermap') . '</a>';
 	}
 
@@ -1458,9 +1481,9 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 		$title = __('Setting for ALL maps', 'weathermap');
 	} elseif ($mapid < 0) {
 		$grpid = -$mapid;
-		$title = __('Per-group setting for Group %s: %s', $grpid, $title, 'weathermap');
+		$title = __('Per Group setting for Group %s: %s', $grpid, $title, 'weathermap');
 	} else {
-		$title = __('Per-map setting for Weathermap %s: %s', $mapid, $title, 'weathermap');
+		$title = __('Per Map setting for Weathermap %s: %s', $mapid, $title, 'weathermap');
 	}
 
 	html_start_box("$action $title", '100%', '', '3', 'center', '');
@@ -1520,16 +1543,17 @@ function weathermap_chgroup($id) {
 
 	$n = 0;
 
-	print '<form>';
+	form_start('weathermap-cacti-plugin-mgmt.php');
+
 	print "<input type=hidden name='map_id' value='" . $id . "'>";
 	print "<input type=hidden name='action' value='chgroup_update'>";
 
-	html_start_box(__('Edit map group for Weathermap %s: %s', $id, $title, 'weathermap'), '100%', '', '3', 'center', '');
+	html_start_box(__('Edit Map Group for Weathermap %s: %s', $id, $title, 'weathermap'), '100%', '', '3', 'center', '');
 
 	# html_header(array("Group Name", ""));
 	form_alternate_row();
 
-	print '<td><b>' . __('Choose an existing Group:', 'wethermap') . '</b><select name="new_group">';
+	print '<td><b>' . __('Choose an existing Group', 'wethermap') . '</b>&nbsp;&nbsp;<select name="new_group">';
 
 	$results = db_fetch_assoc("SELECT *
 		FROM weathermap_groups
@@ -1546,16 +1570,16 @@ function weathermap_chgroup($id) {
 	}
 
 	print '</select>';
-	print '<input type="image" src="../../images/button_save.gif"  border="0" title="Change Group" />';
+	print '<input type="submit" value="' . __esc('Change Group', 'weathermap') . '"/>';
 	print '</td>';
 	print '</tr>';
 	print '<tr><td></td></tr>';
 
-	print '<tr><td><p>' . __('Or create a new group in the %s Group Management Script %s', '<a href="weathermap-cacti-plugin-mgmt.php?action=groupadmin">' , '</a>', 'weathermap') . '</p></td></tr>';
+	print '<tr><td><p>' . __('Or Create a New Group using the %s Group Management interface %s', '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=groupadmin">' , '</a>', 'weathermap') . '</p></td></tr>';
 
 	html_end_box();
 
-	print '</form>';
+	form_end();
 }
 
 function weathermap_group_form($id = 0) {
@@ -1564,9 +1588,9 @@ function weathermap_group_form($id = 0) {
 	$grouptext = '';
 	// if id==0, it's an Add, otherwise it's an editor.
 	if ($id == 0) {
-		print 'Adding a group...';
+		$header = __('Adding a Group', 'weathermap');
 	} else {
-		print "Editing group $id\n";
+		$header = __esc('Editing Group %s', $id, 'weathermap');
 
 		$grouptext = db_fetch_cell_prepared('SELECT name
 			FROM weathermap_groups
@@ -1574,19 +1598,28 @@ function weathermap_group_form($id = 0) {
 			array($id));
 	}
 
-	print '<form action="weathermap-cacti-plugin-mgmt.php"><input type="hidden" name="action" value="group_update" />';
+	html_start_box($header, '100%', '', '3', 'center', '');
 
-	print __('Group Name:', 'weathermap') . '<input name="gname" value="' . html_escape($grouptext) . '"/>';
+	print '<tr><td>';
+
+	form_start('weathermap-cacti-plugin-mgmt.php');
+
+	print '<input type="hidden" name="action" value="group_update">';
+
+	print __('Group Name:', 'weathermap') . '<input class="ui-state-default ui-corner-all" size="40" name="gname" value="' . html_escape($grouptext) . '"/>';
 
 	if ($id > 0) {
 		print '<input type="hidden" name="id" value="' . $id . ' />';
 		print __('Group Name:', 'weathermap') . '<input type=submit value="' . __esc('Update', 'weathermap') . '"/>';
 	} else {
-		# print "<input type=hidden name=id value=$id />\n";
-		print __('Group Name:', 'weathermap') . '<input type="submit" value="' . __esc('Add', 'weathermap') . '"/>';
+		print '<input type="submit" value="' . __esc('Add', 'weathermap') . '"/>';
 	}
 
-	print '</form>';
+	form_end();
+
+	print '</td></tr>';
+
+	html_end_box();
 }
 
 function weathermap_group_editor() {
@@ -1594,15 +1627,7 @@ function weathermap_group_editor() {
 
 	html_start_box(__('Edit Map Groups', 'weathermap'), '100%', '', '3', 'center', 'weathermap-cacti-plugin-mgmt.php?action=group_form&id=0');
 
-	html_header(
-		array(
-			'',
-			__('Group Name', 'weathermap'),
-			__('Settings', 'weathermap'),
-			__('Sort Order', 'weathermap'),
-			''
-		)
-	);
+	html_header(array(__('Actions', 'weathermap'), __('Group Name', 'weathermap'), __('Settings', 'weathermap'), __('Sort Order', 'weathermap')), 2);
 
 	$groups = db_fetch_assoc('SELECT * FROM weathermap_groups ORDER BY sortorder');
 
@@ -1612,14 +1637,14 @@ function weathermap_group_editor() {
 		foreach ($groups as $group) {
 			form_alternate_row();
 
-			print '<td>
+			print '<td style="width:4%">
 				<a title="' . __('Rename this Group', 'weathermap') . '"
 					href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=group_form&id=' . $group['id']) . '">
-					<i class="fas fa-wrench">
+					<i class="fas fa-wrench"></i>
 				</a>
 			</td>';
 
-			print '<td>' . html_escape($group['name']) . '</td>';
+			form_selectable_cell(html_escape($group['name']), $group['id']);
 
 			print '<td>';
 
@@ -1675,6 +1700,8 @@ function weathermap_group_editor() {
 	}
 
 	html_end_box();
+
+	weathermap_back_to();
 }
 
 function weathermap_group_create($newname) {
