@@ -63,20 +63,23 @@ switch ($action) {
 		if ($id >= 0) {
 			$imageformat = strtolower(read_config_option("weathermap_output_format"));
 
-			$userid = (isset($_SESSION["sess_user_id"]) ? intval($_SESSION["sess_user_id"]) : 1);
+			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
 
-			$map = db_fetch_assoc("select weathermap_maps.*
-				from weathermap_auth, weathermap_maps
-				where weathermap_maps.id=weathermap_auth.mapid
-				and active='on'
-				and (userid=" . $userid . " or userid=0)
-				and weathermap_maps.id=" . $id);
+			$map = db_fetch_row_prepared("SELECT wm.*
+				FROM weathermap_auth AS wa
+				INNER JOIN weathermap_maps AS wm
+				ON wm.id = wa.mapid
+				WHERE active = 'on'
+				AND (userid = ? OR userid = 0)
+				AND wm.id = ?
+				LIMIT 1",
+				array($userid, $id));
 
 			if (cacti_sizeof($map)) {
-				$imagefile = __DIR__ . '/output/' . $map[0]['filehash'] . '.' . $imageformat;
+				$imagefile = __DIR__ . '/output/' . $map['filehash'] . '.' . $imageformat;
 
 				if ($action == 'viewthumb') {
-					$imagefile = __DIR__ . '/output/' . $map[0]['filehash'] . '.thumb.' . $imageformat;
+					$imagefile = __DIR__ . '/output/' . $map['filehash'] . '.thumb.' . $imageformat;
 				}
 
 				$orig_cwd = getcwd();
@@ -112,9 +115,10 @@ switch ($action) {
 				FROM weathermap_auth AS wa
 				INNER JOIN weathermap_maps AS wm
 				ON wm.id = wa.mapid
-				WHERE active='on'
+				WHERE active = 'on'
 				AND (userid = ? OR userid = 0)
-				AND wm.id= ?",
+				AND wm.id = ?
+				LIMIT 1",
 				array($userid, $id));
 
 			if (cacti_sizeof($map)) {
@@ -164,7 +168,8 @@ switch ($action) {
 				ON wm.id = wa.mapid
 				WHERE active = 'on'
 				AND (userid = ? OR userid = 0)
-				AND weathermap_maps.id = ?",
+				AND wm.id = ?
+				LIMIT 1",
 				array($userid, $id));
 
 			if (cacti_sizeof($map)) {
@@ -241,13 +246,14 @@ switch ($action) {
 
 		$userid  = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
 
-		$maplist = db_fetch_assoc_prepared("SELECT DISTINCT wm.*
+		$maplist = db_fetch_assoc_prepared("SELECT wm.*
 			FROM weathermap_auth AS wa
 			INNER JOIN weathermap_maps AS wm
 			ON wm.id = wa.mapid
 			WHERE active = 'on'
 			AND (userid = ? OR userid = 0)
-			ORDER BY sortorder, id",
+			ORDER BY sortorder, id
+			LIMIT 1",
 			array($userid));
 
 		if (cacti_sizeof($maplist)) {
@@ -388,7 +394,8 @@ function weathermap_singleview($mapid) {
 		ON wm.id = wa.mapid
 		WHERE active = 'on'
 		AND (userid = ? OR userid = 0)
-		AND weathermap_maps.id = ?",
+		AND weathermap_maps.id = ?
+		LIMIT 1",
 		array($userid, $mapid));
 
 	if (cacti_sizeof($map)) {
@@ -440,22 +447,9 @@ function weathermap_singleview($mapid) {
 		} else {
 			print '<div align="center" style="padding:20px"><em>' . __('This map hasn\'t been created yet.', 'weathermap');
 
-			global $config, $user_auth_realms, $user_auth_realm_filenames;
+			global $config;
 
-			$realm_id2 = 0;
-
-			if (isset($user_auth_realm_filenames[basename('weathermap-cacti-plugin.php')])) {
-				$realm_id2 = $user_auth_realm_filenames[basename('weathermap-cacti-plugin.php')];
-			}
-
-			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
-			$realm_id = db_fetch_cell_prepared('SELECT realm_id
-				FROM user_auth_realm
-				WHERE user_id = ?
-				AND realm_id = ?',
-				array($userid, $realm_id2));
-
-			if (empty($realm_id)) {
+			if (!api_plugin_user_realm_auth('weathermap-cacti-plugin.php')) {
 				print ' (If this message stays here for more than one poller cycle, then check your cacti.log file for errors!)';
 			}
 
@@ -469,22 +463,9 @@ function weathermap_singleview($mapid) {
 }
 
 function weathermap_show_manage_tab() {
-	global $config, $user_auth_realms, $user_auth_realm_filenames;
+	global $config;
 
-	$realm_id2 = 0;
-
-	if (isset($user_auth_realm_filenames['weathermap-cacti-plugin-mgmt.php'])) {
-		$realm_id2 = $user_auth_realm_filenames['weathermap-cacti-plugin-mgmt.php'];
-	}
-
-	$userid   = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
-	$realm_id = db_fetch_cell_prepared('SELECT realm_id
-		FROM user_auth_realm
-		WHERE user_id = ?
-		AND realm_id = ?',
-		array($userid, $realm_id2));
-
-	if ($realm_id > 0) {
+	if (!api_plugin_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
 		print '<a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php">' . __('Manage Maps', 'weathermap') . '</a>';
 	}
 }
@@ -510,6 +491,7 @@ function weathermap_thumbview($limit_to_group = -1) {
 	// if there's only one map, ignore the thumbnail setting and show it fullsize
 	if (cacti_sizeof($maplist) == 1) {
 		$pagetitle = "Network Weathermap";
+
 		weathermap_fullview(false, false, $limit_to_group);
 	} else {
 		$pagetitle = "Network Weathermaps";
@@ -806,25 +788,11 @@ function weathermap_translate_id($idname) {
 }
 
 function weathermap_versionbox() {
-	global $WEATHERMAP_VERSION;
-	global $config, $user_auth_realms, $user_auth_realm_filenames;
+	global $WEATHERMAP_VERSION, $config;
 
 	$pagefoot = __('Powered by %s PHP Weathermap Version %d %s', '<a href="http://www.network-weathermap.com/?v=' . $WEATHERMAP_VERSION . '">', $WEATHERMAP_VERSION, '</a>', 'weathermap');
 
-	$realm_id2 = 0;
-
-	if (isset($user_auth_realm_filenames['weathermap-cacti-plugin-mgmt.php'])) {
-		$realm_id2 = $user_auth_realm_filenames['weathermap-cacti-plugin-mgmt.php'];
-	}
-
-	$userid   = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
-	$realm_id = db_fetch_cell_prepared('SELECT realm_id
-		FROM user_auth_realm
-		WHERE user_id = ?
-		AND realm_id = ?',
-		array($userid, $realm_id2));
-
-	if ($realm_id > 0 || empty($realm_id2)) {
+	if (api_plugin_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
 		$pagefoot .= ' --- <a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php" title="' . __esc('Go to the map management page', 'weathermap') . '">' . __('Weathermap Management', 'weathermap') . '</a>';
 		$pagefoot .= ' | <a target="_blank" href="docs/">' . __('Local Documentation', 'weathermap') . '</a>';
 		$pagefoot .= ' | <a target="_blank" href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-editor.php">' . __('Editor', 'weathermap') . '</a>';

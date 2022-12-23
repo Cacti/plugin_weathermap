@@ -55,7 +55,7 @@ function plugin_weathermap_install() {
 	api_plugin_register_hook('weathermap', 'poller_bottom', 'weathermap_poller_bottom', 'setup.php');
 
 	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin.php', 'Weathermap - View', 1);
-	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-mgmt.php', 'Weathermap - Configure/Manage', 1);
+	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php', 'Weathermap - Configure/Manage', 1);
 	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-editor.php', 'Weathermap - Edit Maps', 1);
 
 	weathermap_setup_table();
@@ -107,7 +107,6 @@ function weathermap_page_head() {
 	}
 }
 
-// ToDo - Convert to Cacti DB API.
 function weathermap_page_title($t) {
 	if (preg_match('/plugins\/weathermap\//', $_SERVER['REQUEST_URI'], $matches)) {
 		$t .= ' - Weathermap';
@@ -448,11 +447,16 @@ function weathermap_config_arrays() {
 	}
 
 	$wm_menu = array(
-		'plugins/weathermap/weathermap-cacti-plugin-mgmt.php'        => 'Weathermaps',
-		'plugins/weathermap/weathermap-cacti-plugin-mgmt-groups.php' => 'Groups'
+		'plugins/weathermap/weathermap-cacti-plugin-mgmt.php'        => __('Weathermaps', 'weathermap'),
+		'plugins/weathermap/weathermap-cacti-plugin-mgmt-groups.php' => __('Weathermap Groups', 'weathermap')
 	);
 
-	$menu[ __('Management') ]['plugins/weathermap/weathermap-cacti-plugin-mgmt.php'] = $wm_menu;
+	$menu[__('Management')]['plugins/weathermap/weathermap-cacti-plugin-mgmt.php'] = $wm_menu;
+
+	if (function_exists('auth_augment_roles')) {
+		auth_augment_roles(__('General Administration'), array('weathermap-cacti-plugin-editor.php', 'weathermap-cacti-plugin-mgmt.php.php', 'weathermap-cacti-plugin-mgmt-groups.php'));
+		auth_augment_roles(__('Normal User'), array('weathermap-cacti-plugin.php'));
+    }
 }
 
 function weathermap_tree_item_render($leaf) {
@@ -540,47 +544,34 @@ function weathermap_tree_item_edit($tree_item) {
 
 	form_alternate_row();
 
-	print "<td width='50%'><font class='textEditTitle'>" . __('Style', 'weathermap') . '</font><br />' . __('How should the map be displayed?', 'weathermap') . '</td><td>';
+	print '<td width="50%"><font class="textEditTitle">' . __('Style', 'weathermap') . '</font><br />' . __('How should the map be displayed?', 'weathermap') . '</td><td>';
 
-	print "<select name='item_options'>
-		<option value=1>" . __('Thumbnail', 'weathermap') . "</option>
-		<option value=2>" . __('Full Size', 'weathermap') . "</option></select>";
+	print '<select name="item_options">
+		<option value="1">' . __('Thumbnail', 'weathermap') . '</option>
+		<option value="2">' . __('Full Size', 'weathermap') . '</option></select>';
 
 	print '</td></tr>';
 }
 
 function weathermap_show_tab() {
-	global $config, $user_auth_realms, $user_auth_realm_filenames;
-	$realm_id2 = 0;
-
-	if (isset($user_auth_realm_filenames['weathermap-cacti-plugin.php'])) {
-		$realm_id2 = $user_auth_realm_filenames['weathermap-cacti-plugin.php'];
-	}
+	global $config;
 
 	$tabstyle = intval(read_config_option('superlinks_tabstyle'));
-	$userid   = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1 );
 
-	$exists = db_fetch_assoc_prepared('SELECT user_auth_realm.realm_id
-		FROM user_auth_realm
-		WHERE user_auth_realm.user_id = ?
-		AND user_auth_realm.realm_id = ?',
-		array($userid, $realm_id2));
-
-	if ($exists != '' || (empty($realm_id2))) {
-		if ( $tabstyle > 0 ) {
+	if (api_plugin_user_realm_auth('weathermap-cacti-plugin.php')) {
+		if ($tabstyle > 0) {
 			$prefix = 's_';
 		} else {
 			$prefix = '';
 		}
 
-		print "<a href='" . $config['url_path'] . "plugins/weathermap/weathermap-cacti-plugin.php'><img src='" . $config['url_path'] . 'plugins/weathermap/images/' . $prefix . 'tab_weathermap';
+		print '<a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php"><img src="' . $config['url_path'] . 'plugins/weathermap/images/' . $prefix . 'tab_weathermap';
 
-		// if we're ON a weathermap page, print '_red'
 		if (preg_match('/plugins\/weathermap\/weathermap-cacti-plugin.php/', $_SERVER['REQUEST_URI'], $matches)) {
 			print '_red';
 		}
 
-		print ".gif' alt='weathermap' align='absmiddle' border='0'></a>";
+		print '.gif" alt="weathermap" align="absmiddle" border="0"></a>';
 	}
 
 	weathermap_setup_table();
@@ -588,276 +579,276 @@ function weathermap_show_tab() {
 
 function weathermap_draw_navigation_text($nav) {
 	$nav['weathermap-cacti-plugin.php:'] = array(
-		'title' => 'Weathermap',
-		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin.php',
-		'level' => '1'
+		'title'   => __('Weathermap', 'weathermap'),
+		'mapping' => '',
+		'url'     => 'weathermap-cacti-plugin.php',
+		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin.php:viewmap'] = array(
-		'title' => 'Weathermap',
-		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin.php',
-		'level' => '1'
+		'title'   => __('Weathermap', 'weathermap'),
+		'mapping' => '',
+		'url'     => 'weathermap-cacti-plugin.php',
+		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin.php:liveview'] = array(
-		'title' => 'Weathermap',
-		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin.php',
-		'level' => '1'
+		'title'   => __('Weathermap', 'weathermap'),
+		'mapping' => '',
+		'url'     => 'weathermap-cacti-plugin.php',
+		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin.php:liveviewimage'] = array(
-		'title' => 'Weathermap',
-		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin.php',
-		'level' => '1'
+		'title'   => __('Weathermap', 'weathermap'),
+		'mapping' => '',
+		'url'     => 'weathermap-cacti-plugin.php',
+		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin.php:viewmapcycle'] = array(
-		'title' => 'Weathermap',
-		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin.php',
-		'level' => '1'
+		'title'   => __('Weathermap', 'weathermap'),
+		'mapping' => '',
+		'url'     => 'weathermap-cacti-plugin.php',
+		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin.php:mrss'] = array(
-		'title' => 'Weathermap',
-		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin.php',
-		'level' => '1'
+		'title'   => __('Weathermap', 'weathermap'),
+		'mapping' => '',
+		'url'     => 'weathermap-cacti-plugin.php',
+		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin.php:viewimage'] = array(
-		'title' => 'Weathermap',
-		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin.php',
-		'level' => '1'
+		'title'   => __('Weathermap', 'weathermap'),
+		'mapping' => '',
+		'url'     => 'weathermap-cacti-plugin.php',
+		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin.php:viewthumb'] = array(
-		'title' => 'Weathermap',
-		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin.php',
-		'level' => '1'
+		'title'   => __('Weathermap', 'weathermap'),
+		'mapping' => '',
+		'url'     => 'weathermap-cacti-plugin.php',
+		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:addmap_picker'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:viewconfig'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:addmap'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:editmap'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:editor'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:perms_edit'] = array(
-		'title' => 'Edit Permissions',
+		'title'   => __('Edit Permissions', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
-		'url' => '',
-		'level' => '2'
+		'url'     => '',
+		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:addmap_picker'] = array(
-		'title' => 'Add Map',
+		'title'   => __('Add Map', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
-		'url' => '',
-		'level' => '2'
+		'url'     => '',
+		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:map_settings'] = array(
-		'title' => 'Map Settings',
+		'title'   => __('Map Settings', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
-		'url' => '',
-		'level' => '2'
+		'url'     => '',
+		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:map_settings_form'] = array(
-		'title' => 'Map Settings',
+		'title'   => __('Map Settings', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
-		'url' => '',
-		'level' => '2'
+		'url'     => '',
+		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:map_settings_delete'] = array(
-		'title' => 'Map Settings',
+		'title'   => __('Map Settings', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
-		'url' => '',
-		'level' => '2'
+		'url'     => '',
+		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:map_settings_update'] = array(
-		'title' => 'Map Settings',
+		'title'   => __('Map Settings', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
-		'url' => '',
-		'level' => '2'
+		'url'     => '',
+		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:map_settings_add'] = array(
-		'title' => 'Map Settings',
+		'title'   => __('Map Settings', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
-		'url' => '',
-		'level' => '2'
+		'url'     => '',
+		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:perms_edit'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:perms_add_user'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:perms_delete_user'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:delete_map'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:move_map_down'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:move_map_up'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:move_group_down'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:move_group_up'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:group_form'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:group_update'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:activate_map'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:deactivate_map'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:rebuildnow'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:rebuildnow2'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:chgroup'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:chgroup_update'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:groupadmin'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:groupadmin_delete'] = array(
-		'title' => 'Weathermap Management',
+		'title'   => __('Weathermap Management', 'weathermap'),
 		'mapping' => 'index.php:',
-		'url' => 'weathermap-cacti-plugin-mgmt.php',
-		'level' => '1'
+		'url'     => 'weathermap-cacti-plugin-mgmt.php',
+		'level'   => '1'
 	);
 
 	return $nav;
@@ -866,28 +857,16 @@ function weathermap_draw_navigation_text($nav) {
 function weathermap_poller_output(&$rrd_update_array) {
 	global $config;
 
-	cacti_log("WM poller_output: STARTING", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
+	cacti_log('WM poller_output: STARTING', true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 
-	/**
-	 * partially borrowed from Jimmy Conner's THold plugin.
-	 * (although I do things slightly differently - I go from filenames, and don't use the poller_interval)
-	 */
-
-	/**
-	 * ToDo - This whole function needs auditing for scalability verification
-	 */
-
-	// $requiredlist = db_fetch_assoc('select distinct weathermap_data.*, data_template_data.local_data_id, data_template_rrd.data_source_type_id from weathermap_data, data_template_data, data_template_rrd where weathermap_data.rrdfile=data_template_data.data_source_path and data_template_rrd.local_data_id=data_template_data.local_data_id');
-	// new version works with *either* a local_data_id or rrdfile in the weathermap_data table, and returns BOTH
-
-	$requiredlist = db_fetch_assoc('SELECT DISTINCT weathermap_data.id, weathermap_data.last_value,
-		weathermap_data.last_time, weathermap_data.data_source_name,
-		data_template_data.data_source_path, data_template_data.local_data_id,
-		data_template_rrd.data_source_type_id
-		FROM weathermap_data, data_template_data, data_template_rrd
-		WHERE weathermap_data.local_data_id=data_template_data.local_data_id
-		AND data_template_rrd.local_data_id=data_template_data.local_data_id
-		AND weathermap_data.local_data_id<>0');
+	$requiredlist = db_fetch_assoc('SELECT DISTINCT wmd.id, wmd.last_value, wmd.last_time, wmd.data_source_name,
+		dtd.data_source_path, dtd.local_data_id, dtr.data_source_type_id
+		FROM weathermap_data AS wmd
+		INNER JOIN data_template_data AS dtd
+		ON wmd.local_data_id = dtd.local_data_id
+		INNER JOIN data_template_rrd AS dtr
+		ON wmd.local_data_id = dtr.local_data_id
+		WHERE wmd.local_data_id > 0');
 
 	$path_rra = $config['rra_path'];
 
@@ -937,7 +916,7 @@ function weathermap_poller_output(&$rrd_update_array) {
 			// if the new value is a NaN, we'll give 0 instead, and pretend it didn't happen from the point
 			// of view of the counter etc. That way, we don't get those enormous spikes. Still doesn't deal with
 			// reboots very well, but it should improve it for drops.
-			if ( $value == 'U' ) {
+			if ($value == 'U') {
 				$newvalue     = 0;
 				$newlastvalue = $lastval;
 				$newtime      = $required['last_time'];
@@ -952,15 +931,15 @@ function weathermap_poller_output(&$rrd_update_array) {
 						break;
 					case 2: //COUNTER
 						if ( $value >= $lastval ) {
-                                // Everything is normal
-                                $newvalue = $value - $lastval;
+							// Everything is normal
+							$newvalue = $value - $lastval;
 						} else {
-                                // Possible overflow, see if its 32bit or 64bit
-                                if ( $lastval > 4294967295 ) {
-                                    $newvalue = ( 18446744073709551615 - $lastval ) + $value;
-                                } else {
-                                    $newvalue = ( 4294967295 - $lastval ) + $value;
-                                }
+							// Possible overflow, see if its 32bit or 64bit
+							if ( $lastval > 4294967295 ) {
+								$newvalue = ( 18446744073709551615 - $lastval ) + $value;
+							} else {
+								$newvalue = ( 4294967295 - $lastval ) + $value;
+							}
 						}
 
 						$newvalue = $newvalue / $period;
@@ -976,7 +955,9 @@ function weathermap_poller_output(&$rrd_update_array) {
 						break;
 					default: // do something somewhat sensible in case something odd happens
 						$newvalue = $value;
+
 						wm_warn("poller_output found an unknown data_source_type_id for $file:$dsname");
+
 						break;
 				}
 			}
@@ -987,17 +968,18 @@ function weathermap_poller_output(&$rrd_update_array) {
 
 			cacti_log("WM poller_output: Final value is $newvalue (was $lastval, period was $period)", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 		} else {
-			cacti_log("WM poller_output: Didn't find it.", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
-			cacti_log("WM poller_output: DID find these:", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
+			cacti_log('WM poller_output: Didn\'t find it.', true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
+			cacti_log('WM poller_output: DID find these:', true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 
 			foreach (array_keys($rrd_update_array) as $key) {
 				$local_data_id = $rrd_update_array[$key]['local_data_id'];
+
 				cacti_log("WM poller_output:    $key ($local_data_id)", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 			}
 		}
 	}
 
-	cacti_log("WM poller_output: ENDING", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
+	cacti_log('WM poller_output: ENDING', true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 
 	return $rrd_update_array;
 }
