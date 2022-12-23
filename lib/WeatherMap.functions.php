@@ -36,39 +36,6 @@
  +-------------------------------------------------------------------------+
 */
 
-/**
- * Utility functions
- * Check for GD & PNG support This is just in here so that both the editor and CLI can use it without the need for another file
- */
-function wm_module_checks() {
-	if (!extension_loaded('gd')) {
-		wm_warn("No image (gd) extension is loaded. This is required by weathermap. [WMWARN20]");
-		wm_warn("Run check.php to check PHP requirements.");
-
-		return(false);
-	}
-
-	if (!function_exists('imagecreatefrompng')) {
-		wm_warn("Your GD php module doesn't support PNG format. [WMWARN21]");
-		wm_warn("Run check.php to check PHP requirements.");
-
-		return(false);
-	}
-
-	if (!function_exists('imagecreatetruecolor')) {
-		wm_warn("Your GD php module doesn't support truecolor. [WMWARN22]");
-		wm_warn("Run check.php to check PHP requirements.");
-
-		return(false);
-	}
-
-	if (!function_exists('imagecopyresampled')) {
-		wm_warn("Your GD php module doesn't support thumbnail creation (imagecopyresampled). [WMWARN23]");
-	}
-
-	return(true);
-}
-
 function wm_debug($string) {
 	global $weathermap_debugging;
 	global $weathermap_map;

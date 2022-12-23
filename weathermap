@@ -1,16 +1,12 @@
 #!/usr/bin/php
 <?php
 
-// PHP Weathermap 0.98a
+// PHP Weathermap 1.0
 // Copyright Howard Jones, 2005-2019 howie@thingy.com
 // http://www.network-weathermap.com/
 // Released under the MIT License
-require_once 'Console/Getopt.php';
-require_once "lib/Weathermap.class.php";
-
-if (!wm_module_checks()) { 
-	die ("Quitting: Module checks failed.\n"); 
-}
+require_once('Console/Getopt.php');
+require_once('lib/Weathermap.class.php');
 
 //$weathermap_debugging=true; 
 

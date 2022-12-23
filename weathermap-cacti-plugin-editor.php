@@ -47,10 +47,9 @@
  */
 
 chdir('../../');
-require_once './include/auth.php';
-require_once './include/config.php';
+require_once('./include/auth.php');
 
 $FROM_CACTI = true;
 
-require_once __DIR__ . '/editor.php';
+require_once(__DIR__ . '/editor.php');
 

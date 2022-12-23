@@ -39,7 +39,7 @@
 #
 # Change the uncommented line to point to your Cacti installation
 #
-$cacti_base = dirname(__FILE__)."/../../";
+$cacti_base = __DIR__ . '/../../';
 # $cacti_base = "C:/xampp/htdocs/cacti/";
 # $cacti_base = "/var/www/html/cacti/";
 # $cacti_base = "/Applications/XAMPP/htdocs/cacti/";

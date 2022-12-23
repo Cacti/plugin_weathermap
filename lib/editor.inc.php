@@ -158,48 +158,32 @@ function wm_editor_sanitize_conffile($filename) {
 }
 
 function show_editor_startpage() {
-	global $mapdir, $WEATHERMAP_VERSION, $config_loaded, $cacti_found, $ignore_cacti,$configerror;
+	global $mapdir, $WEATHERMAP_VERSION, $config_loaded, $cacti_found, $ignore_cacti, $configerror;
 
 	$fromplug = false;
 	if (isset($_REQUEST['plug']) && (intval($_REQUEST['plug'])==1) ) {
 	    $fromplug = true;
 	}
 
-	$matches=0;
+	$matches = 0;
 
-	print '<html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" media="screen" href="editor-resources/oldeditor.css" /><script type="text/javascript" src="vendor/jquery/dist/jquery.min.js"></script><script src="editor-resources/editor.js" type="text/javascript"></script><title>PHP Weathermap Editor ' . $WEATHERMAP_VERSION
-		. '</title></head><body>';
+	print '<script src="editor-resources/editor.js" type="text/javascript"></script>';
 
-	print '<div id="nojs" class="alert"><b>WARNING</b> - ';
-	print 'Sorry, it\'s partly laziness on my part, but you really need JavaScript enabled and DOM support in your browser to use this editor. It\'s a visual tool, so accessibility is already an issue, if it is, and from a security viewpoint, you\'re already running my ';
-	print 'code on your <i>server</i> so either you trust it all having read it, or you\'re already screwed.<P>';
-	print 'If it\'s a major issue for you, please feel free to complain. It\'s mainly laziness as I said, and there could be a fallback (not so smooth) mode for non-javascript browsers if it was seen to be worthwhile (I would take a bit of convincing, because I don\'t see a benefit, personally).</div>';
+	$errormessage = '';
 
-	$errormessage = "";
-
-	if ($configerror!='') {
-		$errormessage .= $configerror.'<p>';
+	if ($configerror != '') {
+		$errormessage .= $configerror . '<p>';
 	}
 
-	if (! $cacti_found && !$ignore_cacti) {
-		$errormessage .= '$cacti_base is not set correctly. Cacti integration will be disabled in the editor.';
+	html_start_box(__('Welcome to the PHP Weathermap %s Editor', $WEATHERMAP_VERSION, 'weathermap'), '100%', '', '3', 'center', '');
+	print '<tr>';
+	print '<td>';
+	print '<div><b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however.</div>';
+	print '</td>';
+	print '</tr>';
+	html_end_box();
 
-		if ($config_loaded != 1) {
-			$errormessage .= " You might need to copy editor-config.php-dist to editor-config.php and edit it.";
-		}
-	}
-
-	if ($errormessage != '') {
-		print '<div class="alert" id="nocacti">'.htmlspecialchars($errormessage).'</div>';
-	}
-
-	print '<div id="withjs">';
-	print '<div id="dlgStart" class="dlgProperties" ><div class="dlgTitlebar">Welcome</div><div class="dlgBody">';
-	print 'Welcome to the PHP Weathermap '.$WEATHERMAP_VERSION.' editor.<p>';
-	print '<div style="border: 3px dashed red; background: #055; padding: 5px; font-size: 90%;"><b>NOTE:</b> This editor is not finished! There are many features of ';
-	print 'Weathermap that you will be missing out on if you choose to use the editor only.';
-	print 'These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however.</div><p>';
-
+	print '<tr>';
 	print 'Do you want to:<p>';
 	print 'Create A New Map:<br>';
 	print '<form method="GET">';
@@ -278,29 +262,29 @@ function show_editor_startpage() {
 
 	if ($errorstring == '') {
 		foreach ($titles as $file=>$title) {
-			$nicefile = htmlspecialchars($file);
+			$nicefile = html_escape($file);
 			print "<option value=\"$nicefile\">$nicefile</option>\n";
 		}
 	} else {
-		print '<option value="">'.htmlspecialchars($errorstring).'</option>';
+		print '<option value="">'.html_escape($errorstring).'</option>';
 	}
 
 	print '</select>';
 	print '<input type="submit" value="Create Copy">';
 	print '</form>';
 	print 'OR<br />';
-	print 'Open An Existing Map (looking in ' . htmlspecialchars($mapdir) . '):<ul class="filelist">';
+	print 'Open An Existing Map (looking in ' . html_escape($mapdir) . '):<ul class="filelist">';
 
 	if ($errorstring == '') {
 		foreach ($titles as $file=>$title) {
 			# $title = $titles[$file];
 			$note = $notes[$file];
-			$nicefile = htmlspecialchars($file);
-			$nicetitle = htmlspecialchars($title);
+			$nicefile = html_escape($file);
+			$nicetitle = html_escape($title);
 			print "<li>$note<a href=\"?mapname=$nicefile&plug=$fromplug\">$nicefile</a> - <span class=\"comment\">$nicetitle</span></li>\n";
 		}
 	} else {
-		print '<li>'.htmlspecialchars($errorstring).'</li>';
+		print '<li>'.html_escape($errorstring).'</li>';
 	}
 
 	print "</ul>";
@@ -421,13 +405,13 @@ function get_imagelist($imagedir) {
 	$imagelist = array();
 
 	if (is_dir($imagedir)) {
-		$n=0;
-		$dh=opendir($imagedir);
+		$n  = 0;
+		$dh = opendir($imagedir);
 
 		if ($dh) {
 			while ($file=readdir($dh)) {
-				$realfile=$imagedir . DIRECTORY_SEPARATOR . $file;
-				$uri = $imagedir . "/" . $file;
+				$realfile = $imagedir . '/' . $file;
+				$uri      = $imagedir . '/' . $file;
 
 				if (is_readable($realfile) && ( preg_match('/\.(gif|jpg|png)$/i',$file) )) {
 					$imagelist[] = $uri;

@@ -458,8 +458,8 @@ function weathermap_config_arrays() {
 function weathermap_tree_item_render($leaf) {
 	global $colors;
 
-	$outdir  = dirname( __FILE__ ) . '/output/';
-	$confdir = dirname( __FILE__ ) . '/configs/';
+	$outdir  = __DIR__ . '/output/';
+	$confdir = __DIR__ . '/configs/';
 
 	$map = db_fetch_row_prepared('SELECT weathermap_maps.*
 		FROM weathermap_auth, weathermap_maps

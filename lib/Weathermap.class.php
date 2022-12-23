@@ -479,9 +479,9 @@ class WeatherMap extends WeatherMapBase {
 			$this->fonts[$i]->size=0;
 		}
 
-		$this->LoadPlugins('data', 'lib' . DIRECTORY_SEPARATOR . 'datasources');
-		$this->LoadPlugins('pre', 'lib' . DIRECTORY_SEPARATOR . 'pre');
-		$this->LoadPlugins('post', 'lib' . DIRECTORY_SEPARATOR . 'post');
+		$this->LoadPlugins('data', 'lib/datasources');
+		$this->LoadPlugins('pre',  'lib/pre');
+		$this->LoadPlugins('post', 'lib/post');
 
 		wm_debug("WeatherMap class Reset() complete");
 	}
@@ -738,11 +738,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
-	function LoadPlugins($type="data", $dir="lib/datasources") {
+	function LoadPlugins($type = 'data', $dir = 'lib/datasources') {
 		wm_debug("Beginning to load $type plugins from $dir");
 
-		if ( ! file_exists($dir)) {
-			$dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . $dir;
+		if (!file_exists($dir)) {
+			$dir = __DIR__ . '/' . $dir;
 
 			wm_debug("Relative path didn't exist. Trying $dir");
 		}
@@ -752,14 +752,17 @@ class WeatherMap extends WeatherMapBase {
 
 		if (!$dh) {
 			// try to find it with the script, if the relative path fails
-			$srcdir = substr($_SERVER['argv'][0], 0, strrpos($_SERVER['argv'][0], DIRECTORY_SEPARATOR));
-			$dh = opendir($srcdir.DIRECTORY_SEPARATOR.$dir);
-			if ($dh) $dir = $srcdir.DIRECTORY_SEPARATOR.$dir;
+			$srcdir = substr($_SERVER['argv'][0], 0, strrpos($_SERVER['argv'][0], '/'));
+
+			$dh = opendir($srcdir . '/' . $dir);
+			if ($dh) {
+				$dir = $srcdir . '/' . $dir;
+			}
 		}
 
 		if ($dh) {
 			while ($file=readdir($dh)) {
-				$realfile = $dir . DIRECTORY_SEPARATOR . $file;
+				$realfile = $dir . '/' . $file;
 
 				if ( is_file($realfile) && preg_match( '/\.php$/', $realfile ) ) {
 					wm_debug("Loading $type Plugin class from $file");
@@ -3429,9 +3432,9 @@ class WeatherMap extends WeatherMapBase {
 			}
 
 			if ($this->context == 'editor2') {
-				$cachefile = $this->cachefolder.DIRECTORY_SEPARATOR.dechex(crc32($this->configfile))."_bg.".$this->cachefile_version.".png";
+				$cachefile = $this->cachefolder . '/' . dechex(crc32($this->configfile)) . '_bg.' . $this->cachefile_version . '.png';
 				imagepng($image, $cachefile);
-				$cacheuri = $this->cachefolder.'/'.dechex(crc32($this->configfile))."_bg.".$this->cachefile_version.".png";
+				$cacheuri  = $this->cachefolder . '/' . dechex(crc32($this->configfile)) . '_bg.' . $this->cachefile_version . '.png';
 				$this->mapcache = $cacheuri;
 			}
 
@@ -3851,7 +3854,7 @@ class WeatherMap extends WeatherMapBase {
 
 		if ($dh) {
 			while ($file=readdir($dh)) {
-				$realfile = $cachefolder . DIRECTORY_SEPARATOR . $file;
+				$realfile = $cachefolder . '/' . $file;
 
 				if (is_file($realfile) && ( preg_match('/^'.$cacheprefix.'/',$file))) {
 					wm_debug("$realfile");
@@ -3868,23 +3871,23 @@ class WeatherMap extends WeatherMapBase {
 
 			foreach ($this->nodes as $node) {
 				if (isset($node->image)) {
-					$nodefile = $cacheprefix."_".dechex(crc32($node->name)).".png";
+					$nodefile = $cacheprefix . '_' . dechex(crc32($node->name)) . '.png';
 					$this->nodes[$node->name]->cachefile = $nodefile;
-					imagepng($node->image,$cachefolder.DIRECTORY_SEPARATOR.$nodefile);
+					imagepng($node->image, $cachefolder . '/' . $nodefile);
 				}
 			}
 
 			foreach ($this->keyimage as $key=>$image) {
-				$scalefile = $cacheprefix."_scale_".dechex(crc32($key)).".png";
+				$scalefile = $cacheprefix . '_scale_' . dechex(crc32($key)) . '.png';
 				$this->keycache[$key] = $scalefile;
-				imagepng($image,$cachefolder.DIRECTORY_SEPARATOR.$scalefile);
+				imagepng($image, $cachefolder . '/' . $scalefile);
 			}
 
 			$json = "";
-			$fd = fopen($cachefolder.DIRECTORY_SEPARATOR.$cacheprefix."_map.json","w");
+			$fd = fopen($cachefolder . '/' . $cacheprefix . '_map.json', 'w');
 
 			foreach (array_keys($this->inherit_fieldlist)as $fld) {
-				$json .= js_escape($fld).": ";
+				$json .= js_escape($fld) . ': ';
 				$json .= js_escape($this->$fld);
 				$json .= ",\n";
 			}
@@ -3894,13 +3897,13 @@ class WeatherMap extends WeatherMapBase {
 			fclose($fd);
 
 			$json = "";
-			$fd = fopen($cachefolder.DIRECTORY_SEPARATOR.$cacheprefix."_tree.json","w");
+			$fd = fopen($cachefolder . '/' . $cacheprefix . '_tree.json', 'w');
 			$id = 10;	// first ID for user-supplied thing
 
 			$json .= "{ id: 1, text: 'SCALEs'\n, children: [\n";
 
 			foreach ($this->colours as $scalename=>$colours) {
-				$json .= "{ id: " . $id++ . ", text:" . js_escape($scalename) . ", leaf: true }, \n";
+				$json .= '{ id: ' . $id++ . ", text:" . js_escape($scalename) . ", leaf: true }, \n";
 			}
 
 			$json = rtrim($json,", \n");
@@ -3949,9 +3952,9 @@ class WeatherMap extends WeatherMapBase {
 			fputs($fd,"[". $json . "]");
 			fclose($fd);
 
-			$fd = fopen($cachefolder.DIRECTORY_SEPARATOR.$cacheprefix."_nodes.json","w");
+			$fd = fopen($cachefolder . '/' . $cacheprefix . '_nodes.json', 'w');
 
-			$json = "";
+			$json = '';
 
 //			$json = $this->defaultnode->asJSON(true);
 
@@ -3964,7 +3967,7 @@ class WeatherMap extends WeatherMapBase {
 			fputs($fd,$json);
 			fclose($fd);
 
-			$fd = fopen($cachefolder.DIRECTORY_SEPARATOR.$cacheprefix."_nodes_lite.json","w");
+			$fd = fopen($cachefolder . '/' . $cacheprefix . '_nodes_lite.json', 'w');
 
 			$json = "";
 
@@ -3979,7 +3982,7 @@ class WeatherMap extends WeatherMapBase {
 			fputs($fd,$json);
 			fclose($fd);
 
-			$fd = fopen($cachefolder.DIRECTORY_SEPARATOR.$cacheprefix."_links.json","w");
+			$fd = fopen($cachefolder . '/' . $cacheprefix . '_links.json', 'w');
 
 			$json = "";
 
@@ -3994,7 +3997,7 @@ class WeatherMap extends WeatherMapBase {
 			fputs($fd,$json);
 			fclose($fd);
 
-			$fd = fopen($cachefolder.DIRECTORY_SEPARATOR.$cacheprefix."_links_lite.json","w");
+			$fd = fopen($cachefolder . '/' . $cacheprefix . '_links_lite.json', 'w');
 
 			$json = "";
 
@@ -4009,18 +4012,18 @@ class WeatherMap extends WeatherMapBase {
 			fputs($fd,$json);
 			fclose($fd);
 
-			$fd = fopen($cachefolder.DIRECTORY_SEPARATOR.$cacheprefix."_imaphtml.json","w");
+			$fd = fopen($cachefolder . '/' . $cacheprefix . '_imaphtml.json', 'w');
 
-			$json = $this->imap->subHTML("LINK:");
+			$json = $this->imap->subHTML('LINK:');
 
 			fputs($fd,$json);
 			fclose($fd);
 
-			$fd = fopen($cachefolder.DIRECTORY_SEPARATOR.$cacheprefix."_imap.json","w");
+			$fd = fopen($cachefolder . '/' . $cacheprefix . '_imap.json', 'w');
 
 			$json = '';
 
-			$nodejson = trim($this->imap->subJSON("NODE:"));
+			$nodejson = trim($this->imap->subJSON('NODE:'));
 
 			if ($nodejson != '') {
 				$json .= $nodejson;
@@ -4029,7 +4032,7 @@ class WeatherMap extends WeatherMapBase {
 				$json .= ",\n";
 			}
 
-			$json .= $this->imap->subJSON("LINK:");
+			$json .= $this->imap->subJSON('LINK:');
 
 			fputs($fd,$json);
 			fclose($fd);
@@ -4038,12 +4041,12 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
-	function MakeTemplateTree( &$tree_list, $startpoint="DEFAULT") {
+	function MakeTemplateTree(&$tree_list, $startpoint = 'DEFAULT') {
 		global $weathermap_lazycounter;
 
 		$output = "";
 		foreach ($tree_list[$startpoint] as $subnode) {
-			$output .= "{ id: " . $weathermap_lazycounter++ . ", text: " . js_escape($subnode);
+			$output .= '{ id: ' . $weathermap_lazycounter++ . ', text: ' . js_escape($subnode);
 
 			if ( isset($tree_list[$subnode])) {
 				$output .= ", children: [ \n";
@@ -4060,14 +4063,14 @@ class WeatherMap extends WeatherMapBase {
 		return($output);
 	}
 
-	function DumpStats($filename="") {
+	function DumpStats($filename = '') {
 		$report = "Feature Statistics:\n\n";
 
 		foreach ($this->usage_stats as $key=>$val) {
 			$report .= sprintf("%70s => %d\n",$key,$val);
 		}
 
-		if ($filename == "") {
+		if ($filename == '') {
 			print $report;
 		}
 	}

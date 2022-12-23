@@ -46,8 +46,6 @@ $weathermap_confdir = realpath(__DIR__ . '/configs');
 include_once(__DIR__ . '/lib/Weathermap.class.php');
 include_once(__DIR__ . '/lib/compat.php');
 
-$i_understand_file_permissions_and_how_to_fix_them = false;
-
 set_default_action();
 
 switch ($action) {
@@ -350,8 +348,8 @@ switch ($action) {
 
 		break;
 	case 'rebuildnow2':
-		include_once(__DIR__ . DIRECTORY_SEPARATOR . 'Weathermap.class.php');
-		include_once(__DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'poller-common.php');
+		include_once(__DIR__ . '/Weathermap.class.php');
+		include_once(__DIR__ . '/lib/poller-common.php');
 
 		top_header();
 
@@ -629,35 +627,15 @@ function get_map_records(&$total_rows, &$rows) {
 }
 
 function maplist() {
-	global $colors, $i_understand_file_permissions_and_how_to_fix_them, $config;
+	global $colors;
 
 	$last_started     = read_config_option('weathermap_last_started_file', true);
 	$last_finished    = read_config_option('weathermap_last_finished_file', true);
 	$last_start_time  = intval(read_config_option('weathermap_last_start_time', true));
 	$last_finish_time = intval(read_config_option('weathermap_last_finish_time', true));
 	$poller_interval  = intval(read_config_option('poller_interval'));
+	$boost_enabled    = read_config_option('boost_rrd_update_enable', 'off');
 
-	if (!wm_module_checks()) {
-		print '<div align="center" class="wm_warning"><p>';
-
-		print '<b>' . __('Required PHP extensions are not present in your mod_php/ISAPI PHP module. Please check your PHP setup to ensure you have the GD extension installed and enabled.', 'weathermap') . '</b><p>';
-
-		print __('If you find that the weathermap tool itself is working, from the command-line or Cacti poller, then it is possible that you have two different PHP installations. The Editor uses the same PHP that webpages on your server use, but the main weathermap tool uses the command-line PHP interpreter.', 'weathermap') . '<p>';
-
-		print '<p>' . __('You should also run %s Dependency Check %s to help make sure that there are not problems', '<a href="check.php">', '</a>', 'weathermap') . '</p><hr/>';
-
-
-		print '</p></div>';
-		exit();
-	}
-
-	if (!db_table_exists('weathermap_maps')) {
-		print '<div align="center" class="wm_warning"><p>';
-		print __('The weathermap_maps table is missing completely from the database. Something went wrong with the installation process.', 'weathermap');
-		print '</p></div>';
-	}
-
-	$boost_enabled = read_config_option('boost_rrd_update_enable', 'off');
 	$has_global_poller_output = false;
 
 	if ($boost_enabled == 'on') {
@@ -739,9 +717,9 @@ function maplist() {
 
 	$maps = get_map_records($total_rows, $rows);
 
-	$nav = html_nav_bar('weathermap-cacti-plugin-editor.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 5, __('Maps'), 'page', 'main');
+	$nav = html_nav_bar('weathermap-cacti-plugin-mgmt.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 5, __('Maps'), 'page', 'main');
 
-    form_start('weathermap-cacti-plugin-editor.php', 'chk');
+    form_start('weathermap-cacti-plugin-mgmt.php', 'chk');
 
     print $nav;
 
@@ -776,7 +754,7 @@ function maplist() {
 			form_alternate_row('line' . $map['id']);
 
 			print '<td>
-				<a class="pic" title="' . __esc('Click to start editor with this file', 'weathermap') . '"
+				<a target="_new" title="' . __esc('Click to start editor with this file', 'weathermap') . '"
 					href="' . html_escape('weathermap-cacti-plugin-editor.php?header=false&action=nothing&mapname=' . $map['configfile']) . '">' .
 					html_escape($map['configfile']) . '
 				</a>';
@@ -796,7 +774,7 @@ function maplist() {
 
 			print '<td>
 				<a class="pic" title="' . __esc('Click to change group', 'weathermap') . '"
-					href="' . html_escape('weathermap-cacti-plugin-editor.php?action=chgroup&id=' . $map['id']) . '">' .
+					href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=chgroup&id=' . $map['id']) . '">' .
 					html_escape($map['groupname']) .
 				'</a>
 			</td>';
@@ -804,14 +782,14 @@ function maplist() {
 			if ($map['active'] == 'on') {
 				print '<td class="wm_enabled">
 					<a class="pic" title="' . __esc('Click to Deactivate', 'weathermap') . '"
-						href="' . html_escape('?action=deactivate_map&id=' . $map['id']) . '">
+						href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=deactivate_map&id=' . $map['id']) . '">
 						<font color="green">Yes</font>
 					</a>
 				</td>';
 			} else {
 				print '<td class="wm_disabled">
 					<a class="pic" title="' . __esc('Click to Activate', 'weathermap') . '"
-						href="' . html_escape('weathermap-cacti-plugin-editor.php?action=activate_map&id=' . $map['id']) . '">
+						href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=activate_map&id=' . $map['id']) . '">
 						<font color="red">No</font>
 					</a>
 				</td>';
@@ -820,7 +798,7 @@ function maplist() {
 			print '<td>';
 
 			print "<a class='pic'
-				href='" . html_escape('weathermap-cacti-plugin-editor.php?action=map_settings&id=' . $map['id']) . "'>";
+				href='" . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $map['id']) . "'>";
 
 			$setting_count = db_fetch_cell_prepared("SELECT COUNT(*) FROM weathermap_settings WHERE mapid = ?", array($map['id']));
 
@@ -837,12 +815,12 @@ function maplist() {
 			print '<td>';
 
 			print '<a class="pic" title="' . __esc('Move Map Up', 'weathermap') . '"
-				href="' . html_escape('weathermap-cacti-plugin-editor.php?action=move_map_up&order=' . $map['sortorder'] . '&id=' . $map['id']) . '">
+				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_up&order=' . $map['sortorder'] . '&id=' . $map['id']) . '">
 				<i class="fa fa-caret-up moveArrow"></i>
 			</a>';
 
 			print '<a class="pic" title="' . __esc('Move Map Down', 'weathermap') . '"
-				href="' . html_escape('weathermap-cacti-plugin-editor.php?action=move_map_down&order=' . $map['sortorder'] . '&id=' . $map['id']) . '">
+				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_down&order=' . $map['sortorder'] . '&id=' . $map['id']) . '">
 				<i class="fa fa-caret-down moveArrow"></i>
 			</a>';
 
@@ -865,7 +843,7 @@ function maplist() {
 			}
 
 			print '<a class="pic" title="' . __esc('Click to edit permissions', 'weathermap') . '"
-				href="' . html_escape('weathermap-cacti-plugin-editor.php?action=perms_edit&id=' . $map['id'] . '&header=false') . '">';
+				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $map['id'] . '&header=false') . '">';
 
 			if (count($mapusers) == 0) {
 				print '(no users)';
@@ -979,13 +957,13 @@ function addmap_picker($show_all = false) {
 
 					print '<td>
 						<a title="' . __esc('Add the configuration file', 'weathermap') . '"
-							href="' . html_escape('weathermap-cacti-plugin-editor.php?action=addmap&file=' . $file) . '">Add
+							href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=addmap&file=' . $file) . '">Add
 						</a>
 					</td>';
 
 					print '<td>
 						<a title="' . __esc('View the configuration file in a new window', 'weathermap') . '" target="_blank"
-							href="' . html_escape('weathermap-cacti-plugin-editor.php?action=viewconfig&file=' . $file) . '">View
+							href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file) . '">View
 						</a>
 					</td>';
 
@@ -1020,11 +998,11 @@ function addmap_picker($show_all = false) {
 	html_end_box();
 
 	if ($skipped > 0) {
-		print '<p align=center>' . __('Some files are not shown because they have already been added. You can %s show these files too %s, if you need to.', '<a href="weathermap-cacti-plugin-editor.php?action=addmap_picker&show=all">', '</a>', 'weathermap') . '</p>';
+		print '<p align=center>' . __('Some files are not shown because they have already been added. You can %s show these files too %s, if you need to.', '<a href="weathermap-cacti-plugin-mgmt.php?action=addmap_picker&show=all">', '</a>', 'weathermap') . '</p>';
 	}
 
 	if ($show_all) {
-		print '<p align=center>' . __('Some files are shown even though they have already been added. You can %s hide those files too %s, if you need to.', '<a href="weathermap-cacti-plugin-editor.php?action=addmap_picker">', '</a>', 'weathermap') . '</p>';
+		print '<p align=center>' . __('Some files are shown even though they have already been added. You can %s hide those files too %s, if you need to.', '<a href="weathermap-cacti-plugin-mgmt.php?action=addmap_picker">', '</a>', 'weathermap') . '</p>';
 	}
 }
 
@@ -1081,7 +1059,7 @@ function add_config($file) {
 		// print "$file_dir != $weathermap_confdir";
 		print '<h3>' . __('Path mismatch', 'weathermap') . '</h3>';
 	} else {
-		$realfile = $weathermap_confdir . DIRECTORY_SEPARATOR . $file;
+		$realfile = $weathermap_confdir . '/' . $file;
 		$title    = wmap_get_title($realfile);
 
 		db_execute_prepared("INSERT INTO weathermap_maps
@@ -1222,7 +1200,7 @@ function perms_list($id) {
 		print '<td>' . html_escape($users[$user]) . '</td>';
 		print '<td class="right">
 			<a class="delete deleteMarker fa fa-times" title="' . __esc('Remove permissions for this user to see this map', 'weathermap') . '"
-				href="' . html_escape('weathermap-cacti-plugin-editor.php?action=perms_delete_user&mapid=' . $id . '&userid=' . $user) . '">
+				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=perms_delete_user&mapid=' . $id . '&userid=' . $user) . '">
 			</a>
 		</td>';
 
@@ -1324,7 +1302,7 @@ function weathermap_map_settings($id) {
 
 				print '<td class="right">
 					<a class="pic" title="' . __('Remove this definition from this map', 'weathermap') . '"
-						href="' . html_escape('weathermap-cacti-plugin-editor.php?action=map_settings_delete&mapid=' . $id . '&id=' . $setting['id']) . '">
+						href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings_delete&mapid=' . $id . '&id=' . $setting['id']) . '">
 						<i class="delete deleteMarker fa fa-times"></i>
 					</a>
 				</td>';
@@ -1345,11 +1323,11 @@ function weathermap_map_settings($id) {
 	print '<div align=center>';
 
 	if ($type == 'group') {
-		print '<a href="weathermap-cacti-plugin-editor.php?action=groupadmin">' . __('Back to Group Admin', 'weathermap') . '</a>';
+		print '<a href="weathermap-cacti-plugin-mgmt.php?action=groupadmin">' . __('Back to Group Admin', 'weathermap') . '</a>';
 	}
 
 	if ($type == 'global') {
-		print '<a href="weathermap-cacti-plugin-editor.php?action=">' . __('Back to Map Admin', 'weathermap') . '</a>';
+		print '<a href="weathermap-cacti-plugin-mgmt.php?action=">' . __('Back to Map Admin', 'weathermap') . '</a>';
 	}
 
 	print '</div>';
@@ -1553,7 +1531,7 @@ function weathermap_chgroup($id) {
 	print '</tr>';
 	print '<tr><td></td></tr>';
 
-	print '<tr><td><p>' . __('Or create a new group in the %s Group Management Script %s', '<a href="weathermap-cacti-plugin-editor.php?action=groupadmin">' , '</a>', 'weathermap') . '</p></td></tr>';
+	print '<tr><td><p>' . __('Or create a new group in the %s Group Management Script %s', '<a href="weathermap-cacti-plugin-mgmt.php?action=groupadmin">' , '</a>', 'weathermap') . '</p></td></tr>';
 
 	html_end_box();
 

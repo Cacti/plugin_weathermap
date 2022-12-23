@@ -40,10 +40,10 @@ include(__DIR__ . '/../../injclude/cli_check.php');
 
 $cacti_base = $config['base_path'];
 
-require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "setup.php");
-require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "lib" . DIRECTORY_SEPARATOR . "poller-common.php");
+require_once(__DIR__ . '/setup.php');
+require_once(__DIR__ . '/lib/poller-common.php');
 
 weathermap_setup_table();
 
-weathermap_run_maps(dirname(__FILE__) );
+weathermap_run_maps(__DIR__);
 
