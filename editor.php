@@ -1004,17 +1004,17 @@ if ($mapname == '') {
 			<input style="display:none" type="image" src="<?php print $imageurl; ?>" id="xycapture" />
 			<img src="<?php print $imageurl; ?>" id="existingdata" alt="Weathermap" usemap="#weathermap_imap" />
 			<div class="debug"><p><strong>Debug:</strong>
-				<a href="?<?php print ($fromplug==true ? 'plug=1&amp;' : ''); ?>action=retidy_all&amp;mapname=<?php echo  htmlspecialchars($mapname) ?>">Re-tidy ALL</a>
-				<a href="?<?php print ($fromplug==true ? 'plug=1&amp;' : ''); ?>action=retidy&amp;mapname=<?php echo  htmlspecialchars($mapname) ?>">Re-tidy</a>
-				<a href="?<?php print ($fromplug==true ? 'plug=1&amp;' : ''); ?>action=untidy&amp;mapname=<?php echo  htmlspecialchars($mapname) ?>">Un-tidy</a>
-				<a href="?<?php print ($fromplug==true ? 'plug=1&amp;' : ''); ?>action=nothing&amp;mapname=<?php echo  htmlspecialchars($mapname) ?>">Do Nothing</a>
+				<a href="?<?php print ($fromplug==true ? 'plug=1&amp;' : ''); ?>action=retidy_all&amp;mapname=<?php echo  html_escape($mapname) ?>">Re-tidy ALL</a>
+				<a href="?<?php print ($fromplug==true ? 'plug=1&amp;' : ''); ?>action=retidy&amp;mapname=<?php echo  html_escape($mapname) ?>">Re-tidy</a>
+				<a href="?<?php print ($fromplug==true ? 'plug=1&amp;' : ''); ?>action=untidy&amp;mapname=<?php echo  html_escape($mapname) ?>">Un-tidy</a>
+				<a href="?<?php print ($fromplug==true ? 'plug=1&amp;' : ''); ?>action=nothing&amp;mapname=<?php echo  html_escape($mapname) ?>">Do Nothing</a>
 				<span>
 					<label for="mapname">mapfile</label>
-					<input type="text" name="mapname" value="<?php print htmlspecialchars($mapname); ?>" />
+					<input type="text" name="mapname" value="<?php print html_escape($mapname); ?>" />
 				</span>
 				<span>
 					<label for="action">action</label>
-					<input type="text" id="action" name="action" value="<?php print htmlspecialchars($newaction); ?>" />
+					<input type="text" id="action" name="action" value="<?php print html_escape($newaction); ?>" />
 				</span>
 				<span>
 					<label for="param">param</label>
@@ -1022,14 +1022,14 @@ if ($mapname == '') {
 				</span>
 				<span>
 					<label for="param2">param2</label>
-					<input type="text" name="param2" id="param2" value="<?php print htmlspecialchars($param2); ?>" />
+					<input type="text" name="param2" id="param2" value="<?php print html_escape($param2); ?>" />
 				</span>
 				<span>
 					<label for="debug">debug</label>
 					<input id="debug" value="" name="debug" />
 				</span>
 				<a target="configwindow" href="?<?php print ($fromplug==true ? 'plug=1&amp;':''); ?>action=show_config&amp;mapname=<?php echo  urlencode($mapname) ?>">See config</a></p>
-				<pre><?php print  htmlspecialchars($log) ?></pre>
+				<pre><?php print  html_escape($log) ?></pre>
 			</div>
 			<?php
 			// we need to draw and throw away a map, to get the
@@ -1093,7 +1093,7 @@ if ($mapname == '') {
 									print '<option value="--AICON--">--ARTIFICIAL ICON--</option>';
 									foreach ($imlist as $im) {
 										print "<option ";
-										print "value=\"".htmlspecialchars($im)."\">".htmlspecialchars($im)."</option>\n";
+										print "value=\"".html_escape($im)."\">".html_escape($im)."</option>\n";
 									}
 								}
 								?>
@@ -1225,38 +1225,38 @@ if ($mapname == '') {
 				<table>
 					<tr>
 						<th>Map Title</th>
-						<td><input id="map_title" name="map_title" size="25" type="text" value="<?php print  htmlspecialchars($map->title) ?>"/></td>
+						<td><input id="map_title" name="map_title" size="25" type="text" value="<?php print  html_escape($map->title) ?>"/></td>
 					</tr>
 					<tr>
 						<th>Legend Text</th>
-						<td><input name="map_legend" size="25" type="text" value="<?php print  htmlspecialchars($map->keytext['DEFAULT']) ?>" /></td>
+						<td><input name="map_legend" size="25" type="text" value="<?php print  html_escape($map->keytext['DEFAULT']) ?>" /></td>
 					</tr>
 					<tr>
 						<th>Timestamp Text</th>
-						<td><input name="map_stamp" size="25" type="text" value="<?php print  htmlspecialchars($map->stamptext) ?>" /></td>
+						<td><input name="map_stamp" size="25" type="text" value="<?php print  html_escape($map->stamptext) ?>" /></td>
 					</tr>
 					<tr>
 						<th>Default Link Width</th>
-						<td><input name="map_linkdefaultwidth" size="6" type="text" value="<?php print  htmlspecialchars($map->links['DEFAULT']->width) ?>" /> pixels</td>
+						<td><input name="map_linkdefaultwidth" size="6" type="text" value="<?php print  html_escape($map->links['DEFAULT']->width) ?>" /> pixels</td>
 					</tr>
 					<tr>
 						<th>Default Link Bandwidth</th>
-						<td><input name="map_linkdefaultbwin" size="6" type="text" value="<?php print  htmlspecialchars($map->links['DEFAULT']->max_bandwidth_in_cfg) ?>" /> bit/sec in, <input name="map_linkdefaultbwout" size="6" type="text" value="<?php echo  htmlspecialchars($map->links['DEFAULT']->max_bandwidth_out_cfg) ?>" /> bit/sec out</td>
+						<td><input name="map_linkdefaultbwin" size="6" type="text" value="<?php print  html_escape($map->links['DEFAULT']->max_bandwidth_in_cfg) ?>" /> bit/sec in, <input name="map_linkdefaultbwout" size="6" type="text" value="<?php echo  html_escape($map->links['DEFAULT']->max_bandwidth_out_cfg) ?>" /> bit/sec out</td>
 					</tr>
 					<tr>
 						<th>Map Size</th>
 						<td>
-							<input name="map_width" size="5" type="text"  value="<?php print  htmlspecialchars($map->width) ?>" /> x
-							<input name="map_height" size="5" type="text"  value="<?php print  htmlspecialchars($map->height) ?>" /> pixels
+							<input name="map_width" size="5" type="text"  value="<?php print  html_escape($map->width) ?>" /> x
+							<input name="map_height" size="5" type="text"  value="<?php print  html_escape($map->height) ?>" /> pixels
 						</td>
 					</tr>
 					<tr>
 						<th>Output Image Filename</th>
-						<td><input name="map_pngfile" type="text"  value="<?php print  htmlspecialchars($map->imageoutputfile) ?>" /></td>
+						<td><input name="map_pngfile" type="text"  value="<?php print  html_escape($map->imageoutputfile) ?>" /></td>
 					</tr>
 					<tr>
 						<th>Output HTML Filename</th>
-						<td><input name="map_htmlfile" type="text" value="<?php print  htmlspecialchars($map->htmloutputfile) ?>" /></td>
+						<td><input name="map_htmlfile" type="text" value="<?php print  html_escape($map->htmloutputfile) ?>" /></td>
 					</tr>
 					<tr>
 						<th>Background Image Filename</th>
@@ -1275,7 +1275,7 @@ if ($mapname == '') {
 											print " selected ";
 										}
 
-										print "value=\"".htmlspecialchars($im)."\">".htmlspecialchars($im)."</option>\n";
+										print "value=\"".html_escape($im)."\">".html_escape($im)."</option>\n";
 									}
 								}
 								?>

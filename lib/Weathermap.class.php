@@ -3623,7 +3623,7 @@ class WeatherMap extends WeatherMapBase {
 							}
 
 							$note = $this->ProcessString($myobj->notestext[$dir],$myobj);
-							$note = htmlspecialchars($note, ENT_NOQUOTES);
+							$note = html_escape($note, ENT_NOQUOTES);
 							$note = str_replace("'", "\\&apos;", $note);
 							$note = str_replace('"', "&quot;", $note);
 
