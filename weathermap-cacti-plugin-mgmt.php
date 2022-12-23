@@ -46,6 +46,16 @@ $weathermap_confdir = realpath(__DIR__ . '/configs');
 include_once(__DIR__ . '/lib/Weathermap.class.php');
 include_once(__DIR__ . '/lib/compat.php');
 
+$actions = array(
+	'1' => __('Delete', 'weathermap'),
+	'2' => __('Duplicate', 'weathermap'),
+	'3' => __('Disable', 'weathermap'),
+	'4' => __('Enable', 'weathermap'),
+	'5' => __('Change Permissions', 'weathermap'),
+	'6' => __('Change Group', 'weathermap'),
+	'7' => __('Rebuild Now', 'weathermap')
+);
+
 set_default_action();
 
 switch ($action) {
@@ -338,24 +348,16 @@ switch ($action) {
 
 		break;
 	case 'rebuildnow':
-		top_header();
-
-		print '<p>' . __('It is recommended that you don\'t use this feature, unless you understand and accept the problems it may cause.', 'weathermap') . '</p>';
-		print '<h4><a href="weathermap-cacti-plugin-mgmt.php?action=rebuildnow2">' . __('Yes', 'weathermap') . '</a></h4>';
-		print '<h1><a href="weathermap-cacti-plugin-mgmt.php">' . __('No', 'weathermap'). '</a></h1>';
-
-		bottom_footer();
-
-		break;
 	case 'rebuildnow2':
 		include_once(__DIR__ . '/Weathermap.class.php');
 		include_once(__DIR__ . '/lib/poller-common.php');
 
-		top_header();
-
 		weathermap_run_maps(__DIR__);
 
-		bottom_footer();
+		raise_message('rebuild_all', __('All Maps have been Rebuilt!', 'weathermap'), MESSAGE_LEVEL_INFO);
+
+		header('Location: ' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?header=false');
+		exit;
 
 		break;
 	default:
@@ -627,7 +629,7 @@ function get_map_records(&$total_rows, &$rows) {
 }
 
 function maplist() {
-	global $colors;
+	global $actions;
 
 	$last_started     = read_config_option('weathermap_last_started_file', true);
 	$last_finished    = read_config_option('weathermap_last_finished_file', true);
@@ -726,13 +728,31 @@ function maplist() {
     html_start_box('', '100%', '', '3', 'center', '');
 
 	$display_text = array(
-		__('Config File', 'weathermap'),
-		__('Title', 'weathermap'),
-		__('Group', 'weathermap'),
-		__('Active', 'weathermap'),
-		__('Settings', 'weathermap'),
-		__('Sort Order', 'weathermap'),
-		__('Accessible By', 'weathermap')
+		array(
+			'display' => __('Config File', 'weathermap'),
+		),
+		array(
+			'display' => __('Title', 'weathermap'),
+		),
+		array(
+			'display' => __('Group', 'weathermap'),
+		),
+		array(
+			'display' => __('Enabled', 'weathermap'),
+		),
+		array(
+			'display' => __('Settings', 'weathermap'),
+		),
+		array(
+			'display' => __('Sort Order', 'weathermap'),
+		),
+		array(
+			'display' => __('Accessible By', 'weathermap'),
+		),
+		array(
+			'display' => __('Last Runtime', 'weathermap'),
+			'align' => 'right'
+		)
 	);
 
 	html_header_checkbox($display_text, false);
@@ -855,6 +875,8 @@ function maplist() {
 
 			print '</td>';
 
+			form_selectable_cell('0.00', $map['id'], '', 'right');
+
 			form_checkbox_cell($map['titlecache'], $map['id']);
 
 			form_end_row();
@@ -867,13 +889,9 @@ function maplist() {
 
 	html_end_box();
 
-    html_start_box('', '100%', '', '3', 'center', '');
+    draw_actions_dropdown($actions);
 
-	if ($had_warnings > 0) {
-		print '<div align="center" class="wm_warning">' . __('One or more of your maps had warnings last time they ran. You can try to find these in your Cacti log file or by clicking on the warning sign next to that map.  The number of maps with issues was %s.', $bad_wranings, 'weathermap') . '</div>';
-	}
-
-	html_end_box();
+    form_end();
 }
 
 function addmap_picker($show_all = false) {
@@ -1236,18 +1254,18 @@ function weathermap_map_settings($id) {
 
 	if ($id == 0) {
 		$title       = __('Additional settings for ALL maps', 'weathermap');
-		$nonemsg     = __('There are no settings for all maps yet. You can add some by clicking Add up in the top-right, or choose a single map from the management screen to add settings for that map.', 'weathermap');
+		$nonemsg     = __('There are no settings for all maps yet. You can add some by pressing the plus sign \'+\' in the top-right, or choose a single map from the management screen to add settings for that map.', 'weathermap');
 
 		$type        = 'global';
 
 		$settingrows = db_fetch_assoc('SELECT * FROM weathermap_settings WHERE mapid = 0 ANS groupid = 0');
 	} elseif ($id < 0) {
-		$group_id    = $id;
+		$group_id    = -$id;
 
 		$groupname   = db_fetch_cell_prepared('SELECT name FROM weathermap_groups WHERE id = ?', array($group_id));
 
-		$title       = __('Edit per-map settings for Group %s: %s', $group_id, $groupname, 'weathermap');
-		$nonemsg     = __('There are no per-group settings for this group yet. You can add some by clicking Add up in the top-right.', 'weathermap');
+		$title       = __('Edit per Map settings for Group %s: %s', $group_id, $groupname, 'weathermap');
+		$nonemsg     = __('There are no per Group settings for this group yet. You can add some by pressing the plus sign \'+\' in the top-right.', 'weathermap');
 
 		$type        = 'group';
 
@@ -1257,8 +1275,8 @@ function weathermap_map_settings($id) {
 
 		$groupname   = db_fetch_cell_prepared('SELECT name FROM weathermap_groups WHERE id = ?' . array($map['group_id']));
 
-		$title       = __('Edit per-map settings for Weathermap %d: %s', $id, $map['titlecache'], 'weathermap');
-		$nonemsg     = __('There are no per-map settings for this map yet. You can add some by clicking Add up in the top-right.', 'weathermap');
+		$title       = __('Edit per Map settings for Weathermap %d: %s', $id, $map['titlecache'], 'weathermap');
+		$nonemsg     = __('There are no per Map settings for this map yet. You can add some by pressing the plus sign \'+\' in the top-right.', 'weathermap');
 
 		$type        = 'map';
 
@@ -1268,20 +1286,20 @@ function weathermap_map_settings($id) {
 	if ($type == 'group') {
 		print '<p>' . __('All maps in this group are also affected by the following GLOBAL settings (group overrides global, map overrides group, but BOTH override SET commands within the map config file):', 'weathermap') . '</p>';
 
-		weathermap_readonly_settings(0, __('Global Settings', 'weathermap'));
+		weathermap_readonly_settings(0, __('Global Settings [ All Maps ]', 'weathermap'));
 	}
 
 	if ($type == 'map') {
 		print '<p>' . __('This map is also affected by the following GLOBAL and GROUP settings (group overrides global, map overrides group, but BOTH override SET commands within the map config file):', 'weathermap') . '</p>';
 
-		weathermap_readonly_settings(0, __('Global Settings', 'weathermap'));
+		weathermap_readonly_settings(0, __('Global Settings [ All Maps ]', 'weathermap'));
 
-		weathermap_readonly_settings(-$map['group_id'], __esc('Group Settings (%s)', $groupname, 'weathermap'));
+		weathermap_readonly_settings($map['group_id'], __esc('Group Settings [ %s ]', ($groupname != '' ? $groupname:__('No Group', 'weathermap')), 'weathermap'));
 	}
 
 	html_start_box($title, '100%', '', '2', 'center', 'weathermap-cacti-plugin-mgmt.php?action=map_settings_form&mapid=' . intval($id));
 
-	html_header(array('', __('Name', 'weathermap'), __('Value', 'weathermap'), ''));
+	html_header(array(__('Action', 'weathermap'), __('Name', 'weathermap'), __('Value', 'weathermap')), 2);
 
 	$n = 0;
 
@@ -1312,8 +1330,8 @@ function weathermap_map_settings($id) {
 				$n++;
 			}
 		} else {
-			print '<tr>';
-			print "<td colspan=2>$nonemsg</td>";
+			print '<tr class="even tableRow">';
+			print '<td colspan="4"><em>' . html_escape($nonemsg) . '</em></td>';
 			print '</tr>';
 		}
 	}
@@ -1327,14 +1345,14 @@ function weathermap_map_settings($id) {
 	}
 
 	if ($type == 'global') {
-		print '<a href="weathermap-cacti-plugin-mgmt.php?action=">' . __('Back to Map Admin', 'weathermap') . '</a>';
+		print '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=">' . __('Back to Map Admin', 'weathermap') . '</a>';
 	}
 
 	print '</div>';
 }
 
 function weathermap_readonly_settings($id, $title = 'Settings') {
-	global $colors, $config;
+	global $config;
 
 	if ($id == 0) {
 		$settings = db_fetch_assoc('SELECT *
@@ -1350,7 +1368,8 @@ function weathermap_readonly_settings($id, $title = 'Settings') {
 	}
 
 	html_start_box($title, '100%', '', '3', 'center', '');
-	html_header(array('', 'Name', 'Value', ''));
+
+	html_header(array(__('Name', 'weathermap'), __('Value', 'weathermap')));
 
 	$n = 0;
 
@@ -1358,10 +1377,10 @@ function weathermap_readonly_settings($id, $title = 'Settings') {
 		foreach ($settings as $setting) {
 			form_alternate_row();
 
-			print '<td></td>';
-			print '<td>' . html_escape($setting['optname']) . '</td><td>' . html_escape($setting['optvalue']) . '</td>';
-			print '<td></td>';
-			print '</tr>';
+			form_selectable_cell(html_escape($setting['optname']), $n);
+			form_selectable_cell(html_escape($setting['optvalue']), $n);
+
+			form_end_row();
 
 			$n++;
 		}
@@ -1369,7 +1388,8 @@ function weathermap_readonly_settings($id, $title = 'Settings') {
 		form_alternate_row();
 
 		print '<td colspan=4><em>' . __('No Settings Found', 'weathermap') . '</em></td>';
-		print '</tr>';
+
+		form_end_row();
 	}
 
 	html_end_box();
