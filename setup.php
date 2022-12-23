@@ -476,7 +476,7 @@ function weathermap_setup_table() {
 }
 
 function weathermap_config_arrays() {
-	global $user_auth_realms, $user_auth_realm_filenames, $menu;
+	global $menu;
 	global $tree_item_types, $tree_item_handlers;
 
 	plugin_weathermap_upgrade();
@@ -507,8 +507,9 @@ function weathermap_config_arrays() {
 	);
 
 	if (function_exists('auth_augment_roles')) {
-		auth_augment_roles(__('General Administration'), array('weathermap-cacti-plugin-editor.php', 'weathermap-cacti-plugin-mgmt.php', 'weathermap-cacti-plugin-mgmt-groups.php'));
-		auth_augment_roles(__('Normal User'), array('weathermap-cacti-plugin.php'));
+		auth_augment_roles_byname(__('General Administration'), 'Manage Weathermap');
+		auth_augment_roles_byname(__('General Administration'), 'Edit Weathermaps');
+		auth_augment_roles_byname(__('Normal User'), 'View Weathermaps');
     }
 }
 
