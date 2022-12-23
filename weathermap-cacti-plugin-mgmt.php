@@ -506,7 +506,7 @@ function wm_filter() {
 
 	$last_stats = read_config_option('weathermap_last_stats', true);
 
-	html_start_box(__('Weather Maps [ Last Completed Run: %s ]', $last_stats, 'weathermap'), '100%', '', '3', 'center', 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+	html_start_box(__('Weather Maps [ Run Details: %s ]', $last_stats, 'weathermap'), '100%', '', '3', 'center', 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
 	?>
 	<tr class='even'>
 		<td>
