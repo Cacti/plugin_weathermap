@@ -170,7 +170,7 @@ function weathermap_page_title($t) {
 		return($t);
 	}
 
-	return($t)
+	return($t);
 }
 
 
