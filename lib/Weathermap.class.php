@@ -511,14 +511,14 @@ class WeatherMap extends WeatherMapBase {
 			wm_warn("Using a non-existent special font ($fontnumber) - falling back to internal GD fonts [WMWARN03]");
 
 			if ($angle != 0) {
-				wm_warn("Angled text doesn't work with non-FreeType fonts [WMWARN02]");
+				wm_warn('Angled text doesn\'t work with non-FreeType fonts [WMWARN02]');
 			}
 
-			$fontnumber=5;
+			$fontnumber = 5;
 		}
 
 		if (($fontnumber > 0) && ($fontnumber < 6)) {
-			imagestring($image, $fontnumber, $x, $y - imagefontheight($fontnumber), $string, $colour);
+			imagestring($image, $fontnumber, $x, floor($y - imagefontheight($fontnumber)), $string, $colour);
 
 			if ($angle != 0) {
 				wm_warn("Angled text doesn't work with non-FreeType fonts [WMWARN02]");
@@ -537,7 +537,7 @@ class WeatherMap extends WeatherMapBase {
 				);
 
 				if ($angle != 0) {
-					wm_warn("Angled text doesn't work with non-FreeType fonts [WMWARN04]");
+					wm_warn('Angled text doesn\'t work with non-FreeType fonts [WMWARN04]');
 				}
 			}
 		}
@@ -4109,7 +4109,7 @@ class WeatherMap extends WeatherMapBase {
 		// ToDo - Why the return?
 		return 0;
 
-		$i  = 0;
+		$i = 0;
 
 		$fd = fopen($file, 'r');
 
@@ -4134,7 +4134,7 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	function SaveCoverage($file) {
-		$i=0;
+		$i = 0;
 
 		$fd = fopen($file, 'w+');
 

@@ -167,8 +167,10 @@ function weathermap_page_title($t) {
 			}
 		}
 
-		return ($t);
+		return($t);
 	}
+
+	return($t)
 }
 
 
@@ -325,8 +327,11 @@ function weathermap_setup_table() {
 			`thumb_height` int(11) NOT NULL default 0,
 			`schedule` varchar(32) NOT NULL default "*",
 			`archiving` set("on","off") NOT NULL default "off",
-			PRIMARY KEY  (id))
-			ENGINE=InnoDB
+			`duration` double NOT NULL default "0",
+			`last_runtime` int unsigned not null default "0",
+			PRIMARY KEY  (id),
+			UNIQUE KEY configfile(configfile))
+			ENGINE = InnoDB
 			ROW_FORMAT=COMPACT');
 
 		if (!db_column_exists('weathermap_maps', 'sortorder')) {
@@ -367,6 +372,18 @@ function weathermap_setup_table() {
 
 		if (!db_column_exists('weathermap_settings', 'groupid')) {
 			db_execute('ALTER TABLE `weathermap_settings` ADD COLUMN `groupid` INT NOT NULL DEFAULT "0" AFTER `mapid`');
+		}
+
+		if (!db_column_exists('weathermap_settings', 'duration')) {
+			db_execute('ALTER TABLE `weathermap_settings` ADD COLUMN `duration` double NOT NULL DEFAULT "0" AFTER `archiving`');
+		}
+
+		if (!db_column_exists('weathermap_settings', 'last_runtime')) {
+			db_execute('ALTER TABLE `weathermap_settings` ADD COLUMN `last_runtime` INT UNSIGNED NOT NULL DEFAULT "0" AFTER `duration`');
+		}
+
+		if (!db_index_exists('weathermap_settings', 'configfile')) {
+			db_execute('ALTER TABLE `weathermap_settings` ADD UNIQUE INDEX `configfile`(`configfile`)');
 		}
 
 		db_execute('UPDATE weathermap_maps SET `filehash` = LEFT(MD5(concat(id,configfile,rand())),20) WHERE `filehash` = ""');
@@ -668,63 +685,63 @@ function weathermap_draw_navigation_text($nav) {
 	);
 
 	$nav['weathermap-cacti-plugin.php:mrss'] = array(
-		'title'   => __('Weathermap', 'weathermap'),
+		'title'   => __('Weathermaps', 'weathermap'),
 		'mapping' => '',
 		'url'     => 'weathermap-cacti-plugin.php',
 		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin.php:viewimage'] = array(
-		'title'   => __('Weathermap', 'weathermap'),
+		'title'   => __('View Map Image', 'weathermap'),
 		'mapping' => '',
 		'url'     => 'weathermap-cacti-plugin.php',
 		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin.php:viewthumb'] = array(
-		'title'   => __('Weathermap', 'weathermap'),
+		'title'   => __('View Map Thumbnail', 'weathermap'),
 		'mapping' => '',
 		'url'     => 'weathermap-cacti-plugin.php',
 		'level'   => '0'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Weathermaps', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:addmap_picker'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
-		'mapping' => 'index.php:',
+		'title'   => __('Add Map', 'weathermap'),
+		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
-		'level'   => '1'
+		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:viewconfig'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
-		'mapping' => 'index.php:',
+		'title'   => __('View Configuration', 'weathermap'),
+		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:,weathermap-cacti-plugin-mgmt.php:addmap_picker',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
-		'level'   => '1'
+		'level'   => '3'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:addmap'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Add Map', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:editmap'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Edit Map', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:editor'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Weathermap Editor', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
@@ -732,13 +749,6 @@ function weathermap_draw_navigation_text($nav) {
 
 	$nav['weathermap-cacti-plugin-mgmt.php:perms_edit'] = array(
 		'title'   => __('Edit Permissions', 'weathermap'),
-		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
-		'url'     => '',
-		'level'   => '2'
-	);
-
-	$nav['weathermap-cacti-plugin-mgmt.php:addmap_picker'] = array(
-		'title'   => __('Add Map', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
 		'url'     => '',
 		'level'   => '2'
@@ -759,147 +769,140 @@ function weathermap_draw_navigation_text($nav) {
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:map_settings_delete'] = array(
-		'title'   => __('Map Settings', 'weathermap'),
+		'title'   => __('Map Settings Delete', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
 		'url'     => '',
 		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:map_settings_update'] = array(
-		'title'   => __('Map Settings', 'weathermap'),
+		'title'   => __('Map Settings Update', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
 		'url'     => '',
 		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:map_settings_add'] = array(
-		'title'   => __('Map Settings', 'weathermap'),
+		'title'   => __('Map Settings Add', 'weathermap'),
 		'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:',
 		'url'     => '',
 		'level'   => '2'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:perms_edit'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Permissions Edit', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:perms_add_user'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Add User', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:perms_delete_user'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Delete User', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:delete_map'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Delete Map', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:move_map_down'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Move Map Up', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:move_map_up'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Move Map Up', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:move_group_down'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Move Group Down', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:move_group_up'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Move Group Up', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:group_form'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Group Edit', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:group_update'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Group Update', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:activate_map'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Activate Map', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:deactivate_map'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Deactivate Map', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:rebuildnow'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
-		'mapping' => 'index.php:',
-		'url'     => 'weathermap-cacti-plugin-mgmt.php',
-		'level'   => '1'
-	);
-
-	$nav['weathermap-cacti-plugin-mgmt.php:rebuildnow2'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Rebuild Now', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:chgroup'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Change Group', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:chgroup_update'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Group Update', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:groupadmin'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Group Admin', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'
 	);
 
 	$nav['weathermap-cacti-plugin-mgmt.php:groupadmin_delete'] = array(
-		'title'   => __('Weathermap Management', 'weathermap'),
+		'title'   => __('Group Admin Delete', 'weathermap'),
 		'mapping' => 'index.php:',
 		'url'     => 'weathermap-cacti-plugin-mgmt.php',
 		'level'   => '1'

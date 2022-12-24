@@ -348,7 +348,6 @@ switch ($action) {
 
 		break;
 	case 'rebuildnow':
-	case 'rebuildnow2':
 		include_once(__DIR__ . '/Weathermap.class.php');
 		include_once(__DIR__ . '/lib/poller-common.php');
 
@@ -735,6 +734,9 @@ function maplist() {
 			'display' => __('Title', 'weathermap'),
 		),
 		array(
+			'display' => __('ID', 'weathermap'),
+		),
+		array(
 			'display' => __('Group', 'weathermap'),
 		),
 		array(
@@ -748,6 +750,10 @@ function maplist() {
 		),
 		array(
 			'display' => __('Accessible By', 'weathermap'),
+		),
+		array(
+			'display' => __('Last Duration', 'weathermap'),
+			'align' => 'right'
 		),
 		array(
 			'display' => __('Last Runtime', 'weathermap'),
@@ -773,80 +779,73 @@ function maplist() {
 		foreach ($maps as $map) {
 			form_alternate_row('line' . $map['id']);
 
-			print '<td>
-				<a target="_new" title="' . __esc('Click to start editor with this file', 'weathermap') . '"
-					href="' . html_escape('weathermap-cacti-plugin-editor.php?header=false&action=nothing&mapname=' . $map['configfile']) . '">' .
-					html_escape($map['configfile']) . '
-				</a>';
+			$output = '<a target="_new" title="' . __esc('Click to start editor with this file', 'weathermap') . '"
+				href="' . html_escape('weathermap-cacti-plugin-editor.php?header=false&action=nothing&mapname=' . $map['configfile']) . '">' .
+				html_escape($map['configfile']) . '
+			</a>';
 
 			if ($map['warncount'] > 0) {
 				$had_warnings++;
 
-				print '<a class="pic" title="' . __esc('Check cacti.log for this Map', 'weathermap') . '"
-					href="' . html_escape('../../utilities.php?tail_lines=500&message_type=2&action=view_logfile&filter=' . $map['configfile']) . '">
+				$output .= '<a class="pic" title="' . __esc('Check cacti.log for this Map', 'weathermap') . '"
+					href="' . html_escape('../../clog_user.php?tail_lines=500&message_type=2&action=view_logfile&filter=' . $map['configfile']) . '">
 					<i class="deviceRecovering fa fa-exclamation-triangle"></i>
 				</a>';
 			}
 
-			print '</td>';
+			form_selectable_cell($output, $map['id']);
+			form_selectable_cell(html_escape($map['titlecache']), $map['id']);
+			form_selectable_cell($map['id'], $map['id']);
 
-			print '<td>' . html_escape($map['titlecache']) . '</td>';
-
-			print '<td>
-				<a class="pic" title="' . __esc('Click to change group', 'weathermap') . '"
+			form_selectable_cell('<a class="pic" title="' . __esc('Click to change group', 'weathermap') . '"
 					href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=chgroup&id=' . $map['id']) . '">' .
 					html_escape($map['groupname']) .
-				'</a>
-			</td>';
+				'</a>', $map['id']);
 
 			if ($map['active'] == 'on') {
-				print '<td class="wm_enabled">
-					<a class="pic" title="' . __esc('Click to Deactivate', 'weathermap') . '"
-						href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=deactivate_map&id=' . $map['id']) . '">
-						<font color="green">Yes</font>
-					</a>
-				</td>';
+				$url = '<a class="pic deviceUp" title="' . __esc('Click to Deactivate', 'weathermap') . '"
+                        href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=deactivate_map&id=' . $map['id']) . '">' .
+                        __('Yes', 'weathermap') . '
+                    </a>';
+
+				form_selectable_cell($url, $map['id'], '', 'wm_enabled');
 			} else {
-				print '<td class="wm_disabled">
-					<a class="pic" title="' . __esc('Click to Activate', 'weathermap') . '"
-						href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=activate_map&id=' . $map['id']) . '">
-						<font color="red">No</font>
-					</a>
-				</td>';
+				$url = '<a class="pic deviceDown" title="' . __esc('Click to Activate', 'weathermap') . '"
+						href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=activate_map&id=' . $map['id']) . '">' .
+						__('No', 'weathermap') . '
+					</a>';
+
+				form_selectable_cell($url, $map['id'], '', 'wm_disabled');
 			}
 
-			print '<td>';
+			$url = '<a class="pic" href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $map['id']) . '">';
 
-			print "<a class='pic'
-				href='" . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $map['id']) . "'>";
-
-			$setting_count = db_fetch_cell_prepared("SELECT COUNT(*) FROM weathermap_settings WHERE mapid = ?", array($map['id']));
+			$setting_count = db_fetch_cell_prepared('SELECT COUNT(*)
+				FROM weathermap_settings
+				WHERE mapid = ?',
+				array($map['id']));
 
 			if ($setting_count > 0) {
-				print __('%d Specials', $setting_count, 'weathermap');
+				$url .= __('%d Specials', $setting_count, 'weathermap');
 			} else {
-				print __('Standard', 'weathermap');
+				$url .= __('Standard', 'weathermap');
 			}
 
-			print '</a>';
+			$url .= '</a>';
 
-			print '</td>';
+			form_selectable_cell($url, $map['id']);
 
-			print '<td>';
-
-			print '<a class="pic" title="' . __esc('Move Map Up', 'weathermap') . '"
+			$url  = '<a class="pic" title="' . __esc('Move Map Up', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_up&order=' . $map['sortorder'] . '&id=' . $map['id']) . '">
 				<i class="fa fa-caret-up moveArrow"></i>
 			</a>';
 
-			print '<a class="pic" title="' . __esc('Move Map Down', 'weathermap') . '"
+			$url .= '<a class="pic" title="' . __esc('Move Map Down', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_down&order=' . $map['sortorder'] . '&id=' . $map['id']) . '">
 				<i class="fa fa-caret-down moveArrow"></i>
 			</a>';
 
-			print '</td>';
-
-			print '<td>';
+			form_selectable_cell($url, $map['id']);
 
 			// Get the current users for this map
 			$userlist = db_fetch_assoc_prepared('SELECT *
@@ -862,20 +861,21 @@ function maplist() {
 				}
 			}
 
-			print '<a class="pic" title="' . __esc('Click to edit permissions', 'weathermap') . '"
+			$url = '<a class="pic" title="' . __esc('Click to edit permissions', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $map['id'] . '&header=false') . '">';
 
 			if (count($mapusers) == 0) {
-				print __('(no users)', 'weathermap');
+				$url .= __('(no users)', 'weathermap');
 			} else {
-				print join(', ', $mapusers);
+				$url .= join(', ', $mapusers);
 			}
 
-			print '</a>';
+			$url .= '</a>';
 
-			print '</td>';
+			form_selectable_cell($url, $map['id']);
 
-			form_selectable_cell('0.00', $map['id'], '', 'right');
+			form_selectable_cell(round($map['duration'], 2), $map['id'], '', 'right');
+			form_selectable_cell(date('m-d H:i:s', $map['last_runtime']), $map['id'], '', 'right');
 
 			form_checkbox_cell($map['titlecache'], $map['id']);
 
@@ -924,7 +924,7 @@ function addmap_picker($show_all = false) {
 
 			html_header(
 				array(
-					'',
+					__('Actions', 'weathermap'),
 					'',
 					__('Config File', 'weathermap'),
 					__('Title', 'weathermap'),
@@ -974,14 +974,15 @@ function addmap_picker($show_all = false) {
 					form_alternate_row();
 
 					print '<td>
-						<a title="' . __esc('Add the configuration file', 'weathermap') . '"
+						<a class="pic" title="' . __esc('Add the configuration file', 'weathermap') . '"
 							href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=addmap&file=' . $file) . '">Add
 						</a>
 					</td>';
 
 					print '<td>
-						<a title="' . __esc('View the configuration file in a new window', 'weathermap') . '" target="_blank"
-							href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file) . '">View
+						<a class="pic" title="' . __esc('View the configuration file in a new window', 'weathermap') . '"
+							href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file) . '">' .
+							__('View', 'weathermap') . '
 						</a>
 					</td>';
 

@@ -146,8 +146,8 @@ switch ($action) {
 	case 'liveview':
 		top_graph_header();
 
-		print "<div id=\"overDiv\" style=\"position:absolute; visibility:hidden; z-index:1000;\"></div>\n";
-		print "<script type=\"text/javascript\" src=\"overlib.js\"><!-- overLIB (c) Erik Bosrup --></script> \n";
+		print '<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>' . PHP_EOL;
+		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/overlib.js"><!-- overLIB (c) Erik Bosrup --></script>';
 
 		$id = -1;
 
@@ -287,14 +287,15 @@ switch ($action) {
 		if ($fullscreen == 1) {
 			print '<!DOCTYPE html>' . PHP_EOL;
 			print '<html><head>';
-			print '<LINK rel="stylesheet" type="text/css" media="screen" href="cacti-resources/weathermap.css">';
+			print '<link rel="stylesheet" type="text/css" media="screen" href="cacti-resources/weathermap.css"/>';
+			print '<script type="text/javascript" src="' . $config['url_path'] . 'include/js/jquery.js"></script>';
 			print '</head><body id="wm_fullscreen">';
 		} else {
 			top_graph_header();
 		}
 
 		print '<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>' . PHP_EOL;
-		print '<script type="text/javascript" src="overlib.js"><!-- overLIB (c) Erik Bosrup --></script>' . PHP_EOL;
+		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/overlib.js"><!-- overLIB (c) Erik Bosrup --></script> ';
 
 		$groupid = -1;
 
@@ -315,7 +316,7 @@ switch ($action) {
 		top_graph_header();
 
 		print '<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>' . PHP_EOL;
-		print '<script type="text/javascript" src="overlib.js"><!-- overLIB (c) Erik Bosrup --></script>' . PHP_EOL;
+		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/overlib.js"><!-- overLIB (c) Erik Bosrup --></script> ';
 
 		$id = -1;
 
@@ -340,7 +341,7 @@ switch ($action) {
 		top_graph_header();
 
 		print '<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>' . PHP_EOL;
-		print '<script type="text/javascript" src="overlib.js"><!-- overLIB (c) Erik Bosrup --></script>' . PHP_EOL;
+		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/overlib.js"><!-- overLIB (c) Erik Bosrup --></script> ';
 
 		$group_id = -1;
 
@@ -390,11 +391,11 @@ function weathermap_singleview($mapid) {
 
 	$map = db_fetch_row_prepared("SELECT wm.*
 		FROM weathermap_auth AS wa
-		INNE JOIN weathermap_maps AS wm
+		INNER JOIN weathermap_maps AS wm
 		ON wm.id = wa.mapid
 		WHERE active = 'on'
 		AND (userid = ? OR userid = 0)
-		AND weathermap_maps.id = ?
+		AND wm.id = ?
 		LIMIT 1",
 		array($userid, $mapid));
 
@@ -654,7 +655,7 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
                 <a id='cycle_next' href='#'>
 					<img src='<?php print $config['url_path']; ?>plugins/weathermap/cacti-resources/img/control_fastforward_blue.png' width='16' height='16'/>
 				</a>
-                <a id='cycle_fullscreen' href='<?php print $config['url_path']; ?>plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=1&group=<?php print $limit_to_group; ?>'>
+                <a target='_new' id='cycle_fullscreen' href='<?php print $config['url_path']; ?>plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=1&group=<?php print $limit_to_group; ?>'>
 					<img src='cacti-resources/img/arrow_out.png' width='16' height='16'/>
 				</a>
 				Showing <span id='wm_current_map'>1</span> of <span id='wm_total_map'>1</span>. Cycling all available maps<?php print $extra; ?>.

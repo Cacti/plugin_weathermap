@@ -2013,10 +2013,10 @@ function TestOutput_HTML($htmlfile, &$map) {
 	fwrite($fd, '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>');
 
 	if ($map->htmlstylesheet != '') {
-		fwrite($fd,'<link rel="stylesheet" type="text/css" href="'.$map->htmlstylesheet.'" />');
+		fwrite($fd, '<link rel="stylesheet" type="text/css" href="'.$map->htmlstylesheet.'" />');
 	}
 
-	fwrite($fd,'<meta http-equiv="refresh" content="300" /><title>' . $map->ProcessString($map->title, $map) . '</title></head><body>');
+	fwrite($fd, '<meta http-equiv="refresh" content="300" /><title>' . $map->ProcessString($map->title, $map) . '</title></head><body>');
 
 	if ($map->htmlstyle == "overlib") {
 		fwrite($fd, "<div id=\"overDiv\" style=\"position:absolute; visibility:hidden; z-index:1000;\"></div>\n");

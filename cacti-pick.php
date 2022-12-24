@@ -45,10 +45,13 @@ $ignore_cacti = false;
 
 $config['base_url'] = $cacti_url;
 
-include(__DIR__ . '/../../include/cli_check.php');
-include_once('editor-config.php');
+include(__DIR__ . '/../../include/global.php');
 
-$config['base_url'] = (isset($config['url_path'])? $config['url_path'] : $cacti_url);
+if (file_exists(__DIR__ . '/editor-config.php')) {
+	include_once(__DIR__ . '/editor-config.php');
+}
+
+$config['base_url'] = (isset($config['url_path']) ? $config['url_path'] : $cacti_url);
 $cacti_found = true;
 
 // ******************************************
@@ -59,9 +62,9 @@ if (isset($_SESSION['cacti']['weathermap']['last_used_host_id'][0])) {
 	$last['name'] = array_reverse($_SESSION['cacti']['weathermap']['last_used_host_name']);
 
 	foreach ($last['id'] as $key => $id) {
-		list($name) = explode(" - ", $last['name'][$key], 2);
+		list($name) = explode(' - ', $last['name'][$key], 2);
 
-		print "<a href=cacti-pick.php?host_id=".$id."&command=link_step1&overlib=1&aggregate=0>[".$name."]</a><br>";
+		print "<a href=cacti-pick.php?host_id=" . $id . "&command=link_step1&overlib=1&aggregate=0>[" . html_escape($name) . "]</a><br>";
 	}
 }
 
@@ -148,7 +151,7 @@ if (isset($_REQUEST['command']) && $_REQUEST['command'] == 'link_step1') {
 		}
 	}
 
-	$(document).ready( function() {
+	$(function() {
 		$('span.filter').keyup(function() {
 			var previous = $('input#filterstring').val();
 			setTimeout(function () {filterlist(previous)}, 500);
@@ -224,10 +227,10 @@ if (isset($_REQUEST['overlib'])) {
 	$overlib = ($_REQUEST['overlib'] == 0 ? false : true);
 }
 
-$hosts = db_fetch_assoc_prepared("SELECT id, CONCAT_WS('',description,' (',hostname,')') AS name
+$hosts = db_fetch_assoc_prepared("SELECT id,
+	CONCAT_WS('',description,' (',hostname,')') AS name
 	FROM host
 	ORDER BY description,hostname");
-
 ?>
 
 <h3>Pick a data source:</h3>
@@ -254,26 +257,28 @@ if (cacti_sizeof($hosts) > 0) {
 }
 
 print '<span class="filter" style="display: none;">Filter: <input id="filterstring" name="filterstring" size="20"> (case-sensitive)<br /></span>';
-print '<input id="overlib" name="overlib" type="checkbox" value="yes" '.($overlib ? 'CHECKED' : '' ).'> <label for="overlib">Also set OVERLIBGRAPH and INFOURL.</label><br />';
+print '<input id="overlib" name="overlib" type="checkbox" value="yes" ' . ($overlib ? 'CHECKED' : '' ) . '> <label for="overlib">Also set OVERLIBGRAPH and INFOURL.</label><br />';
 print '<input id="aggregate" name="aggregate" type="checkbox" value="yes" '.($aggregate ? 'CHECKED' : '' ).'> <label for="aggregate">Append TARGET to existing one (Aggregate)</label>';
 print '</form><div class="listcontainer"><ul id="dslist">';
 
 if (isset_request_var('host_id') && get_filter_request_var('host_id') >= 0) {
 	$host_id = get_filter_request_var('host_id');
 
-	$queryrows = db_fetch_assoc_prepared("SELECT dl.host_id, dtd.local_data_id, dtd.name_cache, dtd.active, dtd.data_source_path
+	$queryrows = db_fetch_assoc_prepared('SELECT dl.host_id, dtd.local_data_id,
+		dtd.name_cache, dtd.active, dtd.data_source_path
 		FROM data_local AS dl
 		INNER JOIN data_template_data AS dtd
 		ON dl.id = dtd.local_data_id
-		WHERE data_local.host_id = ?
-		ORDER BY name_cache",
+		WHERE dl.host_id = ?
+		ORDER BY name_cache',
 		array($host_id));
 } else {
-	$queryrows = db_fetch_assoc_prepared("SELECT dl.host_id, dtd.local_data_id, dtd.name_cache, dtd.active, dtd.data_source_path
+	$queryrows = db_fetch_assoc_prepared('SELECT dl.host_id, dtd.local_data_id,
+		dtd.name_cache, dtd.active, dtd.data_source_path
 		FROM data_local AS dl
 		INNER JOIN data_template_data AS dtd
 		ON dl.id = dtd.local_data_id
-		ORDER BY name_cache");
+		ORDER BY name_cache');
 }
 
 $i=0;
@@ -281,7 +286,9 @@ $i=0;
 if (is_array($queryrows) && sizeof($queryrows) > 0) {
 	foreach ($queryrows as $line) {
 		print "<li class=\"row".($i%2)."\">";
+
 		$key = $line['local_data_id']."','".$line['data_source_path'];
+
 		print "<a href=\"#\" onclick=\"update_source_step1('$key','$host_id')\">". $line['name_cache'] . "</a>";
 		print "</li>\n";
 
@@ -302,7 +309,7 @@ if (is_array($queryrows) && sizeof($queryrows) > 0) {
 if (isset($_REQUEST['command']) && $_REQUEST['command']=='node_step1') {
 	$host_id = -1;
 
-	$overlib = true;
+	$overlib   = true;
 	$aggregate = false;
 
 	if (isset($_REQUEST['aggregate'])) {
