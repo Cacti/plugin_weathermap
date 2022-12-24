@@ -846,11 +846,11 @@ function weathermap_mapselector($current_id = 0) {
 	$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
 
 	$maps = db_fetch_assoc_prepared("SELECT DISTINCT wm.*, wmg.name, wmg.sortorder AS gsort
-		FROM weathermap_groups AS wmg
+		FROM weathermap_maps AS wm
 		INNER JOIN weathermap_auth AS wa
-		ON wm.group_id = wmg.id
-		INNER JOIN weathermap_maps AS wm
 		ON wm.id = wa.mapid
+		INNER JOIN weathermap_groups AS wmg
+		ON wm.group_id = wmg.id
 		WHERE active = 'on'
 		AND (userid = ? OR userid = 0)
 		ORDER BY gsort, sortorder",
@@ -858,26 +858,29 @@ function weathermap_mapselector($current_id = 0) {
 
 	if (cacti_sizeof($maps) > 1) {
 		/* include graph view filter selector */
-		print '<br/><table width="100%" style="background-color: #f5f5f5; border: 1px solid #bbbbbb;" align="center" cellpadding="3">';
 
+		html_start_box(__('Weathermap Filter', 'weathermap'), '100%', '', '3', 'center', '');
 		?>
 		<tr class='even noprint'>
 			<td class='noprint'>
-				<form name='weathermap_select' method='post' action=''>
+				<form name='weathermap_select'>
 					<input name='action' value='viewmap' type='hidden'>
 					<table class='filterTable'>
 						<tr class='noprint'>
 							<td>
-								<?php print __('Jump To Map', 'weathermap');?>
+								<?php print __('Map to View', 'weathermap');?>
 							</td>
 							<td>
-								<select name='id'>
+								<select id='id'>
 									<?php
 
 									$ngroups   = 0;
 									$lastgroup = "------lasdjflkjsdlfkjlksdjflksjdflkjsldjlkjsd";
 									foreach ($maps as $map) {
-										if ($current_id == $map['id']) $nullhash = $map['filehash'];
+										if ($current_id == $map['id']) {
+											$nullhash = $map['filehash'];
+										}
+
 										if ($map['name'] != $lastgroup) {
 											$ngroups++;
 											$lastgroup = $map['name'];
@@ -888,37 +891,50 @@ function weathermap_mapselector($current_id = 0) {
 
 									foreach ($maps as $map) {
 										if ($ngroups > 1 && $map['name'] != $lastgroup) {
-											print "<option style='font-weight: bold; font-style: italic' value='$nullhash'>" . html_escape($map['name']) . "</option>";
+											print "<option style='font-weight: bold; font-style: italic' value='$nullhash'>" . html_escape($map['name']) . '</option>';
 											$lastgroup = $map['name'];
 										}
 
 										print '<option ';
 
 										if ($current_id == $map['id']) {
-											print " selected ";
+											print ' selected ';
 										}
 
 										print 'value="' . $map['filehash'] . '">';
 
 										// if we're showing group headings, then indent the map names
 										if ($ngroups > 1) {
-											print " - ";
+											print ' - ';
 										}
 
 										print html_escape($map['titlecache']) . '</option>';
 									}
                                        ?>
 								</select>
-								&nbsp;<input type="image" src="../../images/enable_icon.png" alt="Go" border="0" align="absmiddle">
 							</td>
 						</tr>
 					</table>
+					<script type='text/javascript'>
+					function applyFilter() {
+						var strURL = urlPath + 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmap&header=false';
+						strURL += '&id=' + $('#id').val();
+
+						loadPageNoHeader(strURL);
+					}
+
+					$(function() {
+						$('#id').change(function() {
+							applyFilter();
+						});
+					});
+					</script>
 				</td>
 			</form>
 		</tr>
 		<?php
 
-		print '</table>';
+		html_end_box();
 	}
 }
 
