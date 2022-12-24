@@ -73,31 +73,31 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 	}
 
 	function ReadData($targetstring, &$map, &$item) {
-		$data[IN]  = NULL;
-		$data[OUT] = NULL;
+		$data[IN]  = null;
+		$data[OUT] = null;
 		$data_time = 0;
 
-		$ping_count = intval($map->get_hint("fping_ping_count"));
+		$ping_count = intval($map->get_hint('fping_ping_count'));
 		if ($ping_count==0) {
 			$ping_count = 5;
 		}
 
-		if (preg_match("/^fping:(\S+)$/",$targetstring,$matches)) {
+		if (preg_match('/^fping:(\S+)$/', $targetstring, $matches)) {
 			$target = $matches[1];
 
 			$pattern = "/^$target\s:";
 
 			for($i=0;$i<$ping_count;$i++) {
-				$pattern .= "\s(\S+)";
+				$pattern .= '\s(\S+)';
 			}
 
-			$pattern .= "/";
+			$pattern .= '/';
 
 			if (is_executable($this->fping_cmd)) {
-				$command = $this->fping_cmd." -t100 -r1 -p20 -u -C $ping_count -i10 -q $target 2>&1";
+				$command = $this->fping_cmd . " -t100 -r1 -p20 -u -C $ping_count -i10 -q $target 2>&1";
 
 				wm_debug("Running $command");
-				$pipe=popen($command, "r");
+				$pipe = popen($command, 'r');
 
 				$count = 0; $hitcount=0;
 				if (isset($pipe)) {
@@ -148,8 +148,8 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 							$data[IN]  = $ave;
 							$data[OUT] = $loss;
 
-							$item->add_note("fping_min",$min);
-							$item->add_note("fping_max",$max);
+							$item->add_note('fping_min', $min);
+							$item->add_note('fping_max', $max);
 						}
 					}
 				}
@@ -158,7 +158,7 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 			}
 		}
 
-		wm_debug ("FPing ReadData: Returning (".($data[IN]===NULL?'NULL':$data[IN]).",".($data[OUT]===NULL?'NULL':$data[OUT]).",$data_time)");
+		wm_debug ('FPing ReadData: Returning (' . ($data[IN] === null ? 'NULL':$data[IN]) . ',' . ($data[OUT] === null ? 'NULL':$data[OUT]) . ",$data_time)");
 
 		return(array($data[IN], $data[OUT], $data_time));
 	}

@@ -78,7 +78,7 @@ function wm_editor_sanitize_string($str) {
 }
 
 function wm_editor_validate_bandwidth($bw) {
-	if(preg_match( '/^(\d+\.?\d*[KMGT]?)$/', $bw) ) {
+	if (preg_match( '/^(\d+\.?\d*[KMGT]?)$/', $bw) ) {
 		return true;
 	}
 
@@ -86,16 +86,16 @@ function wm_editor_validate_bandwidth($bw) {
 }
 
 function wm_editor_validate_one_of($input,$valid=array(),$case_sensitive=false) {
-	if(!$case_sensitive) {
+	if (!$case_sensitive) {
 		$input = strtolower($input);
 	}
 
 	foreach ($valid as $v) {
-		if(!$case_sensitive) {
+		if (!$case_sensitive) {
 			$v = strtolower($v);
 		}
 
-		if($v == $input) {
+		if ($v == $input) {
 			return true;
 		}
 	}
@@ -105,13 +105,13 @@ function wm_editor_validate_one_of($input,$valid=array(),$case_sensitive=false) 
 
 // Labels for Nodes, Links and Scales shouldn't have spaces in
 function wm_editor_sanitize_name($str) {
-	return str_replace( array(" "), "", $str);
+	return str_replace(array(' '), '', $str);
 }
 
 function wm_editor_sanitize_selected($str) {
 	$res = urldecode($str);
 
-	if( ! preg_match("/^(LINK|NODE):/",$res)) {
+	if ( ! preg_match("/^(LINK|NODE):/",$res)) {
 	    return "";
 	}
 
@@ -129,12 +129,12 @@ function wm_editor_sanitize_file($filename,$allowed_exts=array()) {
 	foreach ($allowed_exts as $ext) {
 		$match = "." . $ext;
 
-		if( substr($filename, -strlen($match),strlen($match)) == $match) {
+		if ( substr($filename, -strlen($match),strlen($match)) == $match) {
 			$ok = true;
 		}
 	}
 
-    if(!$ok) {
+    if (!$ok) {
 		return "";
 	}
 
@@ -434,7 +434,7 @@ function handle_inheritance(&$map, &$inheritables) {
 
 		$new = $_REQUEST[$formname];
 
-		if($validation != "") {
+		if ($validation != "") {
 		    switch($validation) {
 				case "int":
 				    $new = intval($new);
@@ -523,7 +523,7 @@ function distance ($ax,$ay, $bx,$by) {
 	return sqrt( $dx*$dx + $dy*$dy );
 }
 
-function tidy_links(&$map,$targets, $ignore_tidied=FALSE) {
+function tidy_links(&$map,$targets, $ignore_tidied=false) {
 	// not very efficient, but it saves looking for special cases (a->b & b->a together)
 	$ntargets = count($targets);
 	$i = 1;
@@ -538,9 +538,9 @@ function tidy_links(&$map,$targets, $ignore_tidied=FALSE) {
  * tidy_link - change link offsets so that link is horizonal or vertical, if possible.
  *             if not possible, change offsets to the closest facing compass points
  */
-function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FALSE) {
+function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=false) {
 	// print "\n-----------------------------------\nTidying $target...\n";
-	if(isset($map->links[$target]) && isset($map->links[$target]->a)) {
+	if (isset($map->links[$target]) && isset($map->links[$target]->a)) {
 		$node_a = $map->links[$target]->a;
 		$node_b = $map->links[$target]->b;
 
@@ -669,7 +669,7 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 
 					$d = distance($axx,$ayy, $bxx, $byy);
 
-					if($d < $best_distance) {
+					if ($d < $best_distance) {
 						// print "from $corner1 ($axx, $ayy) to $corner2 ($bxx, $byy): ";
 						// print "NEW BEST $d\n";
 						$best_distance = $d;
@@ -680,8 +680,8 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 			}
 
 			// Step back a bit from the edge, to hide the corners of the link
-			$new_a_offset = $best_offset_a."85";
-			$new_b_offset = $best_offset_b."85";
+			$new_a_offset = $best_offset_a . '85';
+			$new_b_offset = $best_offset_b . '85';
 		}
 
 		// unwritten/implied - if both overlap, you're doing something weird and you're on your own
@@ -690,27 +690,27 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 		$map->links[$target]->b_offset = $new_b_offset;
 
 		// and also add a note that this link was tidied, and is eligible for automatic tidying
-		$map->links[$target]->add_hint("_tidied",1);
+		$map->links[$target]->add_hint('_tidied', 1);
 	}
 }
 
 function untidy_links(&$map) {
 	foreach ($map->links as $link) {
-		$link->a_offset = "C";
-		$link->b_offset = "C";
+		$link->a_offset = 'C';
+		$link->b_offset = 'C';
 	}
 }
 
-function retidy_links(&$map, $ignore_tidied=FALSE) {
+function retidy_links(&$map, $ignore_tidied=false) {
 	$routes = array();
 	$done = array();
 
 	foreach ($map->links as $link) {
-		if(isset($link->a)) {
-			$route = $link->a->name . " " . $link->b->name;
+		if (isset($link->a)) {
+			$route = $link->a->name . ' ' . $link->b->name;
 
-			if(strcmp( $link->a->name, $link->b->name) > 0) {
-				$route = $link->b->name . " " . $link->a->name;
+			if (strcmp( $link->a->name, $link->b->name) > 0) {
+				$route = $link->b->name . ' ' . $link->a->name;
 			}
 
 			$routes[$route][] = $link->name;
@@ -718,21 +718,21 @@ function retidy_links(&$map, $ignore_tidied=FALSE) {
 	}
 
 	foreach ($map->links as $link) {
-		if(isset($link->a)) {
-			$route = $link->a->name . " " . $link->b->name;
+		if (isset($link->a)) {
+			$route = $link->a->name . ' ' . $link->b->name;
 
-			if(strcmp( $link->a->name, $link->b->name) > 0) {
-				$route = $link->b->name . " " . $link->a->name;
+			if (strcmp($link->a->name, $link->b->name) > 0) {
+				$route = $link->b->name . ' ' . $link->a->name;
 			}
 
-			if(($ignore_tidied || $link->get_hint("_tidied")==1) && !isset($done[$route]) && isset($routes[$route])) {
-				if( sizeof($routes[$route]) == 1) {
-					tidy_link($map,$link->name);
+			if (($ignore_tidied || $link->get_hint('_tidied') == 1) && !isset($done[$route]) && isset($routes[$route])) {
+				if ( sizeof($routes[$route]) == 1) {
+					tidy_link($map, $link->name);
 
 					$done[$route] = 1;
 				} else {
 					# handle multi-links specially...
-					tidy_links($map,$routes[$route]);
+					tidy_links($map, $routes[$route]);
 
 					// mark it so we don't do it again when the other links come by
 					$done[$route] = 1;
@@ -743,7 +743,7 @@ function retidy_links(&$map, $ignore_tidied=FALSE) {
 }
 
 function editor_log($str) {
-    // $f = fopen("editor.log","a");
+    // $f = fopen('editor.log','a');
     // fputs($f, $str);
     // fclose($f);
 }

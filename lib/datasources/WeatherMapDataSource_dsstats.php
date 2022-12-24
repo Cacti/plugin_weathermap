@@ -36,13 +36,13 @@
  +-------------------------------------------------------------------------+
 */
 
-include_once __DIR__ . '/../ds-common.php';
+include_once(__DIR__ . '/../ds-common.php');
 
 class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 	function Init(&$map) {
 		global $config;
 
-		if ($map->context=='cacti') {
+		if ($map->context == 'cacti') {
 			if ( !function_exists('db_fetch_row') ) {
 				wm_debug('ReadData DSStats: Cacti database library not found. [DSSTATS001]');
 				return(false);
@@ -192,7 +192,7 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 				}
 			}
 
-			if ($datatype=='wm' && ($data[IN] == null || $data[OUT] == null) ) {
+			if ($datatype == 'wm' && ($data[IN] == null || $data[OUT] == null) ) {
 				wm_debug("Didn't get data for 'wm' source. Inserting new tasks.");
 
 				// insert the required details into weathermap_data, so it will be picked up next time
@@ -200,7 +200,8 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 					FROM data_template_data AS dtd
 					INNER JOIN data_template_rrd AS dtr
 					ON dtd.local_data_id = dtr.local_data_id
-					WHERE dtr.local_data_id = ?', array($local_data_id));
+					WHERE dtr.local_data_id = ?',
+					array($local_data_id));
 
 				if (cacti_sizeof($result)) {
 					$db_rrdname = $result['path'];
@@ -226,7 +227,7 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 			UpdateCactiData($item, $local_data_id);
 		}
 
-		wm_debug('DSStats ReadData: Returning (' . ($data[IN] === null ?'null':$data[IN]) . ',' . ($data[OUT] === null ? 'null':$data[OUT]) . ",$data_time)");
+		wm_debug('DSStats ReadData: Returning (' . ($data[IN] === null ? 'NULL':$data[IN]) . ',' . ($data[OUT] === null ? 'NULL':$data[OUT]) . ",$data_time)");
 
 		return(array($data[IN], $data[OUT], $data_time));
 	}

@@ -241,21 +241,21 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	# rrdtool graph /dev/null -f "" -s now-30d -e now DEF:in=../rra/atm-sl_traffic_in_5498.rrd:traffic_in:AVERAGE DEF:out=../rra/atm-sl_traffic_in_5498.rrd:traffic_out:AVERAGE VDEF:avg_in=in,AVERAGE VDEF:avg_out=out,AVERAGE PRINT:avg_in:%lf PRINT:avg_out:%lf
 
 	function wmrrd_read_from_real_rrdtool_aggregate($rrdfile,$cf,$aggregatefn,$start,$end,$dsnames, &$data, &$map, &$data_time,&$item) {
-		wm_debug("RRD ReadData: VDEF style, for ".$item->my_type()." ".$item->name);
+		wm_debug('RRD ReadData: VDEF style, for ' . $item->my_type() . ' ' . $item->name);
 
-		$extra_options = $map->get_hint("rrd_options");
+		$extra_options = $map->get_hint('rrd_options');
 
 		// Assemble an array of command args.
 		// In a real programming language, we'd be able to pass this directly to exec()
 		// However, this will at least allow us to put quotes around args that need them
 		$args = array();
-		$args[] = "graph";
-		$args[] = "/dev/null";
-		$args[] = "-f";
+		$args[] = 'graph';
+		$args[] = '/dev/null';
+		$args[] = '-f';
 		$args[] = "'%s %lu %lu'";
-		$args[] = "--start";
+		$args[] = '--start';
 		$args[] = $start;
-		$args[] = "--end";
+		$args[] = '--end';
 		$args[] = $end;
 
 		# assemble an appropriate RRDtool command line, skipping any '-' DS names.
@@ -266,7 +266,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			# $command .= "VDEF:agg_in=in,$aggregatefn ";
 			# $command .= "PRINT:agg_in:'IN %lf' ";
 
-			$args[] = "DEF:in=$rrdfile:".$dsnames[IN].":$cf";
+			$args[] = "DEF:in=$rrdfile:" . $dsnames[IN] . ":$cf";
 			$args[] = "VDEF:agg_in=in,$aggregatefn";
 			$args[] = "PRINT:agg_in:'IN %lf'";
 		}
@@ -276,7 +276,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			# $command .= "VDEF:agg_out=out,$aggregatefn ";
 			# $command .= "PRINT:agg_out:'OUT %lf' ";
 
-			$args[] = "DEF:out=$rrdfile:".$dsnames[OUT].":$cf";
+			$args[] = "DEF:out=$rrdfile:" . $dsnames[OUT] . ":$cf";
 			$args[] = "VDEF:agg_out=out,$aggregatefn";
 			$args[] = "PRINT:agg_out:'OUT %lf'";
 		}
@@ -284,18 +284,18 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$command = $map->rrdtool;
 
 		foreach ($args as $arg) {
-			if (strchr($arg," ") != false) {
+			if (strchr($arg, ' ') != false) {
 				$command .= ' "' . $arg . '"';
 			} else {
 				$command .= ' ' . $arg;
 			}
 		}
 
-		$command .= " " . $extra_options;
+		$command .= ' ' . $extra_options;
 
 		wm_debug("RRD ReadData: Running: $command");
 
-		$pipe=popen($command, "r");
+		$pipe=popen($command, 'r');
 
 		$lines=array ();
 		$count = 0;
@@ -311,8 +311,8 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 
                 // there might (pre-1.5) or might not (1.5+) be a leading blank line
                 // we don't want to count it if there is
-                if (trim($line) != "") {
-                    wm_debug("> " . $line);
+                if (trim($line) != '') {
+                    wm_debug('> ' . $line);
                     $buffer .= $line;
                     $lines[] = $line;
                     $linecount++;
@@ -324,13 +324,13 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			if ($linecount>1) {
 				foreach ($lines as $line) {
 					if (preg_match('/^\'(IN|OUT)\s(\-?\d+[\.,]?\d*e?[+-]?\d*:?)\'$/i', $line, $matches)) {
-						wm_debug("MATCHED: ".$matches[1]." ".$matches[2]);
+						wm_debug('MATCHED: ' . $matches[1] . ' ' . $matches[2]);
 
-						if ($matches[1]=='IN') {
+						if ($matches[1] == 'IN') {
 							$data[IN] = floatval($matches[2]);
 						}
 
-						if ($matches[1]=='OUT') {
+						if ($matches[1] == 'OUT') {
 							$data[OUT] = floatval($matches[2]);
 						}
 
@@ -339,29 +339,29 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 				}
 
 				if ($data_ok) {
-					if ($data[IN] === NULL) {
+					if ($data[IN] === null) {
 						$data[IN] = 0;
 					}
 
-					if ($data[OUT] === NULL) {
+					if ($data[OUT] === null) {
 						$data[OUT] = 0;
 					}
 				}
 			} else {
-				wm_warn("Not enough output from RRDTool. [WMRRD09]");
+				wm_warn('Not enough output from RRDTool. [WMRRD09]');
 			}
 		} else {
 		    $error = error_get_last();
 
-			wm_warn("RRD ReadData: failed to open pipe to RRDTool: ". $error['message']." [WMRRD04]");
+			wm_warn('RRD ReadData: failed to open pipe to RRDTool: ' . $error['message'] . ' [WMRRD04]');
 		}
 
-		wm_debug ("RRD ReadDataFromRealRRDAggregate: Returning (".($data[IN]===NULL?'NULL':$data[IN]).",".($data[OUT]===NULL?'NULL':$data[OUT]).",$data_time)");
+		wm_debug('RRD ReadDataFromRealRRDAggregate: Returning (' . ($data[IN] === null ? 'NULL':$data[IN]) . ',' . ($data[OUT] === null ? 'NULL':$data[OUT]) . ",$data_time)");
 
 	}
 
-	function wmrrd_read_from_real_rrdtool($rrdfile,$cf,$start,$end,$dsnames, &$data, &$map, &$data_time, &$item) {
-		wm_debug("RRD ReadData: traditional style");
+	function wmrrd_read_from_real_rrdtool($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
+		wm_debug('RRD ReadData: traditional style');
 
 		// we get the last 800 seconds of data - this might be 1 or 2 lines, depending on when in the
 		// cacti polling cycle we get run. This ought to stop the 'some lines are grey' problem that some
@@ -371,35 +371,35 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		//     *THEN* GET THE LAST LINE WHERE THOSE TWO DS ARE VALID, *THEN* DO ANY PROCESSING.
 		//  - this allows for early failure, and also tolerance of empty data in other parts of an rrd (like smokeping uptime)
 
-		$extra_options = $map->get_hint("rrd_options");
+		$extra_options = $map->get_hint('rrd_options');
 
 		$values = array();
 		$args = array();
 
 		#### $command = '"'.$map->rrdtool . '" fetch "'.$rrdfile.'" AVERAGE --start '.$start.' --end '.$end;
 		#$command=$map->rrdtool . " fetch $rrdfile $cf --start $start --end $end $extra_options";
-		$args[] = "fetch";
+		$args[] = 'fetch';
 		$args[] = $rrdfile;
 		$args[] = $cf;
-		$args[] = "--start";
+		$args[] = '--start';
 		$args[] = $start;
-		$args[] = "--end";
+		$args[] = '--end';
 		$args[] = $end;
 
 		$command = $map->rrdtool;
 		foreach ($args as $arg) {
-			if (strchr($arg," ") != false) {
+			if (strchr($arg, ' ') != false) {
 				$command .= ' "' . $arg . '"';
 			} else {
 				$command .= ' ' . $arg;
 			}
 		}
 
-		$command .= " " . $extra_options;
+		$command .= ' ' . $extra_options;
 
 		wm_debug ("RRD ReadData: Running: $command");
 
-		$pipe = popen($command, "r");
+		$pipe = popen($command, 'r');
 
 		$lines     = array ();
 		$count     = 0;
@@ -410,7 +410,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 
 			// this replace fudges 1.2.x output to look like 1.0.x
 			// then we can treat them both the same.
-			$heads = preg_split("/\s+/", preg_replace("/^\s+/","timestamp ",$headings) );
+			$heads = preg_split('/\s+/', preg_replace('/^\s+/', 'timestamp ', $headings));
 
 			//fgets($pipe, 4096); // skip the blank line
 			$buffer = '';
@@ -420,8 +420,8 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 
                 // there might (pre-1.5) or might not (1.5+) be a leading blank line
                 // we don't want to count it if there is
-                if (trim($line) != "") {
-                    wm_debug("> " . $line);
+                if (trim($line) != '') {
+                    wm_debug('> ' . $line);
 
                     $buffer .= $line;
                     $lines[] = $line;
@@ -440,9 +440,9 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 				$rlines=array_reverse($lines);
 
 				foreach ($rlines as $line) {
-					 wm_debug ("--" . $line);
+					 wm_debug ('--' . $line);
 
-					 $cols=preg_split("/\s+/", $line);
+					 $cols=preg_split('/\s+/', $line);
 
 					 for ($i=0, $cnt=count($cols)-1; $i < $cnt; $i++) {
 						$h = $heads[$i];
@@ -491,19 +491,19 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			     }
 			} else {
 			    // report DS name error
-			    $names = join(",",$heads);
-			    $names = str_replace("timestamp,","",$names);
+			    $names = join(',', $heads);
+			    $names = str_replace('timestamp,', '', $names);
 
-			    wm_warn("RRD ReadData: At least one of your DS names (".$dsnames[IN]." and ".$dsnames[OUT].") were not found, even though there was a valid data line. Maybe they are wrong? Valid DS names in this file are: $names [WMRRD06]");
+			    wm_warn('RRD ReadData: At least one of your DS names (' . $dsnames[IN] . ' and ' . $dsnames[OUT] . ") were not found, even though there was a valid data line. Maybe they are wrong? Valid DS names in this file are: $names [WMRRD06]");
 			}
 
 		} else {
             $error = error_get_last();
 
-            wm_warn("RRD ReadData: failed to open pipe to RRDTool: ". $error['message']." [WMRRD04]");
+            wm_warn('RRD ReadData: failed to open pipe to RRDTool: ' . $error['message'] . ' [WMRRD04]');
 		}
 
-		wm_debug ("RRD ReadDataFromRealRRD: Returning (".($data[IN]===NULL?'NULL':$data[IN]).",".($data[OUT]===NULL?'NULL':$data[OUT]).",$data_time)");
+		wm_debug ('RRD ReadDataFromRealRRD: Returning (' . ($data[IN] === null ? 'NULL':$data[IN]) . ',' . ($data[OUT] === null ? 'NULL':$data[OUT]) . ",$data_time)");
 	}
 
 	/**
@@ -515,22 +515,22 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	function ReadData($targetstring, &$map, &$item) {
 		global $config;
 
-		$dsnames[IN]  = "traffic_in";
-		$dsnames[OUT] = "traffic_out";
+		$dsnames[IN]  = 'traffic_in';
+		$dsnames[OUT] = 'traffic_out';
 		$data[IN]     = NULL;
 		$data[OUT]    = NULL;
 		$SQL[IN]      = 'select null';
 		$SQL[OUT]     = 'select null';
 		$rrdfile      = $targetstring;
 
-		if ($map->get_hint("rrd_default_in_ds") != '') {
-			$dsnames[IN] = $map->get_hint("rrd_default_in_ds");
-			wm_debug("Default 'in' DS name changed to ".$dsnames[IN]);
+		if ($map->get_hint('rrd_default_in_ds') != '') {
+			$dsnames[IN] = $map->get_hint('rrd_default_in_ds');
+			wm_debug('Default \'in\' DS name changed to ' . $dsnames[IN]);
 		}
 
-		if ($map->get_hint("rrd_default_out_ds") != '') {
-			$dsnames[OUT] = $map->get_hint("rrd_default_out_ds");
-			wm_debug("Default 'out' DS name changed to ".$dsnames[OUT]);
+		if ($map->get_hint('rrd_default_out_ds') != '') {
+			$dsnames[OUT] = $map->get_hint('rrd_default_out_ds');
+			wm_debug('Default \'out\' DS name changed to ' . $dsnames[OUT]);
 		}
 
 		$multiplier = 8; // default bytes-to-bits
@@ -539,25 +539,25 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$outbw = NULL;
 		$data_time = 0;
 
-		if (preg_match("/^(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/", $targetstring, $matches)) {
+		if (preg_match('/^(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/', $targetstring, $matches)) {
 			$rrdfile = $matches[1];
 
 			$dsnames[IN] = $matches[2];
 			$dsnames[OUT] = $matches[3];
 
-			wm_debug("Special DS names seen (".$dsnames[IN]." and ".$dsnames[OUT] . ")");
+			wm_debug('Special DS names seen (' . $dsnames[IN] . ' and ' . $dsnames[OUT] . ')');
 		}
 
-		if (preg_match("/^rrd:(.*)/", $rrdfile, $matches)) {
+		if (preg_match('/^rrd:(.*)/', $rrdfile, $matches)) {
 			$rrdfile = $matches[1];
 		}
 
-		if (preg_match("/^gauge:(.*)/", $rrdfile, $matches)) {
+		if (preg_match('/^gauge:(.*)/', $rrdfile, $matches)) {
 			$rrdfile = $matches[1];
 			$multiplier = 1;
 		}
 
-		if (preg_match("/^scale:([+-]?\d*\.?\d*):(.*)/", $rrdfile, $matches)) {
+		if (preg_match('/^scale:([+-]?\d*\.?\d*):(.*)/', $rrdfile, $matches)) {
 				$rrdfile = $matches[2];
 				$multiplier = $matches[1];
 		}
@@ -566,17 +566,17 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 
 		// try and make a complete path, if we've been given a clue
 		// (if the path starts with a . or a / then assume the user knows what they are doing)
-		if (!preg_match("/^(\/|\.)/",$rrdfile)) {
+		if (!preg_match('/^(\/|\.)/', $rrdfile)) {
 			$rrdbase = $map->get_hint('rrd_default_path');
 
 			if ($rrdbase != '') {
-				$rrdfile = $rrdbase."/".$rrdfile;
+				$rrdfile = $rrdbase . '/' . $rrdfile;
 			}
 		}
 
 		$cfname = $map->get_hint('rrd_cf');
-		if ($cfname=='') {
-			$cfname='AVERAGE';
+		if ($cfname == '') {
+			$cfname = 'AVERAGE';
 		}
 
 		$period = intval($map->get_hint('rrd_period'));
@@ -587,27 +587,27 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$start = $map->get_hint('rrd_start');
 		if ($start == '') {
 		    $start = "now-$period";
-		    $end = "now";
+		    $end = 'now';
 		} else {
-		    $end = "start+".$period;
+		    $end = 'start+' . $period;
 		}
 
 		$use_poller_output = intval($map->get_hint('rrd_use_poller_output'));
-		$nowarn_po_agg = intval($map->get_hint("nowarn_rrd_poller_output_aggregation"));
+		$nowarn_po_agg = intval($map->get_hint('nowarn_rrd_poller_output_aggregation'));
 		$aggregatefunction = $map->get_hint('rrd_aggregate_function');
 
 		if ($aggregatefunction != '' && $use_poller_output==1) {
 			$use_poller_output=0;
 
 			if ($nowarn_po_agg==0) {
-				wm_warn("Can't use poller_output for rrd-aggregated data - disabling rrd_use_poller_output [WMRRD10]");
+				wm_warn('Can\'t use poller_output for rrd-aggregated data - disabling rrd_use_poller_output [WMRRD10]');
 			}
 		}
 
 		if ($use_poller_output == 1) {
-			wm_debug("Going to try poller_output, as requested.");
+			wm_debug('Going to try poller_output, as requested.');
 
-			WeatherMapDataSource_rrd::wmrrd_read_from_poller_output($rrdfile,"AVERAGE",$start,$end, $dsnames, $data,$map, $data_time,$item);
+			WeatherMapDataSource_rrd::wmrrd_read_from_poller_output($rrdfile, 'AVERAGE', $start, $end, $dsnames, $data, $map, $data_time, $item);
 		}
 
 		// if poller_output didn't get anything, or if it couldn't/didn't run, do it the old-fashioned way
@@ -615,11 +615,11 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		//   because there won't be valid data in the weathermap_data table yet.
 		if (($dsnames[IN]!='-' && $data[IN] === NULL) || ($dsnames[OUT] !='-' && $data[OUT] === NULL)) {
 			if ($use_poller_output == 1) {
-				wm_debug("poller_output didn't get anything useful. Kicking it old skool.");
+				wm_debug('poller_output didn\'t get anything useful. Kicking it old skool.');
 			}
 
 			if (file_exists($rrdfile)) {
-				wm_debug ("RRD ReadData: Target DS names are ".$dsnames[IN]." and ".$dsnames[OUT]);
+				wm_debug ('RRD ReadData: Target DS names are ' . $dsnames[IN] . ' and ' . $dsnames[OUT]);
 
 				$values=array();
 
@@ -644,16 +644,16 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		// any , with . (there are never thousands separators, luckily)
 		//
 		if ($data[IN] !== NULL) {
-			$data[IN] = floatval(str_replace(",",".",$data[IN]));
+			$data[IN] = floatval(str_replace(',', '.', $data[IN]));
 			$data[IN] = $data[IN] * $multiplier;
 		}
 
 		if ($data[OUT] !== NULL) {
-			$data[OUT] = floatval(str_replace(",",".",$data[OUT]));
+			$data[OUT] = floatval(str_replace(',', '.', $data[OUT]));
 			$data[OUT] = $data[OUT] * $multiplier;
 		}
 
-		wm_debug ("RRD ReadData: Returning (".($data[IN]===NULL?'NULL':$data[IN]).",".($data[OUT]===NULL?'NULL':$data[OUT]).",$data_time)");
+		wm_debug ('RRD ReadData: Returning (' . ($data[IN] === null ? 'NULL':$data[IN]) . ',' . ($data[OUT] === null ? 'NULL':$data[OUT]) . ",$data_time)");
 
 		return(array($data[IN], $data[OUT], $data_time));
 	}

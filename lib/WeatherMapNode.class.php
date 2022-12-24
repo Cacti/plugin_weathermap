@@ -245,7 +245,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 			// if screenshot_mode is enabled, wipe any letters to X and wipe any IP address to 127.0.0.1
 			// hopefully that will preserve enough information to show cool stuff without leaking info
-			if ($map->get_hint('screenshot_mode')==1) {
+			if ($map->get_hint('screenshot_mode') == 1) {
 				$this->proclabel = screenshotify($this->proclabel);
 			}
 
@@ -483,7 +483,7 @@ class WeatherMapNode extends WeatherMapItem {
 					$icon_im = imagecreatefromfile($this->iconfile);
 					# $icon_im = imagecreatefrompng($this->iconfile);
 
-					if (function_exists("imagefilter") && isset($colicon) && $this->get_hint("use_imagefilter")==1) {
+					if (function_exists('imagefilter') && isset($colicon) && $this->get_hint('use_imagefilter') == 1) {
 						imagefilter($icon_im, IMG_FILTER_COLORIZE, $colicon->r, $colicon->g, $colicon->b);
 					} else {
 						if (isset($colicon)) {
@@ -492,7 +492,7 @@ class WeatherMapNode extends WeatherMapItem {
 						}
 					}
 
-					wm_debug("If this is the last thing in your logs, you probably have a buggy GD library. Get > 2.0.33 or use PHP builtin.");
+					wm_debug('If this is the last thing in your logs, you probably have a buggy GD library. Get > 2.0.33 or use PHP builtin.');
 
 					if ($icon_im) {
 						$icon_w = imagesx($icon_im);
@@ -501,7 +501,7 @@ class WeatherMapNode extends WeatherMapItem {
 						if (($this->iconscalew * $this->iconscaleh) > 0) {
 							imagealphablending($icon_im, true);
 
-							wm_debug("SCALING ICON here");
+							wm_debug('SCALING ICON here');
 
 							if ($icon_w > $icon_h) {
 								$scalefactor = $icon_w/$this->iconscalew;
@@ -520,11 +520,11 @@ class WeatherMapNode extends WeatherMapItem {
 							$icon_im = $scaled;
 						}
 					} else {
-						wm_warn ("Couldn't open ICON: '" . $this->iconfile . "' - is it a PNG, JPEG or GIF? [WMWARN37]");
+						wm_warn ('Couldn\'t open ICON: \'' . $this->iconfile . '\' - is it a PNG, JPEG or GIF? [WMWARN37]');
 					}
 				} else {
 					if ($this->iconfile != 'none') {
-						wm_warn ("ICON '" . $this->iconfile . "' does not exist, or is not readable. Check path and permissions. [WMARN38]");
+						wm_warn ('ICON \'' . $this->iconfile . '\' does not exist, or is not readable. Check path and permissions. [WMARN38]');
 					}
 				}
 			}
@@ -682,7 +682,7 @@ class WeatherMapNode extends WeatherMapItem {
 		if (1==0) {
 			imageellipse($node_im, $this->centre_x, $this->centre_y, 8, 8, $map->selected);
 
-			foreach (array("N","S","E","W","NE","NW","SE","SW") as $corner) {
+			foreach (array('N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW') as $corner) {
 				list($dx, $dy)=calc_offset($corner, $this->width, $this->height);
 
 				imageellipse($node_im, $this->centre_x + $dx, $this->centre_y + $dy, 5, 5, $map->selected);
@@ -694,7 +694,7 @@ class WeatherMapNode extends WeatherMapItem {
 	}
 
 	function update_cache($cachedir,$mapname) {
-		$cachename = $cachedir."/node_".md5($mapname."/".$this->name).".png";
+		$cachename = $cachedir . '/node_' . md5($mapname . '/' . $this->name) . '.png';
 
 		// save this image to a cache, for the editor
 		imagepng($this->image,$cachename);
@@ -728,7 +728,7 @@ class WeatherMapNode extends WeatherMapItem {
 		$template = $this->template;
 
 		if ($template == '') {
-			$template = "DEFAULT";
+			$template = 'DEFAULT';
 		}
 
 		wm_debug("Resetting $this->name with $template");
@@ -769,7 +769,7 @@ class WeatherMapNode extends WeatherMapItem {
 		// This allows the editor to wholesale-replace a single node's configuration
 		// at write-time - it should include the leading NODE xyz line (to allow for renaming)
 		if ($this->config_override != '') {
-			$output  = $this->config_override."\n";
+			$output  = $this->config_override . "\n";
 		} else {
 			# $defdef = $this->owner->defaultnode;
 			$dd = $this->owner->nodes[$this->template];
@@ -779,39 +779,39 @@ class WeatherMapNode extends WeatherMapItem {
 			# $field = 'zorder'; $keyword = 'ZORDER';
 			$basic_params = array(
 					# array('template','TEMPLATE',CONFIG_TYPE_LITERAL),
-					array('label','LABEL',CONFIG_TYPE_LITERAL),
-					array('zorder','ZORDER',CONFIG_TYPE_LITERAL),
-					array('labeloffset','LABELOFFSET',CONFIG_TYPE_LITERAL),
-					array('labelfont','LABELFONT',CONFIG_TYPE_LITERAL),
-					array('labelangle','LABELANGLE',CONFIG_TYPE_LITERAL),
-					array('overlibwidth','OVERLIBWIDTH',CONFIG_TYPE_LITERAL),
-					array('overlibheight','OVERLIBHEIGHT',CONFIG_TYPE_LITERAL),
+					array('label', 'LABEL', CONFIG_TYPE_LITERAL),
+					array('zorder', 'ZORDER', CONFIG_TYPE_LITERAL),
+					array('labeloffset', 'LABELOFFSET', CONFIG_TYPE_LITERAL),
+					array('labelfont', 'LABELFONT', CONFIG_TYPE_LITERAL),
+					array('labelangle', 'LABELANGLE', CONFIG_TYPE_LITERAL),
+					array('overlibwidth', 'OVERLIBWIDTH', CONFIG_TYPE_LITERAL),
+					array('overlibheight', 'OVERLIBHEIGHT', CONFIG_TYPE_LITERAL),
 
-					array('aiconoutlinecolour','AICONOUTLINECOLOR',CONFIG_TYPE_COLOR),
-					array('aiconfillcolour','AICONFILLCOLOR',CONFIG_TYPE_COLOR),
-					array('labeloutlinecolour','LABELOUTLINECOLOR',CONFIG_TYPE_COLOR),
-					array('labelfontshadowcolour','LABELFONTSHADOWCOLOR',CONFIG_TYPE_COLOR),
-					array('labelbgcolour','LABELBGCOLOR',CONFIG_TYPE_COLOR),
-					array('labelfontcolour','LABELFONTCOLOR',CONFIG_TYPE_COLOR)
+					array('aiconoutlinecolour', 'AICONOUTLINECOLOR', CONFIG_TYPE_COLOR),
+					array('aiconfillcolour', 'AICONFILLCOLOR', CONFIG_TYPE_COLOR),
+					array('labeloutlinecolour', 'LABELOUTLINECOLOR', CONFIG_TYPE_COLOR),
+					array('labelfontshadowcolour', 'LABELFONTSHADOWCOLOR', CONFIG_TYPE_COLOR),
+					array('labelbgcolour', 'LABELBGCOLOR', CONFIG_TYPE_COLOR),
+					array('labelfontcolour', 'LABELFONTCOLOR', CONFIG_TYPE_COLOR)
 				);
 
 			# TEMPLATE must come first. DEFAULT
 			if ($this->template != 'DEFAULT' && $this->template != ':: DEFAULT ::') {
-				$output.="\tTEMPLATE " . $this->template . "\n";
+				$output .= "\tTEMPLATE " . $this->template . "\n";
 			}
 
 			foreach ($basic_params as $param) {
-				$field = $param[0];
+				$field   = $param[0];
 				$keyword = $param[1];
 
 			#	$comparison=($this->name == 'DEFAULT' ? $this->inherit_fieldlist[$field] : $defdef->$field);
 				if ($this->$field != $dd->$field) {
 					if ($param[2] == CONFIG_TYPE_COLOR) {
-						$output.="\t$keyword " . render_colour($this->$field) . "\n";
+						$output .= "\t$keyword " . render_colour($this->$field) . "\n";
 					}
 
 					if ($param[2] == CONFIG_TYPE_LITERAL) {
-						$output.="\t$keyword " . $this->$field . "\n";
+						$output .= "\t$keyword " . $this->$field . "\n";
 					}
 				}
 			}
@@ -821,110 +821,110 @@ class WeatherMapNode extends WeatherMapItem {
 			#$comparison=($this->name == 'DEFAULT'
 			#? $this->inherit_fieldlist['infourl'][IN] : $defdef->infourl[IN]);
 			if ($this->infourl[IN] != $dd->infourl[IN]) {
-				$output.="\tINFOURL " . $this->infourl[IN] . "\n";
+				$output .= "\tINFOURL " . $this->infourl[IN] . "\n";
 			}
 
 			#$comparison=($this->name == 'DEFAULT'
 			#? $this->inherit_fieldlist['overlibcaption'][IN] : $defdef->overlibcaption[IN]);
 			if ($this->overlibcaption[IN] != $dd->overlibcaption[IN]) {
-				$output.="\tOVERLIBCAPTION " . $this->overlibcaption[IN] . "\n";
+				$output .= "\tOVERLIBCAPTION " . $this->overlibcaption[IN] . "\n";
 			}
 
 			// IN/OUT are the same, so we can use the simpler form here
 			# $comparison=($this->name == 'DEFAULT'
 			# ? $this->inherit_fieldlist['notestext'][IN] : $defdef->notestext[IN]);
 			if ($this->notestext[IN] != $dd->notestext[IN]) {
-				$output.="\tNOTES " . $this->notestext[IN] . "\n";
+				$output .= "\tNOTES " . $this->notestext[IN] . "\n";
 			}
 
 			# $comparison=($this->name == 'DEFAULT'
 			# ? $this->inherit_fieldlist['overliburl'][IN] : $defdef->overliburl[IN]);
 			if ($this->overliburl[IN] != $dd->overliburl[IN]) {
-				$output.="\tOVERLIBGRAPH " . join(" ",$this->overliburl[IN]) . "\n";
+				$output .= "\tOVERLIBGRAPH " . join(' ', $this->overliburl[IN]) . "\n";
 			}
 
-			$val = $this->iconscalew. " " . $this->iconscaleh. " " .$this->iconfile;
+			$val = $this->iconscalew . ' ' . $this->iconscaleh . ' ' .$this->iconfile;
 
-			$comparison = $dd->iconscalew. " " . $dd->iconscaleh . " " . $dd->iconfile;
+			$comparison = $dd->iconscalew . ' ' . $dd->iconscaleh . ' ' . $dd->iconfile;
 
 			if ($val != $comparison) {
-				$output.="\tICON ";
+				$output .= "\tICON ";
 
 				if ($this->iconscalew > 0) {
-					$output .= $this->iconscalew." ".$this->iconscaleh." ";
+					$output .= $this->iconscalew . ' ' . $this->iconscaleh . ' ';
 				}
 
-				$output .= ($this->iconfile=='' ?  'none' : $this->iconfile) . "\n";
+				$output .= ($this->iconfile == '' ?  'none':$this->iconfile) . "\n";
 			}
 
 			# $comparison=($this->name == 'DEFAULT'
 			# ? $this->inherit_fieldlist['targets'] : $defdef->targets);
 
 			if ($this->targets != $dd->targets) {
-				$output.="\tTARGET";
+				$output .= "\tTARGET";
 
 				foreach ($this->targets as $target) {
-					if (strpos($target[4]," ") == false) {
-						$output.=" " . $target[4];
+					if (strpos($target[4], ' ') == false) {
+						$output .= ' ' . $target[4];
 					} else {
-						$output.=' "' . $target[4].'"';
+						$output .= ' "' . $target[4] . '"';
 					}
 				}
 
-				$output.="\n";
+				$output .= "\n";
 			}
 
 		#	$comparison = ($this->name == 'DEFAULT' ? $this->inherit_fieldlist['usescale'] : $defdef->usescale) . " " .
 		#		($this->name == 'DEFAULT' ? $this->inherit_fieldlist['scalevar'] : $defdef->scalevar);
-			$val = $this->usescale . " " . $this->scalevar . " " . $this->scaletype;
-			$comparison = $dd->usescale . " " . $dd->scalevar . " " . $dd->scaletype;
+			$val = $this->usescale . ' ' . $this->scalevar . ' ' . $this->scaletype;
+			$comparison = $dd->usescale . ' ' . $dd->scalevar . ' ' . $dd->scaletype;
 
 			if (($val != $comparison)) {
-				$output.="\tUSESCALE " . $val . "\n";
+				$output .= "\tUSESCALE " . $val . "\n";
 			}
 
 #			$comparison = ($this->name == 'DEFAULT'
 #				? $this->inherit_fieldlist['useiconscale'] : $defdef->useiconscale) . " " .
 #				($this->name == 'DEFAULT' ? $this->inherit_fieldlist['iconscalevar'] : $defdef->iconscalevar);
-			$val = $this->useiconscale . " " . $this->iconscalevar;
-			$comparison= $dd->useiconscale . " " . $dd->iconscalevar;
+			$val = $this->useiconscale . ' ' . $this->iconscalevar;
+			$comparison= $dd->useiconscale . ' ' . $dd->iconscalevar;
 
 			if ($val != $comparison) {
-				$output.="\tUSEICONSCALE " .$val . "\n";
+				$output.="\tUSEICONSCALE " . $val . "\n";
 			}
 
 			#$comparison = ($this->name == 'DEFAULT'
 			#? $this->inherit_fieldlist['labeloffsetx'] : $defdef->labeloffsetx) . " " . ($this->name == 'DEFAULT'
 		#		? $this->inherit_fieldlist['labeloffsety'] : $defdef->labeloffsety);
-			$val = $this->labeloffsetx . " " . $this->labeloffsety;
-			$comparison = $dd->labeloffsetx . " " . $dd->labeloffsety;
+			$val = $this->labeloffsetx . ' ' . $this->labeloffsety;
+			$comparison = $dd->labeloffsetx . ' ' . $dd->labeloffsety;
 
 			if ($comparison != $val ) {
-				$output.="\tLABELOFFSET " . $val . "\n";
+				$output .= "\tLABELOFFSET " . $val . "\n";
 			}
 
 			#$comparison=($this->name == 'DEFAULT' ? $this->inherit_fieldlist['x'] : $defdef->x) . " " .
 			#			($this->name == 'DEFAULT' ? $this->inherit_fieldlist['y'] : $defdef->y);
-			$val = $this->x . " " . $this->y;
-			$comparison = $dd->x . " " . $dd->y;
+			$val = $this->x . ' ' . $this->y;
+			$comparison = $dd->x . ' ' . $dd->y;
 
 			if ($val != $comparison) {
 				if ($this->relative_to == '') {
-					$output.="\tPOSITION " . $val . "\n";
+					$output .= "\tPOSITION " . $val . "\n";
 				} else {
 					if ($this->polar) {
-						$output .= "\tPOSITION ".$this->relative_to . " " .  $this->original_x . "r" . $this->original_y . "\n";
+						$output .= "\tPOSITION ".$this->relative_to . ' ' .  $this->original_x . 'r' . $this->original_y . "\n";
 					} else {
-						$output.="\tPOSITION " . $this->relative_to . " " .  $this->original_x . " " . $this->original_y . "\n";
+						$output .= "\tPOSITION " . $this->relative_to . ' ' .  $this->original_x . ' ' . $this->original_y . "\n";
 					}
 				}
 			}
 
-			if (($this->max_bandwidth_in != $dd->max_bandwidth_in) || ($this->max_bandwidth_out != $dd->max_bandwidth_out) || ($this->name == 'DEFAULT')) {
+			if ($this->max_bandwidth_in != $dd->max_bandwidth_in || $this->max_bandwidth_out != $dd->max_bandwidth_out || $this->name == 'DEFAULT') {
 				if ($this->max_bandwidth_in == $this->max_bandwidth_out) {
 					$output .="\tMAXVALUE " . $this->max_bandwidth_in_cfg . "\n";
 				} else {
-					$output .="\tMAXVALUE " . $this->max_bandwidth_in_cfg . " " . $this->max_bandwidth_out_cfg . "\n";
+					$output .="\tMAXVALUE " . $this->max_bandwidth_in_cfg . ' ' . $this->max_bandwidth_out_cfg . "\n";
 				}
 			}
 
@@ -937,7 +937,7 @@ class WeatherMapNode extends WeatherMapItem {
 			}
 
 			if ($output != '') {
-				$output = "NODE " . $this->name . "\n$output\n";
+				$output = 'NODE ' . $this->name . "\n$output\n";
 			}
 		}
 
@@ -945,63 +945,63 @@ class WeatherMapNode extends WeatherMapItem {
 	}
 
 	function asJS() {
-		$js = '';
-		$js .= "Nodes[" . js_escape($this->name) . "] = {";
-		$js .= "x:" . (is_null($this->x)? "'null'" : $this->x) . ", ";
-		$js .= "y:" . (is_null($this->y)? "'null'" : $this->y) . ", ";
-		$js .= "\"id\":" . $this->id. ", ";
+		$js  = '';
+		$js .= 'Nodes[' . js_escape($this->name) . '] = {';
+		$js .= 'x:' . (is_null($this->x)? "'null'" : $this->x) . ', ';
+		$js .= 'y:' . (is_null($this->y)? "'null'" : $this->y) . ', ';
+		$js .= '"id":' . $this->id. ', ';
 		// $js.="y:" . $this->y . ", ";
-		$js.="ox:" . $this->original_x . ", ";
-		$js.="oy:" . $this->original_y . ", ";
-		$js.="relative_to:" . js_escape($this->relative_to) . ", ";
-		$js.="label:" . js_escape($this->label) . ", ";
-		$js.="name:" . js_escape($this->name) . ", ";
-		$js.="infourl:" . js_escape($this->infourl[IN]) . ", ";
-		$js.="overlibcaption:" . js_escape($this->overlibcaption[IN]) . ", ";
-		$js.="overliburl:" . js_escape(join(" ",$this->overliburl[IN])) . ", ";
-		$js.="overlibwidth:" . $this->overlibheight . ", ";
-		$js.="overlibheight:" . $this->overlibwidth . ", ";
+		$js .= 'ox:' . $this->original_x . ', ';
+		$js .= 'oy:' . $this->original_y . ', ';
+		$js .= 'relative_to:' . js_escape($this->relative_to) . ', ';
+		$js .= 'label:' . js_escape($this->label) . ', ';
+		$js .= 'name:' . js_escape($this->name) . ', ';
+		$js .= 'infourl:' . js_escape($this->infourl[IN]) . ', ';
+		$js .= 'overlibcaption:' . js_escape($this->overlibcaption[IN]) . ', ';
+		$js .= 'overliburl:' . js_escape(join(' ',$this->overliburl[IN])) . ', ';
+		$js .= 'overlibwidth:' . $this->overlibheight . ', ';
+		$js .= 'overlibheight:' . $this->overlibwidth . ', ';
 
-		if (preg_match("/^(none|nink|inpie|outpie|box|rbox|gauge|round)$/",$this->iconfile)) {
-			$js.="iconfile:" . js_escape("::".$this->iconfile);
+		if (preg_match('/^(none|nink|inpie|outpie|box|rbox|gauge|round)$/', $this->iconfile)) {
+			$js .= 'iconfile:' . js_escape('::' . $this->iconfile);
 		} else {
-			$js.="iconfile:" . js_escape($this->iconfile);
+			$js .= 'iconfile:' . js_escape($this->iconfile);
 		}
 
 		$js .= "};\n";
-		$js .= "NodeIDs[\"N" . $this->id . "\"] = ". js_escape($this->name) . ";\n";
+		$js .= 'NodeIDs["N' . $this->id . '"] = ' . js_escape($this->name) . ";\n";
 
 		return $js;
 	}
 
 	function asJSON($complete=true) {
-		$js = '';
-		$js .= "" . js_escape($this->name) . ": {";
-		$js .= "\"id\":" . $this->id. ", ";
-		$js .= "\"x\":" . ($this->x - $this->centre_x). ", ";
-		$js .= "\"y\":" . ($this->y - $this->centre_y) . ", ";
-		$js .= "\"cx\":" . $this->centre_x. ", ";
-		$js .= "\"cy\":" . $this->centre_y . ", ";
-		$js .= "\"ox\":" . $this->original_x . ", ";
-		$js .= "\"oy\":" . $this->original_y . ", ";
-		$js .= "\"relative_to\":" . js_escape($this->relative_to) . ", ";
-		$js .= "\"name\":" . js_escape($this->name) . ", ";
+		$js  = '';
+		$js .= '' . js_escape($this->name) . ': {';
+		$js .= '"id":' . $this->id. ', ';
+		$js .= '"x":' . ($this->x - $this->centre_x). ', ';
+		$js .= '"y":' . ($this->y - $this->centre_y) . ', ';
+		$js .= '"cx":' . $this->centre_x. ', ';
+		$js .= '"cy":' . $this->centre_y . ', ';
+		$js .= '"ox":' . $this->original_x . ', ';
+		$js .= '"oy":' . $this->original_y . ', ';
+		$js .= '"relative_to":' . js_escape($this->relative_to) . ', ';
+		$js .= '"name":' . js_escape($this->name) . ', ';
 
 		if ($complete) {
-			$js .= "\"label\":" . js_escape($this->label) . ", ";
-			$js .= "\"infourl\":" . js_escape($this->infourl) . ", ";
-			$js .= "\"overliburl\":" . js_escape($this->overliburl) . ", ";
-			$js .= "\"overlibcaption\":" . js_escape($this->overlibcaption) . ", ";
+			$js .= '"label":' . js_escape($this->label) . ', ';
+			$js .= '"infourl":' . js_escape($this->infourl) . ', ';
+			$js .= '"overliburl":' . js_escape($this->overliburl) . ', ';
+			$js .= '"overlibcaption":' . js_escape($this->overlibcaption) . ', ';
 
-			$js .= "\"overlibwidth\":" . $this->overlibheight . ", ";
-			$js .= "\"overlibheight\":" . $this->overlibwidth . ", ";
-			$js .= "\"iconfile\":" . js_escape($this->iconfile). ", ";
+			$js .= '"overlibwidth":' . $this->overlibheight . ', ';
+			$js .= '"overlibheight":' . $this->overlibwidth . ', ';
+			$js .= '"iconfile":' . js_escape($this->iconfile). ', ';
 		}
 
-		$js .= "\"iconcachefile\":" . js_escape($this->cachefile);
+		$js .= '"iconcachefile":' . js_escape($this->cachefile);
 		$js .= "},\n";
 
 		return $js;
 	}
-};
+}
 

@@ -45,19 +45,19 @@
  */
 class WeatherMapPostProcessorExample extends WeatherMapPostProcessor {
 	function run(&$map) {
-		$enable = $map->get_hint("post_test_enable");
+		$enable = $map->get_hint('post_test_enable');
 
 		if ($enable) {
-			wm_debug(__CLASS__ . " is here\n");
+			wm_debug(__CLASS__ . ' is here');
 
             /**
 			 * do your work in here...
 			 */
 
-			$orig = $map->get_note("test");
-			$map->add_note("test", $orig . " TESTYTEST");
+			$orig = $map->get_note('test');
+			$map->add_note('test', $orig . ' TESTYTEST');
 		} else {
-			wm_debug(__CLASS__ . " Not Enabled\n");
+			wm_debug(__CLASS__ . ' Not Enabled');
 		}
 	}
 }

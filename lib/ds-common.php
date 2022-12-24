@@ -48,18 +48,19 @@ function UpdateCactiData(&$item, $local_data_id) {
 	} else {
 		$to_set = array();
 
-		$set_speed = intval($item->get_hint("cacti_use_ifspeed"));
+		$set_speed = intval($item->get_hint('cacti_use_ifspeed'));
 
-		$r3 = db_fetch_assoc_prepared("SELECT data_local.host_id, field_name, field_value
-			FROM data_local, host_snmp_cache USE INDEX (host_id)
-			WHERE data_local.id = ?
-			AND data_local.host_id = host_snmp_cache.host_id
-			AND data_local.snmp_index = host_snmp_cache.snmp_index
-			AND data_local.snmp_query_id = host_snmp_cache.snmp_query_id",
+		$r3 = db_fetch_assoc_prepared('SELECT dl.host_id, field_name, field_value
+			FROM data_local AS dl
+			INNER JOIN host_snmp_cache AS hsc USE INDEX (host_id)
+			ON dl.host_id = hsc.host_id
+			AND dl.snmp_index = hsc.snmp_index
+			AND dl.snmp_query_id = hsc.snmp_query_id
+			WHERE data_local.id = ?',
 			array($local_data_id));
 
 		foreach ($r3 as $vv) {
-			$vname = "cacti_" . $vv['field_name'];
+			$vname = 'cacti_' . $vv['field_name'];
 			$to_set[$vname] = $vv['field_value'];
 		}
 
@@ -97,16 +98,18 @@ function UpdateCactiData(&$item, $local_data_id) {
 			$to_set['cacti_host_id'] = intval($vv['host_id']);
 		}
 
-		$r4 = db_fetch_row_prepared("SELECT DISTINCT graph_templates_item.local_graph_id, title_cache
-			FROM graph_templates_item, graph_templates_graph, data_template_rrd
-			WHERE data_template_rrd.id = task_item_id
-			AND graph_templates_graph.local_graph_id = graph_templates_item.local_graph_id
-			AND local_data_id = ?
-			LIMIT 1",
+		$r4 = db_fetch_row_prepared('SELECT gti.local_graph_id, title_cache
+			FROM graph_templates_item AS gti
+			INNER JOIN graph_templates_graph AS gtg
+			ON gtg.local_graph_id = gti.local_graph_id
+			INNER JOIN data_template_rrd AS dtr
+			ON dtr.id = gti.task_item_id
+			AND dtr.local_data_id = ?
+			LIMIT 1',
 			array($local_data_id));
 
 		if (isset($r4['local_graph_id'])) {
-			$to_set["cacti_graph_id"] = intval($r4['local_graph_id']);
+			$to_set['cacti_graph_id'] = intval($r4['local_graph_id']);
 		}
 
 		$map->dsinfocache[$local_data_id] = $to_set;
