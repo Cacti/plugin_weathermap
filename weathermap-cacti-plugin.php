@@ -36,14 +36,15 @@
  +-------------------------------------------------------------------------+
 */
 
- $guest_account = true;
+$guest_account  = true;
+$showversionbox = false;
 
- chdir('../../');
- include_once('./include/auth.php');
+chdir('../../');
+include_once('./include/auth.php');
 
- // include the weathermap class so that we can get the version
- include_once(__DIR__ . '/lib/Weathermap.class.php');
- include_once(__DIR__ . '/lib/compat.php');
+// include the weathermap class so that we can get the version
+include_once(__DIR__ . '/lib/Weathermap.class.php');
+include_once(__DIR__ . '/lib/compat.php');
 
 set_default_action();
 
@@ -288,6 +289,7 @@ switch ($action) {
 			print '<!DOCTYPE html>' . PHP_EOL;
 			print '<html><head>';
 			print '<link rel="stylesheet" type="text/css" media="screen" href="cacti-resources/weathermap.css"/>';
+			print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'include/fa/css/all.css' . '"/>';
 			print '<script type="text/javascript" src="' . $config['url_path'] . 'include/js/jquery.js"></script>';
 			print '</head><body id="wm_fullscreen">';
 		} else {
@@ -309,7 +311,9 @@ switch ($action) {
 			weathermap_versionbox();
 		}
 
-		bottom_footer();
+		if ($fullscreen == 0) {
+			bottom_footer();
+		}
 
 		break;
 	case 'viewmap':
@@ -382,7 +386,11 @@ function weathermap_cycleview() {
 }
 
 function weathermap_singleview($mapid) {
-	$is_wm_admin = false;
+	if (api_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
+		$is_wm_admin = true;
+	} else {
+		$is_wm_admin = false;
+	}
 
 	$outdir  = __DIR__ . '/output/';
 	$confdir = __DIR__ . '/configs/';
@@ -408,35 +416,30 @@ function weathermap_singleview($mapid) {
 		$maptitle = $map['titlecache'];
 
 		if ($maptitle == '') {
-			$maptitle = 'Map for config file: ' . $map['configfile'];
+			$maptitle = __esc('Map for config file: %s', $map['configfile']);
 		}
 
 		weathermap_mapselector($mapid);
 
-		print '<br/><table width="100%" style="background-color: #f5f5f5; border: 1px solid #bbbbbb;" align="center" cellpadding="1">' . PHP_EOL;
-		?>
-		<tr class='even noprint'>
-			<td>
-				<table class='filterTable'>
-					<tr>
-						<td class='textHeader nowrap'>
-							<?php print html_escape($maptitle);
+		if ($is_wm_admin) {
+			$maptitle .= '<span> [ ';
+			$maptitle .= '<a class="pic" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a> | ';
+			$maptitle .= '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid . '">' . __esc('Map Settings', 'weathermap') . '</a> | ';
+			$maptitle .= '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid . '">' . __esc('Map Permissions', 'weathermap') . '</a> | ';
+			$maptitle .= "<a href='" . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . $map['configfile']) . "'>" . __esc('Edit Map', 'weathermaps') . "</a>";
+			$maptitle .= ' ] </span>';
+		} else {
+			$maptitle .= '<span> [ ';
+			$maptitle .= '<a class="pic" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a>';
+			$maptitle .= ' ] </span>';
+		}
 
-							if ($is_wm_admin) {
-								print '<span style="font-size: 80%">';
-								print '[<a href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid . '">' . __('Map Settings', 'weathermap') . '</a> |';
-								print '<a href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid . '">' . __('Map Permissions', 'weathermap') . '</a> |';
-								print "<a href=''>Edit Map</a>]";
-								print '</span>';
-							}
-							?>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<?php
+		print '<div class="cactiTable">';
+		print '<div class="cactiTableTitle">' . $maptitle . '</div>';
+		print '<div class="cactiTableButton"></div>';
+		print '</div>';
 
+		print '<table class="cactiTable">';
 		print '<tr><td>';
 
 		if (file_exists($htmlfile)) {
@@ -491,34 +494,18 @@ function weathermap_thumbview($limit_to_group = -1) {
 
 	// if there's only one map, ignore the thumbnail setting and show it fullsize
 	if (cacti_sizeof($maplist) == 1) {
-		$pagetitle = "Network Weathermap";
+		$pagetitle = __esc('Network Weathermap', 'weathermap');
 
 		weathermap_fullview(false, false, $limit_to_group);
 	} else {
-		$pagetitle = "Network Weathermaps";
-
-		print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='2'>\n";
+		$pagetitle = __('Network Weathermaps [ %sAutomatically Cycle%s ]', '<a class="pic linkOverDark" style="text-decoration:none" href="' . html_escape($config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle') . '">', '</a>', 'weathermap');
 
 		?>
-		<tr class="even noprint">
-			<td>
-				<table width="100%" cellpadding="0" cellspacing="0">
-					<tr>
-						<td class="textHeader" nowrap> <?php print $pagetitle; ?></td>
-						<td align="right">
-							<a href="<?php print $config['url_path'] . "plugins/weathermap/weathermap-cacti-plugin.php"; ?>?action=viewmapcycle">automatically cycle</a> between full-size maps)
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<i>Click on thumbnails for a full view (or you can <a href="<?php print $config['url_path'] . "plugins/weathermap/weathermap-cacti-plugin.php"; ?>?action=viewmapcycle">automatically cycle</a> between full-size maps)</i>
-			</td>
-		</tr>
+		<div class="cactiTable">
+			<div class="cactiTableTitle"><?php print $pagetitle;?></div>
+			<div class="cactiTableButton"></div>
+		</div>
 		<?php
-		print '</table>';
 
 		$showlivelinks = intval(read_config_option('weathermap_live_view'));
 
@@ -526,13 +513,13 @@ function weathermap_thumbview($limit_to_group = -1) {
 
 		$i = 0;
 
-		if (cacti_sizeof($maplist) > 0) {
+		if (cacti_sizeof($maplist)) {
 			$outdir  = __DIR__ . '/output/';
 			$confdir = __DIR__ . '/configs/';
 
 			$imageformat = strtolower(read_config_option('weathermap_output_format'));
 
-			print '<br/><table width="100%" style="background-color: #f5f5f5; border: 1px solid #bbbbbb;" align="center" cellpadding="1">';
+			print '<table class="cactiTable">';
 			print '<tr><td class="wm_gallery">';
 
 			foreach ($maplist as $map) {
@@ -555,16 +542,16 @@ function weathermap_thumbview($limit_to_group = -1) {
 					$maptitle = __esc('Map for config file: %s', $map['configfile'], 'weathermap');
 				}
 
-				print '<div class="wm_thumbcontainer" style="margin: 2px; border: 1px solid #bbbbbb; padding: 2px; float:left;">';
+				print '<div class="cactiTable" style="margin-right:2px;float:left;max-width:' . $map['thumb_width'] . 'px">';
 
 				if (file_exists($thumbfile)) {
-					print '<div class="wm_thumbtitle" style="font-size: 1.2em; font-weight: bold; text-align: center">' . $maptitle . '</div><a href=' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmap&id=' . $map['filehash'] . '><img class="wm_thumb" ' . $imgsize . 'src="' . $thumburl . '" alt="' . $maptitle . '" border="0" hspace="5" vspace="5" title="' . $maptitle . '"/></a>';
+					print '<div class="tableHeader"><div class="textSubHeaderDark" style="padding:3px 0px 0px 5px">' . html_escape($maptitle) . '</div></div><div><a href=' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmap&id=' . $map['filehash'] . '><img class="wm_thumb" ' . $imgsize . 'src="' . $thumburl . '" alt="" hspace="5" vspace="5" style="margin:0px" title="' . html_escape($maptitle) . '"/></a></div>';
 				} else {
 					print __('(thumbnail for map not created yet)', 'weathermap');
 				}
 
 				if ($showlivelinks == 1) {
-					print '<a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=liveview&id=' . $map['filehash'] . '">' . __('(live)', 'weathermap') . '</a>';
+					print '<a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=liveview&id=' . $map['filehash'] . '">' . __('(Live View)', 'weathermap') . '</a>';
 				}
 
 				print '</div> ';
@@ -628,45 +615,52 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 
 	if ($cycle) {
 		if ($fullscreen) {
-			print "<script src='" . $config['url_path'] . "plugins/weathermap/vendor/jquery/dist/jquery.min.js'></script>";
+			print '<script src="' . $config['url_path'] . 'plugins/weathermap/vendor/jquery/dist/jquery.min.js"></script>';
 		}
 
-		print "<script src='" . $config['url_path'] . "plugins/weathermap/vendor/jquery-idletimer/dist/idle-timer.min.js'></script>";
-
-		$extra = '';
+		print '<script src="' . $config['url_path'] . 'plugins/weathermap/vendor/jquery-idletimer/dist/idle-timer.min.js"></script>';
 
 		if ($limit_to_group > 0) {
-			$extra = ' in this group';
+			$html = __('Showing %s1%s of %s1%s. Cycling all available maps in this group.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');
+		} else {
+			$html = __('Showing %s1%s of %s1%s. Cycling all available maps.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');
 		}
 
-		?>
-		<div id='wmcyclecontrolbox' class='<?php print $class ?>'>
-			<div id='wm_progress'></div>
-			<div id='wm_cyclecontrols'>
-				<a id='cycle_stop' href='?action='>
-					<img src='<?php print $config['url_path']; ?>plugins/weathermap/cacti-resources/img/control_stop_blue.png' width='16' height='16'/>
-				</a>
-				<a id='cycle_prev' href='#'>
-					<img src='<?php print $config['url_path']; ?>plugins/weathermap/cacti-resources/img/control_rewind_blue.png' width='16' height='16'/>
-				</a>
-                <a id='cycle_pause' href='#'>
-					<img src='<?php print $config['url_path']; ?>plugins/weathermap/cacti-resources/img/control_pause_blue.png' width='16' height='16'/>
-				</a>
-                <a id='cycle_next' href='#'>
-					<img src='<?php print $config['url_path']; ?>plugins/weathermap/cacti-resources/img/control_fastforward_blue.png' width='16' height='16'/>
-				</a>
-                <a target='_new' id='cycle_fullscreen' href='<?php print $config['url_path']; ?>plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=1&group=<?php print $limit_to_group; ?>'>
-					<img src='cacti-resources/img/arrow_out.png' width='16' height='16'/>
-				</a>
-				Showing <span id='wm_current_map'>1</span> of <span id='wm_total_map'>1</span>. Cycling all available maps<?php print $extra; ?>.
+		if ($fullscreen == 0) {
+			$pagetitle .= ' <span class="linkOverDark"> [ ' . "
+				<a id='cycle_stop' class='pic fas fa-stop' style='font-size:11px' href='?action='></a>
+				<a id='cycle_prev' class='fas fa-backward' style='font-size:11px' href='#'></a>
+				<a id='cycle_pause' class='fas fa-pause' style='font-size:11px' href='#'></a>
+				<a id='cycle_next' class='fas fa-forward' style='font-size:11px' href='#'></a>
+				<a target='_new' class='fas fa-expand-arrows-alt' style='font-size:11px' id='cycle_fullscreen' href='" . $config['url_path'] . "plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=1&group=" . $limit_to_group . "'></a> ]
+				[ " . $html . ' ] </span>';
+			?>
+			<div class="cactiTable">
+				<div class="cactiTableTitle"><?php print $pagetitle;?></div>
+				<div class="cactiTableButton"></div>
 			</div>
-		</div>
-		<?php
+			<?php
+		} else {
+			?>
+			<div id='wmcyclecontrolbox' class='<?php print $class ?>'>
+				<div id='wm_progress'></div>
+				<div id='wm_cyclecontrols'>
+					<a id='cycle_stop' class='fas fa-stop' href='?action='></a>
+					<a id='cycle_prev' class='fas fa-backward' href='#'></a>
+	                <a id='cycle_pause' class='fas fa-pause' href='#'></a>
+              		 	<a id='cycle_next' class='fas fa-forward' href='#'></a>
+      		         	<a target='_new' class='fas fa-expand-arrows-alt' id='cycle_fullscreen' href='<?php print $config['url_path']; ?>plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=1&group=<?php print $limit_to_group; ?>'></a>
+					<?php print $html;?>
+				</div>
+			</div>
+			<?php
+		}
 	}
 
 	// only draw the whole screen if we're not cycling, or we're cycling without fullscreen mode
-	if ($cycle == false || $fullscreen == 0) {
-		print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='2'>\n";
+	//if ($cycle == false || $fullscreen == 0) {
+	if (1 == 0) {
+		print '<table class="cactiTable">';
 
 		?>
 		<tr class='even'>
@@ -716,19 +710,13 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 			print '<div class="weathermapholder" id="mapholder_' . $map['filehash'] . '">';
 
 			if ($cycle == false || $fullscreen == 0) {
-				print '<br/><table width="100%" style="background-color: #f5f5f5; border: 1px solid #bbbbbb;" align="center" cellpadding="1">';
+				print '<table class="cactiTable">';
 
 				?>
-				<tr class='even'>
-					<td colspan='3'>
-						<table class='filterTable'>
-							<tr>
-								<td align='left' class='textHeaderDark'>
-									<a name='map_<?php print $map['filehash']; ?>'></a>
-									<?php print $maptitle; ?>
-								</td>
-							</tr>
-						</table>
+				<tr class='tableHeader'>
+					<td class='left'>
+						<a name='map_<?php print $map['filehash']; ?>'></a>
+						<?php print $maptitle; ?>
 					</td>
 				</tr>
 				<tr>
@@ -737,7 +725,7 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 			}
 
 			if (file_exists($htmlfile)) {
-				print '<div class="fixscroll" style="overflow:auto">';
+				print '<div class="fixscroll" style="overflow:auto;padding-top:5px">';
 
 				include($htmlfile);
 
@@ -763,7 +751,7 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 			?>
 			<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/weathermap/cacti-resources/map-cycle.js'></script>
 			<script type='text/javascript'>
-			$(function () {
+			$(function() {
 				WMcycler.start({
 					fullscreen: <?php print($fullscreen ? '1' : '0'); ?>,
 					poller_cycle: <?php print $poller_cycle * 1000; ?>,
@@ -789,30 +777,32 @@ function weathermap_translate_id($idname) {
 }
 
 function weathermap_versionbox() {
-	global $WEATHERMAP_VERSION, $config;
+	global $WEATHERMAP_VERSION, $config, $showversionbox;
 
-	$pagefoot = __('Powered by %s PHP Weathermap Version %d %s', '<a href="http://www.network-weathermap.com/?v=' . $WEATHERMAP_VERSION . '">', $WEATHERMAP_VERSION, '</a>', 'weathermap');
+	if ($showversionbox) {
+		$pagefoot = __('Powered by %s PHP Weathermap Version %d %s', '<a href="http://www.network-weathermap.com/?v=' . $WEATHERMAP_VERSION . '">', $WEATHERMAP_VERSION, '</a>', 'weathermap');
 
-	if (api_plugin_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
-		$pagefoot .= ' --- <a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php" title="' . __esc('Go to the map management page', 'weathermap') . '">' . __('Weathermap Management', 'weathermap') . '</a>';
-		$pagefoot .= ' | <a target="_blank" href="docs/">' . __('Local Documentation', 'weathermap') . '</a>';
-		$pagefoot .= ' | <a target="_blank" href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-editor.php">' . __('Editor', 'weathermap') . '</a>';
+		if (api_plugin_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
+			$pagefoot .= ' --- <a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php" title="' . __esc('Go to the map management page', 'weathermap') . '">' . __('Weathermap Management', 'weathermap') . '</a>';
+			$pagefoot .= ' | <a target="_blank" href="docs/">' . __('Local Documentation', 'weathermap') . '</a>';
+			$pagefoot .= ' | <a target="_blank" href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-editor.php">' . __('Editor', 'weathermap') . '</a>';
+		}
+
+		print '<br/><table width="100%" style="background-color: #f5f5f5; border: 1px solid #bbbbbb;" align="center" cellpadding="1">';
+
+		?>
+		<tr class='even'>
+			<td>
+				<table class='filterTable'>
+					<tr>
+						<td class='textHeader' nowrap> <?php print $pagefoot; ?> </td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<?php
+		print '</table>';
 	}
-
-	print '<br/><table width="100%" style="background-color: #f5f5f5; border: 1px solid #bbbbbb;" align="center" cellpadding="1">';
-
-	?>
-	<tr class='even'>
-		<td>
-			<table class='filterTable'>
-				<tr>
-					<td class='textHeader' nowrap> <?php print $pagefoot; ?> </td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<?php
-	print '</table>';
 }
 
 function readfile_chunked($filename) {
