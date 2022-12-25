@@ -811,7 +811,7 @@ class WeatherMapLink extends WeatherMapItem {
 	}
 
 	function asJS() {
-		$js  = '';
+		$js  = "\t\t\t";
 		$js .= 'Links[' . js_escape($this->name) . '] = {';
 		$js .= '"id":' . $this->id. ', ';
 
@@ -854,7 +854,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$js .= 'overliburl:' . js_escape(join(' ', $this->overliburl[IN]));
 
 		$js .= "};\n";
-		$js .= 'LinkIDs["L' . $this->id . '"] = '. js_escape($this->name) . ";\n";
+		$js .= "\t\t\t" . 'LinkIDs["L' . $this->id . '"] = '. js_escape($this->name) . ";\n";
 
 		return $js;
 	}

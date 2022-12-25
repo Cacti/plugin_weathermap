@@ -945,7 +945,7 @@ class WeatherMapNode extends WeatherMapItem {
 	}
 
 	function asJS() {
-		$js  = '';
+		$js  = "\t\t\t";
 		$js .= 'Nodes[' . js_escape($this->name) . '] = {';
 		$js .= 'x:' . (is_null($this->x)? "'null'" : $this->x) . ', ';
 		$js .= 'y:' . (is_null($this->y)? "'null'" : $this->y) . ', ';
@@ -969,14 +969,14 @@ class WeatherMapNode extends WeatherMapItem {
 		}
 
 		$js .= "};\n";
-		$js .= 'NodeIDs["N' . $this->id . '"] = ' . js_escape($this->name) . ";\n";
+		$js .= "\t\t\tNodeIDs['N" . $this->id . "'] = " . js_escape($this->name) . ";\n";
 
 		return $js;
 	}
 
-	function asJSON($complete=true) {
-		$js  = '';
-		$js .= '' . js_escape($this->name) . ': {';
+	function asJSON($complete = true) {
+		$js  = "\t\t\t";
+		$js .= js_escape($this->name) . ': {';
 		$js .= '"id":' . $this->id. ', ';
 		$js .= '"x":' . ($this->x - $this->centre_x). ', ';
 		$js .= '"y":' . ($this->y - $this->centre_y) . ', ';

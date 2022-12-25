@@ -32,34 +32,29 @@ var helptexts = {
 	'tb_default': 'or click a Node or Link to edit it\'s properties'
 };
 
-$(document).ready(initJS);
 $(document).on('unload', cleanupJS);
 
+$(function() {
+	initJS();
+});
+
 function initJS() {
-	// check if DOM is available, if not, we'll stop here, leaving the warning showing
-	if (!document.getElementById || !document.createTextNode || !document.getElementsByTagName) {
-		// I'm pretty sure this is actually impossible now.
-		return;
-	}
-
-	// check if there is a 'No JavaScript' message
-	$('#nojs').hide();
-
-	// so that's the warning hidden, now let's show the content
-
-	// check if there is a 'with JavaScript' div
-	$('#withjs').show();
-
 	// if the xycapture element is there, then we are in the main edit screen
-	if (document.getElementById('xycapture')) {
+	if ($('#xycapture').length) {
 		attach_click_events();
 		attach_help_events();
-		show_context_help('node_label', 'node_help');
+		//show_context_help('node_label', 'node_help');
 
 		// set the mapmode, so we know where we stand.
 		mapmode('existing');
+
+		$('area').draggable();
 	}
 
+	$('#frmMain').submit(function(event) {
+		event.preventDefault();
+		form_submit();
+	});
 }
 
 function cleanupJS() {
@@ -73,7 +68,7 @@ function attach_click_events() {
 	$("area[id^='TIMES']").attr('href', '#').click(position_timestamp);
 	$("area[id^='LEGEN']").attr('href', '#').click(position_legend);
 
-	if (fromplug===1) {
+	if (fromplug === 1) {
 		$('#tb_newfile').html('Return to<br>Cacti').click(function() {
 			window.location = 'weathermap-cacti-plugin-mgmt.php';
 		});
@@ -105,27 +100,36 @@ function attach_click_events() {
 
 	$('#link_via').click(via_link);
 
-	$('.wm_submit').click(do_submit);
+	$('.wm_submit').click(form_submit);
 	$('.wm_cancel').click(cancel_op);
 
 	$('#link_cactipick').click(cactipicker).attr('href','#');
 	$('#node_cactipick').click(nodecactipicker).attr('href','#');
 
-	$('#xycapture').mouseover(function(event) {coord_capture(event);});
-	$('#xycapture').mousemove(function(event) {coord_update(event);});
-	$('#xycapture').mouseout(function(event) {coord_release(event);});
+	$('#xycapture').mouseover(function(event) {
+		coord_capture(event);
+	});
+
+	$('#xycapture').mousemove(function(event) {
+		coord_update(event);
+	});
+
+	$('#xycapture').mouseout(function(event) {
+		coord_release(event);
+	});
 }
 
 // used by the cancel button on each of the properties dialogs
 function cancel_op() {
 	hide_all_dialogs();
+
 	$('#action').val('');
 }
 
 function help_handler(e) {
 	var objectid = $(this).attr('id');
-	var section = objectid.slice(0, objectid.indexOf('_'));
-	var target = section + '_help';
+	var section  = objectid.slice(0, objectid.indexOf('_'));
+	var target   = section + '_help';
 	var helptext = 'undefined';
 
 	if (helptexts[objectid]) {
@@ -154,15 +158,16 @@ function click_handler(e) {
 
 	objecttype = alt.slice(0, 4);
 	objectname = alt.slice(5, alt.length);
-	objectid = objectname.slice(0,objectname.length-2);
+	objectid   = objectname.slice(0,objectname.length-2);
 
 	// if we're not in a mode yet...
-	if (document.frmMain.action.value === '') {
+	if ($('#action').val() === '') {
 		// if we're waiting for a node specifically (e.g. 'make link') then ignore links here
 		if (objecttype == 'NODE') {
 			// chop off the suffix
 			// objectid = objectname.slice(0,objectname.length-2);
 			objectname = NodeIDs[objectid];
+
 			show_node(objectname);
 		}
 
@@ -170,30 +175,28 @@ function click_handler(e) {
 			// chop off the suffix
 			// objectid = objectname.slice(0,objectname.length-2);
 			objectname = LinkIDs[objectid];
+
 			show_link(objectname);
 		}
 	} else {
 		// we've got a command queued, so do the appropriate thing
-		if (objecttype == 'NODE' && document.getElementById('action').value == 'add_link') {
-			document.getElementById('param').value = NodeIDs[objectid];
-			document.frmMain.submit();
-		} else if (objecttype == 'NODE' && document.getElementById('action').value == 'add_link2') {
-			document.getElementById('param').value = NodeIDs[objectid];
-			document.frmMain.submit();
+		if (objecttype == 'NODE' && $('#action').val() == 'add_link') {
+			$('#param').val(NodeIDs[objectid]);
+			form_submit();
+		} else if (objecttype == 'NODE' && $('#action').val() == 'add_link2') {
+			$('#param').val(NodeIDs[objectid]);
+			form_submit();
 		} else {
 			// Halfway through one operation, the user has done something unexpected.
 			// reset back to standard state, and see if we can oblige them
 			//		alert('A bit confused');
-			document.frmMain.action.value = '';
+			$('#action').val('');
+
 			hide_all_dialogs()
+
 			click_handler(e);
 		}
 	}
-}
-
-// used by the Submit button on each of the properties dialogs
-function do_submit() {
-	document.frmMain.submit();
 }
 
 function cactipicker() {
@@ -229,7 +232,8 @@ function show_context_help(itemid, targetid) {
 	//  {
 	message = "We'd show helptext for " + itemid + " in the'" + targetid + "' div";
 	// }
-	helpbox = document.getElementById(targetid);
+
+	helpbox = $('#'+targetid);
 	helpboxtext = helpbox.firstChild;
 	helpboxtext.nodeValue = message;
 }
@@ -238,7 +242,9 @@ function manage_colours() {
 	mapmode('existing');
 
 	hide_all_dialogs();
-	document.getElementById('action').value = 'set_map_colours';
+
+	$('#action').val('set_map_colours');
+
 	show_dialog('dlgColours');
 }
 
@@ -246,13 +252,17 @@ function manage_images() {
 	mapmode('existing');
 
 	hide_all_dialogs();
-	document.getElementById('action').value = 'set_image';
+
+	$('#action').val('set_image');
+
 	show_dialog('dlgImages');
 }
 
 function prefs() {
 	hide_all_dialogs();
-	document.getElementById('action').value = 'editor_settings';
+
+	$('#action').val('editor_settings');
+
 	show_dialog('dlgEditorSettings');
 }
 
@@ -268,96 +278,173 @@ function new_file() {
 
 function mapmode(m) {
 	if (m == 'xy') {
-		document.getElementById('debug').value = 'xy';
-		document.getElementById('xycapture').style.display = 'inline';
-		document.getElementById('existingdata').style.display = 'none';
+		$('#debug').val('xy');
+		$('#xycapture').css('display', 'inline');
+		$('#existingdata').css('display', 'none');
 	} else if (m == 'existing') {
-		document.getElementById('debug').value = 'existing';
-		document.getElementById('xycapture').style.display = 'none';
-		document.getElementById('existingdata').style.display = 'inline';
+		$('#debug').val('existing');
+		$('#xycapture').css('display', 'none');
+		$('#existingdata').css('display', 'inline');
 	} else {
 		alert('invalid mode');
 	}
 }
 
 function add_node() {
-	document.getElementById('tb_help').innerText = 'Click on the map where you would like to add a new node.';
-	document.getElementById('action').value = 'add_node';
+	$('#tb_help').text('Click on the map where you would like to add a new node.');
+	$('#action').val('add_node');
+
 	mapmode('xy');
 }
 
 function delete_node() {
-	if (confirm('This node (and any links it is part of) will be deleted permanently.')) {
-		document.getElementById('action').value = 'delete_node';
-		document.frmMain.submit();
+	if ($('.dlgConfirm').length == 0) {
+		$('body').append('<div class="dlgConfirm"></div>');
 	}
+
+	$('.dlgConfirm').text('WARNING: Pressing \'Delete Node\' will delete this Node and any Links its a part of.');
+
+	mapmode('xy');
+
+	$('.dlgConfirm').dialog({
+		resizable: false,
+		title: 'Delete Node Confirmation',
+		height: 'auto',
+		width: 400,
+		modal: true,
+		buttons: {
+			Cancel: function() {
+				$(this).dialog('close');
+			},
+			'Delete Node': function() {
+				$(this).dialog('close');
+				hide_all_dialogs();
+				$('#action').val('delete_node');
+				form_submit();
+			}
+		}
+	});
 }
 
 function clone_node() {
-	document.getElementById('action').value = 'clone_node';
-	document.frmMain.submit();
+	$('#action').val('clone_node');
+	form_submit();
 }
 
 function edit_node() {
-	document.getElementById('action').value = 'edit_node';
-	show_itemtext('node',document.frmMain.node_name.value);
+	$('#action').val('edit_node');
+
+	show_itemtext('node', $('#node_name').val());
 	// document.frmMain.submit();
 }
 
 function edit_link() {
-	document.getElementById('action').value = 'edit_link';
-	show_itemtext('link',document.frmMain.link_name.value);
+	$('#action').val('edit_link');
+
+	show_itemtext('link', $('#link_name').val());
 	// document.frmMain.submit();
 }
 
 function move_node() {
 	hide_dialog('dlgNodeProperties');
-	document.getElementById('tb_help').innerText = 'Click on the map where you would like to move the node to.';
-	document.getElementById('action').value = 'move_node';
+
+	$('#tb_help').text('Click on the map where you would like to move the node to.');
+	$('#action').val('move_node');
+
 	mapmode('xy');
 }
 
 function via_link() {
 	hide_dialog('dlgLinkProperties');
-	document.getElementById('tb_help').innerText = 'Click on the map via which point you whant to redirect link.';
-	document.getElementById('action').value = 'via_link';
+
+	$('#tb_help').text('Click on the map via which point you whant to redirect link.');
+	$('#action').val('via_link');
+
 	mapmode('xy');
 }
 
 function add_link() {
-	document.getElementById('tb_help').innerText = 'Click on the first node for one end of the link.';
-	document.getElementById('action').value = 'add_link';
+	$('#tb_help').text('Click on the first node for one end of the link.');
+	$('#action').val('add_link');
+
 	mapmode('existing');
 }
 
 function delete_link() {
 	if (confirm('This link will be deleted permanently.')) {
-		document.getElementById('action').value = 'delete_link';
-		document.frmMain.submit();
+		$('#action').val('delete_link');
+		form_submit();
 	}
+}
+
+function form_submit() {
+	var data = $('input, select, textarea').serialize();
+
+	$.ajax({
+		type: 'POST',
+		url: editor_url,
+		data: data,
+		success: function(html) {
+			console.log('done');
+
+			var htmlObject  = $(html);
+
+			if (htmlObject != null) {
+				var newhtml = htmlObject.filter('#mainView').html();
+
+				if (newhtml != null) {
+					$('#mainView').fadeOut('fast').empty().html(newhtml).fadeIn('fast');;
+				} else {
+					var url = editor_url + '?action=nothing&mapname=' + $('#mapname').val();
+					document.location = url;
+				}
+			}
+		}
+	});
+}
+
+function loadPage(href) {
+	$.get(href)
+	.done(function(html) {
+		$(document).replaceWith(html);
+	})
+	.fail(function(html) {
+		console.log('failed');
+	});
+
+	return false;
 }
 
 function map_properties() {
 	mapmode('existing');
 
 	hide_all_dialogs();
-	document.getElementById('action').value = 'set_map_properties';
+
+	$('#action').val('set_map_properties');
+
 	show_dialog('dlgMapProperties');
-	document.getElementById('map_title').focus();
+
+	$('#map_title').focus();
 }
 
 function map_style() {
 	mapmode('existing');
 
 	hide_all_dialogs();
-	document.getElementById('action').value = 'set_map_style';
+
+	$('#action').val('set_map_style');
+
+	//$('#fontsamples').attr('src', '?action=fontsamples&mapname='+$('#mapname').val();
+
 	show_dialog('dlgMapStyle');
-	document.getElementById('mapstyle_linklabels').focus();
+
+	$('#mapstyle_linklabels').focus();
 }
 
 function position_timestamp() {
-	document.getElementById('tb_help').innerText = 'Click on the map where you would like to put the timestamp.';
-	document.getElementById('action').value = 'place_stamp';
+	$('#tb_help').text('Click on the map where you would like to put the timestamp.');
+	$('#action').val('place_stamp');
+
 	mapmode('xy');
 }
 
@@ -399,14 +486,16 @@ function position_legend(e) {
 }
 
 function real_position_legend(scalename) {
-	document.getElementById('tb_help').innerText = 'Click on the map where you would like to put the legend.';
-	document.getElementById('action').value = 'place_legend';
-	document.getElementById('param').value = scalename;
+	$('#tb_help').text('Click on the map where you would like to put the legend.');
+	$('#action').val('place_legend');
+	$('#param').val(scalename);
+
 	mapmode('xy');
 }
 
 function show_itemtext(itemtype,name) {
 	var found = -1;
+
 	mapmode('existing');
 
 	hide_all_dialogs();
@@ -417,11 +506,11 @@ function show_itemtext(itemtype,name) {
 
 	$('textarea#item_configtext').val('');
 
-	if (itemtype==='node') {
+	if (itemtype === 'node') {
 		$('#action').val('set_node_config');
 	}
 
-	if (itemtype==='link') {
+	if (itemtype === 'link') {
 		$('#action').val('set_link_config');
 	}
 
@@ -436,11 +525,11 @@ function show_itemtext(itemtype,name) {
 			action: 'fetch_config',
 			item_type: itemtype,
 			item_name: name,
-			mapname: document.frmMain.mapname.value
+			mapname: $('#mapname').val()
 		},
 		success: function(text) {
 			$('#item_configtext').val(text);
-			document.getElementById('item_configtext').focus();
+			$('#item_configtext').focus();
 			//  $('#dlgTextEdit').unblock();
 		}
 	});
@@ -448,6 +537,7 @@ function show_itemtext(itemtype,name) {
 
 function show_node(name) {
 	var found = -1;
+
 	mapmode('existing');
 
 	hide_all_dialogs();
@@ -455,40 +545,42 @@ function show_node(name) {
 	var mynode = Nodes[name];
 
 	if (mynode) {
-		document.frmMain.action.value = 'set_node_properties';
-		document.frmMain.node_name.value = name;
-		document.frmMain.node_new_name.value = name;
+		$('#action').val('set_node_properties');
+		$('#node_name').val(name);
+		$('#node_new_name').val(name);
 
-		document.frmMain.node_x.value = mynode.x;
-		document.frmMain.node_y.value = mynode.y;
+		$('#node_x').val(mynode.x);
+		node_y.value = mynode.y;
 
-		document.frmMain.node_name.value = mynode.name;
-		document.frmMain.node_new_name.value = mynode.name;
-		document.frmMain.node_label.value = mynode.label;
-		document.frmMain.node_infourl.value = mynode.infourl;
-		document.frmMain.node_hover.value = mynode.overliburl;
+		$('#node_name').val(mynode.name);
+		$('#node_new_name').val(mynode.name);
+		$('#node_label').val(mynode.label);
+		$('#node_infourl').val(mynode.infourl);
+		$('#node_hover').val(mynode.overliburl);
 
 		if (mynode.iconfile != '') {
 			// console.log(mynode.iconfile.substring(0,2));
-			if (mynode.iconfile.substring(0,2)=='::') {
-				document.frmMain.node_iconfilename.value = '--AICON--';
+			if (mynode.iconfile.substring(0,2) == '::') {
+				$('node_iconfilename').val('--AICON--');
 			} else {
-				document.frmMain.node_iconfilename.value = mynode.iconfile;
+				$('node_iconfilename').val(mynode.iconfile);
 			}
 		} else {
-			document.frmMain.node_iconfilename.value = '--NONE--';
+			$('node_iconfilename').val('--NONE--');
 		}
 
 		// save this here, just in case they choose delete_node or move_node
-		document.getElementById('param').value = mynode.name;
+		$('#param').val(mynode.name);
 
 		show_dialog('dlgNodeProperties');
-		document.getElementById('node_new_name').focus();
+
+		$('#node_new_name').focus();
 	}
 }
 
 function show_link(name) {
 	var found = -1;
+
 	mapmode('existing');
 
 	hide_all_dialogs();
@@ -496,27 +588,27 @@ function show_link(name) {
 	var mylink = Links[name];
 
 	if (mylink) {
-		document.frmMain.link_name.value = mylink.name;
-		document.frmMain.link_target.value = mylink.target;
-		document.frmMain.link_width.value = mylink.width;
+		$('#link_name').val(mylink.name);
+		$('#link_target').val(mylink.target);
+		$('#link_width').val(mylink.width);
 
-		document.frmMain.link_bandwidth_in.value = mylink.bw_in;
+		$('#link_bandwidth_in').val(mylink.bw_in);
 
 		if (mylink.bw_in == mylink.bw_out) {
-			document.frmMain.link_bandwidth_out.value = '';
-			document.frmMain.link_bandwidth_out_cb.checked = 1;
+			$('#link_bandwidth_out').val('');
+			$('#link_bandwidth_out_cb').prop('checked', true);
 		} else {
-			document.frmMain.link_bandwidth_out_cb.checked = 0;
-			document.frmMain.link_bandwidth_out.value = mylink.bw_out;
+			$('#link_bandwidth_out_cb').prop('checked', false);
+			$('#link_bandwidth_out').val(mylink.bw_out);
 		}
 
-		document.frmMain.link_infourl.value = mylink.infourl;
-		document.frmMain.link_hover.value = mylink.overliburl;
+		$('#link_infourl').val(mylink.infourl);
+		$('#link_hover').val(mylink.overliburl);
 
-		document.frmMain.link_commentin.value = mylink.commentin;
-		document.frmMain.link_commentout.value = mylink.commentout;
-		document.frmMain.link_commentposin.value = mylink.commentposin;
-		document.frmMain.link_commentposout.value = mylink.commentposout;
+		$('#link_commentin').val(mylink.commentin);
+		$('#link_commentout').val(mylink.commentout);
+		$('#link_commentposin').val(mylink.commentposin);
+		$('#link_commentposout').val(mylink.commentposout);
 
 		// if that didn't 'stick', then we need to add the special value
 		if ($('#link_commentposout').val() != mylink.commentposout) {
@@ -533,25 +625,34 @@ function show_link(name) {
 
 		document.getElementById('link_nodename2').firstChild.nodeValue = mylink.b;
 
-		document.getElementById('param').value = mylink.name;
+		$('#param').val(mylink.name);
 
-		document.frmMain.action.value = 'set_link_properties';
+		$('#action').val('set_link_properties');
 
 		show_dialog('dlgLinkProperties');
-		document.getElementById('link_bandwidth_in').focus();
+
+		$('#link_bandwidth_in').focus();
 	}
 }
 
 function show_dialog(dlg) {
-	document.getElementById(dlg).style.display = 'block';
+	$('#'+dlg).dialog({
+		autoOpen: true,
+		width: '600px',
+		modal: true,
+		height: 'auto',
+		resizable: false,
+		draggable: true
+	});
+//	document.getElementById(dlg).style.display = 'block';
 }
 
 function hide_dialog(dlg) {
-	document.getElementById(dlg).style.display = 'none';
-	// reset the action. The use pressed Cancel, if this function was called
-	// (that, or they're about to open a new Properties dialog, so the value is irrelevant)
-	document.frmMain.action.value = '';
-	//	alert('ACTION=' + document.frmMain.action.value);
+	if ($('#'+dlg).dialog('instance')) {
+		$('#'+dlg).dialog('close').dialog('destroy');
+	}
+
+	$('#action').val('');
 }
 
 function hide_all_dialogs() {
@@ -565,27 +666,6 @@ function hide_all_dialogs() {
 	hide_dialog('dlgEditorSettings');
 }
 
-function ElementPosition(param) {
-	var x=0, y=0;
-	var obj = (typeof param == 'string') ? document.getElementById(param) : param;
-
-	if (obj) {
-		x = obj.offsetLeft;
-		y = obj.offsetTop;
-
-		var body = document.getElementsByTagName('body')[0];
-
-		while (obj.offsetParent && obj!=body) {
-			x += obj.offsetParent.offsetLeft;
-			y += obj.offsetParent.offsetTop;
-			obj = obj.offsetParent;
-		}
-	}
-
-	this.x = x;
-	this.y = y;
-}
-
 function coord_capture(event) {
 	// $('#tb_coords').html('+++');
 }
@@ -595,11 +675,18 @@ function coord_update(event) {
 	var cursory = event.pageY;
 
 	// Adjust for coords relative to the image, not the document
-	var p = new ElementPosition('xycapture');
+	if ($('#xycapture').is(':visible')) {
+		var p = $('#xycapture').offset();
+	} else {
+		var p = $('#existing').offset();
+	}
 
-	cursorx -= p.x;
-	cursory -= p.y;
+	cursorx -= parseInt(p.left);
+	cursory -= parseInt(p.top);
 	cursory++; // fudge to make coords match results from imagemap (not sure why this is needed)
+
+	$('#x').val(cursorx);
+	$('#y').val(cursory);
 
 	$('#tb_coords').html('Position<br />'+ cursorx + ', ' + cursory);
 }
@@ -609,8 +696,8 @@ function coord_release(event) {
 }
 
 function tidy_link() {
-	document.getElementById('action').value = 'link_tidy';
-	document.frmMain.submit();
+	$('#action').val('link_tidy');
+	form_submit();
 }
 
 function attach_help_events() {

@@ -3678,32 +3678,30 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	function asJS() {
-		$js='';
+		$js = '';
 
 		$js .= "var Links = new Array();\n";
-		$js .= "var LinkIDs = new Array();\n";
+		$js .= "\t\t\tvar LinkIDs = new Array();\n";
 		# $js.=$this->defaultlink->asJS();
 
 		foreach ($this->links as $link) {
-			$js.=$link->asJS();
+			$js .= $link->asJS();
 		}
 
-		$js .= "var Nodes = new Array();\n";
-		$js .= "var NodeIDs = new Array();\n";
+		$js .= "\t\t\tvar Nodes = new Array();\n";
+		$js .= "\t\t\tvar NodeIDs = new Array();\n";
 		# $js.=$this->defaultnode->asJS();
 
 		foreach ($this->nodes as $node) {
-			$js.=$node->asJS();
+			$js .= $node->asJS();
 		}
 
 		return $js;
 	}
 
 	function asJSON() {
-		$json = '';
-
+		$json  = '';
 		$json .= "{ \n";
-
 		$json .= "\"map\": {  \n";
 
 		foreach (array_keys($this->inherit_fieldlist)as $fld) {
