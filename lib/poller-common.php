@@ -93,7 +93,7 @@ function weathermap_check_cron($time, $string) {
 	return ($matched);
 }
 
-function weathermap_run_maps($mydir) {
+function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 	global $config;
 	global $weathermap_debugging, $WEATHERMAP_VERSION;
 	global $weathermap_map;
@@ -110,6 +110,10 @@ function weathermap_run_maps($mydir) {
 
 	if ($weathermap_poller_start_time == 0) {
 		$weathermap_poller_start_time = $start_time;
+	}
+
+	if (!$force) {
+		cacti_log('NOTE: Weathermap is not scheduled to start yet', false, 'WEATHERMAP');
 	}
 
 	$outdir  = $mydir . '/output';
@@ -136,15 +140,24 @@ function weathermap_run_maps($mydir) {
 
 	chdir($mydir);
 
-	set_config_option('weathermap_last_start_time', time());
+	if (!$force && !cacti_sizeof($maps)) {
+		set_config_option('weathermap_last_start_time', time());
+	}
 
 	// first, see if the output directory even exists
 	if (is_dir($outdir) && is_writable($outdir)) {
-		$queryrows = db_fetch_assoc('SELECT m.*, g.name AS groupname
+		if (cacti_sizeof($maps)) {
+			$sql_where = 'AND m.id IN (' . implode(', ', $maps) . ')';
+		} else {
+			$sql_where = '';
+		}
+
+		$queryrows = db_fetch_assoc("SELECT m.*, g.name AS groupname
 			FROM weathermap_maps m, weathermap_groups g
 			WHERE m.group_id = g.id
-			AND active = "on"
-			ORDER BY sortorder, id');
+			AND active = 'on'
+			$sql_where
+			ORDER BY sortorder, id");
 
 		if (is_array($queryrows)) {
 			wm_debug('Iterating all maps.');
@@ -163,7 +176,7 @@ function weathermap_run_maps($mydir) {
 
 				wm_debug('FIRST TOUCH');
 
-				if (weathermap_check_cron($weathermap_poller_start_time, $map['schedule'])) {
+				if (weathermap_check_cron($weathermap_poller_start_time, $map['schedule']) || $force) {
 					$mapfile        = $confdir . '/' . $map['configfile'];
 					$htmlfile       = $outdir  . '/' . $map['filehash'] . '.html';
 					$imagefile      = $outdir  . '/' . $map['filehash'] . '.' . $imageformat;
@@ -174,7 +187,9 @@ function weathermap_run_maps($mydir) {
 					if (file_exists($mapfile)) {
 						wm_debug("Map: $mapfile -> $htmlfile & $imagefile", true);
 
-						set_config_option('weathermap_last_started_file', $weathermap_map);
+						if (!$force && !cacti_sizeof($maps)) {
+							set_config_option('weathermap_last_started_file', $weathermap_map);
+						}
 
 						$map_start = time();
 						weathermap_memory_check("MEM starting $mapcount");
@@ -327,7 +342,9 @@ function weathermap_run_maps($mydir) {
 
 						$mapcount++;
 
-						set_config_option('weathermap_last_finished_file', $weathermap_map);
+						if (!$force && !cacti_sizeof($maps)) {
+							set_config_option('weathermap_last_finished_file', $weathermap_map);
+						}
 					} else {
 						wm_warn(sprintf("Mapfile %s is not readable or doesn't exist [WMPOLL04]", $mapfile));
 					}
@@ -384,11 +401,13 @@ function weathermap_run_maps($mydir) {
 		$warning_notes = 'None';
 	}
 
-	$stats_string = sprintf('Time:%0.2f Maps:%d Warnings:%s Notes:%s', $duration, $mapcount, $total_warnings, $warning_notes);
+	if (!$force && !cacti_sizeof($maps)) {
+		$stats_string = sprintf('Time:%0.2f Maps:%d Warnings:%s Notes:%s', $duration, $mapcount, $total_warnings, $warning_notes);
 
-	cacti_log("STATS: WEATHERMAP $stats_string", true, 'SYSTEM');
+		cacti_log("STATS: WEATHERMAP $stats_string", true, 'SYSTEM');
 
-	set_config_option('weathermap_last_stats', $stats_string);
-	set_config_option('weathermap_last_finish_time', time());
+		set_config_option('weathermap_last_stats', $stats_string);
+		set_config_option('weathermap_last_finish_time', time());
+	}
 }
 

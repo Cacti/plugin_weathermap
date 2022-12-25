@@ -38,27 +38,32 @@
 
 chdir('../../');
 include_once('./include/auth.php');
-include_once('./include/config.php');
+//include_once('./include/config.php');
 
 $weathermap_confdir = realpath(__DIR__ . '/configs');
 
 // include the weathermap class so that we can get the version
 include_once(__DIR__ . '/lib/Weathermap.class.php');
 include_once(__DIR__ . '/lib/compat.php');
+include_once(__DIR__ . '/lib/poller-common.php');
 
 $actions = array(
 	'1' => __('Delete', 'weathermap'),
 	'2' => __('Duplicate', 'weathermap'),
 	'3' => __('Disable', 'weathermap'),
 	'4' => __('Enable', 'weathermap'),
-	'5' => __('Change Permissions', 'weathermap'),
-	'6' => __('Change Group', 'weathermap'),
+//	'5' => __('Change Permissions', 'weathermap'),
+//	'6' => __('Change Group', 'weathermap'),
 	'7' => __('Rebuild Now', 'weathermap')
 );
 
 set_default_action();
 
 switch ($action) {
+	case 'actions':
+		weathermap_form_actions();
+
+		break;
 	case 'enable_poller_output':
 		weathermap_setting_save(0, 'rrd_use_poller_output', 1);
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=map_settings&id=0');
@@ -351,9 +356,13 @@ switch ($action) {
 		include_once(__DIR__ . '/Weathermap.class.php');
 		include_once(__DIR__ . '/lib/poller-common.php');
 
-		weathermap_run_maps(__DIR__);
+		$start = microtime(true);
 
-		raise_message('rebuild_all', __('All Maps have been Rebuilt!', 'weathermap'), MESSAGE_LEVEL_INFO);
+		weathermap_run_maps(__DIR__, true);
+
+		$end = microtime(true);
+
+		raise_message('rebuild_all', __('All Maps have been Rebuilt in %0.2f Seconds!', $end - $start, 'weathermap'), MESSAGE_LEVEL_INFO);
 
 		header('Location: ' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?header=false');
 		exit;
@@ -365,6 +374,178 @@ switch ($action) {
 		maplist();
 		bottom_footer();
 		break;
+}
+
+function weathermap_form_actions() {
+	global $actions;
+
+	/* if we are to save this form, instead of display it */
+	if (isset_request_var('selected_items')) {
+		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
+
+		if ($selected_items != false) {
+			if (get_nfilter_request_var('drp_action') === '1') { // delete
+				for ($i=0;($i<cacti_count($selected_items));$i++) {
+					/* ================= input validation ================= */
+					input_validate_input_number($selected_items[$i]);
+					/* ==================================================== */
+
+					map_delete($selected_items[$i]);
+				}
+			} elseif (get_nfilter_request_var('drp_action') === '2') { // duplicate
+				for ($i=0;($i<cacti_count($selected_items));$i++) {
+					/* ================= input validation ================= */
+					input_validate_input_number($selected_items[$i]);
+					/* ==================================================== */
+
+					$titlecache = get_nfilter_request_var('title_format');
+					$configfile = get_nfilter_request_var('configfile_format');
+
+					map_duplicate($selected_items[$i], $titlecache, $configfile);
+				}
+			} elseif (get_nfilter_request_var('drp_action') === '3') { // disable
+				for ($i=0;($i<cacti_count($selected_items));$i++) {
+					/* ================= input validation ================= */
+					input_validate_input_number($selected_items[$i]);
+					/* ==================================================== */
+
+					map_deactivate($selected_items[$i]);
+				}
+			} elseif (get_nfilter_request_var('drp_action') === '4') { // enable
+				for ($i=0;($i<cacti_count($selected_items));$i++) {
+					/* ================= input validation ================= */
+					input_validate_input_number($selected_items[$i]);
+					/* ==================================================== */
+
+					map_activate($selected_items[$i]);
+				}
+			} elseif (get_nfilter_request_var('drp_action') === '7') { // run now
+				$maps = array();
+
+				if (cacti_sizeof($selected_items)) {
+					foreach($selected_items as $item) {
+						/* ================= input validation ================= */
+						input_validate_input_number($item);
+						/* ==================================================== */
+
+						$maps[] = $item;
+					}
+
+					$start = microtime(true);
+
+					weathermap_run_maps(__DIR__, true, $maps);
+
+					$end = microtime(true);
+
+					raise_message('rebuild_selected', __('The %d Selected Maps have been Rebuilt in %0.2f Seconds!', cacti_sizeof($maps), $end - $start, 'weathermap'), MESSAGE_LEVEL_INFO);
+				}
+			}
+		}
+
+		header('Location: weathermap-cacti-plugin-mgmt.php?header=false');
+
+		exit;
+	}
+
+	/* setup some variables */
+	$list = '';
+
+	/* loop through each of the graphs selected on the previous page and get more info about them */
+	foreach ($_POST as $var => $val) {
+		if (preg_match('/^chk_([0-9]+)$/', $var, $matches)) {
+			/* ================= input validation ================= */
+			input_validate_input_number($matches[1]);
+			/* ==================================================== */
+
+			$list .= '<li>' . html_escape(db_fetch_cell_prepared('SELECT titlecache FROM weathermap_maps WHERE id = ?', array($matches[1]))) . '</li>';
+			$array[] = $matches[1];
+		}
+	}
+
+	top_header();
+
+	form_start('weathermap-cacti-plugin-mgmt.php', 'actions');
+
+	html_start_box($actions[get_nfilter_request_var('drp_action')], '60%', '', '3', 'center', '');
+
+	if (isset($array)) {
+		if (get_nfilter_request_var('drp_action') === '1') { // delete
+			print "	<tr>
+					<td class='topBoxAlt'>
+						<p>" . __n('Click \'Continue\' to delete the following Weather Map.', 'Click \'Continue\' to delete following Weather Maps.', cacti_sizeof($array)) . "</p>
+						<div class='itemlist'><ul>$list</ul></div>
+					</td>
+				</tr>\n";
+
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Delete Weather Map', 'Delete Weather Maps', cacti_sizeof($array)) . "'>";
+		} elseif (get_nfilter_request_var('drp_action') === '2') { // duplicate
+			print "<tr>
+				<td class='topBoxAlt'>
+					<p>" . __n('Click \'Continue\' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
+					<div class='itemlist'><ul>$list</ul></div>
+					<p><strong>" . __('Title Format:') . '</strong><br>';
+
+			form_text_box('title_format', '<map_title> (1)', '', '255', '30', 'text');
+
+			print '</p>';
+
+			print '<p><strong>' . __('Config File Format:') . '</strong><br>';
+
+			form_text_box('configfile_format', '<map_config> (1)', '', '255', '30', 'text');
+
+			print "</p>
+				</td>
+			</tr>";
+
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Duplicate Weather Map', 'Duplicate Weather Maps', cacti_sizeof($array)) . "'>";
+		} elseif (get_nfilter_request_var('drp_action') === '3') { // disable
+			print "<tr>
+				<td class='topBoxAlt'>
+					<p>" . __n('Click \'Continue\' to disable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
+					<div class='itemlist'><ul>$list</ul></div>
+				</td>
+			</tr>";
+
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Disable Weather Map', 'Disable Weather Maps', cacti_sizeof($array)) . "'>";
+		} elseif (get_nfilter_request_var('drp_action') === '4') { // enable
+			print "<tr>
+				<td class='topBoxAlt'>
+					<p>" . __n('Click \'Continue\' to enable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
+					<div class='itemlist'><ul>$list</ul></div>
+				</td>
+			</tr>";
+
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Enable Weather Map', 'Enable Weather Maps', cacti_sizeof($array)) . "'>";
+		} elseif (get_nfilter_request_var('drp_action') === '7') { // run now
+			print "<tr>
+				<td class='topBoxAlt'>
+					<p>" . __n('Click \'Continue\' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
+					<div class='itemlist'><ul>$list</ul></div>
+				</td>
+			</tr>";
+
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Rebuild Weather Map', 'Rebuild Weather Maps', cacti_sizeof($array)) . "'>";
+		}
+	} else {
+		raise_message(40);
+		header('Location: weathermap-cacti-plugin-mgmt.php?header=false');
+		exit;
+	}
+
+    print "<tr>
+        <td class='saveRow'>
+            <input type='hidden' name='action' value='actions'>
+            <input type='hidden' name='selected_items' value='" . (isset($array) ? serialize($array) : '') . "'>
+            <input type='hidden' name='drp_action' value='" . html_escape(get_nfilter_request_var('drp_action')) . "'>
+            $save_html
+        </td>
+    </tr>\n";
+
+	html_end_box();
+
+	form_end();
+
+	bottom_footer();
 }
 
 function weathermap_footer_links() {
@@ -542,7 +723,7 @@ function wm_filter() {
 							<input type='button' id='wm_group_settings' value='<?php print __esc('Group Settings', 'weathermap');?>'>
 							<input type='button' id='wm_map_settings' value='<?php print __esc('Map Settings', 'weathermap');?>' title='<?php print __esc('Cacti Weathermap Map Settings', 'weathermap');?>'>
 							<input type='button' id='wm_settings' value='<?php print __esc('Settings', 'weathermap');?>' title='<?php print __esc('Cacti Weathermap Settings', 'weathermap');?>'>
-							<input type='button' id='wm_rebuild' value='<?php print __esc('Rebuild All Maps', 'weathermap');?>' title='<?php print __esc('Rebuild all maps now in background', 'weathermap');?>'>
+							<input type='button' id='wm_rebuild' value='<?php print __esc('Rebuild All', 'weathermap');?>' title='<?php print __esc('Rebuild all maps now in background', 'weathermap');?>'>
 						</span>
 					</td>
 				</tr>
@@ -708,7 +889,6 @@ function maplist() {
 	wm_filter();
 
 	$total_rows = 0;
-	$vdefs = array();
 
 	if (get_request_var('rows') == '-1') {
 		$rows = read_config_option('num_rows_table');
@@ -779,7 +959,7 @@ function maplist() {
 		foreach ($maps as $map) {
 			form_alternate_row('line' . $map['id']);
 
-			$output = '<a target="_new" title="' . __esc('Click to start editor with this file', 'weathermap') . '"
+			$output = '<a title="' . __esc('Click to start editor with this file', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-editor.php?header=false&action=nothing&mapname=' . $map['configfile']) . '">' .
 				html_escape($map['configfile']) . '
 			</a>';
@@ -1150,6 +1330,79 @@ function map_delete($id) {
 	db_execute_prepared('DELETE FROM weathermap_settings WHERE mapid = ?', array($id));
 
 	map_resort();
+}
+
+function map_duplicate($id, $titlecache, $configfile) {
+	$map = db_fetch_row_prepared('SELECT * FROM weathermap_maps WHERE id = ?', array($id));
+
+	$neworder = db_fetch_cell('SELECT MAX(sortorder) FROM weathermap_maps') + 1;
+
+	if (cacti_sizeof($map)) {
+		$interim_config = str_replace('.conf', '', $map['configfile']);
+
+		$save = array();
+		$save['id']           = 0;
+		$save['sortorder']    = $neworder;
+		$save['group_id']     = $map['group_id'];
+		$save['active']       = $map['active'];
+		$save['configfile']   = clean_up_name(str_replace('<map_config>', $interim_config, $configfile)) . '.conf';
+		$save['titlecache']   = str_replace('<map_title>', $map['titlecache'], $titlecache);
+		$save['imagefile']    = '';
+		$save['htmlfile']     = '';
+		$save['filehash']     = '';
+		$save['warncount']    = 0;
+		$save['debug']        = 'off';
+		$save['config']       = '';
+		$save['thumb_height'] = $map['thumb_height'];
+		$save['thumb_width']  = $map['thumb_width'];
+		$save['schedule']     = $map['schedule'];
+		$save['archiving']    = $map['archiving'];
+		$save['duration']     = 0;
+		$save['last_runtime'] = 0;
+
+		$newid = sql_save($save, 'weathermap_maps');
+
+		if ($newid) {
+			db_execute_prepared("INSERT INTO weathermap_auth
+				(userid, usergroupid, mapid)
+				SELECT userid, usergroupid, '$newid' AS mapid
+				FROM weathermap_auth
+				WHERE mapid = ?",
+				array($id));
+
+			db_execute_prepared("INSERT INTO weathermap_settings
+				(mapid, groupid, optname, optvalue)
+				SELECT '$newid' AS mapid, groupid, optname, optvalue
+				FROM weathermap_settings
+				WHERE mapid = ?",
+				array($id));
+
+			raise_message('new_map_' . $newid, __('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
+
+			$confdir = __DIR__ . '/configs';
+
+			$oldfile = $confdir . '/' . $map['configfile'];
+			$newfile = $confdir . '/' . $save['configfile'];
+
+			if (file_exists($oldfile)) {
+				if (copy($oldfile, $newfile)) {
+					$contents = file_get_contents($newfile);
+
+					$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
+
+					file_put_contents($newfile, $contents);
+				} else {
+					raise_message('copy_fail_' . $newid, __('The new Map with the name %s was unable to create the config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
+
+				}
+			} else {
+				raise_message('missing_fail_' . $newid, __('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
+			}
+
+
+			weathermap_run_maps(__DIR__, true, array($newid));
+		}
+	}
 }
 
 function weathermap_set_group($mapid, $groupid) {

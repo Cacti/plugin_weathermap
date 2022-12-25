@@ -45,5 +45,5 @@ require_once(__DIR__ . '/lib/poller-common.php');
 
 weathermap_setup_table();
 
-weathermap_run_maps(__DIR__);
+weathermap_run_maps(__DIR__, true);
 

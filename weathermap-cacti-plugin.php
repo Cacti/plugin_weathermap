@@ -615,10 +615,10 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 
 	if ($cycle) {
 		if ($fullscreen) {
-			print '<script src="' . $config['url_path'] . 'plugins/weathermap/vendor/jquery/dist/jquery.min.js"></script>';
+			print '<script src="' . $config['url_path'] . 'include/js/jquery.js"></script>';
 		}
 
-		print '<script src="' . $config['url_path'] . 'plugins/weathermap/vendor/jquery-idletimer/dist/idle-timer.min.js"></script>';
+		print '<script src="' . $config['url_path'] . 'plugins/weathermap/idle-timer.min.js"></script>';
 
 		if ($limit_to_group > 0) {
 			$html = __('Showing %s1%s of %s1%s. Cycling all available maps in this group.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');

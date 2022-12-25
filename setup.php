@@ -1062,8 +1062,9 @@ function weathermap_poller_bottom() {
 		return;
 	} else {
 		// if we're due, run the render updates
-		if (($renderperiod == 0) || (($rendercounter % $renderperiod) == 0)) {
+		if ($renderperiod == 0 || empty($rendercounter) || $rendercounter % $renderperiod == 0) {
 			weathermap_run_maps(__DIR__);
+			$rendercounter = 0;
 		} elseif ($quietlogging == 0) {
 			cacti_log("WM Version: $WEATHERMAP_VERSION - no update in this cycle ($rendercounter)", true, 'WEATHERMAP');
 		}
@@ -1071,7 +1072,7 @@ function weathermap_poller_bottom() {
 		cacti_log("WM Counter is $rendercounter. period is $renderperiod.", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 
 		// increment the counter
-		$newcount = ($rendercounter + 1) % 1000;
+		$newcount = $rendercounter++;
 
 		set_config_option('weathermap_render_counter', $newcount);
 	}

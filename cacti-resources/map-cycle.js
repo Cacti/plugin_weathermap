@@ -145,7 +145,7 @@ var WMcycler = {
 
             // when to reload the whole page (with new map data)
             this.timer_reloader = setTimeout(function () {
-                that.reload();
+				loadPage(document.location.href);
             }, this.poller_cycle);
 
             this.initIdle(that);
