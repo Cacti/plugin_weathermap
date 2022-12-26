@@ -1,5 +1,5 @@
 .mainView {
-	background: #ccc; padding-top: 60px;
+	padding-top: 60px;
 }
 
 .mainArea {
@@ -15,6 +15,10 @@
 
 body {
 	font-family: 'Gill Sans', Verdana, sans-serif; margin:0;
+}
+
+input {
+	max-width: 100% !important;
 }
 
 #toolbar {

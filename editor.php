@@ -967,6 +967,7 @@ $selectedTheme = get_selected_theme();
 	<link href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/images/favicon.ico'?>' rel='shortcut icon'>
 	<link href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/images/cacti_logo.gif'?>' rel='icon' sizes='96x96'>
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/jquery-ui.css';?>' />
+	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/main.css';?>' />
 	<link rel='stylesheet' type='text/css' media='screen' href='editor-resources/oldeditor.css' />
 
 	<script src='<?php print $config['url_path'] . 'include/js/jquery.js';?>' type='text/javascript'></script>
