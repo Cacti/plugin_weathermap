@@ -47,14 +47,66 @@ function initJS() {
 
 		// set the mapmode, so we know where we stand.
 		mapmode('existing');
-
-		$('area').draggable();
 	}
+
+	$('area').draggable();
 
 	$('#frmMain').submit(function(event) {
 		event.preventDefault();
 		form_submit();
 	});
+
+	initContextMenu();
+}
+
+function initContextMenu() {
+	var nodeMenu = [
+		{title: "Node Actions", cmd: "cat1", isHeader: true},
+		{title: 'Move', cmd: 'move', uiIcon: 'ui-icon-arrow-4'},
+		{title: 'Clone', cmd: 'clone', uiIcon: 'ui-icon-copy'},
+		{title: 'Edit', cmd: 'edit', uiIcon: 'ui-icon-pencil'},
+		{title: 'Delete', cmd: 'delete', uiIcon: 'ui-icon-trash'},
+		{title: "----"},
+		{title: 'Properties', cmd: 'properties', uiIcon: 'ui-icon-gear'}
+	];
+
+	var linkMenu = [
+		{title: "Link Actions", cmd: "cat1", isHeader: true},
+		{title: 'Tidy', cmd: 'tidy', uiIcon: 'ui-icon-arrow-4'},
+		{title: 'Via', cmd: 'via', uiIcon: 'ui-icon-copy'},
+		{title: 'Edit', cmd: 'edit', uiIcon: 'ui-icon-pencil'},
+		{title: 'Delete', cmd: 'delete', uiIcon: 'ui-icon-trash'},
+		{title: "----"},
+		{title: 'Properties', cmd: 'properties', uiIcon: 'ui-icon-gear'}
+	];
+
+	$('map').contextmenu({
+		delegate: 'area',
+		menu: linkMenu,
+		preventSelect: true,
+		select: function(event, ui) {
+			contextAction(event, ui);
+		},
+		beforeOpen: function(event, ui) {
+			var target = ui.target[0].id;
+
+			if (target.startsWith('LINK')) {
+				$(this).contextmenu('replaceMenu', linkMenu);
+			} else {
+				$(this).contextmenu('replaceMenu', nodeMenu);
+			}
+		}
+	});
+}
+
+function contextAction(event, ui) {
+	var alt;
+
+	if (ui.cmd == 'properties') {
+		alt = ui.target[0].id;
+
+		click_execute(event, alt);
+	}
 }
 
 function cleanupJS() {
@@ -126,7 +178,7 @@ function cancel_op() {
 	$('#action').val('');
 }
 
-function help_handler(e) {
+function help_handler(event) {
 	var objectid = $(this).attr('id');
 	var section  = objectid.slice(0, objectid.indexOf('_'));
 	var target   = section + '_help';
@@ -136,7 +188,7 @@ function help_handler(e) {
 		helptext = helptexts[objectid];
 	}
 
-	if ((e.type == 'blur') || (e.type == 'mouseout')) {
+	if ((event.type == 'blur') || (event.type == 'mouseout')) {
         helptext = helptexts[section + '_default'];
 
 		if (helptext == 'undefined') {
@@ -150,11 +202,16 @@ function help_handler(e) {
 }
 
 // Any clicks in the imagemap end up here.
-function click_handler(e) {
-	var alt, objectname, objecttype, objectid;
+function click_handler(event) {
+	var alt;
 
-	// alt = el.getAttribute('alt');
 	alt = $(this).attr('id');
+
+	click_execute(event, alt);
+}
+
+function click_execute(event, alt) {
+	var objectname, objecttype, objectid;
 
 	objecttype = alt.slice(0, 4);
 	objectname = alt.slice(5, alt.length);
@@ -194,7 +251,7 @@ function click_handler(e) {
 
 			hide_all_dialogs()
 
-			click_handler(e);
+			click_handler(event);
 		}
 	}
 }
@@ -371,10 +428,32 @@ function add_link() {
 }
 
 function delete_link() {
-	if (confirm('This link will be deleted permanently.')) {
-		$('#action').val('delete_link');
-		form_submit();
+	if ($('.dlgConfirm').length == 0) {
+		$('body').append('<div class="dlgConfirm"></div>');
 	}
+
+	$('.dlgConfirm').text('WARNING: Pressing \'Delete Link\' will delete this Link.');
+
+	mapmode('xy');
+
+	$('.dlgConfirm').dialog({
+		resizable: false,
+		title: 'Delete Link Confirmation',
+		height: 'auto',
+		width: 400,
+		modal: true,
+		buttons: {
+			Cancel: function() {
+				$(this).dialog('close');
+			},
+			'Delete Node': function() {
+				$(this).dialog('close');
+				hide_all_dialogs();
+				$('#action').val('delete_link');
+				form_submit();
+			}
+		}
+	});
 }
 
 function form_submit() {
@@ -454,7 +533,7 @@ function position_first_legend() {
 }
 
 // called from clicking on the existing legends
-function position_legend(e) {
+function position_legend(event) {
 	var el;
 	var alt, objectname, objecttype;
 
@@ -462,8 +541,8 @@ function position_legend(e) {
 		el = window.event.srcElement;
 	}
 
-	if (e && e.target) {
-		el = e.target;
+	if (event && event.target) {
+		el = event.target;
 	}
 
 	if (!el) {
@@ -558,16 +637,35 @@ function show_node(name) {
 		$('#node_infourl').val(mynode.infourl);
 		$('#node_hover').val(mynode.overliburl);
 
+		var selectedNode;
+
 		if (mynode.iconfile != '') {
 			// console.log(mynode.iconfile.substring(0,2));
 			if (mynode.iconfile.substring(0,2) == '::') {
 				$('node_iconfilename').val('--AICON--');
+				selectedNode = '--AICON--';
 			} else {
 				$('node_iconfilename').val(mynode.iconfile);
+				selectedNode = mynode.iconfile;
 			}
 		} else {
 			$('node_iconfilename').val('--NONE--');
+			selectedNode = '--NONE--';
 		}
+
+		if ($('#node_iconfilename.dd-container').length) {
+			$('#node_iconfilename').ddslick('destroy');
+		}
+
+		$('#node_iconfilename').val(selectedNode).ddslick({
+			height:120,
+			defaultSelectedIndex:selectedNode
+		});
+
+		$('.dd-container').click(function() {
+			$('.ui-dialog').css('z-index', '100');
+			$('.dd-options, .dd-container').css('z-index', '500');
+		});
 
 		// save this here, just in case they choose delete_node or move_node
 		$('#param').val(mynode.name);
@@ -619,11 +717,10 @@ function show_link(name) {
 			$('#link_commentposin').prepend("<option selected value='" + mylink.commentposin + "'>" + mylink.commentposin + "%</option>");
 		}
 
-		document.getElementById('link_nodename1').firstChild.nodeValue = mylink.a;
+		document.getElementById('link_nodename1').firstChild.nodeValue  = mylink.a;
 		document.getElementById('link_nodename1a').firstChild.nodeValue = mylink.a;
 		document.getElementById('link_nodename1b').firstChild.nodeValue = mylink.a;
-
-		document.getElementById('link_nodename2').firstChild.nodeValue = mylink.b;
+		document.getElementById('link_nodename2').firstChild.nodeValue  = mylink.b;
 
 		$('#param').val(mylink.name);
 
@@ -636,15 +733,39 @@ function show_link(name) {
 }
 
 function show_dialog(dlg) {
+	if (dlg == 'dlgMapProperties') {
+		var selectedNode = $('#map_bgfile').val();
+
+		if ($('#map_bgfile.dd-container').length) {
+			$('#map_bgfile').ddslick('destroy');
+		}
+
+		$('#map_bgfile').ddslick({
+			height:120,
+			defaultSelectedIndex:selectedNode
+		});
+
+		$('.dd-container').click(function() {
+			$('.ui-dialog').css('z-index', '100');
+			$('.dd-options, .dd-container').css('z-index', '500');
+		});
+	}
+
 	$('#'+dlg).dialog({
 		autoOpen: true,
-		width: '600px',
-		modal: true,
+		width: 600,
 		height: 'auto',
+		modal: false,
 		resizable: false,
-		draggable: true
+		draggable: true,
+		open: function() {
+			$('select').not('#node_iconfilename, #map_bgfile').selectmenu({
+				open: function() {
+					$('.ui-dialog').css('z-index', '20');
+				}
+			});
+		}
 	});
-//	document.getElementById(dlg).style.display = 'block';
 }
 
 function hide_dialog(dlg) {

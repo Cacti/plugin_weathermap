@@ -423,14 +423,14 @@ function weathermap_singleview($mapid) {
 
 		if ($is_wm_admin) {
 			$maptitle .= '<span> [ ';
-			$maptitle .= '<a class="pic" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a> | ';
-			$maptitle .= '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid . '">' . __esc('Map Settings', 'weathermap') . '</a> | ';
-			$maptitle .= '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid . '">' . __esc('Map Permissions', 'weathermap') . '</a> | ';
-			$maptitle .= "<a href='" . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . $map['configfile']) . "'>" . __esc('Edit Map', 'weathermaps') . "</a>";
+			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a> | ';
+			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid . '">' . __esc('Map Settings', 'weathermap') . '</a> | ';
+			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid . '">' . __esc('Map Permissions', 'weathermap') . '</a> | ';
+			$maptitle .= "<a class='linkOverDark' href='" . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . $map['configfile']) . "'>" . __esc('Edit Map', 'weathermaps') . "</a>";
 			$maptitle .= ' ] </span>';
 		} else {
 			$maptitle .= '<span> [ ';
-			$maptitle .= '<a class="pic" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a>';
+			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a>';
 			$maptitle .= ' ] </span>';
 		}
 

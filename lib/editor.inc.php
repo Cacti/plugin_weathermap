@@ -402,18 +402,22 @@ function extract_with_validation($array, $paramarray, $prefix = "") {
 }
 
 function get_imagelist($imagedir) {
+	global $config;
+
 	$imagelist = array();
 
-	if (is_dir($imagedir)) {
+	$imdir = $config['base_path'] . '/plugins/weathermap/images/' . $imagedir;
+
+	if (is_dir($imdir)) {
 		$n  = 0;
-		$dh = opendir($imagedir);
+		$dh = opendir($imdir);
 
 		if ($dh) {
-			while ($file=readdir($dh)) {
-				$realfile = $imagedir . '/' . $file;
-				$uri      = $imagedir . '/' . $file;
+			while ($file = readdir($dh)) {
+				$realfile = $imdir . '/' . $file;
+				$uri      = "images/$imagedir/$file";
 
-				if (is_readable($realfile) && ( preg_match('/\.(gif|jpg|png)$/i',$file) )) {
+				if (is_readable($realfile) && (preg_match('/\.(gif|jpg|png)$/i', $file))) {
 					$imagelist[] = $uri;
 					$n++;
 				}

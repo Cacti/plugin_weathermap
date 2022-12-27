@@ -211,8 +211,9 @@ class WeatherMap extends WeatherMapBase {
 	var $nodes = array(); // an array of WeatherMapNodes
 	var $links = array(); // an array of WeatherMapLinks
 	var $texts = array(); // an array containing all the extraneous text bits
-	var $used_images = array(); // an array of image filenames referred to (used by editor)
-	var $seen_zlayers = array(0=>array(),1000=>array()); // 0 is the background, 1000 is the legends, title, etc
+
+	var $used_images  = array(); // an array of image filenames referred to (used by editor)
+	var $seen_zlayers = array(0 => array(), 1000 => array()); // 0 is the background, 1000 is the legends, title, etc
 
 	var $config;
 	var $next_id;

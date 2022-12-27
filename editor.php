@@ -396,6 +396,7 @@ if ($mapname == '') {
 			$map->nodes[$new_node_name]->infourl[IN] = wm_editor_sanitize_string($_REQUEST['node_infourl']);
 
 			$urls = preg_split('/\s+/', $_REQUEST['node_hover'], -1, PREG_SPLIT_NO_EMPTY);
+
 			$map->nodes[$new_node_name]->overliburl[IN] = $urls;
 			$map->nodes[$new_node_name]->overliburl[OUT] = $urls;
 
@@ -403,7 +404,7 @@ if ($mapname == '') {
 			$map->nodes[$new_node_name]->y = intval($_REQUEST['node_y']);
 
 			if ($_REQUEST['node_iconfilename'] == '--NONE--') {
-			    $map->nodes[$new_node_name]->iconfile='';
+			    $map->nodes[$new_node_name]->iconfile = '';
 			} else {
 			    // AICONs mess this up, because they're not fully supported by the editor, but it can still break them
 			    if ($_REQUEST['node_iconfilename'] != '--AICON--') {
@@ -924,23 +925,39 @@ if ($mapname == '') {
 
 	// now we'll just draw the full editor page, with our new knowledge
 
-	$imageurl = '?mapname='.urlencode($mapname) . '&action=draw';
+	$imageurl = '?mapname='. $mapname . '&action=draw';
 	if ($selected != '') {
-		$imageurl .= '&selected='.urlencode(wm_editor_sanitize_selected($selected));
+		$imageurl .= '&selected=' . wm_editor_sanitize_selected($selected);
 	}
 
-	$imageurl .= '&unique='.time();
+	$imageurl .= '&unique=' . time();
 
 	// build up the editor's list of used images
-	if ($map->background != '') $map->used_images[] = $map->background;
+	if ($map->background != '') {
+		// Update the location of the backgrounds
+		if (!file_exists($config['base_path'] . '/plugins/weathermap/' . $map->background)) {
+			if (file_exists($config['base_path'] . '/plugins/weathermap/images/backgrounds/' . basename($map->background))) {
+				$map->background = 'images/backgrounds/' . basename($map->background);
+			}
+		}
+	}
+
 	foreach ($map->nodes as $n) {
-		if ($n->iconfile != '' && ! preg_match('/^(none|nink|inpie|outpie|box|rbox|gauge|round)$/',$n->iconfile)) {
+		if ($n->iconfile != '' && ! preg_match('/^(none|nink|inpie|outpie|box|rbox|gauge|round)$/', $n->iconfile)) {
+			// Update the location of the objects
+			if (!file_exists($config['base_path'] . '/plugins/weathermap/' . $n->iconfile)) {
+				if (file_exists($config['base_path'] . '/plugins/weathermap/images/objects/' . basename($n->iconfile))) {
+					$map->used_images[] = 'images/objects/' . basename($n->iconfile);
+				}
+			}
+
 			$map->used_images[] = $n->iconfile;
 		}
 	}
 
 	// get the list from the images/ folder too
-	$imlist = get_imagelist('images');
+	$image_list   = get_imagelist('objects');
+	$backgd_list  = get_imagelist('backgrounds');
 
 	$fontlist = array();
 
@@ -968,14 +985,16 @@ $selectedTheme = get_selected_theme();
 	<link href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/images/cacti_logo.gif'?>' rel='icon' sizes='96x96'>
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/jquery-ui.css';?>' />
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/main.css';?>' />
-	<link rel='stylesheet' type='text/css' media='screen' href='editor-resources/oldeditor.css' />
+	<link rel='stylesheet' type='text/css' media='screen' href='editor-resources/editor.css' />
 
 	<script src='<?php print $config['url_path'] . 'include/js/jquery.js';?>' type='text/javascript'></script>
 	<script src='<?php print $config['url_path'] . 'include/js/jquery-ui.js';?>' type='text/javascript'></script>
 	<script src='<?php print $config['url_path'] . 'include/js/jquery.tablesorter.js';?>' type='text/javascript'></script>
 	<script src='<?php print $config['url_path'] . 'include/js/js.storage.js';?>' type='text/javascript'></script>
-
 	<script src='editor-resources/editor.js' type='text/javascript'></script>
+	<script src='editor-resources/jquery.ddslick.js' type='text/javascript'></script>
+	<script src='editor-resources/jquery.ui-contextmenu.js' type='text/javascript'></script>
+
 	<title>PHP Weathermap Editor <?php print $WEATHERMAP_VERSION; ?></title>
 </head>
 
@@ -1009,19 +1028,19 @@ $selectedTheme = get_selected_theme();
 			<?php
 			// append any images used in the map that aren't in the images folder
 			foreach ($map->used_images as $im) {
-				if (!in_array($im, $imlist)) {
-					$imlist[] = $im;
+				if (!in_array($im, $image_list)) {
+					$image_list[] = $im;
 				}
 			}
 
-			sort($imlist);
+			sort($image_list);
 	?></script>
 		<div class='mainArea'>
 			<input type='hidden' id='plug' name='plug' value='<?php print ($fromplug==true ? 1 : 0) ?>' />
-			<input id='xycapture' name='xycapture' style='display:none' type='image' src='<?php print $imageurl; ?>' />
+			<input id='xycapture' name='xycapture' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
-			<img src='<?php print $imageurl; ?>' id='existingdata' usemap='#weathermap_imap' />
+			<img src='<?php print html_escape($imageurl); ?>' id='existingdata' usemap='#weathermap_imap' />
 			<div class='debug' style='display:none'><p><strong>Debug</strong>
 				<a href='?<?php print ($fromplug==true ? 'plug=1&' : ''); ?>action=retidy_all&mapname=<?php print html_escape($mapname) ?>'>Re-tidy ALL</a>
 				<a href='?<?php print ($fromplug==true ? 'plug=1&' : ''); ?>action=retidy&mapname=<?php print html_escape($mapname) ?>'>Re-tidy</a>
@@ -1029,23 +1048,23 @@ $selectedTheme = get_selected_theme();
 				<a href='?<?php print ($fromplug==true ? 'plug=1&' : ''); ?>action=nothing&mapname=<?php print html_escape($mapname) ?>'>Do Nothing</a>
 				<span>
 					<label for='mapname'>mapfile</label>
-					<input id='mapname' name='mapname' type='text' value='<?php print html_escape($mapname); ?>' />
+					<input id='mapname' name='mapname' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($mapname); ?>' />
 				</span>
 				<span>
 					<label for='action'>action</label>
-					<input id='action' name='action' type='text' value='<?php print html_escape($newaction); ?>' />
+					<input id='action' name='action' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($newaction); ?>' />
 				</span>
 				<span>
 					<label for='param'>param</label>
-					<input id='param' name='param' type='text' value='' />
+					<input id='param' name='param' type='text' class='ui-state-default ui-corner-all' value='' />
 				</span>
 				<span>
 					<label for='param2'>param2</label>
-					<input id='param2' name='param2' type='text' value='<?php print html_escape($param2); ?>' />
+					<input id='param2' name='param2' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($param2); ?>' />
 				</span>
 				<span>
 					<label for='debug'>debug</label>
-					<input id='debug' name='debug' type='text' value='' />
+					<input id='debug' name='debug' type='text' class='ui-state-default ui-corner-all' value='' />
 				</span>
 				<a target='configwindow' href='?<?php print ($fromplug==true ? 'plug=1&':''); ?>action=show_config&mapname=<?php print urlencode($mapname) ?>'>See config</a></p>
 				<pre><?php print html_escape($log) ?></pre>
@@ -1078,44 +1097,47 @@ $selectedTheme = get_selected_theme();
 							</td>
 						</tr>
 						<tr>
-							<th>Position</th>
-							<td><input id='node_x' name='node_x' type='text' size='4' />,<input id='node_y' name='node_y' type='text' size='4' /></td>
+							<td>Position</td>
+							<td><input id='node_x' name='node_x' type='text' class='ui-state-default ui-corner-all' size='4' />,<input id='node_y' name='node_y' type='text' class='ui-state-default ui-corner-all' size='4' /></td>
 						</tr>
 						<tr>
-							<th>Internal Name</th>
-							<td><input id='node_new_name' name='node_new_name' type='text' /></td>
+							<td>Internal Name</td>
+							<td><input id='node_new_name' name='node_new_name' type='text' class='ui-state-default ui-corner-all' /></td>
 						</tr>
 						<tr>
-							<th>Label</th>
-							<td><input id='node_label' name='node_label' type='text' /></td>
+							<td>Label</td>
+							<td><input id='node_label' name='node_label' type='text' class='ui-state-default ui-corner-all' /></td>
 						</tr>
 						<tr>
-							<th>Info URL</th>
-							<td><input id='node_infourl' name='node_infourl' type='text' /></td>
-						</tr>
-						<tr>
-							<th>'Hover' Graph URL</th>
-							<td><input id='node_hover' name='node_hover' type='text' />
-							<span class='cactinode'><a id='node_cactipick'>[Pick from Cacti]</a></span></td>
-						</tr>
-						<tr>
-							<th>Icon Filename</th>
+							<td>Icon Filename</td>
 							<td>
 								<select id='node_iconfilename' name='node_iconfilename'>
 									<?php
-									if (count($imlist)==0) {
-										print '<option value="--NONE--">(no images are available)</option>';
+									if (count($image_list) == 0) {
+										print '<option data-value="--NONE--">(no images are available)</option>';
 									} else {
-										print '<option value="--NONE--">--NO ICON--</option>';
-										print '<option value="--AICON--">--ARTIFICIAL ICON--</option>';
-										foreach ($imlist as $im) {
+										print '<option data-description="Default Rectangular Icon" data-imagesrc="" value="--NONE--">--NO ICON--</option>';
+										foreach ($image_list as $im) {
+											$display = ucfirst(str_replace(array('.png', '.gif', '.jpg'), '', basename($im)));
+
 											print '<option ';
-											print 'value="' . html_escape($im) .'">' . html_escape($im) . '</option>';
+											print 'data-description="' . $display . '" ';
+											print 'data-imagesrc="' . $im . '" ';
+											print 'value="' . html_escape($im) .'">' . $display . '</option>';
 										}
 									}
 									?>
 								</select>
 							</td>
+						</tr>
+						<tr>
+							<td>Info URL</td>
+							<td><input id='node_infourl' name='node_infourl' type='text' class='ui-state-default ui-corner-all' size='50' /></td>
+						</tr>
+						<tr>
+							<td>'Hover' Graph URL</td>
+							<td><input id='node_hover' name='node_hover' type='text' class='ui-state-default ui-corner-all' size='50' />
+							<span class='cactinode'><a id='node_cactipick'>[Pick from Cacti]</a></span></td>
 						</tr>
 					</table>
 				</div>
@@ -1152,39 +1174,39 @@ $selectedTheme = get_selected_theme();
 							</td>
 						</tr>
 						<tr>
-							<th>Maximum Bandwidth<br />Into '<span id='link_nodename1a'>%NODE1%</span>'</th>
-							<td><input id='link_bandwidth_in' name='link_bandwidth_in' type='text' size='8'/> bits/sec</td>
+							<td>Maximum Bandwidth<br />Into '<span id='link_nodename1a'>%NODE1%</span>'</td>
+							<td><input id='link_bandwidth_in' name='link_bandwidth_in' type='text' class='ui-state-default ui-corner-all' size='8'/> bits/sec</td>
 						</tr>
 						<tr>
-							<th>Maximum Bandwidth<br /> Out of '<span id='link_nodename1b'>%NODE1%</span>'</th>
+							<td>Maximum Bandwidth<br /> Out of '<span id='link_nodename1b'>%NODE1%</span>'</td>
 							<td>
-								<input id='link_bandwidth_out_cb' name='link_bandwidth_out_cb' type='checkbox' value='symmetric' />Same As 'In' or <input id='link_bandwidth_out' name='link_bandwidth_out' type='text' size='8' /> bits/sec</td>
+								<input id='link_bandwidth_out_cb' name='link_bandwidth_out_cb' type='checkbox' value='symmetric' />Same As 'In' or <input id='link_bandwidth_out' name='link_bandwidth_out' type='text' class='ui-state-default ui-corner-all' size='8' /> bits/sec</td>
 						</tr>
 						<tr>
-							<th>Data Source</th>
+							<td>Data Source</td>
 							<td>
-								<input id='link_target' name='link_target' type='text' />
+								<input id='link_target' name='link_target' type='text' class='ui-state-default ui-corner-all' />
 								<span class='cactilink'>
 									<a id='link_cactipick'>[Pick from Cacti]</a>
 								</span>
 							</td>
 						</tr>
 						<tr>
-							<th>Link Width</th>
-							<td><input id='link_width' name='link_width' type='text' size='3' /> pixels</td>
+							<td>Link Width</td>
+							<td><input id='link_width' name='link_width' type='text' class='ui-state-default ui-corner-all' size='3' /> pixels</td>
 						</tr>
 						<tr>
-							<th>Info URL</th>
-							<td><input id='link_infourl' name='link_infourl' type='text' size='30' /></td>
+							<td>Info URL</td>
+							<td><input id='link_infourl' name='link_infourl' type='text' class='ui-state-default ui-corner-all' size='30' /></td>
 						</tr>
 						<tr>
-							<th>'Hover' Graph URL</th>
-							<td><input id='link_hover' name='link_hover' type='text' size='30' /></td>
+							<td>'Hover' Graph URL</td>
+							<td><input id='link_hover' name='link_hover' type='text' class='ui-state-default ui-corner-all' size='30' /></td>
 						</tr>
 						<tr>
-							<th>IN Comment</th>
+							<td>IN Comment</td>
 							<td>
-								<input id='link_commentin' name='link_commentin' type='text' size='25' />
+								<input id='link_commentin' name='link_commentin' type='text' class='ui-state-default ui-corner-all' size='25' />
 								<select id='link_commentposin' name='link_commentposin'>
 									<option value=95>95%</option>
 									<option value=90>90%</option>
@@ -1195,9 +1217,9 @@ $selectedTheme = get_selected_theme();
 							</td>
 						</tr>
 						<tr>
-							<th>OUT Comment</th>
+							<td>OUT Comment</td>
 							<td>
-								<input id='link_commentout' name='link_commentout' type='text' size='25' />
+								<input id='link_commentout' name='link_commentout' type='text' class='ui-state-default ui-corner-all' size='25' />
 								<select id='link_commentposout' name='link_commentposout'>
 									<option value=5>5%</option>
 									<option value=10>10%</option>
@@ -1235,65 +1257,63 @@ $selectedTheme = get_selected_theme();
 				<div class='dlgBody'>
 					<table class='cactiTable'>
 						<tr>
-							<th>Map Title</th>
-							<td><input id='map_title' name='map_title' type='text' size='25' value='<?php print html_escape($map->title) ?>'/></td>
+							<td>Map Title</td>
+							<td><input id='map_title' name='map_title' type='text' class='ui-state-default ui-corner-all' size='40' value='<?php print html_escape($map->title) ?>'/></td>
 						</tr>
 						<tr>
-							<th>Legend Text</th>
-							<td><input id='map_legend' name='map_legend' type='text' size='25' value='<?php print html_escape($map->keytext['DEFAULT']) ?>' /></td>
+							<td>Legend Text</td>
+							<td><input id='map_legend' name='map_legend' type='text' class='ui-state-default ui-corner-all' size='25' value='<?php print html_escape($map->keytext['DEFAULT']) ?>' /></td>
 						</tr>
 						<tr>
-							<th>Timestamp Text</th>
-							<td><input id='map_stamp' name='map_stamp' type='text' size='25' value='<?php print html_escape($map->stamptext) ?>' /></td>
-						</tr>
-						<tr>
-							<th>Default Link Width</th>
-							<td><input id='map_linkdefaultwidth' name='map_linkdefaultwidth' type='text' size='6' value='<?php print html_escape($map->links['DEFAULT']->width) ?>' /> pixels</td>
-						</tr>
-						<tr>
-							<th>Default Link Bandwidth</th>
-							<td>
-								<input id='map_linkdefaultbwin' name='map_linkdefaultbwin' type='text' size='6' value='<?php print html_escape($map->links['DEFAULT']->max_bandwidth_in_cfg) ?>' /> bit/sec in, <input id='map_linkdefaultbwout' name='map_linkdefaultbwout' type='text' size='6' value='<?php print html_escape($map->links['DEFAULT']->max_bandwidth_out_cfg) ?>' /> bit/sec out
-							</td>
-						</tr>
-						<tr>
-							<th>Map Size</th>
-							<td>
-								<input id='map_width' name='map_width' type='text' size='5' value='<?php print html_escape($map->width) ?>' /> x
-								<input id='map_height' name='map_height' type='text' size='5' value='<?php print html_escape($map->height) ?>' /> pixels
-							</td>
-						</tr>
-						<tr>
-							<th>Output Image Filename</th>
-							<td><input id='map_pngfile' name='map_pngfile' type='text' value='<?php print html_escape($map->imageoutputfile) ?>' /></td>
-						</tr>
-						<tr>
-							<th>Output HTML Filename</th>
-							<td><input id='map_htmlfile' name='map_htmlfile' type='text' value='<?php print html_escape($map->htmloutputfile) ?>' /></td>
-						</tr>
-						<tr>
-							<th>Background Image Filename</th>
+							<td>Background Image Filename</td>
 							<td>
 								<select id='map_bgfile' name='map_bgfile'>
 									<?php
-									if (count($imlist)==0) {
-										print '<option value="--NONE--">(no images are available)</option>';
+									if (count($backgd_list) == 0) {
+										print '<option data-value="--NONE--">(no images are available)</option>';
 									} else {
-										print '<option value="--NONE--">--NONE--</option>';
+										print '<option data-description="Solid White Background" data-imagesrc="" value="--NONE--">--NO ICON--</option>';
+										foreach ($backgd_list as $im) {
+											$display = ucfirst(str_replace(array('.png', '.gif', '.jpg'), '', basename($im)));
 
-										foreach ($imlist as $im) {
-											print '<option ';
-
-											if ($map->background == $im) {
-												print ' selected ';
-											}
-
-											print 'value="' . html_escape($im) . '">' . html_escape($im) . '</option>';
+											print '<option ' . ($im == $map->background ? 'selected ':'');
+											print 'data-description="' . $display . '" ';
+											print 'data-imagesrc="' . $im . '" ';
+											print 'value="' . html_escape($im) .'">' . $display . '</option>';
 										}
 									}
 									?>
 								</select>
 							</td>
+						</tr>
+						<tr>
+							<td>Timestamp Text</td>
+							<td><input id='map_stamp' name='map_stamp' type='text' class='ui-state-default ui-corner-all' size='40' value='<?php print html_escape($map->stamptext) ?>' /></td>
+						</tr>
+						<tr>
+							<td>Default Link Width</td>
+							<td><input id='map_linkdefaultwidth' name='map_linkdefaultwidth' type='text' class='ui-state-default ui-corner-all' size='6' value='<?php print html_escape($map->links['DEFAULT']->width) ?>' /> pixels</td>
+						</tr>
+						<tr>
+							<td>Default Link Bandwidth</td>
+							<td>
+								<input id='map_linkdefaultbwin' name='map_linkdefaultbwin' type='text' class='ui-state-default ui-corner-all' size='6' value='<?php print html_escape($map->links['DEFAULT']->max_bandwidth_in_cfg) ?>' /> bit/sec in, <input id='map_linkdefaultbwout' name='map_linkdefaultbwout' type='text' class='ui-state-default ui-corner-all' size='6' value='<?php print html_escape($map->links['DEFAULT']->max_bandwidth_out_cfg) ?>' /> bit/sec out
+							</td>
+						</tr>
+						<tr>
+							<td>Map Size</td>
+							<td>
+								<input id='map_width' name='map_width' type='text' class='ui-state-default ui-corner-all' size='5' value='<?php print html_escape($map->width) ?>' /> x
+								<input id='map_height' name='map_height' type='text' class='ui-state-default ui-corner-all' size='5' value='<?php print html_escape($map->height) ?>' /> pixels
+							</td>
+						</tr>
+						<tr>
+							<td>Output Image Filename</td>
+							<td><input id='map_pngfile' name='map_pngfile' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($map->imageoutputfile) ?>' /></td>
+						</tr>
+						<tr>
+							<td>Output HTML Filename</td>
+							<td><input id='map_htmlfile' name='map_htmlfile' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($map->htmloutputfile) ?>' /></td>
 						</tr>
 					</table>
 				</div>
@@ -1318,47 +1338,47 @@ $selectedTheme = get_selected_theme();
 				<div class='dlgBody'>
 					<table class='cactiTable'>
 						<tr>
-							<th>Link Labels</th>
+							<td>Link Labels</td>
 							<td>
 								<select id='mapstyle_linklabels' name='mapstyle_linklabels'>
-									<option <?php print ($map->links['DEFAULT']->labelstyle=='bits' ? 'selected' : '') ?> value='bits'>Bits/sec</option>
-									<option <?php print ($map->links['DEFAULT']->labelstyle=='percent' ? 'selected' : '') ?> value='percent'>Percentage</option>
-									<option <?php print ($map->links['DEFAULT']->labelstyle=='none' ? 'selected' : '') ?> value='none'>None</option>
+									<option <?php print ($map->links['DEFAULT']->labelstyle == 'bits' ? 'selected' : '') ?> value='bits'>Bits/sec</option>
+									<option <?php print ($map->links['DEFAULT']->labelstyle == 'percent' ? 'selected' : '') ?> value='percent'>Percentage</option>
+									<option <?php print ($map->links['DEFAULT']->labelstyle == 'none' ? 'selected' : '') ?> value='none'>None</option>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<th>HTML Style</th>
+							<td>HTML Style</td>
 							<td>
 								<select id='mapstyle_htmlstyle' name='mapstyle_htmlstyle'>
-									<option <?php print ($map->htmlstyle=='overlib' ? 'selected' : '') ?> value='overlib'>Overlib (DHTML)</option>
-									<option <?php print ($map->htmlstyle=='static' ? 'selected' : '') ?> value='static'>Static HTML</option>
+									<option <?php print ($map->htmlstyle == 'overlib' ? 'selected' : '') ?> value='overlib'>Overlib (DHTML)</option>
+									<option <?php print ($map->htmlstyle == 'static' ? 'selected' : '') ?> value='static'>Static HTML</option>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<th>Arrow Style</th>
+							<td>Arrow Style</td>
 							<td>
 								<select id='mapstyle_arrowstyle' name='mapstyle_arrowstyle'>
-									<option <?php print ($map->links['DEFAULT']->arrowstyle=='classic' ? 'selected' : '') ?> value='classic'>Classic</option>
-									<option <?php print ($map->links['DEFAULT']->arrowstyle=='compact' ? 'selected' : '') ?> value='compact'>Compact</option>
+									<option <?php print ($map->links['DEFAULT']->arrowstyle == 'classic' ? 'selected' : '') ?> value='classic'>Classic</option>
+									<option <?php print ($map->links['DEFAULT']->arrowstyle == 'compact' ? 'selected' : '') ?> value='compact'>Compact</option>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<th>Node Font</th>
+							<td>Node Font</td>
 							<td><?php print get_fontlist($map,'mapstyle_nodefont',$map->nodes['DEFAULT']->labelfont); ?></td>
 						</tr>
 						<tr>
-							<th>Link Label Font</th>
+							<td>Link Label Font</td>
 							<td><?php print get_fontlist($map,'mapstyle_linkfont',$map->links['DEFAULT']->bwfont); ?></td>
 						</tr>
 						<tr>
-							<th>Legend Font</th>
+							<td>Legend Font</td>
 							<td><?php print get_fontlist($map,'mapstyle_legendfont',$map->keyfont); ?></td>
 						</tr>
 						<tr>
-							<th>Font Samples:</th>
+							<td>Font Samples:</td>
 							<td><div class='fontsamples' ><img id='fontsamples' alt='' src='' /></div><br />(Drawn using your PHP install)</td>
 						</tr>
 					</table>
@@ -1388,16 +1408,16 @@ $selectedTheme = get_selected_theme();
 					</div>
 					<table class='cactiTable'>
 						<tr>
-							<th>Background Color</th>
+							<td>Background Color</td>
 							<td></td>
 						</tr>
 
 						<tr>
-							<th>Link Outline Color</th>
+							<td>Link Outline Color</td>
 							<td></td>
 						</tr>
 						<tr>
-							<th>Scale Colors</th>
+							<td>Scale Colors</td>
 							<td>Some pleasant way to design the bandwidth color scale goes in here???</td>
 						</tr>
 					</table>
@@ -1468,7 +1488,7 @@ $selectedTheme = get_selected_theme();
 				<div class='dlgBody'>
 					<table class='cactiTable'>
 						<tr>
-							<th>Show VIAs overlay</th>
+							<td>Show VIAs overlay</td>
 							<td>
 								<select id='editorsettings_showvias' name='editorsettings_showvias'>
 									<option <?php print ($use_overlay ? 'selected' : '') ?> value='1'>Yes</option>
@@ -1477,7 +1497,7 @@ $selectedTheme = get_selected_theme();
 							</td>
 						</tr>
 						<tr>
-							<th>Show Relative Positions overlay</th>
+							<td>Show Relative Positions overlay</td>
 							<td>
 								<select id='editorsettings_showrelative' name='editorsettings_showrelative'>
 									<option <?php print ($use_relative_overlay ? 'selected' : '') ?> value='1'>Yes</option>
@@ -1486,16 +1506,16 @@ $selectedTheme = get_selected_theme();
 							</td>
 						</tr>
 						<tr>
-							<th>Snap To Grid</th>
+							<td>Snap To Grid</td>
 							<td>
 								<select id='editorsettings_gridsnap' name='editorsettings_gridsnap'>
-									<option <?php print ($grid_snap_value==0 ? 'selected' : '') ?> value='NO'>No</option>
-									<option <?php print ($grid_snap_value==5 ? 'selected' : '') ?> value='5'>5 pixels</option>
-									<option <?php print ($grid_snap_value==10 ? 'selected' : '') ?> value='10'>10 pixels</option>
-									<option <?php print ($grid_snap_value==15 ? 'selected' : '') ?> value='15'>15 pixels</option>
-									<option <?php print ($grid_snap_value==20 ? 'selected' : '') ?> value='20'>20 pixels</option>
-									<option <?php print ($grid_snap_value==50 ? 'selected' : '') ?> value='50'>50 pixels</option>
-									<option <?php print ($grid_snap_value==100 ? 'selected' : '') ?> value='100'>100 pixels</option>
+									<option <?php print ($grid_snap_value == 0 ? 'selected' : '') ?> value='NO'>No</option>
+									<option <?php print ($grid_snap_value == 5 ? 'selected' : '') ?> value='5'>5 pixels</option>
+									<option <?php print ($grid_snap_value == 10 ? 'selected' : '') ?> value='10'>10 pixels</option>
+									<option <?php print ($grid_snap_value == 15 ? 'selected' : '') ?> value='15'>15 pixels</option>
+									<option <?php print ($grid_snap_value == 20 ? 'selected' : '') ?> value='20'>20 pixels</option>
+									<option <?php print ($grid_snap_value == 50 ? 'selected' : '') ?> value='50'>50 pixels</option>
+									<option <?php print ($grid_snap_value == 100 ? 'selected' : '') ?> value='100'>100 pixels</option>
 								</select>
 							</td>
 						</tr>

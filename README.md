@@ -19,10 +19,13 @@ under heavy development.  It is NOT production ready.
 ## PHP Weathermap contains components from other software developers:
 
 * overlib.js is part of Overlib 4.21, copyright Erik Bosrup 1998-2004. All rights reserved.
-  See http://www.bosrup.com/web/overlib/?License
+  See: http://www.bosrup.com/web/overlib/?License
+
+* ddSlick - DropDown with Images library
+  See: https://jquery-plugins.net/ddslick-dropdown-with-images
 
 * The Bitstream Vera Open Source fonts (Vera\*.ttf) are copyright Bitstream, Inc.
-  See http://www.bitstream.com/font_rendering/products/dev_fonts/vera.html
+  See: http://www.bitstream.com/font_rendering/products/dev_fonts/vera.html
 
 * The manual uses the Kube CSS Framework - http://imperavi.com/kube/
   and ParaType's PT Sans font: http://www.fontsquirrel.com/fonts/PT-Sans

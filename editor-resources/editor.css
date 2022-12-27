@@ -1,198 +1,227 @@
-/* http://colorblender.com/?preloadblend=BC00008A513EFFF2DE5E5550857C73FCFCFC */
+.mainView {
+	padding-top: 60px;
+}
+
+.mainArea {
+	text-align: center;
+}
+
+#existingdata, #xycapture {
+	margin-left: auto;
+	margin-right: auto;
+	border: 0px;
+	cursor: crosshair;
+}
 
 body {
-    font-family: 'Lucida Grande', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #5D5E5E;
+	font-family: 'Gill Sans', Verdana, sans-serif; margin:0;
 }
 
-#mainpage {
-    padding-top: 58px;
+input {
+	max-width: 100% !important;
 }
-
-/****************************************/
-
-#welcome {
-    width: 550px;
-    margin-left: auto;
-    margin-right: auto;
-    cursor: pointer;
-    background: white;
-    color: black;
-    border: 1px black solid;
-    padding: 10px;
-}
-
-.license {
-    font-size: 70%;
-}
-
-.emph {
-    font-size: 150%;
-    font-weight: bold;
-    text-align: center;
-}
-
-/****************************************/
 
 #toolbar {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    height: 32px;
-    width: 100%;
-    color: white;
-    border-bottom: gray solid 1px;
-    z-index: 1000;
-    opacity: 0.9;
-    display: none;
-    background: #2D3E70;
+	font-family: Verdana, sans-serif;
 }
 
-#version {
-    font-size: 70%;
-    padding-left: 10px;
-    padding-right: 10px;
-    float: right;
+#toolbar {
+	position: fixed;
+	top:0px;
+	left: 0px;
+	width: 100%;
+	color: white; border-bottom: gray solid 1px;
+	z-index: 10;
+	opacity: 0.9;
+	background: #1958b7;
 }
 
-#filenameholder {
-    font-size: 70%;
-    padding-left: 10px;
-    padding-right: 10px;
-    float: left;
+#dlgTextEdit textarea {
+	padding: 3px;
 }
 
-#busy {
-    display: none;
+.dlgButtons, .dlgBody, .dlgHelp {
+	display: table-row;
 }
 
-.viamarker {
-    z-index: 500;
-    position: absolute;
+.dlgSubButtons {
+	margin: 20px;
+	white-space: nowrap;
+	text-align: center !important;
 }
 
-/****************************************/
-
-/* #themap { margin-left: auto; margin-right: auto; padding: 0; width: 800px; padding-top: 10px; display: none; } */
-#existingdata {
-    border: none;
-    position: absolute;
-    left: 10px;
-    top: 58px;
+#toolbar ul {
+	float:left;
+	width:100%;
+	margin:0;
+	padding:0;
+	font-size:11px;
+	color:#fff;
+	/*background:#ccc;*/
+	background: #1958b7;
+	/* margin-bottom: 10px; */
 }
 
-/****************************************/
-
-#filepicker {
-    width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-    display: none;
-    padding: 10px;
-    background: white;
-    color: black;
-    border: 1px black solid;
+#toolbar ul li.tb_help {
+	font-style: italic;
+	padding: 2px;
 }
 
-#filelist {
-    list-style: none;
-    margin: 0;
-    border: 0;
-    padding: 0;
-    width: 400px;
-    background: #ddd;
-    border: 1px solid gray;
-    border-right: 2px solid gray;
-    border-bottom: 2px solid gray;
-    font-size: 110%;
-    margin-left: auto;
-    margin-right: auto;
+#toolbar ul li {
+	display:inline;
 }
 
-#filelist li {
-    border-bottom: 1px solid gray;
-    font-weight: bold;
+#toolbar ul li.tb_active {
+	float:left;
+	padding:5px 10px;
+	text-decoration:none;
+
+	border-left: #508fc4 2px solid;
+	border-right: #1958b7 2px solid;
+	border-top: #508fc4 2px solid;
+	border-bottom: #1958b7 2px solid;
+
+	cursor: pointer;
+	text-align: center;
+
+	background: #2175bc;
+	color:#fff;
 }
 
-#filelist li a em {
-    font-size: 90%;
-    font-weight: normal;
-    font-family: serif;
+#toolbar ul li.tb_coords {
+	float:left;
+	padding:7px 12px;
+	text-decoration:none;
+	width: 70px;
+	text-align: center;
+	background: #1958b7;
+	color:#fff;
 }
 
-#filelist li a {
-    padding: 4px;
-    text-decoration: none;
-    color: black;
-    width: 99%;
-    display: block;
+#toolbar ul li.tb_active:hover {
+	color:#fff;
+	background:#2586d7;
 }
 
-#filelist li a:hover {
-    color: white;
-    background: #2D3E70;
+.dlgProperties {
+	display: none;
+	width: 800px;
+	margin: 5px;
+	font-size: 11px;
 }
 
-#filelist li a img {
-    border: none;
-    padding: 2px;
+.dlgBody {
+	padding: 5px;
+	font-size: 12px;
+	text-align: left;
 }
 
-#filelist li#status em {
-    font-size: 90%;
-    font-weight: normal;
-    font-family: serif;
+.dlgBody td {
+	text-align: left;
+}
+
+.dlgConfirm {
+	display: none;
+	width: 800px;
+	margin: 5px;
+	font-size: 11px !important;
+}
+
+.ui-dialog-buttonset {
+	font-size: 12px !important;
+}
+
+.ui-dialog-title {
+	font-size: 12px !important;
+}
+
+.ui-selectmenu-menu {
+	z-index: 65535 !important;
+}
+
+.ui-selectmenu-open {
+	z-index: 65535 !important;
+}
+
+.dlgHelp {
+	font-size: 12px;
+	line-height: 12px;
+	border-top: 1px solid black;
+	height: 48px;
+	padding: 5px;
+	margin-top: 5px;
+}
+
+.dlgComment {
+	font-style: italic;
+	font-size: 12px;
+	margin-bottom: 5px;
 }
 
 
-/****************************************/
-
-.draggablenode {
-    cursor: move;
+.debug {
+	line-height: 2.5;
+	margin: 10px;
+	font-size: 70%;
+	background: yellow;
+	border: 1px dashed black;
+	padding: 4px;
 }
 
-.tb_info {
-    color: #ccc;
-    font-style: italic;
+.debug input {
+	font-size: 80%;
 }
 
-.tb_help {
-    color: black;
-    border-left: white;
+.debug h1 {
+	font-size: 8px;
+	border-bottom: 1px solid grey;
+	text-align: left;
 }
 
-ul#tblist {
-    list-style-type: none;
-    background-color: whitesmoke;
-    width: 100%;
-    height: 24px;
-    padding: 0;
+.debug span {
+	position: relative;
 }
 
-ul#tblist li {
-    float: left;
-    display: block;
-    text-align: center;
-    font: normal small-caps normal 12px "Lucida Grande", Lucida, Verdana, sans-serif;
-    margin: 1px;
-    background-color: #efefef;
-    padding: 3px 2px 3px 5px;
+.debug span label {
+	position:absolute;
+	top:-1.5em;
+	left:0;
+	font:bold 100%/1 sans-serif;
 }
 
-a.tb_button {
-    padding-left: 18px;
-    background: url(add.png) no-repeat left top;
-    text-decoration: none;
-    color: black;
+th {
+	text-align: left;
+	font-size: 11px;
+	font-weight: normal;
+	white-space: nowrap;
 }
 
-/* Individual icons for the toolbar*/
-a#btn_changefile {
-    background: url(bullet_disk.png) no-repeat left top;
+td {
+	text-align: left;
+	font-size: 11px;
+	font-weight: normal;
 }
 
-a#btn_refresh {
-    background: url(arrow_refresh.png) no-repeat left top;
+.alert {
+	background: #fff6bf url(exclamation.png) center no-repeat;
+	background-position: 15px 50%; /* x-pos y-pos */
+	text-align: left;
+	padding: 5px 20px 5px 45px;
+	border-top: 2px solid #ffd324;
+	border-bottom: 2px solid #ffd324;
+}
+
+.fontsamples {
+	height: 64px;
+	width: 300px;
+	overflow: auto;
+}
+
+.cactilink, .cactinode {
+	white-space: nowrap;
+}
+
+#item_configtext {
+	overflow: scroll;
+	white-space: nowrap;
 }

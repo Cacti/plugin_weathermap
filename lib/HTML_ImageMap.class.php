@@ -57,17 +57,23 @@ class HTML_ImageMap_Area {
 
 		if ($this->name != "") {
 			// $h .= " alt=\"".$this->name."\" ";
-			$h .= "id=\"".$this->name."\" ";
+			$h .= 'id="' . $this->name . '" ';
+		}
+
+		if (strpos($this->name, 'LINK') !== false) {
+			$h .= 'class="link" ';
+		} elseif (strpos($this->name, 'NODE') !== false) {
+			$h .= 'class="node" ';
 		}
 
 		if ($this->href != "") {
-			$h .= "href=\"".$this->href."\" ";
+			$h .= 'href="' . $this->href . '" ';
 		} else {
-			$h .= "nohref ";
+			$h .= 'nohref ';
 		}
 
-		if ($this->extrahtml != "") {
-			$h .= $this->extrahtml." ";
+		if ($this->extrahtml != '') {
+			$h .= $this->extrahtml . ' ';
 		}
 
 		return $h;
