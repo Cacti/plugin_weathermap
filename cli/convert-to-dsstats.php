@@ -36,29 +36,20 @@
  +-------------------------------------------------------------------------+
 */
 
-#
-# Change the uncommented line to point to your Cacti installation
-#
-$cacti_base = __DIR__ . '/../../';
-# $cacti_base = "C:/xampp/htdocs/cacti/";
-# $cacti_base = "/var/www/html/cacti/";
-# $cacti_base = "/Applications/XAMPP/htdocs/cacti/";
-
 include(__DIR__ . '/../../../include/cli_check.php');
+require_once('../lib/Weathermap.class.php');
 
-require_once '../lib/Weathermap.class.php';
-require_once 'Console/Getopt.php';
+$cacti_base = $config['base_path'];
 
-$reverse = 0;
-$inputfile = "";
-$outputfile = "";
-$converted = 0;
-$candidates = 0;
+$reverse      = 0;
+$inputfile    = "";
+$outputfile   = "";
+$converted    = 0;
+$candidates   = 0;
 $totaltargets = 0;
 
-$cg=new Console_Getopt();
-$short_opts='';
-$long_opts=array (
+$short_opts = '';
+$long_opts  = array(
 	'help',
 	'input=',
 	'output=',
@@ -66,8 +57,8 @@ $long_opts=array (
 	'reverse',
 );
 
-$args=$cg->readPHPArgv();
-$ret=$cg->getopt($args, $short_opts, $long_opts);
+$args = $cg->readPHPArgv();
+$ret  = $cg->getopt($args, $short_opts, $long_opts);
 
 if (PEAR::isError($ret)) {
 	die ("Error in command line: " . $ret->getMessage() . "\n (try --help)\n");

@@ -39,44 +39,28 @@
 //
 // Change the uncommented line to point to your Cacti installation
 //
-$cacti_base = __DIR__ . '/../../';
+include(__DIR__ . '/../../../include/cli_check.php');
+require_once('../lib/Weathermap.class.php');
 
-// $cacti_base = 'C:/xampp/htdocs/cacti/';
-// $cacti_base = '/var/www/html/cacti/';
-// $cacti_base = '/Applications/XAMPP/htdocs/cacti/';
+$cacti_base = $config['base_path'];
 
-// check if the goalposts have moved
-if (is_dir($cacti_base) && file_exists($cacti_base . '/include/global.php')) {
-	// include the cacti-config, so we know about the database
-	require_once $cacti_base . '/include/global.php';
-} elseif (is_dir($cacti_base) && file_exists($cacti_base . '/include/config.php')) {
-	// include the cacti-config, so we know about the database
-	require_once $cacti_base . '/include/config.php';
-} else {
-	die("Couldn't find a usable Cacti config - check the first few lines of " . __FILE__ . "\n");
-}
-
-require_once 'Weathermap.class.php';
-require_once 'Console/Getopt.php';
-
-$reverse = 0;
-$inputfile = '';
-$outputfile = '';
-$converted = 0;
-$candidates = 0;
+$reverse      = 0;
+$inputfile    = '';
+$outputfile   = '';
+$converted    = 0;
+$candidates   = 0;
 $totaltargets = 0;
 
-$cg = new Console_Getopt();
 $short_opts = '';
-$long_opts = array (
-    'help',
-    'input=',
-    'output=',
-    'debug'
+$long_opts  = array (
+	'help',
+	'input=',
+	'output=',
+	'debug'
 );
 
 $args = $cg->readPHPArgv();
-$ret = $cg->getopt($args, $short_opts, $long_opts);
+$ret  = $cg->getopt($args, $short_opts, $long_opts);
 
 if (PEAR::isError($ret)) {
 	die('Error in command line: ' . $ret->getMessage() . "\n (try --help)\n");

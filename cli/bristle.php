@@ -36,9 +36,7 @@
  +-------------------------------------------------------------------------+
 */
 
-$cacti_root = "/var/www/docs/cacti";
-
-@include_once($cacti_root."/include/global.php");
+include_once('../../../include/cli_check.php');
 
 $target_format  = "";
 $infourl_format = "";

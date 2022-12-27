@@ -44,9 +44,9 @@
  * See http://forums.cacti.net/about26544.html for more info
  *
  */
-$cacti_root = '/var/www/html/cacti/';
-
 include(__DIR__ . '/../../../include/cli_check.php');
+
+$cacti_root = $config['base_path'];
 
 ini_set('include_path',
 	ini_get('include_path') . PATH_SEPARATOR .
@@ -62,7 +62,7 @@ include_once 'include/global.php';
 include_once 'include/config.php';
 
 $cacti_base = $cacti_root;
-$cacti_url = $config['url_path'];
+$cacti_url  = $config['url_path'];
 
 include_once 'editor-config.php';
 
@@ -82,7 +82,6 @@ $width_map = array (
 );
 
 $config['base_url'] = (isset($config['url_path']) ? $config['url_path'] : $cacti_url);
-$cacti_found = true;
 
 // the following are defaults. You can change those from the command-line
 // options now.
@@ -280,10 +279,10 @@ foreach ($map->links as $link) {
 
 		$a = $link->a->name;
 		$b = $link->b->name;
-		$int_in = $link->get_hint("in_interface");
-		$int_out = $link->get_hint("out_interface");
-		$a_id = intval($map->nodes[$a]->get_hint("cacti_id"));
-		$b_id = intval($map->nodes[$b]->get_hint("cacti_id"));
+		$int_in = $link->get_hint('in_interface');
+		$int_out = $link->get_hint('out_interface');
+		$a_id = intval($map->nodes[$a]->get_hint('cacti_id'));
+		$b_id = intval($map->nodes[$b]->get_hint('cacti_id'));
 
 		print "LINK $name\n";
 
