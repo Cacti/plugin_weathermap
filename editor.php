@@ -985,15 +985,15 @@ $selectedTheme = get_selected_theme();
 	<link href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/images/cacti_logo.gif'?>' rel='icon' sizes='96x96'>
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/jquery-ui.css';?>' />
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/main.css';?>' />
-	<link rel='stylesheet' type='text/css' media='screen' href='editor-resources/editor.css' />
+	<link rel='stylesheet' type='text/css' media='screen' href='css/editor.css' />
 
 	<script src='<?php print $config['url_path'] . 'include/js/jquery.js';?>' type='text/javascript'></script>
 	<script src='<?php print $config['url_path'] . 'include/js/jquery-ui.js';?>' type='text/javascript'></script>
 	<script src='<?php print $config['url_path'] . 'include/js/jquery.tablesorter.js';?>' type='text/javascript'></script>
 	<script src='<?php print $config['url_path'] . 'include/js/js.storage.js';?>' type='text/javascript'></script>
-	<script src='editor-resources/editor.js' type='text/javascript'></script>
-	<script src='editor-resources/jquery.ddslick.js' type='text/javascript'></script>
-	<script src='editor-resources/jquery.ui-contextmenu.js' type='text/javascript'></script>
+	<script src='js/editor.js' type='text/javascript'></script>
+	<script src='js/jquery.ddslick.js' type='text/javascript'></script>
+	<script src='js/jquery.ui-contextmenu.js' type='text/javascript'></script>
 
 	<title>PHP Weathermap Editor <?php print $WEATHERMAP_VERSION; ?></title>
 </head>

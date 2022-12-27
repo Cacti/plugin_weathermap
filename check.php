@@ -147,7 +147,7 @@ if (isset($argv)) {
     body { font-family: 'Lucida Grande',Arial,sans-serif; font-size: 10pt; }
     p {margin-bottom: 10px; margin-top: 10px;}
     table { margin: 20px;}
-    .critical { width: 400px; padding: 10px; background: #fee; border: 1px solid #f88; padding-left: 20px; background: left no-repeat url(images/exclamation.png); }
+    .critical { width: 400px; padding: 10px; background: #fee; border: 1px solid #f88; padding-left: 20px; background: left no-repeat url(images/icons/exclamation.png); }
     .noncritical { width: 400px; padding: 10px; background: #ffe; border: 1px solid #fb8; }
     .ok { width: 400px; padding: 10px; background: #efe; border: 1px solid #8f8; }
     </style>
@@ -308,7 +308,7 @@ foreach ($functions as $function=>$details) {
 			$notes .= 'CRITICAL.   ';
 
 			if ($environment == 'web') {
-				print '<td><img alt="NO" src="images/exclamation.png" /><b>CRITICAL</b> ';
+				print '<td><img alt="NO" src="images/icons/exclamation.png" /><b>CRITICAL</b> ';
 			}
 
 			$critical++;

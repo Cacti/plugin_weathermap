@@ -167,7 +167,7 @@ function show_editor_startpage() {
 
 	$matches = 0;
 
-	print '<script src="editor-resources/editor.js" type="text/javascript"></script>';
+	print '<script src="js/editor.js" type="text/javascript"></script>';
 
 	$errormessage = '';
 

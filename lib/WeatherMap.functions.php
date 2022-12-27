@@ -2018,9 +2018,9 @@ function TestOutput_HTML($htmlfile, &$map) {
 
 	fwrite($fd, '<meta http-equiv="refresh" content="300" /><title>' . $map->ProcessString($map->title, $map) . '</title></head><body>');
 
-	if ($map->htmlstyle == "overlib") {
+	if ($map->htmlstyle == 'overlib') {
 		fwrite($fd, "<div id=\"overDiv\" style=\"position:absolute; visibility:hidden; z-index:1000;\"></div>\n");
-		fwrite($fd, "<script type=\"text/javascript\" src=\"overlib.js\"><!-- overLIB (c) Erik Bosrup --></script> \n");
+		fwrite($fd, "<script type=\"text/javascript\" src=\"js/overlib.js\"><!-- overLIB (c) Erik Bosrup --></script> \n");
 	}
 
 	fwrite($fd, $map->MakeHTML());

@@ -203,7 +203,7 @@ td {
 }
 
 .alert {
-	background: #fff6bf url(exclamation.png) center no-repeat;
+	background: #fff6bf url(../images/icons/exclamation.png) center no-repeat;
 	background-position: 15px 50%; /* x-pos y-pos */
 	text-align: left;
 	padding: 5px 20px 5px 45px;
