@@ -137,16 +137,6 @@ function weathermap_poller_top() {
 
 function weathermap_page_head() {
 	global $config;
-
-	// Add in a Media RSS link on the thumbnail view
-	// - format isn't quite right, so it's disabled for now.
-	//	if (preg_match('/plugins\/weathermap\/weathermap\-cacti\-plugin\.php/',$_SERVER['REQUEST_URI'] ,$matches))
-	//	{
-	//		print '<link id='media-rss' title='My Network Weathermaps' rel='alternate' href='?action=mrss' type='application/rss+xml'>';
-	//	}
-	if (preg_match('/plugins\/weathermap\//', $_SERVER['REQUEST_URI'], $matches )) {
-		print "<link rel='stylesheet' type='text/css' media='screen' href='css/weathermap-cacti-plugin.css'>";
-	}
 }
 
 function weathermap_page_title($t) {
