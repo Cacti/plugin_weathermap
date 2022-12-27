@@ -45,34 +45,10 @@ require_once('lib/WMPoint.class.php');
 require_once('lib/WMVector.class.php');
 require_once('lib/WMLine.class.php');
 
-// so that you can't have the editor active, and not know about it.
-$ENABLED     = true;
-$cacti_found = true;
-
-$ignore_cacti=true;
-
 // If we're embedded in the Cacti UI (included from weathermap-cacti-plugin-editor.php), then authentication has happened. Enable the editor.
-if (isset($FROM_CACTI) && $FROM_CACTI == true) {
-	$ENABLED = true;
-	$editor_name = 'weathermap-cacti-plugin-editor.php';
-	$cacti_base = $config['base_path'];
-	$cacti_url = $config['url_path'];
-	$cacti_found = true;
-	$ignore_cacti = false;
-} else {
-    $FROM_CACTI = false;
-	$editor_name = 'editor.php';
-	$cacti_base = '../../';
-	$cacti_url = '/';
-	$cacti_found = false;
-}
-
-if (!$ENABLED) {
-	print '<p>The editor has not been enabled yet. You need to set ENABLED=true at the top of editor.php</p>';
-	print '<p>Before you do that, you should consider using FilesMatch (in Apache) or similar to limit who can access the editor. There is more information in the install guide section of the manual.</p>';
-
-	exit();
-}
+$editor_name  = 'weathermap-cacti-plugin-editor.php';
+$cacti_base   = $config['base_path'];
+$cacti_url    = $config['url_path'];
 
 // sensible defaults
 $mapdir      = 'configs';
@@ -143,15 +119,6 @@ if ($mapname == '') {
 
 	$map = new WeatherMap;
 	$map->context = 'editor';
-
-	$fromplug = false;
-	if (isset($_REQUEST['plug']) && (intval($_REQUEST['plug'])==1)) {
-		$fromplug = true;
-	}
-
-	if ($FROM_CACTI) {
-		$fromplug = true;
-	}
 
 	switch($action) {
 		case 'newmap':
@@ -1017,7 +984,6 @@ $selectedTheme = get_selected_theme();
 	</div>
 	<form id='frmMain' action='<?php print $editor_name ?>' method='post'>
 		<script type='text/javascript'>
-			var fromplug=<?php print ($fromplug==true ? 1:0); ?>;
 			var editor_url = '<?php print $editor_name; ?>';
 
 			// the only javascript in here should be the objects representing the map itself
@@ -1034,16 +1000,15 @@ $selectedTheme = get_selected_theme();
 			sort($image_list);
 	?></script>
 		<div class='mainArea'>
-			<input type='hidden' id='plug' name='plug' value='<?php print ($fromplug==true ? 1 : 0) ?>' />
 			<input id='xycapture' name='xycapture' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
 			<img src='<?php print html_escape($imageurl); ?>' id='existingdata' usemap='#weathermap_imap' />
 			<div class='debug' style='display:none'><p><strong>Debug</strong>
-				<a href='?<?php print ($fromplug==true ? 'plug=1&' : ''); ?>action=retidy_all&mapname=<?php print html_escape($mapname) ?>'>Re-tidy ALL</a>
-				<a href='?<?php print ($fromplug==true ? 'plug=1&' : ''); ?>action=retidy&mapname=<?php print html_escape($mapname) ?>'>Re-tidy</a>
-				<a href='?<?php print ($fromplug==true ? 'plug=1&' : ''); ?>action=untidy&mapname=<?php print html_escape($mapname) ?>'>Un-tidy</a>
-				<a href='?<?php print ($fromplug==true ? 'plug=1&' : ''); ?>action=nothing&mapname=<?php print html_escape($mapname) ?>'>Do Nothing</a>
+				<a href='?action=retidy_all&mapname=<?php print html_escape($mapname) ?>'>Re-tidy ALL</a>
+				<a href='?action=retidy&mapname=<?php print html_escape($mapname) ?>'>Re-tidy</a>
+				<a href='?action=untidy&mapname=<?php print html_escape($mapname) ?>'>Un-tidy</a>
+				<a href='?action=nothing&mapname=<?php print html_escape($mapname) ?>'>Do Nothing</a>
 				<span>
 					<label for='mapname'>mapfile</label>
 					<input id='mapname' name='mapname' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($mapname); ?>' />
@@ -1064,7 +1029,7 @@ $selectedTheme = get_selected_theme();
 					<label for='debug'>debug</label>
 					<input id='debug' name='debug' type='text' class='ui-state-default ui-corner-all' value='' />
 				</span>
-				<a target='configwindow' href='?<?php print ($fromplug==true ? 'plug=1&':''); ?>action=show_config&mapname=<?php print urlencode($mapname) ?>'>See config</a></p>
+				<a target='configwindow' href='?action=show_config&mapname=<?php print urlencode($mapname) ?>'>See config</a></p>
 				<pre><?php print html_escape($log) ?></pre>
 			</div>
 			<?php

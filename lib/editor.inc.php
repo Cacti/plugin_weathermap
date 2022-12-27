@@ -158,12 +158,7 @@ function wm_editor_sanitize_conffile($filename) {
 }
 
 function show_editor_startpage() {
-	global $mapdir, $WEATHERMAP_VERSION, $config_loaded, $cacti_found, $ignore_cacti, $configerror;
-
-	$fromplug = false;
-	if (isset($_REQUEST['plug']) && (intval($_REQUEST['plug'])==1) ) {
-	    $fromplug = true;
-	}
+	global $mapdir, $WEATHERMAP_VERSION, $config_loaded, $configerror;
 
 	$matches = 0;
 
@@ -190,7 +185,6 @@ function show_editor_startpage() {
 	print 'Named: <input type="text" name="mapname" size="20">';
 
 	print '<input name="action" type="hidden" value="newmap">';
-	print '<input name="plug" type="hidden" value="'.$fromplug.'">';
 
 	print '<input type="submit" value="Create">';
 
@@ -257,7 +251,6 @@ function show_editor_startpage() {
 	print 'Named: <input type="text" name="mapname" size="20"> based on ';
 
 	print '<input name="action" type="hidden" value="newmapcopy">';
-	print '<input name="plug" type="hidden" value="'.$fromplug.'">';
 	print '<select name="sourcemap">';
 
 	if ($errorstring == '') {
@@ -278,16 +271,17 @@ function show_editor_startpage() {
 	if ($errorstring == '') {
 		foreach ($titles as $file=>$title) {
 			# $title = $titles[$file];
-			$note = $notes[$file];
-			$nicefile = html_escape($file);
+			$note      = $notes[$file];
+			$nicefile  = html_escape($file);
 			$nicetitle = html_escape($title);
-			print "<li>$note<a href=\"?mapname=$nicefile&plug=$fromplug\">$nicefile</a> - <span class=\"comment\">$nicetitle</span></li>\n";
+
+			print "<li>$note<a href='?mapname=$nicefile'>$nicefile</a> - <span class='comment'>$nicetitle</span></li>";
 		}
 	} else {
-		print '<li>'.html_escape($errorstring).'</li>';
+		print '<li>' . html_escape($errorstring) . '</li>';
 	}
 
-	print "</ul>";
+	print '</ul>';
 
 	print "</div>"; // dlgbody
 	print '<div class="dlgHelp" id="start_help">PHP Weathermap ' . $WEATHERMAP_VERSION

@@ -41,7 +41,6 @@
 $mapdir       = 'configs';
 $cacti_base   = '../../';
 $cacti_url    = '/';
-$ignore_cacti = false;
 
 $config['base_url'] = $cacti_url;
 
@@ -52,7 +51,6 @@ if (file_exists(__DIR__ . '/editor-config.php')) {
 }
 
 $config['base_url'] = (isset($config['url_path']) ? $config['url_path'] : $cacti_url);
-$cacti_found = true;
 
 // ******************************************
 if (isset($_SESSION['cacti']['weathermap']['last_used_host_id'][0])) {
