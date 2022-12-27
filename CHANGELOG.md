@@ -19,6 +19,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - Use Cacti Database API as applicable
 * FIXED  - Remove dependency on PECL Console_Getopt() library
 * FIXED  - Image Library Support changes in PHP 8.x
+* FIXED  - Deprecation of strftime() in PHP 8.1
 * TODO   - Parallel Map Rendering API
 * ADDED  - Right mouse context menu during map editing
 * ADDED  - Drop image functionality for Nodes and Background images
