@@ -146,9 +146,9 @@ if (cacti_sizeof($gopts) > 0) {
 					$defines[$varname]=$value;
 				} else {
 					print "WARNING: --define format is:  --define name=value\n";
-				}            
+				}
 
-	            break;
+				break;
 			case '--version': 
 				print 'PHP Network Weathermap v' . $WEATHERMAP_VERSION."\n";
 				exit();
@@ -157,21 +157,21 @@ if (cacti_sizeof($gopts) > 0) {
 			case '--help':
 				print 'PHP Network Weathermap v' . $WEATHERMAP_VERSION."\n";
 				print "Copyright Howard Jones, 2005-2022 howie@thingy.com\nReleased under the MIT License\nhttp://www.network-weathermap.com/\n\n";
-	
+
 				print "Usage: php weathermap [options]\n\n";
-                        
+
 				print " --config {filename}      -  filename to read from. Default weathermap.conf\n";
 				print " --output {filename}      -  filename to write image. Default weathermap.png\n";
 				print " --htmloutput {filename}  -  filename to write HTML. Default weathermap.html\n\n";
-                        
+
 				print " --image-uri {uri}        -  URI to prefix <img> tags in HTML.\n";
 				print " --bulge                  -  Enable link-bulging mode. See manual.\n\n";
-						
+
 				print " --define name=value      -  Define internal variables\n";
 				print "                             (equivalent to global SET in config file)\n\n";
-                        
+
 				print " --no-data                -  skip the data-reading process (just a 'grey' map)\n";
-				print " --randomdata            -  as above, but use random data\n";
+				print " --randomdata             -  as above, but use random data\n";
 				print " --debug                  -  produce (LOTS) of debugging information during run\n";
 				print " --no-warn={errorcode}[,{errorcode}] - suppress warnings with listed errorcodes\n";
 				print " --dump-after             -  dump all internal PHP structures (HUGE)\n";
@@ -225,12 +225,12 @@ if ($map->ReadConfig($configfile)) {
 		}
 	}
 
-    // feed in any command-line defaults, so that they appear as if SET lines in the config
-    
-    // XXX FIXME
-    foreach ($defines as $hintname=>$hint) {
-        $map->add_hint($hintname,$hint);
-    }
+	// feed in any command-line defaults, so that they appear as if SET lines in the config
+
+	// XXX FIXME
+	foreach ($defines as $hintname=>$hint) {
+		$map->add_hint($hintname,$hint);
+	}
 	
 	// now stuff in all the others, that we got from getopts
 	foreach ($options_output as $key=>$value) {
@@ -305,10 +305,10 @@ if ($map->ReadConfig($configfile)) {
 }
 
 function my_assert_handler($file, $line, $code) {
-    print "assertion Failed:
-        File $file
-        Line $line
-        Code $code";
+	print "assertion Failed:
+		File $file
+		Line $line
+		Code $code";
 
 	debug_print_backtrace();
 
