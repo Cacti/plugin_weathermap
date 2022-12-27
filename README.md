@@ -14,10 +14,12 @@ There is much more information, tutorials and updates available at:
 ------
 
 ## Important Notes
-**This version only works with Cacti 1.x.x and is currently under heavy development.  
-It is NOT production ready.**
+This version of Weathermap only works with Cacti 1.x.x and is currently under
+heavy development.
 
-The location of backgrounds and object images will changes.  The upgrade script 
+**This version is NOT production ready!**
+
+The location of backgrounds and object images has changed!  The upgrade script 
 (once written) will attempt to move these backgrounds and images to the new locations, 
 but you may have some cleanup to do especially if you customized the locations.
 
