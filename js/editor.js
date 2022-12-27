@@ -1,6 +1,8 @@
 // global variable for subwindow reference
 
 var newWindow;
+var selectedNode;
+var selectedLink;
 
 // seed the help text. Done in a big lump here, so we could make a foreign language version someday.
 
@@ -100,12 +102,53 @@ function initContextMenu() {
 }
 
 function contextAction(event, ui) {
-	var alt;
+	var alt, objectname, objecttype, objectid;
+
+	alt        = ui.target[0].id;
+	objecttype = alt.slice(0, 4);
+	objectname = alt.slice(5, alt.length);
+	objectid   = objectname.slice(0, objectname.length-2);
 
 	if (ui.cmd == 'properties') {
-		alt = ui.target[0].id;
-
 		click_execute(event, alt);
+	} else if (objecttype == 'NODE') {
+		objectname = NodeIDs[objectid];
+
+		if (prime_node_form(objectname)) {
+			switch (ui.cmd) {
+				case 'move':
+					move_node();
+					break;
+				case 'clone':
+					clone_node();
+					break;
+				case 'edit':
+					edit_node();
+					break;
+				case 'delete':
+					delete_node();
+					break;
+			}
+		}
+	} else if (objecttype == 'LINK') {
+		objectname = LinkIDs[objectid];
+
+		if (prime_link_form(objectname)) {
+			switch (ui.cmd) {
+				case 'tidy':
+					tidy_link();
+					break;
+				case 'via':
+					via_link();
+					break;
+				case 'edit':
+					edit_link();
+					break;
+				case 'delete':
+					delete_link();
+					break;
+			}
+		}
 	}
 }
 
@@ -120,13 +163,9 @@ function attach_click_events() {
 	$("area[id^='TIMES']").attr('href', '#').click(position_timestamp);
 	$("area[id^='LEGEN']").attr('href', '#').click(position_legend);
 
-	if (fromplug === 1) {
-		$('#tb_newfile').html('Return to<br>Cacti').click(function() {
-			window.location = 'weathermap-cacti-plugin-mgmt.php';
-		});
-	} else {
-		$('#tb_newfile').click(new_file);
-	}
+	$('#tb_newfile').html('Return to<br>Cacti').click(function() {
+		window.location = 'weathermap-cacti-plugin-mgmt.php';
+	});
 
 	$('#tb_addnode').click(add_node);
 	$('#tb_mapprops').click(map_properties);
@@ -372,6 +411,7 @@ function delete_node() {
 		buttons: {
 			Cancel: function() {
 				$(this).dialog('close');
+				mapmode('existing');
 			},
 			'Delete Node': function() {
 				$(this).dialog('close');
@@ -445,6 +485,7 @@ function delete_link() {
 		buttons: {
 			Cancel: function() {
 				$(this).dialog('close');
+				mapmode('existing');
 			},
 			'Delete Node': function() {
 				$(this).dialog('close');
@@ -464,8 +505,6 @@ function form_submit() {
 		url: editor_url,
 		data: data,
 		success: function(html) {
-			console.log('done');
-
 			var htmlObject  = $(html);
 
 			if (htmlObject != null) {
@@ -488,7 +527,7 @@ function loadPage(href) {
 		$(document).replaceWith(html);
 	})
 	.fail(function(html) {
-		console.log('failed');
+		console.log('Load page failed');
 	});
 
 	return false;
@@ -573,8 +612,6 @@ function real_position_legend(scalename) {
 }
 
 function show_itemtext(itemtype,name) {
-	var found = -1;
-
 	mapmode('existing');
 
 	hide_all_dialogs();
@@ -614,22 +651,15 @@ function show_itemtext(itemtype,name) {
 	});
 }
 
-function show_node(name) {
-	var found = -1;
-
-	mapmode('existing');
-
-	hide_all_dialogs();
-
+function prime_node_form(name) {
 	var mynode = Nodes[name];
 
 	if (mynode) {
-		$('#action').val('set_node_properties');
 		$('#node_name').val(name);
 		$('#node_new_name').val(name);
 
 		$('#node_x').val(mynode.x);
-		node_y.value = mynode.y;
+		$('#node_y').val(mynode.y);
 
 		$('#node_name').val(mynode.name);
 		$('#node_new_name').val(mynode.name);
@@ -637,21 +667,33 @@ function show_node(name) {
 		$('#node_infourl').val(mynode.infourl);
 		$('#node_hover').val(mynode.overliburl);
 
-		var selectedNode;
-
 		if (mynode.iconfile != '') {
 			// console.log(mynode.iconfile.substring(0,2));
-			if (mynode.iconfile.substring(0,2) == '::') {
-				$('node_iconfilename').val('--AICON--');
-				selectedNode = '--AICON--';
-			} else {
-				$('node_iconfilename').val(mynode.iconfile);
-				selectedNode = mynode.iconfile;
-			}
+			$('node_iconfilename').val(mynode.iconfile);
+			selectedNode = mynode.iconfile;
 		} else {
 			$('node_iconfilename').val('--NONE--');
 			selectedNode = '--NONE--';
 		}
+
+		// save this here, just in case they choose delete_node or move_node
+		$('#param').val(mynode.name);
+
+		return true;
+	}
+
+	return false;
+}
+
+function show_node(name) {
+	mapmode('existing');
+
+	hide_all_dialogs();
+
+	var success = prime_node_form(name);
+
+	if (success) {
+		$('#action').val('set_node_properties');
 
 		if ($('#node_iconfilename.dd-container').length) {
 			$('#node_iconfilename').ddslick('destroy');
@@ -667,22 +709,15 @@ function show_node(name) {
 			$('.dd-options, .dd-container').css('z-index', '500');
 		});
 
-		// save this here, just in case they choose delete_node or move_node
-		$('#param').val(mynode.name);
-
 		show_dialog('dlgNodeProperties');
 
 		$('#node_new_name').focus();
+	} else {
+		console.log('Unable to find node');
 	}
 }
 
-function show_link(name) {
-	var found = -1;
-
-	mapmode('existing');
-
-	hide_all_dialogs();
-
+function prime_link_form(name) {
 	var mylink = Links[name];
 
 	if (mylink) {
@@ -724,6 +759,18 @@ function show_link(name) {
 
 		$('#param').val(mylink.name);
 
+		return true;
+	}
+
+	return false;
+}
+
+function show_link(name) {
+	mapmode('existing');
+
+	hide_all_dialogs();
+
+	if (prime_link_form(name)) {
 		$('#action').val('set_link_properties');
 
 		show_dialog('dlgLinkProperties');
