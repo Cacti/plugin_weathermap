@@ -145,7 +145,7 @@ function weathermap_page_head() {
 	//		print '<link id='media-rss' title='My Network Weathermaps' rel='alternate' href='?action=mrss' type='application/rss+xml'>';
 	//	}
 	if (preg_match('/plugins\/weathermap\//', $_SERVER['REQUEST_URI'], $matches )) {
-		print "<link rel='stylesheet' type='text/css' media='screen' href='weathermap-cacti-plugin.css'>";
+		print "<link rel='stylesheet' type='text/css' media='screen' href='css/weathermap-cacti-plugin.css'>";
 	}
 }
 
