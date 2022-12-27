@@ -36,8 +36,6 @@
  +-------------------------------------------------------------------------+
 */
 
-include_once(__DIR__ . '/lib/compat.php' );
-
 function plugin_weathermap_install() {
 	api_plugin_register_hook('weathermap', 'config_arrays',   'weathermap_config_arrays',   'setup.php');
 	api_plugin_register_hook('weathermap', 'config_settings', 'weathermap_config_settings', 'setup.php');
@@ -521,8 +519,6 @@ function weathermap_config_arrays() {
 }
 
 function weathermap_tree_item_render($leaf) {
-	global $colors;
-
 	$outdir  = __DIR__ . '/output/';
 	$confdir = __DIR__ . '/configs/';
 
@@ -545,7 +541,7 @@ function weathermap_tree_item_render($leaf) {
 		print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='1'>";
 
 		?>
-		<tr bgcolor='<?php print $colors['panel']; ?>'>
+		<tr class='even'>
 			<td>
 				<table width='100%' cellpadding='0' cellspacing='0'>
 					<tr>
@@ -588,8 +584,6 @@ function weathermap_tree_item_name($item_id) {
 
 // the edit form, for when you add or edit a map in a graph tree
 function weathermap_tree_item_edit($tree_item) {
-	global $colors;
-
 	form_alternate_row();
 
 	$titles = db_fetch_assoc("SELECT id, CONCAT_WS('',titlecache,' (', configfile, ')') AS name

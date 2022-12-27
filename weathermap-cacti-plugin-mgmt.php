@@ -44,7 +44,6 @@ $weathermap_confdir = realpath(__DIR__ . '/configs');
 
 // include the weathermap class so that we can get the version
 include_once(__DIR__ . '/lib/Weathermap.class.php');
-include_once(__DIR__ . '/lib/compat.php');
 include_once(__DIR__ . '/lib/poller-common.php');
 
 $actions = array(
@@ -1076,7 +1075,6 @@ function maplist() {
 
 function addmap_picker($show_all = false) {
 	global $weathermap_confdir;
-	global $colors;
 
 	$loaded = array();
 	$flags  = array();
@@ -1207,7 +1205,6 @@ function addmap_picker($show_all = false) {
 
 function preview_config($file) {
 	global $weathermap_confdir;
-	global $colors;
 
 	chdir($weathermap_confdir);
 
@@ -1246,7 +1243,6 @@ function preview_config($file) {
 
 function add_config($file) {
 	global $weathermap_confdir;
-	global $colors;
 
 	chdir($weathermap_confdir);
 
@@ -1429,8 +1425,6 @@ function perms_delete_user($mapid, $userid) {
 }
 
 function perms_list($id) {
-	global $colors;
-
 	$title = db_fetch_cell_prepared('SELECT titlecache
 		FROM weathermap_maps
 		WHERE id = ?',
@@ -1694,7 +1688,7 @@ function weathermap_readonly_settings($id, $title = 'Settings') {
 }
 
 function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
-	global $colors, $config;
+	global $config;
 
 	$title = db_fetch_cell_prepared('SELECT titlecache
 		FROM weathermap_maps
@@ -1805,8 +1799,6 @@ function weathermap_setting_delete($mapid, $settingid) {
 }
 
 function weathermap_chgroup($id) {
-	global $colors;
-
 	$title = db_fetch_cell_prepared('SELECT titlecache
 		FROM weathermap_maps
 		WHERE id = ?',
@@ -1859,7 +1851,7 @@ function weathermap_chgroup($id) {
 }
 
 function weathermap_group_form($id = 0) {
-	global $colors, $config;
+	global $config;
 
 	$grouptext = '';
 	// if id==0, it's an Add, otherwise it's an editor.
@@ -1899,7 +1891,7 @@ function weathermap_group_form($id = 0) {
 }
 
 function weathermap_group_editor() {
-	global $colors, $config;
+	global $config;
 
 	html_start_box(__('Edit Map Groups', 'weathermap'), '100%', '', '3', 'center', 'weathermap-cacti-plugin-mgmt.php?action=group_form&id=0');
 
