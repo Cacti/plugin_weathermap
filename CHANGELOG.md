@@ -19,8 +19,19 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - Use Cacti Database API as applicable
 * FIXED  - Remove dependency on PECL Console_Getopt() library
 * FIXED  - Image Library Support changes in PHP 8.x
-* ADDED  - Parallel Map Rendering API
+* TODO   - Parallel Map Rendering API
+* ADDED  - Right mouse context menu during map editing
+* ADDED  - Drop image functionality for Nodes and Background images
+* ADDED  - Drop Down actions similar to follow the Cacti UI standard
+* ADDED  - More statistics gathering for map rendering
+* ADDED  - Separated background and object image locations
+* CHANGE - The map editing interface to use jQueryUI dialog for form rendering
+* CHANGE - The map editing interface to follow Cacti's Theme
 * CHANGE - Cacti PSR throughout
+* CHANGE - Movement of css and javascript files to LSB locations
+* CHANGE - The Automatic Cycling of Maps to used FontAwesome Glyphs instead of images
+* CHANGE - The Weathermap interface to follow Cacti UI standard
+* CHANGE - Logging format to follow Cacti standards
 
 --- 0.98a ---
 * FIXED  - Works with PHP 7.x and 5.6 - removed all mysql_*() function calls, and use PDO instead
