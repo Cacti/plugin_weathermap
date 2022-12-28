@@ -147,17 +147,17 @@ function weathermap_page_title($t) {
 	if (preg_match('/plugins\/weathermap\//', $_SERVER['REQUEST_URI'], $matches)) {
 		$t .= ' - Weathermap';
 
-		if (preg_match('/plugins\/weathermap\/weathermap-cacti-plugin.php\?action=viewmap&id=([^&]+)/', $_SERVER['REQUEST_URI'], $matches )) {
+		if (preg_match('/plugins\/weathermap\/weathermap-cacti-plugin.php\?action=viewmap&id=([^&]+)/', $_SERVER['REQUEST_URI'], $matches)) {
 			$mapid = $matches[1];
 
 			if (preg_match('/^\d+$/', $mapid)) {
-				$title = db_fetch_cell_prepared('SELECT titlecache FROM weathermap_maps WHERE id = ?', array(intval($mapid)));
+				$title = db_fetch_cell_prepared('SELECT titlecache FROM weathermap_maps WHERE id = ?', array($mapid));
 			} else {
 				$title = db_fetch_cell_prepared('SELECT titlecache FROM weathermap_maps WHERE filehash = ?', array($mapid));
 			}
 
-			if (isset($title)) {
-				$t .= ' - $title';
+			if ($title != '') {
+				$t .= ' - ' . $title;
 			}
 		}
 
@@ -439,22 +439,23 @@ function weathermap_setup_table() {
 		}
 
 		$cycledelay = read_config_option('weathermap_cycle_refresh');
-		if ($cycledelay == '' || intval($cycledelay < 0)) {
+		if ($cycledelay == '' || $cycledelay < 0) {
 			set_config_option('weathermap_cycle_refresh', '0');
 		}
 
 		$renderperiod = read_config_option('weathermap_render_period');
-		if ($renderperiod == '' || intval($renderperiod < -1)) {
+		if ($renderperiod == '' || $renderperiod < -1) {
 			set_config_option('weathermap_render_period', '0');
 		}
 
 		$quietlogging = read_config_option('weathermap_quiet_logging');
-		if ($quietlogging == '' || intval($quietlogging < -1)) {
+		if ($quietlogging == '' || $quietlogging < -1) {
 			set_config_option('weathermap_quiet_logging', '0');
 		}
 
+cacti_log('WTF!!!', false, 'WEATHERMAP');
 		$rendercounter = read_config_option('weathermap_render_counter');
-		if ($rendercounter == '' || intval($rendercounter < 0)) {
+		if ($rendercounter == '' || $rendercounter < 0) {
 			set_config_option('weathermap_render_counter', '0');
 		}
 
@@ -469,12 +470,12 @@ function weathermap_setup_table() {
 		}
 
 		$ms = read_config_option('weathermap_map_selector');
-		if ($ms == '' || intval($ms) < 0 || intval($ms) > 1) {
+		if ($ms == '' || $ms < 0 || $ms > 1) {
 			set_config_option('weathermap_map_selector', '1');
 		}
 
 		$at = read_config_option('weathermap_all_tab');
-		if ($at == '' || intval($at) < 0 || intval($at) > 1) {
+		if ($at == '' || $at < 0 || $at > 1) {
 			set_config_option('weathermap_all_tab', '0');
 		}
 
@@ -617,7 +618,7 @@ function weathermap_tree_item_edit($tree_item) {
 function weathermap_show_tab() {
 	global $config;
 
-	$tabstyle = intval(read_config_option('superlinks_tabstyle'));
+	$tabstyle = read_config_option('superlinks_tabstyle');
 
 	if (api_plugin_user_realm_auth('weathermap-cacti-plugin.php')) {
 		if ($tabstyle > 0) {
@@ -1039,30 +1040,31 @@ function weathermap_poller_bottom() {
 
 	weathermap_setup_table();
 
-	$renderperiod  = read_config_option('weathermap_render_period');
-	$rendercounter = read_config_option('weathermap_render_counter');
-	$quietlogging  = read_config_option('weathermap_quiet_logging');
+	$renderperiod  = read_config_option('weathermap_render_period', true);
+	$rendercounter = read_config_option('weathermap_render_counter', true);
+	$quietlogging  = read_config_option('weathermap_quiet_logging', true);
+
+	cacti_log("WM Counter is $rendercounter. period is $renderperiod.", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 
 	if ($renderperiod < 0) {
 		// manual updates only
 		if ($quietlogging == 0) {
-			cacti_log("WM Version: $WEATHERMAP_VERSION - no updates ever", true, 'WEATHERMAP');
+			cacti_log("WM Version: $WEATHERMAP_VERSION - Manual Updates Only", true, 'WEATHERMAP');
 		}
 
 		return;
 	} else {
-		// if we're due, run the render updates
-		if ($renderperiod == 0 || empty($rendercounter) || $rendercounter % $renderperiod == 0) {
+		if ($renderperiod == 0 || $rendercounter == '' || $rendercounter % $renderperiod == 0 || $rendercounter > $renderperiod) {
 			weathermap_run_maps(__DIR__);
-			$rendercounter = 0;
-		} elseif ($quietlogging == 0) {
-			cacti_log("WM Version: $WEATHERMAP_VERSION - no update in this cycle ($rendercounter)", true, 'WEATHERMAP');
+
+			$newcount = 1;
+		} else {
+			if ($quietlogging == 0) {
+				cacti_log("WM Version: $WEATHERMAP_VERSION - No Updates this Cycle ($rendercounter)", true, 'WEATHERMAP');
+			}
+
+			$newcount = $rendercounter + 1;
 		}
-
-		cacti_log("WM Counter is $rendercounter. period is $renderperiod.", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
-
-		// increment the counter
-		$newcount = $rendercounter++;
 
 		set_config_option('weathermap_render_counter', $newcount);
 	}
