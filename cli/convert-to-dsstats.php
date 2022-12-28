@@ -42,8 +42,8 @@ require_once('../lib/Weathermap.class.php');
 $cacti_base = $config['base_path'];
 
 $reverse      = 0;
-$inputfile    = "";
-$outputfile   = "";
+$inputfile    = '';
+$outputfile   = '';
 $converted    = 0;
 $candidates   = 0;
 $totaltargets = 0;
@@ -120,7 +120,7 @@ foreach ($allitems as $myobj) {
 	$type = $myobj->my_type();
 
 	$name=$myobj->name;
-	wm_debug ("ReadData for $type $name: \n");
+	wm_debug ("ReadData for $type $name:");
 
 	if (($type=='LINK' && isset($myobj->a)) || ($type=='NODE' && !is_null($myobj->x))) {
 		if (count($myobj->targets)>0) {
@@ -128,69 +128,76 @@ foreach ($allitems as $myobj) {
 			$tindex = 0;
 
 			foreach ($myobj->targets as $target) {
-				wm_debug ("ReadData: New Target: $target[4]\n");
+				wm_debug ("ReadData: New Target: $target[4]");
 
 				$targetstring = $target[0];
 				$multiply = $target[1];
 
 				if ($reverse == 0 && $target[5] == "WeatherMapDataSource_rrd") {
 					$candidates++;
+
 					# list($in,$out,$datatime) =  $map->plugins['data'][ $target[5] ]->ReadData($targetstring, $map, $myobj);
 					wm_debug("ConvertDS: $targetstring is a candidate for conversion.");
-					$rrdfile = $targetstring;
-					$multiplier = 8;
-					$dsnames[IN] = "traffic_in";
-					$dsnames[OUT] = "traffic_out";
 
-					if (preg_match("/^(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/",$targetstring,$matches)) {
+					$rrdfile      = $targetstring;
+					$multiplier   = 8;
+					$dsnames[IN]  = 'traffic_in';
+					$dsnames[OUT] = 'traffic_out';
+
+					if (preg_match('/^(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/', $targetstring, $matches)) {
 						$rrdfile = $matches[1];
 
-						$dsnames[IN] = $matches[2];
+						$dsnames[IN]  = $matches[2];
 						$dsnames[OUT] = $matches[3];
 
-						wm_debug("ConvertDS: Special DS names seen (".$dsnames[IN]." and ".$dsnames[OUT].").\n");
+						wm_debug('ConvertDS: Special DS names seen (' . $dsnames[IN] . ' and ' . $dsnames[OUT] . ')');
 					}
 
-					if (preg_match("/^rrd:(.*)/",$rrdfile,$matches)) {
+					if (preg_match('/^rrd:(.*)/', $rrdfile, $matches)) {
 						$rrdfile = $matches[1];
 					}
 
-					if (preg_match("/^gauge:(.*)/",$rrdfile,$matches)) {
-						$rrdfile = $matches[1];
+					if (preg_match('/^gauge:(.*)/', $rrdfile, $matches)) {
+						$rrdfile    = $matches[1];
 						$multiplier = 1;
 					}
 
-					if (preg_match("/^scale:([+-]?\d*\.?\d*):(.*)/",$rrdfile,$matches)) {
-						$rrdfile = $matches[2];
+					if (preg_match('/^scale:([+-]?\d*\.?\d*):(.*)/', $rrdfile, $matches)) {
+						$rrdfile    = $matches[2];
 						$multiplier = $matches[1];
 					}
 
-					$path_rra = $config["rra_path"];
+					$path_rra   = $config['rra_path'];
 					$db_rrdname = $rrdfile;
-					$db_rrdname = str_replace($path_rra,"<path_rra>",$db_rrdname);
+					$db_rrdname = str_replace($path_rra, '<path_rra>', $db_rrdname);
+
 					# special case for relative paths
-					$db_rrdname = str_replace("../../rra","<path_rra>",$db_rrdname);
+					$db_rrdname = str_replace('../../rra', '<path_rra>', $db_rrdname);
 
 					if ($db_rrdname != $rrdfile) {
 						wm_debug("ConvertDS: Looking for $db_rrdname in the database.");
 
-						$SQLcheck = "select data_template_data.local_data_id from data_template_data,data_template_rrd where data_template_data.local_data_id=data_template_rrd.local_data_id and data_template_data.data_source_path='" . db_qstr($db_rrdname) . "'";
-						wm_debug("ConvertDS: ".$SQLcheck);
-						$results = db_fetch_assoc($SQLcheck);
+						$results = db_fetch_row_prepared('SELECT DISTINCT dtd.local_data_id
+							FROM data_template_data AS dtd
+							INNER JOIN data_template_rrd AS dtr
+							ON dtd.local_data_id = dtr.local_data_id
+							AND dtd.data_source_path = ?',
+							array($db_rrdname));
 
-						if ((cacti_sizeof($results) > 0) && (isset($results[0]['local_data_id']))) {
-							$new_target = sprintf("dsstats:%d:%s:%s", $results[0]['local_data_id'], $dsnames[IN], $dsnames[OUT]);
+						if (cacti_sizeof($results)) {
+							$new_target = sprintf('dsstats:%d:%s:%s', $results['local_data_id'], $dsnames[IN], $dsnames[OUT]);
+
 							$m = $multiply * $multiplier;
 
-							if ( $m != 1) {
+							if ($m != 1) {
 								if ($m == -1) {
-									$new_target = "-".$new_target;
+									$new_target = '-' . $new_target;
 								}
 
 								if ($m == intval($m)) {
-									$new_target = sprintf("%d*%s",$m,$new_target);
+									$new_target = sprintf('%d*%s', $m, $new_target);
 								} else {
-									$new_target = sprintf("%f*%s",$m,$new_target);
+									$new_target = sprintf('%f*%s', $m, $new_target);
 								}
 							}
 
@@ -213,45 +220,50 @@ foreach ($allitems as $myobj) {
 				}
 
 				// XXX - not implemented yet!
-				if ($reverse == 1 && $target[5] == "WeatherMapDataSource_dsstats" && 1==0) {
+				if ($reverse == 1 && $target[5] == 'WeatherMapDataSource_dsstats' && 1 == 0) {
 					$candidates++;
+
 					# list($in,$out,$datatime) =  $map->plugins['data'][ $target[5] ]->ReadData($targetstring, $map, $myobj);
 					wm_debug("ConvertDS: $targetstring is a candidate for conversion.");
 
-					$multiplier = 1;
-					$dsnames[IN] = "traffic_in";
-					$dsnames[OUT] = "traffic_out";
+					$multiplier   = 1;
+					$dsnames[IN]  = 'traffic_in';
+					$dsnames[OUT] = 'traffic_out';
 
-					$path_rra = $config["rra_path"];
+					$path_rra   = $config['rra_path'];
 					$db_rrdname = $rrdfile;
-					$db_rrdname = str_replace($path_rra,"<path_rra>",$db_rrdname);
+					$db_rrdname = str_replace($path_rra, '<path_rra>', $db_rrdname);
 
 					# special case for relative paths
-					$db_rrdname = str_replace("../../rra","<path_rra>",$db_rrdname);
+					$db_rrdname = str_replace('../../rra', '<path_rra>', $db_rrdname);
 
 					wm_debug("ConvertDS: Looking for $db_rrdname in the database.");
 
-					$SQLcheck = "select data_template_data.local_data_id from data_template_data,data_template_rrd where data_template_data.local_data_id=data_template_rrd.local_data_id and data_template_data.data_source_path='" . db_qstr($db_rrdname) . "'";
-					wm_debug("ConvertDS: ".$SQLcheck);
-					$results = db_fetch_assoc($SQLcheck);
+					$results = db_fetch_row_prepared("SELECT DISTINCT dtd.local_data_id
+						FROM data_template_data AS dtr
+						INNER JOIN data_template_rrd AS dtr
+						WHERE dtd.local_data_id = dtr.local_data_id
+						AND dtd.data_source_path = ?",
+						array($db_rrdname));
 
-					if ((cacti_sizeof($results) > 0) && (isset($results[0]['local_data_id']))) {
-						$new_target = sprintf("dsstats:%d:%s:%s", $results[0]['local_data_id'], $dsnames[IN], $dsnames[OUT]);
+					if (cacti_sizeof($results)) {
+						$new_target = sprintf('dsstats:%d:%s:%s', $results['local_data_id'], $dsnames[IN], $dsnames[OUT]);
 						$m = $multiply * $multiplier;
 
 						if ( $m != 1) {
 							if ($m == -1) {
-								$new_target = "-".$new_target;
+								$new_target = '-' . $new_target;
 							}
 
 							if ($m == intval($m)) {
-								$new_target = sprintf("%d*%s",$m,$new_target);
+								$new_target = sprintf('%d*%s', $m, $new_target);
 							} else {
-								$new_target = sprintf("%f*%s",$m,$new_target);
+								$new_target = sprintf('%f*%s', $m, $new_target);
 							}
 						}
 
 						wm_debug("ConvertDS: Converting to $new_target");
+
 						$converted++;
 
 						if ($type == 'NODE') {
@@ -269,12 +281,12 @@ foreach ($allitems as $myobj) {
 				$tindex++;
 			}
 
-			wm_debug ("ReadData complete for $type $name\n");
+			wm_debug ("ReadData complete for $type $name");
 		} else {
-			wm_debug("ReadData: No targets for $type $name\n");
+			wm_debug("ReadData: No targets for $type $name");
 		}
 	} else {
-		wm_debug("ReadData: Skipping $type $name that looks like a template\n.");
+		wm_debug("ReadData: Skipping $type $name that looks like a template.");
 	}
 }
 

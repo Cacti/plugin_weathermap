@@ -594,23 +594,32 @@ class WeatherMapNode extends WeatherMapItem {
 		// ImageAlphaBlending($node_im, false);
 		imageSaveAlpha($node_im, true);
 
-		$nothing=imagecolorallocatealpha($node_im,128,0,0,127);
+		$nothing = imagecolorallocatealpha($node_im, 128, 0, 0, 127);
 		imagefill($node_im, 0, 0, $nothing);
 
 		#$col = $col->gdallocate($node_im);
 
-		// imagefilledrectangle($node_im,0,0,$temp_width,$temp_height,  $nothing);
+		// imagefilledrectangle($node_im, 0, 0, $temp_width, $temp_height, $nothing);
 
 		$label_x1 -= $bbox_x1;
 		$label_x2 -= $bbox_x1;
 		$label_y1 -= $bbox_y1;
 		$label_y2 -= $bbox_y1;
 
-		$icon_x1 -= $bbox_x1;
-		$icon_x2 -= $bbox_x1;
-		$icon_y1 -= $bbox_y1;
-		$icon_y2 -= $bbox_y1;
+		$icon_x1  -= $bbox_x1;
+		$icon_x2  -= $bbox_x1;
+		$icon_y1  -= $bbox_y1;
+		$icon_y2  -= $bbox_y1;
 
+		$icon_x1   = round($icon_x1);
+		$icon_x2   = round($icon_x2);
+		$icon_y1   = round($icon_y1);
+		$icon_y2   = round($icon_y2);
+
+		$bbox_x1   = round($bbox_x1);
+		$bbox_x2   = round($bbox_x2);
+		$bbox_y1   = round($bbox_y1);
+		$bbox_y2   = round($bbox_y2);
 
 		// Draw the icon, if any
 		if (isset($icon_im)) {

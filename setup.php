@@ -78,10 +78,14 @@ function plugin_weathermap_check_config() {
 }
 
 function plugin_weathermap_upgrade() {
+	global $config;
+
 	$files = array('index.php', 'plugins.php');
 	if (!in_array(get_current_page(), $files) && strpos(get_current_page(), 'weathermap-cacti') === false) {
 		return;
 	}
+
+	include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
 
     $current = plugin_weathermap_version();
     $current = $current['version'];
@@ -119,6 +123,8 @@ function plugin_weathermap_upgrade() {
 				$id
 			)
 		);
+
+		weathermap_repair_maps();
 	}
 
 	return false;

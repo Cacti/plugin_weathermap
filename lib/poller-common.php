@@ -93,6 +93,126 @@ function weathermap_check_cron($time, $string) {
 	return ($matched);
 }
 
+function weathermap_repair_maps() {
+	global $config;
+
+	$mydir = $config['base_path'] . '/plugins/weathermap/';
+
+	include_once($mydir . 'lib/Weathermap.class.php');
+
+	$outdir  = $mydir . 'output';
+	$confdir = $mydir . 'configs';
+
+	$mapcount = 0;
+
+	wm_debug('My Dir is: ' . $mydir);
+
+	$maps = db_fetch_assoc('SELECT * FROM weathermap_maps');
+
+	chdir($mydir);
+
+	if (cacti_sizeof($maps)) {
+		foreach($maps as $map) {
+			$changes = 0;
+
+			$configfile = $confdir . '/' . $map['configfile'];
+
+			wm_debug('---------------------------------------------');
+			wm_debug("Processing Map File $configfile");
+
+			if (file_exists($configfile) && is_writable($configfile)) {
+				$contents    = file($configfile);
+				$outcontents = array();
+
+				foreach($contents as $line) {
+					if (strpos($line, 'BACKGROUND') !== false) {
+						$parts   = explode('BACKGROUND', $line);
+						$dirgood = false;
+						$bgfile  = trim($parts[1]);
+
+						if (strpos($bgfile, 'images/backgrounds/') === false) {
+							wm_debug('Found background file reference in old location: ' . $bgfile);
+
+							if (file_exists($mydir . 'images/backgrounds/' . basename($bgfile))) {
+								wm_debug('Background file found in new location! Updating path only.');
+
+								$line = 'BACKGROUND images/backgrounds/' . basename($bgfile);
+
+								$changes++;
+							} else {
+								wm_debug('Background file not found in new location! Attmepting to move.');
+
+								if (!is_dir($mydir . 'images/backgrounds')) {
+									$dirgood = mkdir($mydir . 'images/backgrounds');
+								} else {
+									$dirgood = true;
+								}
+
+								if ($dirgood && file_exists($mydir . $bgfile)) {
+									wm_debug('Found background file on disk: ' . $mydir . $bgfile . ' relocating!');
+
+									rename($mydir . $bgfile, $mydir . 'images/backgrounds/' . basename($bgfile));
+
+									$line = 'BACKGROUND images/backgrounds/' . basename($bgfile);
+
+									$changes++;
+								}
+							}
+						} elseif (strpos($bgfile, 'images/backgrounds/') !== false) {
+							wm_debug('Found background file reference in correct location: ' . $bgfile);
+						}
+					} elseif (strpos($line, 'ICON') !== false) {
+						$parts   = explode('ICON', $line);
+						$dirgood = false;
+						$objfile = trim($parts[1]);
+
+						if (strpos($objfile, 'images/objects/') === false) {
+							wm_debug('Found icon file reference in old location: ' . $objfile);
+
+							if (file_exists($mydir . 'images/objects/' . basename($objfile))) {
+								wm_debug('Found file already in new location! Updating path only.');
+
+								$line = "\tICON images/objects/" . basename($objfile);
+
+								$changes++;
+							} else {
+								if (!is_dir($mydir . 'images/objects')) {
+									$dirgood = mkdir($mydir . 'images/objects');
+								} else {
+									$dirgood = true;
+								}
+
+								if ($dirgood && file_exists($mydir . $objfile)) {
+									wm_debug('Object file found on disk: ' . $mydir . $objfile . ' relocating!');
+
+									rename($mydir . $objfile, $mydir . 'images/objects/' . basename($objfile));
+
+									$line = "\tICON images/objects/" . basename($objfile);
+
+									$changes++;
+								} else {
+									wm_debug('Object file not found on disk: ' . $mydir . $objfile . ' skipping!');
+								}
+							}
+						} elseif (strpos($objfile, 'images/objects/') !== false) {
+							wm_debug('Found object file reference in correct location: ' . $objfile);
+						}
+					}
+
+					$outcontents[] = rtrim($line);
+				}
+			}
+
+			if ($changes) {
+				wm_debug('Writing updated file to: ' . $configfile);
+				file_put_contents($configfile, implode("\n", $outcontents), LOCK_EX);
+			} else {
+				wm_debug('File has correct BACKGROUND and ICON paths: ' . $configfile);
+			}
+		}
+	}
+}
+
 function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 	global $config;
 	global $weathermap_debugging, $WEATHERMAP_VERSION;
@@ -104,7 +224,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 	include_once($mydir . '/lib/Weathermap.class.php');
 
 	$total_warnings = 0;
-	$warning_notes = '';
+	$warning_notes  = '';
 
 	$start_time = time();
 
@@ -162,7 +282,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 		if (is_array($queryrows)) {
 			wm_debug('Iterating all maps.');
 
-			$imageformat = strtolower(read_config_option('weathermap_output_format'));
+			$imageformat  = strtolower(read_config_option('weathermap_output_format'));
 			$rrdtool_path = read_config_option('path_rrdtool');
 
 			foreach ($queryrows as $map) {
@@ -192,7 +312,9 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 						}
 
 						$map_start = time();
+
 						weathermap_memory_check("MEM starting $mapcount");
+
 						$wmap = new Weathermap;
 						$wmap->context = 'cacti';
 
@@ -213,7 +335,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 						foreach ($queries as $sql) {
 							$settingrows = db_fetch_assoc($sql);
 
-							if (is_array($settingrows) && count($settingrows) > 0) {
+							if (cacti_sizeof($settingrows)) {
 								foreach ($settingrows as $setting) {
 									$set_it = false;
 
@@ -247,7 +369,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 						// why did I change this before? It's useful...
 						// $wmap->imageuri = $config['url_path'].'/plugins/weathermap/output/weathermap_'.$map['id'].".".$imageformat;
 						$configured_imageuri = $wmap->imageuri;
-						$wmap->imageuri = $config['url_path'].'plugins/weathermap/weathermap-cacti-plugin.php?action=viewimage&id=' . $map['filehash'] . '&time=' . time();
+						$wmap->imageuri = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewimage&id=' . $map['filehash'] . '&time=' . time();
 
 						weathermap_memory_check("MEM pre-render $mapcount");
 
