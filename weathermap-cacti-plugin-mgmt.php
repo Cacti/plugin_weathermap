@@ -906,10 +906,10 @@ function maplist() {
 
 	$display_text = array(
 		array(
-			'display' => __('Config File', 'weathermap'),
+			'display' => __('Title', 'weathermap'),
 		),
 		array(
-			'display' => __('Title', 'weathermap'),
+			'display' => __('Config File', 'weathermap'),
 		),
 		array(
 			'display' => __('ID', 'weathermap'),
@@ -957,25 +957,25 @@ function maplist() {
 		foreach ($maps as $map) {
 			form_alternate_row('line' . $map['id']);
 
-			$output = '<a title="' . __esc('Click to start editor with this file', 'weathermap') . '"
+			$output = '<a class="mapLink linkEditMain" title="' . __esc('Click to start editor with this file', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-editor.php?header=false&action=nothing&mapname=' . $map['configfile']) . '">' .
-				html_escape($map['configfile']) . '
+				html_escape($map['titlecache']) . '
 			</a>';
 
 			if ($map['warncount'] > 0) {
 				$had_warnings++;
 
-				$output .= '<a class="pic" title="' . __esc('Check cacti.log for this Map', 'weathermap') . '"
+				$output .= '<a class="pic linkEditMain" title="' . __esc('Check cacti.log for this Map', 'weathermap') . '"
 					href="' . html_escape('../../clog_user.php?tail_lines=500&message_type=2&action=view_logfile&filter=' . $map['configfile']) . '">
 					<i class="deviceRecovering fa fa-exclamation-triangle"></i>
 				</a>';
 			}
 
 			form_selectable_cell($output, $map['id']);
-			form_selectable_cell(html_escape($map['titlecache']), $map['id']);
+			form_selectable_cell(html_escape($map['configfile']), $map['id']);
 			form_selectable_cell($map['id'], $map['id']);
 
-			form_selectable_cell('<a class="pic" title="' . __esc('Click to change group', 'weathermap') . '"
+			form_selectable_cell('<a class="pic linkEditMain" title="' . __esc('Click to change group', 'weathermap') . '"
 					href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=chgroup&id=' . $map['id']) . '">' .
 					html_escape($map['groupname']) .
 				'</a>', $map['id']);
@@ -996,7 +996,7 @@ function maplist() {
 				form_selectable_cell($url, $map['id'], '', 'wm_disabled');
 			}
 
-			$url = '<a class="pic" href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $map['id']) . '">';
+			$url = '<a class="pic linkEditMain" href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $map['id']) . '">';
 
 			$setting_count = db_fetch_cell_prepared('SELECT COUNT(*)
 				FROM weathermap_settings
@@ -1039,7 +1039,7 @@ function maplist() {
 				}
 			}
 
-			$url = '<a class="pic" title="' . __esc('Click to edit permissions', 'weathermap') . '"
+			$url = '<a class="pic linkEditMain" title="' . __esc('Click to edit permissions', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $map['id'] . '&header=false') . '">';
 
 			if (count($mapusers) == 0) {
@@ -1070,6 +1070,17 @@ function maplist() {
     draw_actions_dropdown($actions);
 
     form_end();
+
+	?>
+	<script type='text/javascript'>
+	$(function() {
+		$('.mapLink').click(function(event) {
+			event.preventDefault();
+			document.location = $(this).attr('href');
+		});
+	});
+	</script>
+	<?php
 }
 
 function addmap_picker($show_all = false) {
@@ -1151,13 +1162,13 @@ function addmap_picker($show_all = false) {
 					form_alternate_row();
 
 					print '<td>
-						<a class="pic" title="' . __esc('Add the configuration file', 'weathermap') . '"
+						<a class="pic linkEditMain" title="' . __esc('Add the configuration file', 'weathermap') . '"
 							href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=addmap&file=' . $file) . '">Add
 						</a>
 					</td>';
 
 					print '<td>
-						<a class="pic" title="' . __esc('View the configuration file in a new window', 'weathermap') . '"
+						<a class="pic linkEditMain" title="' . __esc('View the configuration file in a new window', 'weathermap') . '"
 							href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file) . '">' .
 							__('View', 'weathermap') . '
 						</a>
@@ -1596,7 +1607,7 @@ function weathermap_map_settings($id) {
 			form_alternate_row();
 
 			print '<td>
-				<a class="pic title="' . __('Edit this definition', 'weathermap') . '"
+				<a class="pic linkEditMain" title="' . __('Edit this definition', 'weathermap') . '"
 					href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings_form&mapid=' . $id . '&id=' . $setting['id']) . '">
 					<i class="fas fa-wrench"></i>
 				</a>
@@ -1606,7 +1617,7 @@ function weathermap_map_settings($id) {
 			print '<td>' . html_escape($setting['optvalue']) . '</td>';
 
 			print '<td class="right">
-				<a class="pic" title="' . __('Remove this definition from this Map', 'weathermap') . '"
+				<a class="pic linkEditMain" title="' . __('Remove this definition from this Map', 'weathermap') . '"
 					href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings_delete&mapid=' . $id . '&id=' . $setting['id']) . '">
 					<i class="delete deleteMarker fa fa-times"></i>
 				</a>
@@ -1635,7 +1646,7 @@ function weathermap_back_to($type = 'global') {
 	}
 
 	if ($type == 'global' || $type == 'map') {
-		print '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=">' . __('Back to Map Admin', 'weathermap') . '</a>';
+		print '<a class="pic linkEditMain" href="weathermap-cacti-plugin-mgmt.php?action=">' . __('Back to Map Admin', 'weathermap') . '</a>';
 	}
 
 	print '</div>';
@@ -1842,7 +1853,7 @@ function weathermap_chgroup($id) {
 	print '</tr>';
 	print '<tr><td></td></tr>';
 
-	print '<tr><td><p>' . __('Or Create a New Group using the %s Group Management interface %s', '<a class="pic" href="weathermap-cacti-plugin-mgmt.php?action=groupadmin">' , '</a>', 'weathermap') . '</p></td></tr>';
+	print '<tr><td><p>' . __('Or Create a New Group using the %s Group Management interface %s', '<a class="pic linkEditMain" href="weathermap-cacti-plugin-mgmt.php?action=groupadmin">' , '</a>', 'weathermap') . '</p></td></tr>';
 
 	html_end_box();
 
@@ -1915,7 +1926,7 @@ function weathermap_group_editor() {
 
 			print '<td>';
 
-			print '<a class="pic" title="' . __('Edit Group Settings', 'weathermap') . '
+			print '<a class="pic linkEditMain" title="' . __('Edit Group Settings', 'weathermap') . '
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings&id=-' . $group['id']) . '">';
 
 			$setting_count = db_fetch_cell_prepared('SELECT COUNT(*)
@@ -1934,12 +1945,12 @@ function weathermap_group_editor() {
 			print '</td>';
 			print '<td>';
 
-			print '<a class="pic" title="' . __('Move Group Up', 'weathermap') . '"
+			print '<a class="pic linkEditMain" title="' . __('Move Group Up', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_group_up&order=' . $group['sortorder'] . '&id=' . $group['id']) . '">
 				<i class="fa fa-caret-up moveArrow"></i>
 			</a>';
 
-			print '<a class="pic" title="' . __('Move Group Down', 'weathermap'). '"
+			print '<a class="pic linkEditMain" title="' . __('Move Group Down', 'weathermap'). '"
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_group_down&order=' . $group['sortorder'] . '&id=' . $group['id']) . '">
 				<i class="fa fa-caret-down moveArrow"></i>
 			</a>';
