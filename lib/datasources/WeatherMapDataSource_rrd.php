@@ -96,9 +96,8 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	function wmrrd_read_from_poller_output($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
 		global $config;
 
-		global $weathermap_debugging;
-
-		$weathermap_debugging = true;
+		//global $weathermap_debugging;
+		//$weathermap_debugging = true;
 
 		$local_data_id = null;
 
