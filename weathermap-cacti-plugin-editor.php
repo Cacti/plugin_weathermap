@@ -52,7 +52,6 @@ $cacti_url    = $config['url_path'];
 
 // sensible defaults
 $mapdir      = 'configs';
-$configerror = '';
 
 // these are all set via the Editor Settings dialog, in the editor, now.
 $use_overlay = false; // set to true to enable experimental overlay showing VIAs
@@ -77,7 +76,8 @@ if (isset($_COOKIE['wmeditor'])) {
 
 
 if (!is_writable($mapdir)) {
-	$configerror = "The map config directory ($mapdir) is not writable by the web server user. You will not be able to edit any files until this is corrected. [WMEDIT01]";
+	cacti_log("FATAL: The map config directory ($mapdir) is not writable by the web server user. You will not be able to edit any files until this is corrected. [WMEDIT01]", true, 'WEATERMAP');
+	exit;
 }
 
 $action   = '';
@@ -89,26 +89,33 @@ $param     = '';
 $param2    = '';
 $log       = '';
 
+set_default_action('');
+
 if (isset($_REQUEST['action'])) {
 	$action = $_REQUEST['action'];
 }
 
 if (isset($_REQUEST['mapname'])) {
-	$mapname = $_REQUEST['mapname'];  $mapname = wm_editor_sanitize_conffile($mapname);
+	$mapname = $_REQUEST['mapname'];
+	$mapname = wm_editor_sanitize_conffile($mapname);
 }
 
 if (isset($_REQUEST['selected'])) {
 	$selected = wm_editor_sanitize_selected($_REQUEST['selected']);
 }
 
-$weathermap_debugging=false;
+$weathermap_debugging = false;
 
-if ($mapname == '') {
+if ($action == 'graphs') {
+	display_graphs();
+} elseif ($action == 'datasources') {
+	display_datasources();
+} elseif ($mapname == '') {
 	// this is the file-picker/welcome page
 	show_editor_startpage();
 } else {
 	// everything else in this file is inside this else
-	$mapfile = $mapdir.'/'.$mapname;
+	$mapfile = $mapdir . '/' . $mapname;
 
 	wm_debug('==========================================================================================================');
 	wm_debug("Starting Edit Run: action is $action on $mapname");
@@ -1001,9 +1008,9 @@ $selectedTheme = get_selected_theme();
 	?></script>
 		<div class='mainArea'>
 			<input id='xycapture' name='xycapture' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
+			<img src='<?php print html_escape($imageurl); ?>' id='existingdata' usemap='#weathermap_imap' />
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
-			<img src='<?php print html_escape($imageurl); ?>' id='existingdata' usemap='#weathermap_imap' />
 			<div class='debug' style='display:none'><p><strong>Debug</strong>
 				<a href='?action=retidy_all&mapname=<?php print html_escape($mapname) ?>'>Re-tidy ALL</a>
 				<a href='?action=retidy&mapname=<?php print html_escape($mapname) ?>'>Re-tidy</a>
@@ -1094,13 +1101,22 @@ $selectedTheme = get_selected_theme();
 							</td>
 						</tr>
 						<tr>
-							<td>Info URL</td>
-							<td><input id='node_infourl' name='node_infourl' type='text' class='ui-state-default ui-corner-all' size='50' /></td>
+							<td>Info URL(s)</td>
+							<td>
+								<textarea id='node_infourl' name='node_infourl' class='ui-state-default ui-corner-all' rows='2' cols='60'></textarea>
+							</td>
 						</tr>
 						<tr>
-							<td>'Hover' Graph URL</td>
-							<td><input id='node_hover' name='node_hover' type='text' class='ui-state-default ui-corner-all' size='50' />
-							<span class='cactinode'><a id='node_cactipick'>[Pick from Cacti]</a></span></td>
+							<td>'Hover' Graph URL(s)</td>
+							<td>
+								<textarea id='node_hover' name='node_hover' class='ui-state-default ui-corner-all' rows='2' cols='60'></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>Graph Selector</td>
+							<td>
+								<input id='node_picker' name='node_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='graphs' />
+							</td>
 						</tr>
 					</table>
 				</div>
@@ -1146,12 +1162,15 @@ $selectedTheme = get_selected_theme();
 								<input id='link_bandwidth_out_cb' name='link_bandwidth_out_cb' type='checkbox' value='symmetric' />Same As 'In' or <input id='link_bandwidth_out' name='link_bandwidth_out' type='text' class='ui-state-default ui-corner-all' size='8' /> bits/sec</td>
 						</tr>
 						<tr>
-							<td>Data Source</td>
+							<td>Data Source(s)</td>
 							<td>
-								<input id='link_target' name='link_target' type='text' class='ui-state-default ui-corner-all' />
-								<span class='cactilink'>
-									<a id='link_cactipick'>[Pick from Cacti]</a>
-								</span>
+								<textarea id='link_target' name='link_target' class='ui-state-default ui-corner-all'></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>Data Source Selector</td>
+							<td>
+								<input id='link_target_picker' name='link_target_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='datasources' />
 							</td>
 						</tr>
 						<tr>
@@ -1159,12 +1178,22 @@ $selectedTheme = get_selected_theme();
 							<td><input id='link_width' name='link_width' type='text' class='ui-state-default ui-corner-all' size='3' /> pixels</td>
 						</tr>
 						<tr>
-							<td>Info URL</td>
-							<td><input id='link_infourl' name='link_infourl' type='text' class='ui-state-default ui-corner-all' size='30' /></td>
+							<td>Info URL(s)</td>
+							<td>
+								<textarea id='link_infourl' name='link_infourl' class='ui-state-default ui-corner-all'></textarea>
+							</td>
 						</tr>
 						<tr>
-							<td>'Hover' Graph URL</td>
-							<td><input id='link_hover' name='link_hover' type='text' class='ui-state-default ui-corner-all' size='30' /></td>
+							<td>'Hover' Graph URL(s)</td>
+							<td>
+								<textarea id='link_hover' name='link_hover' class='ui-state-default ui-corner-all'></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>Graph Selector</td>
+							<td>
+								<input id='link_picker' name='link_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='graphs' />
+							</td>
 						</tr>
 						<tr>
 							<td>IN Comment</td>

@@ -3,6 +3,9 @@
 var newWindow;
 var selectedNode;
 var selectedLink;
+var graphTimer;
+var graphClickTimer;
+var graphOpen = false;
 
 // seed the help text. Done in a big lump here, so we could make a foreign language version someday.
 
@@ -34,6 +37,141 @@ var helptexts = {
 	'tb_default': 'or click a Node or Link to edit it\'s properties'
 };
 
+function graphPicker() {
+	$('.selectmenu-ajax').each(function() {
+		var id     = $(this).attr('id');
+		var value  = $(this).val();
+		var title  = 'Click to Search';
+		var action = $(this).attr('data-action');
+
+		var dialogForm = "<span id='" + id + "_wrap' class='autodrop ui-selectmenu-button ui-selectmenu-button-closed ui-corner-all ui-button ui-widget'>";
+		dialogForm    += "<span id='" + id + "_click' style='z-index:4' class='ui-selectmenu-icon ui-icon ui-icon-triangle-1-s'></span>";
+		dialogForm    += "<span class='ui-select-text'>";
+		dialogForm    += "<input type='text' class='ui-state-default ui-corner-all' id='" + id + "_input' value='" + title + "'>";
+		dialogForm    += "</span>";
+		dialogForm    += "</span>&nbsp;";
+		dialogForm    += "<input id='" + id + "_add' type='button' class='ui-button ui-corner-all ui-widget' value='Add' />&nbsp;";
+		dialogForm    += "<input id='" + id + "_rep' type='button' class='ui-button ui-corner-all ui-widget' value='Replace'/>";
+
+		$(this).after(dialogForm);
+		$(this).hide();
+
+		$('#' + id + '_add').click(function() {
+			if (id == 'link_target_picker') {
+				var target = $('#' + id).val();
+				var existing = $('#link_target').val();
+
+				$('#link_target').val(existing + ' ' + target);
+			} else {
+				var hover   = 'graph_image.php?local_graph_id=';;
+				var infourl = 'graph.php?rra_id=all&local_graph_id=';
+
+				if (id == 'link_picker') {
+					var target = $('#' + id).val();
+					var ehover = $('#link_hover').val();
+					var einfo  = $('#link_infourl').val();
+
+					$('#link_hover').val(ehover + ' ' + hover + target);
+					$('#link_infourl').val(einfo + ' ' + infourl + target);
+				} else if (id == 'node_picker') {
+					var target = $('#' + id).val();
+					var ehover = $('#node_hover').val();
+					var einfo  = $('#node_infourl').val();
+
+					$('#node_hover').val(ehover + ' ' + hover + target);
+					$('#node_infourl').val(einfo + ' ' + infourl + target);
+				}
+			}
+		});
+
+		$('#' + id + '_rep').click(function() {
+			if (id == 'link_picker') {
+				$('#link_hover').val('graph_image.php?local_graph_id=' + $('#' + id).val());
+				$('#link_infourl').val('graph.php?rra_id=all&local_graph_id=' + $('#' + id).val());
+			} else if (id == 'node_picker') {
+				$('#node_hover').val('graph_image.php?local_graph_id=' + $('#' + id).val());
+				$('#node_infourl').val('graph.php?rra_id=all&local_graph_id=' + $('#' + id).val());
+			} else if (id == 'link_target_picker') {
+				$('#link_target').val($('#' + id).val());
+			}
+		});
+
+		$('#' + id + '_input').autocomplete({
+			source: 'weathermap-cacti-plugin-editor.php?action='+action,
+			autoFocus: true,
+			minLength: 0,
+			select: function(event, ui) {
+				$('#' + id + '_input').val(ui.item.label);
+
+				if (ui.item.id) {
+					$('#' + id).val(ui.item.id);
+				} else {
+					$('#' + id).val(ui.item.value);
+				}
+			},
+			open: function(event, ui) {
+				$('.ui-dialog').css('z-index', '20');
+				$(this).css('z-index', '5000');
+			}
+		}).css('border', 'none').css('background-color', 'transparent');
+
+		$('#' + id + '_wrap').on('dblclick', function() {
+			graphOpen = false;
+			clearTimeout(graphTimer);
+			clearTimeout(graphClickTimer);
+			$('#' + id + '_input').autocomplete('close').select();
+		}).on('click', function() {
+			if (graphOpen) {
+				$('#'+'_input').autocomplete('close');
+				clearTimeout(graphTimer);
+				graphOpen = false;
+			} else {
+				graphClickTimer = setTimeout(function() {
+					$('#' + id + '_input').autocomplete('search', '');
+						clearTimeout(graphTimer);
+						graphOpen = true;
+					}, 200);
+			}
+			$('#' + id + '_input').select();
+		}).on('keyup', function() {
+			$('#' + id).val($('#' + id + '_input').val());
+		}).on('mouseleave', function() {
+			graphTimer = setTimeout(function() { $('#' + id + '_input').autocomplete('close'); }, 800);
+		});
+
+		var width = $('#' + id + '_input').textBoxWidth();
+		if (width < 200) {
+			width = 200;
+		}
+
+		$('#' + id + '_wrap').css('width', width+20);
+		$('#' + id + '_input').css('width', width);
+		$('#' + id + '_wrap').find('.ui-select-text').css('width', width);
+
+		$('ul[id^="ui-id"]').on('mouseenter', function() {
+			clearTimeout(graphTimer);
+		}).on('mouseleave', function() {
+			graphTimer = setTimeout(function() {
+				$('#' + id + '_input').autocomplete('close');
+			}, 800);
+		});
+
+		$('ul[id^="ui-id"] > li').on('mouseenter', function() {
+			$(this).addClass('ui-state-hover');
+		}).on('mouseleave', function() {
+			$(this).removeClass('ui-state-hover');
+		});
+
+		$('#' + id + '_wrap').on('mouseenter', function() {
+			$(this).addClass('ui-state-hover');
+			$('input#' + id + '_input').addClass('ui-state-hover');
+		}).on('mouseleave', function() {
+			$(this).removeClass('ui-state-hover');
+			$('input#' + id + '_input').removeClass('ui-state-hover');
+		});
+	});
+}
+
 $(document).on('unload', cleanupJS);
 
 $(function() {
@@ -59,7 +197,25 @@ function initJS() {
 	});
 
 	initContextMenu();
+
+	graphPicker();
 }
+
+/** textBoxWidth - This function will return the natural width of a string
+ *  without any wrapping. */
+$.fn.textBoxWidth = function() {
+	var org = $(this);
+	var html = $('<span style="display:none;white-space:nowrap;position:absolute;width:auto;left:-9999px">' + (org.val() || org.text()) + '</span>');
+	html.css('font-family', org.css('font-family'));
+	html.css('font-weight', org.css('font-weight'));
+	html.css('font-size',   org.css('font-size'));
+	html.css('padding',     org.css('padding'));
+	html.css('margin',      org.css('margin'));
+	$('body').append(html);
+	var width = html.width();
+	html.remove();
+	return width;
+};
 
 function initContextMenu() {
 	var nodeMenu = [

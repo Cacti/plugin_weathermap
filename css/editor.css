@@ -1,3 +1,9 @@
+// Stop Firefox from making the border blue on inputs
+input:focus {
+  outline: 0px solid green;
+  caret-color: transparent;
+}
+
 .mainView {
 	padding-top: 60px;
 }
@@ -102,6 +108,21 @@ input {
 #toolbar ul li.tb_active:hover {
 	color:#fff;
 	background:#2586d7;
+}
+
+.dlgBody td {
+	padding: 1px !important;
+}
+
+.dlgBody textarea {
+	height:50px;
+	width:380px;
+}
+
+.dlgBody input.ui-autocomplete-input {
+	line-height:16px;
+	margin:0px;
+	padding:0px;
 }
 
 .dlgProperties {

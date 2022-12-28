@@ -38,7 +38,6 @@
 
 chdir('../../');
 include_once('./include/auth.php');
-//include_once('./include/config.php');
 
 $weathermap_confdir = realpath(__DIR__ . '/configs');
 

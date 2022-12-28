@@ -59,6 +59,92 @@ function fix_gpc_string($input) {
 	return ($input);
 }
 
+function display_graphs() {
+	$sql_where = '';
+
+	if (get_nfilter_request_var('term') != '') {
+		$sql_where .= 'WHERE title_cache LIKE ' . db_qstr('%' . get_nfilter_request_var('term') . '%') . ' AND local_graph_id > 0';
+	} else {
+		$sql_where .= 'WHERE local_graph_id > 0';
+	}
+
+	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gt.hash = "5deb0d66c81262843dce5f3861be9966"';
+
+	$graphs = db_fetch_assoc("SELECT
+		gtg.local_graph_id AS id,
+		gtg.title_cache AS title,
+		gt.name AS template_name
+		FROM graph_templates_graph AS gtg
+		LEFT JOIN graph_templates AS gt
+		ON gt.id=gtg.graph_template_id
+		LEFT JOIN graph_local AS gl
+		ON gtg.local_graph_id = gl.id
+		LEFT JOIN host as h
+		ON gl.host_id = h.id
+		$sql_where
+		ORDER BY title_cache
+		LIMIT " . read_config_option('autocomplete_rows'));
+
+	$return = array();
+
+	if (cacti_sizeof($graphs)) {
+		foreach($graphs as $index => $g) {
+			if (!is_graph_allowed($g['id'])) {
+				unset($graphs[$index]);
+			} else {
+				$return[] = array('label' => $g['title'], 'value' => $g['title'], 'id' => $g['id']);
+			}
+		}
+	}
+
+	print json_encode($return);
+}
+
+function display_datasources() {
+	$sql_where = '';
+
+	if (get_nfilter_request_var('term') != '') {
+		$sql_where .= 'WHERE name_cache LIKE ' . db_qstr('%' . get_nfilter_request_var('term') . '%') . ' AND local_graph_id > 0';
+	} else {
+		$sql_where .= 'WHERE local_graph_id > 0';
+	}
+
+	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gt.hash = "5deb0d66c81262843dce5f3861be9966"';
+
+	$graphs = db_fetch_assoc("SELECT
+		gti.local_graph_id AS id,
+		dtd.name_cache AS title,
+		dtd.data_source_path AS path
+		FROM data_template_data AS dtd
+		INNER JOIN data_template_rrd AS dtr
+		ON dtd.local_data_id = dtr.local_data_id
+		INNER JOIN (
+			SELECT DISTINCT graph_template_id, local_graph_id, task_item_id
+			FROM graph_templates_item
+			WHERE local_graph_id > 0
+		) AS gti
+		ON gti.task_item_id = dtr.id
+		INNER JOIN graph_templates AS gt
+		ON gt.id = gti.graph_template_id
+		$sql_where
+		ORDER BY name_cache
+		LIMIT " . read_config_option('autocomplete_rows'));
+
+	$return = array();
+
+	if (cacti_sizeof($graphs)) {
+		foreach($graphs as $index => $g) {
+			if (!is_graph_allowed($g['id'])) {
+				unset($graphs[$index]);
+			} else {
+				$return[] = array('label' => $g['title'], 'value' => $g['title'], 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'));
+			}
+		}
+	}
+
+	print json_encode($return);
+}
+
 /**
  * Clean up URI (function taken from Cacti) to protect against XSS
  */

@@ -673,7 +673,7 @@ class WeatherMapLink extends WeatherMapItem {
 				}
 			}
 
-			if ($this->overliburl[IN]==$this->overliburl[OUT]) {
+			if ($this->overliburl[IN] == $this->overliburl[OUT]) {
 				$dirs = array(IN => ''); // only use the IN value, since they're both the same, but don't prefix the output keyword
 			} else {
 				$dirs = array(IN => 'IN', OUT => 'OUT');// the full monty two-keyword version
@@ -834,7 +834,7 @@ class WeatherMapLink extends WeatherMapItem {
 		}
 
 		$js .= js_escape(trim($tgt));
-		$js .= ',';
+		$js .= ', ';
 
 		$js .= 'bw_in:' . js_escape($this->max_bandwidth_in_cfg) . ', ';
 		$js .= 'bw_out:' . js_escape($this->max_bandwidth_out_cfg) . ', ';
@@ -851,6 +851,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$js .= 'commentposout:' . intval($this->commentoffset_out) . ', ';
 
 		$js .= 'infourl:' . js_escape($this->infourl[IN]) . ', ';
+
 		$js .= 'overliburl:' . js_escape(join(' ', $this->overliburl[IN]));
 
 		$js .= "};\n";
@@ -865,8 +866,8 @@ class WeatherMapLink extends WeatherMapItem {
 		$js .= '"id":' . $this->id . ', ';
 
 		if (isset($this->a)) {
-			$js.='"a":"' . $this->a->name . '", ';
-			$js.='"b":"' . $this->b->name . '", ';
+			$js .= '"a":"' . $this->a->name . '", ';
+			$js .= '"b":"' . $this->b->name . '", ';
 		}
 
 		if ($complete) {
@@ -878,11 +879,11 @@ class WeatherMapLink extends WeatherMapItem {
 			$tgt = '';
 
 			foreach ($this->targets as $target) {
-				$tgt.=$target[4] . ' ';
+				$tgt .= $target[4] . ' ';
 			}
 
 			$js .= js_escape(trim($tgt));
-			$js .= ',';
+			$js .= ', ';
 
 			$js .= '"bw_in":' . js_escape($this->max_bandwidth_in_cfg) . ', ';
 			$js .= '"bw_out":' . js_escape($this->max_bandwidth_out_cfg) . ', ';
