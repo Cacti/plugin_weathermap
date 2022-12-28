@@ -425,7 +425,7 @@ function weathermap_singleview($mapid) {
 			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a> | ';
 			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid . '">' . __esc('Map Settings', 'weathermap') . '</a> | ';
 			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid . '">' . __esc('Map Permissions', 'weathermap') . '</a> | ';
-			$maptitle .= "<a class='linkOverDark' href='" . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . $map['configfile']) . "'>" . __esc('Edit Map', 'weathermaps') . "</a>";
+			$maptitle .= "<a class='editMap linkOverDark' href='" . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . $map['configfile']) . "'>" . __esc('Edit Map', 'weathermaps') . "</a>";
 			$maptitle .= ' ] </span>';
 		} else {
 			$maptitle .= '<span> [ ';
@@ -462,6 +462,16 @@ function weathermap_singleview($mapid) {
 		print '</td></tr>';
 		print '</table>';
 
+		?>
+		<script type='text/javascript'>
+		$(function() {
+			$('.editMap').click(function(event) {
+				event.preventDefault();
+				document.location = $(this).attr('href');
+			});
+		});
+		</script>
+		<?php
 	}
 }
 

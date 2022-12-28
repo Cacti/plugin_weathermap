@@ -453,7 +453,6 @@ function weathermap_setup_table() {
 			set_config_option('weathermap_quiet_logging', '0');
 		}
 
-cacti_log('WTF!!!', false, 'WEATHERMAP');
 		$rendercounter = read_config_option('weathermap_render_counter');
 		if ($rendercounter == '' || $rendercounter < 0) {
 			set_config_option('weathermap_render_counter', '0');
