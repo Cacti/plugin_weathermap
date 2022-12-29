@@ -856,7 +856,7 @@ function show_node(name) {
 		}
 
 		$('#node_iconfilename').val(selectedNode).ddslick({
-			height:120,
+			height:240,
 			defaultSelectedIndex:selectedNode
 		});
 
