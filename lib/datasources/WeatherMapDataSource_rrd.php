@@ -109,11 +109,25 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			$path_rra   = $config['rra_path'];
 			$db_rrdname = $rrdfile;
 
-			if (strpos($db_rrdname, '<path_rra>') !== false) {
-				$db_rrdname = str_replace($path_rra, '<path_rra>', $db_rrdname);
+			if (strpos($db_rrdname, '<path_rra>') === false) {
+				if (substr($db_rrdname, 0, 1) != '/') {
+					if (file_exists($path_rra . '/' . $db_rrdname)) {
+						$db_rrdname = '<path_rra>' . '/' . $db_rrdname;
+					} else {
+						wm_debug('File does Not Exist for Getting RRDdata');
+					}
+				} elseif (file_exists($db_rrdname)) {
+					if (strpos($db_rrdname, $path_rra) !== false) {
+						$db_rrdname = str_replace($path_rra, '<path_rra>', $db_rrdname);
+					}
+				} else {
+					wm_debug('File does Not Exist for Getting RRDdata');
+				}
 			} elseif (!file_exists($db_rrdname)) {
 				if (file_exists($path_rra . '/' . $db_rrdname)) {
 					$db_rrdname = '<path_rra>' . '/' . $db_rrdname;
+				} else {
+					wm_debug('File does Not Exist for Getting RRDdata');
 				}
 			} else {
 				wm_debug('File Exists for Getting RRDdata');
