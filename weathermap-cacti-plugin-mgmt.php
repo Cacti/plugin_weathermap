@@ -58,7 +58,7 @@ $actions = array(
 
 set_default_action();
 
-switch ($action) {
+switch (get_request_var('action')) {
 	case 'actions':
 		weathermap_form_actions();
 
