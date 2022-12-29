@@ -99,7 +99,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		//global $weathermap_debugging;
 		//$weathermap_debugging = true;
 
-		$local_data_id = null;
+		$this->local_data_id = null;
 
 		wm_debug("RRD ReadData: poller_output style");
 
@@ -151,7 +151,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 						if (cacti_sizeof($result)) {
 							$fields = array();
 
-							$local_data_id = $result[0]['local_data_id'];
+							$this->local_data_id = $result[0]['local_data_id'];
 
 							foreach($result as $row) {
 								$fields[] = $row['data_source_name'];
@@ -161,15 +161,8 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 								wm_warn("RRD ReadData: poller_output: $db_rrdname is not a valid RRD filename within this Cacti install. <path_rra> is $path_rra [WMRRD08]");
 							}
 						} else {
-							// add the new data source (which we just checked exists) to the table.
-							// Include the local_data_id as well, to make life easier in poller_output
-							// (and to allow the cacti: DS plugin to use the same table, too)
-							wm_debug('RRD ReadData: poller_output - Adding new weathermap_data row for data source ID ' . $result['local_data_id']);
-
-							db_execute_prepared('INSERT INTO weathermap_data
-								(rrdfile, data_source_name, sequence, local_data_id, last_value)
-								VALUES (?, ?, 0, ?, "")',
-								array($db_rrdname, $dsnames[$dir], $result['local_data_id']));
+							// it does not appear that this is a valid data source.  Notify of that
+							wm_warn("RRD ReadData: poller_output: $db_rrdname is not a valid RRD filename within this Cacti install. <path_rra> is $path_rra [WMRRD08]");
 						}
 					} else {
 						// the data table line already exists
@@ -192,7 +185,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 						$ldi = 0;
 
 						if ($result['local_data_id'] == 0) {
-							$local_data_id = db_fetch_cell_prepared('SELECT DISTINCT dtd.local_data_id
+							$this->local_data_id = db_fetch_cell_prepared('SELECT DISTINCT dtd.local_data_id
 								FROM data_template_data AS dtd
 								INNER JOIN data_template_rrd AS dtr
 								ON dtd.local_data_id = dtr.local_data_id
@@ -200,13 +193,13 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 								AND dtr.data_source_name = ?',
 								array($db_rrdname, $dsnames[$dir]));
 
-							if ($local_data_id > 0) {
-								wm_debug('RRD ReadData: updated  local_data_id for wmdata.id = ' . $result['id'] . "to $local_data_id");
+							if ($this->local_data_id > 0) {
+								wm_debug('RRD ReadData: updated  local_data_id for wmdata.id = ' . $result['id'] . "to {$this->local_data_id}");
 
 								db_execute_prepared('UPDATE weathermap_data
 									SET local_data_id = ?
 									WHERE id = ?',
-									array($local_data_id, $result['id']));
+									array($this->local_data_id, $result['id']));
 							}
 						} else {
 							$ldi = $result['local_data_id'];
@@ -226,8 +219,6 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 
 		wm_debug('RRD ReadData: poller_output - result is ' . ($data[IN] === null ? 'NULL':$data[IN]) . ',' . ($data[OUT] === null ? 'NULL':$data[OUT]));
 		wm_debug('RRD ReadData: poller_output - ended');
-
-		return $local_data_id;
 	}
 
 	function wmrrd_read_from_php_rrd($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
@@ -625,7 +616,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		if ($use_poller_output == 1) {
 			wm_debug('Going to try poller_output, as requested.');
 
-			$local_data_id = WeatherMapDataSource_rrd::wmrrd_read_from_poller_output($rrdfile, 'AVERAGE', $start, $end, $dsnames, $data, $map, $data_time, $item);
+			WeatherMapDataSource_rrd::wmrrd_read_from_poller_output($rrdfile, 'AVERAGE', $start, $end, $dsnames, $data, $map, $data_time, $item);
 		}
 
 		// if poller_output didn't get anything, or if it couldn't/didn't run, do it the old-fashioned way
@@ -636,8 +627,8 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 				wm_debug('poller_output didn\'t get anything useful. Kicking it old school.');
 			}
 
-			if ($local_data_id !== null && read_config_option('boost_rrd_update_enable') == 'on') {
-				rrdtool_function_fetch($local_data_id, -300, time());
+			if ($this->local_data_id !== null && read_config_option('boost_rrd_update_enable') == 'on') {
+				rrdtool_function_fetch($this->local_data_id, -300, time());
 			}
 
 			// Check for relative Cacti paths in the links
