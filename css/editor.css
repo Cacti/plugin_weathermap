@@ -20,6 +20,11 @@ input:focus {
 	cursor: crosshair;
 }
 
+#frmMain {
+	position: relative;
+	top: -20px;
+}
+
 body {
 	font-family: 'Gill Sans', Verdana, sans-serif; margin:0;
 }
