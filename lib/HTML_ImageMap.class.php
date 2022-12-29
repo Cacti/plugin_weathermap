@@ -53,8 +53,6 @@ class HTML_ImageMap_Area {
 	var $extrahtml;
 
 	function common_html() {
-		global $config;
-
 		$h = "";
 
 		if ($this->name != "") {
@@ -69,10 +67,6 @@ class HTML_ImageMap_Area {
 		}
 
 		if ($this->href != '') {
-			if (!filter_var($this->href, FILTER_VALIDATE_URL)) {
-				$this->href = $config['url_path'] . $this->href;
-			}
-
 			$h .= 'href="' . $this->href . '" ';
 		} else {
 			$h .= 'nohref ';
