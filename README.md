@@ -42,6 +42,11 @@ dependent on Cacti permissions to properly operate.
 
   See: https://jquery-plugins.net/ddslick-dropdown-with-images
 
+* Network-Icons-SVG - A collection of network icons in SVG format converted
+  to work with Weathermaps PNG format.
+
+  See: https://github.com/aci686/Network-Icons-SVG
+
 * The Bitstream Vera Open Source fonts (Vera\*.ttf) are copyright Bitstream, Inc.
 
   See: http://www.bitstream.com/font_rendering/products/dev_fonts/vera.html
