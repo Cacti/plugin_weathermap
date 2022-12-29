@@ -442,9 +442,10 @@ function click_execute(event, alt) {
 		// we've got a command queued, so do the appropriate thing
 		if (objecttype == 'NODE' && $('#action').val() == 'add_link') {
 			$('#param').val(NodeIDs[objectid]);
-			form_submit();
+			$('#action').val('add_link2');
+			$('#tb_help').text('Click on the second node for the end of the link.');
 		} else if (objecttype == 'NODE' && $('#action').val() == 'add_link2') {
-			$('#param').val(NodeIDs[objectid]);
+			$('#param2').val(NodeIDs[objectid]);
 			form_submit();
 		} else {
 			// Halfway through one operation, the user has done something unexpected.
@@ -618,14 +619,14 @@ function move_node() {
 function via_link() {
 	hide_dialog('dlgLinkProperties');
 
-	$('#tb_help').text('Click on the map via which point you whant to redirect link.');
+	$('#tb_help').text('Click on the map via which point you want to redirect link.');
 	$('#action').val('via_link');
 
 	mapmode('xy');
 }
 
 function add_link() {
-	$('#tb_help').text('Click on the first node for one end of the link.');
+	$('#tb_help').text('Click on the first node for the start of the link.');
 	$('#action').val('add_link');
 
 	mapmode('existing');
