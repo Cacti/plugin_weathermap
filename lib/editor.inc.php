@@ -70,7 +70,7 @@ function display_graphs() {
 
 	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gt.hash = "5deb0d66c81262843dce5f3861be9966"';
 
-	$graphs = db_fetch_assoc("SELECT
+	$graphs = db_fetch_assoc("SELECT DISTINCT
 		gtg.local_graph_id AS id,
 		gtg.title_cache AS title,
 		gt.name AS template_name
@@ -111,7 +111,7 @@ function display_datasources() {
 
 	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gt.hash = "5deb0d66c81262843dce5f3861be9966"';
 
-	$graphs = db_fetch_assoc("SELECT
+	$graphs = db_fetch_assoc("SELECT DISTINCT
 		gti.local_graph_id AS id,
 		dtd.name_cache AS title,
 		dtd.data_source_path AS path

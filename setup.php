@@ -189,7 +189,7 @@ function weathermap_top_graph_refresh($refresh) {
 function weathermap_config_settings() {
 	global $tabs, $settings;
 
-	$tabs['misc'] = __('Misc');
+	$tabs['wmap'] = __('Weathermap', 'weathermap');
 
 	$temp = array(
 		'weathermap_header' => array(
@@ -210,7 +210,33 @@ function weathermap_config_settings() {
 			'friendly_name' => __('Thumbnail Maximum Size', 'weathermap'),
 			'description'   => __('The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run.', 'weathermap'),
 			'method'        => 'textbox',
-			'max_length'    => 5,
+			'size'          => 3,
+			'max_length'    => 4,
+		),
+		'weathermap_width' => array(
+			'friendly_name' => __('Hover Graph Default Width', 'weathermap'),
+			'description'   => __('The default width of the RRDtool Graphs that appear when you over on a Link.', 'weathermap'),
+			'method'        => 'textbox',
+			'default'       => 400,
+			'size'          => 3,
+			'max_length'    => 4,
+		),
+		'weathermap_height' => array(
+			'friendly_name' => __('Hover Graph Default Height', 'weathermap'),
+			'description'   => __('The default height of the RRDtool Graphs that appear when you over on a Link.', 'weathermap'),
+			'method'        => 'textbox',
+			'default'       => 125,
+			'size'          => 3,
+			'max_length'    => 4,
+		),
+		'weathermap_nolegend' => array(
+			'friendly_name' => __('Hover Graph Style', 'weathermap'),
+			'description'   => __('When hovering over the Links or Nodes, what style of Graph would you like displayed?', 'weathermap'),
+			'method'        => 'drop_array',
+			'array'         => array(
+				'thumb' => __('Thumbnail Graphs', 'weathermap'),
+				'full'  => __('Full Graphs', 'weathermap')
+			)
 		),
 		'weathermap_cycle_refresh' => array(
 			'friendly_name' => __('Refresh Time', 'weathermap'),
@@ -285,10 +311,10 @@ function weathermap_config_settings() {
 		)
 	);
 
-	if (isset($settings['misc'])) {
-		$settings['misc'] = array_merge($settings['misc'], $temp);
+	if (isset($settings['wmap'])) {
+		$settings['wmap'] = array_merge($settings['wmap'], $temp);
 	} else {
-		$settings['misc'] = $temp;
+		$settings['wmap'] = $temp;
 	}
 }
 
