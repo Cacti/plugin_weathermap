@@ -61,6 +61,11 @@ function plugin_weathermap_install() {
 
 function plugin_weathermap_uninstall() {
 	set_config_option('weathermap_version', '');
+
+	db_execute('DROP TABLE IF EXISTS weathermap_auth');
+	db_execute('DROP TABLE IF EXISTS weathermap_data');
+	db_execute('DROP TABLE IF EXISTS weathermap_maps');
+	db_execute('DROP TABLE IF EXISTS weathermap_settings');
 }
 
 function plugin_weathermap_version() {
