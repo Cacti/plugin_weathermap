@@ -309,10 +309,10 @@ function weathermap_setup_table() {
 			`sortorder` int(11) NOT NULL default 0,
 			`group_id` int(11) NOT NULL default 1,
 			`active` set("on","off") NOT NULL default "on",
-			`configfile` text NOT NULL,
-			`imagefile` text NOT NULL,
-			`htmlfile` text NOT NULL,
-			`titlecache` text NOT NULL,
+			`configfile` varchar(255) NOT NULL,
+			`imagefile` varchar(255) NOT NULL,
+			`htmlfile` varchar(255) NOT NULL,
+			`titlecache` varchar(60) NOT NULL,
 			`filehash` varchar (40) NOT NULL default "",
 			`warncount` int(11) NOT NULL default 0,
 			`config` text NOT NULL,
@@ -482,6 +482,12 @@ function weathermap_setup_table() {
 
 		// patch up the sortorder for any maps that don't have one.
 		db_execute('UPDATE weathermap_maps SET sortorder = id WHERE sortorder IS NULL OR sortorder = 0');
+
+		// make sure Weathermaps uses a sane width for columns
+		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `configfile` varchar(255) NOT NULL');
+		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `imagefile` varchar(255) NOT NULL');
+		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `htmlfile` varchar(255) NOT NULL');
+		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `titlecache` varchar(60) NOT NULL');
 	}
 }
 
