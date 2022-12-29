@@ -299,7 +299,7 @@ function weathermap_setup_table() {
 
 	// only bother with all this if it's a new install, a new version, or we're in a development version
 	// - saves a handful of db hits per request!
-	if (($dbversion == '') || (preg_match('/dev$/', $myversion)) || ($dbversion != $myversion)) {
+	if (($dbversion == '') || (preg_match('/dev$/', $myversion)) || ($dbversion != $myversion) || !db_table_exists('weathermap_maps')) {
 		if (db_column_exists('weathermap_maps', 'sortorder')) {
 			db_execute('UPDATE weathermap_maps SET sortorder = id WHERE sortorder IS NULL');
 		}
@@ -325,7 +325,7 @@ function weathermap_setup_table() {
 			PRIMARY KEY  (id),
 			UNIQUE KEY configfile(configfile))
 			ENGINE = InnoDB
-			ROW_FORMAT=COMPACT');
+			ROW_FORMAT=Dynamic');
 
 		if (!db_column_exists('weathermap_maps', 'sortorder')) {
 			db_execute('ALTER TABLE weathermap_maps ADD COLUMN sortorder int(11) NOT NULL default 0 AFTER id');
@@ -385,7 +385,7 @@ function weathermap_setup_table() {
 			`userid` mediumint(9) NOT NULL default "0",
 			`mapid` int(11) NOT NULL default "0")
 			ENGINE=InnoDB
-			ROW_FORMAT=COMPACT');
+			ROW_FORMAT=Dynamic');
 
 		if (!db_table_exists('weathermap_groups')) {
 			db_execute('CREATE TABLE IF NOT EXISTS weathermap_groups (
@@ -421,7 +421,7 @@ function weathermap_setup_table() {
 			KEY local_data_id (local_data_id),
 			KEY data_source_name (data_source_name))
 			ENGINE=InnoDB
-			ROW_FORMAT=COMPACT');
+			ROW_FORMAT=Dynamic');
 
 		if (!db_column_exists('weathermap_data', 'local_data_id')) {
 			db_execute('ALTER TABLE weathermap_data
