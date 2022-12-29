@@ -6,7 +6,7 @@
 // http://www.network-weathermap.com/
 // Released under the MIT License
 require_once('Console/Getopt.php');
-require_once('lib/Weathermap.class.php');
+require_once('lib/WeatherMap.class.php');
 
 //$weathermap_debugging=true; 
 

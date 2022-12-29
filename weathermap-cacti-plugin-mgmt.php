@@ -38,12 +38,12 @@
 
 chdir('../../');
 include_once('./include/auth.php');
-include_once('./lib/rrd.php');
+include_once($config['base_path'] . '/lib/rrd.php');
 
 $weathermap_confdir = realpath(__DIR__ . '/configs');
 
 // include the weathermap class so that we can get the version
-include_once(__DIR__ . '/lib/Weathermap.class.php');
+include_once(__DIR__ . '/lib/WeatherMap.class.php');
 include_once(__DIR__ . '/lib/poller-common.php');
 
 $actions = array(
@@ -352,7 +352,7 @@ switch ($action) {
 
 		break;
 	case 'rebuildnow':
-		include_once(__DIR__ . '/Weathermap.class.php');
+		include_once(__DIR__ . '/WeatherMap.class.php');
 		include_once(__DIR__ . '/lib/poller-common.php');
 
 		$start = microtime(true);

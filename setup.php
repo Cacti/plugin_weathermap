@@ -287,7 +287,6 @@ function weathermap_config_settings() {
 	}
 }
 
-
 function weathermap_setup_table() {
 	global $config, $database_default;
 

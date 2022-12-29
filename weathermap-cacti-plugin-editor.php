@@ -39,7 +39,7 @@
 chdir(__DIR__);
 require_once('../../include/auth.php');
 require_once('lib/editor.inc.php');
-require_once('lib/Weathermap.class.php');
+require_once('lib/WeatherMap.class.php');
 require_once('lib/geometry.php');
 require_once('lib/WMPoint.class.php');
 require_once('lib/WMVector.class.php');

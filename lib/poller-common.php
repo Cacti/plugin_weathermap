@@ -98,7 +98,7 @@ function weathermap_repair_maps() {
 
 	$mydir = $config['base_path'] . '/plugins/weathermap/';
 
-	include_once($mydir . 'lib/Weathermap.class.php');
+	include_once($mydir . 'lib/WeatherMap.class.php');
 
 	$outdir  = $mydir . 'output';
 	$confdir = $mydir . 'configs';
@@ -221,7 +221,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 	global $weathermap_poller_start_time;
 
 	include_once($mydir . '/lib/HTML_ImageMap.class.php');
-	include_once($mydir . '/lib/Weathermap.class.php');
+	include_once($mydir . '/lib/WeatherMap.class.php');
 
 	$total_warnings = 0;
 	$warning_notes  = '';
@@ -232,8 +232,8 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 		$weathermap_poller_start_time = $start_time;
 	}
 
-	if (!$force) {
-		cacti_log('NOTE: Weathermap is not scheduled to start yet', false, 'WEATHERMAP');
+	if ($force) {
+		cacti_log('NOTE: Weathermap Run is a Force Run', false, 'WEATHERMAP');
 	}
 
 	$outdir  = $mydir . '/output';

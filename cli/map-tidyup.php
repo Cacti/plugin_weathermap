@@ -40,7 +40,7 @@
 // Change the uncommented line to point to your Cacti installation
 //
 include(__DIR__ . '/../../../include/cli_check.php');
-require_once('../lib/Weathermap.class.php');
+require_once('../lib/WeatherMap.class.php');
 
 $cacti_base = $config['base_path'];
 

@@ -55,7 +55,7 @@ ini_set('include_path',
 	$cacti_root . '/plugins/weathermap/random-bits'
 );
 
-require_once 'lib/Weathermap.class.php';
+require_once 'lib/WeatherMap.class.php';
 require_once 'Console/Getopt.php';
 
 include_once 'include/global.php';

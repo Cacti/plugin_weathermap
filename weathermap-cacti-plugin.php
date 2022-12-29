@@ -43,7 +43,7 @@ chdir('../../');
 include_once('./include/auth.php');
 
 // include the weathermap class so that we can get the version
-include_once(__DIR__ . '/lib/Weathermap.class.php');
+include_once(__DIR__ . '/lib/WeatherMap.class.php');
 
 set_default_action();
 

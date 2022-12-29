@@ -92,6 +92,9 @@ define('DISTANCE', 2);
 // template class for data sources. All data sources extend this class.
 // I really wish PHP4 would just die overnight
 class WeatherMapDataSource {
+	// Cacti Integration
+	var $local_data_id;
+
 	// Initialize - called after config has been read (so SETs are processed)
 	// but just before ReadData. Used to allow plugins to verify their dependencies
 	// (if any) and bow out gracefully. Return false to signal that the plugin is not
