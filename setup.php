@@ -76,6 +76,16 @@ function plugin_weathermap_version() {
 	return $info['info'];
 }
 
+function plugin_weathermap_numeric_version() {
+	static $current;
+
+	if ($current == null) {
+		$current = plugin_weathermap_version();
+	}
+
+	return $current['version'];
+}
+
 function plugin_weathermap_check_config() {
 	plugin_weathermap_upgrade();
 
@@ -92,9 +102,9 @@ function plugin_weathermap_upgrade() {
 
 	include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
 
-    $current = plugin_weathermap_version();
-    $current = $current['version'];
-    $old     = db_fetch_row("SELECT * FROM plugin_config WHERE directory='weathermap'");
+	$current = plugin_weathermap_version();
+	$current = $current['version'];
+	$old     = db_fetch_row("SELECT * FROM plugin_config WHERE directory='weathermap'");
 
 	if ($current != $old) {
 		db_execute_prepared('UPDATE plugin_realms
@@ -325,12 +335,8 @@ function weathermap_config_settings() {
 function weathermap_setup_table() {
 	global $config, $database_default;
 
-	global $WEATHERMAP_VERSION;
-
 	$dbversion = read_config_option('weathermap_db_version');
-
-	$myversioninfo = plugin_weathermap_version();
-	$myversion     = $myversioninfo['version'];
+	$myversion = plugin_weathermap_numeric_version();
 
 	// only bother with all this if it's a new install, a new version, or we're in a development version
 	// - saves a handful of db hits per request!
@@ -1073,7 +1079,9 @@ function weathermap_poller_output(&$rrd_update_array) {
 
 function weathermap_poller_bottom() {
 	global $config;
-	global $weathermap_debugging, $WEATHERMAP_VERSION;
+	global $weathermap_debugging;
+
+	$weathermap_version = plugin_weathermap_numeric_version();
 
 	include_once(__DIR__ . '/lib/poller-common.php');
 
@@ -1088,7 +1096,7 @@ function weathermap_poller_bottom() {
 	if ($renderperiod < 0) {
 		// manual updates only
 		if ($quietlogging == 0) {
-			cacti_log("WM Version: $WEATHERMAP_VERSION - Manual Updates Only", true, 'WEATHERMAP');
+			cacti_log("WM Version: $weathermap_version - Manual Updates Only", true, 'WEATHERMAP');
 		}
 
 		return;
@@ -1099,7 +1107,7 @@ function weathermap_poller_bottom() {
 			$newcount = 1;
 		} else {
 			if ($quietlogging == 0) {
-				cacti_log("WM Version: $WEATHERMAP_VERSION - No Updates this Cycle ($rendercounter)", true, 'WEATHERMAP');
+				cacti_log("WM Version: $weathermap_version - No Updates this Cycle ($rendercounter)", true, 'WEATHERMAP');
 			}
 
 			$newcount = $rendercounter + 1;

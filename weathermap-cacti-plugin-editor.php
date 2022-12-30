@@ -45,21 +45,18 @@ require_once('lib/WMPoint.class.php');
 require_once('lib/WMVector.class.php');
 require_once('lib/WMLine.class.php');
 
-global $WEATHERMAP_VERSION;
-
 // If we're embedded in the Cacti UI (included from weathermap-cacti-plugin-editor.php), then authentication has happened. Enable the editor.
 $editor_name  = 'weathermap-cacti-plugin-editor.php';
 $cacti_base   = $config['base_path'];
 $cacti_url    = $config['url_path'];
 
-
 // sensible defaults
 $mapdir      = 'configs';
 
 // these are all set via the Editor Settings dialog, in the editor, now.
-$use_overlay = false; // set to true to enable experimental overlay showing VIAs
+$use_overlay          = false; // set to true to enable experimental overlay showing VIAs
 $use_relative_overlay = false; // set to true to enable experimental overlay showing relative-positioning
-$grid_snap_value = 0; // set non-zero to snap to a grid of that spacing
+$grid_snap_value      = 0; // set non-zero to snap to a grid of that spacing
 
 if (isset($_COOKIE['wmeditor'])) {
 	$parts = explode(':', $_COOKIE['wmeditor']);
@@ -944,7 +941,8 @@ if ($action == 'graphs') {
 	cacti_cookie_set('wmeditor', ($use_overlay ? '1':'0') . ':' . ($use_relative_overlay ? '1':'0') . ':' . intval($grid_snap_value));
 //	setcookie("wmeditor", ($use_overlay ? "1":"0") .":". ($use_relative_overlay ? "1":"0") . ":" . intval($grid_snap_value), time()+60*60*24*30 );
 
-$selectedTheme = get_selected_theme();
+$selectedTheme      = get_selected_theme();
+$weathermap_version = plugin_weathermap_numeric_version();
 
 ?>
 <!DOCTYPE html>
@@ -975,7 +973,7 @@ $selectedTheme = get_selected_theme();
 	<script src='js/jquery.ddslick.js' type='text/javascript'></script>
 	<script src='js/jquery.ui-contextmenu.js' type='text/javascript'></script>
 
-	<title>PHP Weathermap Editor <?php print $WEATHERMAP_VERSION; ?></title>
+	<title>PHP Weathermap Editor <?php print $weathermap_version; ?></title>
 </head>
 
 <body id='mainView' class='mainView'>

@@ -244,7 +244,7 @@ function wm_editor_sanitize_conffile($filename) {
 }
 
 function show_editor_startpage() {
-	global $mapdir, $WEATHERMAP_VERSION, $config_loaded, $configerror;
+	global $mapdir, $config_loaded, $configerror;
 
 	$matches = 0;
 
@@ -252,11 +252,13 @@ function show_editor_startpage() {
 
 	$errormessage = '';
 
+	$weathermap_version = plugin_weathermap_numeric_version();
+
 	if ($configerror != '') {
 		$errormessage .= $configerror . '<p>';
 	}
 
-	html_start_box(__('Welcome to the PHP Weathermap %s Editor', $WEATHERMAP_VERSION, 'weathermap'), '100%', '', '3', 'center', '');
+	html_start_box(__('Welcome to the PHP Weathermap %s Editor', $weathermap_version, 'weathermap'), '100%', '', '3', 'center', '');
 	print '<tr>';
 	print '<td>';
 	print '<div><b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however.</div>';
@@ -370,7 +372,7 @@ function show_editor_startpage() {
 	print '</ul>';
 
 	print "</div>"; // dlgbody
-	print '<div class="dlgHelp" id="start_help">PHP Weathermap ' . $WEATHERMAP_VERSION
+	print '<div class="dlgHelp" id="start_help">PHP Weathermap ' . $weathermap_version
 		. ' Copyright &copy; 2005-2019 Howard Jones - howie@thingy.com<br />The current version should always be <a href="http://www.network-weathermap.com/">available here</a>, along with other related software. PHP Weathermap is licensed under the GNU Public License, version 2. See COPYING for details. This distribution also includes the Overlib library by Erik Bosrup.</div>';
 
 	print "</div>"; // dlgStart
@@ -516,7 +518,7 @@ function handle_inheritance(&$map, &$inheritables) {
 		$formname = $inheritable[2];
 		$validation = $inheritable[3];
 
-		$new = $_REQUEST[$formname];
+		$new = get_nfilter_request_var($formname);
 
 		if ($validation != "") {
 		    switch($validation) {

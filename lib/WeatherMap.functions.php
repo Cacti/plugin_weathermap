@@ -2003,12 +2003,11 @@ function draw_spine($im, $spine, $col) {
  * A duplicate of the HTML output code in the weathermap CLI utility,
  * for use by the test-output stuff.
  *
- * @global string $WEATHERMAP_VERSION
  * @param string $htmlfile
  * @param WeatherMap $map
  */
 function TestOutput_HTML($htmlfile, &$map) {
-	global $WEATHERMAP_VERSION;
+	$weathermap_version = plugin_weathermap_numeric_version();
 
 	$fd = fopen($htmlfile, 'w');
 	fwrite($fd, '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>');
@@ -2022,7 +2021,7 @@ function TestOutput_HTML($htmlfile, &$map) {
 	fwrite($fd, $map->MakeHTML());
 
 	fwrite($fd, '<hr /><span id="byline">Network Map created with <a href="http://www.network-weathermap.com/?vs='
-		. $WEATHERMAP_VERSION . '">PHP Network Weathermap v' . $WEATHERMAP_VERSION
+		. $weathermap_version . '">PHP Network Weathermap v' . $weathermap_version
 		. '</a></span></body></html>');
 
 	fclose ($fd);
@@ -2043,7 +2042,8 @@ function TestOutput_HTML($htmlfile, &$map) {
 
 function TestOutput_RunTest($conffile, $imagefile, $htmlfile, $newconffile, $coveragefile) {
 	global $weathermap_map;
-	global $WEATHERMAP_VERSION;
+
+	$weathermap_version = plugin_weathermap_numeric_version();
 
 	$map = new WeatherMap();
 
@@ -2062,7 +2062,7 @@ function TestOutput_RunTest($conffile, $imagefile, $htmlfile, $newconffile, $cov
 	$skip   = 0;
 	$nwarns = 0;
 
-	if (!strstr($WEATHERMAP_VERSION, 'dev')) {
+	if (!strstr($weathermap_version, 'dev')) {
 		# Allow tests to be from the future. Global SET in test file can excempt test from running
 		# SET REQUIRES_VERSION 0.98
 		# but don't check if the current version is a dev version
@@ -2071,7 +2071,7 @@ function TestOutput_RunTest($conffile, $imagefile, $htmlfile, $newconffile, $cov
 		if ($required_version != '') {
 			// doesan't need to be complete, just in the right order
 			$known_versions = array('0.97','0.97a','0.97b','0.98','0.98a');
-			$my_version = array_search($WEATHERMAP_VERSION,$known_versions);
+			$my_version = array_search($weathermap_version, $known_versions);
 			$req_version = array_search($required_version,$known_versions);
 
 			if ($req_version > $my_version) {

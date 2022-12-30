@@ -772,10 +772,12 @@ function weathermap_translate_id($idname) {
 }
 
 function weathermap_versionbox() {
-	global $WEATHERMAP_VERSION, $config, $showversionbox;
+	global $config, $showversionbox;
+
+	$weathermap_version = plugin_weathermap_numeric_version();
 
 	if ($showversionbox) {
-		$pagefoot = __('Powered by %s PHP Weathermap Version %d %s', '<a href="http://www.network-weathermap.com/?v=' . $WEATHERMAP_VERSION . '">', $WEATHERMAP_VERSION, '</a>', 'weathermap');
+		$pagefoot = __('Powered by %s PHP Weathermap Version %s %s', '<a href="http://www.network-weathermap.com/?v=' . $weathermap_version . '">', $weathermap_version, '</a>', 'weathermap');
 
 		if (api_plugin_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
 			$pagefoot .= ' --- <a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php" title="' . __esc('Go to the map management page', 'weathermap') . '">' . __('Weathermap Management', 'weathermap') . '</a>';
@@ -823,11 +825,11 @@ function readfile_chunked($filename) {
 }
 
 function weathermap_footer_links() {
-	global $WEATHERMAP_VERSION;
+	$weathermap_version = plugin_weathermap_numeric_version();
 
 	print '<br />';
 
-	html_start_box("<center><a target=\"_blank\" class=\"linkOverDark\" href=\"docs/\">Local Documentation</a> -- <a target=\"_blank\" class=\"linkOverDark\" href=\"http://www.network-weathermap.com/\">Weathermap Website</a> -- <a target=\"_target\" class=\"linkOverDark\" href=\"weathermap-cacti-plugin-editor.php?plug=1\">Weathermap Editor</a> -- This is version $WEATHERMAP_VERSION</center>", '100%', '', '3', 'center', '');
+	html_start_box("<center><a target=\"_blank\" class=\"linkOverDark\" href=\"docs/\">Local Documentation</a> -- <a target=\"_blank\" class=\"linkOverDark\" href=\"http://www.network-weathermap.com/\">Weathermap Website</a> -- <a target=\"_target\" class=\"linkOverDark\" href=\"weathermap-cacti-plugin-editor.php?plug=1\">Weathermap Editor</a> -- This is version $weathermap_version</center>", '100%', '', '3', 'center', '');
 	html_end_box();
 }
 

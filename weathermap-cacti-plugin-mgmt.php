@@ -503,11 +503,11 @@ function weathermap_form_actions() {
 }
 
 function weathermap_footer_links() {
-	global $WEATHERMAP_VERSION;
+	$weathermap_version = plugin_weathermap_numeric_version();
 
 	print '<br />';
 
-	html_start_box('<a target="_blank" class="linkOverDark" href="docs/">' . __('Local Documentation', 'weathermap') . '</a> -- <a target="_blank" class="linkOverDark" href="http://www.network-weathermap.com/">' . __('Weathermap Website', 'weathermap') . '</a> -- <a target="_target" class="linkOverDark" href="weathermap-cacti-plugin-editor.php">' . __('Weathermap Editor', 'weathermap') . '</a> -- ' . __('This is version %s', $WEATHERMAP_VERSION), '100%', '', '3', 'center', '');
+	html_start_box('<a target="_blank" class="linkOverDark" href="docs/">' . __('Local Documentation', 'weathermap') . '</a> -- <a target="_blank" class="linkOverDark" href="http://www.network-weathermap.com/">' . __('Weathermap Website', 'weathermap') . '</a> -- <a target="_target" class="linkOverDark" href="weathermap-cacti-plugin-editor.php">' . __('Weathermap Editor', 'weathermap') . '</a> -- ' . __('This is version %s', $weathermap_version), '100%', '', '3', 'center', '');
 
 	html_end_box();
 }
@@ -1787,7 +1787,7 @@ function weathermap_chgroup($id) {
 	# html_header(array("Group Name", ""));
 	form_alternate_row();
 
-	print '<td><b>' . __('Choose an existing Group', 'wethermap') . '</b>&nbsp;&nbsp;<select name="new_group">';
+	print '<td><b>' . __('Choose an existing Group', 'weathermap') . '</b>&nbsp;&nbsp;<select name="new_group">';
 
 	$results = db_fetch_assoc("SELECT *
 		FROM weathermap_groups
