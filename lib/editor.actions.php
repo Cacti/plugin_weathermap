@@ -72,6 +72,18 @@ function newMapCopy($mapfile) {
 	}
 }
 
+function getMapJavaScript($mapfile) {
+	$map = new WeatherMap;
+
+	$map->context = 'editor';
+
+	$map->ReadConfig($mapfile);
+
+	$output .= $map->asJS();
+
+	print $output;
+}
+
 function getMapAreaData($mapfile) {
 	$map = new WeatherMap;
 
@@ -926,6 +938,8 @@ function displayFontSamples($mapfile) {
 }
 
 function fixMapBackgroundAndImages(&$map) {
+	global $config;
+
 	// build up the editor's list of used images
 	if ($map->background != '') {
 		// Update the location of the backgrounds

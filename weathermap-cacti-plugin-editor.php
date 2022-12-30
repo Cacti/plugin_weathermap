@@ -247,6 +247,11 @@ switch($action) {
 		exit;
 
 		break;
+	case 'load_map_javascript':
+		getMapJavaScript($mapfile);
+		exit;
+
+		break;
 	case 'nothing':
 
 		break;
@@ -270,6 +275,15 @@ fixMapBackgroundAndImages($map);
 // get the list from the images/ folder too
 $image_list   = get_imagelist('objects');
 $backgd_list  = get_imagelist('backgrounds');
+
+// append any images used in the map that aren't in the images folder
+foreach ($map->used_images as $im) {
+	if (!in_array($im, $image_list)) {
+		$image_list[] = $im;
+	}
+}
+
+sort($image_list);
 
 cacti_cookie_set('wmeditor', ($use_overlay ? '1':'0') . ':' . ($use_relative_overlay ? '1':'0') . ':' . intval($grid_snap_value));
 
@@ -319,22 +333,6 @@ $weathermap_version = plugin_weathermap_numeric_version();
 		</ul>
 	</div>
 	<form id='frmMain' action='<?php print $editor_name ?>' method='post'>
-		<script type='text/javascript'>
-			var editor_url = '<?php print $editor_name; ?>';
-
-			// the only javascript in here should be the objects representing the map itself
-			// all code should be in editor.js
-			<?php print $map->asJS() ?>
-			<?php
-			// append any images used in the map that aren't in the images folder
-			foreach ($map->used_images as $im) {
-				if (!in_array($im, $image_list)) {
-					$image_list[] = $im;
-				}
-			}
-
-			sort($image_list);
-	?></script>
 		<div class='mainArea'>
 			<input id='xycapture' name='xycapture' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
 			<img src='<?php print html_escape($imageurl); ?>' id='existingdata' usemap='#weathermap_imap' />
@@ -367,10 +365,18 @@ $weathermap_version = plugin_weathermap_numeric_version();
 				</span>
 				<a target='configwindow' href='?action=show_config&mapname=<?php print urlencode($mapname) ?>'>See config</a>
 			</div>
-			<div class='mapData'>
-				<?php print getMapAreaData($mapfile);?>
-			</div>
 		</div>
+
+		<!-- Data for overlay and selection -->
+		<div class='scriptData'>
+			<script type='text/javascript'>
+			<?php getMapJavaScript($mapfile);?>
+			</script>
+		</div>
+		<div class='mapData'>
+			<?php getMapAreaData($mapfile);?>
+		</div>
+		<!-- End DAta for overlay and selection -->
 
 		<!-- Node Properties -->
 		<div id='dlgNodeProperties' class='dlgProperties' title='Node Properties'>

@@ -20,6 +20,7 @@ var selectedLink;
 var graphTimer;
 var graphClickTimer;
 var graphOpen = false;
+var editor_url = 'weathermap-cacti-plugin-editor.php';
 
 // seed the help text. Done in a big lump here, so we could make a foreign language version someday.
 
@@ -199,7 +200,7 @@ function graphPicker() {
 		$(this).after(dialogForm);
 		$(this).hide();
 
-		$('#' + id + '_add').click(function() {
+		$('#' + id + '_add').off('click').on('click', function() {
 			if (id == 'link_target_picker') {
 				var target = $('#' + id).val();
 				var existing = $('#link_target').val();
@@ -235,7 +236,7 @@ function graphPicker() {
 			}
 		});
 
-		$('#' + id + '_rep').click(function() {
+		$('#' + id + '_rep').off('click').on('click', function() {
 			if (id == 'link_picker') {
 				$('#link_hover').val('graph_image.php?local_graph_id=' + $('#' + id).val());
 				$('#link_infourl').val('graph_view.php?action=preview&reset=true&style=selective&graph_list=' + $('#' + id).val());
@@ -342,7 +343,7 @@ function initJS() {
 
 	$('area').draggable();
 
-	$('#frmMain').submit(function(event) {
+	$('#frmMain').off('submit').on('submit', function(event) {
 		event.preventDefault();
 		form_submit();
 	});
@@ -471,54 +472,54 @@ function cleanupJS() {
 }
 
 function attach_click_events() {
-	$("area[id^='LINK:']").attr('href', '#').click(click_handler);
-	$("area[id^='NODE:']").attr('href', '#').click(click_handler);
-	$("area[id^='TIMES']").attr('href', '#').click(position_timestamp);
-	$("area[id^='LEGEN']").attr('href', '#').click(position_legend);
+	$("area[id^='LINK:']").attr('href', '#').off('click').on('click', click_handler);
+	$("area[id^='NODE:']").attr('href', '#').off('click').on('click', click_handler);
+	$("area[id^='TIMES']").attr('href', '#').off('click').on('click', position_timestamp);
+	$("area[id^='LEGEN']").attr('href', '#').off('click').on('click', position_legend);
 
-	$('#tb_newfile').html('Return to<br>Cacti').click(function() {
+	$('#tb_newfile').html('Return to<br>Cacti').on('click', function() {
 		window.location = 'weathermap-cacti-plugin-mgmt.php';
 	});
 
-	$('#tb_addnode').click(add_node);
-	$('#tb_mapprops').click(map_properties);
-	$('#tb_mapstyle').click(map_style);
+	$('#tb_addnode').off('click').on('click', add_node);
+	$('#tb_mapprops').off('click').on('click', map_properties);
+	$('#tb_mapstyle').off('click').on('click', map_style);
 
-	$('#tb_addlink').click(add_link);
-	$('#tb_poslegend').click(position_first_legend);
-	$('#tb_postime').click(position_timestamp);
-	$('#tb_colours').click(manage_colours);
+	$('#tb_addlink').off('click').on('click', add_link);
+	$('#tb_poslegend').off('click').on('click', position_first_legend);
+	$('#tb_postime').off('click').on('click', position_timestamp);
+	$('#tb_colours').off('click').on('click', manage_colours);
 
-	$('#tb_manageimages').click(manage_images);
-	$('#tb_prefs').click(prefs);
+	$('#tb_manageimages').off('click').on('click', manage_images);
+	$('#tb_prefs').off('click').on('click', prefs);
 
-	$('#node_move').click(move_node);
-	$('#node_delete').click(delete_node);
-	$('#node_clone').click(clone_node);
-	$('#node_edit').click(edit_node);
+	$('#node_move').off('click').on('click', move_node);
+	$('#node_delete').off('click').on('click', delete_node);
+	$('#node_clone').off('click').on('click', clone_node);
+	$('#node_edit').off('click').on('click', edit_node);
 
-	$('#link_delete').click(delete_link);
-	$('#link_edit').click(edit_link);
+	$('#link_delete').off('click').on('click', delete_link);
+	$('#link_edit').off('click').on('click', edit_link);
 
-	$('#link_tidy').click(tidy_link);
+	$('#link_tidy').off('click').on('click', tidy_link);
 
-	$('#link_via').click(via_link);
+	$('#link_via').off('click').on('click', via_link);
 
-	$('.wm_submit').click(form_submit);
-	$('.wm_cancel').click(cancel_op);
+	$('.wm_submit').off('click').on('click', form_submit);
+	$('.wm_cancel').off('click').on('click', cancel_op);
 
-	$('#link_cactipick').click(cactipicker).attr('href','#');
-	$('#node_cactipick').click(nodecactipicker).attr('href','#');
+	$('#link_cactipick').off('click').on('click', cactipicker).attr('href','#');
+	$('#node_cactipick').off('click').on('click', nodecactipicker).attr('href','#');
 
-	$('#xycapture').mouseover(function(event) {
+	$('#xycapture').off('mouseover').mouseover(function(event) {
 		coord_capture(event);
 	});
 
-	$('#xycapture').mousemove(function(event) {
+	$('#xycapture').off('mousemove').mousemove(function(event) {
 		coord_update(event);
 	});
 
-	$('#xycapture').mouseout(function(event) {
+	$('#xycapture').off('mouseout').mouseout(function(event) {
 		coord_release(event);
 	});
 }
@@ -554,10 +555,12 @@ function help_handler(event) {
 }
 
 // Any clicks in the imagemap end up here.
-function click_handler(event) {
-	var alt;
+function click_handler(event, target) {
+	var alt = $(this).attr('id');
 
-	alt = $(this).attr('id');
+	if (alt == 'undefined') {
+		alt = event.target.id;
+	}
 
 	click_execute(event, alt);
 }
@@ -601,10 +604,7 @@ function click_execute(event, alt) {
 			// reset back to standard state, and see if we can oblige them
 			//		alert('A bit confused');
 			$('#action').val('');
-
 			hide_all_dialogs()
-
-			click_handler(event);
 		}
 	}
 }
@@ -721,7 +721,7 @@ function delete_node() {
 		title: 'Delete Node Confirmation',
 		height: 'auto',
 		width: 400,
-		modal: true,
+		modal: false,
 		buttons: {
 			Cancel: function() {
 				$(this).dialog('close');
@@ -819,32 +819,23 @@ function form_submit() {
 		url: editor_url,
 		data: data,
 		success: function(html) {
-			var htmlObject  = $(html);
+			$.get('?action=load_area_data&mapname=' + $('#mapname').val(), function(data) {
+				$('.mapData').empty().html(data);
 
-			if (htmlObject != null) {
-				var newhtml = htmlObject.find('#frmMain').html();
+				$.getScript('?action=load_map_javascript&mapname=' + $('#mapname').val(), function(data) {
+					var date = new Date();
 
-				if (newhtml != null) {
-					$('#frmMain').fadeOut('fast').empty().html(newhtml).fadeIn('fast');;
-				} else {
-					var url = editor_url + '?action=nothing&mapname=' + $('#mapname').val();
-					document.location = url;
-				}
-			}
+					// Reload the images to update page
+					$('#existingdata').attr('src', $('#existingdata').attr('src') + '&date='+date.getTime());
+					$('#xycapture').attr('src', $('#xycapture').attr('src') + '&date='+date.getTime());
+
+					$('#action').val('');
+
+					initJS();
+				});
+			});
 		}
 	});
-}
-
-function loadPage(href) {
-	$.get(href)
-	.done(function(html) {
-		$('html').replaceWith(html);
-	})
-	.fail(function(html) {
-		console.log('Load page failed');
-	});
-
-	return false;
 }
 
 function map_properties() {
@@ -1018,7 +1009,7 @@ function show_node(name) {
 			defaultSelectedIndex:selectedNode
 		});
 
-		$('.dd-container').click(function() {
+		$('.dd-container').off('click').on('click', function() {
 			$('.ui-dialog').css('z-index', '100');
 			$('.dd-options, .dd-container').css('z-index', '500');
 		});
@@ -1106,7 +1097,7 @@ function show_dialog(dlg) {
 			defaultSelectedIndex:selectedNode
 		});
 
-		$('.dd-container').click(function() {
+		$('.dd-container').off('click').on('click', function() {
 			$('.ui-dialog').css('z-index', '100');
 			$('.dd-options, .dd-container').css('z-index', '500');
 		});

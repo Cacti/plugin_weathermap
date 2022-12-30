@@ -3944,7 +3944,7 @@ class WeatherMap extends WeatherMapBase {
 	function asJS() {
 		$js = '';
 
-		$js .= "var Links = new Array();\n";
+		$js .= "\t\t\tvar Links   = new Array();\n";
 		$js .= "\t\t\tvar LinkIDs = new Array();\n";
 		# $js.=$this->defaultlink->asJS();
 
@@ -3952,7 +3952,7 @@ class WeatherMap extends WeatherMapBase {
 			$js .= $link->asJS();
 		}
 
-		$js .= "\t\t\tvar Nodes = new Array();\n";
+		$js .= "\t\t\tvar Nodes   = new Array();\n";
 		$js .= "\t\t\tvar NodeIDs = new Array();\n";
 		# $js.=$this->defaultnode->asJS();
 
