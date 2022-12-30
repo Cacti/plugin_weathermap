@@ -22,10 +22,10 @@ $(function() {
 		close: function(event, ui) {
 			ui.tooltip.hover(
 			function () {
-				$(this).stop(true).fadeTo(400, 1);
+				$(this).stop(true).fadeTo(1000, 1);
 			},
 			function() {
-				$(this).fadeOut(400, function() {
+				$(this).fadeOut(1000, function() {
 					$(this).remove();
 				});
 			});

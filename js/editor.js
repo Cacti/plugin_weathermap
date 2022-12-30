@@ -1,4 +1,18 @@
 // global variable for subwindow reference
+const MESSAGE_LEVEL_NONE  = 0;
+const MESSAGE_LEVEL_INFO  = 1;
+const MESSAGE_LEVEL_WARN  = 2;
+const MESSAGE_LEVEL_ERROR = 3;
+const MESSAGE_LEVEL_CSRF  = 4;
+const MESSAGE_LEVEL_MIXED = 5;
+
+var sessionMessage      = null;
+var sessionMessageOpen  = null;
+var sessionMessageTimer = null;
+var sessionMessageOk    = 'Ok';
+var sessionMessageTitle = 'Operation successful';
+var sessionMessageSave  = 'The Operation was successful.  Details are below.';
+var sessionMessagePause = 'Pause';
 
 var newWindow;
 var selectedNode;
@@ -37,12 +51,141 @@ var helptexts = {
 	'tb_default': 'or click a Node or Link to edit it\'s properties'
 };
 
+function displayMessages() {
+	var error   = false;
+	var title   = '';
+	var header  = '';
+
+	if (typeof sessionMessageTimer == 'function' || sessionMessageTimer !== null) {
+		clearInterval(sessionMessageTimer);
+	}
+
+	if (sessionMessage == null) {
+		return;
+	}
+
+	if (typeof sessionMessage.level != 'undefined') {
+		if (sessionMessage.level == MESSAGE_LEVEL_ERROR) {
+			title = errorReasonTitle;
+			header = errorOnPage;
+			var sessionMessageButtons = {
+				'Ok': {
+					text: sessionMessageOk,
+					id: 'btnSessionMessageOk',
+					click: function() {
+						$(this).dialog('close');
+					}
+				}
+			};
+
+			sessionMessageOpen = {};
+		} else if (sessionMessage.level == MESSAGE_LEVEL_MIXED) {
+			title  = mixedReasonTitle;
+			header = mixedOnPage;
+			var sessionMessageButtons = {
+				'Ok': {
+					text: sessionMessageOk,
+					id: 'btnSessionMessageOk',
+					click: function() {
+						$(this).dialog('close');
+					}
+				}
+			};
+
+			sessionMessageOpen = {};
+		} else if (sessionMessage.level == MESSAGE_LEVEL_CSRF) {
+			var href = document.location.href;
+			href = href + (href.indexOf('?') > 0 ? '&':'?') + 'csrf_timeout=true';
+			document.location = href;
+			return false;
+		} else {
+			title = sessionMessageTitle;
+			header = sessionMessageSave;
+			var sessionMessageButtons = {
+				'Pause': {
+					text: sessionMessagePause,
+					id: 'btnSessionMessagePause',
+					click: function() {
+						if (sessionMessageTimer != null) {
+							clearInterval(sessionMessageTimer);
+							sessionMessageTimer = null;
+						}
+						$('#btnSessionMessagePause').remove();
+						$('#btnSessionMessageOk').html('<span class="ui-button-text">' + sessionMessageOk + '</span>');
+					}
+				},
+				'Ok': {
+					text: sessionMessageOk,
+					id: 'btnSessionMessageOk',
+					click: function() {
+						$(this).dialog('close');
+						$('#messageContainer').remove();
+						clearInterval(sessionMessageTimer);
+					}
+				}
+			};
+
+			sessionMessageOpen = function() {
+				sessionMessageCountdown(5000);
+			}
+		}
+
+		var returnStr = '<div id="messageContainer" style="display:none">' +
+			'<h4>' + header + '</h4>' +
+			'<p style="display:table-cell;overflow:auto"> ' + sessionMessage.message + '</p>' +
+			'</div>';
+
+		$('#messageContainer').remove();
+		$('body').append(returnStr);
+
+		var messageWidth = $(window).width();
+		if (messageWidth > 600) {
+			messageWidth = 600;
+		} else {
+			messageWidth -= 50;
+		}
+
+		$('#messageContainer').dialog({
+			open: sessionMessageOpen,
+			draggable: true,
+			resizable: false,
+			height: 'auto',
+			minWidth: messageWidth,
+			maxWidth: 800,
+			maxHeight: 600,
+			title: title,
+			buttons: sessionMessageButtons
+		});
+
+		sessionMessage = null;
+	}
+}
+
+function sessionMessageCountdown(time) {
+	var sessionMessageTimeLeft = (time / 1000);
+
+	$('#btnSessionMessageOk').html('<span class="ui-button-text">' + sessionMessageOk + ' (' + sessionMessageTimeLeft + ')</span>');
+
+	sessionMessageTimer = setInterval(function() {
+		sessionMessageTimeLeft--;
+
+		$('#btnSessionMessageOk').html('<span class="ui-button-text">' + sessionMessageOk + ' (' + sessionMessageTimeLeft + ')</span>');
+
+		if (sessionMessageTimeLeft <= 0) {
+			clearInterval(sessionMessageTimer);
+			$('#messageContainer').dialog('close');
+			$('#messageContainer').remove();
+		}
+	}, 1000);
+}
+
 function graphPicker() {
 	$('.selectmenu-ajax').each(function() {
-		var id     = $(this).attr('id');
-		var value  = $(this).val();
-		var title  = 'Click to Search';
-		var action = $(this).attr('data-action');
+		var id      = $(this).attr('id');
+		var value   = $(this).val();
+		var title   = 'Click to Search';
+		var action  = $(this).attr('data-action');
+		var mapname = 'none';
 
 		var dialogForm = "<span id='" + id + "_wrap' class='autodrop ui-selectmenu-button ui-selectmenu-button-closed ui-corner-all ui-button ui-widget'>";
 		dialogForm    += "<span id='" + id + "_click' style='z-index:4' class='ui-selectmenu-icon ui-icon ui-icon-triangle-1-s'></span>";
@@ -105,7 +248,7 @@ function graphPicker() {
 		});
 
 		$('#' + id + '_input').autocomplete({
-			source: 'weathermap-cacti-plugin-editor.php?action='+action,
+			source: 'weathermap-cacti-plugin-editor.php?mapname='+$('#mapname').val()+'&action='+action,
 			autoFocus: true,
 			minLength: 0,
 			select: function(event, ui) {
@@ -246,6 +389,10 @@ function initContextMenu() {
 		{title: 'Properties', cmd: 'properties', uiIcon: 'ui-icon-gear'}
 	];
 
+	$('body').on('contextmenu', function() {
+		return false;
+	});
+
 	$('map').contextmenu({
 		delegate: 'area',
 		menu: linkMenu,
@@ -258,8 +405,10 @@ function initContextMenu() {
 
 			if (target.startsWith('LINK')) {
 				$(this).contextmenu('replaceMenu', linkMenu);
-			} else {
+			} else if (target.startsWith('NODE')) {
 				$(this).contextmenu('replaceMenu', nodeMenu);
+			} else {
+				return false;
 			}
 		}
 	});
@@ -673,10 +822,10 @@ function form_submit() {
 			var htmlObject  = $(html);
 
 			if (htmlObject != null) {
-				var newhtml = htmlObject.filter('#mainView').html();
+				var newhtml = htmlObject.find('#frmMain').html();
 
 				if (newhtml != null) {
-					$('#mainView').fadeOut('fast').empty().html(newhtml).fadeIn('fast');;
+					$('#frmMain').fadeOut('fast').empty().html(newhtml).fadeIn('fast');;
 				} else {
 					var url = editor_url + '?action=nothing&mapname=' + $('#mapname').val();
 					document.location = url;
@@ -689,7 +838,7 @@ function form_submit() {
 function loadPage(href) {
 	$.get(href)
 	.done(function(html) {
-		$(document).replaceWith(html);
+		$('html').replaceWith(html);
 	})
 	.fail(function(html) {
 		console.log('Load page failed');

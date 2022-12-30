@@ -1031,8 +1031,9 @@ function maplist() {
 	?>
 	<script type='text/javascript'>
 	$(function() {
-		$('.mapLink').click(function(event) {
+		$('.mapLink').off('click').on('click', function(event) {
 			event.preventDefault();
+			event.stopPropagation();
 			document.location = $(this).attr('href');
 		});
 	});

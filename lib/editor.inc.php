@@ -37,9 +37,9 @@
 */
 
 /** editor.inc.php
-  *
-  * All the functions used by the editor.
-  */
+ *
+ * All the functions used by the editor.
+ */
 
 /** @function fix_gpc_string
   *
@@ -602,14 +602,14 @@ function common_range ($a_min,$a_max, $b_min, $b_max) {
  * distance - find the distance between two points
  *
  */
-function distance ($ax,$ay, $bx,$by) {
+function distance($ax, $ay, $bx, $by) {
 	$dx = $bx - $ax;
 	$dy = $by - $ay;
 
-	return sqrt( $dx*$dx + $dy*$dy );
+	return sqrt($dx * $dx + $dy * $dy );
 }
 
-function tidy_links(&$map,$targets, $ignore_tidied=false) {
+function tidy_links(&$map, $targets, $ignore_tidied=false) {
 	// not very efficient, but it saves looking for special cases (a->b & b->a together)
 	$ntargets = count($targets);
 	$i = 1;
