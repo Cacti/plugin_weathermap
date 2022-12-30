@@ -1464,6 +1464,8 @@ function perms_list($id) {
 	}
 
 	html_end_box();
+
+	weathermap_back_to();
 }
 
 function weathermap_map_settings($id) {
@@ -1813,6 +1815,8 @@ function weathermap_chgroup($id) {
 	print '<tr><td><p>' . __('Or Create a New Group using the %s Group Management interface %s', '<a class="pic linkEditMain" href="weathermap-cacti-plugin-mgmt.php?action=groupadmin">' , '</a>', 'weathermap') . '</p></td></tr>';
 
 	html_end_box();
+
+	weathermap_back_to();
 
 	form_end();
 }
