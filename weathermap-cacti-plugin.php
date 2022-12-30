@@ -37,13 +37,14 @@
 */
 
 $guest_account  = true;
-$showversionbox = false;
 
 chdir('../../');
 include_once('./include/auth.php');
 
 // include the weathermap class so that we can get the version
 include_once(__DIR__ . '/lib/WeatherMap.class.php');
+
+$showversionbox = read_config_option('weathermap_showversion');
 
 set_default_action();
 
@@ -54,9 +55,8 @@ switch ($action) {
 
 		if (isset_request_var('id') && (!is_numeric(get_nfilter_request_var('id')) || strlen(get_request_var('id')) == 20)) {
 			$id = weathermap_translate_id(get_nfilter_request_var('id'));
+cacti_log('translating the is ' . $id);
 		}
-
-		$id = get_filter_request_var('id');
 
 		if ($id >= 0) {
 			$imageformat = strtolower(read_config_option('weathermap_output_format'));
@@ -101,8 +101,6 @@ switch ($action) {
 		if (isset_request_var('id') && (!is_numeric(get_nfilter_request_var('id')) || strlen(get_request_var('id')) == 20)) {
 			$id = weathermap_translate_id(get_nfilter_request_var('id'));
 		}
-
-		$id = get_filter_request_var('id');
 
 		if ($id >= 0) {
 			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
@@ -150,8 +148,6 @@ switch ($action) {
 		if (isset_request_var('id') && (!is_numeric(get_nfilter_request_var('id')) || strlen(get_request_var('id')) == 20)) {
 			$id = weathermap_translate_id(get_nfilter_request_var('id'));
 		}
-
-		$id = get_filter_request_var('id');
 
 		if ($id >= 0) {
 			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
@@ -320,8 +316,6 @@ switch ($action) {
 		if (isset_request_var('id') && (!is_numeric(get_nfilter_request_var('id')) || strlen(get_request_var('id')) == 20)) {
 			$id = weathermap_translate_id(get_nfilter_request_var('id'));
 		}
-
-		$id = get_filter_request_var('id');
 
 		if ($id >= 0) {
 			weathermap_singleview($id);

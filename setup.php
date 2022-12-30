@@ -280,6 +280,12 @@ function weathermap_config_settings() {
 				288 => __('Every %d Poller Cycles', 288,  'weathermap'),
 			),
 		),
+		'weathermap_showversion' => array(
+			'friendly_name' => __('Show Weathermap Help Links', 'weathermap'),
+			'description' => __('If checked, all Weathermap pages will include a link to documentation.', 'weathermap'),
+			'method' => 'checkbox',
+			'default' => ''
+		),
 		'weathermap_all_tab' => array(
 			'friendly_name' => __('Show \'All\' Tab', 'weathermap'),
 			'description'   => __('When using groups, add an \'All Maps\' tab to the tab bar.', 'weathermap'),
