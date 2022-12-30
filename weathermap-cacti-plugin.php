@@ -52,16 +52,14 @@ switch ($action) {
 	case 'viewimage':
 		$id = -1;
 
-		if (isset($_REQUEST['id']) && (!is_numeric($_REQUEST['id']) || strlen($_REQUEST['id']) == 20)) {
-			$id = weathermap_translate_id($_REQUEST['id']);
+		if (isset_request_var('id') && (!is_numeric(get_nfilter_request_var('id')) || strlen(get_request_var('id')) == 20)) {
+			$id = weathermap_translate_id(get_nfilter_request_var('id'));
 		}
 
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			$id = intval($_REQUEST['id']);
-		}
+		$id = get_filter_request_var('id');
 
 		if ($id >= 0) {
-			$imageformat = strtolower(read_config_option("weathermap_output_format"));
+			$imageformat = strtolower(read_config_option('weathermap_output_format'));
 
 			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
 
@@ -100,13 +98,11 @@ switch ($action) {
 	case 'liveviewimage':
 		$id = -1;
 
-		if (isset($_REQUEST['id']) && (!is_numeric($_REQUEST['id']) || strlen($_REQUEST['id']) == 20)) {
-			$id = weathermap_translate_id($_REQUEST['id']);
+		if (isset_request_var('id') && (!is_numeric(get_nfilter_request_var('id')) || strlen(get_request_var('id')) == 20)) {
+			$id = weathermap_translate_id(get_nfilter_request_var('id'));
 		}
 
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			$id = intval($_REQUEST['id']);
-		}
+		$id = get_filter_request_var('id');
 
 		if ($id >= 0) {
 			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
@@ -151,13 +147,11 @@ switch ($action) {
 
 		$id = -1;
 
-		if (isset($_REQUEST['id']) && (!is_numeric($_REQUEST['id']) || strlen($_REQUEST['id']) == 20)) {
-			$id = weathermap_translate_id($_REQUEST['id']);
+		if (isset_request_var('id') && (!is_numeric(get_nfilter_request_var('id')) || strlen(get_request_var('id')) == 20)) {
+			$id = weathermap_translate_id(get_nfilter_request_var('id'));
 		}
 
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			$id = intval($_REQUEST['id']);
-		}
+		$id = get_filter_request_var('id');
 
 		if ($id >= 0) {
 			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
@@ -280,8 +274,8 @@ switch ($action) {
 	case 'viewmapcycle':
 		$fullscreen = 0;
 
-		if ((isset($_REQUEST['fullscreen']) && is_numeric($_REQUEST['fullscreen']))) {
-			$fullscreen = intval($_REQUEST['fullscreen']);
+		if (isset_request_var('fullscreen')) {
+			$fullscreen = get_filter_request_var('fullscreen');
 		}
 
 		if ($fullscreen == 1) {
@@ -300,8 +294,8 @@ switch ($action) {
 
 		$groupid = -1;
 
-		if ((isset($_REQUEST['group']) && is_numeric($_REQUEST['group']))) {
-			$groupid = intval($_REQUEST['group']);
+		if (isset_request_var('group')) {
+			$groupid = get_filter_request_var('group');
 		}
 
 		weathermap_fullview(true, false, $groupid, $fullscreen);
@@ -323,13 +317,11 @@ switch ($action) {
 
 		$id = -1;
 
-		if (isset($_REQUEST['id']) && (!is_numeric($_REQUEST['id']) || strlen($_REQUEST['id']) == 20)) {
-			$id = weathermap_translate_id($_REQUEST['id']);
+		if (isset_request_var('id') && (!is_numeric(get_nfilter_request_var('id')) || strlen(get_request_var('id')) == 20)) {
+			$id = weathermap_translate_id(get_nfilter_request_var('id'));
 		}
 
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			$id = intval($_REQUEST['id']);
-		}
+		$id = get_filter_request_var('id');
 
 		if ($id >= 0) {
 			weathermap_singleview($id);
@@ -348,8 +340,8 @@ switch ($action) {
 
 		$group_id = -1;
 
-		if (isset($_REQUEST['group_id']) && (is_numeric($_REQUEST['group_id']))) {
-			$group_id = intval($_REQUEST['group_id']);
+		if (isset_request_var('group_id')) {
+			$group_id = get_filter_request_var('group_id');
 			$_SESSION['wm_last_group'] = $group_id;
 		} elseif (isset($_SESSION['wm_last_group'])) {
 			$group_id = intval($_SESSION['wm_last_group']);

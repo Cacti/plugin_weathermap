@@ -94,17 +94,17 @@ $log       = '';
 
 set_default_action('');
 
-if (isset($_REQUEST['action'])) {
-	$action = $_REQUEST['action'];
+if (isset_request_var('action')) {
+	$action = get_nfilter_request_var('action');
 }
 
-if (isset($_REQUEST['mapname'])) {
-	$mapname = $_REQUEST['mapname'];
+if (isset_request_var('mapname')) {
+	$mapname = get_nfilter_request_var('mapname');
 	$mapname = wm_editor_sanitize_conffile($mapname);
 }
 
-if (isset($_REQUEST['selected'])) {
-	$selected = wm_editor_sanitize_selected($_REQUEST['selected']);
+if (isset_request_var('selected')) {
+	$selected = wm_editor_sanitize_selected(get_nfilter_request_var('selected'));
 }
 
 $weathermap_debugging = false;
@@ -136,8 +136,8 @@ if ($action == 'graphs') {
 
 			break;
 		case 'newmapcopy':
-			if (isset($_REQUEST['sourcemap'])) {
-				$sourcemapname = $_REQUEST['sourcemap'];
+			if (isset_request_var('sourcemap')) {
+				$sourcemapname = get_nfilter_request_var('sourcemap');
 			}
 
 			$sourcemapname = wm_editor_sanitize_conffile($sourcemapname);
@@ -241,8 +241,8 @@ if ($action == 'graphs') {
 
 			header('Content-type: text/plain');
 
-			$item_name = $_REQUEST['item_name'];
-			$item_type = $_REQUEST['item_type'];
+			$item_name = get_nfilter_request_var('item_name');
+			$item_type = get_nfilter_request_var('item_type');
 
 			$ok=false;
 
@@ -270,8 +270,8 @@ if ($action == 'graphs') {
 		case 'set_link_config':
 			$map->ReadConfig($mapfile);
 
-			$link_name = $_REQUEST['link_name'];
-			$link_config = fix_gpc_string($_REQUEST['item_configtext']);
+			$link_name = get_nfilter_request_var('link_name');
+			$link_config = fix_gpc_string(get_nfilter_request_var('item_configtext'));
 
 			if (isset($map->links[$link_name])) {
 				$map->links[$link_name]->config_override = $link_config;
@@ -291,8 +291,8 @@ if ($action == 'graphs') {
 		case 'set_node_config':
 			$map->ReadConfig($mapfile);
 
-			$node_name = $_REQUEST['node_name'];
-			$node_config = fix_gpc_string($_REQUEST['item_configtext']);
+			$node_name = get_nfilter_request_var('node_name');
+			$node_config = fix_gpc_string(get_nfilter_request_var('item_configtext'));
 
 			if (isset($map->nodes[$node_name])) {
 				$map->nodes[$node_name]->config_override = $node_config;
@@ -312,8 +312,8 @@ if ($action == 'graphs') {
 		case 'set_node_properties':
 			$map->ReadConfig($mapfile);
 
-			$node_name = $_REQUEST['node_name'];
-			$new_node_name = $_REQUEST['node_new_name'];
+			$node_name = get_nfilter_request_var('node_name');
+			$new_node_name = get_nfilter_request_var('node_new_name');
 
 			// first check if there's a rename...
 			if ($node_name != $new_node_name && strpos($new_node_name, ' ') === false) {
@@ -367,23 +367,23 @@ if ($action == 'graphs') {
 			}
 
 			// by this point, and renaming has been done, and new_node_name will always be the right name
-			$map->nodes[$new_node_name]->label = wm_editor_sanitize_string($_REQUEST['node_label']);
-			$map->nodes[$new_node_name]->infourl[IN] = wm_editor_sanitize_string($_REQUEST['node_infourl']);
+			$map->nodes[$new_node_name]->label       = wm_editor_sanitize_string(get_nfilter_request_var('node_label'));
+			$map->nodes[$new_node_name]->infourl[IN] = wm_editor_sanitize_string(get_nfilter_request_var('node_infourl'));
 
-			$urls = preg_split('/\s+/', $_REQUEST['node_hover'], -1, PREG_SPLIT_NO_EMPTY);
+			$urls = preg_split('/\s+/', get_nfilter_request_var('node_hover'), -1, PREG_SPLIT_NO_EMPTY);
 
-			$map->nodes[$new_node_name]->overliburl[IN] = $urls;
+			$map->nodes[$new_node_name]->overliburl[IN]  = $urls;
 			$map->nodes[$new_node_name]->overliburl[OUT] = $urls;
 
-			$map->nodes[$new_node_name]->x = intval($_REQUEST['node_x']);
-			$map->nodes[$new_node_name]->y = intval($_REQUEST['node_y']);
+			$map->nodes[$new_node_name]->x = intval(get_nfilter_request_var('node_x'));
+			$map->nodes[$new_node_name]->y = intval(get_nfilter_request_var('node_y'));
 
-			if ($_REQUEST['node_iconfilename'] == '--NONE--') {
+			if (get_nfilter_request_var('node_iconfilename') == '--NONE--') {
 			    $map->nodes[$new_node_name]->iconfile = '';
 			} else {
 			    // AICONs mess this up, because they're not fully supported by the editor, but it can still break them
-			    if ($_REQUEST['node_iconfilename'] != '--AICON--') {
-				    $iconfile = stripslashes($_REQUEST['node_iconfilename']);
+			    if (get_nfilter_request_var('node_iconfilename') != '--AICON--') {
+				    $iconfile = stripslashes(get_nfilter_request_var('node_iconfilename'));
 				    $map->nodes[$new_node_name]->iconfile = $iconfile;
 			    }
 			}
@@ -394,24 +394,26 @@ if ($action == 'graphs') {
 		case 'set_link_properties':
 			$map->ReadConfig($mapfile);
 
-			$link_name = $_REQUEST['link_name'];
+			$link_name = get_nfilter_request_var('link_name');
 
 			if (strpos($link_name,' ') === false) {
-			    $map->links[$link_name]->width = floatval($_REQUEST['link_width']);
-			    $map->links[$link_name]->infourl[IN] = wm_editor_sanitize_string($_REQUEST['link_infourl']);
-			    $map->links[$link_name]->infourl[OUT] = wm_editor_sanitize_string($_REQUEST['link_infourl']);
-			    $urls = preg_split('/\s+/', $_REQUEST['link_hover'], -1, PREG_SPLIT_NO_EMPTY);
-			    $map->links[$link_name]->overliburl[IN] = $urls;
+			    $map->links[$link_name]->width        = floatval(get_nfilter_request_var('link_width'));
+			    $map->links[$link_name]->infourl[IN]  = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
+			    $map->links[$link_name]->infourl[OUT] = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
+
+			    $urls = preg_split('/\s+/', get_nfilter_request_var('link_hover'), -1, PREG_SPLIT_NO_EMPTY);
+
+			    $map->links[$link_name]->overliburl[IN]  = $urls;
 			    $map->links[$link_name]->overliburl[OUT] = $urls;
 
-			    $map->links[$link_name]->comments[IN] =  wm_editor_sanitize_string($_REQUEST['link_commentin']);
-			    $map->links[$link_name]->comments[OUT] = wm_editor_sanitize_string($_REQUEST['link_commentout']);
-			    $map->links[$link_name]->commentoffset_in =  intval($_REQUEST['link_commentposin']);
-			    $map->links[$link_name]->commentoffset_out = intval($_REQUEST['link_commentposout']);
+			    $map->links[$link_name]->comments[IN]      = wm_editor_sanitize_string(get_nfilter_request_var('link_commentin'));
+			    $map->links[$link_name]->comments[OUT]     = wm_editor_sanitize_string(get_nfilter_request_var('link_commentout'));
+			    $map->links[$link_name]->commentoffset_in  = intval(get_nfilter_request_var('link_commentposin'));
+			    $map->links[$link_name]->commentoffset_out = intval(get_nfilter_request_var('link_commentposout'));
 
-			    // $map->links[$link_name]->target = $_REQUEST['link_target'];
+			    // $map->links[$link_name]->target = get_nfilter_request_var('link_target'];
 
-			    $targets = preg_split('/\s+/',$_REQUEST['link_target'],-1,PREG_SPLIT_NO_EMPTY);
+			    $targets = preg_split('/\s+/', get_nfilter_request_var('link_target'), -1, PREG_SPLIT_NO_EMPTY);
 			    $new_target_list = array();
 
 			    foreach ($targets as $target) {
@@ -433,10 +435,10 @@ if ($action == 'graphs') {
 
 				$map->links[$link_name]->targets = $new_target_list;
 
-				$bwin = $_REQUEST['link_bandwidth_in'];
-				$bwout = $_REQUEST['link_bandwidth_out'];
+				$bwin  = get_nfilter_request_var('link_bandwidth_in');
+				$bwout = get_nfilter_request_var('link_bandwidth_out');
 
-				if (isset($_REQUEST['link_bandwidth_out_cb']) && $_REQUEST['link_bandwidth_out_cb'] == 'symmetric') {
+				if (isset_request_var('link_bandwidth_out_cb') && get_nfilter_request_var('link_bandwidth_out_cb') == 'symmetric') {
 					$bwout = $bwin;
 				}
 
@@ -459,21 +461,21 @@ if ($action == 'graphs') {
 		case 'set_map_properties':
 			$map->ReadConfig($mapfile);
 
-			$map->title = wm_editor_sanitize_string($_REQUEST['map_title']);
-			$map->keytext['DEFAULT'] = wm_editor_sanitize_string($_REQUEST['map_legend']);
-			$map->stamptext = wm_editor_sanitize_string($_REQUEST['map_stamp']);
+			$map->title              = wm_editor_sanitize_string(get_nfilter_request_var('map_title'));
+			$map->keytext['DEFAULT'] = wm_editor_sanitize_string(get_nfilter_request_var('map_legend'));
+			$map->stamptext          = wm_editor_sanitize_string(get_nfilter_request_var('map_stamp'));
 
-			$map->htmloutputfile = wm_editor_sanitize_file($_REQUEST['map_htmlfile'], array('html') );
-			$map->imageoutputfile = wm_editor_sanitize_file($_REQUEST['map_pngfile'], array('png', 'jpg', 'gif', 'jpeg'));
+			$map->htmloutputfile  = wm_editor_sanitize_file(get_nfilter_request_var('map_htmlfile'), array('html') );
+			$map->imageoutputfile = wm_editor_sanitize_file(get_nfilter_request_var('map_pngfile'), array('png', 'jpg', 'gif', 'jpeg'));
 
-			$map->width = intval($_REQUEST['map_width']);
-			$map->height = intval($_REQUEST['map_height']);
+			$map->width  = intval(get_nfilter_request_var('map_width'));
+			$map->height = intval(get_nfilter_request_var('map_height'));
 
 			// XXX sanitise this a bit
-			if ($_REQUEST['map_bgfile'] == '--NONE--') {
+			if (get_nfilter_request_var('map_bgfile') == '--NONE--') {
 				$map->background = '';
 			} else {
-				$map->background = wm_editor_sanitize_file(stripslashes($_REQUEST['map_bgfile']), array('png', 'jpg', 'gif', 'jpeg') );
+				$map->background = wm_editor_sanitize_file(stripslashes(get_nfilter_request_var('map_bgfile')), array('png', 'jpg', 'gif', 'jpeg') );
 			}
 
 			db_execute_prepared('UPDATE weathermap_maps
@@ -487,13 +489,14 @@ if ($action == 'graphs') {
 
 			handle_inheritance($map, $inheritables);
 
-			$map->links['DEFAULT']->width = intval($_REQUEST['map_linkdefaultwidth']);
-			$map->links['DEFAULT']->add_note('my_width', intval($_REQUEST['map_linkdefaultwidth']));
+			$map->links['DEFAULT']->width = intval(get_nfilter_request_var('map_linkdefaultwidth'));
 
-			$bwin = $_REQUEST['map_linkdefaultbwin'];
-			$bwout = $_REQUEST['map_linkdefaultbwout'];
+			$map->links['DEFAULT']->add_note('my_width', get_filter_request_var('map_linkdefaultwidth'));
 
-			$bwin_old = $map->links['DEFAULT']->max_bandwidth_in_cfg;
+			$bwin  = get_nfilter_request_var('map_linkdefaultbwin');
+			$bwout = get_nfilter_request_var('map_linkdefaultbwout');
+
+			$bwin_old  = $map->links['DEFAULT']->max_bandwidth_in_cfg;
 			$bwout_old = $map->links['DEFAULT']->max_bandwidth_out_cfg;
 
 			if (!wm_editor_validate_bandwidth($bwin)) {
@@ -505,10 +508,10 @@ if ($action == 'graphs') {
 			}
 
 			if (($bwin_old != $bwin) || ($bwout_old != $bwout)) {
-				$map->links['DEFAULT']->max_bandwidth_in_cfg = $bwin;
+				$map->links['DEFAULT']->max_bandwidth_in_cfg  = $bwin;
 				$map->links['DEFAULT']->max_bandwidth_out_cfg = $bwout;
-				$map->links['DEFAULT']->max_bandwidth_in = unformat_number($bwin, $map->kilo);
-				$map->links['DEFAULT']->max_bandwidth_out = unformat_number($bwout, $map->kilo);
+				$map->links['DEFAULT']->max_bandwidth_in      = unformat_number($bwin, $map->kilo);
+				$map->links['DEFAULT']->max_bandwidth_out     = unformat_number($bwout, $map->kilo);
 
 				// $map->defaultlink->SetBandwidth($bwin,$bwout);
 				foreach ($map->links as $link) {
@@ -516,10 +519,10 @@ if ($action == 'graphs') {
 						// $link->SetBandwidth($bwin,$bwout);
 						$link_name = $link->name;
 
-						$map->links[$link_name]->max_bandwidth_in_cfg = $bwin;
+						$map->links[$link_name]->max_bandwidth_in_cfg  = $bwin;
 						$map->links[$link_name]->max_bandwidth_out_cfg = $bwout;
-						$map->links[$link_name]->max_bandwidth_in = unformat_number($bwin, $map->kilo);
-						$map->links[$link_name]->max_bandwidth_out = unformat_number($bwout, $map->kilo);
+						$map->links[$link_name]->max_bandwidth_in      = unformat_number($bwin, $map->kilo);
+						$map->links[$link_name]->max_bandwidth_out     = unformat_number($bwout, $map->kilo);
 					}
 				}
 			}
@@ -530,11 +533,11 @@ if ($action == 'graphs') {
 		case 'set_map_style':
 			$map->ReadConfig($mapfile);
 
-			if (wm_editor_validate_one_of($_REQUEST['mapstyle_htmlstyle'],array('static','overlib'),false)) {
-				$map->htmlstyle = strtolower($_REQUEST['mapstyle_htmlstyle']);
+			if (wm_editor_validate_one_of(get_nfilter_request_var('mapstyle_htmlstyle'), array('static','overlib'),false)) {
+				$map->htmlstyle = strtolower(get_nfilter_request_var('mapstyle_htmlstyle'));
 			}
 
-			$map->keyfont = intval($_REQUEST['mapstyle_legendfont']);
+			$map->keyfont = get_filter_request_var('mapstyle_legendfont');
 
 			$inheritables = array(
 				array('link','labelstyle','mapstyle_linklabels',''),
@@ -551,7 +554,7 @@ if ($action == 'graphs') {
 		case 'add_link':
 			$map->ReadConfig($mapfile);
 
-			$param2 = $_REQUEST['param'];
+			$param2 = get_nfilter_request_var('param');
 			# $param2 = substr($param2,0,-2);
 			$newaction = 'add_link2';
 			#  print $newaction;
@@ -561,8 +564,8 @@ if ($action == 'graphs') {
 		case 'add_link2':
 			$map->ReadConfig($mapfile);
 
-			$a = $_REQUEST['param2'];
-			$b = $_REQUEST['param'];
+			$a = get_nfilter_request_var('param2');
+			$b = get_nfilter_request_var('param');
 			# $b = substr($b,0,-2);
 			$log = "[$a -> $b]";
 
@@ -595,9 +598,10 @@ if ($action == 'graphs') {
 
 			break;
 		case 'place_legend':
-			$x = snap( intval($_REQUEST['x']) ,$grid_snap_value);
-			$y = snap( intval($_REQUEST['y']) ,$grid_snap_value);
-			$scalename = wm_editor_sanitize_name($_REQUEST['param']);
+			$x = snap(intval(get_nfilter_request_var('x')), $grid_snap_value);
+			$y = snap(intval(get_nfilter_request_var('y')), $grid_snap_value);
+
+			$scalename = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
 			$map->ReadConfig($mapfile);
 
@@ -608,8 +612,8 @@ if ($action == 'graphs') {
 
 			break;
 		case 'place_stamp':
-			$x = snap( intval($_REQUEST['x']), $grid_snap_value);
-			$y = snap( intval($_REQUEST['y']), $grid_snap_value);
+			$x = snap(intval(get_nfilter_request_var('x')), $grid_snap_value);
+			$y = snap(intval(get_nfilter_request_var('y')), $grid_snap_value);
 
 			$map->ReadConfig($mapfile);
 
@@ -620,9 +624,10 @@ if ($action == 'graphs') {
 
 			break;
 		case 'via_link':
-			$x = intval($_REQUEST['x']);
-			$y = intval($_REQUEST['y']);
-			$link_name = wm_editor_sanitize_name($_REQUEST['link_name']);
+			$x = intval(get_nfilter_request_var('x'));
+			$y = intval(get_nfilter_request_var('y'));
+
+			$link_name = wm_editor_sanitize_name(get_nfilter_request_var('link_name'));
 
 			$map->ReadConfig($mapfile);
 
@@ -633,10 +638,10 @@ if ($action == 'graphs') {
 
 			break;
 		case 'move_node':
-			$x = snap(intval($_REQUEST['x']), $grid_snap_value);
-			$y = snap(intval($_REQUEST['y']), $grid_snap_value);
+			$x = snap(intval(get_nfilter_request_var('x')), $grid_snap_value);
+			$y = snap(intval(get_nfilter_request_var('y')), $grid_snap_value);
 
-			$node_name = wm_editor_sanitize_name($_REQUEST['node_name']);
+			$node_name = wm_editor_sanitize_name(get_nfilter_request_var('node_name'));
 
 			$map->ReadConfig($mapfile);
 
@@ -732,7 +737,7 @@ if ($action == 'graphs') {
 		case 'link_tidy':
 			$map->ReadConfig($mapfile);
 
-			$target = wm_editor_sanitize_name($_REQUEST['param']);
+			$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
 			if (isset($map->links[$target])) {
 				// draw a map and throw it away, to calculate all the bounding boxes
@@ -777,7 +782,7 @@ if ($action == 'graphs') {
 		case 'delete_link':
 			$map->ReadConfig($mapfile);
 
-			$target = wm_editor_sanitize_name($_REQUEST['param']);
+			$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 			$log = 'delete link ' . $target;
 
 			if (isset($map->links[$target])) {
@@ -788,8 +793,8 @@ if ($action == 'graphs') {
 
 			break;
 		case 'add_node':
-			$x = snap(intval($_REQUEST['x']), $grid_snap_value);
-			$y = snap(intval($_REQUEST['y']), $grid_snap_value);
+			$x = snap(intval(get_nfilter_request_var('x')), $grid_snap_value);
+			$y = snap(intval(get_nfilter_request_var('y')), $grid_snap_value);
 
 			$map->ReadConfig($mapfile);
 
@@ -826,15 +831,15 @@ if ($action == 'graphs') {
 			// have to do this, otherwise the editor will be unresponsive afterwards - not actually going to change anything!
 			$map->ReadConfig($mapfile);
 
-			$use_overlay = (isset($_REQUEST['editorsettings_showvias']) ? intval($_REQUEST['editorsettings_showvias']) : false);
-			$use_relative_overlay = (isset($_REQUEST['editorsettings_showrelative']) ? intval($_REQUEST['editorsettings_showrelative']) : false);
-			$grid_snap_value = (isset($_REQUEST['editorsettings_gridsnap']) ? intval($_REQUEST['editorsettings_gridsnap']) : 0);
+			$use_overlay = (isset_request_var('editorsettings_showvias') ? intval(get_nfilter_request_var('editorsettings_showvias')) : false);
+			$use_relative_overlay = (isset_request_var('editorsettings_showrelative') ? intval(get_nfilter_request_var('editorsettings_showrelative')) : false);
+			$grid_snap_value = (isset_request_var('editorsettings_gridsnap') ? intval(get_nfilter_request_var('editorsettings_gridsnap')) : 0);
 
 			break;
 		case 'delete_node':
 			$map->ReadConfig($mapfile);
 
-			$target = wm_editor_sanitize_name($_REQUEST['param']);
+			$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
 			if (isset($map->nodes[$target])) {
 				$log = 'delete node ' . $target;
@@ -856,7 +861,7 @@ if ($action == 'graphs') {
 		case 'clone_node':
 			$map->ReadConfig($mapfile);
 
-			$target = wm_editor_sanitize_name($_REQUEST['param']);
+			$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
 			if (isset($map->nodes[$target])) {
 				$log = 'clone node ' . $target;

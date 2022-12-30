@@ -69,22 +69,14 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'group_update':
-		$id      = -1;
-		$newname = '';
-
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			$id = intval($_REQUEST['id']);
-		}
-
-		if (isset($_REQUEST['gname']) && (strlen($_REQUEST['gname']) > 0)) {
-			$newname = $_REQUEST['gname'];
-		}
+		$id      = get_filter_request_var('id');
+		$newname = get_request_var('gname');
 
 		if ($id >= 0 && $newname != '') {
 			weathermap_group_update($id, $newname);
 		}
 
-		if ($id < 0 && $newname != '') {
+		if (empty($id) && $newname != '') {
 			weathermap_group_create($newname);
 		}
 
@@ -92,11 +84,7 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'groupadmin_delete':
-		$id = -1;
-
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			$id = intval($_REQUEST['id']);
-		}
+		$id = get_filter_request_var('id');
 
 		if ($id >= 1) {
 			weathermap_group_delete($id);
@@ -109,9 +97,8 @@ switch (get_request_var('action')) {
 		$id = -1;
 
 		top_header();
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			$id = intval($_REQUEST['id']);
-		}
+
+		$id = get_filter_request_var('id');
 
 		if ($id >= 0) {
 			weathermap_group_form($id);
@@ -132,13 +119,8 @@ switch (get_request_var('action')) {
 		$mapid   = -1;
 		$groupid = -1;
 
-		if (isset($_REQUEST['map_id']) && is_numeric($_REQUEST['map_id'])) {
-			$mapid = intval($_REQUEST['map_id']);
-		}
-
-		if (isset($_REQUEST['new_group']) && is_numeric($_REQUEST['new_group'])) {
-			$groupid = intval($_REQUEST['new_group']);
-		}
+		$mapid   = get_filter_request_var('map_id');
+		$groupid = get_filter_request_var('new_group');
 
 		if (($groupid > 0) && ($mapid >= 0)) {
 			weathermap_set_group($mapid, $groupid);
@@ -148,29 +130,19 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'chgroup':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			top_header();
-			weathermap_chgroup(intval($_REQUEST['id']));
-			bottom_footer();
-		} else {
-			print 'Something got lost back there.';
-		}
+		top_header();
+		weathermap_chgroup(get_filter_request_var('id'));
+		bottom_footer();
 
 		break;
 	case 'map_settings_delete':
 		$mapid     = null;
 		$settingid = null;
 
-		if (isset($_REQUEST['mapid']) && is_numeric($_REQUEST['mapid'])) {
-			$mapid = intval($_REQUEST['mapid']);
-		}
-
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			$settingid = intval($_REQUEST['id']);
-		}
+		$mapid     = get_filter_request_var('mapid');
+		$settingid = get_filter_request_var('id');
 
 		if (!is_null($mapid) && !is_null($settingid)) {
-			// create setting
 			weathermap_setting_delete($mapid, $settingid);
 		}
 
@@ -184,27 +156,14 @@ switch (get_request_var('action')) {
 		$name      = '';
 		$value     = '';
 
-		if (isset($_REQUEST['mapid']) && is_numeric($_REQUEST['mapid'])) {
-			$mapid = intval($_REQUEST['mapid']);
-		}
-
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			$settingid = intval($_REQUEST['id']);
-		}
-
-		if (isset($_REQUEST['name']) && $_REQUEST['name']) {
-			$name = $_REQUEST['name'];
-		}
-
-		if (isset($_REQUEST['value']) && $_REQUEST['value']) {
-			$value = $_REQUEST['value'];
-		}
+		$mapid     = get_filter_request_var('mapid');
+		$settingid = get_filter_request_var('id');
+		$name      = get_nfilter_request_var('name');
+		$value     = get_nfilter_request_var('value');
 
 		if (!is_null($mapid) && $settingid == 0) {
-			// create setting
 			weathermap_setting_save($mapid, $name, $value);
 		} elseif (!is_null($mapid) && !is_null($settingid)) {
-			// update setting
 			weathermap_setting_update($mapid, $settingid, $name, $value);
 		}
 
@@ -212,103 +171,98 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'map_settings_form':
-		if (isset($_REQUEST['mapid']) && is_numeric($_REQUEST['mapid'])) {
-			top_header();
+		top_header();
 
-			if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-				weathermap_map_settings_form(intval($_REQUEST['mapid']), intval($_REQUEST['id']));
-			} else {
-				weathermap_map_settings_form(intval($_REQUEST['mapid']));
-			}
+		$mapid = get_filter_request_var('mapid');
+		$id    = get_filter_request_var('id');
 
-			bottom_footer();
+		if ($id > 0) {
+			weathermap_map_settings_form($mapid, $id);
+		} else {
+			weathermap_map_settings_form($mapid);
 		}
+
+		bottom_footer();
 
 		break;
 	case 'map_settings':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			top_header();
-			weathermap_map_settings(intval($_REQUEST['id']));
-			bottom_footer();
-		}
+		top_header();
+		weathermap_map_settings(get_filter_request_var('id'));
+		bottom_footer();
 
 		break;
 	case 'perms_add_user':
-		if (isset($_REQUEST['mapid']) && is_numeric($_REQUEST['mapid']) && isset($_REQUEST['userid']) && is_numeric($_REQUEST['userid'])) {
-			perms_add_user(intval($_REQUEST['mapid']), intval($_REQUEST['userid']));
-			header('Location: weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . intval($_REQUEST['mapid']));
-		}
+		$mapid  = get_filter_request_var('mapid');
+		$userid = get_filter_request_var('userid');
+
+		perms_add_user($mapid, $userid);
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid)
 
 		break;
 	case 'perms_delete_user':
-		if (isset($_REQUEST['mapid']) && is_numeric($_REQUEST['mapid']) && isset($_REQUEST['userid']) && is_numeric($_REQUEST['userid'])) {
-			perms_delete_user($_REQUEST['mapid'], $_REQUEST['userid']);
-			header('Location: weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $_REQUEST['mapid']);
-		}
+		$mapid  = get_filter_request_var('mapid');
+		$userid = get_filter_request_var('userid');
+
+		perms_delete_user($mapid, $userid);
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid);
 
 		break;
 	case 'perms_edit':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			top_header();
-			perms_list($_REQUEST['id']);
-			bottom_footer();
-		} else {
-			print __('Something got lost back there.', 'weathermap');
-		}
+		top_header();
+		perms_list(get_filter_request_var('id'));
+		bottom_footer();
 
 		break;
 	case 'delete_map':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			map_delete($_REQUEST['id']);
-		}
+		map_delete(get_filter_request_var('id'));
 
 		header('Location: weathermap-cacti-plugin-mgmt.php');
 
 		break;
 	case 'deactivate_map':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			map_deactivate($_REQUEST['id']);
-		}
+		map_deactivate(get_filter_request_var('id'));
 
 		header('Location: weathermap-cacti-plugin-mgmt.php');
 
 		break;
 	case 'activate_map':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
-			map_activate($_REQUEST['id']);
-		}
+		map_activate(get_filter_request_var('id'));
 
 		header('Location: weathermap-cacti-plugin-mgmt.php');
 
 		break;
 	case 'move_map_up':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id']) && isset($_REQUEST['order']) && is_numeric($_REQUEST['order'])) {
-			map_move($_REQUEST['id'], $_REQUEST['order'], -1);
-		}
+		$id    = get_filter_request_var('id');
+		$order = get_filter_request_var('order');
+
+		map_move($id, $order, -1);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php');
 
 		break;
 	case 'move_map_down':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id']) && isset($_REQUEST['order']) && is_numeric($_REQUEST['order'])) {
-			map_move($_REQUEST['id'], $_REQUEST['order'], +1);
-		}
+		$id    = get_filter_request_var('id');
+		$order = get_filter_request_var('order');
+
+		map_move($id, $order, +1);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php');
 
 		break;
 	case 'move_group_up':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id']) && isset($_REQUEST['order']) && is_numeric($_REQUEST['order'])) {
-			weathermap_group_move(intval($_REQUEST['id']), intval($_REQUEST['order']), -1);
-		}
+		$id    = get_filter_request_var('id');
+		$order = get_filter_request_var('order');
+
+		weathermap_group_move($id, $order, -1);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=groupadmin');
 
 		break;
 	case 'move_group_down':
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id']) && isset($_REQUEST['order']) && is_numeric($_REQUEST['order'])) {
-			weathermap_group_move(intval($_REQUEST['id']), intval($_REQUEST['order']), 1);
-		}
+		$id    = get_filter_request_var('id');
+		$order = get_filter_request_var('order');
+
+		weathermap_group_move($id, $order), 1);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=groupadmin');
 
@@ -316,8 +270,8 @@ switch (get_request_var('action')) {
 	case 'viewconfig':
 		top_graph_header();
 
-		if (isset($_REQUEST['file'])) {
-			preview_config($_REQUEST['file']);
+		if (isset_request_var('file')) {
+			preview_config(get_nfilter_request_var('file'));
 		} else {
 			print __('No such file.', 'weathermap');
 		}
@@ -328,7 +282,7 @@ switch (get_request_var('action')) {
 	case 'addmap_picker':
 		top_header();
 
-		if (isset($_REQUEST['show']) && $_REQUEST['show'] == 'all') {
+		if (isset_request_var('show') && get_nfilter_request_var('show') == 'all') {
 			addmap_picker(true);
 		} else {
 			addmap_picker(false);
@@ -338,8 +292,9 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'addmap':
-		if (isset($_REQUEST['file'])) {
-			add_config($_REQUEST['file']);
+		if (isset_request_var('file')) {
+			add_config(get_nfilter_request_var('file'));
+
 			header('Location: weathermap-cacti-plugin-mgmt.php');
 		} else {
 			print __('No such file.', 'weathermap');
