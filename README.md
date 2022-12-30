@@ -26,16 +26,14 @@ but you may have some cleanup to do especially if you customized the locations.
 The directories: `cacti-resources` and `editor-resources` have been removed
 in favor of the standard `js` and `css` folders.
 
-Since the Editor has essentially no security, in the final version, it will be
-dependent on Cacti permissions to properly operate.
+Since the Editor has essentially no security, this version will be 100% dependent
+on the Cacti Security model to authorize users.
+
+The Overlib library dependency has been removed in this release.
 
 ------
 
 ## PHP Weathermap contains components from other software developers:
-
-* overlib.js is part of Overlib 4.21, copyright Erik Bosrup 1998-2004. All rights reserved.
-
-  See: http://www.bosrup.com/web/overlib/?License
 
 * ddSlick - A forked and jQueryUI compatible version of the jquery images dropdown
   plugin.

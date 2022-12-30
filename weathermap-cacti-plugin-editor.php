@@ -45,10 +45,13 @@ require_once('lib/WMPoint.class.php');
 require_once('lib/WMVector.class.php');
 require_once('lib/WMLine.class.php');
 
+global $WEATHERMAP_VERSION;
+
 // If we're embedded in the Cacti UI (included from weathermap-cacti-plugin-editor.php), then authentication has happened. Enable the editor.
 $editor_name  = 'weathermap-cacti-plugin-editor.php';
 $cacti_base   = $config['base_path'];
 $cacti_url    = $config['url_path'];
+
 
 // sensible defaults
 $mapdir      = 'configs';
@@ -552,7 +555,7 @@ if ($action == 'graphs') {
 			# $param2 = substr($param2,0,-2);
 			$newaction = 'add_link2';
 			#  print $newaction;
-			$selected = 'NODE:'.$param2;
+			$selected = 'NODE:' . $param2;
 
 			break;
 		case 'add_link2':

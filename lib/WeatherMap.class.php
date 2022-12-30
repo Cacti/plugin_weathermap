@@ -1140,49 +1140,66 @@ class WeatherMap extends WeatherMapBase {
 
 	// nodename is a vestigal parameter, from the days when nodes were just big labels
 	function DrawLabelRotated($im, $x, $y, $angle, $text, $font, $padding, $linkname, $textcolour, $bgcolour, $outlinecolour, &$map, $direction) {
-		list($strwidth, $strheight)=$this->myimagestringsize($font, $text);
+		list($strwidth, $strheight) = $this->myimagestringsize($font, $text);
 
-		if (abs($angle)>90)  $angle -= 180;
-		if ($angle < -180) $angle +=360;
+		if (abs($angle) > 90){
+			$angle -= 180;
+		}
+
+		if ($angle < -180) {
+			$angle += 360;
+		}
 
 		$rangle = -deg2rad($angle);
 
-		$extra=3;
+		if ($padding == 0) {
+			$padding = 4;
+		}
 
-		$x1 = $x - ($strwidth / 2) - $padding - $extra;
-		$x2 = $x + ($strwidth / 2) + $padding + $extra;
-		$y1 = $y - ($strheight / 2) - $padding - $extra;
-		$y2 = $y + ($strheight / 2) + $padding + $extra;
+		$x1 = $x - ($strwidth / 2)  - $padding;
+		$x2 = $x + ($strwidth / 2)  + $padding;
+		$y1 = $y - ($strheight / 2) - $padding;
+		$y2 = $y + ($strheight / 2) + $padding;
+
+		foreach($ppoints as $index => $point) {
+			$ppoints[$index] = round($point);
+		}
+
+		foreach($apoints as $index => $point) {
+			$apoints[$index] = round($point);
+		}
 
 		// a box. the last point is the start point for the text.
-		$points = array($x1,$y1, $x1,$y2, $x2,$y2, $x2,$y1,   $x-$strwidth/2, $y+$strheight/2 + 1);
-		$npoints = count($points)/2;
+		$apoints  = array($x1, $y1, $x1, $y2, $x2, $y2, $x2, $y1, $x - round($strwidth / 2), $y + round($strheight / 2) - round($padding/2) + 1);
+		$ppoints  = array($x1, $y1, $x1, $y2, $x2, $y2, $x2, $y1, $x1, $y1);
 
-		rotateAboutPoint($points, $x,$y, $rangle);
+		$npoints = count($ppoints) / 2;
+
+		rotateAboutPoint($ppoints, $x, $y, $rangle);
 
 		if ($bgcolour != array(-1, -1, -1)) {
-			$bgcol=myimagecolorallocate($im, $bgcolour[0], $bgcolour[1], $bgcolour[2]);
-			# imagefilledrectangle($im, $x1, $y1, $x2, $y2, $bgcol);
-			wimagefilledpolygon($im,$points,4,$bgcol);
+			$bgcol = myimagecolorallocate($im, $bgcolour[0], $bgcolour[1], $bgcolour[2]);
+			//imagefilledrectangle($im, $x1, $y1, $x2, $y2, $bgcol);
+			wimagefilledpolygon($im, $ppoints, 4, $bgcol);
 		}
 
 		if ($outlinecolour != array(-1, -1, -1)) {
-			$outlinecol=myimagecolorallocate($im, $outlinecolour[0], $outlinecolour[1], $outlinecolour[2]);
-			# imagerectangle($im, $x1, $y1, $x2, $y2, $outlinecol);
-			wimagepolygon($im,$points,4,$outlinecol);
+			$outlinecol = myimagecolorallocate($im, $outlinecolour[0], $outlinecolour[1], $outlinecolour[2]);
+			//imagerectangle($im, $x1, $y1, $x2, $y2, $outlinecol);
+			wimagepolygon($im, $ppoints, 4, $outlinecol);
 		}
 
-		$textcol=myimagecolorallocate($im, $textcolour[0], $textcolour[1], $textcolour[2]);
-		$this->myimagestring($im, $font, $points[8], $points[9], $text, $textcol,$angle);
+		$textcol = myimagecolorallocate($im, $textcolour[0], $textcolour[1], $textcolour[2]);
+		$this->myimagestring($im, $font, $apoints[8], $apoints[9], $text, $textcol, $angle);
 
-		$areaname = "LINK:L".$map->links[$linkname]->id.':'.($direction+2);
+		$areaname = 'LINK:L' . $map->links[$linkname]->id . ':' . ($direction + 2);
 
 		// the rectangle is about half the size in the HTML, and easier to optimise/detect in the browser
-		if ($angle==0) {
-			$map->imap->addArea("Rectangle", $areaname, '', array($x1, $y1, $x2, $y2));
+		if ($angle == 0) {
+			$map->imap->addArea('Rectangle', $areaname, '', array($x1, $y1, $x2, $y2));
 			wm_debug("Adding Rectangle imagemap for $areaname");
 		} else {
-			$map->imap->addArea("Polygon", $areaname, '', $points);
+			$map->imap->addArea('Polygon', $areaname, '', $apoints);
 			wm_debug("Adding Poly imagemap for $areaname");
 		}
 	}
@@ -3789,6 +3806,7 @@ class WeatherMap extends WeatherMapBase {
 		foreach ($allitems as $myobj) {
 			$type   = $myobj->my_type();
 			$prefix = substr($type, 0, 1);
+			$style  = '';
 
 			$dirs = array();
 			//print "\n\nConsidering a $type - ".$myobj->name.".\n";
@@ -3840,67 +3858,72 @@ class WeatherMap extends WeatherMapBase {
 
 					$left      = '';
 					$above     = '';
-					$img_extra = '';
 
 					if ($myobj->overlibwidth != 0) {
 						$left = 'WIDTH,' . $myobj->overlibwidth . ',';
-						$img_extra .= " WIDTH=$myobj->overlibwidth";
+						$style .= ($style != '' ? ';':'') . 'width:' . $myobj->overlibwidth . 'px';
 
 						if ($mid_x > $center_x) {
 							$left .= 'LEFT,';
 						}
+					} else {
+						$style .= ($style != '' ? ';':'') . 'width:' . read_config_option('weathermap_width') . 'px';
 					}
 
 					if ($myobj->overlibheight != 0) {
 						$above = 'HEIGHT,' . $myobj->overlibheight . ',';
 
-						$img_extra .= " HEIGHT=$myobj->overlibheight";
+						$style .= 'width:' . $myobj->overlibheight . 'px;';
 
 						if ($mid_y > $center_y) {
 							$above .= 'ABOVE,';
 						}
+					} else {
+						$style .= ($style != '' ? ';':'') . 'height:' . read_config_option('weathermap_height') . 'px';
 					}
 
-					foreach ($dirs as $dir=>$parts) {
+					foreach ($dirs as $dir => $parts) {
 						$caption = ($myobj->overlibcaption[$dir] != '' ? $myobj->overlibcaption[$dir] : $myobj->name);
 						$caption = $this->ProcessString($caption, $myobj);
 
-						$overlibhtml = "onmouseover=\"return overlib('";
+						$data_hover  = 'data-hover="<ul class=\'wm_container\'>';
 
 						$n = 0;
 						if (cacti_sizeof($myobj->overliburl[$dir]) > 0) {
 							// print "ARRAY:".is_array($link->overliburl[$dir])."\n";
 							foreach ($myobj->overliburl[$dir] as $url) {
 								if ($n>0) {
-									$overlibhtml .= '&lt;br /&gt;';
+									$data_hover .= '<br>';
 								}
 
-								$overlibhtml .= "&lt;img $img_extra src=" . $this->ProcessString($url, $myobj) . "&gt;";
+								$data_hover .= "<li class='wm_child'><img style='{$style}' src='" . $this->ProcessString($url, $myobj) . "'></li>";
 								$n++;
 							}
+
+							$data_hover .= '</ul>"';
 						}
 
 						# print "Added $n for $dir\n";
 						if (trim($myobj->notestext[$dir]) != '') {
 							# put in a linebreak if there was an image AND notes
 							if ($n > 0) {
-								$overlibhtml .= '&lt;br /&gt;';
+								$data_hover .= '<br>';
 							}
 
 							$note = $this->ProcessString($myobj->notestext[$dir], $myobj);
-							$note = html_escape($note, ENT_NOQUOTES);
+							$note = html_escape($note);
 							$note = str_replace("'", "\\&apos;", $note);
 							$note = str_replace('"', "&quot;", $note);
 
-							$overlibhtml .= $note;
+							$data_hover .= $note;
 						}
 
-						$overlibhtml .= "',DELAY,250,{$left}{$above}CAPTION,'" . $caption . "');\"  onmouseout='return nd();'";
+						$data_hover .= ' data-caption="' . html_escape($caption) . '"';
 
 						foreach ($parts as $part) {
 							$areaname = $type . ':' . $prefix . $myobj->id . ':' . $part;
 
-							$this->imap->setProp('extrahtml', $overlibhtml, $areaname);
+							$this->imap->setProp('extrahtml', $data_hover, $areaname);
 						}
 					}
 				} // if change

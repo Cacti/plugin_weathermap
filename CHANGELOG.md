@@ -20,6 +20,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - Remove dependency on PECL Console_Getopt() library
 * FIXED  - Image Library Support changes in PHP 8.x
 * FIXED  - Deprecation of strftime() in PHP 8.1
+* FIXED  - Label Rendering
 * TODO   - Parallel Map Rendering API
 * ADDED  - Right mouse context menu during map editing
 * ADDED  - Drop image functionality for Nodes and Background images
@@ -33,6 +34,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * CHANGE - The Automatic Cycling of Maps to used FontAwesome Glyphs instead of images
 * CHANGE - The Weathermap interface to follow Cacti UI standard
 * CHANGE - Logging format to follow Cacti standards
+* REMOVED - Dependency on overlib.js.  This file has been removed
 
 --- 0.98a ---
 * FIXED  - Works with PHP 7.x and 5.6 - removed all mysql_*() function calls, and use PDO instead

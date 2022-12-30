@@ -146,8 +146,8 @@ switch ($action) {
 	case 'liveview':
 		top_graph_header();
 
-		print '<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>' . PHP_EOL;
-		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/overlib.js"><!-- overLIB (c) Erik Bosrup --></script>';
+		print '<link rel="stylesheet" type="text/css" media="screen" href="css/weathermap.css"/>';
+		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
 
 		$id = -1;
 
@@ -295,8 +295,8 @@ switch ($action) {
 			top_graph_header();
 		}
 
-		print '<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>' . PHP_EOL;
-		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/overlib.js"><!-- overLIB (c) Erik Bosrup --></script> ';
+		print '<link rel="stylesheet" type="text/css" media="screen" href="css/weathermap.css"/>';
+		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
 
 		$groupid = -1;
 
@@ -318,8 +318,8 @@ switch ($action) {
 	case 'viewmap':
 		top_graph_header();
 
-		print '<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>' . PHP_EOL;
-		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/overlib.js"><!-- overLIB (c) Erik Bosrup --></script> ';
+		print '<link rel="stylesheet" type="text/css" media="screen" href="css/weathermap.css"/>';
+		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
 
 		$id = -1;
 
@@ -343,8 +343,8 @@ switch ($action) {
 	default:
 		top_graph_header();
 
-		print '<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>' . PHP_EOL;
-		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/overlib.js"><!-- overLIB (c) Erik Bosrup --></script> ';
+		print '<link rel="stylesheet" type="text/css" media="screen" href="css/weathermap.css"/>';
+		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
 
 		$group_id = -1;
 

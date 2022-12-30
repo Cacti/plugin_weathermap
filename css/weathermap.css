@@ -21,7 +21,7 @@ td.maptable_names { width: 400px; }
 td.maptable_status { width: 100px; }
 td.maptable_settings { width: 80px; }
 td.maptable_active { width: 50px; }
- 
+
 div.wm_mapgroup table { border-top: 1px solid #eee; }
 .wm_warningcount { border: 2px red solid; padding: 2px; }
 
@@ -34,6 +34,22 @@ div.wm_mapgroup table { border-top: 1px solid #eee; }
 
 .wm_warning { padding:5px; width: 50%; border: 2px red solid; margin: 5px auto 15px auto; background-color: #fee; }
 
+.wm_hover {
+	overflow-x: hidden;
+}
+
+.ui-tooltip-content {
+	overflow-x: hidden !important;
+}
+
+.wm_container {
+	overflow-x: hidden;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.wm_child {}
 
 
 

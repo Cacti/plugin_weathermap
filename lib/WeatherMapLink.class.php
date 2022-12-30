@@ -231,10 +231,10 @@ class WeatherMapLink extends WeatherMapItem {
 	 * col = array of Colour objects
 	 * widths = array of link widths
 	 */
-	function DrawComments($image,$col,$widths) {
-		$curvepoints =& $this->curvepoints;
+	function DrawComments($image, $col, $widths) {
+		$curvepoints = &$this->curvepoints;
 
-		$last = count($curvepoints)-1;
+		$last = count($curvepoints) - 1;
 
 		$totaldistance = $curvepoints[$last][2];
 
@@ -246,7 +246,7 @@ class WeatherMapLink extends WeatherMapItem {
 		if ($this->linkstyle == 'oneway') {
 			$dirs = array(OUT);
 		} else {
-			$dirs = array(OUT,IN);
+			$dirs = array(OUT, IN);
 		}
 
 		foreach ($dirs as $dir) {
@@ -256,7 +256,7 @@ class WeatherMapLink extends WeatherMapItem {
 			# print "COMMENT: $comment";
 
 			if ($this->owner->get_hint('screenshot_mode') == 1) {
-				$comment=screenshotify($comment);
+				$comment = screenshotify($comment);
 			}
 
 			if ($comment != '') {
@@ -274,10 +274,10 @@ class WeatherMapLink extends WeatherMapItem {
 				$nudgealong = intval($this->get_hint('comment_nudgealong'));
 				$nudgeout   = intval($this->get_hint('comment_nudgeout'));
 
-				$extra = ($totaldistance * ($extra_percent/100));
+				$extra = ($totaldistance * ($extra_percent / 100));
 				# $comment_index = find_distance($curvepoints,$extra);
 
-				list($x,$y,$comment_index,$angle) = find_distance_coords_angle($curvepoints,$extra);
+				list($x, $y, $comment_index, $angle) = find_distance_coords_angle($curvepoints,$extra);
 
 				#  print "$extra_percent => $extra ($totaldistance)\n";
 				#printf("  Point A is %f,%f\n",$curvepoints[$comment_index][0], $curvepoints[$comment_index][1]);
@@ -301,7 +301,7 @@ class WeatherMapLink extends WeatherMapItem {
 
 				$centre_distance = $widths[$dir] + 4 + $nudgeout;
 				if ($this->commentstyle == 'center') {
-					$centre_distance = $nudgeout - ($textheight/2);
+					$centre_distance = $nudgeout - ($textheight / 2);
 				}
 
 				// find the normal to our link, so we can get outside the arrow
@@ -310,8 +310,8 @@ class WeatherMapLink extends WeatherMapItem {
 
 				# print "$extra => $comment_index/$last => $x,$y => $dx,$dy => $l\n";
 
-				$dx = $dx/$l;
-				$dy = $dy/$l;
+				$dx = $dx / $l;
+				$dy = $dy / $l;
 				$nx = $dy;
 				$ny = -$dx;
 
@@ -323,16 +323,16 @@ class WeatherMapLink extends WeatherMapItem {
 					# $col = $map->selected;
 					$angle -= 180;
 					if ($angle < -180) {
-						$angle +=360;
+						$angle += 360;
 					}
 
-					$edge_x = $x + $nudgealong*$dx - $nx * $centre_distance;
-					$edge_y = $y + $nudgealong*$dy - $ny * $centre_distance;
-					# $comment .= "@";
+					$edge_x = $x + ($nudgealong * $dx) - ($nx * $centre_distance);
+					$edge_y = $y + ($nudgealong * $dy) - ($ny * $centre_distance);
+
 					$flipped = true;
 				} else {
-					$edge_x = $x + $nudgealong*$dx + $nx * $centre_distance;
-					$edge_y = $y + $nudgealong*$dy + $ny * $centre_distance;
+					$edge_x = $x + ($nudgealong * $dx) + ($nx * $centre_distance);
+					$edge_y = $y + ($nudgealong * $dy) + ($ny * $centre_distance);
 				}
 
 				if ( !$flipped && ($extra + $textlength) > $totaldistance) {
@@ -349,7 +349,9 @@ class WeatherMapLink extends WeatherMapItem {
 
 				// FINALLY, draw the text!
 				# imagefttext($image, $fontsize, $angle, $edge_x, $edge_y, $col, $font,$comment);
+
 				$this->owner->myimagestring($image, $this->commentfont, $edge_x, $edge_y, $comment, $col[$dir], $angle);
+
 				#imagearc($image,$x,$y,10,10,0, 360,$this->owner->selected);
 				#imagearc($image,$edge_x,$edge_y,10,10,0, 360,$this->owner->selected);
 			}
@@ -499,8 +501,8 @@ class WeatherMapLink extends WeatherMapItem {
 		$curvelength = $this->curvepoints[count($this->curvepoints)-1][2];
 
 		// figure out where the labels should be, and what the angle of the curve is at that point
-		list($q1_x,$q1_y,$junk,$q1_angle) = find_distance_coords_angle($this->curvepoints,($this->labeloffset_out/100)*$curvelength);
-		list($q3_x,$q3_y,$junk,$q3_angle) = find_distance_coords_angle($this->curvepoints,($this->labeloffset_in/100)*$curvelength);
+		list($q1_x, $q1_y, $junk, $q1_angle) = find_distance_coords_angle($this->curvepoints, ($this->labeloffset_out / 100) * $curvelength);
+		list($q3_x, $q3_y, $junk, $q3_angle) = find_distance_coords_angle($this->curvepoints, ($this->labeloffset_in / 100) * $curvelength);
 
 		# imageline($im, $q1_x+20*cos(deg2rad($q1_angle)),$q1_y-20*sin(deg2rad($q1_angle)), $q1_x-20*cos(deg2rad($q1_angle)), $q1_y+20*sin(deg2rad($q1_angle)), $this->owner->selected );
 		# imageline($im, $q3_x+20*cos(deg2rad($q3_angle)),$q3_y-20*sin(deg2rad($q3_angle)), $q3_x-20*cos(deg2rad($q3_angle)), $q3_y+20*sin(deg2rad($q3_angle)), $this->owner->selected );
@@ -544,7 +546,7 @@ class WeatherMapLink extends WeatherMapItem {
 			foreach ($tasks as $task) {
 				$thelabel = '';
 
-				$thelabel = $map->ProcessString($this->bwlabelformats[$task[7]],$this);
+				$thelabel = $map->ProcessString($this->bwlabelformats[$task[7]], $this);
 
 				if ($thelabel != '') {
 					wm_debug('Bandwidth for label is ' . $task[5]);

@@ -1157,8 +1157,9 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 				wm_debug("Not drawing $linkname ($dir) fill because there is no fill colour");
 			}
 
-			$areaname = "LINK:L" . $map->links[$linkname]->id . ":$dir";
-			$map->imap->addArea("Polygon", $areaname, '', $finalpoints);
+			$areaname = 'LINK:L' . $map->links[$linkname]->id . ":$dir";
+
+			$map->imap->addArea('Polygon', $areaname, '', $finalpoints);
 
 			wm_debug("Adding Poly imagemap for $areaname");
 
@@ -1307,10 +1308,9 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 			wm_debug("Not drawing $linkname ($dir) fill because there is no fill colour");
 		}
 
-		# $areaname = "LINK:" . $linkname. ":$dir";
-		$areaname = "LINK:L" . $map->links[$linkname]->id . ":$dir";
+		$areaname = 'LINK:L' . $map->links[$linkname]->id . ":$dir";
 
-		$map->imap->addArea("Polygon", $areaname, '', $there_points);
+		$map->imap->addArea('Polygon', $areaname, '', $there_points);
 
 		wm_debug("Adding Poly imagemap for $areaname");
 
@@ -1867,6 +1867,7 @@ function wimagefilledpolygon($image, $points, $num_points, $color) {
 	}
 
 	$col = imagecolorsforindex($image, $color);
+
 	$r   = $col['red'];
 	$g   = $col['green'];
 	$b   = $col['blue'];
@@ -1879,12 +1880,12 @@ function wimagefilledpolygon($image, $points, $num_points, $color) {
 
 	$pts = '';
 
-	for ($i=0; $i < $num_points; $i++) {
+	for ($i = 0; $i < $num_points; $i++) {
 		$pts .= $points[$i * 2]     . ' ';
 		$pts .= $points[$i * 2 + 1] . ' ';
 	}
 
-	metadump("FPOLY $num_points ".$pts." $r $g $b $a");
+	metadump("FPOLY $num_points " . $pts . " $r $g $b $a");
 
 	if (version_compare(PHP_VERSION, '8.0', '>')) {
 		return(imagefilledpolygon($image, $points, $color));
@@ -2017,11 +2018,6 @@ function TestOutput_HTML($htmlfile, &$map) {
 	}
 
 	fwrite($fd, '<meta http-equiv="refresh" content="300" /><title>' . $map->ProcessString($map->title, $map) . '</title></head><body>');
-
-	if ($map->htmlstyle == 'overlib') {
-		fwrite($fd, "<div id=\"overDiv\" style=\"position:absolute; visibility:hidden; z-index:1000;\"></div>\n");
-		fwrite($fd, "<script type=\"text/javascript\" src=\"js/overlib.js\"><!-- overLIB (c) Erik Bosrup --></script> \n");
-	}
 
 	fwrite($fd, $map->MakeHTML());
 

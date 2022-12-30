@@ -217,7 +217,7 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	}
 
 	function hitTest($x, $y) {
-		return (($x > $this->x1) && ($x < $this->x2) && ($y > $this->y1) && ($y < $this->y2));
+		return ($x > $this->x1 && $x < $this->x2 && $y > $this->y1 && $y < $this->y2);
 	}
 
 	function asHTML() {
@@ -297,7 +297,7 @@ class HTML_ImageMap {
 			$elementObject = new $className($args[1], $args[2], array_slice($args, 3));
 		}
 
-		$this->shapes[] =& $elementObject;
+		$this->shapes[] = &$elementObject;
 		$this->nshapes++;
 		//      print $this->nshapes." shapes\n";
 	}
