@@ -196,7 +196,7 @@ switch (get_request_var('action')) {
 		$userid = get_filter_request_var('userid');
 
 		perms_add_user($mapid, $userid);
-		header('Location: weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid)
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid);
 
 		break;
 	case 'perms_delete_user':
@@ -262,7 +262,7 @@ switch (get_request_var('action')) {
 		$id    = get_filter_request_var('id');
 		$order = get_filter_request_var('order');
 
-		weathermap_group_move($id, $order), 1);
+		weathermap_group_move($id, $order, 1);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=groupadmin');
 
