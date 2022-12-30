@@ -1232,7 +1232,7 @@ function add_config($file) {
 		$myuid   = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
 
 		db_execute_prepared('INSERT INTO weathermap_auth
-			(mapid,userid)
+			(mapid, userid)
 			VALUES (?, ?)',
 			array($last_id, $myuid));
 

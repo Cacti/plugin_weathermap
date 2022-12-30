@@ -215,7 +215,7 @@ function weathermap_repair_maps() {
 
 function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 	global $config;
-	global $weathermap_debugging, $WEATHERMAP_VERSION;
+	global $weathermap_debugging;
 	global $weathermap_map;
 	global $weathermap_warncount;
 	global $weathermap_poller_start_time;
@@ -290,6 +290,13 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 
 				// reset the warning counter
 				$weathermap_warncount = 0;
+
+				if ($map['filehash'] == '') {
+					db_execute_prepared('UPDATE weathermap_maps
+						SET filehash = LEFT(MD5(CONCAT(id, configfile, rand())), 20)
+						WHERE id = ?',
+						array($map['id']));
+				}
 
 				// this is what will prefix log entries for this map
 				$weathermap_map = '[Map ' . $map['id'] . '] ' . $map['configfile'];
