@@ -325,8 +325,20 @@ switch (get_request_var('action')) {
 	default:
 		// by default, just list the map setup
 		top_header();
+
 		maplist();
+
+		// Ensure that the map config file directory is writable
+		$mapdir = $config['base_path'] . '/plugins/weathermap/configs';
+
+		if (!is_writable($mapdir)) {
+			cacti_log("FATAL: The map config directory ($mapdir) is not writable by the web server user. You will not be able to edit any files until this is corrected. [WMEDIT01]", true, 'WEATERMAP');
+
+			raise_message_javascript(__('Weathermap Permission Error', 'weathermap'), __('Editor directory permissions are not correct!', 'weathermap'), __('The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor', 'weathermap'));
+		}
+
 		bottom_footer();
+
 		break;
 }
 

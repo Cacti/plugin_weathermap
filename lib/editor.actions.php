@@ -79,9 +79,7 @@ function getMapJavaScript($mapfile) {
 
 	$map->ReadConfig($mapfile);
 
-	$output .= $map->asJS();
-
-	print $output;
+	print $map->asJS();
 }
 
 function getMapAreaData($mapfile) {

@@ -826,8 +826,8 @@ function form_submit() {
 					var date = new Date();
 
 					// Reload the images to update page
-					$('#existingdata').attr('src', $('#existingdata').attr('src') + '&date='+date.getTime());
-					$('#xycapture').attr('src', $('#xycapture').attr('src') + '&date='+date.getTime());
+					$('#existingdata').attr('src', $('#existingdata').attr('src') + '&date=' + date.getTime());
+					$('#xycapture').attr('src', $('#xycapture').attr('src') + '&date=' + date.getTime());
 
 					$('#action').val('');
 

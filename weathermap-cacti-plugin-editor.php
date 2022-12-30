@@ -76,12 +76,6 @@ if (isset($_COOKIE['wmeditor'])) {
 	}
 }
 
-// Ensure that the map config file directory is writable
-if (!is_writable($mapdir)) {
-	cacti_log("FATAL: The map config directory ($mapdir) is not writable by the web server user. You will not be able to edit any files until this is corrected. [WMEDIT01]", true, 'WEATERMAP');
-	exit;
-}
-
 $action   = '';
 $mapname  = '';
 $selected = '';
@@ -172,74 +166,92 @@ switch($action) {
 		break;
 	case 'set_node_properties':
 		setNodeProperties($mapfile);
+		exit;
 
 		break;
 	case 'set_link_properties':
 		setLinkProperties($mapfile);
+		exit;
 
 		break;
 	case 'set_map_properties':
 		setMapProperties($mapfile);
+		exit;
 
 		break;
 	case 'set_map_style':
 		setMapStyle($mapfile);
+		exit;
 
 		break;
 	case 'add_link2':
 		addLink($mapfile);
+		exit;
 
 		break;
 	case 'place_legend':
 		placeLegend($mapfile, $grid_snap_value);
+		exit;
 
 		break;
 	case 'place_stamp':
 		placeStamp($mapfile, $grid_snap_value);
+		exit;
 
 		break;
 	case 'via_link':
 		viaLink($mapfile);
+		exit;
 
 		break;
 	case 'move_node':
 		moveNode($mapfile, $grid_snap_value);
+		exit;
 
 		break;
 	case 'link_tidy':
 		linkTidy($mapfile);
+		exit;
 
 		break;
 	case 'retidy':
 		reTidy($mapfile);
+		exit;
 
 		break;
 	case 'retidy_all':
 		reTidyAll($mapfile);
+		exit;
 
 		break;
 	case 'untidy':
 		unTidy($mapfile);
+		exit;
 
 		break;
 	case 'delete_link':
 		deleteLink($mapfile);
+		exit;
 
 		break;
 	case 'add_node':
 		addNode($mapfile, $grid_snap_value);
+		exit;
 
 		break;
 	case 'editor_settings':
 		editorSettings($mapfile);
+		exit;
 
 		break;
 	case 'delete_node':
 		deleteNode($mapfile);
+		exit;
 
 		break;
 	case 'clone_node':
 		cloneNode($mapfile);
+		exit;
 
 		break;
 	case 'load_area_data':
