@@ -150,8 +150,6 @@ function weathermap_page_head() {
 
 function weathermap_page_title($t) {
 	if (preg_match('/plugins\/weathermap\//', $_SERVER['REQUEST_URI'], $matches)) {
-		$t .= ' - Weathermap';
-
 		if (preg_match('/plugins\/weathermap\/weathermap-cacti-plugin.php\?action=viewmap&id=([^&]+)/', $_SERVER['REQUEST_URI'], $matches)) {
 			$mapid = $matches[1];
 
