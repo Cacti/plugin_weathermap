@@ -296,6 +296,11 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 						SET filehash = LEFT(MD5(CONCAT(id, configfile, rand())), 20)
 						WHERE id = ?',
 						array($map['id']));
+
+					$map['filehash'] = db_fetch_cell_prepared('SELECT filehash
+						FROM weathermap_maps
+						WHERE id = ?',
+						array($map['id']));
 				}
 
 				// this is what will prefix log entries for this map
