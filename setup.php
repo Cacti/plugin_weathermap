@@ -160,7 +160,7 @@ function weathermap_page_title($t) {
 			}
 
 			if ($title != '') {
-				$t .= ' - ' . $title;
+				$t .= ' > ' . $title;
 			}
 		}
 
