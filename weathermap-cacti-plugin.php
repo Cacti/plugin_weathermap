@@ -880,6 +880,7 @@ function weathermap_mapselector($current_id = 0) {
 
 										if ($map['name'] != $lastgroup) {
 											$ngroups++;
+
 											$lastgroup = $map['name'];
 										}
 									}
@@ -888,26 +889,21 @@ function weathermap_mapselector($current_id = 0) {
 
 									foreach ($maps as $map) {
 										if ($ngroups > 1 && $map['name'] != $lastgroup) {
-											print "<option style='font-weight: bold; font-style: italic' value='$nullhash'>" . html_escape($map['name']) . '</option>';
+											print "<option disabled style='font-weight: bold; font-style: italic' value='$nullhash'>" . html_escape($map['name']) . '</option>';
 											$lastgroup = $map['name'];
 										}
 
 										print '<option ';
 
 										if ($current_id == $map['id']) {
-											print ' selected ';
+											print 'selected ';
 										}
 
 										print 'value="' . $map['filehash'] . '">';
 
-										// if we're showing group headings, then indent the map names
-										if ($ngroups > 1) {
-											print ' - ';
-										}
-
 										print html_escape($map['titlecache']) . '</option>';
 									}
-                                       ?>
+									?>
 								</select>
 							</td>
 						</tr>
