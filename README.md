@@ -8,10 +8,26 @@ See CHANGELOG.md for the most recent updates, listed by version.
 
 See COPYING for the license under which php-weathermap is released.
 
-There is much more information, tutorials and updates available at:
-    http://www.network-weathermap.com/
+## Compability
+This version only works with Cacti 1.x onwards.  A re-write of the user interface
+is being made to make it more compatible with 1.2.x and 1.3.x releases.
 
-------
+## Contribute
+
+Check out the main [Cacti](http://www.cacti.net) web site for downloads, change
+logs, release notes and more!
+
+### Community forums
+
+Given the large scope of Cacti, the forums tend to generate a respectable amount
+of traffic. Doing your part in answering basic questions goes a long way since
+we cannot be everywhere at once. Contribute to the Cacti community by
+participating on the [Cacti Community Forums](http://forums.cacti.net).
+
+For Network Weathermap's core support, there is much more information along with
+tutorials and updates available at Howard Jone's site:
+
+    http://www.network-weathermap.com/
 
 ## Important Notes
 This version of Weathermap only works with Cacti 1.x.x and is currently under
@@ -36,7 +52,18 @@ When reviewing the plugin in detail, there were so many possible enhancements
 that could be incorporated into the tool, but for now, it's really just to
 bring the Weathermap plugin fully into the Cacti 1.x and beyond.
 
-------
+### GitHub Documentation
+
+Get involved in creating and editing Cacti Documentation!  Fork, change and
+submit a pull request to help improve the documentation on
+[GitHub](https://github.com/cacti/documentation).
+
+### GitHub Development
+
+Get involved in development of Cacti! Join the developers and community on
+[GitHub](https://github.com/cacti)!
+
+### Component Software
 
 ## PHP Weathermap contains components from other software developers:
 
@@ -65,3 +92,4 @@ bring the Weathermap plugin fully into the Cacti 1.x and beyond.
 
   See: http://www.famfamfam.com/lab/icons/silk/.
   See: http://creativecommons.org/licenses/by/2.5/
+
