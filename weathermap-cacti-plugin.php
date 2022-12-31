@@ -965,25 +965,25 @@ function weathermap_tabs($current_tab) {
 
 	$tabs = weathermap_get_valid_tabs();
 
-	# print "Limiting to $current_tab\n";
-
 	if (cacti_sizeof($tabs) > 1) {
 		/* draw the categories tabs on the top of the page */
-		print "<p></p><table class='tabs' width='100%' cellspacing='0' cellpadding='3' align='center'><tr>\n";
+		print '<div>' . PHP_EOL;
+		print "<div class='tabs' style='float:left;'><nav><ul role='tablist'>" . PHP_EOL;
 
 		if (cacti_sizeof($tabs) > 0) {
-			$show_all = intval(read_config_option("weathermap_all_tab"));
+			$show_all = intval(read_config_option('weathermap_all_tab'));
 
 			if ($show_all == 1) {
-				$tabs['-2'] = "All Maps";
+				$tabs['-2'] = __('All Maps', 'weathermaps');
 			}
 
 			foreach (array_keys($tabs) as $tab_short_name) {
-				print "<td " . (($tab_short_name == $current_tab) ? "bgcolor='silver'" : "bgcolor='#DFDFDF'") . " nowrap='nowrap' width='" . (strlen($tabs[$tab_short_name]) * 9) . "' align='center' class='tab'><span class='textHeader'><a href='" . $config['url_path'] . "plugins/weathermap/weathermap-cacti-plugin.php?group_id=$tab_short_name'>{$tabs[$tab_short_name]}</a></span></td>\n<td width='1'></td>\n";
+				print "<li class='subTab'><a " . (($tab_short_name == $current_tab) ? "class='selected pic'" : "class='pic'") . " href='" . html_escape($config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?group_id=' . $tab_short_name) . "'>" . $tabs[$tab_short_name] . '</a></li>' . PHP_EOL;
 			}
 		}
 
-		print "<td></td>\n</tr></table>\n";
+		print '</ul></nav></div>' . PHP_EOL;
+		print '</div>' . PHP_EOL;
 
 		return true;
 	} else {
