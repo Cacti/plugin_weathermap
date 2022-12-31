@@ -1,4 +1,4 @@
-# PHP Network Weathermap 1.0 - Alpha
+# PHP Network Weathermap 1.0 - Beta
 
 This is PHP Network Weathermap fork, version 1.0 originally by Howard Jones (howie@thingy.com)
 
@@ -20,16 +20,21 @@ heavy development.
 **This version is NOT production ready!**
 
 The location of backgrounds and object images has changed!  The upgrade script 
-(once written) will attempt to move these backgrounds and images to the new locations, 
+will attempt to move these backgrounds and images to the new locations, 
 but you may have some cleanup to do especially if you customized the locations.
 
 The directories: `cacti-resources` and `editor-resources` have been removed
-in favor of the standard `js` and `css` folders.
+in favor of the standard `js` and `css` folders.  You should remove these
+folders after installation.
 
 Since the Editor has essentially no security, this version will be 100% dependent
 on the Cacti Security model to authorize users.
 
 The Overlib library dependency has been removed in this release.
+
+When reviewing the plugin in detail, there were so many possible enhancements
+that could be incorporated into the tool, but for now, it's really just to
+bring the Weathermap plugin fully into the Cacti 1.x and beyond.
 
 ------
 
