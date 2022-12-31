@@ -1,3 +1,7 @@
+# CHANGELOG.md
+
+## Background
+
 This version of Weathermap is a fork of the original work by Howard Jones, and brings his 0.98x version
 into the Cacti 1.x world.  Although, the change notes below are pretty extensive, there were just too
 many changes to capture them all.
@@ -10,6 +14,8 @@ IMPORTANT NOTE - you may need to reset permissions on your users after upgrading
 the "new-style" plugin API that's been around for 5+ years. This handles permissions differently, unfortunately.
 
 IMPORTANT NOTE: This version only works on CACTI 1.x++!
+
+## Changes
 
 --- 1.00 ---
 
