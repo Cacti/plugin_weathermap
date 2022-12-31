@@ -598,7 +598,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 									if (count($backgd_list) == 0) {
 										print '<option data-value="--NONE--">(no images are available)</option>';
 									} else {
-										print '<option data-description="Solid White Background" data-imagesrc="" value="--NONE--">--NO ICON--</option>';
+										print '<option data-description="Solid White Background" data-imagesrc="" value="--NONE--">--NO BACKGROUND--</option>';
 										foreach ($backgd_list as $im) {
 											$display = ucfirst(str_replace(array('.png', '.gif', '.jpg'), '', basename($im)));
 

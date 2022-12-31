@@ -188,6 +188,12 @@ function graphPicker() {
 		var action  = $(this).attr('data-action');
 		var mapname = 'none';
 
+		if ($('#'+id+'_wrap').length) {
+			$('#'+id+'_wrap').remove();
+			$('#'+id+'_add').remove();
+			$('#'+id+'_rep').remove();
+		}
+
 		var dialogForm = "<span id='" + id + "_wrap' class='autodrop ui-selectmenu-button ui-selectmenu-button-closed ui-corner-all ui-button ui-widget'>";
 		dialogForm    += "<span id='" + id + "_click' style='z-index:4' class='ui-selectmenu-icon ui-icon ui-icon-triangle-1-s'></span>";
 		dialogForm    += "<span class='ui-select-text'>";
@@ -635,13 +641,9 @@ function nodecactipicker() {
 }
 
 function show_context_help(itemid, targetid) {
-	//    var itemid = item.id;
 	var helpbox, helpboxtext, message;
-	//    var ct = document.getElementById(targetid);
-	//    if (ct)
-	//  {
+
 	message = "We'd show helptext for " + itemid + " in the'" + targetid + "' div";
-	// }
 
 	helpbox = $('#'+targetid);
 	helpboxtext = helpbox.firstChild;
@@ -739,6 +741,7 @@ function delete_node() {
 
 function clone_node() {
 	$('#action').val('clone_node');
+
 	form_submit();
 }
 
@@ -746,14 +749,12 @@ function edit_node() {
 	$('#action').val('edit_node');
 
 	show_itemtext('node', $('#node_name').val());
-	// document.frmMain.submit();
 }
 
 function edit_link() {
 	$('#action').val('edit_link');
 
 	show_itemtext('link', $('#link_name').val());
-	// document.frmMain.submit();
 }
 
 function move_node() {
@@ -819,6 +820,8 @@ function form_submit() {
 		url: editor_url,
 		data: data,
 		success: function(html) {
+			hide_all_dialogs();
+
 			$.get('?action=load_area_data&mapname=' + $('#mapname').val(), function(data) {
 				$('.mapData').empty().html(data);
 
@@ -1009,7 +1012,7 @@ function show_node(name) {
 			defaultSelectedIndex:selectedNode
 		});
 
-		$('.dd-container').off('click').on('click', function() {
+		$('.dd-container').on('click', function() {
 			$('.ui-dialog').css('z-index', '100');
 			$('.dd-options, .dd-container').css('z-index', '500');
 		});
@@ -1093,11 +1096,11 @@ function show_dialog(dlg) {
 		}
 
 		$('#map_bgfile').ddslick({
-			height:120,
+			height:240,
 			defaultSelectedIndex:selectedNode
 		});
 
-		$('.dd-container').off('click').on('click', function() {
+		$('.dd-container').on('click', function() {
 			$('.ui-dialog').css('z-index', '100');
 			$('.dd-options, .dd-container').css('z-index', '500');
 		});
