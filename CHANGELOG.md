@@ -301,7 +301,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * ADDED  - filenames for output are much less guessable now (may break external references to maps)
 * ADDED  - You can use 'DUPLEX half' on a link to make the bandwidth percentage calculate work for half-duplex links
 * ADDED  - ININFOURL/OUTINFOURL, INOVERLIBGRAPH/OUTOVERLIBGRAPH, INNOTES/OUTNOTES
-*          allow you to have different urls for the in and out side of links (based on idea from llow)
+* ADDED  - allow you to have different urls for the in and out side of links (based on idea from llow)
 * ADDED  - OVERLIBGRAPH (and IN/OUT versions) can take multiple URLs separated by spaces (again from idea by llow)
 * ADDED  - debug/warning log output contains the map name, and the debug output is marked DEBUG
 * ADDED  - debug log output contains the calling function, file/line number, too. Making debugging-by-mail easier.
@@ -387,8 +387,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - weathermap.conf really *is* a simple map again. My test version went out with 0.9 and 0.91
 * CHANGE - added a lot more memory debug points in
 * CHANGE - refactored the curve/link drawing code to make some new features possible/easier
-           Further tweaks and improvements to check.php (Basic GD check, memory_limit check, PEAR Getopt check, and more explanation now)
-           Small improvements to the editor's font-picking, including samples of all fonts.
+           Further tweaks and improvements to check.php (Basic GD check, memory_limit check, 
+           PEAR Getopt check, and more explanation now) Small improvements to the editor's font-picking, 
+           including samples of all fonts.
 * Added  - Editor handles VIAs in a MUCH better way when moving nodes.
 * CHANGE - Improved clipping reporting, improved plugin loading (Niels Baggesen)
 * Added  - BWSTYLE lets you choose between regular and angled bwlabels
@@ -396,7 +397,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * Added  - Editor can pick Cacti graphs for NODE's overlib/infourl (but NOT targets)
 * Added  - COMMENTPOS allows you to move the position of comments along the link (like BWLABELPOS)
 * FIXED  - strange edge case with gradient SCALE caused div-by-zero (Tiago Giorgetti)
-* CHANGE - The editor doesn't *require* an editor-config.php anymore. It *will* warn you if the defaults aren't enough, however.
+* CHANGE - The editor doesn't *require* an editor-config.php anymore. It *will* warn you if the defaults 
+           aren't enough, however.
 
 0.91
 * FIXED  - RRD bug with '-' DS names. This was fixed in 0.9pre3, but somehow slipped through.
@@ -408,11 +410,13 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - Documentation fixes for installation (to include check.php) and NODE TARGETs.
 * ADDED  - check.php checks for presence of possibly-missing functions in your PHP installation
 * ADDED  - 'quiet' logging setting for Cacti plugin - in LOW logging, only errors are logged.
-* ADDED  - add a - to the front of a targetspec and you can take away values instead of aggregating them (think Total-VPN=Internet, for example)
+* ADDED  - add a - to the front of a targetspec and you can take away values instead of aggregating them 
+           (think Total-VPN=Internet, for example)
 * ADDED  - the scale line that was 'hit' for each link direction is stored in inscalekey and outscalekey
 
 --- 0.9 
-* CHANGE - Changed node rendering - now we render to a transparent mini-image and blit them on. This will be good for the editor.
+* CHANGE - Changed node rendering - now we render to a transparent mini-image and blit them on. This will be 
+           good for the editor.
 * FIXED  - long-undetected bug in HTML_ImageMap for similarly named nodes or links (SLander)
 * ADDED  - BWLABELPOS - you can specify the position of the bandwidth labels along the link
 * ADDED  - OVERLIBCAPTION based on code from Jared Gillis
@@ -421,17 +425,21 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - another variation of the imagemap sorting bug from 0.81 (Erik van Cutsem)
 * FIXED  - KILO ignored bug (found/patch by Steve Woodcock)
 * FIXED  - unreported bug where WriteConfig throws away HTMLOUTPUTFILE and IMAGEOUTPUTFILE
-* ADDED  - facility to use multiple SCALEs in a map. SCALE takes an optional name. NODEs and LINKs can have a USESCALE line.
-* FIXED  - bugs relating to assumption that 'admin' user always exists, and that users never go away, in the Cacti mgmt tab (adrian marsh)
+* ADDED  - facility to use multiple SCALEs in a map. SCALE takes an optional name. NODEs and LINKs can have a 
+           USESCALE line.
+* FIXED  - bugs relating to assumption that 'admin' user always exists, and that users never go away, in the 
+           Cacti mgmt tab (adrian marsh)
 * ADDED  - Logging is tidied up a bit under Cacti's poller
 * FIXED  - Added a warning for RRD data sources where the DS names you specify don't exist in the RRD file
 * ADDED  - numeric offsets for NODES lines, like for LABELOFFSET. Move the end of a link whereever you like.
 * ADDED  - a new 'static' datasource - you can hardcode values, if you ever needed to.
 * ADDED  - a 'gauge:' datasource to the rrd plugin. Allows you to use values from any rrd without bit/byte-conversion.
-* ADDED  - formatting tokens into most strings - you can print data on the map from various places, including stuff placed there by plugins.
+* ADDED  - formatting tokens into most strings - you can print data on the map from various places, including 
+           stuff placed there by plugins.
 * ADDED  - if you specify an output filename ending in .jpg or .gif, you'll get a GIF or JPEG file.
 * ADDED  - BACKGROUND and ICON also understand JPEG, GIF and PNG, if your GD library understands them.
-* ADDED  - support for non-standard polling periods in Cacti plugin. You can choose to only update every so often, or not at all (manually).
+* ADDED  - support for non-standard polling periods in Cacti plugin. You can choose to only update every so often, 
+           or not at all (manually).
 * ADDED  - manual 'recalculate now' button in Cacti plugin's management UI
 * ADDED  - SET command to pass hints into plugins or weathermap core, per-node, per-link or globally.
 * CHANGE - Cleaned up config parser. Can be more fussy. More consistent though.
@@ -447,7 +455,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
            then you get an incorrect error about checking line 27 of the CLI tool.
 
 --- 0.81 
-* ADDED  - Weathermaps link to the Cacti 'Configuration' side-menu. Removed 'Manage Maps' link in Weathermap tab. (knobdy) File-picker in editor no longer masks on *.conf
+* ADDED  - Weathermaps link to the Cacti 'Configuration' side-menu. Removed 'Manage Maps' link in Weathermap tab. 
+           (knobdy) File-picker in editor no longer masks on *.conf
 * FIXED  - sort-order bug for imagemaps (Fran Boon)
 * FIXED  - Plugin shows same map twice if you have 'Anyone + users' (Fran Boon, again)
 * FIXED  - Default bandwidth duplicated field in editor. (qjy2000_cn)
@@ -477,7 +486,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  -  cacti-pick.php some more (all done now?)
 * ADDED  - non-bandwidth bandwidth labels: BWLABELS unformatted
 
-* Many Thanks to James Lang, Niels Baggesen and the [php-weathermap] mailing list for feedback during the testing of this release.
+* Many Thanks to James Lang, Niels Baggesen and the [php-weathermap] mailing list for feedback during the testing 
+  of this release.
 
 --- 0.71 
 * FIXED  - Database code in cacti-pick.php
@@ -485,16 +495,19 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - A problem with cached images in editor.
 
 --- 0.7 
-* Updated the manual and example map to reflect all these changes.
-* Added config options for HTMLOUTPUTFILE and IMAGEOUTPUTFILE. The idea is to reduce the size of command-lines, and make the map files more self-contained. CLI options still take precedence.
-* ADDED  - Includes new 'DHTML' editor for the first time. This is still very much in testing - backup any map configs you edit with it first!
+* CHANGE - the manual and example map to reflect all these changes.
+* ADDED  - Config options for HTMLOUTPUTFILE and IMAGEOUTPUTFILE. The idea is to reduce the size of command-lines, 
+           and make the map files more self-contained. CLI options still take precedence.
+* ADDED  - Includes new 'DHTML' editor for the first time. This is still very much in testing - backup any map configs 
+           you edit with it first!
 * FIXED  - DrawLegend() to not go below a minimum width (it used to use the title length, but that can be too small now)
 * ADDED  - BACKGROUNDCOLOR option: take an R G B like the SCALE lines (request from kbriggs)
 * REMOVE - Ripped out some of the 'live PHP' code to make DrawMap a bit simpler.
 * ADDED  - A check for PNG support in CLI command.
 * ADDED  - command-line error-checking (Niels is back again)
 * ADDED  - A fix for Windows line-endings. Seems that PHP uses Unix-endings even on Win32
-* ADDED  - LINK DEFAULT and NODE DEFAULT - set the defaults for (nearly) any parameter. This also means that most node-affecting and link-affecting parameters are now per-node and per-link.
+* ADDED  - LINK DEFAULT and NODE DEFAULT - set the defaults for (nearly) any parameter. This also means that most 
+           node-affecting and link-affecting parameters are now per-node and per-link.
 * ADDED  - ARROWSTYLE option - there's 'classic' and 'compact' with neater arrowheads.
 * ADDED  - LABELOFFSET option to change the relative position of the LABEL when an ICON is also used.
 * ADDED  - OVERLIBWIDTH and OVERLIBHEIGHT to allow better OverLib output (Niels B, once more)
@@ -507,10 +520,13 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * ADDED  - Warning for non-existent NODES in LINK (thanks again Niels Baggesen)
 * FIXED  - HTML fix for <map> in generated HTML (Niels once more)
 * CHANGE - More HTML fixes to make us a bit more XHTML-like.
-* ADDED  - You can have an ICON and a LABEL now. LABEL is centred over the NODE, for the moment. Also, there's a drop shadow effect, to make it easier to read the overlaid text.
-* ADDED  - New config features: LINKFONT, NODEFONT and KEYFONT to control the fonts used for those things. It's a number from 1 to 5.
+* ADDED  - You can have an ICON and a LABEL now. LABEL is centred over the NODE, for the moment. Also, there's a 
+           drop shadow effect, to make it easier to read the overlaid text.
+* ADDED  - New config features: LINKFONT, NODEFONT and KEYFONT to control the fonts used for those things. It's a 
+           number from 1 to 5.
 * ADDED  - Added BWLABELS NONE for no labels on links at all (request from Ueli Heuer)
-* CHANGE - Moved responsibility for complete HTML page from the class to the CLI program - MakeHTML produces an HTML fragment now.
+* CHANGE - Moved responsibility for complete HTML page from the class to the CLI program - MakeHTML produces an 
+           HTML fragment now.
 * ADDED  - Ability to customise timestamp and legend text, by adding new text after the KEYPOS and TIMEPOS commands.
 
 --- 0.5a - Fixed totally embarrassing problems with the DS-specification code.
@@ -519,7 +535,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 --- 0.5 - Fixed asymmetric BANDWIDTH bug - thanks rpingar
 * FIXED  - Make rrdtool commandline work on Windows - also thanks to rpingar
 * ADDED  - Specification of RRD DS names in TARGET ( blah.rrd:ds0:ds1 - that's in then out)
-* FIXED  - Fix for different C libraries returning something other than NaN for a NaN (thru rrd) - now we look for good data rather than bad data.
+* FIXED  - Fix for different C libraries returning something other than NaN for a NaN (thru rrd) - now we look 
+           for good data rather than bad data.
 * ADDED  - Allow for decimals in BANDWIDTH specifications - 1.5M should work now
 * ADDED  - Allow for decimals in SCALE specifications - mainly useful for very small values on big links
 * CHANGE - Brought back sub-1.0 percentages, which got lost somewhere along the line
@@ -532,7 +549,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - *BREAKAGE* Changed BANDWIDTH to use bits too
 * ADDED  - support for K,M,G,T suffixes on bandwidth specs
 * ADDED  - KILO config file option to redefine 1K=1000 or 1K=1024 (or anything actually)
-* ADDED  - --sizedebug commandline option, to help with figuring out what you did wrong with the new BANDWIDTH format. Shows max bandwidth instead of the current bandwidth on all links. Included something a bit more like a manual.
+* ADDED  - --sizedebug commandline option, to help with figuring out what you did wrong with the new BANDWIDTH 
+           format. Shows max bandwidth instead of the current bandwidth on all links. Included something a bit 
+           more like a manual.
 * FIXED  - *BREAKAGE* Changed BWLABELS options to be bits/percent, since they *are* bits!
 * CHANGE - LABEL regexp relaxed to allow spaces in labels
 * FIXED  - HTMLSTYLE, BWLABELS regexps tightened up to detect more errors
