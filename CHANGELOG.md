@@ -1,7 +1,6 @@
-This is a roll-up of all the small bugfixes for the last couple of years, especially those that stop Weathermap
-working with newer MySQL or PHP versions, and beyond that addtional fixes identified by The Cacti Group. 
-This version attempts to provide a forward path for Cacti 1.x users who have been reluctant to upgrade Cacti due 
-to the lack of strong Westhermap support in Cacti 1.x.
+This version of Weathermap is a fork of the original work by Howard Jones, and brings his 0.98x version
+into the Cacti 1.x world.  Although, the change notes below are pretty extensive, there were just too
+many changes to capture them all.
 
 There is a more substantial release that Howie has been working on in the works, that is a fundamental shift
 in the framework and provides several improvements to prior releases. There are also small usability changes 
@@ -14,27 +13,42 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- 1.00 ---
 
-* FIXED  - General support for PHP 8.1
+* FIXED  - General support for PHP 8.2
 * FIXED  - Removed any "mysql*" function calls
 * FIXED  - Use Cacti Database API as applicable
+* FIXED  - Use Cacti Database API prepared statements.
 * FIXED  - Remove dependency on PECL Console_Getopt() library
 * FIXED  - Image Library Support changes in PHP 8.x
 * FIXED  - Deprecation of strftime() in PHP 8.1
-* FIXED  - Label Rendering
+* FIXED  - Label render centering and math errors for background
+* FIXED  - Editing Node and Link configuration text from browser
 * TODO   - Parallel Map Rendering API
+* TODO   - Internationalization (i18n)
+* TODO   - Drop Downs for DSStats and Thold
+* TODO   - Label Offset and Angle form objects
+* TODO   - Colors Interface
+* TODO   - Manage Images Interace
+* TODO   - Rename conf file and title from Cacti UI
 * ADDED  - Right mouse context menu during map editing
+* ADDED  - Support for Cacti Themes
 * ADDED  - Drop image functionality for Nodes and Background images
 * ADDED  - Drop Down actions similar to follow the Cacti UI standard
 * ADDED  - More statistics gathering for map rendering
 * ADDED  - Separated background and object image locations
+* ADDED  - Large library of network objects converted from SVG
+* ADDED  - Removal of Cacti pick functionality by adding directly to dialogs
+* ADDED  - Disabled context menu except for correct objects
 * CHANGE - The map editing interface to use jQueryUI dialog for form rendering
-* CHANGE - The map editing interface to follow Cacti's Theme
+* CHANGE - Simplify the Editor script separating functions and api cactions to separate files
 * CHANGE - Cacti PSR throughout
+* CHANGE - Remove quite a bit of legacy unused code
 * CHANGE - Movement of css and javascript files to LSB locations
 * CHANGE - The Automatic Cycling of Maps to used FontAwesome Glyphs instead of images
 * CHANGE - The Weathermap interface to follow Cacti UI standard
 * CHANGE - Logging format to follow Cacti standards
-* REMOVED - Dependency on overlib.js.  This file has been removed
+* CHANGE - Perfrom Map Editing through callbacks removing page refreshes
+* CHANGE - Move Group tabs to Cacti tab standard
+* REMOVE - Dependency on overlib.js.  This file has been removed
 
 --- 0.98a ---
 * FIXED  - Works with PHP 7.x and 5.6 - removed all mysql_*() function calls, and use PDO instead
@@ -208,8 +222,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * ADDED  - New token: in/outscalecolor contains HTML colour code of node/link colours for use in NOTES
 * ADDED  - New NODES offset type - angle+radius
 * ADDED  - New NODES offset type - compass-point+percentage
-* ADDED  - "KEYSTYLE inverted" - to get a thermometer-style vertical legend.
-* ADDED  - "COMMENTSTYLE center" to make comments run along the centre of a link arrow. (and 'edge' for the usual)
+* ADDED  - 'KEYSTYLE inverted' - to get a thermometer-style vertical legend.
+* ADDED  - 'COMMENTSTYLE center' to make comments run along the centre of a link arrow. (and 'edge' for the usual)
 * ADDED  - COMMENTFONTCOLOR accepts 'contrast' as an option, for when it's over a link
 * ADDED  - VIASTYLE angled (or curved) - you can turn sharp corners now
 * ADDED  - Comment (and pos) editing in editor (based on code by Zdolny)
@@ -217,12 +231,12 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * ADDED  - SCALE allows 'none' as a colour (for non-gradients). Only affects LINKs so far.
 * ADDED  - fping plugin allows for changing the number of pings.
 * ADDED  - TARGET strings can be enclosed in quotes, to allow spaces in them (mainly for external ! scripts)
-* ADDED  - "KEYSTYLE tags" - like classic, but uses the scale tags instead of percentages.
+* ADDED  - 'KEYSTYLE tags' - like classic, but uses the scale tags instead of percentages.
 * ADDED  - scripts in random-bits to help with automatic/assisted mapping.
 * ADDED  - lots more pretty pictures in the manual, so you can see what I mean.
 * ADDED  - IMAGEURI keyword to match --image-uri command-line option (ignored in Cacti plugin)
 * ADDED  - MINTIMEPOS and MAXTIMEPOS to track data source times
-* CHANGE - Cacti plugin uses "processed" map title now (allows {} tokens in the title)
+* CHANGE - Cacti plugin uses 'processed' map title now (allows {} tokens in the title)
 * CHANGE - A NODE with no POSITION is not drawn, instead of drawn at 0,0. Useful for templates.
 * CHANGE - A LINK with no NODES is no longer an error. Also for templates.
 * CHANGE - The link_bulge secret mode bulges each side of a link independently now
@@ -430,135 +444,109 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
            then you get an incorrect error about checking line 27 of the CLI tool.
 
 --- 0.81 
-* Added a Weathermaps link to the Cacti 'Configuration' side-menu. Removed 'Manage Maps' link in Weathermap tab. (knobdy) File-picker in editor no longer masks on *.conf
-* FIXED sort-order bug for imagemaps (Fran Boon)
-* FIXED plugin shows same map twice if you have 'Anyone + users' (Fran Boon, again)
-* FIXED default bandwidth duplicated field in editor. (qjy2000_cn)
-* FIXED now allow TITLEPOS 0 0 (actually, y=0 is useless, but x=0 might be useful) (knobdy)
-* Editor still won't upload images, but it WILL let you pick from any PNG files in the images/
-* folder, and any images already mentioned in the map configuration file for ICON and BACKGROUND
-* *  lines. (everyone and their dog)
-*    Similar change for DEFINEFONT. You still have to hand-edit to define the font, but after that, the
-*      editor will let you pick it.
-*    Changed the dependency tests to NOT give a warning about particular DLL names.
-*    Added more dependency tests for specific functions.
-*    Changes some debug messages to warning, so that they are visible in the logs even without DEBUG on.
-*    FIXED minor (unreported) bug with sort order in Manage Maps
-*    Changed most Cacti Plugin code to use Cacti's (logging) SQL functions. Hopefully this will help
-*      with running down a couple of problems for Windows users.
-*    More error reporting generally.
-*    Fixed error when creating multiple links between nodes in the editor (fozzy)
-*    Docs update - More FAQs and config reference improvements/amendments.
-*    Added 'Cycle' mode to plugin - automatically cycle between your weathermaps.
+* ADDED  - Weathermaps link to the Cacti 'Configuration' side-menu. Removed 'Manage Maps' link in Weathermap tab. (knobdy) File-picker in editor no longer masks on *.conf
+* FIXED  - sort-order bug for imagemaps (Fran Boon)
+* FIXED  - Plugin shows same map twice if you have 'Anyone + users' (Fran Boon, again)
+* FIXED  - Default bandwidth duplicated field in editor. (qjy2000_cn)
+* FIXED  - Now allow TITLEPOS 0 0 (actually, y=0 is useless, but x=0 might be useful) (knobdy)
+* CHANGE - Changed the dependency tests to NOT give a warning about particular DLL names.
+* ADDED  - More dependency tests for specific functions.
+* CHANGE - Some debug messages to warning, so that they are visible in the logs even without DEBUG on.
+* FIXED  - Minor (unreported) bug with sort order in Manage Maps
+* CHANGE - Most Cacti Plugin code to use Cacti's (logging) SQL functions. Hopefully this will help windows users
+* ADDED  - More error reporting generally.
+* FXED   - Error when creating multiple links between nodes in the editor (fozzy)
+* CHANGE - Docs update - More FAQs and config reference improvements/amendments.
+* ADDED  - 'Cycle' mode to plugin - automatically cycle between your weathermaps.
 
 --- 0.8 
-* Added ability to have multiple targets for a LINK - aggregate your T1s
-* Added ability to use half an RRD (use '-' as the DS name) - if you have 'in' in one RRD, and 'out' in another
-* Added a tab-seperated file datasource for TARGET lines, so you can draw anything you can dump into a textfile.
-* Added ability to specify which corner of a NODE each LINK-end goes to - handy for busy hub nodes
-* Added support for FreeType & GD fonts
-* Added VIA points - a link can go around corners, and they're nicely curved too.
-* Added gradient SCALEs - specify two colours for a band to have colours interpolated.
-* Added many more colour controls for map elements:
-* * For Links: OUTLINECOLOR r g b ( or OUTLINECOLOR none)
-* * For Link bandwidth labels: BWOUTLINECOLOR, BWBOXCOLOR, BWFONTCOLOR
-* * For Nodes: LABELBGCOLOR, LABELFONTCOLOR, LABELOUTLINECOLOR, LABELFONTSHADOWCOLOR
-* * For Map 'furniture': TIMECOLOR, TITLECOLOR, KEYBGCOLOR, KEYTEXTCOLOR, KEYOUTLINE
-* Added Cacti plugin. View and Manage UI, plus poller integration. No editor (yet)
-* Updated example config to use new 0.8 features
-* Re-organised manual, and heavily re-written config reference.
-* Fixed cacti-pick.php some more (all done now?)
-* Added non-bandwidth bandwidth labels: BWLABELS unformatted
+* ADDED  - Ability to have multiple targets for a LINK - aggregate your T1s
+* ADDED  - Ability to use half an RRD (use '-' as the DS name) - if you have 'in' in one RRD, and 'out' in another
+* ADDED  - Tab-seperated file datasource for TARGET lines, so you can draw anything you can dump into a textfile.
+* ADDED  - Ability to specify which corner of a NODE each LINK-end goes to - handy for busy hub nodes
+* ADDED  - Support for FreeType & GD fonts
+* ADDED  - VIA points - a link can go around corners, and they're nicely curved too.
+* ADDED  - Gradient SCALEs - specify two colours for a band to have colours interpolated.
+* ADDED  - Many more colour controls for map elements
+* ADDED  - Cacti plugin. View and Manage UI, plus poller integration. No editor (yet)
+* CHANGE - Example config to use new 0.8 features
+* CHANGE - Re-organised manual, and heavily re-written config reference.
+* FIXED  -  cacti-pick.php some more (all done now?)
+* ADDED  - non-bandwidth bandwidth labels: BWLABELS unformatted
 
 * Many Thanks to James Lang, Niels Baggesen and the [php-weathermap] mailing list for feedback during the testing of this release.
 
 --- 0.71 
-Fixed database code in cacti-pick.php
-Fixed up editor to handle blank maps better.
-Fixed a problem with cached images in editor.
+* FIXED  - Database code in cacti-pick.php
+* FIXED  - Editor to handle blank maps better.
+* FIXED  - A problem with cached images in editor.
 
 --- 0.7 
 * Updated the manual and example map to reflect all these changes.
-* Added config options for HTMLOUTPUTFILE and IMAGEOUTPUTFILE. The
-        idea is to reduce the size of command-lines, and make the map files
-        more self-contained. CLI options still take precedence.
-      Includes new 'DHTML' editor for the first time. This is still very much
-* * *   in testing - backup any map configs you edit with it first!
-      Fixed DrawLegend() to not go below a minimum width (it used to use the
-* * *   title length, but that can be too small now)
-      Added BACKGROUNDCOLOR option: take an R G B like the SCALE lines (request
-* * *   from kbriggs)
-      Ripped out some of the 'live PHP' code to make DrawMap a bit simpler.
-      Added a check for PNG support in CLI command.
-      Added command-line error-checking (Niels is back again)
-      Added a fix for Windows line-endings. Seems that PHP uses Unix-endings even on Win32
-      Added LINK DEFAULT and NODE DEFAULT - set the defaults for (nearly) any
-* parameter. This also means that most node-affecting and link-affecting
-* parameters are now per-node and per-link.
-      Added ARROWSTYLE option - there's 'classic' and 'compact' with neater arrowheads.
-      Added LABELOFFSET option to change the relative position of the LABEL when an
-        ICON is also used.
-      Added OVERLIBWIDTH and OVERLIBHEIGHT to allow better OverLib output (Niels B, once more)
-      Switched to using 24bit images internally. This should improve the handling of
-        PNG transparency in ICONs.
-      Improved number and content of error messages.
+* Added config options for HTMLOUTPUTFILE and IMAGEOUTPUTFILE. The idea is to reduce the size of command-lines, and make the map files more self-contained. CLI options still take precedence.
+* ADDED  - Includes new 'DHTML' editor for the first time. This is still very much in testing - backup any map configs you edit with it first!
+* FIXED  - DrawLegend() to not go below a minimum width (it used to use the title length, but that can be too small now)
+* ADDED  - BACKGROUNDCOLOR option: take an R G B like the SCALE lines (request from kbriggs)
+* REMOVE - Ripped out some of the 'live PHP' code to make DrawMap a bit simpler.
+* ADDED  - A check for PNG support in CLI command.
+* ADDED  - command-line error-checking (Niels is back again)
+* ADDED  - A fix for Windows line-endings. Seems that PHP uses Unix-endings even on Win32
+* ADDED  - LINK DEFAULT and NODE DEFAULT - set the defaults for (nearly) any parameter. This also means that most node-affecting and link-affecting parameters are now per-node and per-link.
+* ADDED  - ARROWSTYLE option - there's 'classic' and 'compact' with neater arrowheads.
+* ADDED  - LABELOFFSET option to change the relative position of the LABEL when an ICON is also used.
+* ADDED  - OVERLIBWIDTH and OVERLIBHEIGHT to allow better OverLib output (Niels B, once more)
+* CHANGE - Switched to using 24bit images internally. This should improve the handling of PNG transparency in ICONs.
+* CHANGE - Improved number and content of error messages.
 
 --- 0.6 - Renamed weathermap.php to just 'weathermap' to make it more
-      obviously not a PHP page.
-      Fixed up NODE name regexp (thanks Niels Baggesen)
-      Added warning for non-existent NODES in LINK (thanks again Niels Baggesen)
-      HTML fix for <map> in generated HTML (Niels once more)
-      More HTML fixes to make us a bit more XHTML-like.
-      You can have an ICON and a LABEL now. LABEL is centred over the
-      NODE, for the moment. Also, there's a drop shadow effect, to make
-      it easier to read the overlaid text.
-      New config features: LINKFONT, NODEFONT and KEYFONT to control the
-      fonts used for those things. It's a number from 1 to 5.
-      Added BWLABELS NONE for no labels on links at all (request from Ueli Heuer)
-      Moved responsibility for complete HTML page from the class to the CLI program - MakeHTML produces an HTML fragment now.
-      Added ability to customise timestamp and legend text, by adding new text after the KEYPOS and TIMEPOS commands.
+* FIXED  - obviously not a PHP page.
+* FIXED  - NODE name regexp (thanks Niels Baggesen)
+* ADDED  - Warning for non-existent NODES in LINK (thanks again Niels Baggesen)
+* FIXED  - HTML fix for <map> in generated HTML (Niels once more)
+* CHANGE - More HTML fixes to make us a bit more XHTML-like.
+* ADDED  - You can have an ICON and a LABEL now. LABEL is centred over the NODE, for the moment. Also, there's a drop shadow effect, to make it easier to read the overlaid text.
+* ADDED  - New config features: LINKFONT, NODEFONT and KEYFONT to control the fonts used for those things. It's a number from 1 to 5.
+* ADDED  - Added BWLABELS NONE for no labels on links at all (request from Ueli Heuer)
+* CHANGE - Moved responsibility for complete HTML page from the class to the CLI program - MakeHTML produces an HTML fragment now.
+* ADDED  - Ability to customise timestamp and legend text, by adding new text after the KEYPOS and TIMEPOS commands.
 
 --- 0.5a - Fixed totally embarrassing problems with the DS-specification code.
-       As far as I can figure I never did test it. Oh dear. Thanks to
-       Jethro Binks for speedy patches.
+* FIXED  - As far as I can figure I never did test it. Oh dear. Thanks to Jethro Binks for speedy patches.
 
 --- 0.5 - Fixed asymmetric BANDWIDTH bug - thanks rpingar
-      Fix to make rrdtool commandline work on Windows - also thanks to rpingar
-      Added specification of RRD DS names in TARGET ( blah.rrd:ds0:ds1 - that's in then out)
-      Fix for different C libraries returning something other than NaN for a NaN (thru rrd) - now we look for good data rather than bad data.
-      Allow for decimals in BANDWIDTH specifications - 1.5M should work now
-      Allow for decimals in SCALE specifications - mainly useful for very small values on big links
-      Brought back sub-1.0 percentages, which got lost somewhere along the line
-      Added in warning for >100% lines
-      Added TIMEPOS option so *you* get to choose where the timestamp goes, mgb
-      Fixed stupid bug in ReadRRDData - Weathermap should follow the data better now. Thanks to 'cl'
+* FIXED  - Make rrdtool commandline work on Windows - also thanks to rpingar
+* ADDED  - Specification of RRD DS names in TARGET ( blah.rrd:ds0:ds1 - that's in then out)
+* FIXED  - Fix for different C libraries returning something other than NaN for a NaN (thru rrd) - now we look for good data rather than bad data.
+* ADDED  - Allow for decimals in BANDWIDTH specifications - 1.5M should work now
+* ADDED  - Allow for decimals in SCALE specifications - mainly useful for very small values on big links
+* CHANGE - Brought back sub-1.0 percentages, which got lost somewhere along the line
+* ADDED  - Warning for >100% lines
+* ADDED  - TIMEPOS option so *you* get to choose where the timestamp goes, mgb
+* FIXED  - Stupid bug in ReadRRDData - Weathermap should follow the data better now. Thanks to 'cl'
 
 --- 0.4 - Changed all internals to deal in bits/sec instead of bytes
-      Moved timestamp back up to the top-right corner.
-      *BREAKAGE* Changed BANDWIDTH to use bits too
-      Added support for K,M,G,T suffixes on bandwidth specs
-      Added KILO config file option to redefine 1K=1000 or 1K=1024 (or anything actually)
-      Added --sizedebug commandline option, to help with figuring out
-        what you did wrong with the new BANDWIDTH format. Shows max
-        bandwidth instead of the current bandwidth on all links.
-      Included something a bit more like a manual.
-      *BREAKAGE* Changed BWLABELS options to be bits/percent, since they *are* bits!
-      LABEL regexp relaxed to allow spaces in labels
-      HTMLSTYLE, BWLABELS regexps tightened up to detect more errors
-      Added new example config in docs/ directory
-      Moved editor.php out of the way to random-bits
-      Included a copy of auto-overlib.pl, just cos it's handy
+* CHANGE - Moved timestamp back up to the top-right corner.
+* FIXED  - *BREAKAGE* Changed BANDWIDTH to use bits too
+* ADDED  - support for K,M,G,T suffixes on bandwidth specs
+* ADDED  - KILO config file option to redefine 1K=1000 or 1K=1024 (or anything actually)
+* ADDED  - --sizedebug commandline option, to help with figuring out what you did wrong with the new BANDWIDTH format. Shows max bandwidth instead of the current bandwidth on all links. Included something a bit more like a manual.
+* FIXED  - *BREAKAGE* Changed BWLABELS options to be bits/percent, since they *are* bits!
+* CHANGE - LABEL regexp relaxed to allow spaces in labels
+* FIXED  - HTMLSTYLE, BWLABELS regexps tightened up to detect more errors
+* ADDED  - New example config in docs/ directory
+* CHANGE - Moved editor.php out of the way to random-bits
+* ADDED  - Included a copy of auto-overlib.pl, just cos it's handy
 
 --- 0.3 - ICON config directive for NODEs added - same effect as jas0420's perl code
-      Fixed WriteConfig a little - TITLEs are written.
-      OVERLIBGRAPH config is written for NODES.
-      Fixed bug with OVERLIBGRAPH DHTML and NODEs
-      Added --image-uri option back in from the perl version
+* FIXED  - WriteConfig a little - TITLEs are written.
+* ADDED  - OVERLIBGRAPH config is written for NODES.
+* FIXED  - Bug with OVERLIBGRAPH DHTML and NODEs
+* ADDED  - --image-uri option back in from the perl version
 
 --- 0.2 - NODEs with no label aren't drawn but can still be an endpoint for a LINK.
-      Small bugfixes from mgb
-      Included the editor.php for people to see
-      Code tidyup for weathermap.php
+* FIXED  - Small bugfixes from mgb
+* ADDED  - Included the editor.php for people to see
+* FIXED  - Code tidyup for weathermap.php
 
 --- 0.1 
 Initial pre-release version
