@@ -791,7 +791,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 			<div class='cactiTable'>
 				<div class='dlgBody'>
 					<p>You can edit the map items directly here.</p>
-	   	             <textarea wrap='no' id='item_configtext' name='item_configtext' cols='80' rows='15'></textarea>
+	   	             <textarea id='item_configtext' name='item_configtext' cols='80' rows='15'></textarea>
 				</div>
 				<div class='dlgHelp'>
 					Helpful text will appear here, depending on the current

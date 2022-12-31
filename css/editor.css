@@ -250,5 +250,6 @@ td {
 
 #item_configtext {
 	overflow: scroll;
-	white-space: nowrap;
+	width: 500px;
+	height: 300px;
 }

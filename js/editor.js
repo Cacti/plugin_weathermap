@@ -583,7 +583,6 @@ function click_execute(event, alt) {
 		// if we're waiting for a node specifically (e.g. 'make link') then ignore links here
 		if (objecttype == 'NODE') {
 			// chop off the suffix
-			// objectid = objectname.slice(0,objectname.length-2);
 			objectname = NodeIDs[objectid];
 
 			show_node(objectname);
@@ -591,7 +590,6 @@ function click_execute(event, alt) {
 
 		if (objecttype == 'LINK') {
 			// chop off the suffix
-			// objectid = objectname.slice(0,objectname.length-2);
 			objectname = LinkIDs[objectid];
 
 			show_link(objectname);
@@ -624,7 +622,6 @@ function cactipicker() {
 		newWindow.focus();
 	}
 
-	// newWindow.location = 'cacti-pick.php?command=link_step1';
 	newWindow.location = 'cacti-pick.php?command=link_step1';
 }
 
@@ -860,8 +857,6 @@ function map_style() {
 
 	$('#action').val('set_map_style');
 
-	//$('#fontsamples').attr('src', '?action=fontsamples&mapname='+$('#mapname').val();
-
 	show_dialog('dlgMapStyle');
 
 	$('#mapstyle_linklabels').focus();
@@ -896,19 +891,11 @@ function position_legend(event) {
 		return;
 	}
 
-	// we need to figure out WHICH legend, nowadays
-	//alt = el.getAttribute('alt');
 	alt = el.id;
 
-	// objecttype = alt.slice(0, 5);
 	objectname = alt.slice(7, alt.length);
 
 	real_position_legend(objectname);
-
-	//document.getElementById('tb_help').innerText = 'Click on the map where you would like to put the legend.';
-	//document.getElementById('action').value = 'place_legend';
-	//document.getElementById('param').value = objectname;
-	//mapmode('xy');
 }
 
 function real_position_legend(scalename) {
@@ -924,10 +911,6 @@ function show_itemtext(itemtype,name) {
 
 	hide_all_dialogs();
 
-	// $('#dlgNodeProperties').block();
-
-	//  $.blockUI.defaults.elementMessage = 'Please Wait';
-
 	$('textarea#item_configtext').val('');
 
 	if (itemtype === 'node') {
@@ -939,8 +922,6 @@ function show_itemtext(itemtype,name) {
 	}
 
 	show_dialog('dlgTextEdit');
-
-	// $('#item_configtext').block();
 
 	$.ajax({
 		type: 'GET',
@@ -954,7 +935,6 @@ function show_itemtext(itemtype,name) {
 		success: function(text) {
 			$('#item_configtext').val(text);
 			$('#item_configtext').focus();
-			//  $('#dlgTextEdit').unblock();
 		}
 	});
 }
@@ -1178,7 +1158,6 @@ function tidy_link() {
 
 function attach_help_events() {
 	// add an onblur/onfocus handler to all the visible <input> items
-
 	$('input').focus(help_handler).blur(help_handler);
 }
 
