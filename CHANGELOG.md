@@ -100,13 +100,10 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
            the 0.98 code.  There are larger structural changes in 0.98 and new features, but these 
            bugfixes were useful enough to warrant a new 0.97 release (especially the mysql schema change). 
            A real 0.98 release will follow in due course.
-
 * NOTE   - Also late addition to 0.97b - a couple of security analysts have pointed out flaws in the editor.
            First, the ability to remotely create .php files and then cross-site-scripting vulnerabilities. Both
            are really facets of the same thing - lack of input validation. 0.97b improves this a great deal.
-
 * NOTE   - Thanks to Gerry Eisenhaur and Daniel Ricardo dos Santos respectively for their security bug reports.
-
 * FIXED  - absolute SCALE definitions didn't support K (thanks wwwdrich)
 * FIXED  - memory leak in poller code. Memory usage is MUCH lower now.
 * FIXED  - updated mysql schema commands to use modern ENGINE instead of TYPE;
