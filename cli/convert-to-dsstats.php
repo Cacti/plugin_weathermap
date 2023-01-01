@@ -36,78 +36,88 @@
  +-------------------------------------------------------------------------+
 */
 
-include(__DIR__ . '/../../../include/cli_check.php');
-require_once('../lib/WeatherMap.class.php');
+chdir('../../../');
+include('./include/cli_check.php');
+include_once('./plugins/weathermap/lib/WeatherMap.class.php');
 
 $cacti_base = $config['base_path'];
 
-$reverse      = 0;
+$reverse      = false;
 $inputfile    = '';
 $outputfile   = '';
 $converted    = 0;
 $candidates   = 0;
 $totaltargets = 0;
 
-$short_opts = '';
-$long_opts  = array(
-	'help',
-	'input=',
-	'output=',
-	'debug',
+$shortopts = 'VvHh';
+$longopts  = array(
+	'input:',
+	'output:',
 	'reverse',
+	'debug',
+	'help',
+	'version',
 );
 
-$args = $cg->readPHPArgv();
-$ret  = $cg->getopt($args, $short_opts, $long_opts);
+$options = getopt($shortopts, $longopts);
 
-if (PEAR::isError($ret)) {
-	die ("Error in command line: " . $ret->getMessage() . "\n (try --help)\n");
-}
+if (cacti_sizeof($options)) {
+	foreach ($options as $arg => $value) {
+		switch ($arg) {
+			case 'debug':
+				$weathermap_debugging = true;
 
-$gopts=$ret[0];
+				break;
+			case 'input':
+				$inputfile = $value;
 
-if (cacti_sizeof($gopts) > 0) {
-	foreach ($gopts as $o) {
-		switch ($o[0]) {
-			case '--debug':
-				$weathermap_debugging=true;
 				break;
-			case '--input':
-				$inputfile=$o[1];
+			case 'output':
+				$outputfile = $value;
+
 				break;
-			case '--output':
-				$outputfile=$o[1];
-				break;
-			case '--reverse':
-				$reverse = 1;
+			case 'reverse':
+				$reverse = true;
+
 				break;
 			case 'help':
-			default:
-				print "Weathermap DSStats converter. Converts rrd targets to DSStats\n";
-				print "-------------------------------------------------------------\n";
-				print "Usage: php convert-to-dstats.php [options]\n\n";
-				print " --input {filename}         - File to read from\n";
-				print " --output {filename}        - File to write to\n";
-				# print " --reverse                  - Convert from DSStats to RRDtool instead\n";
-				print " --debug                    - Enable debugging output\n";
-				print " --help                    - Show this message\n";
+			case 'H':
+			case 'h':
+				display_help();
 
 				exit();
+
+				break;
+			case 'version':
+			case 'V':
+			case 'v':
+				display_version();
+
+				exit();
+
+				break;
+			default:
+                print 'ERROR: Invalid Parameter ' . $arg . PHP_EOL . PHP_EOL;
+
+                display_help();
+
+                exit(1);
 		}
 	}
 }
 
-if ($inputfile == "" || $outputfile == "") {
-	print "You must specify an input and output file. See --help.\n";
-	exit();
+if ($inputfile == '' || $outputfile == '') {
+	print 'FATAL: You must specify an input and output file.' . PHP_EOL;
+	display_help();
+	exit(1);
 }
 
 $map = new WeatherMap;
 
 $map->context = 'cacti';
-$map->rrdtool  = read_config_option("path_rrdtool");
+$map->rrdtool  = read_config_option('path_rrdtool');
 
-print "Reading config from $inputfile\n";
+print 'Reading config from $inputfile' . PHP_EOL;
 
 $map->ReadConfig($inputfile);
 
@@ -128,12 +138,12 @@ foreach ($allitems as $myobj) {
 			$tindex = 0;
 
 			foreach ($myobj->targets as $target) {
-				wm_debug ("ReadData: New Target: $target[4]");
+				wm_debug ('ReadData: New Target: ' . $target[4]);
 
 				$targetstring = $target[0];
 				$multiply = $target[1];
 
-				if ($reverse == 0 && $target[5] == "WeatherMapDataSource_rrd") {
+				if ($reverse == false && $target[5] == 'WeatherMapDataSource_rrd') {
 					$candidates++;
 
 					# list($in,$out,$datatime) =  $map->plugins['data'][ $target[5] ]->ReadData($targetstring, $map, $myobj);
@@ -220,7 +230,7 @@ foreach ($allitems as $myobj) {
 				}
 
 				// XXX - not implemented yet!
-				if ($reverse == 1 && $target[5] == 'WeatherMapDataSource_dsstats' && 1 == 0) {
+				if ($reverse == true && $target[5] == 'WeatherMapDataSource_dsstats' && 1 == 0) {
 					$candidates++;
 
 					# list($in,$out,$datatime) =  $map->plugins['data'][ $target[5] ]->ReadData($targetstring, $map, $myobj);
@@ -239,11 +249,11 @@ foreach ($allitems as $myobj) {
 
 					wm_debug("ConvertDS: Looking for $db_rrdname in the database.");
 
-					$results = db_fetch_row_prepared("SELECT DISTINCT dtd.local_data_id
+					$results = db_fetch_row_prepared('SELECT DISTINCT dtd.local_data_id
 						FROM data_template_data AS dtr
 						INNER JOIN data_template_rrd AS dtr
 						WHERE dtd.local_data_id = dtr.local_data_id
-						AND dtd.data_source_path = ?",
+						AND dtd.data_source_path = ?',
 						array($db_rrdname));
 
 					if (cacti_sizeof($results)) {
@@ -292,7 +302,32 @@ foreach ($allitems as $myobj) {
 
 $map->WriteConfig($outputfile);
 
-print "Wrote new config to $outputfile\n";
+print "Wrote new config to $outputfile" . PHP_EOL;
 
-print "$totaltargets targets, $candidates rrd-based targets, $converted were actually converted.\n";
+print "$totaltargets targets, $candidates rrd-based targets, $converted were actually converted." . PHP_EOL;
+
+function display_version() {
+	global $config;
+
+	if (!function_exists('plugin_weathermap_version')) {
+		include_once($config['base_path'] . '/plugins/weathermap/setup.php');
+	}
+
+	$copyright_years = '2008-2023';
+
+	$info = plugin_weathermap_version();
+
+	print 'Weathermap Cacti DSStats Conversion Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . $copyright_years . PHP_EOL;
+}
+
+function display_help() {
+	display_version();
+
+	print 'usage: php convert-to-dstats.php --input=S --output=S [--reverse] [--debug]' . PHP_EOL . PHP_EOL;
+
+	print ' --input={filename}         - File to read from' . PHP_EOL;
+	print ' --output={filename}        - File to write to' . PHP_EOL;
+	print ' --reverse                  - Convert from DSStats to RRDtool instead' . PHP_EOL;
+	print ' --debug                    - Enable debugging output' . PHP_EOL;
+}
 

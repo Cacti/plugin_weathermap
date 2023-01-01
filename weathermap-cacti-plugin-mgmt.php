@@ -38,13 +38,11 @@
 
 chdir('../../');
 include_once('./include/auth.php');
-include_once($config['base_path'] . '/lib/rrd.php');
+include_once('./lib/rrd.php');
+include_once('./plugins/weathermap/lib/WeatherMap.class.php');
+include_once('./plugins/weathermap/lib/lib/poller-common.php');
 
 $weathermap_confdir = realpath(__DIR__ . '/configs');
-
-// include the weathermap class so that we can get the version
-include_once(__DIR__ . '/lib/WeatherMap.class.php');
-include_once(__DIR__ . '/lib/poller-common.php');
 
 $actions = array(
 	'1' => __('Delete', 'weathermap'),
@@ -296,15 +294,7 @@ switch (get_request_var('action')) {
 		}
 
 		break;
-	case 'editor':
-		// chdir(__DIR__);
-		// include_once('./weathermap-cacti-plugin-editor.php');
-
-		break;
 	case 'rebuildnow':
-		include_once(__DIR__ . '/WeatherMap.class.php');
-		include_once(__DIR__ . '/lib/poller-common.php');
-
 		$start = microtime(true);
 
 		weathermap_run_maps(__DIR__, true);

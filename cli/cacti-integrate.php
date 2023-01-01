@@ -44,145 +44,128 @@
  * See http://forums.cacti.net/about26544.html for more info
  *
  */
-include(__DIR__ . '/../../../include/cli_check.php');
+
+chdir('../../../');
+
+include('./include/cli_check.php');
+include_once('./plugins/weathermap/lib/WeatherMap.class.php');
 
 $cacti_root = $config['base_path'];
-
-ini_set('include_path',
-	ini_get('include_path') . PATH_SEPARATOR .
-	$cacti_root . PATH_SEPARATOR .
-	$cacti_root . '/plugins/weathermap' . PATH_SEPARATOR .
-	$cacti_root . '/plugins/weathermap/random-bits'
-);
-
-require_once 'lib/WeatherMap.class.php';
-require_once 'Console/Getopt.php';
-
-include_once 'include/global.php';
-include_once 'include/config.php';
-
 $cacti_base = $cacti_root;
 $cacti_url  = $config['url_path'];
-
-include_once 'editor-config.php';
 
 // adjust width of link based on bandwidth.
 // NOTE: These are bands - the value has to be up to or including the value in the list to match
 $width_map = array (
-    '1000000' => '1',     // up to 1meg
-    '9999999' => '1',     // 1-10meg
-    '10000000' => '2',    // 10meg
-    '99999999' => '2',    // 10-100meg
-    '100000000' => '4',   // 100meg
-    '999999999' => '4',   // 100meg-1gig
-    '1000000000' => '6',  // 1gig
-    '9999999999' => '6',  // 1gig-10gig
-    '10000000000' => '8', // 10gig
-    '99999999999' => '8'  // 10gig-100gig
+	'1000000'     => '1', // up to 1meg
+	'9999999'     => '1', // 1-10meg
+	'10000000'    => '2', // 10meg
+	'99999999'    => '2', // 10-100meg
+	'100000000'   => '4', // 100meg
+	'999999999'   => '4', // 100meg-1gig
+	'1000000000'  => '6', // 1gig
+	'9999999999'  => '6', // 1gig-10gig
+	'10000000000' => '8', // 10gig
+	'99999999999' => '8'  // 10gig-100gig
 );
-
-$config['base_url'] = (isset($config['url_path']) ? $config['url_path'] : $cacti_url);
 
 // the following are defaults. You can change those from the command-line
 // options now.
 
 // set this to true to adjust the width of links according to speed
-$map_widths = false;
-
-// set this to true to use DSStats targets instead of RRD file targets
-$use_dsstats = false;
-
+$map_widths        = false;
+$use_dsstats       = false;
 $overwrite_targets = false;
+$outputmapfile     = '';
+$inputmapfile      = '';
 
-$outputmapfile = "";
-$inputmapfile = "";
-
-// initialize object
-$cg = new Console_Getopt();
-
-$short_opts = '';
-$long_opts = array (
-    'help',
-    'input=',
-    'output=',
-    'debug',
-    'target-dsstats',
-    'target-rrdtool',
-    'overwrite-targets',
-    'speed-width-map'
+$shortopts = 'VvHh';
+$longopts  = array (
+	'input:',
+	'output:',
+	'target-dsstats',
+	'target-rrdtool',
+	'overwrite-targets',
+	'speed-width-map',
+	'debug',
+	'help',
+	'version'
 );
 
-$args = $cg->readPHPArgv();
+$options = getopt($shortopts, $longopts);
 
-$ret = $cg->getopt($args, $short_opts, $long_opts);
+if (cacti_sizeof($options)) {
+	foreach ($options as $arg => $value) {
+		switch ($arg) {
+			case 'debug':
+				$weathermap_debugging = true;
 
-if (PEAR::isError($ret)) {
-    die('Error in command line: ' . $ret->getMessage() . "\n (try --help)\n");
-}
+				break;
+			case 'overwrite-targets':
+				$overwrite_targets = true;
 
-$gopts = $ret[0];
+				break;
+			case 'speed-width-map':
+				$map_widths = true;
 
-$options_output = array ();
+				break;
+			case 'target-dsstats':
+				$use_dsstats = true;
 
-if (cacti_sizeof($gopts) > 0) {
-    foreach ($gopts as $o) {
-        switch ($o[0]) {
-            case '--debug':
-                $weathermap_debugging = true;
-                break;
+				break;
+			case 'target-rrdtool':
+				$use_dsstats = false;
 
-            case '--overwrite-targets':
-                $overwrite_targets = true;
-                break;
+				break;
+			case 'output':
+				$outputmapfile = $value;
 
-            case '--speed-width-map':
-                $map_widths = true;
-                break;
+				break;
+			case 'input':
+				$inputmapfile = $value;
 
-            case '--target-dsstats':
-                $use_dsstats = true;
-                break;
+				break;
+			case 'help':
+			case 'H':
+			case 'h':
+				display_help();
 
-            case '--target-rrdtool':
-                $use_dsstats = false;
-                break;
+				exit();
 
-            case '--output':
-                $outputmapfile = $o[1];
-                break;
+				break;
+			case 'version':
+			case 'V':
+			case 'v':
+				display_version();
 
-            case '--input':
-                $inputmapfile = $o[1];
-                break;
+				exit();
 
-            case '--help':
-                print "cacti-integrate.php\n";
-                print
-                    "Copyright Howard Jones, 2008-2019 howie@thingy.com\nReleased under the MIT License\nhttp://www.network-weathermap.com/\n\n";
+				break;
+			default:
+				print 'ERROR: Invalid Parameter ' . $arg . PHP_EOL . PHP_EOL;
 
-                print "Usage: php cacti-integrate.php [options]\n\n";
+				display_help();
 
-                print " --input {filename}      -  read config from this file\n";
-                print " --output {filename}     -  write new config to this file\n";
-                print " --target-rrdtool        -  generate rrd file targets (default)\n";
-                print " --target-dsstats        -  generate DSStats targets\n";
-                print " --debug                 -  enable debugging\n";
-                print " --help                  -  show this help\n";
-
-                exit();
-                break;
-        }
-    }
+				exit(1);
+		}
+	}
 }
 
 if ($inputmapfile == '' || $outputmapfile == '') {
-    print "You MUST specify an input and output file. See --help\n";
-    exit();
+    print 'FATAL: You MUST specify an input and output file.' . PHP_EOL;
+
+	display_help();
+
+    exit(1);
 }
 
 // figure out which template has interface traffic. This might be wrong for you.
-$data_template    = "Interface - Traffic";
-$data_template_id = db_fetch_cell_prepared("SELECT id FROM data_template WHERE name = ?", array($data_template));
+$data_template_hash = 'fd841e8bb822927289b7acbc031f3d7e';
+
+$data_template_id = db_fetch_cell_prepared("SELECT id
+	FROM data_template
+	WHERE hash = ?",
+	array($data_template));
 
 $map = new WeatherMap;
 
@@ -201,7 +184,7 @@ $fmt_cacti_graphpage = $cacti_url . 'graph.php?rra_id=all&local_graph_id=%d';
 foreach ($map->nodes as $node) {
 	$name = $node->name;
 
-	print "NODE $name\n";
+	print 'NODE ' . $name . PHP_EOL;
 
 	$host_id  = $node->get_hint('cacti_id');
 	$hostname = $node->get_hint('hostname');
@@ -225,35 +208,35 @@ foreach ($map->nodes as $node) {
 		// by now, if there was a host_id, all 3 are populated. If not, then we should try one of the others to get a host_id
 
 		if ($address != '') {
-			$res2 = db_fetch_row_prepared("SELECT id, description FROM host WHERE hostname = ?", array($address));
+			$res2 = db_fetch_row_prepared('SELECT id, description FROM host WHERE hostname = ?', array($address));
 
 			if ($res2) {
 				$host_id = $res2['id'];
-				$map->nodes[$node->name]->add_hint("cacti_id", $host_id);
+				$map->nodes[$node->name]->add_hint('cacti_id', $host_id);
 
 				if ($hostname == '') {
 					$hostname = $res2['description'];
-					$map->nodes[$node->name]->add_hint("hostname", $hostname);
+					$map->nodes[$node->name]->add_hint('hostname', $hostname);
 				}
 			}
 		} elseif ($hostname != '') {
-			$res3 = db_fetch_row_prepared("SELECT id, description FROM host WHERE description = ?", array($hostname));
+			$res3 = db_fetch_row_prepared('SELECT id, description FROM host WHERE description = ?', array($hostname));
 
 			if ($res3) {
 				$host_id = $res3['id'];
-				$map->nodes[$node->name]->add_hint("cacti_id", $host_id);
+				$map->nodes[$node->name]->add_hint('cacti_id', $host_id);
 
 				if ($address == '') {
 					$address = $res3['hostname'];
-					$map->nodes[$node->name]->add_hint("address", $address);
+					$map->nodes[$node->name]->add_hint('address', $address);
 				}
 			}
 		}
 	}
 
 	if ($host_id != '') {
-		$info = $config['base_url'] . "host.php?id=" . $host_id;
-		$tgt = "cactimonitor:$host_id";
+		$info = $config['url_path'] . 'host.php?id=' . $host_id;
+		$tgt = 'cactimonitor:' . $host_id;
 
 		$map->nodes[$node->name]->targets = array(
 			array(
@@ -268,7 +251,7 @@ foreach ($map->nodes as $node) {
 		$map->nodes[$node->name]->infourl[IN] = $info;
 	}
 
-	print "  $host_id $hostname $address\n";
+	print "  $host_id $hostname $address" . PHP_EOL;
 }
 
 // Now lets go through the links
@@ -284,45 +267,45 @@ foreach ($map->links as $link) {
 		$a_id = intval($map->nodes[$a]->get_hint('cacti_id'));
 		$b_id = intval($map->nodes[$b]->get_hint('cacti_id'));
 
-		print "LINK $name\n";
+		print 'LINK ' . $name . PHP_EOL;
 
 		if (count($link->targets) == 0 || $overwrite_targets ) {
 			if ((($a_id + $b_id) > 0) && ($int_out . $int_in == '')) {
-				print "  (could do if there were interfaces)\n";
+				print '  (could do if there were interfaces)' . PHP_EOL;
 			}
 
 			if ((($a_id + $b_id) == 0) && ($int_out . $int_in != '')) {
-				print "  (could do if there were host_ids)\n";
+				print '  (could do if there were host_ids)' . PHP_EOL;
 			}
 
-			$tgt_interface = "";
-			$tgt_host = "";
+			$tgt_interface = '';
+			$tgt_host      = '';
 
 			if ($a_id > 0 && $int_out != '') {
-				print "  We'll use the A end.\n";
+				print '  We\'ll use the A end.' . PHP_EOL;
 
 				$tgt_interface = $int_out;
-				$tgt_host = $a_id;
-				$ds_names = ":traffic_in:traffic_out";
+				$tgt_host      = $a_id;
+				$ds_names      = ':traffic_in:traffic_out';
 			} elseif ($b_id > 0 && $int_in != '') {
-				print "  We'll use the B end and reverse it.\n";
+				print '  We\'ll use the B end and reverse it.' . PHP_EOL;
 
 				$tgt_interface = $int_in;
-				$tgt_host = $b_id;
-				$ds_names = ":traffic_out:traffic_in";
+				$tgt_host      = $b_id;
+				$ds_names      = ':traffic_out:traffic_in';
 			} else {
-				print "  No useful ends on this link - fill in more detail (host id, IP) on either NODE $a or $b\n";
+				print "  No useful ends on this link - fill in more detail (host id, IP) on either NODE $a or $b" . PHP_EOL;
 			}
 
-			if ($tgt_host != "") {
-				$int_list = explode(":::", $tgt_interface);
+			if ($tgt_host != '') {
+				$int_list = explode(':::', $tgt_interface);
 				$total_speed = 0;
 				$total_target = array ();
 
 				foreach ($int_list as $interface) {
-					print "  Interface: $interface\n";
+					print '  Interface: ' . $interface . PHP_EOL;
 
-					$res4 = db_fetch_row_prepared("SELECT dl.id, data_source_path, dl.snmp_index
+					$res4 = db_fetch_row_prepared('SELECT dl.id, data_source_path, dl.snmp_index
 						FROM data_template_data AS dtd
 						INNER JOIN data_local AS dl
 						ON dl.id = dtd.local_data_id
@@ -337,7 +320,7 @@ foreach ($map->links as $link) {
 						AND hsc.field_value = ?
 						AND dl.data_template_id = ?
 						ORDER BY dtd.id DESC
-						LIMIT 1",
+						LIMIT 1',
 						array($tgt_host, 'ifName', 'ifDescr', 'ifAlias', $interface, $data_template_id));
 
 					// if we found one, add the interface to the targets for this link
@@ -345,7 +328,7 @@ foreach ($map->links as $link) {
 						$target        = $res4['data_source_path'];
 						$local_data_id = $res4['id'];
 						$snmp_index    = $res4['snmp_index'];
-						$tgt           = str_replace("<path_rra>", $config["rra_path"], $target);
+						$tgt           = str_replace('<path_rra>', $config['rra_path'], $target);
 						$tgt           = $tgt . $ds_names;
 
 						if ($use_dsstats) {
@@ -368,18 +351,18 @@ foreach ($map->links as $link) {
 							);
 						}
 
-						$speed = db_fetch_cell_prepared("SELECT field_value
+						$speed = db_fetch_cell_prepared('SELECT field_value
 							FROM host_snmp_cache
-							WHERE field_name = 'ifSpeed'
+							WHERE field_name = "ifSpeed"
 							AND host_id = ?
-							AND snmp_index = ?",
+							AND snmp_index = ?',
 							array($tgt_host, $snmp_index));
 
-						$hspeed = db_fetch_cell_prepared("SELECT field_value
+						$hspeed = db_fetch_cell_prepared('SELECT field_value
 							FROM host_snmp_cache
-							WHERE field_name = 'ifHighSpeed'
+							WHERE field_name = "ifHighSpeed"
 							AND host_id = ?
-							AND snmp_index = ?",
+							AND snmp_index = ?',
 							array($tgt_host, $snmp_index));
 
 						if ($hspeed && intval($hspeed) > 20) {
@@ -388,34 +371,34 @@ foreach ($map->links as $link) {
 							$total_speed += intval($speed);
 						}
 
-						$graph_id = db_fetch_cell_prepared("SELECT gti.local_graph_id
+						$graph_id = db_fetch_cell_prepared('SELECT gti.local_graph_id
 							FROM graph_templates_item
 							INNER JOIN data_template_rrd AS dtr
 							ON gti.task_item_id = dtr.id
 							WHERE local_data_id = ?
-							LIMIT 1",
+							LIMIT 1',
 							array($local_data_id));
 
 						if ($graph_id) {
 							$overlib = sprintf($fmt_cacti_graph, $graph_id);
 							$infourl = sprintf($fmt_cacti_graphpage, $graph_id);
 
-							print "    INFO $infourl\n";
-							print "    OVER $overlib\n";
+							print '    INFO ' . $infourl . PHP_EOL;
+							print '    OVER ' .$overlib  . PHP_EOL;
 
-							$map->links[$name]->overliburl[IN][] = $overlib;
+							$map->links[$name]->overliburl[IN][]  = $overlib;
 							$map->links[$name]->overliburl[OUT][] = $overlib;
-							$map->links[$name]->infourl[IN] = $infourl;
-							$map->links[$name]->infourl[OUT] = $infourl;
+							$map->links[$name]->infourl[IN]       = $infourl;
+							$map->links[$name]->infourl[OUT]      = $infourl;
 						} else {
-							print " Couldn't find a graph that uses this rrd??\n";
+							print ' Couldn\'t find a graph that uses this rrd?' . PHP_EOL;
 						}
 					} else {
-						print "  Failed to find RRD file for $tgt_host/$interface\n";
+						print "  Failed to find RRD file for $tgt_host/$interface" . PHP_EOL;
 					}
 				}
 
-				print "    SPEED $total_speed\n";
+				print '    SPEED ' . $total_speed . PHP_EOL;
 
 				$map->links[$name]->max_bandwidth_in = $total_speed;
 				$map->links[$name]->max_bandwidth_out = $total_speed;
@@ -427,7 +410,7 @@ foreach ($map->links as $link) {
 						if ($total_speed <= $map_speed) {
 							$map->links[$name]->width = $width_map[$map_speed];
 
-							print "    WIDTH " . $width_map[$map_speed] . "\n";
+							print '    WIDTH ' . $width_map[$map_speed] . PHP_EOL;
 
 							continue 2;
 						}
@@ -435,12 +418,38 @@ foreach ($map->links as $link) {
 				}
 			}
 		} else {
-			print "Skipping link with targets\n";
+			print 'Skipping link with targets' . PHP_EOL;
 		}
 	}
 }
 
 $map->WriteConfig($outputmapfile);
 
-print "Wrote config to $outputmapfile\n";
+print 'Wrote config to ' . $outputmapfile . PHP_EOL;
+
+function display_version() {
+    global $config;
+
+    if (!function_exists('plugin_weathermap_version')) {
+        include_once($config['base_path'] . '/plugins/weathermap/setup.php');
+    }
+
+	$copyright_years = '2008-2023';
+
+    $info = plugin_weathermap_version();
+
+    print 'Weathermap Cacti Integrate Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . $copyright_years . PHP_EOL;
+}
+
+function display_help() {
+	display_version();
+
+	print PHP_EOL;
+
+	print 'usage: cacti-integrate.php --input=S --output=S [--target-rrdtool] [--targetdsstats]' . PHP_EOL . PHP_EOL;
+	print ' --output {filename}     -  write new config to this file' . PHP_EOL;
+	print ' --target-rrdtool        -  generate rrd file targets (default)' . PHP_EOL;
+	print ' --target-dsstats        -  generate DSStats targets' . PHP_EOL;
+	print ' --debug                 -  enable debugging' . PHP_EOL;
+}
 

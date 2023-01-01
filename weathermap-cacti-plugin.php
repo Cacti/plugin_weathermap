@@ -40,9 +40,7 @@ $guest_account  = true;
 
 chdir('../../');
 include_once('./include/auth.php');
-
-// include the weathermap class so that we can get the version
-include_once(__DIR__ . '/lib/WeatherMap.class.php');
+include_once('./plugins/weathermap/lib/WeatherMap.class.php');
 
 $showversionbox = read_config_option('weathermap_showversion');
 

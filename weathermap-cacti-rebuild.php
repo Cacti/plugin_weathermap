@@ -36,12 +36,12 @@
  +-------------------------------------------------------------------------+
 */
 
-include(__DIR__ . '/../../injclude/cli_check.php');
+chdir('../../');
+include('./include/cli_check.php');
+require_once('./plugins/weathermap/setup.php');
+require_once('./plugins/weathermap/lib/poller-common.php');
 
 $cacti_base = $config['base_path'];
-
-require_once(__DIR__ . '/setup.php');
-require_once(__DIR__ . '/lib/poller-common.php');
 
 weathermap_setup_table();
 

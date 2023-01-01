@@ -36,7 +36,8 @@
  +-------------------------------------------------------------------------+
 */
 
-include(__DIR__ . '/../../../include/cli_check.php');
+chdir('../../../');
+include('./include/cli_check.php');
 include_once($config['lib_path'] . '/snmp.php');
 
 $cacti_base = $config['base_path'];
@@ -45,27 +46,13 @@ $cacti_url  = $config['url_path'];
 $width  = 4000;
 $height = 3000;
 
-// check if the goalposts have moved
-if (is_dir($cacti_base) && file_exists($cacti_base."/include/global.php")) {
-	// include the cacti-config, so we know about the database
-	include_once($cacti_base."/include/global.php");
-	$config['base_url'] = (isset($config['url_path'])? $config['url_path'] : $cacti_url);
-} elseif (is_dir($cacti_base) && file_exists($cacti_base."/include/config.php")) {
-	// include the cacti-config, so we know about the database
-	include_once($cacti_base."/include/config.php");
-	$config['base_url'] = (isset($config['url_path'])? $config['url_path'] : $cacti_url);
-} else {
-	print "You need to fix your editor-config.php\n";
-	exit();
-}
-
 # figure out which template has interface traffic. This might be wrong for you.
-$data_template    = "Interface - Traffic";
+$data_template_hash = 'fd841e8bb822927289b7acbc031f3d7e';
 
 $data_template_id = db_fetch_cell_prepared("SELECT id
 	FROM data_template
-	WHERE name = ?",
-	array($data_template));
+	WHERE hash = ?",
+	array($data_template_hash));
 
 $queryrows = db_fetch_assoc("SELECT h.snmp_version, h.snmp_community, h.snmp_username,
 	h.snmp_password, h.snmp_auth_protocol, h.snmp_priv_passphrase, h.snmp_priv_protocol,

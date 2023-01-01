@@ -36,15 +36,16 @@
  +-------------------------------------------------------------------------+
 */
 
-chdir(__DIR__);
-require_once('../../include/auth.php');
-require_once('lib/editor.inc.php');
-require_once('lib/editor.actions.php');
-require_once('lib/WeatherMap.class.php');
-require_once('lib/geometry.php');
-require_once('lib/WMPoint.class.php');
-require_once('lib/WMVector.class.php');
-require_once('lib/WMLine.class.php');
+chdir('../../');
+
+require_once('./include/auth.php');
+require_once('./plugins/weathermap/lib/editor.inc.php');
+require_once('./plugins/weathermap/lib/editor.actions.php');
+require_once('./plugins/weathermap/lib/WeatherMap.class.php');
+require_once('./plugins/weathermap/lib/geometry.php');
+require_once('./plugins/weathermap/lib/WMPoint.class.php');
+require_once('./plugins/weathermap/lib/WMVector.class.php');
+require_once('./plugins/weathermap/lib/WMLine.class.php');
 
 // If we're embedded in the Cacti UI (included from weathermap-cacti-plugin-editor.php), then authentication has happened. Enable the editor.
 $editor_name  = 'weathermap-cacti-plugin-editor.php';

@@ -36,7 +36,7 @@
  +-------------------------------------------------------------------------+
 */
 
-require_once 'HTML_ImageMap.class.php';
+require_once('HTML_ImageMap.class.php');
 
 class WeatherMapNode extends WeatherMapItem {
 	var $owner;

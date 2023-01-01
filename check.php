@@ -271,22 +271,6 @@ $functions = array(
 
 $results = array();
 
-if ($environment == 'CLI') {
-	// Console_Getopt is only needed by the CLI tool.
-	$included = false;
-	if (file_exists('Console/Getopt.php')) {
-		$included = include_once('Console/Getopt.php');
-	}
-
-	if ($included != 1) {
-		$noncritical++;
-
-		print wordwrap('The Console_Getopt PEAR module is not available. The CLI weathermap tool will not run without it (that may not be a problem, if you only intend to use Cacti).' . PHP_EOL . PHP_EOL);
-	} else {
-		print wordwrap('The Console_Getopt PEAR module is available. That\'s good!' . PHP_EOL . PHP_EOL);
-	}
-}
-
 foreach ($functions as $function=>$details) {
 	$exists = '';
 	$notes  = '';

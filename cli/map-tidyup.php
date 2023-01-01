@@ -39,8 +39,9 @@
 //
 // Change the uncommented line to point to your Cacti installation
 //
-include(__DIR__ . '/../../../include/cli_check.php');
-require_once('../lib/WeatherMap.class.php');
+chdir('../../../');
+include('./include/cli_check.php');
+include_once('./plugins/weathermap/lib/WeatherMap.class.php');
 
 $cacti_base = $config['base_path'];
 
@@ -51,56 +52,64 @@ $converted    = 0;
 $candidates   = 0;
 $totaltargets = 0;
 
-$short_opts = '';
-$long_opts  = array (
+$shortopts = 'VvHh';
+$longopts  = array (
+	'input:',
+	'output:',
+	'debug',
 	'help',
-	'input=',
-	'output=',
-	'debug'
+	'version'
 );
 
-$args = $cg->readPHPArgv();
-$ret  = $cg->getopt($args, $short_opts, $long_opts);
+$options = getopt($shortopts, $longopts);
 
-if (PEAR::isError($ret)) {
-	die('Error in command line: ' . $ret->getMessage() . "\n (try --help)\n");
-}
-
-$gopts = $ret[0];
-
-if (count($gopts) > 0) {
-	foreach ($gopts as $o) {
-		switch ($o[0]) {
-			case '--debug':
+if (cacti_sizeof($options) > 0) {
+	foreach ($options as $arg => $value) {
+		switch ($arg) {
+			case 'debug':
 				$weathermap_debugging = true;
 
 				break;
-			case '--input':
-				$inputfile = $o[1];
+			case 'input':
+				$inputfile = $value;
 
 				break;
-			case '--output':
-				$outputfile = $o[1];
+			case 'output':
+				$outputfile = $value;
 
 				break;
 			case 'help':
-			default:
-				print "Weathermap DSStats converter. Converts rrd targets to DSStats\n";
-				print "-------------------------------------------------------------\n";
-				print "Usage: php convert-to-dstats.php [options]\n\n";
-				print " --input {filename}         - File to read from\n";
-				print " --output {filename}        - File to write to\n";
-				print " --debug                    - Enable debugging output\n";
-				print " --help                    - Show this message\n";
+			case 'H':
+			case 'h':
+				display_help();
 
-                exit();
+				exit();
+
+				break;
+			case 'version':
+			case 'V':
+			case 'v':
+				display_version();
+
+				exit();
+
+				break;
+			default:
+				print 'ERROR: Invalid Parameter ' . $arg . PHP_EOL . PHP_EOL;
+
+				display_help();
+
+				exit(1);
 		}
 	}
 }
 
 if ($inputfile === '' || $outputfile === '') {
-	print "You must specify an input and output file. See --help.\n";
-	exit();
+	print 'FATAL: You must specify an input and output file.' . PHP_EOL;
+
+	display_help();
+
+	exit(1);
 }
 
 $map = new WeatherMap;
@@ -108,7 +117,7 @@ $map = new WeatherMap;
 $map->context = 'cacti';
 $map->rrdtool = read_config_option('path_rrdtool');
 
-print 'Reading config from '.$inputfile."\n";
+print 'Reading config from ' . $inputfile . PHP_EOL;
 
 $map->ReadConfig($inputfile);
 
@@ -122,5 +131,29 @@ $map->DrawMap(null);
 
 $map->WriteConfig($outputfile);
 
-print 'Wrote new config to '.$outputfile."\n";
+print 'Wrote new config to ' . $outputfile . PHP_EOL;
+
+function display_help() {
+	display_version();
+
+	print 'usage: php convert-to-dstats.php --inpude=S --output=S [--debug]' . PHP_EOL . PHP_EOL;
+	print ' --input={filename}         - File to read from' . PHP_EOL;
+	print ' --output={filename}        - File to write to' . PHP_EOL;
+	print ' --debug                    - Enable debugging output' . PHP_EOL;
+	print ' --help                     - Show this message' . PHP_EOL;
+}
+
+function display_version() {
+	global $config;
+
+	if (!function_exists('plugin_weathermap_version')) {
+		include_once($config['base_path'] . '/plugins/weathermap/setup.php');
+	}
+
+	$copyright_years = '2008-2023';
+
+	$info = plugin_weathermap_version();
+
+	print 'Weathermap Map Tidy Up Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . $copyright_years . PHP_EOL;
+}
 

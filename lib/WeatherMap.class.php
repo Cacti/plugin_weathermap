@@ -36,12 +36,12 @@
  +-------------------------------------------------------------------------+
 */
 
-require_once 'HTML_ImageMap.class.php';
+require_once('HTML_ImageMap.class.php');
 
-require_once 'WeatherMap.functions.php';
-require_once 'geometry.php';
-require_once 'WeatherMapNode.class.php';
-require_once 'WeatherMapLink.class.php';
+require_once('WeatherMap.functions.php');
+require_once('geometry.php');
+require_once('WeatherMapNode.class.php');
+require_once('WeatherMapLink.class.php');
 
 $weathermap_debugging  = false;
 $weathermap_map        = '';
@@ -812,12 +812,12 @@ class WeatherMap extends WeatherMapBase {
 			while ($file=readdir($dh)) {
 				$realfile = $dir . '/' . $file;
 
-				if ( is_file($realfile) && preg_match( '/\.php$/', $realfile ) ) {
+				if (is_file($realfile) && preg_match( '/\.php$/', $realfile)) {
 					wm_debug("Loading $type Plugin class from $file");
 
-					include_once( $realfile );
+					include_once($realfile);
 
-					$class = preg_replace( "/\.php$/", "", $file );
+					$class = preg_replace("/\.php$/", "", $file);
 
 					if ($type == 'data') {
 						$this->datasourceclasses [$class]= $class;
@@ -4410,5 +4410,5 @@ class WeatherMap extends WeatherMapBase {
 
 		fclose($fd);
 	}
-};
+}
 
