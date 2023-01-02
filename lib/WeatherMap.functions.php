@@ -36,6 +36,91 @@
  +-------------------------------------------------------------------------+
 */
 
+function get_allowed_weathermaps($userid, $group_id = null) {
+	// Special Group Limiter
+	$sql_where = '';
+	if ($group_id !== null) {
+		$sql_where = 'AND wm.group_id = ' . $group_id;
+	}
+
+	$maps = db_fetch_assoc_prepared("SELECT wm.*
+		FROM weathermap_maps AS wm
+		INNER JOIN (
+			SELECT DISTINCT mapid
+			FROM weathermap_auth AS wa
+			WHERE wa.userid = 0
+			UNION
+			SELECT DISTINCT mapid
+			FROM weathermap_auth AS wa
+			LEFT JOIN user_auth AS ua
+			ON wa.userid = ua.id
+			WHERE wa.userid = ?
+			UNION
+			SELECT DISTINCT mapid
+			FROM weathermap_auth AS wa
+			LEFT JOIN user_auth_group AS uag
+			ON uag.id = -wa.userid
+			INNER JOIN user_auth_group_members AS uagm
+			ON uag.id = uagm.group_id
+			AND uagm.user_id = ?
+		) AS rs
+		ON rs.mapid = wm.id
+		WHERE wm.active = 'on'
+		$sql_where",
+		array($userid, $userid));
+
+	return $maps;
+}
+
+function is_weathermap_allowed($mapid, $userid, $group_id = null) {
+	// Special Group Limiter
+	$sql_where = '';
+	if ($group_id !== null) {
+		$sql_where = 'AND group_id = ' . $group_id;
+	}
+
+	// Try all users first
+	$allowed = db_fetch_cell_prepared("SELECT mapid
+		FROM weathermap_auth
+		WHERE userid = 0
+		$sql_where
+		AND mapid = ?",
+		array($mapid));
+
+	// Try user first
+	if ($allowed) {
+		return true;
+	}
+
+	$allowed = db_fetch_cell_prepared("SELECT mapid
+		FROM weathermap_auth
+		WHERE userid = ?
+		$sql_where
+		AND mapid = ?",
+		array($userid, $mapid));
+
+	// Try user second
+	if ($allowed) {
+		return true;
+	}
+
+	$allowed - db_fetch_cell_prepared("SELECT mapid
+		FROM weathermap_auth AS wa
+		INNER JOIN user_auth_group AS uag
+		ON uag.id = -wa.userid
+		WHERE uag.id = ?
+		$sql_where
+		AND mapid = ?",
+		array(-$userid, $mapid));
+
+	// Try user second
+	if ($allowed) {
+		return true;
+	}
+
+	return false;
+}
+
 function wm_debug($string) {
 	global $weathermap_debugging;
 	global $weathermap_map;
