@@ -38,8 +38,8 @@
 
 chdir('../../');
 include('./include/cli_check.php');
-require_once('./plugins/weathermap/setup.php');
-require_once('./plugins/weathermap/lib/poller-common.php');
+include_once($config['base_path'] . '/plugins/weathermap/setup.php');
+include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
 
 $cacti_base = $config['base_path'];
 
