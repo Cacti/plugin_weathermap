@@ -17,8 +17,14 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- 1.00 ---
+--- 1.00 Beta 1 ---
+* feature#43: Allow Weathermap Permissions to Include Cacti User Groups
+* issue#18: No scrolling list of allowed users
+* issue#37: Need to clear iCCP chunk from png files for newer libpng
+* issue#46: 1.0 - QA When adding datasources or graphs using the Add button, a space will always be added
+* issue#47: 1.0 - QA Don't assume that the Cacti poller has write access to the images folder and subfolders
 
+--- 1.00 ---
 * FIXED  - General support for PHP 8.2
 * FIXED  - Removed any "mysql*" function calls
 * FIXED  - Use Cacti Database API as applicable

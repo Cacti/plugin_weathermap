@@ -54,6 +54,11 @@ $actions = array(
 	'7' => __('Rebuild Now', 'weathermap')
 );
 
+$perm_actions = array(
+	'1' => __('Grant Access', 'weathermap'),
+	'2' => __('Revoke Access', 'weathermap')
+);
+
 set_default_action();
 
 switch (get_request_var('action')) {
@@ -331,7 +336,52 @@ function weathermap_form_actions() {
 	global $actions;
 
 	/* if we are to save this form, instead of display it */
-	if (isset_request_var('selected_items')) {
+	if (isset_request_var('associate_perms')) {
+		$removed = $added = 0;
+
+		$mapid = get_filter_request_var('mapid');
+
+		foreach ($_POST as $var => $val) {
+			if (preg_match('/^chk_([0-9:a-z]+)$/', $var, $matches)) {
+				$parts = explode(':', $matches[1]);
+
+				/* ================= input validation ================= */
+				input_validate_input_number($parts[0]);
+				/* ==================================================== */
+
+                if (get_nfilter_request_var('drp_action') == '1') {
+					$added++;
+
+					if ($parts[1] == 'group') {
+						db_execute_prepared('REPLACE INTO weathermap_auth
+							(userid, usergroupid, mapid)
+							VALUES (?, ?, ?)',
+							array(-$parts[0], 0, $mapid));
+					} else {
+						db_execute_prepared('REPLACE INTO weathermap_auth
+							(userid, usergroupid, mapid)
+							VALUES (?, ?, ?)',
+							array($parts[0], 0, $mapid));
+					}
+                } else {
+					$removed++;
+
+					if ($parts[1] == 'group') {
+						db_execute_prepared('DELETE FROM weathermap_auth
+							WHERE userid = ? AND usergroupid = ? AND mapid = ?',
+							array(-$parts[0], 0, $mapid));
+					} else {
+						db_execute_prepared('DELETE FROM weathermap_auth
+							WHERE userid = ? AND usergroupid = ? AND mapid = ?',
+							array($parts[0], 0, $mapid));
+					}
+                }
+            }
+        }
+
+        header('Location: weathermap-cacti-plugin-mgmt.php?action=perms_edit&header=false&id=' . get_nfilter_request_var('mapid'));
+        exit;
+	} elseif (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 
 		if ($selected_items != false) {
@@ -979,27 +1029,34 @@ function maplist() {
 
 			form_selectable_cell($url, $map['id']);
 
-			// Get the current users for this map
-			$userlist = db_fetch_assoc_prepared('SELECT *
+			$ulist = db_fetch_row_prepared('SELECT
+				SUM(CASE WHEN userid = 0 THEN 1 ELSE NULL END) AS special,
+				SUM(CASE WHEN userid > 0 THEN 1 ELSE NULL END) AS users,
+				SUM(CASE WHEN userid < 0 THEN 1 ELSE NULL END) AS groups
 				FROM weathermap_auth
 				WHERE mapid = ?
-				ORDER BY userid',
+				HAVING special > 0 OR users > 0 OR groups > 0',
 				array($map['id']));
-
-			$mapusers = array();
-			foreach ($userlist as $user) {
-				if (array_key_exists($user['userid'], $users)) {
-					$mapusers[] = $users[$user['userid']];
-				}
-			}
 
 			$url = '<a class="pic linkEditMain" title="' . __esc('Click to edit permissions', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $map['id'] . '&header=false') . '">';
 
-			if (count($mapusers) == 0) {
-				$url .= __('(no users)', 'weathermap');
+			if (cacti_sizeof($ulist) == 0) {
+				$url .= __('No Users', 'weathermap');
 			} else {
-				$url .= join(', ', $mapusers);
+				$found = false;
+				if ($ulist['special'] > 0) {
+					$found = true;
+					$url .= __('All Users', 'weathermap');
+				}
+
+				if ($ulist['groups'] > 0) {
+					$url .= ($found ? ', ':'') . __n('1 Group', $ulist['groups'] . ' Groups', $ulist['groups'], 'weathermap');
+				}
+
+				if ($ulist['users'] > 0) {
+					$url .= ($found ? ', ':'') . __n('1 User', $ulist['users'] . ' Users', $ulist['users'], 'weathermap');
+				}
 			}
 
 			$url .= '</a>';
@@ -1423,79 +1480,404 @@ function perms_delete_user($mapid, $userid) {
 		array($mapid, $userid));
 }
 
-function perms_list($id) {
+function perms_request_validation() {
+    /* ================= input validation and session storage ================= */
+    $filters = array(
+		'rows' => array(
+			'filter' => FILTER_VALIDATE_INT,
+			'pageset' => true,
+			'default' => '-1'
+		),
+		'page' => array(
+			'filter' => FILTER_VALIDATE_INT,
+			'default' => '1'
+		),
+		'type' => array(
+			'filter' => FILTER_VALIDATE_INT,
+			'pageset' => true,
+			'default' => '-1'
+		),
+		'filter' => array(
+			'filter' => FILTER_DEFAULT,
+			'pageset' => true,
+			'default' => ''
+		)
+    );
+
+    validate_store_request_vars($filters, 'sess_wm_perfs');
+    /* ================= input validation ================= */
+}
+
+function perms_filter($id) {
+	global $item_rows;
+
 	$title = db_fetch_cell_prepared('SELECT titlecache
 		FROM weathermap_maps
 		WHERE id = ?',
 		array($id));
 
-	$auth_sql = "SELECT * FROM weathermap_auth WHERE mapid = $id ORDER BY userid";
+	html_start_box(__('Weathermap Permissions for Map [ %s ]', $title, 'weathermap'), '100%', '', '3', 'center', '');
+	?>
+	<tr class='even'>
+		<td>
+			<form id='form_perms' action='weathermap-cacti-plugin-mgmt.php'>
+			<table class='filterTable'>
+				<tr>
+					<td>
+						<?php print __('Search', 'weathermap');?>
+					</td>
+					<td>
+						<input type='text' class='ui-state-default ui-corner-all' id='filter' size='25' value='<?php print html_escape_request_var('filter', 'weathermap');?>'>
+					</td>
+					<td>
+						<?php print __('Type', 'weathermap');?>
+					</td>
+					<td>
+						<select id='type' onChange='applyFilter()'>
+							<option value='-1'<?php print(get_request_var('type') == '-1' ? ' selected>':'>') . __('All', 'weathermap');?></option>
+							<option value='0'<?php print(get_request_var('type') == '0' ? ' selected>':'>') . __('Users', 'weathermap');?></option>
+							<option value='1'<?php print(get_request_var('type') == '1' ? ' selected>':'>') . __('User Groups', 'weathermap');?></option>
+						</select>
+					</td>
+					<td>
+						<?php print __('Rows', 'weathermap');?>
+					</td>
+					<td>
+						<select id='rows' onChange='applyFilter()'>
+							<option value='-1'<?php print(get_request_var('rows') == '-1' ? ' selected>':'>') . __('Default', 'weathermap');?></option>
+							<?php
+							if (cacti_sizeof($item_rows)) {
+								foreach ($item_rows as $key => $value) {
+									print "<option value='" . $key . "'";
 
-	$query = db_fetch_assoc('SELECT id, username FROM user_auth ORDER BY username');
+									if (get_request_var('rows') == $key) {
+										print ' selected';
+									} print '>' . $value . "</option>\n";
+								}
+							}
+	?>
+						</select>
+					</td>
+					<td>
+						<span>
+							<input type='button' class='ui-button ui-corner-all ui-widget' value='<?php print __esc_x('Button: use filter settings', 'Go', 'weathermap');?>' id='refresh'>
+							<input type='button' class='ui-button ui-corner-all ui-widget' value='<?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap');?>' id='clear'>
+							<input type='hidden' value='<?php print $id;?>' id='mapid'>
+						</span>
+					</td>
+				</tr>
+			</table>
+			</form>
+			<script type='text/javascript'>
 
-	$users[0] = 'Anyone';
+			function applyFilter() {
+				strURL  = 'weathermap-cacti-plugin-mgmt.php?';
+				strURL += '&action=perms_edit';
+				strURL += '&header=false';
+				strURL += '&filter='+$('#filter').val();
+				strURL += '&type='+$('#type').val();
+				strURL += '&id='+$('#mapid').val();
+				strURL += '&rows='+$('#rows').val();
+				loadPageNoHeader(strURL);
+			}
 
-	foreach ($query as $user) {
-		$users[$user['id']] = $user['username'];
-	}
+			function clearFilter() {
+				strURL = 'weathermap-cacti-plugin-mgmt.php?action=perms_edit&header=false&reset=1&id='+$('#mapid').val();
+				loadPageNoHeader(strURL);
+			}
 
-	$auth_results = db_fetch_assoc($auth_sql);
-	$mapusers     = array();
-	$mapuserids   = array();
+			$(function() {
+				$('#refresh').click(function() {
+					applyFilter();
+				});
 
-	foreach ($auth_results as $user) {
-		if (isset($users[$user['userid']])) {
-			$mapusers[]   = $users[$user['userid']];
-			$mapuserids[] = $user['userid'];
+				$('#clear').click(function() {
+					clearFilter();
+				});
+
+				$('#form_perms').submit(function(event) {
+					event.preventDefault();
+					applyFilter();
+				});
+			});
+
+			</script>
+		</td>
+	</tr>
+	<?php
+
+	html_end_box();
+}
+
+function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
+	$sql_where1 = '';
+	$sql_where2 = '';
+
+	$guest_user    = read_config_option('guest_user');
+	$template_user = read_config_option('user_template');
+
+	if (get_request_var('filter') != '') {
+		if (get_request_var('type') == -1 || get_request_var('type') == 0) {
+			$sql_params[] = get_request_var('id');
+
+			$sql_where1   = 'AND (username LIKE ? OR full_name LIKE ?)';
+			$sql_params[] = '%' . get_nfilter_request_var('filter') . '%';
+			$sql_params[] = '%' . get_nfilter_request_var('filter') . '%';
+
+			if ($guest_user > 0) {
+				$sql_where1  .= ' AND id != ?';
+				$sql_params[] = $guest_user;
+			}
+
+			if ($template_user > 0) {
+				$sql_where1  .= ' AND id != ?';
+				$sql_params[] = $template_user;
+			}
+		}
+
+		if (get_request_var('type') == -1 || get_request_var('type') == 1) {
+			$sql_where2   = 'AND (name LIKE ? OR description LIKE ?)';
+
+			$sql_params[] = get_request_var('id');
+			$sql_params[] = '%' . get_nfilter_request_var('filter') . '%';
+			$sql_params[] = '%' . get_nfilter_request_var('filter') . '%';
+		}
+	} else {
+		if (get_request_var('type') == -1 || get_request_var('type') == 0) {
+			$sql_params[] = get_request_var('id');
+
+			if ($guest_user > 0) {
+				$sql_where1  .= ' AND id != ?';
+				$sql_params[] = $guest_user;
+			}
+
+			if ($template_user > 0) {
+				$sql_where1  .= ' AND id != ?';
+				$sql_params[] = $template_user;
+			}
+		}
+
+		if (get_request_var('type') == -1 || get_request_var('type') == 1) {
+			$sql_params[] = get_request_var('id');
 		}
 	}
 
-	$userselect = '';
-	foreach ($users as $uid => $name) {
-		if (!in_array($uid, $mapuserids)) $userselect .= "<option value=\"$uid\">$name</option>\n";
+	if ($apply_limits) {
+		$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
 	}
 
-	html_start_box(__('Edit permissions for Weathermap [ %s ]', $title, 'weathermap'), '100%', '', '3', 'center', '');
+	if (get_request_var('type') == -1) {
+		$records = db_fetch_assoc_prepared("SELECT *
+			FROM (
+				SELECT '0' AS id, 'Everyone' AS name, 'All Users in System' AS description, 'special' AS type, '-1' AS allowed, 'N/A' AS realm
+				UNION ALL
+				SELECT id, username AS name, full_name AS description, 'user' AS type, wa.mapid AS allowed, realm
+				FROM user_auth AS ua
+				LEFT JOIN weathermap_auth AS wa
+				ON ua.id = wa.userid
+				AND ua.enabled = 'on'
+				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
+				$sql_where1
+				UNION ALL
+				SELECT id, name, description, 'group' AS type, wa.mapid AS allowed, 'N/A' AS realm
+				FROM user_auth_group AS uag
+				LEFT JOIN weathermap_auth AS wa
+				ON uag.id = -wa.userid
+				AND uag.enabled = 'on'
+				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
+				$sql_where2
+			) AS rs
+			$sql_limit",
+			$sql_params);
 
-	html_header(array(__('Username', 'weathermap'), ''));
+		$total_rows = db_fetch_cell_prepared("SELECT SUM(`rows`) + 1
+			FROM (
+				SELECT COUNT(*) AS `rows`
+				FROM user_auth AS ua
+				LEFT JOIN weathermap_auth AS wa
+				ON ua.id = wa.userid
+				AND ua.enabled = 'on'
+				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
+				$sql_where1
+				UNION ALL
+				SELECT COUNT(*) AS `rows`
+				FROM user_auth_group AS uag
+				LEFT JOIN weathermap_auth AS wa
+				ON uag.id = -wa.userid
+				AND uag.enabled = 'on'
+				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
+				$sql_where2
+			) AS rs",
+			$sql_params);
+	} elseif (get_request_var('type') == 0) {
+		$records = db_fetch_assoc_prepared("SELECT *
+			FROM (
+				SELECT '0' AS id, 'Everyone' AS name, 'All Users in System' AS description, 'special' AS type, '-1' AS allowed, 'N/A' AS realm
+				UNION ALL
+				SELECT id, username AS name, full_name AS description, 'user' AS type, wa.mapid AS allowed, realm
+				FROM user_auth AS ua
+				LEFT JOIN weathermap_auth AS wa
+				ON ua.id = wa.userid
+				AND ua.enabled = 'on'
+				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
+				$sql_where1
+			) AS rs
+			$sql_limit",
+			$sql_params);
 
-	$n = 0;
+		$total_rows = db_fetch_cell_prepared("SELECT COUNT(*) + 1
+			FROM user_auth AS ua
+			LEFT JOIN weathermap_auth AS wa
+			ON ua.id = wa.userid
+			AND ua.enabled = 'on'
+			WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
+			$sql_where1",
+			$sql_params);
+	} else {
+		$records = db_fetch_assoc_prepared("SELECT *
+			FROM (
+				SELECT '0' AS id, 'Everyone' AS name, 'All Users in System' AS description, 'special' AS type, '-1' AS allowed, 'N/A' AS realm
+				UNION ALL
+				SELECT id, name, description, 'group' AS type, wa.mapid AS allowed, 'N/A' AS realm
+				FROM user_auth_group AS uag
+				LEFT JOIN weathermap_auth AS wa
+				ON uag.id = -wa.userid
+				AND uag.enabled = 'on'
+				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
+				$sql_where2
+			) AS rs
+			$sql_limit",
+			$sql_params);
 
-	foreach ($mapuserids as $user) {
-		form_alternate_row();
-
-		print '<td>' . html_escape($users[$user]) . '</td>';
-		print '<td class="right">
-			<a class="delete deleteMarker fa fa-times" title="' . __esc('Remove permissions for this user to see this Map', 'weathermap') . '"
-				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=perms_delete_user&mapid=' . $id . '&userid=' . $user) . '">
-			</a>
-		</td>';
-
-		print '</tr>';
-
-		$n++;
+		$total_rows = db_fetch_cell_prepared("SELECT COUNT(*) + 1
+			FROM user_auth_group AS uag
+			LEFT JOIN weathermap_auth AS wa
+			ON uag.id = -wa.userid
+			AND uag.enabled = 'on'
+			WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
+			$sql_where2",
+			$sql_params);
 	}
 
-	if ($n == 0) {
-		print '<tr><td><em><b>' . __('Nobody can see this Map', 'weathermap') . '</em></td></tr>';
+	return $records;
+}
+
+function perms_list($id) {
+	global $perm_actions;
+
+	perms_request_validation();
+
+	perms_filter($id);
+
+	$total_rows = 0;
+	$perm_records = array();
+
+	if (get_request_var('rows') == '-1') {
+		$rows = read_config_option('num_rows_table');
+	} else {
+		$rows = get_request_var('rows');
 	}
 
-	html_end_box();
+	$perm_records = perms_get_records($total_rows, $rows);
+
+	$nav = html_nav_bar('weathermap-cacti-plugin-mgmt.php?action=perms_edit&filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 5, __('Users or Groups', 'weathermap'), 'page', 'main');
+
+	form_start('weathermap-cacti-plugin-mgmt.php?action=perms_edit', 'chk');
+
+	print $nav;
 
 	html_start_box('', '100%', '', '3', 'center', '');
 
-	print '<tr>';
+	$display_text = array(
+		array(
+			'display' => __('Account Type', 'weathermap'),
+		),
+		array(
+			'display' => __('User/Group', 'weathermap'),
+		),
+		array(
+			'display' => __('Login Realm', 'weathermap'),
+		),
+		array(
+			'display' => __('UID/GID', 'weathermap'),
+			'align'    => 'center'
+		),
+		array(
+			'display' => __('Full Name/Description', 'weathermap'),
+		),
+		array(
+			'display' => __('Allowed', 'weathermap'),
+		)
+	);
 
-	if ($userselect == '') {
-		print '<td><em>' . __('There aren\'t any users left to add!', 'weathermap') . '</em></td></tr>';
+	html_header_checkbox($display_text, false);
+
+	if (cacti_sizeof($perm_records)) {
+		foreach ($perm_records as $perm) {
+			$rid = $perm['id'] . ':' . $perm['type'];
+
+			if ($perm['allowed'] < 0) {
+				$perm['allowed'] = db_fetch_cell_prepared('SELECT mapid
+					FROM weathermap_auth
+					WHERE userid = 0
+					AND mapid = ?',
+					array($id));
+			}
+
+			form_alternate_row('line' . $rid);
+
+			if ($perm['type'] == 'user') {
+				form_selectable_cell(__('User', 'weathermap'), $rid);
+			} elseif ($perm['type'] == 'group') {
+				form_selectable_cell(__('User Group', 'weathermap'), $rid);
+			} else {
+				form_selectable_cell(__('All Users', 'weathermap'), $rid);
+			}
+
+			form_selectable_cell(filter_value($perm['name'], get_request_var('filter')), $rid);
+
+			if ($perm['realm'] == 'N/A') {
+				$realm = __('N/A', 'weathermap');
+			} elseif ($perm['realm'] == 0) {
+				$realm = __('Local', 'weathermap');
+			} elseif ($perm['realm'] == 2) {
+				$realm = __('Web Basic', 'weathermap');
+			} elseif ($perm['realm'] >= 3) {
+				$realm = __('LDAP/AD', 'weathermap');
+			}
+
+			form_selectable_cell($realm, $rid);
+
+			form_selectable_cell($perm['id'], $rid, '', 'center');
+
+			form_selectable_cell(filter_value($perm['description'], get_request_var('filter')), $rid);
+
+			if ($perm['allowed'] == '') {
+				form_selectable_cell(__('Not Permitted', 'weathermap'), $rid, '', 'deviceDown');
+			} else {
+				form_selectable_cell(__('Permitted', 'weathermap'), $rid, '', 'deviceUp');
+			}
+
+			form_checkbox_cell($perm['name'], $rid);
+
+			form_end_row();
+		}
 	} else {
-		print '<td><form action="">' . __('Allow', 'weathermap') . ' <input type="hidden" name="action" value="perms_add_user"><input type="hidden" name="mapid" value="' . $id . '"><select name="userid">';
-		print $userselect;
-		print '</select> ' . __('to see this Map', 'weathermap') . ' <input type="submit" value="' . __esc('Update', 'weathermap') . '"></form></td>';
-		print '</tr>';
+		print '<tr><td><em><b>' . __('No Users have Access to this Map', 'weathermap') . '</em></td></tr>';
 	}
 
 	html_end_box();
+
+	if (cacti_sizeof($perm_records)) {
+		print $nav;
+	}
+
+	draw_actions_dropdown($perm_actions);
+
+	form_hidden_box('associate_perms', '1', '');
+	form_hidden_box('mapid', $id, '');
+
+	form_end();
 
 	weathermap_back_to();
 }
@@ -1693,8 +2075,6 @@ function weathermap_readonly_settings($id, $title = 'Settings') {
 
 function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 	global $config;
-
-cacti_log("The map is is: $mapid");
 
 	if ($mapid > 0) {
 		$name = db_fetch_cell_prepared('SELECT titlecache

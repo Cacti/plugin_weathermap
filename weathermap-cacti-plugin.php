@@ -58,36 +58,34 @@ switch (get_request_var('action')) {
 		if ($id >= 0) {
 			$imageformat = strtolower(read_config_option('weathermap_output_format'));
 
-			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
+			$userid = $_SESSION['sess_user_id'];
 
-			$map = db_fetch_row_prepared("SELECT wm.*
-				FROM weathermap_auth AS wa
-				INNER JOIN weathermap_maps AS wm
-				ON wm.id = wa.mapid
-				WHERE active = 'on'
-				AND (userid = ? OR userid = 0)
-				AND wm.id = ?
-				LIMIT 1",
-				array($userid, $id));
+			if (is_weathermap_allowed($id, $userid)) {
+				$map = db_fetch_row_prepared("SELECT wm.*
+					FROM weathermap_maps AS wm
+					WHERE active = 'on'
+					AND wm.id = ?",
+					array($id));
 
-			if (cacti_sizeof($map)) {
-				$imagefile = __DIR__ . '/output/' . $map['filehash'] . '.' . $imageformat;
+				if (cacti_sizeof($map)) {
+					$imagefile = __DIR__ . '/output/' . $map['filehash'] . '.' . $imageformat;
 
-				if ($action == 'viewthumb') {
-					$imagefile = __DIR__ . '/output/' . $map['filehash'] . '.thumb.' . $imageformat;
+					if ($action == 'viewthumb') {
+						$imagefile = __DIR__ . '/output/' . $map['filehash'] . '.thumb.' . $imageformat;
+					}
+
+					$orig_cwd = getcwd();
+					chdir(__DIR__);
+
+					header('Content-type: image/png');
+
+					// readfile_chunked($imagefile);
+					readfile($imagefile);
+
+					dir($orig_cwd);
+				} else {
+					// no permission to view this map
 				}
-
-				$orig_cwd = getcwd();
-				chdir(__DIR__);
-
-				header('Content-type: image/png');
-
-				// readfile_chunked($imagefile);
-				readfile($imagefile);
-
-				dir($orig_cwd);
-			} else {
-				// no permission to view this map
 			}
 		}
 
@@ -100,36 +98,34 @@ switch (get_request_var('action')) {
 		}
 
 		if ($id >= 0) {
-			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
+			$userid = $_SESSION['sess_user_id'];
 
-			$map = db_fetch_row_prepared("SELECT wm.*
-				FROM weathermap_auth AS wa
-				INNER JOIN weathermap_maps AS wm
-				ON wm.id = wa.mapid
-				WHERE active = 'on'
-				AND (userid = ? OR userid = 0)
-				AND wm.id = ?
-				LIMIT 1",
-				array($userid, $id));
+			if (is_weathermap_allowed($id, $userid)) {
+				$map = db_fetch_row_prepared("SELECT wm.*
+					FROM weathermap_maps AS wm
+					WHERE active = 'on'
+					AND wm.id = ?",
+					array($id));
 
-			if (cacti_sizeof($map)) {
-				$mapfile  = __DIR__ . '/configs/' . $map['configfile'];
-				$orig_cwd = getcwd();
+				if (cacti_sizeof($map)) {
+					$mapfile  = __DIR__ . '/configs/' . $map['configfile'];
+					$orig_cwd = getcwd();
 
-				chdir(__DIR__);
+					chdir(__DIR__);
 
-				header('Content-type: image/png');
+					header('Content-type: image/png');
 
-				$map = new WeatherMap;
+					$map = new WeatherMap;
 
-				$map->context = '';
-				$map->rrdtool = read_config_option('path_rrdtool');
+					$map->context = '';
+					$map->rrdtool = read_config_option('path_rrdtool');
 
-				$map->ReadConfig($mapfile);
-				$map->ReadData();
-				$map->DrawMap('', '', 250, true, false);
+					$map->ReadConfig($mapfile);
+					$map->ReadData();
+					$map->DrawMap('', '', 250, true, false);
 
-				dir($orig_cwd);
+					dir($orig_cwd);
+				}
 			}
 		}
 
@@ -147,74 +143,72 @@ switch (get_request_var('action')) {
 		}
 
 		if ($id >= 0) {
-			$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
+			$userid = $_SESSION['sess_user_id'];
 
-			$map = db_fetch_row_prepared("SELECT wm.*
-				FROM weathermap_auth AS wa
-				INNER JOIN weathermap_maps AS wm
-				ON wm.id = wa.mapid
-				WHERE active = 'on'
-				AND (userid = ? OR userid = 0)
-				AND wm.id = ?
-				LIMIT 1",
-				array($userid, $id));
+			if (is_weathermap_allowed($id, $userid)) {
+				$map = db_fetch_row_prepared("SELECT wm.*
+					FROM weathermap_maps AS wm
+					WHERE active = 'on'
+					AND wm.id = ?",
+					array($id));
 
-			if (cacti_sizeof($map)) {
-				$maptitle = $map['titlecache'];
+				if (cacti_sizeof($map)) {
+					$maptitle = $map['titlecache'];
 
-				print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='1'>\n";
+					print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='1'>\n";
 
-				?>
-				<tr class='even noprint'>
-					<td>
-						<table class='filterTable'>
-							<tr>
-								<td class='textHeader nowrap'><?php print html_escape($maptitle); ?></td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-				<?php
-				print '<tr><td>';
+					?>
+					<tr class='even noprint'>
+						<td>
+							<table class='filterTable'>
+								<tr>
+									<td class='textHeader nowrap'><?php print html_escape($maptitle); ?></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<?php
+					print '<tr><td>';
 
-				# print "Generating map $id here now from ".$map[0]['configfile'];
+					# print "Generating map $id here now from ".$map[0]['configfile'];
 
-				$confdir = __DIR__ . '/configs/';
+					$confdir = __DIR__ . '/configs/';
 
-				// everything else in this file is inside this else
-				$mapname = $map[0]['configfile'];
-				$mapfile = $confdir . '/' . $mapname;
+					// everything else in this file is inside this else
+					$mapname = $map[0]['configfile'];
+					$mapfile = $confdir . '/' . $mapname;
 
-				$orig_cwd = getcwd();
-				chdir(__DIR__);
+					$orig_cwd = getcwd();
+					chdir(__DIR__);
 
-				$map = new WeatherMap;
-				// $map->context = 'cacti';
-				$map->rrdtool = read_config_option('path_rrdtool');
+					$map = new WeatherMap;
+					// $map->context = 'cacti';
+					$map->rrdtool = read_config_option('path_rrdtool');
 
-				print '<pre>';
+					print '<pre>';
 
-				$map->ReadConfig($mapfile);
-				$map->ReadData();
-				$map->DrawMap('null');
-				$map->PreloadMapHTML();
+					$map->ReadConfig($mapfile);
+					$map->ReadData();
+					$map->DrawMap('null');
+					$map->PreloadMapHTML();
 
-				print '</pre>';
+					print '</pre>';
 
-				print '';
+					print '';
 
-				print "<img src='?action=liveviewimage&id=$id' />\n";
-				print $map->imap->subHTML('LEGEND:');
-				print $map->imap->subHTML('TIMESTAMP');
-				print $map->imap->subHTML('NODE:');
-				print $map->imap->subHTML('LINK:');
+					print "<img src='?action=liveviewimage&id=$id' />\n";
+					print $map->imap->subHTML('LEGEND:');
+					print $map->imap->subHTML('TIMESTAMP');
+					print $map->imap->subHTML('NODE:');
+					print $map->imap->subHTML('LINK:');
 
-				chdir($orig_cwd);
+					chdir($orig_cwd);
 
-				print '</td></tr>';
-				print '</table>';
-			} else {
-				print 'Map unavailable.';
+					print '</td></tr>';
+					print '</table>';
+				} else {
+					print 'Map unavailable.';
+				}
 			}
 		} else {
 			print 'No ID, or unknown map name.';
@@ -231,17 +225,9 @@ switch (get_request_var('action')) {
 		print '<?xml version="1.0" encoding="utf-8" standalone="yes"?>' . "\n";
 		print '<rss xmlns:media="http://search.yahoo.com/mrss" version="2.0"><channel><title>My Network Weathermaps</title>';
 
-		$userid  = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
+		$userid  = $_SESSION['sess_user_id'];
 
-		$maplist = db_fetch_assoc_prepared("SELECT wm.*
-			FROM weathermap_auth AS wa
-			INNER JOIN weathermap_maps AS wm
-			ON wm.id = wa.mapid
-			WHERE active = 'on'
-			AND (userid = ? OR userid = 0)
-			ORDER BY sortorder, id
-			LIMIT 1",
-			array($userid));
+		$maplist = get_allowed_weathermaps($userid);
 
 		if (cacti_sizeof($maplist)) {
 			foreach ($maplist as $map) {
@@ -256,7 +242,7 @@ switch (get_request_var('action')) {
 				}
 
 				printf('<item><title>%s</title><description>Network Weathermap named "%s"</description><link>%s</link><media:thumbnail url="%s"/><media:content url="%s"/><guid isPermaLink="false">%s%s</guid></item>',
-                    $maptitle, $maptitle, $linkurl, $thumburl, $bigurl, $config['url_path'], $guid);
+					$maptitle, $maptitle, $linkurl, $thumburl, $bigurl, $config['url_path'], $guid);
 				print "\n";
 			}
 		}
@@ -377,84 +363,82 @@ function weathermap_singleview($mapid) {
 	$outdir  = __DIR__ . '/output/';
 	$confdir = __DIR__ . '/configs/';
 
-	$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
+	$userid = $_SESSION['sess_user_id'];
 
-	$map = db_fetch_row_prepared("SELECT wm.*
-		FROM weathermap_auth AS wa
-		INNER JOIN weathermap_maps AS wm
-		ON wm.id = wa.mapid
-		WHERE active = 'on'
-		AND (userid = ? OR userid = 0)
-		AND wm.id = ?
-		LIMIT 1",
-		array($userid, $mapid));
+	if (is_weathermap_allowed($mapid, $userid)) {
+		$map = db_fetch_row_prepared("SELECT wm.*
+			FROM weathermap_maps AS wm
+			WHERE active = 'on'
+			AND wm.id = ?",
+			array($mapid));
 
-	if (cacti_sizeof($map)) {
-		# print do_hook_function ('weathermap_page_top', array($map[0]['id'], $map[0]['titlecache']));
+		if (cacti_sizeof($map)) {
+			# print do_hook_function ('weathermap_page_top', array($map[0]['id'], $map[0]['titlecache']));
 
-		print do_hook_function('weathermap_page_top', '');
+			print do_hook_function('weathermap_page_top', '');
 
-		$htmlfile = $outdir . $map['filehash'] . '.html';
-		$maptitle = $map['titlecache'];
+			$htmlfile = $outdir . $map['filehash'] . '.html';
+			$maptitle = $map['titlecache'];
 
-		if ($maptitle == '') {
-			$maptitle = __esc('Map for config file: %s', $map['configfile']);
-		}
-
-		weathermap_mapselector($mapid);
-
-		if ($is_wm_admin) {
-			$maptitle .= '<span> [ ';
-			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a> | ';
-			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid . '">' . __esc('Map Settings', 'weathermap') . '</a> | ';
-			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid . '">' . __esc('Map Permissions', 'weathermap') . '</a> | ';
-			$maptitle .= "<a class='editMap linkOverDark' href='" . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . $map['configfile']) . "'>" . __esc('Edit Map', 'weathermaps') . "</a>";
-			$maptitle .= ' ] </span>';
-		} else {
-			$maptitle .= '<span> [ ';
-			$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a>';
-			$maptitle .= ' ] </span>';
-		}
-
-		print '<div class="cactiTable">';
-		print '<div class="cactiTableTitle">' . $maptitle . '</div>';
-		print '<div class="cactiTableButton"></div>';
-		print '</div>';
-
-		print '<table class="cactiTable">';
-		print '<tr><td>';
-
-		if (file_exists($htmlfile)) {
-			print '<div class="fixscroll" style="overflow:auto">';
-
-			include($htmlfile);
-
-			print '</div>';
-		} else {
-			print '<div align="center" style="padding:20px"><em>' . __('This map hasn\'t been created yet.', 'weathermap');
-
-			global $config;
-
-			if (!api_plugin_user_realm_auth('weathermap-cacti-plugin.php')) {
-				print ' (If this message stays here for more than one poller cycle, then check your cacti.log file for errors!)';
+			if ($maptitle == '') {
+				$maptitle = __esc('Map for config file: %s', $map['configfile']);
 			}
 
-			print '</em></div>';
-		}
+			weathermap_mapselector($mapid);
 
-		print '</td></tr>';
-		print '</table>';
+			if ($is_wm_admin) {
+				$maptitle .= '<span> [ ';
+				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a> | ';
+				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid . '">' . __esc('Map Settings', 'weathermap') . '</a> | ';
+				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid . '">' . __esc('Map Permissions', 'weathermap') . '</a> | ';
+				$maptitle .= "<a class='editMap linkOverDark' href='" . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . $map['configfile']) . "'>" . __esc('Edit Map', 'weathermaps') . "</a>";
+				$maptitle .= ' ] </span>';
+			} else {
+				$maptitle .= '<span> [ ';
+				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a>';
+				$maptitle .= ' ] </span>';
+			}
 
-		?>
-		<script type='text/javascript'>
-		$(function() {
-			$('.editMap').click(function(event) {
-				event.preventDefault();
-				document.location = $(this).attr('href');
+			print '<div class="cactiTable">';
+			print '<div class="cactiTableTitle">' . $maptitle . '</div>';
+			print '<div class="cactiTableButton"></div>';
+			print '</div>';
+
+			print '<table class="cactiTable">';
+			print '<tr><td>';
+
+			if (file_exists($htmlfile)) {
+				print '<div class="fixscroll" style="overflow:auto">';
+
+				include($htmlfile);
+
+				print '</div>';
+			} else {
+				print '<div align="center" style="padding:20px"><em>' . __('This map hasn\'t been created yet.', 'weathermap');
+
+				global $config;
+
+				if (!api_plugin_user_realm_auth('weathermap-cacti-plugin.php')) {
+					print ' (If this message stays here for more than one poller cycle, then check your cacti.log file for errors!)';
+				}
+
+				print '</em></div>';
+			}
+
+			print '</td></tr>';
+			print '</table>';
+
+			?>
+			<script type='text/javascript'>
+			$(function() {
+				$('.editMap').click(function(event) {
+					event.preventDefault();
+					document.location = $(this).attr('href');
+				});
 			});
-		});
-		</script>
-		<?php
+			</script>
+			<?php
+		}
 	}
 }
 
@@ -472,20 +456,25 @@ function weathermap_thumbview($limit_to_group = -1) {
 	$total_map_count_SQL = "select count(*) as total from weathermap_maps";
 	$total_map_count     = db_fetch_cell($total_map_count_SQL);
 
-	$userid      = (isset($_SESSION["sess_user_id"]) ? intval($_SESSION["sess_user_id"]) : 1);
+	$userid = $_SESSION['sess_user_id'];
 
-	$maplist_sql = "select distinct weathermap_maps.* from weathermap_auth,weathermap_maps where weathermap_maps.id=weathermap_auth.mapid and active='on' and ";
+	$allmaps = get_allowed_weathermaps($userid);
+	$groups  = array();
 
-	if ($limit_to_group > 0) {
-		$maplist_sql .= " weathermap_maps.group_id=" . $limit_to_group . " and ";
+	if (cacti_sizeof($allmaps)) {
+		foreach($allmaps as $m) {
+			$groups[$m['group_id']] = true;
+		}
 	}
 
-	$maplist_sql .= " (userid=" . $userid . " or userid=0) order by sortorder, id";
-
-	$maplist = db_fetch_assoc($maplist_sql);
+	if ($limit_to_group > 0) {
+		$maplist = get_allowed_weathermaps($userid, $limit_to_group);
+	} else {
+		$maplist = get_allowed_weathermaps($userid);
+	}
 
 	// if there's only one map, ignore the thumbnail setting and show it fullsize
-	if (cacti_sizeof($maplist) == 1) {
+	if (cacti_sizeof($groups) == 1 && cacti_sizeof($maplist) == 1) {
 		$pagetitle = __esc('Network Weathermap', 'weathermap');
 
 		weathermap_fullview(false, false, $limit_to_group);
@@ -568,27 +557,17 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 
 	$_SESSION['custom'] = false;
 
-	$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
-
-	$maplist_sql = "SELECT DISTINCT wm.*
-		FROM weathermap_auth AS wa
-		INNER JOIN weathermap_maps AS wm
-		ON wm.id = wa.mapid
-		WHERE active = 'on' AND ";
+	$userid = $_SESSION['sess_user_id'];
 
 	if ($limit_to_group > 0) {
-		$maplist_sql .= ' wm.group_id = ? AND ';
-		$maplist_params[] = $limit_to_group;
+		$maplist = get_allowed_weathermaps($userid, $limit_to_group);
+	} else {
+		$maplist = get_allowed_weathermaps($userid);
 	}
 
-	$maplist_sql .= ' (userid = ? OR userid = 0) ORDER BY sortorder, id';
-	$maplist_params[] = $userid;
-
-	if ($firstonly) {
-		$maplist_sql .= ' LIMIT 1';
+	if ($firstonly && cacti_sizeof($maplist)) {
+		$maplist = array($maplist[0]);
 	}
-
-	$maplist = db_fetch_assoc_prepared($maplist_sql, $maplist_params);
 
 	if (cacti_sizeof($maplist) == 1) {
 		$pagetitle = __('Network Weathermap', 'weathermap');
@@ -647,38 +626,6 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 			</div>
 			<?php
 		}
-	}
-
-	// only draw the whole screen if we're not cycling, or we're cycling without fullscreen mode
-	//if ($cycle == false || $fullscreen == 0) {
-	if (1 == 0) {
-		print '<table class="cactiTable">';
-
-		?>
-		<tr class='even'>
-			<td>
-				<table class='filterTable'>
-					<tr>
-						<td class='textHeader nowrap'> <?php print $pagetitle; ?> </td>
-						<td align='right'>
-							<?php if (!$cycle) { ?>
-								(automatically cycle between full-size maps (<?php
-
-								if ($limit_to_group > 0) {
-									print '<a href = "' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&group=' . intval($limit_to_group) . '">within this group</a>, or ';
-								}
-								print ' <a href = "' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle">all maps</a>';
-								?>)
-							<?php } ?>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<?php
-		print '</table>';
-
-		weathermap_tabs($limit_to_group);
 	}
 
 	$i = 0;
