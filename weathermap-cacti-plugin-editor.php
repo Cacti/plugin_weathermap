@@ -466,9 +466,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					Helpful text will appear here, depending on the current
-					item selected. It should wrap onto several lines, if it's
-					necessary for it to do that.
+					You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above.
 				</div>
 			</div>
 		</div>
@@ -570,9 +568,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					Helpful text will appear here, depending on the current
-					item selected. It should wrap onto several lines, if it's
-					necessary for it to do that.
+					You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above.
 				</div>
 			</div>
 		</div>
@@ -634,14 +630,6 @@ $weathermap_version = plugin_weathermap_numeric_version();
 								<input id='map_height' name='map_height' type='text' class='ui-state-default ui-corner-all' size='5' value='<?php print html_escape($map->height) ?>' /> pixels
 							</td>
 						</tr>
-						<tr>
-							<td>Output Image Filename</td>
-							<td><input id='map_pngfile' name='map_pngfile' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($map->imageoutputfile) ?>' /></td>
-						</tr>
-						<tr>
-							<td>Output HTML Filename</td>
-							<td><input id='map_htmlfile' name='map_htmlfile' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($map->htmloutputfile) ?>' /></td>
-						</tr>
 					</table>
 				</div>
 				<div class='dlgButtons'>
@@ -651,9 +639,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					Helpful text will appear here, depending on the current
-					item selected. It should wrap onto several lines, if it's
-					necessary for it to do that.
+					This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included.
 				</div>
 			</div>
 		</div>
@@ -717,9 +703,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					Helpful text will appear here, depending on the current
-					item selected. It should wrap onto several lines, if it's
-					necessary for it to do that.
+					The Map Style form allows you to alter some, but not all Map style settings.  See the Documentation for additional style options.
 				</div>
 			</div>
 		</div>
@@ -756,9 +740,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					Helpful text will appear here, depending on the current
-					item selected. It should wrap onto several lines, if it's
-					necessary for it to do that.
+					In the future, this form will allow you to set the various color variables at the Map level.  For now, you can control these through a direct modification of your Weathermap configuration files.
 				</div>
 			</div>
 		</div>
@@ -779,9 +761,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					Helpful text will appear here, depending on the current
-					item selected. It should wrap onto several lines, if it's
-					necessary for it to do that.
+					In the future, this form will allow you to manage adding additional icons to the Icon library.  For now, you can copy your png files to either &lt;path_cacti&gt;/plugins/weathermap/images/backgrounds/ for Background Images and &lt;path_cacti&gt;/plugins/weathermap/images/objects/ for Icon files.
 				</div>
 			</div>
 		</div>
@@ -795,9 +775,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	   	             <textarea id='item_configtext' name='item_configtext' cols='80' rows='15'></textarea>
 				</div>
 				<div class='dlgHelp'>
-					Helpful text will appear here, depending on the current
-					item selected. It should wrap onto several lines, if it's
-					necessary for it to do that.
+					From this form, you can edit the Mapfile component directly.  No syntax checking is done.  So, make changes with care.
 				</div>
 				<div class='dlgButtons'>
 					<div class='dlgSubButtons'>
@@ -855,9 +833,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					Helpful text will appear here, depending on the current
-					item selected. It should wrap onto several lines, if it's
-					necessary for it to do that.
+					This form allows you to control a select number of Editor Settings including both Overlay Style and Snap Settings in pixels.
 				</div>
 			</div>
 		</div>
