@@ -65,6 +65,7 @@ function plugin_weathermap_uninstall() {
 	db_execute('DROP TABLE IF EXISTS weathermap_auth');
 	db_execute('DROP TABLE IF EXISTS weathermap_data');
 	db_execute('DROP TABLE IF EXISTS weathermap_maps');
+	db_execute('DROP TABLE IF EXISTS weathermap_groups');
 	db_execute('DROP TABLE IF EXISTS weathermap_settings');
 }
 
