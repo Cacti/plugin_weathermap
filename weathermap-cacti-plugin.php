@@ -46,14 +46,13 @@ $showversionbox = read_config_option('weathermap_showversion');
 
 set_default_action();
 
-switch ($action) {
+switch (get_request_var('action')) {
 	case 'viewthumb': // FALL THROUGH
 	case 'viewimage':
 		$id = -1;
 
 		if (isset_request_var('id') && (!is_numeric(get_nfilter_request_var('id')) || strlen(get_request_var('id')) == 20)) {
 			$id = weathermap_translate_id(get_nfilter_request_var('id'));
-cacti_log('translating the is ' . $id);
 		}
 
 		if ($id >= 0) {
