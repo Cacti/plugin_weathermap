@@ -151,11 +151,25 @@ function weathermap_repair_maps() {
 								if ($dirgood && file_exists($mydir . $bgfile)) {
 									wm_debug('Found background file on disk: ' . $mydir . $bgfile . ' relocating!');
 
-									rename($mydir . $bgfile, $mydir . 'images/backgrounds/' . basename($bgfile));
+									$old = $mydir . $bgfile;
+									$new = $mydir . 'images/backgrounds/' . basename($bgfile);
 
-									$line = 'BACKGROUND images/backgrounds/' . basename($bgfile);
-
-									$changes++;
+									if (is_writable($mydir . $bgfile)) {
+										if (is_writeable($old) && is_writeable(dirname($new)) && is_writeable($new)) {
+											if (rename($old, $new)) {
+												$line = 'BACKGROUND images/backgrounds/' . basename($bgfile);
+												$changes++;
+											} else {
+												wm_warn(sprintf('Unable to move BACKGROUND %s to %s, Permission error [WMPOLL09]', $old, $new));
+											}
+										} else {
+											wm_warn(sprintf('Unable to move BACKGROUND %s to %s, Permission error [WMPOLL09]', $old, $new));
+										}
+									} else {
+										wm_warn(sprintf('Unable to move BACKGROUND %s to %s, Permission error [WMPOLL09]', $old, $new));
+									}
+								} else {
+									wm_warn(sprintf('BACKGROUND file not found on disk: %s skipping! [WMPOLL10]', $mydir . $objfile));
 								}
 							}
 						} elseif (strpos($bgfile, 'images/backgrounds/') !== false) {
@@ -185,13 +199,25 @@ function weathermap_repair_maps() {
 								if ($dirgood && file_exists($mydir . $objfile)) {
 									wm_debug('Object file found on disk: ' . $mydir . $objfile . ' relocating!');
 
-									rename($mydir . $objfile, $mydir . 'images/objects/' . basename($objfile));
+									$old = $mydir . $objfile;
+									$new = $mydir . 'images/objects/' . basename($objfile);
 
-									$line = "\tICON images/objects/" . basename($objfile);
-
-									$changes++;
+									if (is_writable($mydir . $bgfile)) {
+										if (is_writeable($old) && is_writeable(dirname($new)) && is_writeable($new)) {
+											if (rename($old, $new)) {
+												$line = "\tICON images/objects/" . basename($objfile);
+												$changes++;
+											} else {
+												wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
+											}
+										} else {
+											wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
+										}
+									} else {
+										wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
+									}
 								} else {
-									wm_debug('Object file not found on disk: ' . $mydir . $objfile . ' skipping!');
+									wm_warn(sprintf('ICONFILE file not found on disk: %s skipping! [WMPOLL12]', $mydir . $objfile));
 								}
 							}
 						} elseif (strpos($objfile, 'images/objects/') !== false) {
