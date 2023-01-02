@@ -68,7 +68,7 @@ function display_graphs() {
 		$sql_where .= 'WHERE local_graph_id > 0';
 	}
 
-	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gt.hash = "5deb0d66c81262843dce5f3861be9966"';
+	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 
 	$graphs = db_fetch_assoc("SELECT DISTINCT
 		gtg.local_graph_id AS id,
@@ -109,7 +109,7 @@ function display_datasources() {
 		$sql_where .= 'WHERE local_graph_id > 0';
 	}
 
-	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gt.hash = "5deb0d66c81262843dce5f3861be9966"';
+	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 
 	$graphs = db_fetch_assoc("SELECT DISTINCT
 		gti.local_graph_id AS id,
