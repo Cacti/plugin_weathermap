@@ -453,16 +453,16 @@ function weathermap_setup_table() {
 			db_execute('ALTER TABLE `weathermap_settings` ADD COLUMN `groupid` INT NOT NULL DEFAULT "0" AFTER `mapid`');
 		}
 
-		if (!db_column_exists('weathermap_settings', 'duration')) {
-			db_execute('ALTER TABLE `weathermap_settings` ADD COLUMN `duration` double NOT NULL DEFAULT "0" AFTER `archiving`');
+		if (!db_column_exists('weathermap_maps', 'duration')) {
+			db_execute('ALTER TABLE `weathermap_maps` ADD COLUMN `duration` double NOT NULL DEFAULT "0" AFTER `archiving`');
 		}
 
-		if (!db_column_exists('weathermap_settings', 'last_runtime')) {
-			db_execute('ALTER TABLE `weathermap_settings` ADD COLUMN `last_runtime` INT UNSIGNED NOT NULL DEFAULT "0" AFTER `duration`');
+		if (!db_column_exists('weathermap_maps', 'last_runtime')) {
+			db_execute('ALTER TABLE `weathermap_maps` ADD COLUMN `last_runtime` INT UNSIGNED NOT NULL DEFAULT "0" AFTER `duration`');
 		}
 
-		if (!db_index_exists('weathermap_settings', 'configfile')) {
-			db_execute('ALTER TABLE `weathermap_settings` ADD UNIQUE INDEX `configfile`(`configfile`)');
+		if (!db_index_exists('weathermap_maps', 'configfile')) {
+			db_execute('ALTER TABLE `weathermap_maps` ADD UNIQUE INDEX `configfile`(`configfile`)');
 		}
 
 		db_execute('UPDATE weathermap_maps SET `filehash` = LEFT(MD5(concat(id,configfile,rand())),20) WHERE `filehash` = ""');
