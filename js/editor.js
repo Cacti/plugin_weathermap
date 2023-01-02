@@ -211,7 +211,7 @@ function graphPicker() {
 				var target = $('#' + id).val();
 				var existing = $('#link_target').val();
 
-				$('#link_target').val(existing + ' ' + target);
+				$('#link_target').val(existing + (existing != '' ? ' ':'') + target);
 			} else {
 				var hover   = 'graph_image.php?local_graph_id=';;
 				var infourl = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
@@ -225,8 +225,8 @@ function graphPicker() {
 						einfo = infourl;
 					}
 
-					$('#link_hover').val(ehover + ' ' + hover + target);
-					$('#link_infourl').val(einfo + ',' + target);
+					$('#link_hover').val(ehover + (ehover != '' ? ' ':'') + hover + target);
+					$('#link_infourl').val(einfo + (einfo != '' ? ',':'') + target);
 				} else if (id == 'node_picker') {
 					var target = $('#' + id).val();
 					var ehover = $('#node_hover').val();
@@ -236,8 +236,8 @@ function graphPicker() {
 						einfo = infourl;
 					}
 
-					$('#node_hover').val(ehover + ' ' + hover + target);
-					$('#node_infourl').val(einfo + ',' + target);
+					$('#node_hover').val(ehover + (ehover != '' ? ' ':'') + hover + target);
+					$('#node_infourl').val(einfo + (einfo != '' ? ',':'') + target);
 				}
 			}
 		});
@@ -799,7 +799,7 @@ function delete_link() {
 				$(this).dialog('close');
 				mapmode('existing');
 			},
-			'Delete Node': function() {
+			'Delete Link': function() {
 				$(this).dialog('close');
 				hide_all_dialogs();
 				$('#action').val('delete_link');
