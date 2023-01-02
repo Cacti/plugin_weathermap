@@ -341,10 +341,6 @@ function weathermap_setup_table() {
 	// only bother with all this if it's a new install, a new version, or we're in a development version
 	// - saves a handful of db hits per request!
 	if (($dbversion == '') || (preg_match('/dev$/', $myversion)) || ($dbversion != $myversion) || !db_table_exists('weathermap_maps')) {
-		if (db_column_exists('weathermap_maps', 'sortorder')) {
-			db_execute('UPDATE weathermap_maps SET sortorder = id WHERE sortorder IS NULL');
-		}
-
 		db_execute('CREATE TABLE IF NOT EXISTS weathermap_maps (
 			`id` int(11) NOT NULL auto_increment,
 			`sortorder` int(11) NOT NULL default 0,
@@ -367,6 +363,54 @@ function weathermap_setup_table() {
 			UNIQUE KEY configfile(configfile))
 			ENGINE = InnoDB
 			ROW_FORMAT=Dynamic');
+
+		db_execute('CREATE TABLE IF NOT EXISTS weathermap_auth (
+			`userid` mediumint(9) NOT NULL default "0",
+			`mapid` int(11) NOT NULL default "0")
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic');
+
+		db_execute('CREATE TABLE IF NOT EXISTS weathermap_settings (
+			`id` int(11) NOT NULL auto_increment,
+			`mapid` int(11) NOT NULL default "0",
+			`groupid` int(11) NOT NULL default "0",
+			`optname` varchar(128) NOT NULL default "",
+			`optvalue` varchar(128) NOT NULL default "",
+			PRIMARY KEY  (id))
+			ENGINE=InnoDB');
+
+		db_execute('CREATE TABLE IF NOT EXISTS weathermap_data (
+			`id` int(11) NOT NULL auto_increment,
+			`rrdfile` varchar(255) NOT NULL,
+			`data_source_name` varchar(19) NOT NULL,
+			`last_time` int(11) NOT NULL DEFAULT -1,
+			`last_value` varchar(255) NOT NULL DEFAULT "",
+			`last_calc` varchar(255) NOT NULL DEFAULT "",
+			`sequence` int(11) NOT NULL DEFAULT 0,
+			`local_data_id` int(11) NOT NULL DEFAULT 0,
+			PRIMARY KEY  (id),
+			KEY rrdfile (rrdfile(250)),
+			KEY local_data_id (local_data_id),
+			KEY data_source_name (data_source_name))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic');
+
+		if (!db_table_exists('weathermap_groups')) {
+			db_execute('CREATE TABLE IF NOT EXISTS weathermap_groups (
+				`id` INT(11) NOT NULL auto_increment,
+				`name` VARCHAR(128) NOT NULL default "",
+				`sortorder` INT(11) NOT NULL default 0,
+				PRIMARY KEY (id))
+				ENGINE=InnoDB');
+
+			db_execute('INSERT INTO weathermap_groups (id, name, sortorder) VALUES (1, "Weathermaps", 1)');
+		}
+
+		db_execute('DELETE FROM weathermap_data WHERE local_data_id = 0');
+
+		if (db_column_exists('weathermap_maps', 'sortorder')) {
+			db_execute('UPDATE weathermap_maps SET sortorder = id WHERE sortorder IS NULL');
+		}
 
 		if (!db_column_exists('weathermap_maps', 'sortorder')) {
 			db_execute('ALTER TABLE weathermap_maps ADD COLUMN sortorder int(11) NOT NULL default 0 AFTER id');
@@ -422,55 +466,11 @@ function weathermap_setup_table() {
 
 		db_execute('UPDATE weathermap_maps SET `filehash` = LEFT(MD5(concat(id,configfile,rand())),20) WHERE `filehash` = ""');
 
-		db_execute('CREATE TABLE IF NOT EXISTS weathermap_auth (
-			`userid` mediumint(9) NOT NULL default "0",
-			`mapid` int(11) NOT NULL default "0")
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic');
-
-		if (!db_table_exists('weathermap_groups')) {
-			db_execute('CREATE TABLE IF NOT EXISTS weathermap_groups (
-				`id` INT(11) NOT NULL auto_increment,
-				`name` VARCHAR( 128 ) NOT NULL default "",
-				`sortorder` INT(11) NOT NULL default 0,
-				PRIMARY KEY (id))
-				ENGINE=InnoDB');
-
-			db_execute('INSERT INTO weathermap_groups (id, name, sortorder) VALUES (1, "Weathermaps", 1)');
-		}
-
-		db_execute('CREATE TABLE IF NOT EXISTS weathermap_settings (
-			`id` int(11) NOT NULL auto_increment,
-			`mapid` int(11) NOT NULL default "0",
-			`groupid` int(11) NOT NULL default "0",
-			`optname` varchar(128) NOT NULL default "",
-			`optvalue` varchar(128) NOT NULL default "",
-			PRIMARY KEY  (id))
-			ENGINE=InnoDB');
-
-		db_execute('CREATE TABLE IF NOT EXISTS weathermap_data (
-			`id` int(11) NOT NULL auto_increment,
-			`rrdfile` varchar(255) NOT NULL,
-			`data_source_name` varchar(19) NOT NULL,
-			`last_time` int(11) NOT NULL DEFAULT -1,
-			`last_value` varchar(255) NOT NULL DEFAULT "",
-			`last_calc` varchar(255) NOT NULL DEFAULT "",
-			`sequence` int(11) NOT NULL DEFAULT 0,
-			`local_data_id` int(11) NOT NULL DEFAULT 0,
-			PRIMARY KEY  (id),
-			KEY rrdfile (rrdfile(250)),
-			KEY local_data_id (local_data_id),
-			KEY data_source_name (data_source_name))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic');
-
 		if (!db_column_exists('weathermap_data', 'local_data_id')) {
 			db_execute('ALTER TABLE weathermap_data
 				ADD COLUMN local_data_id int(11) NOT NULL default 0 AFTER sequence,
 				ADD INDEX (`local_data_id`)');
 		}
-
-		db_execute('DELETE FROM weathermap_data WHERE local_data_id = 0');
 
 		// create the settings entries, if necessary
 		$pagestyle = read_config_option('weathermap_pagestyle');
@@ -1017,21 +1017,21 @@ function weathermap_poller_output(&$rrd_update_array) {
 				$newlastvalue = $value;
 				$newtime      = $time;
 
-				switch ( $required['data_source_type_id'] ) {
+				switch ($required['data_source_type_id']) {
 					case 1: //GAUGE
 						$newvalue = $value;
 
 						break;
 					case 2: //COUNTER
-						if ( $value >= $lastval ) {
+						if ($value >= $lastval) {
 							// Everything is normal
 							$newvalue = $value - $lastval;
 						} else {
 							// Possible overflow, see if its 32bit or 64bit
-							if ( $lastval > 4294967295 ) {
-								$newvalue = ( 18446744073709551615 - $lastval ) + $value;
+							if ($lastval > 4294967295) {
+								$newvalue = (18446744073709551615 - $lastval) + $value;
 							} else {
-								$newvalue = ( 4294967295 - $lastval ) + $value;
+								$newvalue = (4294967295 - $lastval) + $value;
 							}
 						}
 
@@ -1039,7 +1039,7 @@ function weathermap_poller_output(&$rrd_update_array) {
 
 						break;
 					case 3: //DERIVE
-						$newvalue = ( $value - $lastval ) / $period;
+						$newvalue = ($value - $lastval) / $period;
 
 						break;
 					case 4: //ABSOLUTE
