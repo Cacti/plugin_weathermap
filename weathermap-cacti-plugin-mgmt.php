@@ -1501,6 +1501,12 @@ function perms_request_validation() {
 			'filter' => FILTER_DEFAULT,
 			'pageset' => true,
 			'default' => ''
+		),
+		'has_perms' => array(
+			'filter' => FILTER_VALIDATE_REGEXP,
+			'options' => array('options' => array('regexp' => '(true|false)')),
+			'pageset' => true,
+			'default' => read_config_option('default_has') == 'on' ? 'true':'false'
 		)
     );
 
@@ -1560,6 +1566,12 @@ function perms_filter($id) {
 					</td>
 					<td>
 						<span>
+							<input type='checkbox' id='has_perms' <?php print (get_request_var('has_perms') == 'true' ? 'checked':'');?>>
+							<label for='has_perms'><?php print __('Has Permissions', 'weathermap');?></label>
+						</span>
+					</td>
+					<td>
+						<span>
 							<input type='button' class='ui-button ui-corner-all ui-widget' value='<?php print __esc_x('Button: use filter settings', 'Go', 'weathermap');?>' id='refresh'>
 							<input type='button' class='ui-button ui-corner-all ui-widget' value='<?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap');?>' id='clear'>
 							<input type='hidden' value='<?php print $id;?>' id='mapid'>
@@ -1576,6 +1588,7 @@ function perms_filter($id) {
 				strURL += '&header=false';
 				strURL += '&filter='+$('#filter').val();
 				strURL += '&type='+$('#type').val();
+				strURL += '&has_perms='+$('#has_perms').is(':checked');
 				strURL += '&id='+$('#mapid').val();
 				strURL += '&rows='+$('#rows').val();
 				loadPageNoHeader(strURL);
@@ -1593,6 +1606,10 @@ function perms_filter($id) {
 
 				$('#clear').click(function() {
 					clearFilter();
+				});
+
+				$('#has_perms').change(function() {
+					applyFilter();
 				});
 
 				$('#form_perms').submit(function(event) {
@@ -1615,6 +1632,12 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 
 	$guest_user    = read_config_option('guest_user');
 	$template_user = read_config_option('user_template');
+
+	if (get_request_var('has_perms') == 'true') {
+		$join = 'INNER';
+	} else {
+		$join = 'LEFT';
+	}
 
 	if (get_request_var('filter') != '') {
 		if (get_request_var('type') == -1 || get_request_var('type') == 0) {
@@ -1673,7 +1696,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT id, username AS name, full_name AS description, 'user' AS type, wa.mapid AS allowed, realm
 				FROM user_auth AS ua
-				LEFT JOIN weathermap_auth AS wa
+				$join JOIN weathermap_auth AS wa
 				ON ua.id = wa.userid
 				AND ua.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
@@ -1681,7 +1704,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT id, name, description, 'group' AS type, wa.mapid AS allowed, 'N/A' AS realm
 				FROM user_auth_group AS uag
-				LEFT JOIN weathermap_auth AS wa
+				$join JOIN weathermap_auth AS wa
 				ON uag.id = -wa.userid
 				AND uag.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
@@ -1694,7 +1717,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 			FROM (
 				SELECT COUNT(*) AS `rows`
 				FROM user_auth AS ua
-				LEFT JOIN weathermap_auth AS wa
+				$join JOIN weathermap_auth AS wa
 				ON ua.id = wa.userid
 				AND ua.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
@@ -1702,7 +1725,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT COUNT(*) AS `rows`
 				FROM user_auth_group AS uag
-				LEFT JOIN weathermap_auth AS wa
+				$join JOIN weathermap_auth AS wa
 				ON uag.id = -wa.userid
 				AND uag.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
@@ -1716,7 +1739,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT id, username AS name, full_name AS description, 'user' AS type, wa.mapid AS allowed, realm
 				FROM user_auth AS ua
-				LEFT JOIN weathermap_auth AS wa
+				$join JOIN weathermap_auth AS wa
 				ON ua.id = wa.userid
 				AND ua.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
@@ -1727,7 +1750,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 
 		$total_rows = db_fetch_cell_prepared("SELECT COUNT(*) + 1
 			FROM user_auth AS ua
-			LEFT JOIN weathermap_auth AS wa
+			$join JOIN weathermap_auth AS wa
 			ON ua.id = wa.userid
 			AND ua.enabled = 'on'
 			WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
@@ -1740,7 +1763,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT id, name, description, 'group' AS type, wa.mapid AS allowed, 'N/A' AS realm
 				FROM user_auth_group AS uag
-				LEFT JOIN weathermap_auth AS wa
+				$join JOIN weathermap_auth AS wa
 				ON uag.id = -wa.userid
 				AND uag.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
@@ -1751,7 +1774,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 
 		$total_rows = db_fetch_cell_prepared("SELECT COUNT(*) + 1
 			FROM user_auth_group AS uag
-			LEFT JOIN weathermap_auth AS wa
+			$join JOIN weathermap_auth AS wa
 			ON uag.id = -wa.userid
 			AND uag.enabled = 'on'
 			WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
