@@ -354,26 +354,26 @@ function weathermap_form_actions() {
 
 					if ($parts[1] == 'group') {
 						db_execute_prepared('REPLACE INTO weathermap_auth
-							(userid, usergroupid, mapid)
-							VALUES (?, ?, ?)',
-							array(-$parts[0], 0, $mapid));
+							(userid, mapid)
+							VALUES (?, ?)',
+							array(-$parts[0], $mapid));
 					} else {
 						db_execute_prepared('REPLACE INTO weathermap_auth
-							(userid, usergroupid, mapid)
-							VALUES (?, ?, ?)',
-							array($parts[0], 0, $mapid));
+							(userid, mapid)
+							VALUES (?, ?)',
+							array($parts[0], $mapid));
 					}
                 } else {
 					$removed++;
 
 					if ($parts[1] == 'group') {
 						db_execute_prepared('DELETE FROM weathermap_auth
-							WHERE userid = ? AND usergroupid = ? AND mapid = ?',
-							array(-$parts[0], 0, $mapid));
+							WHERE userid = ? AND mapid = ?',
+							array(-$parts[0], $mapid));
 					} else {
 						db_execute_prepared('DELETE FROM weathermap_auth
-							WHERE userid = ? AND usergroupid = ? AND mapid = ?',
-							array($parts[0], 0, $mapid));
+							WHERE userid = ? AND mapid = ?',
+							array($parts[0], $mapid));
 					}
                 }
             }
@@ -1416,8 +1416,8 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 
 		if ($newid) {
 			db_execute_prepared("INSERT INTO weathermap_auth
-				(userid, usergroupid, mapid)
-				SELECT userid, usergroupid, '$newid' AS mapid
+				(userid, mapid)
+				SELECT userid, '$newid' AS mapid
 				FROM weathermap_auth
 				WHERE mapid = ?",
 				array($id));
