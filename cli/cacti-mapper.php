@@ -109,10 +109,10 @@ if (cacti_sizeof($queryrows)) {
 
 $count = 0;
 
-if (file_exists('mapper-cache.txt')) {
+if (file_exists('../output/mapper-cache.txt')) {
 	print 'Reading Netmask cache...' . PHP_EOL;
 
-	$fd = fopen('mapper-cache.txt', 'r');
+	$fd = fopen('../output/mapper-cache.txt', 'r');
 
 	while(!feof($fd)) {
 		$str = fgets($fd,4096);
@@ -195,7 +195,7 @@ $count = 0;
 
 print 'Writing Netmask cache...' . PHP_EOL;
 
-$fd = fopen('mapper-cache.txt', 'w');
+$fd = fopen('../output/mapper-cache.txt', 'w');
 
 if (cacti_sizeof($interfaces)) {
 	foreach($interfaces as $key=>$int) {

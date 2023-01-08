@@ -3,19 +3,19 @@
 ## Background
 
 This version of Weathermap is a fork of the original work by Howard Jones, and brings his 0.98x version
-into the Cacti 1.x world.  Although, the change notes below are pretty extensive, there were just too
+into the Cacti 1.x world.  Although, the change notes are roughly correct,, there were just too
 many changes to capture them all.
 
 There is a more substantial release that Howie has been working on in the works, that is a fundamental shift
 in the framework and provides several improvements to prior releases. There are also small usability changes 
 aimed at reducing repeat "error reports" in the forums.
 
-IMPORTANT NOTE - you may need to reset permissions on your users after upgrading, as I've finally switched to 
-the "new-style" plugin API that's been around for 5+ years. This handles permissions differently, unfortunately.
-
 IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
+
+--- 1.00 Beta 2 ---
+* issue#49: The Data Source Selector does not work
 
 --- 1.00 Beta 1 ---
 * feature#43: Allow Weathermap Permissions to Include Cacti User Groups

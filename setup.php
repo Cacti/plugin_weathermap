@@ -46,7 +46,6 @@ function plugin_weathermap_install() {
 
 	api_plugin_register_hook('weathermap', 'top_graph_refresh', 'weathermap_top_graph_refresh', 'setup.php');
 	api_plugin_register_hook('weathermap', 'page_title',        'weathermap_page_title',        'setup.php');
-	api_plugin_register_hook('weathermap', 'page_head',         'weathermap_page_head',         'setup.php');
 
 	api_plugin_register_hook('weathermap', 'poller_top',    'weathermap_poller_top',    'setup.php');
 	api_plugin_register_hook('weathermap', 'poller_output', 'weathermap_poller_output', 'setup.php');
@@ -140,6 +139,8 @@ function plugin_weathermap_upgrade() {
 			)
 		);
 
+		db_execute('DELETE FROM plugin_hooks WHERE name = "weathermap" AND hook = "page_head"');
+
 		weathermap_repair_maps();
 	}
 
@@ -153,10 +154,6 @@ function weathermap_poller_top() {
 
 	// round to the nearest minute, since that's all we need for the crontab-style stuff
 	$weathermap_poller_start_time = $n - ($n % 60);
-}
-
-function weathermap_page_head() {
-	global $config;
 }
 
 function weathermap_page_title($t) {

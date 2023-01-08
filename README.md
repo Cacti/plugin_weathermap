@@ -1,6 +1,10 @@
-# PHP Network Weathermap 1.0 - Beta
+# PHP Network Weathermap 1.0 - Beta 2
 
-This is PHP Network Weathermap fork, version 1.0 originally by Howard Jones (howie@thingy.com)
+This is PHP Network Weathermap fork, version 1.0.  The PHP Weathermap was
+originally by Howard Jones (howie@thingy.com).  As Howie has scaled back his
+Cacti plugin development work, we will release this version that incorporates
+his core framework from the 0.98 version.  In future releases, we will look
+to incorporate subequent releases of the WeatherMap core.
 
 See the docs sub-directory for full HTML documentation, FAQ and example config.
 
@@ -9,7 +13,8 @@ See CHANGELOG.md for the most recent updates, listed by version.
 See COPYING for the license under which php-weathermap is released.
 
 ## Compability
-This version only works with Cacti 1.x onwards.  A re-write of the user interface
+
+This version only works with Cacti 1.2.x onwards.  A re-write of the user interface
 is being made to make it more compatible with 1.2.x and 1.3.x releases.
 
 ## Contribute
@@ -17,7 +22,7 @@ is being made to make it more compatible with 1.2.x and 1.3.x releases.
 Check out the main [Cacti](http://www.cacti.net) web site for downloads, change
 logs, release notes and more!
 
-### Community forums
+## Community forums
 
 Given the large scope of Cacti, the forums tend to generate a respectable amount
 of traffic. Doing your part in answering basic questions goes a long way since
@@ -30,8 +35,8 @@ tutorials and updates available at Howard Jone's site:
     http://www.network-weathermap.com/
 
 ## Important Notes
-This version of Weathermap only works with Cacti 1.x.x and is currently under
-heavy development.
+This version of Weathermap only works with Cacti 1.2.x and is now ready for
+beta, yet non-production use at this time.
 
 **This version is NOT production ready!**
 
@@ -52,20 +57,18 @@ When reviewing the plugin in detail, there were so many possible enhancements
 that could be incorporated into the tool, but for now, it's really just to
 bring the Weathermap plugin fully into the Cacti 1.x and beyond.
 
-### GitHub Documentation
+## GitHub Documentation
 
 Get involved in creating and editing Cacti Documentation!  Fork, change and
 submit a pull request to help improve the documentation on
 [GitHub](https://github.com/cacti/documentation).
 
-### GitHub Development
+## GitHub Development
 
 Get involved in development of Cacti! Join the developers and community on
 [GitHub](https://github.com/cacti)!
 
-### Component Software
-
-## PHP Weathermap contains components from other software developers:
+## Included 3rd Party Component Software
 
 * ddSlick - A forked and jQueryUI compatible version of the jquery images dropdown
   plugin.
