@@ -1,6 +1,10 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
+ | Copyright (C) 2022-2023 The Cacti Group, Inc.                           |
+ |                                                                         |
+ | Based on the Original Plugin developed by Howard Jones                  |
+ |                                                                         |
  | Copyright (C) 2005-2022 Howard Jones and contributors                   |
  |                                                                         |
  | Permission is hereby granted, free of charge, to any person obtaining   |
