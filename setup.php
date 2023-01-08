@@ -40,6 +40,10 @@
  +-------------------------------------------------------------------------+
 */
 
+if (!defined('WM_COPYRIGHT_YEARS')) {
+	define('WM_COPYRIGHT_YEARS', '2008-2023');
+}
+
 function plugin_weathermap_install() {
 	api_plugin_register_hook('weathermap', 'config_arrays',   'weathermap_config_arrays',   'setup.php');
 	api_plugin_register_hook('weathermap', 'config_settings', 'weathermap_config_settings', 'setup.php');

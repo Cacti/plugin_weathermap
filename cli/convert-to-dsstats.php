@@ -317,11 +317,9 @@ function display_version() {
 		include_once($config['base_path'] . '/plugins/weathermap/setup.php');
 	}
 
-	$copyright_years = '2008-2023';
-
 	$info = plugin_weathermap_version();
 
-	print 'Weathermap Cacti DSStats Conversion Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . $copyright_years . PHP_EOL;
+	print 'Weathermap Cacti DSStats Conversion Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . WM_COPYRIGHT_YEARS . PHP_EOL;
 }
 
 function display_help() {
