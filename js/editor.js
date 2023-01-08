@@ -675,12 +675,6 @@ function prefs() {
 	show_dialog('dlgEditorSettings');
 }
 
-function default_toolbar() {
-}
-
-function working_toolbar() {
-}
-
 function new_file() {
 	self.location = '?action=newfile';
 }
