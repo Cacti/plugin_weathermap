@@ -147,18 +147,18 @@ function wm_debug($string) {
 
 		// use Cacti's debug log, if we are running from the poller
 		if (function_exists('debug_log_insert') && (!function_exists('show_editor_startpage'))) {
-			cacti_log("DEBUG:$calling_fn " . ($weathermap_map == '' ? '':$weathermap_map . ': ') . rtrim($string), true, 'WEATHERMAP');
+			cacti_log("DEBUG:$calling_fn " . ($weathermap_map == '' ? '' : $weathermap_map . ': ') . rtrim($string), true, 'WEATHERMAP');
 		} else {
 			$stderr = fopen('php://stderr', 'w');
 
-			fwrite($stderr, "DEBUG:$calling_fn " . ($weathermap_map == '' ? '':$weathermap_map . ': ') . $string . PHP_EOL);
+			fwrite($stderr, "DEBUG:$calling_fn " . ($weathermap_map == '' ? '' : $weathermap_map . ': ') . $string . PHP_EOL);
 			fclose($stderr);
 
 			// mostly this is overkill, but it's sometimes useful (mainly in the editor)
 			if (1==0) {
 				$log = fopen('debug.log', 'a');
 
-				fwrite($log, "DEBUG:$calling_fn " . ($weathermap_map == '' ? '':$weathermap_map . ': ') . $string . PHP_EOL);
+				fwrite($log, "DEBUG:$calling_fn " . ($weathermap_map == '' ? '' : $weathermap_map . ': ') . $string . PHP_EOL);
 				fclose($log);
 			}
 		}
