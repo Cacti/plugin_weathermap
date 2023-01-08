@@ -12,7 +12,7 @@ See CHANGELOG.md for the most recent updates, listed by version.
 
 See COPYING for the license under which php-weathermap is released.
 
-## Compability
+## Compatability
 
 This version only works with Cacti 1.2.x onwards.  A re-write of the user interface
 is being made to make it more compatible with 1.2.x and 1.3.x releases.
