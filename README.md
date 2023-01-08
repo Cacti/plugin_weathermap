@@ -68,6 +68,15 @@ submit a pull request to help improve the documentation on
 Get involved in development of Cacti! Join the developers and community on
 [GitHub](https://github.com/cacti)!
 
+## Original Weathermap Plugin
+
+Howard Jones original work can still be found on GitHub at the following location.
+
+https://github.com/howardjones/network-weathermap
+
+Howie has done extensive rework of his Weathermap API that we will look to incorporate
+in future releases of the Cacti version of the plugin.
+
 ## Included 3rd Party Component Software
 
 * ddSlick - A forked and jQueryUI compatible version of the jquery images dropdown
