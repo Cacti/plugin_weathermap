@@ -96,3 +96,5 @@ Get involved in development of Cacti! Join the developers and community on
   See: http://www.famfamfam.com/lab/icons/silk/.
   See: http://creativecommons.org/licenses/by/2.5/
 
+-----------------------------------------------------------------------------
+Copyright (c) 2004-2023 - The Cacti Group, Inc.
