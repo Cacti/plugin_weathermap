@@ -1,11 +1,51 @@
 <?php
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2022-2023 The Cacti Group, Inc.                           |
+ |                                                                         |
+ | Based on the Original Plugin developed by Howard Jones                  |
+ |                                                                         |
+ | Copyright (C) 2005-2022 Howard Jones and contributors                   |
+ |                                                                         |
+ | Permission is hereby granted, free of charge, to any person obtaining   |
+ | a copy of this software and associated documentation files              |
+ | (the "Software"), to deal in the Software without restriction,          |
+ | including without limitation the rights to use, copy, modify, merge,    |
+ | publish, distribute, sublicense, and/or sell copies of the Software,    |
+ | and to permit persons to whom the Software is furnished to do so,       |
+ | subject to the following conditions:                                    |
+ |                                                                         |
+ | The above copyright notice and this permission notice shall be          |
+ | included in all copies or substantial portions of the Software.         |
+ |                                                                         |
+ | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,         |
+ | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES         |
+ | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND                |
+ | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS     |
+ | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN      |
+ | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN       |
+ | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE        |
+ | SOFTWARE.                                                               |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+ | Extensions to Howard Jones' original work are designed, written, and    |
+ | maintained by the Cacti Group.                                          |
+ |                                                                         |
+ | Howard Jones was the original author of Weathermap.  You can reach      |
+ | him at: howie@thingy.com                                                |
+ +-------------------------------------------------------------------------+
+ | http://www.network-weathermap.com/                                      |
+ | http://www.cacti.net/                                                   |
+ +-------------------------------------------------------------------------+
+*/
 
 /** editor.inc.php
-  *
-  * All the functions used by the editor.
-  */
+ *
+ * All the functions used by the editor.
+ */
 
-/** @function fix_gpc_string 
+/** @function fix_gpc_string
   *
   * Take a string (that we got from $_REQUEST) and make it back to how the
   * user TYPED it, regardless of whether magic_quotes_gpc is turned on or off.
@@ -15,89 +55,189 @@
   * @returns string Fixed string
   *
   */
-function fix_gpc_string($input) 
-{
-    if (true == function_exists('get_magic_quotes_gpc') && 1 == get_magic_quotes_gpc()) {
-        $input = stripslashes($input);
-    }
-    return ($input);
+function fix_gpc_string($input) {
+	if (true == function_exists('get_magic_quotes_gpc') && 1 == get_magic_quotes_gpc()) {
+		$input = stripslashes($input);
+	}
+
+	return ($input);
+}
+
+function display_graphs() {
+	$sql_where = '';
+
+	if (get_nfilter_request_var('term') != '') {
+		$sql_where .= 'WHERE title_cache LIKE ' . db_qstr('%' . get_nfilter_request_var('term') . '%') . ' AND local_graph_id > 0';
+	} else {
+		$sql_where .= 'WHERE local_graph_id > 0';
+	}
+
+	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
+
+	$graphs = db_fetch_assoc("SELECT DISTINCT
+		gtg.local_graph_id AS id,
+		gtg.title_cache AS title,
+		gt.name AS template_name
+		FROM graph_templates_graph AS gtg
+		LEFT JOIN graph_templates AS gt
+		ON gt.id=gtg.graph_template_id
+		LEFT JOIN graph_local AS gl
+		ON gtg.local_graph_id = gl.id
+		LEFT JOIN host as h
+		ON gl.host_id = h.id
+		$sql_where
+		ORDER BY title_cache
+		LIMIT " . read_config_option('autocomplete_rows'));
+
+	$return = array();
+
+	if (cacti_sizeof($graphs)) {
+		foreach($graphs as $index => $g) {
+			if (!is_graph_allowed($g['id'])) {
+				unset($graphs[$index]);
+			} else {
+				$return[] = array('label' => $g['title'], 'value' => $g['title'], 'id' => $g['id']);
+			}
+		}
+	}
+
+	print json_encode($return);
+}
+
+function display_datasources() {
+	$sql_where = '';
+
+	if (get_nfilter_request_var('term') != '') {
+		$sql_where .= 'WHERE name_cache LIKE ' . db_qstr('%' . get_nfilter_request_var('term') . '%') . ' AND local_graph_id > 0';
+	} else {
+		$sql_where .= 'WHERE local_graph_id > 0';
+	}
+
+	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'dl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
+
+	$graphs = db_fetch_assoc("SELECT DISTINCT
+		gti.local_graph_id AS id,
+		dtd.name_cache AS title,
+		dtd.data_source_path AS path
+		FROM data_template_data AS dtd
+		INNER JOIN data_local AS dl
+		ON dl.id = dtd.local_data_id
+		INNER JOIN data_template_rrd AS dtr
+		ON dtd.local_data_id = dtr.local_data_id
+		INNER JOIN (
+			SELECT DISTINCT graph_template_id, local_graph_id, task_item_id
+			FROM graph_templates_item
+			WHERE local_graph_id > 0
+		) AS gti
+		ON gti.task_item_id = dtr.id
+		INNER JOIN graph_templates AS gt
+		ON gt.id = gti.graph_template_id
+		$sql_where
+		ORDER BY name_cache
+		LIMIT " . read_config_option('autocomplete_rows'));
+
+	$return = array();
+
+	if (cacti_sizeof($graphs)) {
+		foreach($graphs as $index => $g) {
+			if (!is_graph_allowed($g['id'])) {
+				unset($graphs[$index]);
+			} else {
+				$return[] = array('label' => $g['title'], 'value' => $g['title'], 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'));
+			}
+		}
+	}
+
+	print json_encode($return);
 }
 
 /**
  * Clean up URI (function taken from Cacti) to protect against XSS
  */
 function wm_editor_sanitize_uri($str) {
-        static $drop_char_match =   array(' ','^', '$', '<', '>', '`', '\'', '"', '|', '+', '[', ']', '{', '}', ';', '!', '%');
-        static $drop_char_replace = array('', '', '',  '',  '',  '',  '',   '',  '',  '',  '',  '',  '',  '',  '',  '', '');
+	static $drop_char_match =   array(' ','^', '$', '<', '>', '`', '\'', '"', '|', '+', '[', ']', '{', '}', ';', '!', '%');
+	static $drop_char_replace = array('', '', '',  '',  '',  '',  '',   '',  '',  '',  '',  '',  '',  '',  '',  '', '');
 
-        return str_replace($drop_char_match, $drop_char_replace, urldecode($str));
+	return str_replace($drop_char_match, $drop_char_replace, urldecode($str));
 }
 
 // much looser sanitise for general strings that shouldn't have HTML in them
 function wm_editor_sanitize_string($str) {
-        static $drop_char_match =   array('<', '>' );
-        static $drop_char_replace = array('', '');
+	static $drop_char_match =   array('<', '>' );
+	static $drop_char_replace = array('', '');
 
-        return str_replace($drop_char_match, $drop_char_replace, urldecode($str));
+	return str_replace($drop_char_match, $drop_char_replace, urldecode($str));
 }
 
 function wm_editor_validate_bandwidth($bw) {
-  
-    if(preg_match( '/^(\d+\.?\d*[KMGT]?)$/', $bw) ) {
-	return true;
-    }
-    return false;
+	if (preg_match( '/^(\d+\.?\d*[KMGT]?)$/', $bw) ) {
+		return true;
+	}
+
+	return false;
 }
 
 function wm_editor_validate_one_of($input,$valid=array(),$case_sensitive=false) {
-    if(! $case_sensitive ) $input = strtolower($input);
-    
-    foreach ($valid as $v) {
-	if(! $case_sensitive ) $v = strtolower($v);
-	if($v == $input) return true;
-    }
-    
-    return false;
+	if (!$case_sensitive) {
+		$input = strtolower($input);
+	}
+
+	foreach ($valid as $v) {
+		if (!$case_sensitive) {
+			$v = strtolower($v);
+		}
+
+		if ($v == $input) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 // Labels for Nodes, Links and Scales shouldn't have spaces in
 function wm_editor_sanitize_name($str) {
-    return str_replace( array(" "), "", $str);
+	return str_replace(array(' '), '', $str);
 }
 
-function wm_editor_sanitize_selected($str) {        
+function wm_editor_sanitize_selected($str) {
 	$res = urldecode($str);
-	
-	if( ! preg_match("/^(LINK|NODE):/",$res)) {
+
+	if ( ! preg_match("/^(LINK|NODE):/",$res)) {
 	    return "";
 	}
+
 	return wm_editor_sanitize_name($res);
 }
 
 function wm_editor_sanitize_file($filename,$allowed_exts=array()) {
-    
-    $filename = wm_editor_sanitize_uri($filename);
-    
-    if ($filename == "") return "";
-        
-    $ok = false;
-    foreach ($allowed_exts as $ext) {
-		$match = ".".$ext;
+	$filename = wm_editor_sanitize_uri($filename);
 
-		if( substr($filename, -strlen($match),strlen($match)) == $match) {
+	if ($filename == "") {
+		return "";
+	}
+
+	$ok = false;
+	foreach ($allowed_exts as $ext) {
+		$match = "." . $ext;
+
+		if ( substr($filename, -strlen($match),strlen($match)) == $match) {
 			$ok = true;
 		}
-    }    
-    if(! $ok ) return "";
-    return $filename;
+	}
+
+    if (!$ok) {
+		return "";
+	}
+
+	return $filename;
 }
 
 function wm_editor_sanitize_conffile($filename) {
-    
-    $filename = wm_editor_sanitize_uri($filename);
-    
-    # If we've been fed something other than a .conf filename, just pretend it didn't happen
-    if ( substr($filename,-5,5) != ".conf" ) {
+	$filename = wm_editor_sanitize_uri($filename);
+
+	# If we've been fed something other than a .conf filename, just pretend it didn't happen
+	if ( substr($filename,-5,5) != ".conf" ) {
 		$filename = "";
 	}
 
@@ -106,59 +246,39 @@ function wm_editor_sanitize_conffile($filename) {
 		$filename = "";
 	}
 
-    return $filename;
+	return $filename;
 }
 
-function show_editor_startpage()
-{
-	global $mapdir, $WEATHERMAP_VERSION, $config_loaded, $cacti_found, $ignore_cacti,$configerror;
+function show_editor_startpage() {
+	global $mapdir, $config_loaded, $configerror;
 
-	$fromplug = false;
-	if (isset($_REQUEST['plug']) && (intval($_REQUEST['plug'])==1) ) { 
-	    $fromplug = true; 
+	$matches = 0;
+
+	print '<script src="js/editor.js" type="text/javascript"></script>';
+
+	$errormessage = '';
+
+	$weathermap_version = plugin_weathermap_numeric_version();
+
+	if ($configerror != '') {
+		$errormessage .= $configerror . '<p>';
 	}
 
-	$matches=0;
+	html_start_box(__('Welcome to the PHP Weathermap %s Editor', $weathermap_version, 'weathermap'), '100%', '', '3', 'center', '');
+	print '<tr>';
+	print '<td>';
+	print '<div><b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however.</div>';
+	print '</td>';
+	print '</tr>';
+	html_end_box();
 
-	print '<html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" media="screen" href="editor-resources/oldeditor.css" /><script type="text/javascript" src="vendor/jquery/dist/jquery.min.js"></script><script src="editor-resources/editor.js" type="text/javascript"></script><title>PHP Weathermap Editor ' . $WEATHERMAP_VERSION
-		. '</title></head><body>';
-
-	print '<div id="nojs" class="alert"><b>WARNING</b> - ';
-	print 'Sorry, it\'s partly laziness on my part, but you really need JavaScript enabled and DOM support in your browser to use this editor. It\'s a visual tool, so accessibility is already an issue, if it is, and from a security viewpoint, you\'re already running my ';
-	print 'code on your <i>server</i> so either you trust it all having read it, or you\'re already screwed.<P>';
-	print 'If it\'s a major issue for you, please feel free to complain. It\'s mainly laziness as I said, and there could be a fallback (not so smooth) mode for non-javascript browsers if it was seen to be worthwhile (I would take a bit of convincing, because I don\'t see a benefit, personally).</div>';
-	
-	$errormessage = "";
-
-    if ($configerror!='') {
-        $errormessage .= $configerror.'<p>';
-    }
-		
-	if (! $cacti_found && !$ignore_cacti) {
-		$errormessage .= '$cacti_base is not set correctly. Cacti integration will be disabled in the editor.';
-		if ($config_loaded != 1) { 
-            $errormessage .= " You might need to copy editor-config.php-dist to editor-config.php and edit it."; 
-        }
-	}
-	
-	if ($errormessage != '') {
-		print '<div class="alert" id="nocacti">'.htmlspecialchars($errormessage).'</div>';
-	}
-
-	print '<div id="withjs">';
-	print '<div id="dlgStart" class="dlgProperties" ><div class="dlgTitlebar">Welcome</div><div class="dlgBody">';
-	print 'Welcome to the PHP Weathermap '.$WEATHERMAP_VERSION.' editor.<p>';
-	print '<div style="border: 3px dashed red; background: #055; padding: 5px; font-size: 90%;"><b>NOTE:</b> This editor is not finished! There are many features of ';
-	print 'Weathermap that you will be missing out on if you choose to use the editor only.';
-	print 'These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however.</div><p>';
-	
+	print '<tr>';
 	print 'Do you want to:<p>';
 	print 'Create A New Map:<br>';
 	print '<form method="GET">';
 	print 'Named: <input type="text" name="mapname" size="20">';
 
 	print '<input name="action" type="hidden" value="newmap">';
-	print '<input name="plug" type="hidden" value="'.$fromplug.'">';
 
 	print '<input type="submit" value="Create">';
 
@@ -175,45 +295,49 @@ function show_editor_startpage()
 
 		if ($dh) {
 		    while (false !== ($file = readdir($dh))) {
-			$realfile=$mapdir . DIRECTORY_SEPARATOR . $file;
-			$note = "";
-	
-			// skip directories, unreadable files, .files and anything that doesn't come through the sanitiser unchanged
-			if ( (is_file($realfile)) && (is_readable($realfile)) && (!preg_match("/^\./",$file) )  && ( wm_editor_sanitize_conffile($file) == $file ) ) {
-				if (!is_writable($realfile)) {
-					$note .= "(read-only)";
-				}
-				$title='(no title)';
-				$fd=fopen($realfile, "r");
-				if ($fd) {
-					while (!feof($fd)) {
-						$buffer=fgets($fd, 4096);
-	
-						if (preg_match('/^\s*TITLE\s+(.*)/i', $buffer, $matches)) {
-						    $title= wm_editor_sanitize_string($matches[1]); 
-						}
+				$realfile = $mapdir . '/' . $file;
+				$note     = "";
+
+				// skip directories, unreadable files, .files and anything that doesn't come through the sanitiser unchanged
+				if ((is_file($realfile)) && (is_readable($realfile)) && (!preg_match("/^\./",$file)) && (wm_editor_sanitize_conffile($file) == $file)) {
+					if (!is_writable($realfile)) {
+						$note .= "(read-only)";
 					}
-	
-					fclose ($fd);
-					$titles[$file] = $title;
-					$notes[$file] = $note;
-					$n++;
+
+					$title='(no title)';
+					$fd=fopen($realfile, "r");
+
+					if ($fd) {
+						while (!feof($fd)) {
+							$buffer=fgets($fd, 4096);
+
+							if (preg_match('/^\s*TITLE\s+(.*)/i', $buffer, $matches)) {
+							    $title= wm_editor_sanitize_string($matches[1]);
+							}
+						}
+
+						fclose ($fd);
+
+						$titles[$file] = $title;
+						$notes[$file]  = $note;
+
+						$n++;
+					}
 				}
-			}
 		    }
 
-		    closedir ($dh);
-		} else { 
-            $errorstring = "Can't open mapdir to read."; 
-        }
-		
-		ksort($titles);
-		
-		if ($n == 0) { 
-		    $errorstring = "No files in mapdir"; 
+			closedir ($dh);
+		} else {
+			$errorstring = "Can't open mapdir to read.";
 		}
-	} else { 
-	    $errorstring = "NO DIRECTORY named $mapdir"; 
+
+		ksort($titles);
+
+		if ($n == 0) {
+			$errorstring = "No files in mapdir";
+		}
+	} else {
+	    $errorstring = "NO DIRECTORY named $mapdir";
 	}
 
 	print 'OR<br />Create A New Map as a copy of an existing map:<br>';
@@ -221,40 +345,40 @@ function show_editor_startpage()
 	print 'Named: <input type="text" name="mapname" size="20"> based on ';
 
 	print '<input name="action" type="hidden" value="newmapcopy">';
-	print '<input name="plug" type="hidden" value="'.$fromplug.'">';
 	print '<select name="sourcemap">';
-	
+
 	if ($errorstring == '') {
 		foreach ($titles as $file=>$title) {
-			$nicefile = htmlspecialchars($file);
+			$nicefile = html_escape($file);
 			print "<option value=\"$nicefile\">$nicefile</option>\n";
 		}
 	} else {
-		print '<option value="">'.htmlspecialchars($errorstring).'</option>';
+		print '<option value="">'.html_escape($errorstring).'</option>';
 	}
-	
+
 	print '</select>';
 	print '<input type="submit" value="Create Copy">';
 	print '</form>';
 	print 'OR<br />';
-	print 'Open An Existing Map (looking in ' . htmlspecialchars($mapdir) . '):<ul class="filelist">';
+	print 'Open An Existing Map (looking in ' . html_escape($mapdir) . '):<ul class="filelist">';
 
 	if ($errorstring == '') {
-		foreach ($titles as $file=>$title) {			
+		foreach ($titles as $file=>$title) {
 			# $title = $titles[$file];
-			$note = $notes[$file];
-			$nicefile = htmlspecialchars($file);
-			$nicetitle = htmlspecialchars($title);
-			print "<li>$note<a href=\"?mapname=$nicefile&plug=$fromplug\">$nicefile</a> - <span class=\"comment\">$nicetitle</span></li>\n";
+			$note      = $notes[$file];
+			$nicefile  = html_escape($file);
+			$nicetitle = html_escape($title);
+
+			print "<li>$note<a href='?mapname=$nicefile'>$nicefile</a> - <span class='comment'>$nicetitle</span></li>";
 		}
 	} else {
-		print '<li>'.htmlspecialchars($errorstring).'</li>';
+		print '<li>' . html_escape($errorstring) . '</li>';
 	}
 
-	print "</ul>";
+	print '</ul>';
 
 	print "</div>"; // dlgbody
-	print '<div class="dlgHelp" id="start_help">PHP Weathermap ' . $WEATHERMAP_VERSION
+	print '<div class="dlgHelp" id="start_help">PHP Weathermap ' . $weathermap_version
 		. ' Copyright &copy; 2005-2019 Howard Jones - howie@thingy.com<br />The current version should always be <a href="http://www.network-weathermap.com/">available here</a>, along with other related software. PHP Weathermap is licensed under the GNU Public License, version 2. See COPYING for details. This distribution also includes the Overlib library by Erik Bosrup.</div>';
 
 	print "</div>"; // dlgStart
@@ -262,104 +386,94 @@ function show_editor_startpage()
 	print "</body></html>";
 }
 
-function snap($coord, $gridsnap = 0)
-{
-    if ($gridsnap == 0) {
-        return ($coord);
-    } else {        
-        $rest = $coord % $gridsnap;
-        return ($coord - $rest + round($rest/$gridsnap) * $gridsnap );
-    }
+function snap($coord, $gridsnap = 0) {
+	if ($gridsnap == 0) {
+		return ($coord);
+	} else {
+		$rest = $coord % $gridsnap;
+
+		return ($coord - $rest + round($rest/$gridsnap) * $gridsnap );
+	}
 }
 
-
-function extract_with_validation($array, $paramarray, $prefix = "")
-{
-	$all_present=true;
-	$candidates=array( );
+function extract_with_validation($array, $paramarray, $prefix = "") {
+	$all_present = true;
+	$candidates  = array();
 
 	foreach ($paramarray as $var) {
 		$varname=$var[0];
 		$vartype=$var[1];
 		$varreqd=$var[2];
 
-		if ($varreqd == 'req' && !array_key_exists($varname, $array)) { 
-	            $all_present=false; 
-	        }
+		if ($varreqd == 'req' && !array_key_exists($varname, $array)) {
+	            $all_present=false;
+        }
 
 		if (array_key_exists($varname, $array)) {
 			$varvalue=$array[$varname];
 
 			$waspresent=$all_present;
 
-			switch ($vartype)
-			{
-			case 'int':
-				if (!preg_match('/^\-*\d+$/', $varvalue)) { 
-                    $all_present=false; 
-                }
+			switch ($vartype) {
+				case 'int':
+					if (!preg_match('/^\-*\d+$/', $varvalue)) {
+						$all_present=false;
+					}
 
-				break;
+					break;
+				case 'float':
+					if (!preg_match('/^\d+\.\d+$/', $varvalue)) {
+						$all_present=false;
+					}
 
-			case 'float':
-				if (!preg_match('/^\d+\.\d+$/', $varvalue)) { 
-                    $all_present=false; 
-                }
+					break;
+				case 'yesno':
+					if (!preg_match('/^(y|n|yes|no)$/i', $varvalue)) {
+						$all_present=false;
+					}
 
-				break;
+					break;
+				case 'sqldate':
+					if (!preg_match('/^\d\d\d\d\-\d\d\-\d\d$/i', $varvalue)) {
+						$all_present=false;
+					}
 
-			case 'yesno':
-				if (!preg_match('/^(y|n|yes|no)$/i', $varvalue)) { 
-                    $all_present=false; 
-                }
+					break;
+				case 'any':
+					// we don't care at all
 
-				break;
+					break;
+				case 'ip':
+					if (!preg_match( '/^((\d|[1-9]\d|2[0-4]\d|25[0-5]|1\d\d)(?:\.(\d|[1-9]\d|2[0-4]\d|25[0-5]|1\d\d)){3})$/', $varvalue)) {
+						$all_present=false;
+					}
 
-			case 'sqldate':
-				if (!preg_match('/^\d\d\d\d\-\d\d\-\d\d$/i', $varvalue)) { 
-                    $all_present=false; 
-                }
+					break;
+				case 'alpha':
+					if (!preg_match('/^[A-Za-z]+$/', $varvalue)) {
+						$all_present=false;
+					}
 
-				break;
+					break;
+				case 'alphanum':
+					if (!preg_match('/^[A-Za-z0-9]+$/', $varvalue)) {
+						$all_present=false;
+					}
 
-			case 'any':
-				// we don't care at all
-				break;
+					break;
+				case 'bandwidth':
+					if (!preg_match('/^\d+\.?\d*[KMGT]*$/i', $varvalue)) {
+						$all_present=false;
+					}
 
-			case 'ip':
-				if (!preg_match( '/^((\d|[1-9]\d|2[0-4]\d|25[0-5]|1\d\d)(?:\.(\d|[1-9]\d|2[0-4]\d|25[0-5]|1\d\d)){3})$/', $varvalue)) { 
-                    $all_present=false; 
-                }
+					break;
+				default:
+					// an unknown type counts as an error, really
+					$all_present=false;
 
-				break;
-
-			case 'alpha':
-				if (!preg_match('/^[A-Za-z]+$/', $varvalue)) { 
-                    $all_present=false; 
-                }
-
-				break;
-
-			case 'alphanum':
-				if (!preg_match('/^[A-Za-z0-9]+$/', $varvalue)) { 
-                    $all_present=false; 
-                }
-
-				break;
-
-			case 'bandwidth':
-				if (!preg_match('/^\d+\.?\d*[KMGT]*$/i', $varvalue)) { 
-                    $all_present=false; 
-                }
-				break;
-
-			default:
-				// an unknown type counts as an error, really
-				$all_present=false;
-
-				break;
+					break;
 			}
-			
+
 			if ($all_present) {
 				$candidates["{$prefix}{$varname}"]=$varvalue;
 			}
@@ -367,28 +481,31 @@ function extract_with_validation($array, $paramarray, $prefix = "")
 	}
 
 	if ($all_present) {
-	    foreach ($candidates as $key => $value) { 
-		$GLOBALS[$key]=$value; 
+	    foreach ($candidates as $key => $value) {
+			$GLOBALS[$key]=$value;
 	    }
 	}
 
 	return array($all_present,$candidates);
 }
 
-function get_imagelist($imagedir)
-{
+function get_imagelist($imagedir) {
+	global $config;
+
 	$imagelist = array();
 
-	if (is_dir($imagedir)) {
-		$n=0;
-		$dh=opendir($imagedir);
+	$imdir = $config['base_path'] . '/plugins/weathermap/images/' . $imagedir;
+
+	if (is_dir($imdir)) {
+		$n  = 0;
+		$dh = opendir($imdir);
 
 		if ($dh) {
-			while ($file=readdir($dh)) {
-				$realfile=$imagedir . DIRECTORY_SEPARATOR . $file;
-				$uri = $imagedir . "/" . $file;
+			while ($file = readdir($dh)) {
+				$realfile = $imdir . '/' . $file;
+				$uri      = "images/$imagedir/$file";
 
-				if (is_readable($realfile) && ( preg_match('/\.(gif|jpg|png)$/i',$file) )) {
+				if (is_readable($realfile) && (preg_match('/\.(gif|jpg|png)$/i', $file))) {
 					$imagelist[] = $uri;
 					$n++;
 				}
@@ -397,44 +514,48 @@ function get_imagelist($imagedir)
 			closedir ($dh);
 		}
 	}
+
 	return ($imagelist);
 }
 
-function handle_inheritance(&$map, &$inheritables)
-{
-	foreach ($inheritables as $inheritable) {		
+function handle_inheritance(&$map, &$inheritables) {
+	foreach ($inheritables as $inheritable) {
 		$fieldname = $inheritable[1];
 		$formname = $inheritable[2];
 		$validation = $inheritable[3];
-		
-		$new = $_REQUEST[$formname];
-		if($validation != "") {
+
+		$new = get_nfilter_request_var($formname);
+
+		if ($validation != "") {
 		    switch($validation) {
-			case "int":
-			    $new = intval($new);
-			    break;
-			case "float":
-			    $new = floatval($new);
-			    break;
+				case "int":
+				    $new = intval($new);
+
+				    break;
+				case "float":
+				    $new = floatval($new);
+
+				    break;
 		    }
 		}
-		
-		$old = ($inheritable[0]=='node' ? $map->nodes['DEFAULT']->$fieldname : $map->links['DEFAULT']->$fieldname);	
-		
+
+		$old = ($inheritable[0]=='node' ? $map->nodes['DEFAULT']->$fieldname : $map->links['DEFAULT']->$fieldname);
+
 		if ($old != $new) {
 			if ($inheritable[0]=='node') {
 				$map->nodes['DEFAULT']->$fieldname = $new;
+
 				foreach ($map->nodes as $node) {
 					if ($node->name != ":: DEFAULT ::" && $node->$fieldname == $old) {
 						$map->nodes[$node->name]->$fieldname = $new;
 					}
 				}
 			}
-			
+
 			if ($inheritable[0]=='link') {
 				$map->links['DEFAULT']->$fieldname = $new;
+
 				foreach ($map->links as $link) {
-					
 					if ($link->name != ":: DEFAULT ::" && $link->$fieldname == $old) {
 						$map->links[$link->name]->$fieldname = $new;
 					}
@@ -444,74 +565,74 @@ function handle_inheritance(&$map, &$inheritables)
 	}
 }
 
-function get_fontlist(&$map,$name,$current)
-{
-    $output = '<select class="fontcombo" name="'.$name.'">';
-        
-    ksort($map->fonts);
+function get_fontlist(&$map,$name,$current) {
+	$output = '<select class="fontcombo" name="'.$name.'">';
 
-    foreach ($map->fonts as $fontnumber => $font) {		
-        $output .= '<option ';
-        if ($current == $fontnumber) {
-            $output .= 'SELECTED';
-        }
-        $output .= ' value="'.$fontnumber.'">'.$fontnumber.' ('.$font->type.')</option>';
-    }
-        
-    $output .= "</select>";
+	ksort($map->fonts);
 
-    return($output);
+	foreach ($map->fonts as $fontnumber => $font) {
+		$output .= '<option ';
+
+		if ($current == $fontnumber) {
+			$output .= 'SELECTED';
+		}
+
+		$output .= ' value="'.$fontnumber.'">'.$fontnumber.' ('.$font->type.')</option>';
+	}
+
+	$output .= "</select>";
+
+	return($output);
 }
 
-
-function range_overlaps($a_min, $a_max, $b_min, $b_max)
-{
+function range_overlaps($a_min, $a_max, $b_min, $b_max) {
 	if ($a_min > $b_max) {
 		return false;
 	}
+
 	if ($b_min > $a_max) {
 		return false;
 	}
 
 	return true;
 }
-function common_range ($a_min,$a_max, $b_min, $b_max)
-{
+
+function common_range ($a_min,$a_max, $b_min, $b_max) {
 	$min_overlap = max($a_min, $b_min);
 	$max_overlap = min($a_max, $b_max);
 
 	return array($min_overlap,$max_overlap);
 }
-/* distance - find the distance between two points
+
+/**
+ * distance - find the distance between two points
  *
  */
-function distance ($ax,$ay, $bx,$by)
-{
+function distance($ax, $ay, $bx, $by) {
 	$dx = $bx - $ax;
 	$dy = $by - $ay;
-	return sqrt( $dx*$dx + $dy*$dy );
+
+	return sqrt($dx * $dx + $dy * $dy );
 }
 
-
-function tidy_links(&$map,$targets, $ignore_tidied=FALSE)
-{
+function tidy_links(&$map, $targets, $ignore_tidied=false) {
 	// not very efficient, but it saves looking for special cases (a->b & b->a together)
 	$ntargets = count($targets);
 	$i = 1;
+
 	foreach ($targets as $target) {
 		tidy_link($map, $target, $i, $ntargets, $ignore_tidied);
 		$i++;
 	}
 }
+
 /**
  * tidy_link - change link offsets so that link is horizonal or vertical, if possible.
  *             if not possible, change offsets to the closest facing compass points
  */
-function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FALSE)
-{
+function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=false) {
 	// print "\n-----------------------------------\nTidying $target...\n";
-	if(isset($map->links[$target]) and isset($map->links[$target]->a) ) {
-
+	if (isset($map->links[$target]) && isset($map->links[$target]->a)) {
 		$node_a = $map->links[$target]->a;
 		$node_b = $map->links[$target]->b;
 
@@ -533,7 +654,7 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 		$b_x_offset = 0; $b_y_offset = 0;
 
 		// if they are side by side, and there's some common y coords, make link horizontal
-		if ( !$x_overlap && $y_overlap ) {
+		if (!$x_overlap && $y_overlap) {
 			// print "SIDE BY SIDE\n";
 
 			// snap the X coord to the appropriate edge of the node
@@ -541,6 +662,7 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 				$a_x_offset = $bb_a[2] - $node_a->x;
 				$b_x_offset = $bb_b[0] - $node_b->x;
 			}
+
 			if ($bb_b[2] < $bb_a[0]) {
 				$a_x_offset = $bb_a[0] - $node_a->x;
 				$b_x_offset = $bb_b[2] - $node_b->x;
@@ -548,6 +670,7 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 
 			// this should be true whichever way around they are
 			list($min_overlap,$max_overlap) = common_range($bb_a[1],$bb_a[3],$bb_b[1],$bb_b[3]);
+
 			$overlap = $max_overlap - $min_overlap;
 			$n = $overlap/($linktotal+1);
 
@@ -567,12 +690,14 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 				$a_y_offset = $bb_a[3] - $node_a->y;
 				$b_y_offset = $bb_b[1] - $node_b->y;
 			}
+
 			if ($bb_b[3] < $bb_a[1]) {
 				$a_y_offset = $bb_a[1] - $node_a->y;
 				$b_y_offset = $bb_b[3] - $node_b->y;
 			}
 
 			list($min_overlap,$max_overlap) = common_range($bb_a[0],$bb_a[2],$bb_b[0],$bb_b[2]);
+
 			$overlap = $max_overlap - $min_overlap;
 			$n = $overlap/($linktotal+1);
 
@@ -585,11 +710,9 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 		}
 
 		// if no common coordinates, figure out the best diagonal...
-		if ( !$y_overlap && !$x_overlap ) {
-
+		if (!$y_overlap && !$x_overlap) {
 			$pt_a = new WMPoint($node_a->x, $node_a->y);
 			$pt_b = new WMPoint($node_b->x, $node_b->y);
-
 
 			$line = new WMLineSegment($pt_a, $pt_b);
 
@@ -609,14 +732,12 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 
 			$new_a_offset = sprintf("%d:%d", $a_x_offset,$a_y_offset);
 			$new_b_offset = sprintf("%d:%d", $b_x_offset,$b_y_offset);
-
-
 		}
 
 		// if no common coordinates, figure out the best diagonal...
 		// currently - brute force search the compass points for the shortest distance
 		// potentially - intersect link line with rectangles to get exact crossing point
-		if ( 1==0 && !$y_overlap && !$x_overlap ) {
+		if (1==0 && !$y_overlap && !$x_overlap) {
 			// print "DIAGONAL\n";
 
 			$corners = array("NE","E","SE","S","SW","W","NW","N");
@@ -639,7 +760,8 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 					$byy = $node_b->y + $by;
 
 					$d = distance($axx,$ayy, $bxx, $byy);
-					if($d < $best_distance) {
+
+					if ($d < $best_distance) {
 						// print "from $corner1 ($axx, $ayy) to $corner2 ($bxx, $byy): ";
 						// print "NEW BEST $d\n";
 						$best_distance = $d;
@@ -648,58 +770,62 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=FA
 					}
 				}
 			}
+
 			// Step back a bit from the edge, to hide the corners of the link
-			$new_a_offset = $best_offset_a."85";
-			$new_b_offset = $best_offset_b."85";
+			$new_a_offset = $best_offset_a . '85';
+			$new_b_offset = $best_offset_b . '85';
 		}
 
 		// unwritten/implied - if both overlap, you're doing something weird and you're on your own
 		// finally, update the offsets
 		$map->links[$target]->a_offset = $new_a_offset;
 		$map->links[$target]->b_offset = $new_b_offset;
+
 		// and also add a note that this link was tidied, and is eligible for automatic tidying
-		$map->links[$target]->add_hint("_tidied",1);
+		$map->links[$target]->add_hint('_tidied', 1);
 	}
 }
-function untidy_links(&$map)
-{
-	foreach ($map->links as $link)
-	{
-		$link->a_offset = "C";
-		$link->b_offset = "C";
+
+function untidy_links(&$map) {
+	foreach ($map->links as $link) {
+		$link->a_offset = 'C';
+		$link->b_offset = 'C';
 	}
 }
-function retidy_links(&$map, $ignore_tidied=FALSE)
-{
+
+function retidy_links(&$map, $ignore_tidied=false) {
 	$routes = array();
 	$done = array();
-	foreach ($map->links as $link)
-	{
-		if(isset($link->a)) {
-			$route = $link->a->name . " " . $link->b->name;
-			if(strcmp( $link->a->name, $link->b->name) > 0) {
-				$route = $link->b->name . " " . $link->a->name;
+
+	foreach ($map->links as $link) {
+		if (isset($link->a)) {
+			$route = $link->a->name . ' ' . $link->b->name;
+
+			if (strcmp( $link->a->name, $link->b->name) > 0) {
+				$route = $link->b->name . ' ' . $link->a->name;
 			}
+
 			$routes[$route][] = $link->name;
 		}
 	}
 
-	foreach ($map->links as $link)
-	{
-		if(isset($link->a)) {
-			$route = $link->a->name . " " . $link->b->name;
-			if(strcmp( $link->a->name, $link->b->name) > 0) {
-				$route = $link->b->name . " " . $link->a->name;
+	foreach ($map->links as $link) {
+		if (isset($link->a)) {
+			$route = $link->a->name . ' ' . $link->b->name;
+
+			if (strcmp($link->a->name, $link->b->name) > 0) {
+				$route = $link->b->name . ' ' . $link->a->name;
 			}
 
-			if( ($ignore_tidied || $link->get_hint("_tidied")==1) && !isset($done[$route]) && isset( $routes[$route] ) ) {
+			if (($ignore_tidied || $link->get_hint('_tidied') == 1) && !isset($done[$route]) && isset($routes[$route])) {
+				if ( sizeof($routes[$route]) == 1) {
+					tidy_link($map, $link->name);
 
-				if( sizeof($routes[$route]) == 1) {
-					tidy_link($map,$link->name);
 					$done[$route] = 1;
 				} else {
 					# handle multi-links specially...
-					tidy_links($map,$routes[$route]);
+					tidy_links($map, $routes[$route]);
+
 					// mark it so we don't do it again when the other links come by
 					$done[$route] = 1;
 				}
@@ -708,12 +834,9 @@ function retidy_links(&$map, $ignore_tidied=FALSE)
 	}
 }
 
-
-function editor_log($str)
-{
-    // $f = fopen("editor.log","a");
+function editor_log($str) {
+    // $f = fopen('editor.log','a');
     // fputs($f, $str);
     // fclose($f);
 }
 
-// vim:ts=4:sw=4:

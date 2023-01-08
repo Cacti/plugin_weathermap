@@ -1,0 +1,255 @@
+// Stop Firefox from making the border blue on inputs
+input:focus {
+  outline: 0px solid green;
+  caret-color: transparent;
+}
+
+.mainView {
+	padding-top: 60px;
+}
+
+.mainArea {
+	text-align: center;
+}
+
+#existingdata, #xycapture {
+	margin-left: auto;
+	margin-right: auto;
+	border: 0px;
+	padding: 0px;
+	cursor: crosshair;
+}
+
+#frmMain {
+	position: relative;
+	top: -20px;
+}
+
+body {
+	font-family: 'Gill Sans', Verdana, sans-serif; margin:0;
+}
+
+input {
+	max-width: 100% !important;
+}
+
+#toolbar {
+	font-family: Verdana, sans-serif;
+}
+
+#toolbar {
+	position: fixed;
+	top:0px;
+	left: 0px;
+	width: 100%;
+	color: white; border-bottom: gray solid 1px;
+	z-index: 10;
+	opacity: 0.9;
+	background: #1958b7;
+}
+
+#dlgTextEdit textarea {
+	padding: 3px;
+}
+
+.dlgButtons, .dlgBody, .dlgHelp {
+	display: table-row;
+}
+
+.dlgSubButtons {
+	margin: 20px;
+	white-space: nowrap;
+	text-align: center !important;
+}
+
+#toolbar ul {
+	float:left;
+	width:100%;
+	margin:0;
+	padding:0;
+	font-size:11px;
+	color:#fff;
+	/*background:#ccc;*/
+	background: #1958b7;
+	/* margin-bottom: 10px; */
+}
+
+#toolbar ul li.tb_help {
+	font-style: italic;
+	padding: 2px;
+}
+
+#toolbar ul li {
+	display:inline;
+}
+
+#toolbar ul li.tb_active {
+	float:left;
+	padding:5px 10px;
+	text-decoration:none;
+
+	border-left: #508fc4 2px solid;
+	border-right: #1958b7 2px solid;
+	border-top: #508fc4 2px solid;
+	border-bottom: #1958b7 2px solid;
+
+	cursor: pointer;
+	text-align: center;
+
+	background: #2175bc;
+	color:#fff;
+}
+
+#toolbar ul li.tb_coords {
+	float:left;
+	padding:7px 12px;
+	text-decoration:none;
+	width: 70px;
+	text-align: center;
+	background: #1958b7;
+	color:#fff;
+}
+
+#toolbar ul li.tb_active:hover {
+	color:#fff;
+	background:#2586d7;
+}
+
+.dlgBody td {
+	padding: 1px !important;
+}
+
+.dlgBody textarea {
+	height:50px;
+	width:380px;
+}
+
+.dlgBody input.ui-autocomplete-input {
+	line-height:16px;
+	margin:0px;
+	padding:0px;
+}
+
+.dlgProperties {
+	display: none;
+	width: 800px;
+	margin: 5px;
+	font-size: 11px;
+}
+
+.dlgBody {
+	padding: 5px;
+	font-size: 12px;
+	text-align: left;
+}
+
+.dlgBody td {
+	text-align: left;
+}
+
+.dlgConfirm {
+	display: none;
+	width: 800px;
+	margin: 5px;
+	font-size: 11px !important;
+}
+
+.ui-dialog-buttonset {
+	font-size: 12px !important;
+}
+
+.ui-dialog-title {
+	font-size: 12px !important;
+}
+
+.ui-selectmenu-menu {
+	z-index: 65535 !important;
+}
+
+.ui-selectmenu-open {
+	z-index: 65535 !important;
+}
+
+.dlgHelp {
+	font-size: 12px;
+	line-height: 12px;
+	border-top: 1px solid black;
+	height: 48px;
+	padding: 5px;
+	margin-top: 5px;
+}
+
+.dlgComment {
+	font-style: italic;
+	font-size: 12px;
+	margin-bottom: 5px;
+}
+
+
+.debug {
+	line-height: 2.5;
+	margin: 10px;
+	font-size: 70%;
+	background: yellow;
+	border: 1px dashed black;
+	padding: 4px;
+}
+
+.debug input {
+	font-size: 80%;
+}
+
+.debug h1 {
+	font-size: 8px;
+	border-bottom: 1px solid grey;
+	text-align: left;
+}
+
+.debug span {
+	position: relative;
+}
+
+.debug span label {
+	position:absolute;
+	top:-1.5em;
+	left:0;
+	font:bold 100%/1 sans-serif;
+}
+
+th {
+	text-align: left;
+	font-size: 11px;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+td {
+	text-align: left;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.alert {
+	background: #fff6bf url(../images/icons/exclamation.png) center no-repeat;
+	background-position: 15px 50%; /* x-pos y-pos */
+	text-align: left;
+	padding: 5px 20px 5px 45px;
+	border-top: 2px solid #ffd324;
+	border-bottom: 2px solid #ffd324;
+}
+
+.fontsamples {
+	height: 64px;
+	width: 300px;
+	overflow: auto;
+}
+
+.cactilink, .cactinode {
+	white-space: nowrap;
+}
+
+#item_configtext {
+	overflow: scroll;
+	width: 500px;
+	height: 300px;
+}
