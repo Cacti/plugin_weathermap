@@ -813,10 +813,14 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		if ($dh) {
-			while ($file=readdir($dh)) {
+			while ($file = readdir($dh)) {
 				$realfile = $dir . '/' . $file;
 
 				if (is_file($realfile) && preg_match( '/\.php$/', $realfile)) {
+					if (strpos($realfile, 'index.php') !== false) {
+						continue;
+					}
+
 					wm_debug("Loading $type Plugin class from $file");
 
 					include_once($realfile);
