@@ -54,7 +54,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	function Init(&$map) {
 		global $config;
 
-		if ($map->context=='cacti') {
+		if ($map->context == 'cacti') {
 			wm_debug('RRD DS: path_rra is ' . $config['rra_path'] . ' - your rrd pathname must be exactly this to use poller_output');
 
 			// save away a couple of useful global SET variables
@@ -100,9 +100,6 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	function wmrrd_read_from_poller_output($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
 		global $config;
 
-		//global $weathermap_debugging;
-		//$weathermap_debugging = true;
-
 		$this->local_data_id = null;
 
 		wm_debug("RRD ReadData: poller_output style");
@@ -111,7 +108,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			// take away the cacti bit, to get the appropriate path for the table
 			// $db_rrdname = realpath($rrdfile);
 			$path_rra   = $config['rra_path'];
-			$db_rrdname = $rrdfile;
+			$db_rrdname = trim($rrdfile);
 
 			if (strpos($db_rrdname, '<path_rra>') === false) {
 				if (substr($db_rrdname, 0, 1) != '/') {
@@ -547,7 +544,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$data[OUT]    = null;
 		$SQL[IN]      = 'select null';
 		$SQL[OUT]     = 'select null';
-		$rrdfile      = $targetstring;
+		$rrdfile      = trim($targetstring);
 		$path_rra     = $config['rra_path'];
 
 		if ($map->get_hint('rrd_default_in_ds') != '') {
@@ -567,26 +564,25 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$data_time = 0;
 
 		if (preg_match('/^(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/', $targetstring, $matches)) {
-			$rrdfile = $matches[1];
-
-			$dsnames[IN] = $matches[2];
-			$dsnames[OUT] = $matches[3];
+			$rrdfile      = trim($matches[1]);
+			$dsnames[IN]  = trim($matches[2]);
+			$dsnames[OUT] = trim($matches[3]);
 
 			wm_debug('Special DS names seen (' . $dsnames[IN] . ' and ' . $dsnames[OUT] . ')');
 		}
 
 		if (preg_match('/^rrd:(.*)/', $rrdfile, $matches)) {
-			$rrdfile = $matches[1];
+			$rrdfile = trim($matches[1]);
 		}
 
 		if (preg_match('/^gauge:(.*)/', $rrdfile, $matches)) {
-			$rrdfile = $matches[1];
+			$rrdfile = trim($matches[1]);
 			$multiplier = 1;
 		}
 
 		if (preg_match('/^scale:([+-]?\d*\.?\d*):(.*)/', $rrdfile, $matches)) {
-			$rrdfile    = $matches[2];
-			$multiplier = $matches[1];
+			$rrdfile    = trim($matches[2]);
+			$multiplier = trim($matches[1]);
 		}
 
 		wm_debug("SCALING result by $multiplier");
