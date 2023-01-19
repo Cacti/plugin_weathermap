@@ -63,9 +63,11 @@ function UpdateCactiData(&$item, $local_data_id) {
 			WHERE dl.id = ?',
 			array($local_data_id));
 
-		foreach ($r3 as $vv) {
-			$vname = 'cacti_' . $vv['field_name'];
-			$to_set[$vname] = $vv['field_value'];
+		if (cacti_sizeof($r3)) {
+			foreach ($r3 as $vv) {
+				$vname = 'cacti_' . $vv['field_name'];
+				$to_set[$vname] = $vv['field_value'];
+			}
 		}
 
 		if ($set_speed != 0) {
