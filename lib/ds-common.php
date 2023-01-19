@@ -60,7 +60,7 @@ function UpdateCactiData(&$item, $local_data_id) {
 			ON dl.host_id = hsc.host_id
 			AND dl.snmp_index = hsc.snmp_index
 			AND dl.snmp_query_id = hsc.snmp_query_id
-			WHERE data_local.id = ?',
+			WHERE dl.id = ?',
 			array($local_data_id));
 
 		foreach ($r3 as $vv) {
