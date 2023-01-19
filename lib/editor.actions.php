@@ -494,8 +494,8 @@ function addLink($mapfile) {
 
 	$map->ReadConfig($mapfile);
 
-	$a = get_nfilter_request_var('param2');
-	$b = get_nfilter_request_var('param');
+	$a = get_nfilter_request_var('param');
+	$b = get_nfilter_request_var('param2');
 
 	$log = "[$a -> $b]";
 
