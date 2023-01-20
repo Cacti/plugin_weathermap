@@ -294,7 +294,7 @@ function setNodeProperties($mapfile) {
 	$map->nodes[$new_node_name]->label       = wm_editor_sanitize_string(get_nfilter_request_var('node_label'));
 	$map->nodes[$new_node_name]->infourl[IN] = wm_editor_sanitize_string(get_nfilter_request_var('node_infourl'));
 
-	$urls = preg_split('/\s+/', get_nfilter_request_var('node_hover'), -1, PREG_SPLIT_NO_EMPTY);
+	$urls = preg_split('/\s+/', trim(get_nfilter_request_var('node_hover')), -1, PREG_SPLIT_NO_EMPTY);
 
 	$map->nodes[$new_node_name]->overliburl[IN]  = $urls;
 	$map->nodes[$new_node_name]->overliburl[OUT] = $urls;
@@ -339,9 +339,7 @@ function setLinkProperties($mapfile) {
 	    $map->links[$link_name]->commentoffset_in  = intval(get_nfilter_request_var('link_commentposin'));
 	    $map->links[$link_name]->commentoffset_out = intval(get_nfilter_request_var('link_commentposout'));
 
-	    // $map->links[$link_name]->target = get_nfilter_request_var('link_target'];
-
-	    $targets = preg_split('/\s+/', get_nfilter_request_var('link_target'), -1, PREG_SPLIT_NO_EMPTY);
+	    $targets = preg_split('/\s+/', trim(get_nfilter_request_var('link_target')), -1, PREG_SPLIT_NO_EMPTY);
 	    $new_target_list = array();
 
 	    foreach ($targets as $target) {
@@ -351,10 +349,10 @@ function setLinkProperties($mapfile) {
 			// if it's an RRD file, then allow for the user to specify the
 			// DSs to be used. The default is traffic_in, traffic_out, which is
 			// OK for Cacti (most of the time), but if you have other RRDs...
-			if (preg_match('/(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/i',$target,$matches)) {
-				$newtarget[0] = $matches[1];
-				$newtarget[1] = $matches[2];
-				$newtarget[2] = $matches[3];
+			if (preg_match('/(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/i', $target, $matches)) {
+				$newtarget[0] = trim($matches[1]);
+				$newtarget[1] = trim($matches[2]);
+				$newtarget[2] = trim($matches[3]);
 			}
 
 			// now we've (maybe) messed with it, we'll store the array of target specs
@@ -494,8 +492,8 @@ function addLink($mapfile) {
 
 	$map->ReadConfig($mapfile);
 
-	$a = get_nfilter_request_var('param2');
-	$b = get_nfilter_request_var('param');
+	$a = get_nfilter_request_var('param');
+	$b = get_nfilter_request_var('param2');
 
 	$log = "[$a -> $b]";
 

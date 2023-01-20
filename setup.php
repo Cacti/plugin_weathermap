@@ -1063,7 +1063,8 @@ function weathermap_poller_output(&$rrd_update_array) {
 
 			db_execute_prepared('UPDATE weathermap_data
 				SET `last_time` = ?, `last_calc` = ?, `last_value` = ?,`sequence`=`sequence`+1
-				WHERE `id` = ?', array($newtine, $newvalue, $newlastvalue, $required['id']));
+				WHERE `id` = ?',
+				array($newtime, $newvalue, $newlastvalue, $required['id']));
 
 			cacti_log("WM poller_output: Final value is $newvalue (was $lastval, period was $period)", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 		} else {

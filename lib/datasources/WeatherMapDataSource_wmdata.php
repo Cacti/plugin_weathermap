@@ -42,7 +42,7 @@
 
 class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 	function Recognise($targetstring) {
-		if (preg_match("/^wmdata:.*$/", $targetstring, $matches)) {
+		if (preg_match('/^wmdata:.*$/', $targetstring, $matches)) {
 			return true;
 		} else {
 			return false;
@@ -58,13 +58,13 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 
 		$matches = 0;
 
-		if(preg_match("/^wmdata:([^:]*):(.*)", $targetstring, $matches)) {
-			$datafile = $matches[1];
-			$dataname = $matches[2];
+		if (preg_match('/^wmdata:([^:]*):(.*)', trim($targetstring), $matches)) {
+			$datafile = trim($matches[1]);
+			$dataname = trim($matches[2]);
 		}
 
-		if(file_exists($datafile)) {
-			$fd = fopen($targetstring, "r");
+		if (file_exists($datafile)) {
+			$fd = fopen($targetstring, 'r');
 
 			if ($fd) {
 				$found = false;
@@ -72,32 +72,33 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 				while (!feof($fd)) {
 					$buffer = fgets($fd, 4096);
 					# strip out any Windows line-endings that have gotten in here
-					$buffer = str_replace("\r", "", $buffer);
+					$buffer = str_replace("\r", '', $buffer);
 
 					$fields = explode("\t",$buffer);
 
-					if($fields[0] == $dataname) {
+					if ($fields[0] == $dataname) {
 						$data[IN]  = $fields[1];
 						$data[OUT] = $fields[2];
+
 						$found = true;
 					}
 				}
 
-				if($found===true) {
+				if ($found===true) {
 					$stats = stat($datafile);
 					$data_time = $stats['mtime'];
 				} else {
-					wm_warn("WMData ReadData: Data name ($dataname) didn't exist in ($datafile). [WMWMDATA03]\n");
+					wm_warn("WMData ReadData: Data name ($dataname) didn't exist in ($datafile). [WMWMDATA03]");
 				}
 			} else {
-				wm_warn("WMData ReadData: Couldn't open ($datafile). [WMWMDATA02]\n");
+				wm_warn("WMData ReadData: Couldn't open ($datafile). [WMWMDATA02]");
 			}
 		} else {
 			wm_warn("WMData ReadData: $datafile doesn't exist [WMWMDATA01]");
 		}
 
 		wm_debug(
-			sprintf("WMData ReadData: Returning (%s, %s, %s)\n",
+			sprintf("WMData ReadData: Returning (%s, %s, %s)",
 				string_or_null($data[IN]),
 				string_or_null($data[OUT]),
 				$data_time
