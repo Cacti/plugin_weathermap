@@ -3438,7 +3438,7 @@ class WeatherMap extends WeatherMapBase {
 
 					wm_debug("AllocateScaleColours: $scalename/$refname $key ($r,$g,$b)");
 
-					$this->colours[$scalename][$key][$refname]=myimagecolorallocate($im, $r, $g, $b);
+					$this->colours[$scalename][$key][$refname] = myimagecolorallocate($im, $r, $g, $b);
 				}
 			}
 		}

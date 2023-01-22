@@ -354,6 +354,10 @@ function myimagecolorallocate($image, $red, $green, $blue) {
 		return(-1);
 	}
 
+	if ($red < 0 || $green < 0 || $blue < 0) {
+		return imagecolorallocatealpha($image, 0, 0, 0, 127);
+	}
+
 	$existing = imagecolorexact($image, $red, $green, $blue);
 
 	if ($existing > -1) {
