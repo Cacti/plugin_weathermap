@@ -412,11 +412,7 @@ function weathermap_singleview($mapid) {
 			print '<tr><td>';
 
 			if (file_exists($htmlfile)) {
-				print '<div class="fixscroll" style="overflow:auto">';
-
 				include($htmlfile);
-
-				print '</div>';
 			} else {
 				print '<div align="center" style="padding:20px"><em>' . __('This map hasn\'t been created yet.', 'weathermap');
 
@@ -668,11 +664,7 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 			}
 
 			if (file_exists($htmlfile)) {
-				print '<div class="fixscroll" style="overflow:auto;padding-top:5px">';
-
 				include($htmlfile);
-
-				print '</div>';
 			} else {
 				print '<div align="center" style="padding:20px"><em>' . __('This map hasn\'t been created yet.', 'weathermap') . '</em></div>';
 			}

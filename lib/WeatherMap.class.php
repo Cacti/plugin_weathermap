@@ -4031,7 +4031,7 @@ class WeatherMap extends WeatherMapBase {
 
 		$html='';
 
-		$html .= '<div class="weathermapimage" style="margin-left: auto; margin-right: auto; width: ' . $this->width . 'px;">' . PHP_EOL;
+		$html .= '<div class="weathermapimage">' . PHP_EOL;
 
 		if ($this->imageuri != '') {
 			$html.=sprintf(

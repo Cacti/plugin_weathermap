@@ -40,4 +40,8 @@ $(function() {
 			//callback($(this).attr('data-hover'));
 		}
 	});
+
+	waitForFinalEvent(function() {
+		$('.cactiGraphContentArea').removeClass('cactiGraphContentArea').addClass('wm_scroll');
+	});
 });
