@@ -564,6 +564,8 @@ class WeatherMap extends WeatherMapBase {
 			$fontnumber = 5;
 		}
 
+		$x = floor($x);
+
 		if (($fontnumber > 0) && ($fontnumber < 6)) {
 			imagestring($image, $fontnumber, $x, floor($y - imagefontheight($fontnumber)), $string, $colour);
 
@@ -579,7 +581,7 @@ class WeatherMap extends WeatherMapBase {
 
 			if ($this->fonts[$fontnumber]->type == 'gd') {
 				imagestring($image, $this->fonts[$fontnumber]->gdnumber,
-					$x, $y - imagefontheight($this->fonts[$fontnumber]->gdnumber),
+					$x, floor($y - imagefontheight($this->fonts[$fontnumber]->gdnumber)),
 					$string, $colour
 				);
 
