@@ -195,6 +195,8 @@ function weathermap_top_graph_refresh($refresh) {
 	// if we're cycling maps, then we want to handle reloads ourselves, thanks
 	if (isset_request_var('action') && get_request_var('action') == 'viewmapcycle') {
 		return (86400);
+	} elseif (get_request_var('action') == '' || get_request_var('action') == 'viewmap') {
+		return (read_user_setting('page_refresh'));
 	}
 
 	return ($refresh);
