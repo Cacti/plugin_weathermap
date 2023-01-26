@@ -99,7 +99,7 @@ class WeatherMapNode extends WeatherMapItem {
 	function __construct() {
 		$this->inherit_fieldlist = array(
 			'boundingboxes' => array(),
-			'my_default' => NULL,
+			'my_default' => null,
 			'label' => '',
 			'proclabel' => '',
 			'usescale' => 'DEFAULT',
@@ -112,8 +112,8 @@ class WeatherMapNode extends WeatherMapItem {
 			'labelfont' => 3,
 			'relative_to' => '',
 			'relative_resolved' => false,
-			'x' => NULL,
-			'y' => NULL,
+			'x' => null,
+			'y' => null,
 			'inscalekey'=>'', 'outscalekey'=>'',
 			#'incolour'=>-1,'outcolour'=>-1,
 			'original_x' => 0,
@@ -154,7 +154,7 @@ class WeatherMapNode extends WeatherMapItem {
 		$this->centre_x = 0;
 		$this->centre_y = 0;
 		$this->polar = false;
-		$this->image = NULL;
+		$this->image = null;
 	}
 
 	function my_type() {
@@ -310,12 +310,18 @@ class WeatherMapNode extends WeatherMapItem {
 
 		// figure out a bounding rectangle for the icon
 		if ($this->iconfile != '') {
-			$icon_im = NULL;
-			$icon_w = 0;
-			$icon_h = 0;
+			$icon_im = null;
+			$icon_w  = 0;
+			$icon_h  = 0;
 
-			if ($this->iconfile == 'rbox' || $this->iconfile == 'box' || $this->iconfile == 'round' || $this->iconfile == 'inpie' || $this->iconfile == 'outpie' || $this->iconfile == 'gauge' || $this->iconfile == 'nink') {
-				wm_debug("Artificial Icon type " .$this->iconfile. " for $this->name");
+			if ($this->iconfile == 'rbox' ||
+				$this->iconfile == 'box' ||
+				$this->iconfile == 'round' ||
+				$this->iconfile == 'inpie' ||
+				$this->iconfile == 'outpie' ||
+				$this->iconfile == 'gauge' ||
+				$this->iconfile == 'nink') {
+				wm_debug("Artificial Icon type " . $this->iconfile . " for $this->name");
 
 				// this is an artificial icon - we don't load a file for it
 
@@ -327,8 +333,8 @@ class WeatherMapNode extends WeatherMapItem {
 
 				imagefill($icon_im, 0, 0, $nothing);
 
-				$fill = NULL;
-				$ink = NULL;
+				$fill = null;
+				$ink = null;
 
 				$aifill = new Colour($this->aiconfillcolour);
 				$aiink = new Colour($this->aiconoutlinecolour);
@@ -373,21 +379,21 @@ class WeatherMapNode extends WeatherMapItem {
 				}
 
 				if ($this->iconfile=='box') {
-					if ($fill !== NULL && !$fill->is_none()) {
+					if ($fill !== null && !$fill->is_none()) {
 						imagefilledrectangle($icon_im, 0, 0, $this->iconscalew-1, $this->iconscaleh-1, $fill->gdallocate($icon_im) );
 					}
 
-					if ($ink !== NULL && !$ink->is_none()) {
+					if ($ink !== null && !$ink->is_none()) {
 						imagerectangle($icon_im, 0, 0, $this->iconscalew-1, $this->iconscaleh-1, $ink->gdallocate($icon_im) );
 					}
 				}
 
 				if ($this->iconfile=='rbox') {
-					if ($fill !== NULL && !$fill->is_none()) {
+					if ($fill !== null && !$fill->is_none()) {
 						imagefilledroundedrectangle($icon_im, 0, 0, $this->iconscalew-1, $this->iconscaleh-1, 4, $fill->gdallocate($icon_im));
 					}
 
-					if ($ink !== NULL && !$ink->is_none()) {
+					if ($ink !== null && !$ink->is_none()) {
 						imageroundedrectangle($icon_im, 0, 0, $this->iconscalew-1, $this->iconscaleh-1, 4, $ink->gdallocate($icon_im));
 					}
 				}
@@ -396,11 +402,11 @@ class WeatherMapNode extends WeatherMapItem {
 					$rx = $this->iconscalew/2-1;
 					$ry = $this->iconscaleh/2-1;
 
-					if ($fill !== NULL && !$fill->is_none()) {
+					if ($fill !== null && !$fill->is_none()) {
 						imagefilledellipse($icon_im,$rx,$ry,$rx*2,$ry*2,$fill->gdallocate($icon_im));
 					}
 
-					if ($ink !== NULL && !$ink->is_none()) {
+					if ($ink !== null && !$ink->is_none()) {
 						imageellipse($icon_im,$rx,$ry,$rx*2,$ry*2,$ink->gdallocate($icon_im));
 					}
 				}
@@ -425,7 +431,7 @@ class WeatherMapNode extends WeatherMapItem {
 					imagefilledarc($icon_im, $rx-1, $ry+$quarter, $quarter*2, $quarter*2, 0,360, $col1->gdallocate($icon_im), IMG_ARC_PIE);
 					imagefilledarc($icon_im, $rx+1, $ry-$quarter, $quarter*2, $quarter*2, 0,360, $col2->gdallocate($icon_im), IMG_ARC_PIE);
 
-					if ($ink !== NULL && !$ink->is_none()) {
+					if ($ink !== null && !$ink->is_none()) {
 						// XXX - need a font definition from somewhere for NINK text
 						$font = 1;
 
@@ -458,16 +464,16 @@ class WeatherMapNode extends WeatherMapItem {
 					$rx = $this->iconscalew/2-1;
 					$ry = $this->iconscaleh/2-1;
 
-					if ($fill !== NULL && !$fill->is_none()) {
+					if ($fill !== null && !$fill->is_none()) {
 						imagefilledellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $fill->gdallocate($icon_im) );
 					}
 
-					if ($ink !== NULL && !$ink->is_none()) {
+					if ($ink !== null && !$ink->is_none()) {
 						// imagefilledarc  ( resource $image  , int $cx  , int $cy  , int $width  , int $height  , int $start  , int $end  , int $color  , int $style  )
 						imagefilledarc($icon_im, $rx, $ry, $rx*2,$ry*2, 0, $segment_angle, $ink->gdallocate($icon_im) , IMG_ARC_PIE);
 					}
 
-					if ($fill !== NULL && !$fill->is_none()) {
+					if ($fill !== null && !$fill->is_none()) {
 						imageellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $fill->gdallocate($icon_im) );
 					}
 
@@ -479,7 +485,8 @@ class WeatherMapNode extends WeatherMapItem {
 					wm_warn('gauge AICON not implemented yet [WMWARN99]');
 				}
 			} else {
-				$this->iconfile = $map->ProcessString($this->iconfile ,$this);
+				$this->iconfile = $map->ProcessString($this->iconfile, $this);
+
 				if (is_readable($this->iconfile)) {
 					imagealphablending($im, true);
 					// draw the supplied icon, instead of the labelled box
@@ -528,7 +535,7 @@ class WeatherMapNode extends WeatherMapItem {
 					}
 				} else {
 					if ($this->iconfile != 'none') {
-						wm_warn ('ICON \'' . $this->iconfile . '\' does not exist, or is not readable. Check path and permissions. [WMARN38]');
+						wm_warn ('ICON \'' . $this->iconfile . '\' does not exist, or is not readable. Check path and permissions. [WMWARN38]');
 					}
 				}
 			}

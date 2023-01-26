@@ -950,11 +950,17 @@ function prime_node_form(name) {
 		$('#node_hover').val(mynode.overliburl);
 
 		if (mynode.iconfile != '') {
-			// console.log(mynode.iconfile.substring(0,2));
-			$('node_iconfilename').val(mynode.iconfile);
-			selectedNode = mynode.iconfile;
+			//console.log(mynode.iconfile.substring(0,2));
+			//console.log(mynode.iconfile);
+			if (mynode.iconfile.substring(0, 2) == '::') {
+				$('#node_iconfilename').val('--AICON--');
+				selectedNode = '--AICON--';
+			} else {
+				$('#node_iconfilename').val(mynode.iconfile);
+				selectedNode = mynode.iconfile;
+			}
 		} else {
-			$('node_iconfilename').val('--NONE--');
+			$('#node_iconfilename').val('--NONE--');
 			selectedNode = '--NONE--';
 		}
 

@@ -423,9 +423,11 @@ $weathermap_version = plugin_weathermap_numeric_version();
 								<select id='node_iconfilename' name='node_iconfilename'>
 									<?php
 									if (count($image_list) == 0) {
-										print '<option data-value="--NONE--">(no images are available)</option>';
+										print '<option data-value="--NONE--">Label Only</option>';
+										print '<option data-value="--AICON--">Special Icon (AICON)></option>';
 									} else {
-										print '<option data-description="Default Rectangular Icon" data-imagesrc="" value="--NONE--">--NO ICON--</option>';
+										print '<option data-description="Label Only Icon" data-imagesrc="" value="--NONE--">Label Only</option>';
+										print '<option data-description="Special Purpose Icon" data-imagesrc="" value="--AICON--">Special Icon (AICON)</option>';
 										foreach ($image_list as $im) {
 											$display = ucfirst(str_replace(array('.png', '.gif', '.jpg'), '', basename($im)));
 

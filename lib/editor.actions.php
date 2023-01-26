@@ -303,13 +303,12 @@ function setNodeProperties($mapfile) {
 	$map->nodes[$new_node_name]->y = intval(get_nfilter_request_var('node_y'));
 
 	if (get_nfilter_request_var('node_iconfilename') == '--NONE--') {
-	    $map->nodes[$new_node_name]->iconfile = '';
+		$map->nodes[$new_node_name]->iconfile = '';
+	} elseif (get_nfilter_request_var('node_iconfilename') == '--AICON--') {
+		//$map->nodes[$new_node_name]->iconfile = '--AICON--';
 	} else {
-	    // AICONs mess this up, because they're not fully supported by the editor, but it can still break them
-	    if (get_nfilter_request_var('node_iconfilename') != '--AICON--') {
-		    $iconfile = stripslashes(get_nfilter_request_var('node_iconfilename'));
-		    $map->nodes[$new_node_name]->iconfile = $iconfile;
-	    }
+		$iconfile = stripslashes(get_nfilter_request_var('node_iconfilename'));
+		$map->nodes[$new_node_name]->iconfile = $iconfile;
 	}
 
 	$map->WriteConfig($mapfile);
@@ -325,24 +324,24 @@ function setLinkProperties($mapfile) {
 	$link_name = get_nfilter_request_var('link_name');
 
 	if (strpos($link_name, ' ') === false) {
-	    $map->links[$link_name]->width        = floatval(get_nfilter_request_var('link_width'));
-	    $map->links[$link_name]->infourl[IN]  = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
-	    $map->links[$link_name]->infourl[OUT] = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
+		$map->links[$link_name]->width        = floatval(get_nfilter_request_var('link_width'));
+		$map->links[$link_name]->infourl[IN]  = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
+		$map->links[$link_name]->infourl[OUT] = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
 
-	    $urls = preg_split('/\s+/', get_nfilter_request_var('link_hover'), -1, PREG_SPLIT_NO_EMPTY);
+		$urls = preg_split('/\s+/', get_nfilter_request_var('link_hover'), -1, PREG_SPLIT_NO_EMPTY);
 
-	    $map->links[$link_name]->overliburl[IN]  = $urls;
-	    $map->links[$link_name]->overliburl[OUT] = $urls;
+		$map->links[$link_name]->overliburl[IN]  = $urls;
+		$map->links[$link_name]->overliburl[OUT] = $urls;
 
-	    $map->links[$link_name]->comments[IN]      = wm_editor_sanitize_string(get_nfilter_request_var('link_commentin'));
-	    $map->links[$link_name]->comments[OUT]     = wm_editor_sanitize_string(get_nfilter_request_var('link_commentout'));
-	    $map->links[$link_name]->commentoffset_in  = intval(get_nfilter_request_var('link_commentposin'));
-	    $map->links[$link_name]->commentoffset_out = intval(get_nfilter_request_var('link_commentposout'));
+		$map->links[$link_name]->comments[IN]      = wm_editor_sanitize_string(get_nfilter_request_var('link_commentin'));
+		$map->links[$link_name]->comments[OUT]     = wm_editor_sanitize_string(get_nfilter_request_var('link_commentout'));
+		$map->links[$link_name]->commentoffset_in  = intval(get_nfilter_request_var('link_commentposin'));
+		$map->links[$link_name]->commentoffset_out = intval(get_nfilter_request_var('link_commentposout'));
 
-	    $targets = preg_split('/\s+/', trim(get_nfilter_request_var('link_target')), -1, PREG_SPLIT_NO_EMPTY);
-	    $new_target_list = array();
+		$targets = preg_split('/\s+/', trim(get_nfilter_request_var('link_target')), -1, PREG_SPLIT_NO_EMPTY);
+		$new_target_list = array();
 
-	    foreach ($targets as $target) {
+		foreach ($targets as $target) {
 			// we store the original TARGET string, and line number, along with the breakdown, to make nicer error messages later
 			$newtarget = array($target,'traffic_in','traffic_out',0,$target);
 

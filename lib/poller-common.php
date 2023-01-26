@@ -180,37 +180,58 @@ function weathermap_repair_maps() {
 							wm_debug('Found background file reference in correct location: ' . $bgfile);
 						}
 					} elseif (strpos($line, 'ICON') !== false) {
+						/**
+						 * We are looking at the ICON parameter.  It can take two forms.  The first form is
+						 * a path to a filename, or the pattern as follows
+						 *
+						 * ICON height width type
+						 *
+						 * Types include:
+						 *
+						 * - box - a square cornered box
+						 * - rbox - a round cornered box
+						 * - round - a circle or an ellipse
+						 * - inpie & outpie to produce a pie chart of either the in or out value relative to it's maximum
+						 * - nlink - to produce a circular 'yin-yang' style symbox with each half showing the in and out values
+						 *
+						 */
 						$parts   = explode('ICON', $line);
 						$dirgood = false;
-						$objfile = trim($parts[1]);
+						$attribs = explode(' ', $parts[1]);
 
-						if (strpos($objfile, 'images/objects/') === false) {
-							wm_debug('Found icon file reference in old location: ' . $objfile);
+						if (cacti_sizeof($attribs) == 1) {
+							$objfile = trim($parts[1]);
 
-							if (file_exists($mydir . 'images/objects/' . basename($objfile))) {
-								wm_debug('Found file already in new location! Updating path only.');
+							if (strpos($objfile, 'images/objects/') === false) {
+								wm_debug('Found icon file reference in old location: ' . $objfile);
 
-								$line = "\tICON images/objects/" . basename($objfile);
+								if (file_exists($mydir . 'images/objects/' . basename($objfile))) {
+									wm_debug('Found file already in new location! Updating path only.');
 
-								$changes++;
-							} else {
-								if (!is_dir($mydir . 'images/objects')) {
-									$dirgood = mkdir($mydir . 'images/objects');
+									$line = "\tICON images/objects/" . basename($objfile);
+
+									$changes++;
 								} else {
-									$dirgood = true;
-								}
+									if (!is_dir($mydir . 'images/objects')) {
+										$dirgood = mkdir($mydir . 'images/objects');
+									} else {
+										$dirgood = true;
+									}
 
-								if ($dirgood && file_exists($mydir . $objfile)) {
-									wm_debug('Object file found on disk: ' . $mydir . $objfile . ' relocating!');
+									if ($dirgood && file_exists($mydir . $objfile)) {
+										wm_debug('Object file found on disk: ' . $mydir . $objfile . ' relocating!');
 
-									$old = $mydir . $objfile;
-									$new = $mydir . 'images/objects/' . basename($objfile);
+										$old = $mydir . $objfile;
+										$new = $mydir . 'images/objects/' . basename($objfile);
 
-									if (is_writable($mydir . $bgfile)) {
-										if (is_writeable($old) && is_writeable(dirname($new)) && is_writeable($new)) {
-											if (rename($old, $new)) {
-												$line = "\tICON images/objects/" . basename($objfile);
-												$changes++;
+										if (is_writable($mydir . $bgfile)) {
+											if (is_writeable($old) && is_writeable(dirname($new)) && is_writeable($new)) {
+												if (rename($old, $new)) {
+													$line = "\tICON images/objects/" . basename($objfile);
+													$changes++;
+												} else {
+													wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
+												}
 											} else {
 												wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
 											}
@@ -218,18 +239,16 @@ function weathermap_repair_maps() {
 											wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
 										}
 									} else {
-										wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
+										wm_warn(sprintf('ICONFILE file not found on disk: %s skipping! [WMPOLL12]', $mydir . $objfile));
 									}
-								} else {
-									wm_warn(sprintf('ICONFILE file not found on disk: %s skipping! [WMPOLL12]', $mydir . $objfile));
 								}
+							} elseif (strpos($objfile, 'images/objects/') !== false) {
+								wm_debug('Found object file reference in correct location: ' . $objfile);
 							}
-						} elseif (strpos($objfile, 'images/objects/') !== false) {
-							wm_debug('Found object file reference in correct location: ' . $objfile);
 						}
-					}
 
-					$outcontents[] = rtrim($line);
+						$outcontents[] = rtrim($line);
+					}
 				}
 			}
 
