@@ -3839,7 +3839,7 @@ class WeatherMap extends WeatherMapBase {
 				//print "CHANGE: $change\n";
 
 				// skip all this if it's a template node
-				if ($type=='LINK' && ! isset($myobj->a->name)) {
+				if ($type == 'LINK' && !isset($myobj->a->name)) {
 					$change = '';
 				}
 
@@ -3901,7 +3901,7 @@ class WeatherMap extends WeatherMapBase {
 						if (cacti_sizeof($myobj->overliburl[$dir]) > 0) {
 							// print "ARRAY:".is_array($link->overliburl[$dir])."\n";
 							foreach ($myobj->overliburl[$dir] as $url) {
-								if ($n>0) {
+								if ($n > 0) {
 									$data_hover .= '<br>';
 								}
 
@@ -3909,7 +3909,7 @@ class WeatherMap extends WeatherMapBase {
 								$n++;
 							}
 
-							$data_hover .= '</ul>"';
+							$data_hover .= '</ul>';
 						}
 
 						# print "Added $n for $dir\n";
@@ -3927,7 +3927,7 @@ class WeatherMap extends WeatherMapBase {
 							$data_hover .= $note;
 						}
 
-						$data_hover .= ' data-caption="' . html_escape($caption) . '"';
+						$data_hover .= '" data-caption="' . html_escape($caption) . '"';
 
 						foreach ($parts as $part) {
 							$areaname = $type . ':' . $prefix . $myobj->id . ':' . $part;
