@@ -37,7 +37,6 @@ $(function() {
 			data.find('.wmcontent').html($(this).attr('data-hover'));
 
 			callback(data);
-			//callback($(this).attr('data-hover'));
 		}
 	});
 

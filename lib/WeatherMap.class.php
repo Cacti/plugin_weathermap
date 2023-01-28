@@ -3829,8 +3829,8 @@ class WeatherMap extends WeatherMapBase {
 
 			// check to see if any of the relevant things have a value
 			$change = '';
+
 			foreach ($dirs as $d=>$parts) {
-				//print "$d - ".join(" ",$parts)."\n";
 				$change .= join('', $myobj->overliburl[$d]);
 				$change .= $myobj->notestext[$d];
 			}
@@ -3882,7 +3882,7 @@ class WeatherMap extends WeatherMapBase {
 					if ($myobj->overlibheight != 0) {
 						$above = 'HEIGHT,' . $myobj->overlibheight . ',';
 
-						$style .= 'width:' . $myobj->overlibheight . 'px;';
+						$style .= ($style != '' ? ';':'') . 'height:' . $myobj->overlibheight . 'px;';
 
 						if ($mid_y > $center_y) {
 							$above .= 'ABOVE,';
@@ -4031,9 +4031,7 @@ class WeatherMap extends WeatherMapBase {
 		// PreloadMapHTML fills in the ImageMap info, ready for the HTML to be created.
 		$this->PreloadMapHTML();
 
-		$html='';
-
-		$html .= '<div class="weathermapimage">' . PHP_EOL;
+		$html = '<div class="weathermapimage">' . PHP_EOL;
 
 		if ($this->imageuri != '') {
 			$html.=sprintf(
@@ -4055,12 +4053,10 @@ class WeatherMap extends WeatherMapBase {
 				$imagemapname
 			);
 
-			//$html .=  'alt="network weathermap" ';
 			$html .= '/></center>' . PHP_EOL;
 		}
 
 		$html .= '</div>' . PHP_EOL;
-
 		$html .= $this->SortedImagemap($imagemapname);
 
 		return ($html);
