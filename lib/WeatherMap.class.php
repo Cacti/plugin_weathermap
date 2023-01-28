@@ -4037,7 +4037,7 @@ class WeatherMap extends WeatherMapBase {
 
 		if ($this->imageuri != '') {
 			$html.=sprintf(
-				'<img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
+				'<center><img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
 				$this->imageuri,
 				$this->width,
 				$this->height,
@@ -4045,10 +4045,10 @@ class WeatherMap extends WeatherMapBase {
 			);
 
 			//$html .=  'alt="network weathermap" ';
-			$html .= '/>' . PHP_EOL;
+			$html .= '/></center>' . PHP_EOL;
 		} else {
 			$html.=sprintf(
-				'<img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
+				'<center><img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
 				$this->imagefile,
 				$this->width,
 				$this->height,
@@ -4056,7 +4056,7 @@ class WeatherMap extends WeatherMapBase {
 			);
 
 			//$html .=  'alt="network weathermap" ';
-			$html .= '/>' . PHP_EOL;
+			$html .= '/></center>' . PHP_EOL;
 		}
 
 		$html .= '</div>' . PHP_EOL;
