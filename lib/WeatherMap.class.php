@@ -564,6 +564,8 @@ class WeatherMap extends WeatherMapBase {
 			$fontnumber = 5;
 		}
 
+		$x = floor($x);
+
 		if (($fontnumber > 0) && ($fontnumber < 6)) {
 			imagestring($image, $fontnumber, $x, floor($y - imagefontheight($fontnumber)), $string, $colour);
 
@@ -579,7 +581,7 @@ class WeatherMap extends WeatherMapBase {
 
 			if ($this->fonts[$fontnumber]->type == 'gd') {
 				imagestring($image, $this->fonts[$fontnumber]->gdnumber,
-					$x, $y - imagefontheight($this->fonts[$fontnumber]->gdnumber),
+					$x, floor($y - imagefontheight($this->fonts[$fontnumber]->gdnumber)),
 					$string, $colour
 				);
 
@@ -3827,8 +3829,8 @@ class WeatherMap extends WeatherMapBase {
 
 			// check to see if any of the relevant things have a value
 			$change = '';
+
 			foreach ($dirs as $d=>$parts) {
-				//print "$d - ".join(" ",$parts)."\n";
 				$change .= join('', $myobj->overliburl[$d]);
 				$change .= $myobj->notestext[$d];
 			}
@@ -3837,7 +3839,7 @@ class WeatherMap extends WeatherMapBase {
 				//print "CHANGE: $change\n";
 
 				// skip all this if it's a template node
-				if ($type=='LINK' && ! isset($myobj->a->name)) {
+				if ($type == 'LINK' && !isset($myobj->a->name)) {
 					$change = '';
 				}
 
@@ -3880,7 +3882,7 @@ class WeatherMap extends WeatherMapBase {
 					if ($myobj->overlibheight != 0) {
 						$above = 'HEIGHT,' . $myobj->overlibheight . ',';
 
-						$style .= 'width:' . $myobj->overlibheight . 'px;';
+						$style .= ($style != '' ? ';':'') . 'height:' . $myobj->overlibheight . 'px;';
 
 						if ($mid_y > $center_y) {
 							$above .= 'ABOVE,';
@@ -3899,7 +3901,7 @@ class WeatherMap extends WeatherMapBase {
 						if (cacti_sizeof($myobj->overliburl[$dir]) > 0) {
 							// print "ARRAY:".is_array($link->overliburl[$dir])."\n";
 							foreach ($myobj->overliburl[$dir] as $url) {
-								if ($n>0) {
+								if ($n > 0) {
 									$data_hover .= '<br>';
 								}
 
@@ -3907,7 +3909,7 @@ class WeatherMap extends WeatherMapBase {
 								$n++;
 							}
 
-							$data_hover .= '</ul>"';
+							$data_hover .= '</ul>';
 						}
 
 						# print "Added $n for $dir\n";
@@ -3925,7 +3927,7 @@ class WeatherMap extends WeatherMapBase {
 							$data_hover .= $note;
 						}
 
-						$data_hover .= ' data-caption="' . html_escape($caption) . '"';
+						$data_hover .= '" data-caption="' . html_escape($caption) . '"';
 
 						foreach ($parts as $part) {
 							$areaname = $type . ':' . $prefix . $myobj->id . ':' . $part;
@@ -4029,13 +4031,11 @@ class WeatherMap extends WeatherMapBase {
 		// PreloadMapHTML fills in the ImageMap info, ready for the HTML to be created.
 		$this->PreloadMapHTML();
 
-		$html='';
-
-		$html .= '<div class="weathermapimage" style="margin-left: auto; margin-right: auto; width: ' . $this->width . 'px;">' . PHP_EOL;
+		$html = '<div class="weathermapimage">' . PHP_EOL;
 
 		if ($this->imageuri != '') {
 			$html.=sprintf(
-				'<img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
+				'<center><img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
 				$this->imageuri,
 				$this->width,
 				$this->height,
@@ -4043,22 +4043,20 @@ class WeatherMap extends WeatherMapBase {
 			);
 
 			//$html .=  'alt="network weathermap" ';
-			$html .= '/>' . PHP_EOL;
+			$html .= '/></center>' . PHP_EOL;
 		} else {
 			$html.=sprintf(
-				'<img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
+				'<center><img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
 				$this->imagefile,
 				$this->width,
 				$this->height,
 				$imagemapname
 			);
 
-			//$html .=  'alt="network weathermap" ';
-			$html .= '/>' . PHP_EOL;
+			$html .= '/></center>' . PHP_EOL;
 		}
 
 		$html .= '</div>' . PHP_EOL;
-
 		$html .= $this->SortedImagemap($imagemapname);
 
 		return ($html);

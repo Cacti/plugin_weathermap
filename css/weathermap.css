@@ -42,6 +42,11 @@ div.wm_mapgroup table { border-top: 1px solid #eee; }
 	overflow-x: hidden !important;
 }
 
+.wm_scroll {
+	overflow-x: auto !important;
+	overflow-y: auto !important;
+}
+
 .wm_container {
 	overflow-x: hidden;
 	list-style-type: none;
@@ -51,14 +56,11 @@ div.wm_mapgroup table { border-top: 1px solid #eee; }
 
 .wm_child {}
 
-
-
 /* .all_map_holder { margin-left: auto; margin-right: auto;  } */
 
 tr.fig, tr.fig td { border-top: 1px solid gray; }
 
 td.groupheader { background-color: #009; color: white; font-weight: bold; }
-
 
 .wm_expanded { height: 200px; border-left: 1px solid gray; border-bottom: 1px solid gray; border-right: 1px solid gray; }
 

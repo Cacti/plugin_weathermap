@@ -137,7 +137,7 @@ switch (get_request_var('action')) {
 	case 'liveview':
 		top_graph_header();
 
-		print '<link rel="stylesheet" type="text/css" media="screen" href="css/weathermap.css"/>';
+		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
 		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
 
 		$id = -1;
@@ -353,11 +353,9 @@ switch (get_request_var('action')) {
 		break;
 }
 
-function weathermap_cycleview() {
-
-}
-
 function weathermap_singleview($mapid) {
+	global $config;
+
 	if (api_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
 		$is_wm_admin = true;
 	} else {
@@ -412,11 +410,7 @@ function weathermap_singleview($mapid) {
 			print '<tr><td>';
 
 			if (file_exists($htmlfile)) {
-				print '<div class="fixscroll" style="overflow:auto">';
-
 				include($htmlfile);
-
-				print '</div>';
 			} else {
 				print '<div align="center" style="padding:20px"><em>' . __('This map hasn\'t been created yet.', 'weathermap');
 
@@ -668,11 +662,7 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 			}
 
 			if (file_exists($htmlfile)) {
-				print '<div class="fixscroll" style="overflow:auto;padding-top:5px">';
-
 				include($htmlfile);
-
-				print '</div>';
 			} else {
 				print '<div align="center" style="padding:20px"><em>' . __('This map hasn\'t been created yet.', 'weathermap') . '</em></div>';
 			}
