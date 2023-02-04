@@ -23,6 +23,7 @@ var graphOpen = false;
 var editor_url = 'weathermap-cacti-plugin-editor.php';
 var imageWidth  = null;
 var imageHeight = null;
+var local_graph_id = null;
 
 // seed the help text. Done in a big lump here, so we could make a foreign language version someday.
 
@@ -209,11 +210,28 @@ function graphPicker() {
 		$(this).hide();
 
 		$('#' + id + '_add').off('click').on('click', function() {
+			var hover   = 'graph_image.php?local_graph_id=';;
+			var infourl = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
+
 			if (id == 'link_target_picker') {
 				var target = $('#' + id).val();
 				var existing = $('#link_target').val();
 
 				$('#link_target').val(existing + (existing != '' ? ' ':'') + target);
+
+				// Add the graph hovers if possible
+				var ehover = $('#link_hover').val();
+				var einfo  = $('#link_infourl').val();
+
+				if (local_graph_id > 0) {
+					if (ehover == '') {
+						$('#link_hover').val(hover + local_graph_id);
+					}
+
+					if (einfo == '') {
+						$('#link_infourl').val(infourl + local_graph_id);
+					}
+				}
 			} else {
 				var hover   = 'graph_image.php?local_graph_id=';;
 				var infourl = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
@@ -265,8 +283,10 @@ function graphPicker() {
 
 				if (ui.item.id) {
 					$('#' + id).val(ui.item.id);
+					local_graph_id = ui.item.local_graph_id;
 				} else {
 					$('#' + id).val(ui.item.value);
+					local_graph_id = ui.item.local_graph_id;
 				}
 			},
 			open: function(event, ui) {
@@ -293,8 +313,6 @@ function graphPicker() {
 					}, 200);
 			}
 			$('#' + id + '_input').select();
-		}).on('keyup', function() {
-			$('#' + id).val($('#' + id + '_input').val());
 		}).on('mouseleave', function() {
 			graphTimer = setTimeout(function() { $('#' + id + '_input').autocomplete('close'); }, 800);
 		});

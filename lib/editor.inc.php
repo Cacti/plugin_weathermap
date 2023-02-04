@@ -143,12 +143,12 @@ function display_datasources() {
 			if (!is_graph_allowed($g['id'])) {
 				unset($graphs[$index]);
 			} else {
-				$return[] = array('label' => $g['title'], 'value' => $g['title'], 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'));
+				$return[] = array('label' => $g['title'], 'value' => $g['title'], 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'), 'local_graph_id' => $g['id']);
 			}
 		}
 	}
 
-	print json_encode($return);
+	print json_encode($return, true);
 }
 
 /**
