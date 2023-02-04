@@ -1152,31 +1152,29 @@ function addmap_picker($show_all = false) {
 				if ($details['action'] == 'add') {
 					$file   = basename($details['file']);
 					$url    = 'weathermap-cacti-plugin-mgmt.php?action=addmap&file=' . $file;
-					$tip    = __esc('Add the configuration file to Weathermap', 'weathermap');
+					$tip    = __esc('Add the configuration file %s to Weathermap', $file, 'weathermap');
 					$value  = '<i class="fa fa-plus"></i>';
 					$action = "<a class='pic deviceUp' href='$url' title='$tip'>$value</a>";
 				} else {
-					$file = basename($details['file']);
-					$file = map_get_next_name($file);
+					$file    = basename($details['file']);
+					$newfile = map_get_next_name($file);
 
-					if ($file != basename($details['file'])) {
-						$url = 'weathermap-cacti-plugin-mgmt.php?' .
-							'action=duplicate' .
-							'&mapid=' . $details['mapid'] .
-							'&file=' . $file .
-							'&title=' . $details['title'] . __(' Copy', 'weathermap');
+					$url = 'weathermap-cacti-plugin-mgmt.php?' .
+						'action=dupmap' .
+						'&mapid=' . $details['mapid'] .
+						'&file=' . $file .
+						'&title=' . $details['title'] . __(' Copy', 'weathermap');
 
-						$tip    = __esc('Duplicate the configuration file and add to Weathermap', 'weathermap');
-						$value  = '<i class="fa fa-copy"></i>';
-						$action = "<a class='pic deviceRecovering' href='$url' title='$tip'>$value</a>";
-					}
+					$tip    = __esc('Duplicate the configuration file %s and add to Weathermap as %s', $file, $newfile, 'weathermap');
+					$value  = '<i class="fa fa-copy"></i>';
+					$action = "<a class='pic deviceRecovering' href='$url' title='$tip'>$value</a>";
 				}
 
-				$tip = 	__esc('View the configuration file in a new window', 'weathermap');
-				$url = 'weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file;
+				$tip   = __esc('View the configuration file %s in a new window', $file, 'weathermap');
+				$url   = 'weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file;
 				$value = '<i class="fa fa-binoculars"></i>';
 
-				$action .= "<a pic href='$url' title='$tip'>$value</a>";
+				$action .= "<a target='_new' href='$url' title='$tip'>$value</a>";
 
 				form_selectable_cell($action, $i, '1%');
 
@@ -1230,9 +1228,10 @@ function preview_config($file) {
 	$file_dir   = realpath($path_parts['dirname']);
 
 	if ($file_dir != $weathermap_confdir) {
-		// someone is trying to read arbitrary files?
-		// print "$file_dir != $weathermap_confdir";
-		print '<h3>' . __('Path mismatch', 'weathermap') . '</h3>';
+		raise_message('path_mismatch', __esc('The path %s is not in the config directory.', $file, 'weathermap'), MESSAGE_LEVEL_ERROR);
+
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+		exit;
 	} else {
 		html_start_box(__('Preview of %s', $file, 'weathermap'), '100%', '', '3', 'center', '');
 
@@ -1250,6 +1249,10 @@ function preview_config($file) {
 			}
 
 			fclose($fd);
+		} else {
+			raise_message('path_missing', __esc('The path %s does not appear to exist in the config directory', $file, 'weathermap'), MESSAGE_LEVEL_ERROR);
+			header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+			exit;
 		}
 
 		print '</pre>';
@@ -2252,7 +2255,7 @@ function weathermap_chgroup($id) {
 
 	$curgroup = db_fetch_cell_prepared('SELECT group_id
 		FROM weathermap_maps
-		WHERE id = ?' .
+		WHERE id = ?',
 		array($id));
 
 	$n = 0;

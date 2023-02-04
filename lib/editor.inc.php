@@ -155,7 +155,7 @@ function display_datasources() {
  * Clean up URI (function taken from Cacti) to protect against XSS
  */
 function wm_editor_sanitize_uri($str) {
-	static $drop_char_match =   array(' ','^', '$', '<', '>', '`', '\'', '"', '|', '+', '[', ']', '{', '}', ';', '!', '%');
+	static $drop_char_match   =   array(' ','^', '$', '<', '>', '`', '\'', '"', '|', '+', '[', ']', '{', '}', ';', '!', '%');
 	static $drop_char_replace = array('', '', '',  '',  '',  '',  '',   '',  '',  '',  '',  '',  '',  '',  '',  '', '');
 
 	return str_replace($drop_char_match, $drop_char_replace, urldecode($str));
@@ -163,10 +163,10 @@ function wm_editor_sanitize_uri($str) {
 
 // much looser sanitise for general strings that shouldn't have HTML in them
 function wm_editor_sanitize_string($str) {
-	static $drop_char_match =   array('<', '>' );
+	static $drop_char_match   = array('<', '>' );
 	static $drop_char_replace = array('', '');
 
-	return str_replace($drop_char_match, $drop_char_replace, urldecode($str));
+	return str_replace($drop_char_match, $drop_char_replace, html_escape($str));
 }
 
 function wm_editor_validate_bandwidth($bw) {
