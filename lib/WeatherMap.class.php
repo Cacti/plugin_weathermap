@@ -552,7 +552,18 @@ class WeatherMap extends WeatherMapBase {
         return $allItems;
     }
 
-	function myimagestring($image, $fontnumber, $x, $y, $string, $colour, $angle=0) {
+	/**
+	 * myimagestring - Function to draw a string on an image
+	 *
+	 * @param  object - An image object
+	 * @param  int      The font number
+	 * @param  int      The lower left corner of where the text will start
+	 * @param  int      The lower left corder of where the test will start
+	 * @param  string   The string to paint
+	 * @param  hex      The colour to draw the test with
+	 * @param  double   The angle to rotate the text on the image
+	 */
+	function myimagestring($image, $fontnumber, $x, $y, $string, $colour, $angle = 0) {
 		// if it's supposed to be a special font, and it hasn't been defined, then fall through
 		if ($fontnumber > 5 && !isset($this->fonts[$fontnumber])) {
 			wm_warn("Using a non-existent special font ($fontnumber) - falling back to internal GD fonts [WMWARN03]");
@@ -564,16 +575,25 @@ class WeatherMap extends WeatherMapBase {
 			$fontnumber = 5;
 		}
 
-		$x = floor($x);
+		/**
+		 * When using wimagettftext the x and y coordinates represent the lower left
+		 * corner of the text, where imagestring uses the upper left corener.
+		 * Big difference.
+		 */
+		$x = round($x);
+		$y = round($y);
 
-		if (($fontnumber > 0) && ($fontnumber < 6)) {
-			imagestring($image, $fontnumber, $x, floor($y - imagefontheight($fontnumber)), $string, $colour);
+		if ($fontnumber > 0 && $fontnumber < 6 && $angle == 0) {
+			/**
+			 * The x and y coordinates will be different due to the change between
+			 * imagestring and imagettftext as noted above
+			 */
+			imagestring($image, $fontnumber, $x, round($y - imagefontheight($fontnumber)), $string, $colour);
 
 			if ($angle != 0) {
 				wm_warn("Angled text doesn't work with non-FreeType fonts [WMWARN02]");
 			}
 		} else {
-			// look up what font is defined for this slot number
 			if ($this->fonts[$fontnumber]->type == 'truetype') {
 				wimagettftext($image, $this->fonts[$fontnumber]->size, $angle, $x, $y,
 					$colour, $this->fonts[$fontnumber]->file, $string);
@@ -581,7 +601,7 @@ class WeatherMap extends WeatherMapBase {
 
 			if ($this->fonts[$fontnumber]->type == 'gd') {
 				imagestring($image, $this->fonts[$fontnumber]->gdnumber,
-					$x, floor($y - imagefontheight($this->fonts[$fontnumber]->gdnumber)),
+					$x, round($y - imagefontheight($this->fonts[$fontnumber]->gdnumber)),
 					$string, $colour
 				);
 
@@ -595,7 +615,7 @@ class WeatherMap extends WeatherMapBase {
 	function myimagestringsize($fontnumber, $string) {
 		$linecount = 1;
 
-		$lines         = explode("\n",$string);
+		$lines         = explode("\n", $string);
 		$linecount     = sizeof($lines);
 		$maxlinelength = 0;
 
@@ -607,13 +627,15 @@ class WeatherMap extends WeatherMapBase {
 			}
 		}
 
-		if (($fontnumber > 0) && ($fontnumber < 6)) {
+		if ($fontnumber > 0 && $fontnumber < 6) {
 			return array(imagefontwidth($fontnumber) * $maxlinelength, $linecount * imagefontheight($fontnumber));
 		} else {
 			// look up what font is defined for this slot number
 			if (!isset($this->fonts[$fontnumber])) {
 				wm_warn("Using a non-existent special font ($fontnumber) - falling back to internal GD fonts [WMWARN36]");
-				$fontnumber=5;
+
+				$fontnumber = 5;
+
 				return array(imagefontwidth($fontnumber) * $maxlinelength, $linecount * imagefontheight($fontnumber));
 			} else {
 				if ($this->fonts[$fontnumber]->type == 'truetype') {
@@ -621,20 +643,19 @@ class WeatherMap extends WeatherMapBase {
 					$xsize = 0;
 
 					foreach($lines as $line) {
-						$bounds=imagettfbbox($this->fonts[$fontnumber]->size, 0, $this->fonts[$fontnumber]->file, $line);
+						$bounds = imagettfbbox($this->fonts[$fontnumber]->size, 0, $this->fonts[$fontnumber]->file, $line);
+
 						$cx = $bounds[4] - $bounds[0];
 						$cy = $bounds[1] - $bounds[5];
-						if ($cx > $xsize) $xsize = $cx;
-						$ysize += ($cy*1.2);
-						# warn("Adding $cy (x was $cx)\n");
+
+						if ($cx > $xsize) {
+							$xsize = $cx;
+						}
+
+						$ysize += ($cy * 1.2);
 					}
 
-					#$bounds=imagettfbbox($this->fonts[$fontnumber]->size, 0, $this->fonts[$fontnumber]->file,
-					#	$string);
-					# return (array($bounds[4] - $bounds[0], $bounds[1] - $bounds[5]));
-					# warn("Size of $string is $xsize x $ysize over $linecount lines\n");
-
-					return(array($xsize,$ysize));
+					return(array($xsize, $ysize));
 				}
 
 				if ($this->fonts[$fontnumber]->type == 'gd') {
@@ -1148,7 +1169,7 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	// nodename is a vestigal parameter, from the days when nodes were just big labels
-	function DrawLabelRotated($im, $x, $y, $angle, $text, $font, $padding, $linkname, $textcolour, $bgcolour, $outlinecolour, &$map, $direction) {
+	function DrawLabelRotated($image, $x, $y, $angle, $text, $font, $padding, $linkname, $textcolour, $bgcolour, $outlinecolour, &$map, $direction) {
 		list($strwidth, $strheight) = $this->myimagestringsize($font, $text);
 
 		if (abs($angle) > 90){
@@ -1162,7 +1183,7 @@ class WeatherMap extends WeatherMapBase {
 		$rangle = -deg2rad($angle);
 
 		if ($padding == 0) {
-			$padding = 4;
+			$padding = 3;
 		}
 
 		$x1 = $x - ($strwidth / 2)  - $padding;
@@ -1171,44 +1192,42 @@ class WeatherMap extends WeatherMapBase {
 		$y2 = $y + ($strheight / 2) + $padding;
 
 		// a box. the last point is the start point for the text.
-		$apoints  = array($x1, $y1, $x1, $y2, $x2, $y2, $x2, $y1, $x - round($strwidth / 2), $y + round($strheight / 2) - round($padding/2) + 1);
-		$ppoints  = array($x1, $y1, $x1, $y2, $x2, $y2, $x2, $y1, $x1, $y1);
+		$ppoints  = array($x1,$y1, $x1,$y2, $x2,$y2, $x2,$y1, $x1,$y1);
+		$textpos  = array($x - $strwidth / 2, $y + $strheight / 2);
 
 		foreach($ppoints as $index => $point) {
 			$ppoints[$index] = round($point);
 		}
 
-		foreach($apoints as $index => $point) {
-			$apoints[$index] = round($point);
+		foreach($textpos as $index => $point) {
+			$textpos[$index] = round($point);
 		}
-
-		$npoints = count($ppoints) / 2;
 
 		rotateAboutPoint($ppoints, $x, $y, $rangle);
 
 		if ($bgcolour != array(-1, -1, -1)) {
-			$bgcol = myimagecolorallocate($im, $bgcolour[0], $bgcolour[1], $bgcolour[2]);
-			//imagefilledrectangle($im, $x1, $y1, $x2, $y2, $bgcol);
-			wimagefilledpolygon($im, $ppoints, 4, $bgcol);
+			$bgcol = myimagecolorallocate($image, $bgcolour[0], $bgcolour[1], $bgcolour[2]);
+			//imagefilledrectangle($image, $x1, $y1, $x2, $y2, $bgcol);
+			wimagefilledpolygon($image, $ppoints, 4, $bgcol);
 		}
 
 		if ($outlinecolour != array(-1, -1, -1)) {
-			$outlinecol = myimagecolorallocate($im, $outlinecolour[0], $outlinecolour[1], $outlinecolour[2]);
-			//imagerectangle($im, $x1, $y1, $x2, $y2, $outlinecol);
-			wimagepolygon($im, $ppoints, 4, $outlinecol);
+			$outlinecol = myimagecolorallocate($image, $outlinecolour[0], $outlinecolour[1], $outlinecolour[2]);
+			//imagerectangle($image, $x1, $y1, $x2, $y2, $outlinecol);
+			wimagepolygon($image, $ppoints, 4, $outlinecol);
 		}
 
-		$textcol = myimagecolorallocate($im, $textcolour[0], $textcolour[1], $textcolour[2]);
-		$this->myimagestring($im, $font, $apoints[8], $apoints[9], $text, $textcol, $angle);
+		$textcol = myimagecolorallocate($image, $textcolour[0], $textcolour[1], $textcolour[2]);
+		$this->myimagestring($image, $font, $textpos[0], $textpos[1], $text, $textcol, $angle, $strheight);
 
 		$areaname = 'LINK:L' . $map->links[$linkname]->id . ':' . ($direction + 2);
 
 		// the rectangle is about half the size in the HTML, and easier to optimise/detect in the browser
 		if ($angle == 0) {
-			$map->imap->addArea('Rectangle', $areaname, '', array($x1, $y1, $x2, $y2));
+			$map->imap->addArea('Rectangle', $areaname, '', array($x1,$y1, $x2,$y2));
 			wm_debug("Adding Rectangle imagemap for $areaname");
 		} else {
-			$map->imap->addArea('Polygon', $areaname, '', $apoints);
+			$map->imap->addArea('Polygon', $areaname, '', $ppoints);
 			wm_debug("Adding Poly imagemap for $areaname");
 		}
 	}
@@ -1426,7 +1445,7 @@ class WeatherMap extends WeatherMapBase {
 		return array($min, $max);
 	}
 
-	function DrawLegend_Horizontal($im, $scalename = 'DEFAULT', $width = 400) {
+	function DrawLegend_Horizontal($image, $scalename = 'DEFAULT', $width = 400) {
 		$title=$this->keytext[$scalename];
 
 		$colours = $this->colours[$scalename];
@@ -1507,7 +1526,7 @@ class WeatherMap extends WeatherMapBase {
 			}
 		}
 
-		imagecopy($im,$scale_im,$this->keyx[$scalename],$this->keyy[$scalename],0,0,imagesx($scale_im),imagesy($scale_im));
+		imagecopy($image,$scale_im,$this->keyx[$scalename],$this->keyy[$scalename],0,0,imagesx($scale_im),imagesy($scale_im));
 
 		$this->keyimage[$scalename] = $scale_im;
 
@@ -1519,7 +1538,7 @@ class WeatherMap extends WeatherMapBase {
 		);
 	}
 
-	function DrawLegend_Vertical($im, $scalename = 'DEFAULT', $height = 400, $inverted = false) {
+	function DrawLegend_Vertical($image, $scalename = 'DEFAULT', $height = 400, $inverted = false) {
 		$title   = $this->keytext[$scalename];
 
 		$colours = $this->colours[$scalename];
@@ -1620,7 +1639,7 @@ class WeatherMap extends WeatherMapBase {
 			}
 		}
 
-		imagecopy($im, $scale_im, $this->keyx[$scalename], $this->keyy[$scalename], 0, 0, imagesx($scale_im), imagesy($scale_im));
+		imagecopy($image, $scale_im, $this->keyx[$scalename], $this->keyy[$scalename], 0, 0, imagesx($scale_im), imagesy($scale_im));
 		$this->keyimage[$scalename] = $scale_im;
 
 		$rx = $this->keyx[$scalename];
@@ -1631,7 +1650,7 @@ class WeatherMap extends WeatherMapBase {
 		);
 	}
 
-	function DrawLegend_Classic($im, $scalename = 'DEFAULT', $use_tags = false) {
+	function DrawLegend_Classic($image, $scalename = 'DEFAULT', $use_tags = false) {
 		$title = $this->keytext[$scalename];
 
 		$colours = $this->colours[$scalename];
@@ -1806,7 +1825,7 @@ class WeatherMap extends WeatherMapBase {
 						$i++;
 					}
 
-					imagecopy($im, $scale_im, $this->keyx[$scalename], $this->keyy[$scalename], 0, 0, imagesx($scale_im), imagesy($scale_im));
+					imagecopy($image, $scale_im, $this->keyx[$scalename], $this->keyy[$scalename], 0, 0, imagesx($scale_im), imagesy($scale_im));
 
 					$this->keyimage[$scalename] = $scale_im;
 				}
@@ -1995,7 +2014,7 @@ class WeatherMap extends WeatherMapBase {
 		return $out;
 	}
 
-	function DrawTimestamp($im, $font, $colour, $which = '') {
+	function DrawTimestamp($image, $font, $colour, $which = '') {
 		$this->datestamp = $this->strftime($this->stamptext, time());
 
 		switch($which) {
@@ -2029,11 +2048,11 @@ class WeatherMap extends WeatherMapBase {
 			$y = $pos_y;
 		}
 
-		$this->myimagestring($im, $font, $x, $y, $stamp, $colour);
+		$this->myimagestring($image, $font, $x, $y, $stamp, $colour);
 		$this->imap->addArea('Rectangle', $which . 'TIMESTAMP', '', array($x, $y, $x + $boxwidth, $y - $boxheight));
 	}
 
-	function DrawTitle($im, $font, $colour) {
+	function DrawTitle($image, $font, $colour) {
 		$string = $this->ProcessString($this->title, $this);
 
 		if ($this->get_hint('screenshot_mode')==1) {
@@ -2050,7 +2069,7 @@ class WeatherMap extends WeatherMapBase {
 			$y = $this->titley;
 		}
 
-		$this->myimagestring($im, $font, $x, $y, $string, $colour);
+		$this->myimagestring($image, $font, $x, $y, $string, $colour);
 
 		$this->imap->addArea('Rectangle', 'TITLE', '', array($x, $y, $x + $boxwidth, $y - $boxheight));
 	}
@@ -3430,7 +3449,7 @@ class WeatherMap extends WeatherMapBase {
 	// this way, it's the pretty icons that suffer if there aren't enough colours, and
 	// not the actual useful data
 	// we skip any gradient scales
-	function AllocateScaleColours($im, $refname = 'gdref1') {
+	function AllocateScaleColours($image, $refname = 'gdref1') {
 		foreach ($this->colours as $scalename => $colours) {
 			foreach ($colours as $key => $colour) {
 				if ((!isset($this->colours[$scalename][$key]['red2'])) && (!isset($this->colours[$scalename][$key][$refname]))) {
@@ -3440,7 +3459,7 @@ class WeatherMap extends WeatherMapBase {
 
 					wm_debug("AllocateScaleColours: $scalename/$refname $key ($r,$g,$b)");
 
-					$this->colours[$scalename][$key][$refname] = myimagecolorallocate($im, $r, $g, $b);
+					$this->colours[$scalename][$key][$refname] = myimagecolorallocate($image, $r, $g, $b);
 				}
 			}
 		}
@@ -3522,12 +3541,12 @@ class WeatherMap extends WeatherMapBase {
 			// by here, we should have a valid image handle
 
 			// save this away, now
-			$this->image=$image;
+			$this->image = $image;
 
-			$this->white=myimagecolorallocate($image, 255, 255, 255);
-			$this->black=myimagecolorallocate($image, 0, 0, 0);
-			$this->grey=myimagecolorallocate($image, 192, 192, 192);
-			$this->selected=myimagecolorallocate($image, 255, 0, 0); // for selections in the editor
+			$this->white    = myimagecolorallocate($image, 255, 255, 255);
+			$this->black    = myimagecolorallocate($image, 0, 0, 0);
+			$this->grey     = myimagecolorallocate($image, 192, 192, 192);
+			$this->selected = myimagecolorallocate($image, 255, 0, 0); // for selections in the editor
 
 			$this->AllocateScaleColours($image);
 

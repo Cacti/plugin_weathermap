@@ -12,6 +12,10 @@ input:focus {
 	padding-top: 60px;
 }
 
+input {
+	max-width: 100%;
+}
+
 .mainArea {
 	text-align: center;
 }

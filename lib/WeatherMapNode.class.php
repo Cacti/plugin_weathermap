@@ -163,7 +163,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 	// make a mini-image, containing this node and nothing else
 	// figure out where the real NODE centre is, relative to the top-left corner.
-	function pre_render($im, &$map) {
+	function pre_render($image, &$map) {
 		// don't bother drawing if there's no position - it's a template
 		if (is_null($this->x)) {
 			return;
@@ -488,7 +488,7 @@ class WeatherMapNode extends WeatherMapItem {
 				$this->iconfile = $map->ProcessString($this->iconfile, $this);
 
 				if (is_readable($this->iconfile)) {
-					imagealphablending($im, true);
+					imagealphablending($image, true);
 					// draw the supplied icon, instead of the labelled box
 
 					$icon_im = imagecreatefromfile($this->iconfile);
@@ -721,20 +721,20 @@ class WeatherMapNode extends WeatherMapItem {
 	}
 
 	// draw the node, using the pre_render() output
-	function NewDraw($im, &$map) {
+	function NewDraw($image, &$map) {
 		// take the offset we figured out earlier, and just blit
 		// the image on. Who says "blit" anymore?
 
 		// it's possible that there is no image, so better check.
 		if (isset($this->image)) {
-			imagealphablending($im, true);
+			imagealphablending($image, true);
 
 			$dst_x = $this->x - $this->centre_x;
 			$dst_y = $this->y - $this->centre_y;
 			$src_x = imagesx($this->image);
 			$src_y = imagesy($this->image);
 
-			imagecopy($im, $this->image, (int) $dst_x, (int) $dst_y, 0, 0, $src_x, $src_y);
+			imagecopy($image, $this->image, (int) $dst_x, (int) $dst_y, 0, 0, $src_x, $src_y);
 		}
 	}
 

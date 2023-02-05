@@ -362,7 +362,7 @@ class WeatherMapLink extends WeatherMapItem {
 		}
 	}
 
-	function Draw($im, &$map) {
+	function Draw($image, &$map) {
 		// Get the positions of the end-points
 		$x1 = $map->nodes[$this->a->name]->x;
 		$y1 = $map->nodes[$this->a->name]->y;
@@ -412,7 +412,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$outlinecol = new Colour($this->outlinecolour);
 		$commentcol = new Colour($this->commentfontcolour);
 
-		$outline_colour = $outlinecol->gdallocate($im);
+		$outline_colour = $outlinecol->gdallocate($image);
 
 		$xpoints = array();
 		$ypoints = array();
@@ -422,7 +422,7 @@ class WeatherMapLink extends WeatherMapItem {
 
 		# warn("There are VIAs.\n");
 		foreach ($this->vialist as $via) {
-			# imagearc($im, $via[0],$via[1],20,20,0,360,$map->selected);
+			# imagearc($image, $via[0],$via[1],20,20,0,360,$map->selected);
 			if (isset($via[2])) {
 				$xpoints[] = $map->nodes[$via[2]]->x + $via[0];
 				$ypoints[] = $map->nodes[$via[2]]->y + $via[1];
@@ -441,8 +441,8 @@ class WeatherMapLink extends WeatherMapItem {
 		$link_in_colour  = $this->colours[IN];
 		$link_out_colour = $this->colours[OUT];
 
-		$gd_in_colour  = $link_in_colour->gdallocate($im);
-		$gd_out_colour = $link_out_colour->gdallocate($im);
+		$gd_in_colour  = $link_in_colour->gdallocate($image);
+		$gd_out_colour = $link_out_colour->gdallocate($image);
 
 	//	$map->links[$this->name]->inscalekey = $link_in_scalekey;
 	//	$map->links[$this->name]->outscalekey = $link_out_scalekey;
@@ -454,7 +454,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$link_out_width = $this->width;
 
 		// for bulging animations
-		if ( ($map->widthmod) || ($map->get_hint('link_bulge') == 1)) {
+		if (($map->widthmod) || ($map->get_hint('link_bulge') == 1)) {
 			// a few 0.1s and +1s to fix div-by-zero, and invisible links
 			$link_width = (($link_width * $this->inpercent * 1.5 + 0.1) / 100) + 1;
 
@@ -464,7 +464,7 @@ class WeatherMapLink extends WeatherMapItem {
 		}
 
 		// If there are no vias, treat this as a 2-point angled link, not curved
-		if ( sizeof($this->vialist) == 0 || $this->viastyle == 'angled') {
+		if (sizeof($this->vialist) == 0 || $this->viastyle == 'angled') {
 			// Calculate the spine points - the actual not a curve really, but we
 			// need to create the array, and calculate the distance bits, otherwise
 			// things like bwlabels won't know where to go.
@@ -472,22 +472,22 @@ class WeatherMapLink extends WeatherMapItem {
 			$this->curvepoints = calc_straight($xpoints, $ypoints);
 
 			// then draw the "curve" itself
-			draw_straight($im, $this->curvepoints,
-				array($link_in_width,$link_out_width), $outline_colour, array($gd_in_colour, $gd_out_colour),
+			draw_straight($image, $this->curvepoints,
+				array($link_in_width, $link_out_width), $outline_colour, array($gd_in_colour, $gd_out_colour),
 				$this->name, $map, $this->splitpos, ($this->linkstyle == 'oneway' ? true:false)
 			);
-		} elseif ($this->viastyle=='curved') {
+		} elseif ($this->viastyle == 'curved') {
 			// Calculate the spine points - the actual curve
 			$this->curvepoints = calc_curve($xpoints, $ypoints);
 
 			// then draw the curve itself
-			draw_curve($im, $this->curvepoints,
+			draw_curve($image, $this->curvepoints,
 				array($link_in_width, $link_out_width), $outline_colour, array($gd_in_colour, $gd_out_colour),
 				$this->name, $map, $this->splitpos, ($this->linkstyle == 'oneway' ? true:false)
 			);
 		}
 
-		if ( !$commentcol->is_none() ) {
+		if (!$commentcol->is_none()) {
 			if ($commentcol->is_contrast()) {
 				$commentcol_in  = $link_in_colour->contrast();
 				$commentcol_out = $link_out_colour->contrast();
@@ -496,10 +496,10 @@ class WeatherMapLink extends WeatherMapItem {
 				$commentcol_out = $commentcol;
 			}
 
-			$comment_colour_in  = $commentcol_in->gdallocate($im);
-			$comment_colour_out = $commentcol_out->gdallocate($im);
+			$comment_colour_in  = $commentcol_in->gdallocate($image);
+			$comment_colour_out = $commentcol_out->gdallocate($image);
 
-			$this->DrawComments($im,array($comment_colour_in, $comment_colour_out),array($link_in_width*1.1,$link_out_width*1.1));
+			$this->DrawComments($image,array($comment_colour_in, $comment_colour_out),array($link_in_width*1.1,$link_out_width*1.1));
 		}
 
 		$curvelength = $this->curvepoints[count($this->curvepoints)-1][2];
@@ -508,8 +508,8 @@ class WeatherMapLink extends WeatherMapItem {
 		list($q1_x, $q1_y, $junk, $q1_angle) = find_distance_coords_angle($this->curvepoints, ($this->labeloffset_out / 100) * $curvelength);
 		list($q3_x, $q3_y, $junk, $q3_angle) = find_distance_coords_angle($this->curvepoints, ($this->labeloffset_in / 100) * $curvelength);
 
-		# imageline($im, $q1_x+20*cos(deg2rad($q1_angle)),$q1_y-20*sin(deg2rad($q1_angle)), $q1_x-20*cos(deg2rad($q1_angle)), $q1_y+20*sin(deg2rad($q1_angle)), $this->owner->selected );
-		# imageline($im, $q3_x+20*cos(deg2rad($q3_angle)),$q3_y-20*sin(deg2rad($q3_angle)), $q3_x-20*cos(deg2rad($q3_angle)), $q3_y+20*sin(deg2rad($q3_angle)), $this->owner->selected );
+		# imageline($image, $q1_x+20*cos(deg2rad($q1_angle)),$q1_y-20*sin(deg2rad($q1_angle)), $q1_x-20*cos(deg2rad($q1_angle)), $q1_y+20*sin(deg2rad($q1_angle)), $this->owner->selected );
+		# imageline($image, $q3_x+20*cos(deg2rad($q3_angle)),$q3_y-20*sin(deg2rad($q3_angle)), $q3_x-20*cos(deg2rad($q3_angle)), $q3_y+20*sin(deg2rad($q3_angle)), $this->owner->selected );
 
 		# warn("$q1_angle $q3_angle\n");
 
@@ -544,7 +544,7 @@ class WeatherMapLink extends WeatherMapItem {
 			if ($this->linkstyle == 'oneway') {
 				$tasks = array($outbound);
 			} else {
-				$tasks = array($inbound,$outbound);
+				$tasks = array($inbound, $outbound);
 			}
 
 			foreach ($tasks as $task) {
@@ -555,7 +555,7 @@ class WeatherMapLink extends WeatherMapItem {
 				if ($thelabel != '') {
 					wm_debug('Bandwidth for label is ' . $task[5]);
 
-					$padding = intval($this->get_hint('bwlabel_padding'));
+					$padding = $this->get_hint('bwlabel_padding');
 
 					// if screenshot_mode is enabled, wipe any letters to X and wipe any IP address to 127.0.0.1
 					// hopefully that will preserve enough information to show cool stuff without leaking info
@@ -569,11 +569,11 @@ class WeatherMapLink extends WeatherMapItem {
 						$angle = 0;
 					}
 
-					$map->DrawLabelRotated($im, $task[0], $task[1], $angle, $thelabel, $this->bwfont, $padding,
+					$map->DrawLabelRotated($image, $task[0], $task[1], $angle, $thelabel, $this->bwfont, $padding,
 						$this->name, $this->bwfontcolour, $this->bwboxcolour, $this->bwoutlinecolour, $map, $task[7]
 					);
 
-					// imagearc($im, $task[0], $task[1], 10,10,0,360,$map->selected);
+					// imagearc($image, $task[0], $task[1], 10,10,0,360,$map->selected);
 				}
 			}
 		}
