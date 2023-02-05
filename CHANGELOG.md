@@ -14,17 +14,38 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- 1.00 Beta 2 ---
+--- 1.0 Beta 4 ---
+* issue#64: Map Properties-Map Size-Unable to display entire map
+* issue#74: Weathermap Editor Issues
+* issue#75: There is no option to create a new map
+* issue#76: Graph Selector and Data Source Selector enhancements suggestions.
+* issue#77: Missing scroll bar on large map
+* issue#79: Bandwidth test a bit off with angled style and popup size issues
+* issue#81: Weathermap 1.0 - Editor button leads to the Editor page without css
+* issue#82: Unable to sort Maps
+
+--- 1.0 Beta 3 ---
+* issue#62: Missing ICON data
+* issue#63: LOG:ICONFILE file not found.  When using the specified icon.
+* issue#65: The problem with the default width of the hover map
+* issue#66: Automatic refresh of webpage will not work
+* issue#67: Weathermap log error
+* issue#68: Switching to php 8.1 implicit conversion from float to int looses precision
+* issue#70: CSS improvements
+* issue#71: The OVERLIBGRAPH of the link at the edge position is outside the bounding box.
+* issue#72: The NOTES function fails.
+
+--- 1.0 Beta 2 ---
 * issue#49: The Data Source Selector does not work
 
---- 1.00 Beta 1 ---
+--- 1.0 Beta 1 ---
 * feature#43: Allow Weathermap Permissions to Include Cacti User Groups
 * issue#18: No scrolling list of allowed users
 * issue#37: Need to clear iCCP chunk from png files for newer libpng
 * issue#46: 1.0 - QA When adding datasources or graphs using the Add button, a space will always be added
 * issue#47: 1.0 - QA Don't assume that the Cacti poller has write access to the images folder and subfolders
 
---- 1.00 ---
+--- 1.0 ---
 * FIXED  - General support for PHP 8.2
 * FIXED  - Removed any "mysql*" function calls
 * FIXED  - Use Cacti Database API as applicable
