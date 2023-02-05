@@ -1182,28 +1182,27 @@ class WeatherMap extends WeatherMapBase {
 
 		$rangle = -deg2rad($angle);
 
-		if ($padding == 0) {
-			$padding = 3;
-		}
+		$extra = 3;
 
-		$x1 = $x - ($strwidth / 2)  - $padding;
-		$x2 = $x + ($strwidth / 2)  + $padding;
-		$y1 = $y - ($strheight / 2) - $padding;
-		$y2 = $y + ($strheight / 2) + $padding;
+		$x1 = $x - ($strwidth / 2)  - $padding - $extra;
+		$x2 = $x + ($strwidth / 2)  + $padding + $extra;
+		$y1 = $y - ($strheight / 2) - $padding - $extra;
+		$y2 = $y + ($strheight / 2) + $padding + $extra;
 
 		// a box. the last point is the start point for the text.
-		$ppoints  = array($x1,$y1, $x1,$y2, $x2,$y2, $x2,$y1, $x1,$y1);
-		$textpos  = array($x - $strwidth / 2, $y + $strheight / 2);
+		$ppoints  = array($x1, $y1, $x1, $y2, $x2, $y2, $x2, $y1, $x1, $y1);
+		$apoints  = array($x1, $y1, $x1, $y2, $x2, $y2, $x2, $y1, $x - $strwidth / 2, $y + $strheight / 2);
 
 		foreach($ppoints as $index => $point) {
 			$ppoints[$index] = round($point);
 		}
 
-		foreach($textpos as $index => $point) {
-			$textpos[$index] = round($point);
+		foreach($apoints as $index => $point) {
+			$apoints[$index] = round($point);
 		}
 
 		rotateAboutPoint($ppoints, $x, $y, $rangle);
+		rotateAboutPoint($apoints, $x, $y, $rangle);
 
 		if ($bgcolour != array(-1, -1, -1)) {
 			$bgcol = myimagecolorallocate($image, $bgcolour[0], $bgcolour[1], $bgcolour[2]);
@@ -1218,7 +1217,7 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		$textcol = myimagecolorallocate($image, $textcolour[0], $textcolour[1], $textcolour[2]);
-		$this->myimagestring($image, $font, $textpos[0], $textpos[1], $text, $textcol, $angle, $strheight);
+		$this->myimagestring($image, $font, $apoints[8], $apoints[9], $text, $textcol, $angle, $strheight);
 
 		$areaname = 'LINK:L' . $map->links[$linkname]->id . ':' . ($direction + 2);
 
