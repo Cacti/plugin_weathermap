@@ -351,8 +351,8 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	</div>
 	<form id='frmMain' action='<?php print $editor_name ?>' method='post'>
 		<div class='mainArea'>
-			<input id='xycapture' name='xycapture' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
-			<img src='<?php print html_escape($imageurl); ?>' id='existingdata' usemap='#weathermap_imap' />
+			<input id='xycapture' name='xycapture' data-width='<?php print html_escape($map->width);?>' data-height='<?php print html_escape($map->height);?>' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
+			<img id='existingdata' name='existingdata' data-width='<?php print html_escape($map->width);?>' data-height='<?php print html_escape($map->height);?>' src='<?php print html_escape($imageurl); ?>' usemap='#weathermap_imap' />
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
 			<div class='debug' style='display:none'><p><strong>Debug</strong>

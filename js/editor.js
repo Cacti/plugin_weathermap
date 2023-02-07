@@ -21,6 +21,9 @@ var graphTimer;
 var graphClickTimer;
 var graphOpen = false;
 var editor_url = 'weathermap-cacti-plugin-editor.php';
+var imageWidth  = null;
+var imageHeight = null;
+var local_graph_id = null;
 
 // seed the help text. Done in a big lump here, so we could make a foreign language version someday.
 
@@ -207,11 +210,28 @@ function graphPicker() {
 		$(this).hide();
 
 		$('#' + id + '_add').off('click').on('click', function() {
+			var hover   = 'graph_image.php?local_graph_id=';;
+			var infourl = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
+
 			if (id == 'link_target_picker') {
 				var target = $('#' + id).val();
 				var existing = $('#link_target').val();
 
 				$('#link_target').val(existing + (existing != '' ? ' ':'') + target);
+
+				// Add the graph hovers if possible
+				var ehover = $('#link_hover').val();
+				var einfo  = $('#link_infourl').val();
+
+				if (local_graph_id > 0) {
+					if (ehover == '') {
+						$('#link_hover').val(hover + local_graph_id);
+					}
+
+					if (einfo == '') {
+						$('#link_infourl').val(infourl + local_graph_id);
+					}
+				}
 			} else {
 				var hover   = 'graph_image.php?local_graph_id=';;
 				var infourl = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
@@ -263,8 +283,10 @@ function graphPicker() {
 
 				if (ui.item.id) {
 					$('#' + id).val(ui.item.id);
+					local_graph_id = ui.item.local_graph_id;
 				} else {
 					$('#' + id).val(ui.item.value);
+					local_graph_id = ui.item.local_graph_id;
 				}
 			},
 			open: function(event, ui) {
@@ -291,8 +313,6 @@ function graphPicker() {
 					}, 200);
 			}
 			$('#' + id + '_input').select();
-		}).on('keyup', function() {
-			$('#' + id).val($('#' + id + '_input').val());
 		}).on('mouseleave', function() {
 			graphTimer = setTimeout(function() { $('#' + id + '_input').autocomplete('close'); }, 800);
 		});
@@ -514,9 +534,6 @@ function attach_click_events() {
 	$('.wm_submit').off('click').on('click', form_submit);
 	$('.wm_cancel').off('click').on('click', cancel_op);
 
-	$('#link_cactipick').off('click').on('click', cactipicker).attr('href','#');
-	$('#node_cactipick').off('click').on('click', nodecactipicker).attr('href','#');
-
 	$('#xycapture').off('mouseover').mouseover(function(event) {
 		coord_capture(event);
 	});
@@ -613,30 +630,6 @@ function click_execute(event, alt) {
 	}
 }
 
-function cactipicker() {
-	// make sure it isn't already opened
-	if (!newWindow || newWindow.closed) {
-		newWindow = window.open('', 'cactipicker', 'scrollbars=1,status=1,height=400,width=400,resizable=1');
-	} else if (newWindow.focus) {
-		// window is already open and focusable, so bring it to the front
-		newWindow.focus();
-	}
-
-	newWindow.location = 'cacti-pick.php?command=link_step1';
-}
-
-function nodecactipicker() {
-	// make sure it isn't already opened
-	if (!newWindow || newWindow.closed) {
-		newWindow = window.open('', 'cactipicker', 'scrollbars=1,status=1,height=400,width=400,resizable=1');
-	} else if (newWindow.focus) {
-		// window is already open and focusable, so bring it to the front
-		newWindow.focus();
-	}
-
-	newWindow.location = 'cacti-pick.php?command=node_step1';
-}
-
 function show_context_help(itemid, targetid) {
 	var helpbox, helpboxtext, message;
 
@@ -682,15 +675,24 @@ function new_file() {
 function mapmode(m) {
 	if (m == 'xy') {
 		$('#debug').val('xy');
-		$('#xycapture').css('display', 'inline');
-		$('#existingdata').css('display', 'none');
+		$('#xycapture').show();
+		$('#existingdata').hide();
+
+		setCanvasSize('xycapture');
 	} else if (m == 'existing') {
 		$('#debug').val('existing');
-		$('#xycapture').css('display', 'none');
-		$('#existingdata').css('display', 'inline');
-	} else {
-		alert('invalid mode');
+		$('#xycapture').hide();
+		$('#existingdata').show();
+
+		setCanvasSize('existingdata');
 	}
+}
+
+function setCanvasSize(element) {
+	imageWidth  = $('#'+element).attr('data-width');
+	imageHeight = $('#'+element).attr('data-height');
+
+	//console.log('Width:'+imageWidth+', Height:'+imageHeight);
 }
 
 function add_node() {
@@ -1127,24 +1129,42 @@ function coord_capture(event) {
 }
 
 function coord_update(event) {
-	var cursorx = event.pageX;
-	var cursory = event.pageY;
+	/**
+	 * Get the absolution location on the page of the
+	 * cursor on the page
+	 */
+	var windowX = event.pageX.toFixed(0);
+	var windowY = event.pageY.toFixed(0);
 
-	// Adjust for coords relative to the image, not the document
+	/**
+	 * Get the upper left hand corner of the image on page
+	 * Which helps us perform the relative calculation
+	 */
 	if ($('#xycapture').is(':visible')) {
-		var p = $('#xycapture').offset();
+		var imageTopLeft = $('#xycapture').offset();
 	} else {
-		var p = $('#existing').offset();
+		var imageTopLeft = $('#existing').offset();
 	}
+	//console.log('ImageTop:'+imageTopLeft.top+', ImageLeft:'+imageTopLeft.left);
 
-	cursorx -= parseInt(p.left);
-	cursory -= parseInt(p.top);
-	cursory++; // fudge to make coords match results from imagemap (not sure why this is needed)
+	/**
+	 * get the relative location on the image
+	 * by subtracting the imageTop from the cursor
+	 * position.
+	 */
+	windowX -= imageTopLeft.left;
+	windowY -= imageTopLeft.top;
+	windowX  = windowX.toFixed(0);
+	windowY  = windowY.toFixed(0);
 
-	$('#x').val(cursorx);
-	$('#y').val(cursory);
+	$('#x').val(windowX);
+	$('#y').val(windowY);
 
-	$('#tb_coords').html('Position<br />'+ cursorx + ', ' + cursory);
+	// Log the coordinates
+	//console.log('X Value:'+$('#x').val());
+	//console.log('Y Value:'+$('#y').val());
+
+	$('#tb_coords').html('Position<br />'+ windowX + ', ' + windowY);
 }
 
 function coord_release(event) {

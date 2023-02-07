@@ -424,7 +424,7 @@ function imagepolyline($image, $points, $npoints, $color) {
 }
 
 // draw a filled round-cornered rectangle
-function imagefilledroundedrectangle($image  , $x1  , $y1  , $x2  , $y2  , $radius, $color) {
+function imagefilledroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color) {
 	imagefilledrectangle($image, $x1, $y1 + $radius, $x2, $y2 - $radius, $color);
 	imagefilledrectangle($image, $x1 + $radius, $y1, $x2 - $radius, $y2, $color);
 
@@ -433,8 +433,6 @@ function imagefilledroundedrectangle($image  , $x1  , $y1  , $x2  , $y2  , $radi
 
 	imagefilledarc($image, $x1 + $radius, $y2 - $radius, $radius * 2, $radius * 2, 0, 360, $color, IMG_ARC_PIE);
 	imagefilledarc($image, $x2 - $radius, $y2 - $radius, $radius * 2, $radius * 2, 0, 360, $color, IMG_ARC_PIE);
-
-	# bool imagefilledarc  ( resource $image  , int $cx  , int $cy  , int $width  , int $height  , int $start  , int $end  , int $color  , int $style  )
 }
 
 // draw a round-cornered rectangle
@@ -502,7 +500,7 @@ function imagecreatefromfile($filename) {
  * Much nicer colorization than imagefilter does, AND no special requirements.
  * Preserves white, black and transparency.
  */
-function imagecolorize($im, $r, $g, $b) {
+function imagecolorize($image, $r, $g, $b) {
 	//We will create a monochromatic palette based on
 	//the input color
 	//which will go from black to white
@@ -563,8 +561,8 @@ function imagecolorize($im, $r, $g, $b) {
 
 	//Now,let's change the original palette into the one we
 	//created
-	for ($c = 0; $c < imagecolorstotal($im); $c++) {
-		$col = imagecolorsforindex($im, $c);
+	for ($c = 0; $c < imagecolorstotal($image); $c++) {
+		$col = imagecolorsforindex($image, $c);
 		$lum_src = round(255 * ($col['red'] + $col['green'] + $col['blue']) / 765);
 		$col_out = $pal[$lum_src];
 
@@ -574,10 +572,10 @@ function imagecolorize($im, $r, $g, $b) {
 		#                $col_out['r'], $col_out['g'], $col_out['b']
 		#             );
 
-		imagecolorset($im, $c, $col_out['r'], $col_out['g'], $col_out['b']);
+		imagecolorset($image, $c, $col_out['r'], $col_out['g'], $col_out['b']);
 	}
 
-	return($im);
+	return($image);
 }
 
 /**
@@ -934,7 +932,7 @@ function calc_arrowsize($width,&$map,$linkname) {
 	return(array($arrowsize, $arrowwidth));
 }
 
-function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolours, $linkname, &$map, $q2_percent=50, $unidirectional=false) {
+function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolours, $linkname, &$map, $q2_percent = 50, $unidirectional = false) {
 	$totaldistance = $curvepoints[count($curvepoints)-1][DISTANCE];
 
 	if ($unidirectional) {
@@ -1273,7 +1271,7 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
  *    outlinecolour is a GD colour reference
  *    fillcolours is an array of two more colour references, one for the out, and one for the in spans
  */
-function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours, $linkname, &$map, $q2_percent=50, $unidirectional=false) {
+function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours, $linkname, &$map, $q2_percent = 50, $unidirectional = false) {
 	// now we have a 'spine' - all the central points for this curve.
 	// time to flesh it out to the right width, and figure out where to draw arrows and bandwidth boxes...
 
@@ -1998,20 +1996,25 @@ function wimagettftext($image, $size, $angle, $x, $y, $color, $file, $string) {
 		return;
 	}
 
-	$col = imagecolorsforindex($image, $color);
-	$r   = $col['red'];
-	$g   = $col['green'];
-	$b   = $col['blue'];
-	$a   = $col['alpha'];
+	$col  = imagecolorsforindex($image, $color);
+	$r    = $col['red'];
+	$g    = $col['green'];
+	$b    = $col['blue'];
+	$a    = $col['alpha'];
 
-	$r   = $r / 255;
-	$g   = $g / 255;
-	$b   = $b / 255;
-	$a   = (127 - $a) / 127;
+	$r    = round($r / 255, 0);
+	$g    = round($g / 255, 0);
+	$b    = round($b / 255, 0);
+	$a    = round((127 - $a) / 127, 0);
+
+	$x    = round($x, 0);
+	$y    = round($y, 0);
+
+	$size = round($size, 0);
 
 	metadump("TEXT $x $y $angle $size $file $r $g $b $a $string");
 
-	return(imagettftext($image, $size, $angle, (int) $x, (int) $y, (int) $color, $file, $string));
+	return(imagettftext($image, $size, $angle, $x, $y, $color, $file, $string));
 }
 
 function wm_draw_marker_diamond($im, $col, $x, $y, $size=10) {

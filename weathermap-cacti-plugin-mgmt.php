@@ -226,37 +226,33 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'move_map_up':
-		$id    = get_filter_request_var('id');
-		$order = get_filter_request_var('order');
+		$id = get_filter_request_var('id');
 
-		map_move($id, $order, -1);
+		map_move($id, -1);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php');
 
 		break;
 	case 'move_map_down':
-		$id    = get_filter_request_var('id');
-		$order = get_filter_request_var('order');
+		$id = get_filter_request_var('id');
 
-		map_move($id, $order, +1);
+		map_move($id, 1);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php');
 
 		break;
 	case 'move_group_up':
-		$id    = get_filter_request_var('id');
-		$order = get_filter_request_var('order');
+		$id = get_filter_request_var('id');
 
-		weathermap_group_move($id, $order, -1);
+		weathermap_group_move($id, -1);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=groupadmin');
 
 		break;
 	case 'move_group_down':
-		$id    = get_filter_request_var('id');
-		$order = get_filter_request_var('order');
+		$id = get_filter_request_var('id');
 
-		weathermap_group_move($id, $order, 1);
+		weathermap_group_move($id, 1);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=groupadmin');
 
@@ -574,24 +570,21 @@ function map_resort() {
 		ORDER BY group_id, sortorder');
 
 	$i = 1;
-	$last_group = -1020.5;
+	$last_g = -1;
 
 	if (cacti_sizeof($list)) {
 		foreach ($list as $map) {
-			if ($last_group != $map['group_id']) {
-				$last_group = $map['group_id'];
+			if ($last_g != $map['group_id']) {
+				$last_g = $map['group_id'];
 				$i = 1;
 			}
 
-			$sql[] = "UPDATE weathermap_maps SET sortorder = $i WHERE id = " . $map['id'];
+			db_execute_prepared('UPDATE weathermap_maps
+				SET sortorder = ?
+				WHERE id = ?',
+				array($i, $map['id']));
 
 			$i++;
-		}
-
-		if (!empty($sql)) {
-			for ($a = 0; $a < count($sql); $a++) {
-				$result = db_execute($sql[$a]);
-			}
 		}
 	}
 }
@@ -607,18 +600,16 @@ function weathermap_group_resort() {
 	$i = 1;
 
 	foreach ($list as $group) {
-		$sql[] = "UPDATE weathermap_groups SET sortorder = $i WHERE id = " . $group['id'];
-		$i++;
-	}
+		db_execute_prepared("UPDATE weathermap_groups
+			SET sortorder = ?
+			WHERE id = ?",
+			array($i, $group['id']));
 
-	if (!empty($sql)) {
-		for ($a = 0; $a < count($sql); $a++) {
-			$result = db_execute($sql[$a]);
-		}
+		$i++;
 	}
 }
 
-function map_move($mapid, $junk, $direction) {
+function map_move($mapid, $direction) {
 	$source = db_fetch_row_prepared('SELECT *
 		FROM weathermap_maps
 		WHERE id = ?',
@@ -640,21 +631,21 @@ function map_move($mapid, $junk, $direction) {
 			$otherid = $target['id'];
 
 			// move $mapid in direction $direction
-			$sql[] = "UPDATE weathermap_maps SET sortorder = $neworder WHERE id = $mapid";
+			db_execute_prepared('UPDATE weathermap_maps
+				SET sortorder = ?
+				WHERE id = ?',
+				array($neworder, $mapid));
 
 			// then find the other one with the same sortorder and move that in the opposite direction
-			$sql[] = "UPDATE weathermap_maps SET sortorder = $oldorder WHERE id = $otherid";
-		}
-
-		if (!empty($sql)) {
-			for ($a = 0; $a < count($sql); $a++) {
-				$result = db_execute($sql[$a]);
-			}
+			db_execute_prepared('UPDATE weathermap_maps
+				SET sortorder = ?
+				WHERE id = ?',
+				array($oldorder, $otherid));
 		}
 	}
 }
 
-function weathermap_group_move($id, $junk, $direction) {
+function weathermap_group_move($id, $direction) {
 	$source = db_fetch_row_prepared('SELECT *
 		FROM weathermap_groups
 		WHERE id = ?',
@@ -802,7 +793,7 @@ function get_map_records(&$total_rows, &$rows) {
 		ON wm.group_id = wmg.id
 		$sql_where");
 
-    $sql_order = get_order_string();
+    $sql_order = 'ORDER BY group_id, sortorder';
     $sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
 
 	return db_fetch_assoc("SELECT wm.*, wmg.name AS groupname
@@ -921,6 +912,7 @@ function maplist() {
 		),
 		array(
 			'display' => __('ID', 'weathermap'),
+			'align'   => 'center',
 		),
 		array(
 			'display' => __('Group', 'weathermap'),
@@ -933,17 +925,22 @@ function maplist() {
 		),
 		array(
 			'display' => __('Sort Order', 'weathermap'),
+			'align'   => 'center',
+		),
+		array(
+			'display' => __('Order', 'weathermap'),
+			'align'   => 'center',
 		),
 		array(
 			'display' => __('Accessible By', 'weathermap'),
 		),
 		array(
 			'display' => __('Last Duration', 'weathermap'),
-			'align' => 'right'
+			'align'   => 'right'
 		),
 		array(
 			'display' => __('Last Runtime', 'weathermap'),
-			'align' => 'right'
+			'align'   => 'right'
 		)
 	);
 
@@ -953,7 +950,7 @@ function maplist() {
 		FROM user_auth
 		WHERE enabled = 'on'");
 
-	$users[0] = 'Anyone';
+	$users[0] = __('Anyone', 'weathermap');
 
 	foreach ($query as $user) {
 		$users[$user['id']] = $user['username'];
@@ -981,7 +978,7 @@ function maplist() {
 
 			form_selectable_cell($output, $map['id']);
 			form_selectable_cell(html_escape($map['configfile']), $map['id']);
-			form_selectable_cell($map['id'], $map['id']);
+			form_selectable_cell($map['id'], $map['id'], '', 'center');
 
 			form_selectable_cell('<a class="pic linkEditMain" title="' . __esc('Click to change group', 'weathermap') . '"
 					href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=chgroup&id=' . $map['id']) . '">' .
@@ -1022,16 +1019,18 @@ function maplist() {
 			form_selectable_cell($url, $map['id']);
 
 			$url  = '<a class="pic" title="' . __esc('Move Map Up', 'weathermap') . '"
-				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_up&order=' . $map['sortorder'] . '&id=' . $map['id']) . '">
+				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_up&id=' . $map['id']) . '">
 				<i class="fa fa-caret-up moveArrow"></i>
 			</a>';
 
 			$url .= '<a class="pic" title="' . __esc('Move Map Down', 'weathermap') . '"
-				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_down&order=' . $map['sortorder'] . '&id=' . $map['id']) . '">
+				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_down&id=' . $map['id']) . '">
 				<i class="fa fa-caret-down moveArrow"></i>
 			</a>';
 
-			form_selectable_cell($url, $map['id']);
+			form_selectable_cell($url, $map['id'], '', 'center');
+
+			form_selectable_cell($map['sortorder'], $map['id'], '', 'center');
 
 			$ulist = db_fetch_row_prepared('SELECT
 				SUM(CASE WHEN userid = 0 THEN 1 ELSE NULL END) AS special,
@@ -1160,31 +1159,29 @@ function addmap_picker($show_all = false) {
 				if ($details['action'] == 'add') {
 					$file   = basename($details['file']);
 					$url    = 'weathermap-cacti-plugin-mgmt.php?action=addmap&file=' . $file;
-					$tip    = __esc('Add the configuration file to Weathermap', 'weathermap');
+					$tip    = __esc('Add the configuration file %s to Weathermap', $file, 'weathermap');
 					$value  = '<i class="fa fa-plus"></i>';
 					$action = "<a class='pic deviceUp' href='$url' title='$tip'>$value</a>";
 				} else {
-					$file = basename($details['file']);
-					$file = map_get_next_name($file);
+					$file    = basename($details['file']);
+					$newfile = map_get_next_name($file);
 
-					if ($file != basename($details['file'])) {
-						$url = 'weathermap-cacti-plugin-mgmt.php?' .
-							'action=duplicate' .
-							'&mapid=' . $details['mapid'] .
-							'&file=' . $file .
-							'&title=' . $details['title'] . __(' Copy', 'weathermap');
+					$url = 'weathermap-cacti-plugin-mgmt.php?' .
+						'action=dupmap' .
+						'&mapid=' . $details['mapid'] .
+						'&file=' . $file .
+						'&title=' . $details['title'] . __(' Copy', 'weathermap');
 
-						$tip    = __esc('Duplicate the configuration file and add to Weathermap', 'weathermap');
-						$value  = '<i class="fa fa-copy"></i>';
-						$action = "<a class='pic deviceRecovering' href='$url' title='$tip'>$value</a>";
-					}
+					$tip    = __esc('Duplicate the configuration file %s and add to Weathermap as %s', $file, $newfile, 'weathermap');
+					$value  = '<i class="fa fa-copy"></i>';
+					$action = "<a class='pic deviceRecovering' href='$url' title='$tip'>$value</a>";
 				}
 
-				$tip = 	__esc('View the configuration file in a new window', 'weathermap');
-				$url = 'weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file;
+				$tip   = __esc('View the configuration file %s in a new window', $file, 'weathermap');
+				$url   = 'weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file;
 				$value = '<i class="fa fa-binoculars"></i>';
 
-				$action .= "<a pic href='$url' title='$tip'>$value</a>";
+				$action .= "<a target='_new' href='$url' title='$tip'>$value</a>";
 
 				form_selectable_cell($action, $i, '1%');
 
@@ -1238,9 +1235,10 @@ function preview_config($file) {
 	$file_dir   = realpath($path_parts['dirname']);
 
 	if ($file_dir != $weathermap_confdir) {
-		// someone is trying to read arbitrary files?
-		// print "$file_dir != $weathermap_confdir";
-		print '<h3>' . __('Path mismatch', 'weathermap') . '</h3>';
+		raise_message('path_mismatch', __esc('The path %s is not in the config directory.', $file, 'weathermap'), MESSAGE_LEVEL_ERROR);
+
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+		exit;
 	} else {
 		html_start_box(__('Preview of %s', $file, 'weathermap'), '100%', '', '3', 'center', '');
 
@@ -1258,6 +1256,10 @@ function preview_config($file) {
 			}
 
 			fclose($fd);
+		} else {
+			raise_message('path_missing', __esc('The path %s does not appear to exist in the config directory', $file, 'weathermap'), MESSAGE_LEVEL_ERROR);
+			header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+			exit;
 		}
 
 		print '</pre>';
@@ -1365,7 +1367,6 @@ function map_get_next_name($basename, $pattern = 'copy') {
 	}
 
 	while ($i < 5) {
-
 		if (!file_exists("$weathermap_confdir/$file" . '_' . $pattern . '.conf')) {
 			$file .= '_' . $pattern;
 			break;
@@ -2260,7 +2261,7 @@ function weathermap_chgroup($id) {
 
 	$curgroup = db_fetch_cell_prepared('SELECT group_id
 		FROM weathermap_maps
-		WHERE id = ?' .
+		WHERE id = ?',
 		array($id));
 
 	$n = 0;
@@ -2390,13 +2391,13 @@ function weathermap_group_editor() {
 			form_selectable_cell($action, $n);
 
 			$tip     = __esc('Move Group Up', 'weathermap');
-			$url     = html_escape('weathermap-cacti-plugin-mgmt.php?action=move_group_up&order=' . $group['sortorder'] . '&id=' . $group['id']);
+			$url     = html_escape('weathermap-cacti-plugin-mgmt.php?action=move_group_up&id=' . $group['id']);
 			$value   = '<i class="fa fa-caret-up moveArrow"></i>';
 
 			$action  = "<a class='pic' href='$url' title='$tip'>$value</a>";
 
 			$tip     = __esc('Move Group Down', 'weathermap');
-			$url     = html_escape('weathermap-cacti-plugin-mgmt.php?action=move_group_down&order=' . $group['sortorder'] . '&id=' . $group['id']);
+			$url     = html_escape('weathermap-cacti-plugin-mgmt.php?action=move_group_down&id=' . $group['id']);
 			$value   = '<i class="fa fa-caret-down moveArrow"></i>';
 
 			$action .= "<a class='pic' href='$url' title='$tip'>$value</a>";

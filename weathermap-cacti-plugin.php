@@ -402,8 +402,7 @@ function weathermap_singleview($mapid) {
 			}
 
 			print '<div class="cactiTable">';
-			print '<div class="cactiTableTitle">' . $maptitle . '</div>';
-			print '<div class="cactiTableButton"></div>';
+			print '<div class="cactiTableTitleRow">' . $maptitle . '</div>';
 			print '</div>';
 
 			print '<table class="cactiTable">';
@@ -481,8 +480,7 @@ function weathermap_thumbview($limit_to_group = -1) {
 
 		?>
 		<div class="cactiTable">
-			<div class="cactiTableTitle"><?php print $pagetitle;?></div>
-			<div class="cactiTableButton"></div>
+			<div class="cactiTableTitleRow"><?php print $pagetitle;?></div>
 		</div>
 		<?php
 
@@ -605,8 +603,7 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 				[ " . $html . ' ] </span>';
 			?>
 			<div class="cactiTable">
-				<div class="cactiTableTitle"><?php print $pagetitle;?></div>
-				<div class="cactiTableButton"></div>
+				<div class="cactiTableTitleRow"><?php print $pagetitle;?></div>
 			</div>
 			<?php
 		} else {
@@ -720,7 +717,7 @@ function weathermap_versionbox() {
 		if (api_plugin_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
 			$pagefoot .= ' --- <a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php" title="' . __esc('Go to the map management page', 'weathermap') . '">' . __('Weathermap Management', 'weathermap') . '</a>';
 			$pagefoot .= ' | <a target="_blank" href="docs/">' . __('Local Documentation', 'weathermap') . '</a>';
-			$pagefoot .= ' | <a target="_blank" href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-editor.php">' . __('Editor', 'weathermap') . '</a>';
+			$pagefoot .= ' | <a class="pic" href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=addmap_picker">' . __('New Map', 'weathermap') . '</a>';
 		}
 
 		print '<br/><table width="100%" style="background-color: #f5f5f5; border: 1px solid #bbbbbb;" align="center" cellpadding="1">';
@@ -788,7 +785,7 @@ function weathermap_mapselector($current_id = 0) {
 		ON wm.group_id = wmg.id
 		WHERE active = 'on'
 		AND (userid = ? OR userid = 0)
-		ORDER BY gsort, sortorder",
+		ORDER BY wmg.sortorder, wm.sortorder",
 		array($userid));
 
 	if (cacti_sizeof($maps) > 1) {
@@ -882,7 +879,7 @@ function weathermap_get_valid_tabs() {
 		ON wmg.id = wm.group_id
 		WHERE active = 'on'
 		AND (userid = ? OR userid = 0)
-		ORDER BY wmg.sortorder",
+		ORDER BY wmg.sortorder, wm.sortorder",
 		array($userid));
 
 	foreach ($maps as $map) {

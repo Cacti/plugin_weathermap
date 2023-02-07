@@ -1,4 +1,4 @@
-# PHP Network Weathermap 1.0 - Beta 2
+# PHP Network Weathermap 1.0 - Beta 4
 
 This is PHP Network Weathermap fork, version 1.0.  The PHP Weathermap was
 originally by Howard Jones (howie@thingy.com).  As Howie has scaled back his

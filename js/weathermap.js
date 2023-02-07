@@ -1,3 +1,6 @@
+var tooltipObject = null;
+var wmHoverTimeout = null;
+
 $(function() {
 	$('map').tooltip({
 		items: 'area',
@@ -10,14 +13,18 @@ $(function() {
 
 			$('div.ui-tooltip').not('#'+ id).remove();
 
-			ui.tooltip.css('max-width', '800px');
-			ui.tooltip.css('max-height', '800px');
+			ui.tooltip.css('min-width', '600px');
+			ui.tooltip.css('max-width', '1800px');
+			ui.tooltip.css('overflow-y', 'visible');
 
 			ui.tooltip.position({
 				my: 'left top',
 				at: 'right+15 center',
 				of: event
 			});
+
+			tooltipObject      = ui.tooltip;
+			wmHoverTimeout = setTimeout(adjustTooltipWindow, 200);
 		},
 		close: function(event, ui) {
 			ui.tooltip.hover(
@@ -44,3 +51,11 @@ $(function() {
 		$('.cactiGraphContentArea').removeClass('cactiGraphContentArea').addClass('wm_scroll');
 	});
 });
+
+function adjustTooltipWindow() {
+	var maxWidth = $(tooltipObject).find('img').width();
+	//console.log(maxWidth);
+	tooltipObject.css('max-width', maxWidth+'px');
+	tooltipObject.css('max-height', '800px');
+	tooltipObject.css('overflow-y', 'visible');
+}

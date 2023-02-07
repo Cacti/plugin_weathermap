@@ -1,4 +1,8 @@
-// Stop Firefox from making the border blue on inputs
+html, body {
+	font-family: 'Gill Sans', Verdana, sans-serif; margin:0;
+	overflow: visible !important;
+}
+
 input:focus {
   outline: 0px solid green;
   caret-color: transparent;
@@ -6,6 +10,10 @@ input:focus {
 
 .mainView {
 	padding-top: 60px;
+}
+
+input {
+	max-width: unset !important;
 }
 
 .mainArea {
@@ -23,14 +31,6 @@ input:focus {
 #frmMain {
 	position: relative;
 	top: -20px;
-}
-
-body {
-	font-family: 'Gill Sans', Verdana, sans-serif; margin:0;
-}
-
-input {
-	max-width: 100% !important;
 }
 
 #toolbar {
