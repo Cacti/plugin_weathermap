@@ -158,7 +158,7 @@ class WeatherMapNode extends WeatherMapItem {
 	}
 
 	function my_type() {
-		return "NODE";
+		return 'NODE';
 	}
 
 	// make a mini-image, containing this node and nothing else
@@ -181,15 +181,20 @@ class WeatherMapNode extends WeatherMapItem {
 
 		// start these off with sensible values, so that bbox
 		// calculations are easier.
-		$icon_x1 = $this->x; $icon_x2 = $this->x;
-		$icon_y1 = $this->y; $icon_y2 = $this->y;
-		$label_x1 = $this->x; $label_x2 = $this->x;
-		$label_y1 = $this->y; $label_y2 = $this->y;
-		$boxwidth = 0; $boxheight = 0;
-		$icon_w = 0;
-		$icon_h = 0;
+		$icon_x1   = $this->x;
+		$icon_x2   = $this->x;
+		$icon_y1   = $this->y;
+		$icon_y2   = $this->y;
+		$label_x1  = $this->x;
+		$label_x2  = $this->x;
+		$label_y1  = $this->y;
+		$label_y2  = $this->y;
+		$boxwidth  = 0;
+		$boxheight = 0;
+		$icon_w    = 0;
+		$icon_h    = 0;
 
-		$col = new Colour(-1,-1,-1);
+		$col = new Colour(-1, -1, -1);
 
 		# print $col->as_string();
 
@@ -199,12 +204,12 @@ class WeatherMapNode extends WeatherMapItem {
 			$pc = 0;
 
 			if ($this->scalevar == 'in') {
-				$pc = $this->inpercent;
+				$pc  = $this->inpercent;
 				$col = $this->colours[IN];
 			}
 
 			if ($this->scalevar == 'out') {
-				$pc = $this->outpercent;
+				$pc  = $this->outpercent;
 				$col = $this->colours[OUT];
 			}
 		} elseif ($this->labelbgcolour != array(-1,-1,-1)) {
@@ -214,38 +219,38 @@ class WeatherMapNode extends WeatherMapItem {
 
 		$colicon = null;
 		if (!empty($this->targets) && $this->useiconscale != 'none') {
-			wm_debug("Colorising the icon");
+			wm_debug('Colorising the icon');
 
-			$pc = 0;
+			$pc  = 0;
 			$val = 0;
 
 			if ($this->iconscalevar == 'in') {
-				$pc = $this->inpercent;
+				$pc  = $this->inpercent;
 				//$col = $this->colours[IN];
 				$val = $this->bandwidth_in;
 			}
 
 			if ($this->iconscalevar == 'out') {
-				$pc = $this->outpercent;
+				$pc  = $this->outpercent;
 				//$col = $this->colours[OUT];
 				$val = $this->bandwidth_out;
 			}
 
-			if ($this->iconscaletype=='percent') {
+			if ($this->iconscaletype == 'percent') {
 				list($colicon,$node_iconscalekey,$icontag) =
 					$map->NewColourFromPercent($pc, $this->useiconscale,$this->name );
 			} else {
 				// use the absolute value if we aren't doing percentage scales.
-				list($colicon,$node_iconscalekey,$icontag) = $map->NewColourFromPercent($val, $this->useiconscale,$this->name, false );
+				list($colicon,$node_iconscalekey,$icontag) = $map->NewColourFromPercent($val, $this->useiconscale, $this->name, false);
 			}
 		}
 
 		// figure out a bounding rectangle for the label
 		if ($this->label != '') {
-			$padding = 4.0;
+			$padding   = 4.0;
 			$padfactor = 1.0;
 
-			$this->proclabel = $map->ProcessString($this->label,$this,true,TRUE);
+			$this->proclabel = $map->ProcessString($this->label, $this, true, true);
 
 			// if screenshot_mode is enabled, wipe any letters to X and wipe any IP address to 127.0.0.1
 			// hopefully that will preserve enough information to show cool stuff without leaking info
@@ -255,11 +260,11 @@ class WeatherMapNode extends WeatherMapItem {
 
 			list($strwidth, $strheight) = $map->myimagestringsize($this->labelfont, $this->proclabel);
 
-			if ($this->labelangle==90 || $this->labelangle==270) {
-				$boxwidth = ($strheight * $padfactor) + $padding;
-				$boxheight = ($strwidth * $padfactor) + $padding;
+			if ($this->labelangle == 90 || $this->labelangle == 270) {
+				$boxwidth  = ($strheight * $padfactor) + $padding;
+				$boxheight = ($strwidth  * $padfactor) + $padding;
 
-				wm_debug("Node->pre_render: ".$this->name." Label Metrics are: $strwidth x $strheight -> $boxwidth x $boxheight");
+				wm_debug('Node->pre_render: ' . $this->name . " Label Metrics are: $strwidth x $strheight -> $boxwidth x $boxheight");
 
 				$label_x1 = $this->x - ($boxwidth / 2);
 				$label_y1 = $this->y - ($boxheight / 2);
@@ -278,8 +283,8 @@ class WeatherMapNode extends WeatherMapItem {
 				}
 			}
 
-			if ($this->labelangle==0 || $this->labelangle==180) {
-				$boxwidth = ($strwidth * $padfactor) + $padding;
+			if ($this->labelangle == 0 || $this->labelangle == 180) {
+				$boxwidth  = ($strwidth  * $padfactor) + $padding;
 				$boxheight = ($strheight * $padfactor) + $padding;
 
 				wm_debug("Node->pre_render: ".$this->name." Label Metrics are: $strwidth x $strheight -> $boxwidth x $boxheight");
@@ -293,7 +298,7 @@ class WeatherMapNode extends WeatherMapItem {
 				$txt_x = $this->x - ($strwidth / 2);
 				$txt_y = $this->y + ($strheight / 2);
 
-				if ($this->labelangle==180) {
+				if ($this->labelangle == 180) {
 					$txt_x = $this->x + ($strwidth / 2);
 					$txt_y = $this->y - ($strheight / 2);
 				}
@@ -329,39 +334,37 @@ class WeatherMapNode extends WeatherMapItem {
 
 				imageSaveAlpha($icon_im, true);
 
-				$nothing=imagecolorallocatealpha($icon_im,128,0,0,127);
+				$nothing = imagecolorallocatealpha($icon_im, 128, 0, 0, 127);
 
 				imagefill($icon_im, 0, 0, $nothing);
 
 				$fill = null;
-				$ink = null;
+				$ink  = null;
 
 				$aifill = new Colour($this->aiconfillcolour);
-				$aiink = new Colour($this->aiconoutlinecolour);
+				$aiink  = new Colour($this->aiconoutlinecolour);
 
 				// if useiconscale isn't set, then use the static
 				// colour defined, or copy the colour from the label
-				if ($this->useiconscale == "none") {
+				if ($this->useiconscale == 'none') {
 					if ($aifill->is_copy() && !$col->is_none()) {
 						$fill = $col;
-					} else {
-						if ($aifill->is_real()) {
-							$fill = $aifill;
-						}
+					} elseif ($aifill->is_real()) {
+						$fill = $aifill;
 					}
 				} else {
 					// if useiconscale IS defined, use that to figure out
 					// the fill colour
-					$pc = 0;
+					$pc  = 0;
 					$val = 0;
 
 					if ($this->iconscalevar == 'in') {
-						$pc = $this->inpercent;
+						$pc  = $this->inpercent;
 						$val = $this->bandwidth_in;
 					}
 
 					if ($this->iconscalevar == 'out') {
-						$pc = $this->outpercent;
+						$pc  = $this->outpercent;
 						$val = $this->bandwidth_out;
 					}
 
@@ -374,50 +377,44 @@ class WeatherMapNode extends WeatherMapItem {
 					}
 				}
 
-				if ($this->aiconoutlinecolour != array(-1,-1,-1)) {
-					$ink=$aiink;
+				if ($this->aiconoutlinecolour != array(-1, -1, -1)) {
+					$ink = $aiink;
 				}
 
-				if ($this->iconfile=='box') {
+				if ($this->iconfile == 'box') {
 					if ($fill !== null && !$fill->is_none()) {
-						imagefilledrectangle($icon_im, 0, 0, $this->iconscalew-1, $this->iconscaleh-1, $fill->gdallocate($icon_im) );
+						imagefilledrectangle($icon_im, 0, 0, $this->iconscalew - 1, $this->iconscaleh - 1, $fill->gdallocate($icon_im) );
 					}
 
 					if ($ink !== null && !$ink->is_none()) {
-						imagerectangle($icon_im, 0, 0, $this->iconscalew-1, $this->iconscaleh-1, $ink->gdallocate($icon_im) );
+						imagerectangle($icon_im, 0, 0, $this->iconscalew - 1, $this->iconscaleh - 1, $ink->gdallocate($icon_im) );
 					}
-				}
-
-				if ($this->iconfile=='rbox') {
+				} elseif ($this->iconfile == 'rbox') {
 					if ($fill !== null && !$fill->is_none()) {
-						imagefilledroundedrectangle($icon_im, 0, 0, $this->iconscalew-1, $this->iconscaleh-1, 4, $fill->gdallocate($icon_im));
+						imagefilledroundedrectangle($icon_im, 0, 0, $this->iconscalew - 1, $this->iconscaleh - 1, 4, $fill->gdallocate($icon_im));
 					}
 
 					if ($ink !== null && !$ink->is_none()) {
-						imageroundedrectangle($icon_im, 0, 0, $this->iconscalew-1, $this->iconscaleh-1, 4, $ink->gdallocate($icon_im));
+						imageroundedrectangle($icon_im, 0, 0, $this->iconscalew - 1, $this->iconscaleh - 1, 4, $ink->gdallocate($icon_im));
 					}
-				}
-
-				if ($this->iconfile=='round') {
-					$rx = $this->iconscalew/2-1;
-					$ry = $this->iconscaleh/2-1;
+				} elseif ($this->iconfile == 'round') {
+					$rx = $this->iconscalew / 2 - 1;
+					$ry = $this->iconscaleh / 2 - 1;
 
 					if ($fill !== null && !$fill->is_none()) {
-						imagefilledellipse($icon_im,$rx,$ry,$rx*2,$ry*2,$fill->gdallocate($icon_im));
+						imagefilledellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $fill->gdallocate($icon_im));
 					}
 
 					if ($ink !== null && !$ink->is_none()) {
-						imageellipse($icon_im,$rx,$ry,$rx*2,$ry*2,$ink->gdallocate($icon_im));
+						imageellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $ink->gdallocate($icon_im));
 					}
-				}
-
-				if ($this->iconfile=='nink') {
+				} elseif ($this->iconfile == 'nink') {
 					// print "NINK **************************************************************";
-					$rx = $this->iconscalew/2-1;
-					$ry = $this->iconscaleh/2-1;
+					$rx = $this->iconscalew / 2 - 1;
+					$ry = $this->iconscaleh / 2 - 1;
 
 					$size    = $this->iconscalew;
-					$quarter = $size/4;
+					$quarter = $size / 4;
 
 					$col1 = $this->colours[OUT];
 					$col2 = $this->colours[IN];
@@ -425,63 +422,64 @@ class WeatherMapNode extends WeatherMapItem {
 					// assert('!is_null($col1)');
 					// assert('!is_null($col2)');
 
-					imagefilledarc($icon_im, $rx-1, $ry, $size, $size, 270,90, $col1->gdallocate($icon_im), IMG_ARC_PIE);
-					imagefilledarc($icon_im, $rx+1, $ry, $size, $size, 90,270, $col2->gdallocate($icon_im), IMG_ARC_PIE);
+					imagefilledarc($icon_im, $rx - 1, $ry, $size, $size, 270, 90, $col1->gdallocate($icon_im), IMG_ARC_PIE);
+					imagefilledarc($icon_im, $rx + 1, $ry, $size, $size, 90, 270, $col2->gdallocate($icon_im), IMG_ARC_PIE);
 
-					imagefilledarc($icon_im, $rx-1, $ry+$quarter, $quarter*2, $quarter*2, 0,360, $col1->gdallocate($icon_im), IMG_ARC_PIE);
-					imagefilledarc($icon_im, $rx+1, $ry-$quarter, $quarter*2, $quarter*2, 0,360, $col2->gdallocate($icon_im), IMG_ARC_PIE);
+					imagefilledarc($icon_im, $rx - 1, $ry + $quarter, $quarter * 2, $quarter *2, 0, 360, $col1->gdallocate($icon_im), IMG_ARC_PIE);
+					imagefilledarc($icon_im, $rx + 1, $ry - $quarter, $quarter * 2, $quarter *2, 0, 360, $col2->gdallocate($icon_im), IMG_ARC_PIE);
 
 					if ($ink !== null && !$ink->is_none()) {
 						// XXX - need a font definition from somewhere for NINK text
 						$font = 1;
 
-						$instr = $map->ProcessString("{node:this:bandwidth_in:%.1k}",$this);
-						$outstr = $map->ProcessString("{node:this:bandwidth_out:%.1k}",$this);
+						$instr  = $map->ProcessString("{node:this:bandwidth_in:%.1k}", $this);
+						$outstr = $map->ProcessString("{node:this:bandwidth_out:%.1k}", $this);
 
-						list($twid,$thgt) = $map->myimagestringsize($font,$instr);
+						list($twid, $thgt) = $map->myimagestringsize($font, $instr);
 
-						$map->myimagestring($icon_im, $font, $rx - $twid/2, $ry- $quarter + ($thgt/2),$instr,$ink->gdallocate($icon_im));
+						$map->myimagestring($icon_im, $font, $rx - $twid / 2, $ry - $quarter + ($thgt / 2), $instr, $ink->gdallocate($icon_im));
 
-						list($twid,$thgt) = $map->myimagestringsize($font,$outstr);
+						list($twid, $thgt) = $map->myimagestringsize($font, $outstr);
 
-						$map->myimagestring($icon_im, $font, $rx - $twid/2,  $ry + $quarter + ($thgt/2),$outstr,$ink->gdallocate($icon_im));
+						$map->myimagestring($icon_im, $font, $rx - $twid / 2,  $ry + $quarter + ($thgt / 2), $outstr, $ink->gdallocate($icon_im));
 
-						imageellipse($icon_im,$rx,$ry,$rx*2,$ry*2,$ink->gdallocate($icon_im) );
+						imageellipse($icon_im, $rx, $ry, $rx * 2, $ry * 2, $ink->gdallocate($icon_im) );
 
 						// imagearc($icon_im, $rx,$ry,$quarter*4,$quarter*4, 0,360, $ink->gdallocate($icon_im));
 					}
 
 					// print "NINK ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
-				}
-
-				// XXX - needs proper colours
-				if ($this->iconfile=='inpie' || $this->iconfile=='outpie') {
+				} elseif ($this->iconfile == 'inpie' || $this->iconfile == 'outpie') {
+					// XXX - needs proper colours
 					# list($colpie,$node_iconscalekey,$icontag) = $map->NewColourFromPercent($pc, $this->useiconscale,$this->name);
 
-					if ($this->iconfile=='inpie') $segment_angle = (($this->inpercent)/100) * 360;
-					if ($this->iconfile=='outpie') $segment_angle = (($this->outpercent)/100) * 360;
+					if ($this->iconfile == 'inpie') {
+						$segment_angle = (($this->inpercent) / 100) * 360;
+					}
 
-					$rx = $this->iconscalew/2-1;
-					$ry = $this->iconscaleh/2-1;
+					if ($this->iconfile == 'outpie') {
+						$segment_angle = (($this->outpercent) / 100) * 360;
+					}
+
+					$rx = $this->iconscalew / 2 - 1;
+					$ry = $this->iconscaleh / 2 - 1;
 
 					if ($fill !== null && !$fill->is_none()) {
-						imagefilledellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $fill->gdallocate($icon_im) );
+						imagefilledellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $fill->gdallocate($icon_im));
 					}
 
 					if ($ink !== null && !$ink->is_none()) {
 						// imagefilledarc  ( resource $image  , int $cx  , int $cy  , int $width  , int $height  , int $start  , int $end  , int $color  , int $style  )
-						imagefilledarc($icon_im, $rx, $ry, $rx*2,$ry*2, 0, $segment_angle, $ink->gdallocate($icon_im) , IMG_ARC_PIE);
+						imagefilledarc($icon_im, $rx, $ry, $rx * 2, $ry * 2, 0, $segment_angle, $ink->gdallocate($icon_im), IMG_ARC_PIE);
 					}
 
 					if ($fill !== null && !$fill->is_none()) {
-						imageellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $fill->gdallocate($icon_im) );
+						imageellipse($icon_im, $rx, $ry, $rx * 2, $ry * 2, $fill->gdallocate($icon_im));
 					}
 
 					// warn('inpie AICON not implemented yet [WMWARN99]');
-				}
-
-				// if ($this->iconfile=='outpie') { warn('outpie AICON not implemented yet [WMWARN99]'); }
-				if ($this->iconfile=='gauge') {
+				} elseif ($this->iconfile == 'gauge') {
+					// if ($this->iconfile=='outpie') { warn('outpie AICON not implemented yet [WMWARN99]'); }
 					wm_warn('gauge AICON not implemented yet [WMWARN99]');
 				}
 			} else {
@@ -496,11 +494,9 @@ class WeatherMapNode extends WeatherMapItem {
 
 					if (function_exists('imagefilter') && isset($colicon) && $this->get_hint('use_imagefilter') == 1) {
 						imagefilter($icon_im, IMG_FILTER_COLORIZE, $colicon->r, $colicon->g, $colicon->b);
-					} else {
-						if (isset($colicon)) {
-							// debug("Skipping unavailable imagefilter() call.\n");
-							imagecolorize($icon_im, $colicon->r, $colicon->g, $colicon->b);
-						}
+					} elseif (isset($colicon)) {
+						// debug("Skipping unavailable imagefilter() call.\n");
+						imagecolorize($icon_im, $colicon->r, $colicon->g, $colicon->b);
 					}
 
 					wm_debug('If this is the last thing in your logs, you probably have a buggy GD library. Get > 2.0.33 or use PHP builtin.');
@@ -515,16 +511,16 @@ class WeatherMapNode extends WeatherMapItem {
 							wm_debug('SCALING ICON here');
 
 							if ($icon_w > $icon_h) {
-								$scalefactor = $icon_w/$this->iconscalew;
+								$scalefactor = $icon_w / $this->iconscalew;
 							} else {
-								$scalefactor = $icon_h/$this->iconscaleh;
+								$scalefactor = $icon_h / $this->iconscaleh;
 							}
 
-							$new_width = $icon_w / $scalefactor;
+							$new_width  = $icon_w / $scalefactor;
 							$new_height = $icon_h / $scalefactor;
-							$scaled = imagecreatetruecolor($new_width, $new_height);
+							$scaled     = imagecreatetruecolor($new_width, $new_height);
 
-							imagealphablending($scaled,false);
+							imagealphablending($scaled, false);
 							imagecopyresampled($scaled, $icon_im, 0, 0, 0, 0, $new_width, $new_height, $icon_w, $icon_h);
 							imagedestroy($icon_im);
 
@@ -533,10 +529,8 @@ class WeatherMapNode extends WeatherMapItem {
 					} else {
 						wm_warn ('Couldn\'t open ICON: \'' . $this->iconfile . '\' - is it a PNG, JPEG or GIF? [WMWARN37]');
 					}
-				} else {
-					if ($this->iconfile != 'none') {
-						wm_warn ('ICON \'' . $this->iconfile . '\' does not exist, or is not readable. Check path and permissions. [WMWARN38]');
-					}
+				} elseif ($this->iconfile != 'none') {
+					wm_warn ('ICON \'' . $this->iconfile . '\' does not exist, or is not readable. Check path and permissions. [WMWARN38]');
 				}
 			}
 
@@ -558,9 +552,10 @@ class WeatherMapNode extends WeatherMapItem {
 		}
 
 		// do any offset calculations
-		$dx=0;
-		$dy=0;
-		if (($this->labeloffset != '') && (($this->iconfile != ''))) {
+		$dx = 0;
+		$dy = 0;
+
+		if ($this->labeloffset != '' && $this->iconfile != '') {
 			$this->labeloffsetx = 0;
 			$this->labeloffsety = 0;
 
@@ -584,33 +579,24 @@ class WeatherMapNode extends WeatherMapItem {
 		}
 
 		// work out the bounding box of the whole thing
-
-		$bbox_x1 = min($label_x1,$icon_x1);
-		$bbox_x2 = max($label_x2,$icon_x2)+1;
-		$bbox_y1 = min($label_y1,$icon_y1);
-		$bbox_y2 = max($label_y2,$icon_y2)+1;
-
-		#           imagerectangle($im,$bbox_x1,$bbox_y1,$bbox_x2,$bbox_y2,$map->selected);
-		#         imagerectangle($im,$label_x1,$label_y1,$label_x2,$label_y2,$map->black);
-		#       imagerectangle($im,$icon_x1,$icon_y1,$icon_x2,$icon_y2,$map->black);
+		$bbox_x1 = min($label_x1, $icon_x1);
+		$bbox_x2 = max($label_x2, $icon_x2) + 1;
+		$bbox_y1 = min($label_y1, $icon_y1);
+		$bbox_y2 = max($label_y2, $icon_y2) + 1;
 
 		// create TWO imagemap entries - one for the label and one for the icon
 		// (so we can have close-spaced icons better)
-		$temp_width = $bbox_x2-$bbox_x1;
-		$temp_height = $bbox_y2-$bbox_y1;
+		$temp_width  = round($bbox_x2 - $bbox_x1);
+		$temp_height = round($bbox_y2 - $bbox_y1);
 
 		// create an image of that size and draw into it
-		$node_im=imagecreatetruecolor($temp_width,$temp_height );
+		$node_im = imagecreatetruecolor($temp_width, $temp_height);
 
 		// ImageAlphaBlending($node_im, false);
 		imageSaveAlpha($node_im, true);
 
 		$nothing = imagecolorallocatealpha($node_im, 128, 0, 0, 127);
 		imagefill($node_im, 0, 0, $nothing);
-
-		#$col = $col->gdallocate($node_im);
-
-		// imagefilledrectangle($node_im, 0, 0, $temp_width, $temp_height, $nothing);
 
 		$label_x1 -= $bbox_x1;
 		$label_x2 -= $bbox_x1;
@@ -671,6 +657,7 @@ class WeatherMapNode extends WeatherMapItem {
 			}
 
 			$shcol = new Colour($this->labelfontshadowcolour);
+
 			if ($shcol->is_real()) {
 				$map->myimagestring($node_im, $this->labelfont, $txt_x + 1, $txt_y + 1, $this->proclabel, $shcol->gdallocate($node_im),$this->labelangle);
 			}
@@ -685,7 +672,7 @@ class WeatherMapNode extends WeatherMapItem {
 				} else {
 					wm_warn("You can't make a contrast with 'none'. [WMWARN43]");
 
-					$txcol = new Colour(0,0,0);
+					$txcol = new Colour(0, 0, 0);
 				}
 			}
 
@@ -699,11 +686,11 @@ class WeatherMapNode extends WeatherMapItem {
 		$map->nodes[$this->name]->centre_x = $this->x - $bbox_x1;
 		$map->nodes[$this->name]->centre_y = $this->y - $bbox_y1;
 
-		if (1==0) {
+		if (1 == 0) {
 			imageellipse($node_im, $this->centre_x, $this->centre_y, 8, 8, $map->selected);
 
 			foreach (array('N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW') as $corner) {
-				list($dx, $dy)=calc_offset($corner, $this->width, $this->height);
+				list($dx, $dy) = calc_offset($corner, $this->width, $this->height);
 
 				imageellipse($node_im, $this->centre_x + $dx, $this->centre_y + $dy, 5, 5, $map->selected);
 			}

@@ -424,7 +424,7 @@ function imagepolyline($image, $points, $npoints, $color) {
 }
 
 // draw a filled round-cornered rectangle
-function imagefilledroundedrectangle($image  , $x1  , $y1  , $x2  , $y2  , $radius, $color) {
+function imagefilledroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color) {
 	imagefilledrectangle($image, $x1, $y1 + $radius, $x2, $y2 - $radius, $color);
 	imagefilledrectangle($image, $x1 + $radius, $y1, $x2 - $radius, $y2, $color);
 
@@ -433,8 +433,6 @@ function imagefilledroundedrectangle($image  , $x1  , $y1  , $x2  , $y2  , $radi
 
 	imagefilledarc($image, $x1 + $radius, $y2 - $radius, $radius * 2, $radius * 2, 0, 360, $color, IMG_ARC_PIE);
 	imagefilledarc($image, $x2 - $radius, $y2 - $radius, $radius * 2, $radius * 2, 0, 360, $color, IMG_ARC_PIE);
-
-	# bool imagefilledarc  ( resource $image  , int $cx  , int $cy  , int $width  , int $height  , int $start  , int $end  , int $color  , int $style  )
 }
 
 // draw a round-cornered rectangle
