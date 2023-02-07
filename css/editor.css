@@ -13,7 +13,7 @@ input:focus {
 }
 
 input {
-	max-width: 100%;
+	max-width: unset !important;
 }
 
 .mainArea {
