@@ -43,6 +43,7 @@
 function get_allowed_weathermaps($userid, $group_id = null) {
 	// Special Group Limiter
 	$sql_where = '';
+
 	if ($group_id !== null) {
 		$sql_where = 'AND wm.group_id = ' . $group_id;
 	}
@@ -70,7 +71,8 @@ function get_allowed_weathermaps($userid, $group_id = null) {
 		) AS rs
 		ON rs.mapid = wm.id
 		WHERE wm.active = 'on'
-		$sql_where",
+		$sql_where
+		ORDER BY wm.sortorder",
 		array($userid, $userid));
 
 	return $maps;

@@ -14,6 +14,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
+--- develop ---
+* issue#87: WeatherMap Sort Order not respected on Top Tab
+
 --- 1.0 Beta 4 ---
 * issue#64: Map Properties-Map Size-Unable to display entire map
 * issue#74: Weathermap Editor Issues

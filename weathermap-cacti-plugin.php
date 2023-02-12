@@ -450,8 +450,9 @@ function weathermap_show_manage_tab() {
 function weathermap_thumbview($limit_to_group = -1) {
 	global $config;
 
-	$total_map_count_SQL = "select count(*) as total from weathermap_maps";
-	$total_map_count     = db_fetch_cell($total_map_count_SQL);
+	$total_map_count = db_fetch_cell("SELECT COUNT(*) AS total
+		FROM weathermap_maps
+		WHERE active = 'on'");
 
 	$userid = $_SESSION['sess_user_id'];
 
