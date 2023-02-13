@@ -1033,12 +1033,12 @@ function maplist() {
 			form_selectable_cell($map['sortorder'], $map['id'], '', 'center');
 
 			$ulist = db_fetch_row_prepared('SELECT
-				SUM(CASE WHEN userid = 0 THEN 1 ELSE NULL END) AS special,
-				SUM(CASE WHEN userid > 0 THEN 1 ELSE NULL END) AS users,
-				SUM(CASE WHEN userid < 0 THEN 1 ELSE NULL END) AS groups
+				SUM(CASE WHEN userid = 0 THEN 1 ELSE NULL END) AS `special`,
+				SUM(CASE WHEN userid > 0 THEN 1 ELSE NULL END) AS `users`,
+				SUM(CASE WHEN userid < 0 THEN 1 ELSE NULL END) AS `groups`
 				FROM weathermap_auth
 				WHERE mapid = ?
-				HAVING special > 0 OR users > 0 OR groups > 0',
+				HAVING `special` > 0 OR `users` > 0 OR `groups` > 0',
 				array($map['id']));
 
 			$url = '<a class="pic linkEditMain" title="' . __esc('Click to edit permissions', 'weathermap') . '"
