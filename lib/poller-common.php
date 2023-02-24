@@ -272,6 +272,9 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 	include_once($mydir . '/lib/HTML_ImageMap.class.php');
 	include_once($mydir . '/lib/WeatherMap.class.php');
 
+	// Check and enable boost supprt if it's enabled
+	weathermap_check_set_boost();
+
 	$total_warnings = 0;
 	$warning_notes  = '';
 

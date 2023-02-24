@@ -537,6 +537,30 @@ function weathermap_setup_table() {
 		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `imagefile` varchar(255) NOT NULL');
 		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `htmlfile` varchar(255) NOT NULL');
 		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `titlecache` varchar(60) NOT NULL');
+
+		// Check and enable boost supprt if it's enabled
+		weathermap_check_set_boost();
+	}
+}
+
+function weathermap_check_set_boost() {
+	$boost = read_config_option('boost_rrd_update_enable') == 'on' ? true:false;
+	if ($boost) {
+		$exists = db_fetch_row('SELECT id, optvalue
+			FROM weathermap_settings
+			WHERE mapid = 0
+			AND groupid = 0
+			AND optname = "rrd_use_poller_output"');
+
+		if (!cacti_sizeof($exists)) {
+			db_execute('INSERT INTO weathermap_settings (mapid, groupid, optname, optvalue)
+				VALUES (0, 0, "rrd_user_poller_output", 1)');
+		} elseif ($exists['optvalue'] == 0) {
+			db_execute_prepared('UPDATE weathermap_settings
+				SET optvalue = 1
+				WHERE id = ?',
+				array($exists['id']));
+		}
 	}
 }
 
