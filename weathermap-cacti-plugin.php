@@ -264,7 +264,7 @@ switch (get_request_var('action')) {
 		if ($fullscreen == 1) {
 			print '<!DOCTYPE html>' . PHP_EOL;
 			print '<html><head>';
-			print '<link rel="stylesheet" type="text/css" media="screen" href="css/weathermap.css"/>';
+			print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
 			print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'include/fa/css/all.css' . '"/>';
 			print '<script type="text/javascript" src="' . $config['url_path'] . 'include/js/jquery.js"></script>';
 			print '</head><body id="wm_fullscreen">';
@@ -272,7 +272,7 @@ switch (get_request_var('action')) {
 			top_graph_header();
 		}
 
-		print '<link rel="stylesheet" type="text/css" media="screen" href="css/weathermap.css"/>';
+		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
 		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
 
 		$groupid = -1;
@@ -295,7 +295,7 @@ switch (get_request_var('action')) {
 	case 'viewmap':
 		top_graph_header();
 
-		print '<link rel="stylesheet" type="text/css" media="screen" href="css/weathermap.css"/>';
+		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
 		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
 
 		$id = -1;
@@ -316,7 +316,7 @@ switch (get_request_var('action')) {
 	default:
 		top_graph_header();
 
-		print '<link rel="stylesheet" type="text/css" media="screen" href="css/weathermap.css"/>';
+		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
 		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
 
 		$group_id = -1;
