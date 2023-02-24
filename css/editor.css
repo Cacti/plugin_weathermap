@@ -244,6 +244,10 @@ td {
 	overflow: auto;
 }
 
+.overflow {
+	height: 200px;
+}
+
 .cactilink, .cactinode {
 	white-space: nowrap;
 }

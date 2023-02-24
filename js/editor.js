@@ -185,11 +185,11 @@ function sessionMessageCountdown(time) {
 
 function graphPicker() {
 	$('.selectmenu-ajax').each(function() {
-		var id      = $(this).attr('id');
-		var value   = $(this).val();
-		var title   = 'Click to Search';
-		var action  = $(this).attr('data-action');
-		var mapname = 'none';
+		var id       = $(this).attr('id');
+		var value    = $(this).val();
+		var title    = 'Click to Search';
+		var action   = $(this).attr('data-action');
+		var mapname  = 'none';
 
 		if ($('#'+id+'_wrap').length) {
 			$('#'+id+'_wrap').remove();
@@ -275,7 +275,26 @@ function graphPicker() {
 		});
 
 		$('#' + id + '_input').autocomplete({
-			source: 'weathermap-cacti-plugin-editor.php?mapname='+$('#mapname').val()+'&action='+action,
+			source: function(request, response) {
+				if (id == 'node_picker') {
+					var template = $('#node_template').val();
+				} else if (id == 'link_picker') {
+					var template = $('#link_template').val();
+				} else {
+					var template = -1;
+				}
+
+				var url = 'weathermap-cacti-plugin-editor.php' +
+					'?mapname=' + $('#mapname').val() +
+					'&action=' + action +
+					'&term=' + request.term +
+					'&target=' + id +
+					'&graph_template_id='+template;
+
+				$.getJSON(url, function(data) {
+					response(data);
+				});
+			},
 			autoFocus: true,
 			minLength: 0,
 			select: function(event, ui) {
@@ -373,6 +392,8 @@ function initJS() {
 		event.preventDefault();
 		form_submit();
 	});
+
+	$('#node_template').selectmenu().selectmenu('menuWidget').addClass('overflow');
 
 	initContextMenu();
 

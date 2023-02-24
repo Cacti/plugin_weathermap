@@ -64,7 +64,8 @@ function fix_gpc_string($input) {
 }
 
 function display_graphs() {
-	$sql_where = '';
+	$sql_where  = '';
+	$sql_params = array();
 
 	if (get_nfilter_request_var('term') != '') {
 		$sql_where .= 'WHERE title_cache LIKE ' . db_qstr('%' . get_nfilter_request_var('term') . '%') . ' AND local_graph_id > 0';
@@ -72,9 +73,17 @@ function display_graphs() {
 		$sql_where .= 'WHERE local_graph_id > 0';
 	}
 
-	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
+	if (get_nfilter_request_var('graph_template_id') > 0) {
+		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gl.graph_template_id = ?';
 
-	$graphs = db_fetch_assoc("SELECT DISTINCT
+		$sql_params[] = get_request_var('graph_template_id');
+	}
+
+	if (get_request_var('target') == 'link_target_picker') {
+		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
+	}
+
+	$graphs = db_fetch_assoc_prepared("SELECT DISTINCT
 		gtg.local_graph_id AS id,
 		gtg.title_cache AS title,
 		gt.name AS template_name
@@ -87,7 +96,8 @@ function display_graphs() {
 		ON gl.host_id = h.id
 		$sql_where
 		ORDER BY title_cache
-		LIMIT " . read_config_option('autocomplete_rows'));
+		LIMIT " . read_config_option('autocomplete_rows'),
+		$sql_params);
 
 	$return = array();
 

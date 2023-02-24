@@ -454,6 +454,25 @@ $weathermap_version = plugin_weathermap_numeric_version();
 							</td>
 						</tr>
 						<tr>
+							<td>Graph Template</td>
+							<td>
+								<select id='node_template' name='node_template'>
+									<?php
+									print '<option value="-1"' . (get_request_var('node_template') == -1 ? 'selected':'') . '>' . __('All', 'weathermap') . '</option>';
+									$graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
+										FROM graph_templates AS gt
+										INNER JOIN graph_local AS gl
+										ON gt.id = gl.graph_template_id
+										ORDER BY gt.name');
+
+									foreach ($graph_templates as $gt) {
+										print '<option ' . (get_request_var('node_template') == $gt['id'] ? 'selected':'');
+										print ' value="' . $gt['id'] . '">' . html_escape($gt['name']) . '</option>';
+									}
+									?>
+							</td>
+						</tr>
+						<tr>
 							<td>Graph Selector</td>
 							<td>
 								<input id='node_picker' name='node_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='graphs' />
@@ -526,6 +545,25 @@ $weathermap_version = plugin_weathermap_numeric_version();
 							<td>'Hover' Graph URL(s)</td>
 							<td>
 								<textarea id='link_hover' name='link_hover' class='ui-state-default ui-corner-all'></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>Graph Template</td>
+							<td>
+								<select id='link_template' name='link_template'>
+									<?php
+									print '<option value="-1"' . (get_request_var('node_template') == -1 ? 'selected':'') . '>' . __('All', 'weathermap') . '</option>';
+									$graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
+										FROM graph_templates AS gt
+										INNER JOIN graph_local AS gl
+										ON gt.id = gl.graph_template_id
+										ORDER BY gt.name');
+
+									foreach ($graph_templates as $gt) {
+										print '<option ' . (get_request_var('node_template') == $gt['id'] ? 'selected':'');
+										print ' value="' . $gt['id'] . '">' . html_escape($gt['name']) . '</option>';
+									}
+									?>
 							</td>
 						</tr>
 						<tr>
