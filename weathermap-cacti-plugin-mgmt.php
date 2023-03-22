@@ -1663,6 +1663,12 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 			}
 		}
 
+		if (get_request_var('type') == -1) {
+			$sql_params[] = get_request_var('id');
+		}
+
+		$sql_params[] = get_request_var('id');
+
 		if (get_request_var('type') == -1 || get_request_var('type') == 1) {
 			$sql_where2   = 'AND (name LIKE ? OR description LIKE ?)';
 
@@ -1683,7 +1689,14 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				$sql_where1  .= ' AND id != ?';
 				$sql_params[] = $template_user;
 			}
+
 		}
+
+		if (get_request_var('type') == -1) {
+			$sql_params[] = get_request_var('id');
+		}
+
+		$sql_params[] = get_request_var('id');
 
 		if (get_request_var('type') == -1 || get_request_var('type') == 1) {
 			$sql_params[] = get_request_var('id');
@@ -1701,7 +1714,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT id, username AS name, full_name AS description, 'user' AS type, wa.mapid AS allowed, realm
 				FROM user_auth AS ua
-				$join JOIN weathermap_auth AS wa
+				$join JOIN (SELECT * FROM weathermap_auth WHERE mapid = ?) AS wa
 				ON ua.id = wa.userid
 				AND ua.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
@@ -1709,7 +1722,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT id, name, description, 'group' AS type, wa.mapid AS allowed, 'N/A' AS realm
 				FROM user_auth_group AS uag
-				$join JOIN weathermap_auth AS wa
+				$join JOIN (SELECT * FROM weathermap_auth WHERE mapid = ?) AS wa
 				ON uag.id = -wa.userid
 				AND uag.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
@@ -1722,7 +1735,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 			FROM (
 				SELECT COUNT(*) AS `rows`
 				FROM user_auth AS ua
-				$join JOIN weathermap_auth AS wa
+				$join JOIN (SELECT * FROM weathermap_auth WHERE mapid = ?) AS wa
 				ON ua.id = wa.userid
 				AND ua.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
@@ -1730,7 +1743,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT COUNT(*) AS `rows`
 				FROM user_auth_group AS uag
-				$join JOIN weathermap_auth AS wa
+				$join JOIN (SELECT * FROM weathermap_auth WHERE mapid = ?)  AS wa
 				ON uag.id = -wa.userid
 				AND uag.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
@@ -1744,7 +1757,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT id, username AS name, full_name AS description, 'user' AS type, wa.mapid AS allowed, realm
 				FROM user_auth AS ua
-				$join JOIN weathermap_auth AS wa
+				$join JOIN (SELECT * FROM weathermap_auth WHERE mapid = ?) AS wa
 				ON ua.id = wa.userid
 				AND ua.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
@@ -1755,7 +1768,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 
 		$total_rows = db_fetch_cell_prepared("SELECT COUNT(*) + 1
 			FROM user_auth AS ua
-			$join JOIN weathermap_auth AS wa
+			$join JOIN (SELECT * FROM weathermap_auth WHERE mapid = ?) AS wa
 			ON ua.id = wa.userid
 			AND ua.enabled = 'on'
 			WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND ua.enabled = 'on'))
@@ -1768,7 +1781,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				UNION ALL
 				SELECT id, name, description, 'group' AS type, wa.mapid AS allowed, 'N/A' AS realm
 				FROM user_auth_group AS uag
-				$join JOIN weathermap_auth AS wa
+				$join JOIN (SELECT * FROM weathermap_auth WHERE mapid = ?) AS wa
 				ON uag.id = -wa.userid
 				AND uag.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
@@ -1779,7 +1792,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 
 		$total_rows = db_fetch_cell_prepared("SELECT COUNT(*) + 1
 			FROM user_auth_group AS uag
-			$join JOIN weathermap_auth AS wa
+			$join JOIN (SELECT * FROM weathermap_auth WHERE mapid = ?) AS wa
 			ON uag.id = -wa.userid
 			AND uag.enabled = 'on'
 			WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))

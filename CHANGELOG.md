@@ -18,7 +18,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#87: WeatherMap Sort Order not respected on Top Tab
 * issue#89: Allow more Graphs types to be searched for
 * issue#90: Error: You have an error in your SQL syntax, Mysql 8.0 Weathermap 1.0
+* issue#111: Weathermap permissions management errors
 * feature#97: Auto-set the boost setting instead of making it a discrete user setting
+
 
 --- 1.0 Beta 4 ---
 * issue#64: Map Properties-Map Size-Unable to display entire map
