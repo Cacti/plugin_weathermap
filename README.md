@@ -1,4 +1,4 @@
-# PHP Network Weathermap 1.0 - Beta 4
+# PHP Network Weathermap 1.0
 
 This is PHP Network Weathermap fork, version 1.0.  The PHP Weathermap was
 originally by Howard Jones (howie@thingy.com).  As Howie has scaled back his
@@ -12,7 +12,7 @@ See CHANGELOG.md for the most recent updates, listed by version.
 
 See COPYING for the license under which php-weathermap is released.
 
-## Compatability
+## Compatibility
 
 This version only works with Cacti 1.2.x onwards.  A re-write of the user interface
 is being made to make it more compatible with 1.2.x and 1.3.x releases.
@@ -35,23 +35,26 @@ tutorials and updates available at Howard Jone's site:
     http://www.network-weathermap.com/
 
 ## Important Notes
-This version of Weathermap only works with Cacti 1.2.x and is now ready for
-beta, yet non-production use at this time.
 
-**This version is NOT production ready!**
+This version of Weathermap only works with Cacti 1.2.x and above only.
+beta, yet non-production use at this time.
 
 The location of backgrounds and object images has changed!  The upgrade script 
 will attempt to move these backgrounds and images to the new locations, 
 but you may have some cleanup to do especially if you customized the locations.
 
-The directories: `cacti-resources` and `editor-resources` have been removed
+WARNING: Before upgrading make ensure the poller account can move config file
+images into into the plugins various images directories.  Fail to do so 
+may result in corrupted config files.
+
+NOTE: The directories: `cacti-resources` and `editor-resources` have been removed
 in favor of the standard `js` and `css` folders.  You should remove these
 folders after installation.
 
-Since the Editor has essentially no security, this version will be 100% dependent
-on the Cacti Security model to authorize users.
+WARNING: Since previously the WeatherMap Editor had essentially no security, 
+this version will be 100% dependent on the Cacti Security model to authorize users.
 
-The Overlib library dependency has been removed in this release.
+NOTE: The Overlib library dependency has been removed in this release.
 
 When reviewing the plugin in detail, there were so many possible enhancements
 that could be incorporated into the tool, but for now, it's really just to
