@@ -554,7 +554,7 @@ function weathermap_check_set_boost() {
 
 		if (!cacti_sizeof($exists)) {
 			db_execute('INSERT INTO weathermap_settings (mapid, groupid, optname, optvalue)
-				VALUES (0, 0, "rrd_user_poller_output", 1)');
+				VALUES (0, 0, "rrd_use_poller_output", 1)');
 		} elseif ($exists['optvalue'] == 0) {
 			db_execute_prepared('UPDATE weathermap_settings
 				SET optvalue = 1
