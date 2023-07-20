@@ -1038,6 +1038,10 @@ function weathermap_poller_output(&$rrd_update_array) {
 			$period  = $time - $required['last_time'];
 			$lastval = $required['last_value'];
 
+			if (empty($period)) {
+				$period = 60;
+			}
+
 			// if the new value is a NaN, we'll give 0 instead, and pretend it didn't happen from the point
 			// of view of the counter etc. That way, we don't get those enormous spikes. Still doesn't deal with
 			// reboots very well, but it should improve it for drops.
