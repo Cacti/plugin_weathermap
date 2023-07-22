@@ -14,11 +14,13 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- develop ---
+--- 1.1 ---
 * issue#87: WeatherMap Sort Order not respected on Top Tab
 * issue#89: Allow more Graphs types to be searched for
 * issue#90: Error: You have an error in your SQL syntax, Mysql 8.0 Weathermap 1.0
 * issue#111: Weathermap permissions management errors
+* issue#119: The table weathermap_settings does not enforce a unique key on the mapid, groupid, and optname columns
+* issue#121: Division by zero in rare cases
 * feature#97: Auto-set the boost setting instead of making it a discrete user setting
 
 
