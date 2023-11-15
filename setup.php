@@ -360,6 +360,7 @@ function weathermap_setup_table() {
 			`titlecache` varchar(60) NOT NULL,
 			`filehash` varchar (40) NOT NULL default "",
 			`warncount` int(11) NOT NULL default 0,
+			`debug` set("on","off","once") NOT NULL DEFAULT "off",
 			`config` text NOT NULL,
 			`thumb_width` int(11) NOT NULL default 0,
 			`thumb_height` int(11) NOT NULL default 0,
@@ -430,6 +431,10 @@ function weathermap_setup_table() {
 
 		if (!db_column_exists('weathermap_maps', 'warncount')) {
 			db_execute('ALTER TABLE weathermap_maps ADD COLUMN warncount int(11) NOT NULL default 0 AFTER filehash');
+		}
+
+		if (!db_column_exists('weathermap_maps', 'debug')) {
+			db_execute('ALTER TABLE weathermap_maps ADD COLUMN debug `debug` set("on","off","once") NOT NULL DEFAULT "off" AFTER warncount');
 		}
 
 		if (!db_column_exists('weathermap_maps', 'config')) {
