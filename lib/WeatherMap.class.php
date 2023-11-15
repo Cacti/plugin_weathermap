@@ -1551,7 +1551,7 @@ class WeatherMap extends WeatherMapBase {
 		$y = $this->keyy[$scalename];
 
 		# $height = 400;
-		$scalefactor = $height/100;
+		$scalefactor = intval($height/100);
 
 		list($tilewidth, $tileheight) = $this->myimagestringsize($font, '100%');
 
@@ -1606,9 +1606,9 @@ class WeatherMap extends WeatherMapBase {
 			$updown = -1;
 		}
 
-		for($p=0; $p<=100; $p++) {
+		for($p = 0; $p <= 100; $p++) {
 			if ($inverted) {
-				$dy = (100 - $p) * $scalefactor;
+				$dy = (100 - $p) * $scalefactor);
 			} else {
 				$dy = $p * $scalefactor;
 			}
