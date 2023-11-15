@@ -385,8 +385,10 @@ function weathermap_setup_table() {
 			`groupid` int(11) NOT NULL default "0",
 			`optname` varchar(128) NOT NULL default "",
 			`optvalue` varchar(128) NOT NULL default "",
-			PRIMARY KEY  (id))
-			ENGINE=InnoDB');
+			PRIMARY KEY  (id),
+			UNIQUE INDEX mapid_groupid_optname(mapid, groupid, optname))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic');
 
 		db_execute('CREATE TABLE IF NOT EXISTS weathermap_data (
 			`id` int(11) NOT NULL auto_increment,
@@ -410,7 +412,8 @@ function weathermap_setup_table() {
 				`name` VARCHAR(128) NOT NULL default "",
 				`sortorder` INT(11) NOT NULL default 0,
 				PRIMARY KEY (id))
-				ENGINE=InnoDB');
+				ENGINE=InnoDB
+				ROW_FORMAT=Dynamic');
 
 			db_execute('INSERT INTO weathermap_groups (id, name, sortorder) VALUES (1, "Weathermaps", 1)');
 		}
@@ -545,6 +548,25 @@ function weathermap_setup_table() {
 
 		// Check and enable boost supprt if it's enabled
 		weathermap_check_set_boost();
+
+		// Correct weathermap settings table of duplicate entries
+		while (true) {
+			$rows = db_fetch_assoc('SELECT mapid, groupid, optname, COUNT(*) AS totals
+				FROM weathermap_settings
+				GROUP BY mapid, groupid, optname
+				HAVING totals > 1');
+
+			if (cacti_sizeof($rows)) {
+				foreach($rows as $row) {
+					db_execcute_prepared('DELETE FROM weathermap_settings
+						WHERE mapid = ? AND groupid = ? AND optname = ?
+						LIMIT 1',
+						array($row['mapid'], $row['groupid'], $row['optname']));
+				}
+			} else {
+				break;
+			}
+		}
 	}
 }
 

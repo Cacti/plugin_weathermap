@@ -14,6 +14,12 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
+--- 1.2 ---
+* issue: Correct plugin INFO file for proper attribution
+* issue#119: Fixing issues with the weathermap_settings table missing a unique index
+* issue#127: Fix on Deprecation warning in Cacti log
+* issue#128: Add missing debug column to the weathermap_maps table
+
 --- 1.1 ---
 * issue#87: WeatherMap Sort Order not respected on Top Tab
 * issue#89: Allow more Graphs types to be searched for
@@ -22,7 +28,6 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#119: The table weathermap_settings does not enforce a unique key on the mapid, groupid, and optname columns
 * issue#121: Division by zero in rare cases
 * feature#97: Auto-set the boost setting instead of making it a discrete user setting
-
 
 --- 1.0 Beta 4 ---
 * issue#64: Map Properties-Map Size-Unable to display entire map
