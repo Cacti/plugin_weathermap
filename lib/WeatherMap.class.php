@@ -1608,7 +1608,7 @@ class WeatherMap extends WeatherMapBase {
 
 		for($p = 0; $p <= 100; $p++) {
 			if ($inverted) {
-				$dy = (100 - $p) * $scalefactor);
+				$dy = (100 - $p) * $scalefactor;
 			} else {
 				$dy = $p * $scalefactor;
 			}
