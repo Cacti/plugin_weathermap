@@ -2,7 +2,7 @@
 name = weathermap
 version = 1.2
 longname = Weathermap Plugin
-author = Howard Jones & The Cacti Group
+author = Howard Jones and The Cacti Group
 email = developers@cacti.net
 homepage = https://cacti.net
 compat = 1.2.24
