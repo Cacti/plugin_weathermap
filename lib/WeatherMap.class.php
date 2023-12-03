@@ -1846,7 +1846,7 @@ class WeatherMap extends WeatherMapBase {
 	 *
 	 * Usage:
 	 * use function \PHP81_BC\strftime;
-	 * print strftime('%A %e %B %Y %X', new \DateTime('2021-09-28 00:00:00'), 'fr_FR');
+	 * print strftime('%A %e %B %Y %X', new DateTime('2021-09-28 00:00:00'), 'fr_FR');
 	 *
 	 * Original use:
 	 * \setlocale('fr_FR.UTF-8', LC_TIME);
@@ -1859,19 +1859,19 @@ class WeatherMap extends WeatherMapBase {
 	 */
 	function strftime(string $format, $timestamp = null, ?string $locale = null): string {
 		if (null === $timestamp) {
-			$timestamp = new \DateTime;
+			$timestamp = new DateTime;
 		} elseif (is_numeric($timestamp)) {
 			$timestamp = date_create('@' . $timestamp);
 
 			if ($timestamp) {
-				$timestamp->setTimezone(new \DateTimezone(date_default_timezone_get()));
+				$timestamp->setTimezone(new DateTimezone(date_default_timezone_get()));
 			}
 		} elseif (is_string($timestamp)) {
 			$timestamp = date_create($timestamp);
 		}
 
-		if (!($timestamp instanceof \DateTimeInterface)) {
-			throw new \InvalidArgumentException('$timestamp argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.');
+		if (!($timestamp instanceof DateTimeInterface)) {
+			throw new InvalidArgumentException('$timestamp argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.');
 		}
 
 		$locale = substr((string) $locale, 0, 5);
@@ -1908,7 +1908,7 @@ class WeatherMap extends WeatherMapBase {
 				$pattern = $intl_formats[$format];
 			}
 
-			return (new \IntlDateFormatter($locale, $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
+			return (new IntlDateFormatter($locale, $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
 		};
 
 		// Same order as https://www.php.net/manual/en/function.strftime.php
@@ -1930,13 +1930,13 @@ class WeatherMap extends WeatherMapBase {
 			// Week
 			'%U' => function ($timestamp) {
 				// Number of weeks between date and first Sunday of year
-				$day = new \DateTime(sprintf('%d-01 Sunday', $timestamp->format('Y')));
+				$day = new DateTime(sprintf('%d-01 Sunday', $timestamp->format('Y')));
 				return sprintf('%02u', 1 + ($timestamp->format('z') - $day->format('z')) / 7);
 			},
 			'%V' => 'W',
 			'%W' => function ($timestamp) {
 				// Number of weeks between date and first Monday of year
-				$day = new \DateTime(sprintf('%d-01 Monday', $timestamp->format('Y')));
+				$day = new DateTime(sprintf('%d-01 Monday', $timestamp->format('Y')));
 				return sprintf('%02u', 1 + ($timestamp->format('z') - $day->format('z')) / 7);
 			},
 
@@ -1996,7 +1996,7 @@ class WeatherMap extends WeatherMapBase {
 			}
 
 			if (!isset($translation_table[$match[1]])) {
-				throw new \InvalidArgumentException(sprintf('Format "%s" is unknown in time format', $match[1]));
+				throw new InvalidArgumentException(sprintf('Format "%s" is unknown in time format', $match[1]));
 			}
 
 			$replace = $translation_table[$match[1]];
