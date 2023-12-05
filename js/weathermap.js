@@ -13,7 +13,7 @@ $(function() {
 
 			$('div.ui-tooltip').not('#'+ id).remove();
 
-			ui.tooltip.css('min-width', '600px');
+			ui.tooltip.css('min-width', '200px');
 			ui.tooltip.css('max-width', '1800px');
 			ui.tooltip.css('overflow-y', 'visible');
 
