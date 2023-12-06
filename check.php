@@ -287,7 +287,7 @@ foreach ($functions as $function=>$details) {
 		$exists = 'YES';
 
 		if ($environment == 'web') {
-			print '<td><img alt="YES" src="images/tick.png" /></td>';
+			print '<td><img alt="YES" src="images/icons/tick.png" /></td>';
 		}
 	} else {
 		$exists = 'NO';
@@ -305,7 +305,7 @@ foreach ($functions as $function=>$details) {
 				$notes .= 'Non-Critical.   ';
 
 				if ($environment == 'web') {
-					print '<td><img  alt="NO" src="images/cross.png" /><i>non-critical</i>  ';
+					print '<td><img  alt="NO" src="images/icons/cross.png" /><i>non-critical</i>  ';
 				}
 
 				$noncritical++;
@@ -313,7 +313,7 @@ foreach ($functions as $function=>$details) {
 				$notes .= 'Minor.   ';
 
 				if ($environment == 'web') {
-					print '<td><img alt="NO" src="images/cross.png" /><i>minor</i>  ';
+					print '<td><img alt="NO" src="images/icons/cross.png" /><i>minor</i>  ';
 				}
 			}
 		}
