@@ -796,7 +796,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 				<div class='dlgBody'>
 					<p>Nothing in here works yet. </p>
 					The aim is to have some nice way to upload images which can be used as icons or backgrounds.
-					These images are what would appear in the dropdown boxes that don't currently do anything in the Node and Map Properties dialogs. This may end up being a seperate page rather than a dialog box...
+					These images are what would appear in the dropdown boxes that don't currently do anything in the Node and Map Properties dialogs. This may end up being a separate page rather than a dialog box...
 				</div>
 				<div class='dlgButtons'>
 					<div class='dlgSubButtons'>

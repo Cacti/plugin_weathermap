@@ -546,7 +546,7 @@ function weathermap_setup_table() {
 		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `htmlfile` varchar(255) NOT NULL');
 		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `titlecache` varchar(60) NOT NULL');
 
-		// Check and enable boost supprt if it's enabled
+		// Check and enable boost support if it's enabled
 		weathermap_check_set_boost();
 
 		// Correct weathermap settings table of duplicate entries

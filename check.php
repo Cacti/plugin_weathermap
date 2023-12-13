@@ -363,7 +363,7 @@ if (($critical + $noncritical) > 0) {
 		print ' * install the extension, if it isn\'t installed already' . PHP_EOL . PHP_EOL;
 	}
 
-	print wordwrap('The details of how this is done will depend on your operating system, and on where you installed (or compiled) your PHP from originally. Usually, you would install an RPM, or other package on Linux systems, a port on *BSD, or a DLL on Windows. If you build PHP from source, you need to add extra options to the \'./configure\' line. Consult your PHP documention for more information.' . PHP_EOL);
+	print wordwrap('The details of how this is done will depend on your operating system, and on where you installed (or compiled) your PHP from originally. Usually, you would install an RPM, or other package on Linux systems, a port on *BSD, or a DLL on Windows. If you build PHP from source, you need to add extra options to the \'./configure\' line. Consult your PHP documentation for more information.' . PHP_EOL);
 
 	if ($environment == 'web') {
 		print '</p>';

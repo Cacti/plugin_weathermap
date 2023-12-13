@@ -75,7 +75,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * TODO   - Drop Downs for DSStats and Thold
 * TODO   - Label Offset and Angle form objects
 * TODO   - Colors Interface
-* TODO   - Manage Images Interace
+* TODO   - Manage Images Interface
 * TODO   - Rename conf file and title from Cacti UI
 * ADDED  - Right mouse context menu during map editing
 * ADDED  - Support for Cacti Themes
@@ -94,7 +94,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * CHANGE - The Automatic Cycling of Maps to used FontAwesome Glyphs instead of images
 * CHANGE - The Weathermap interface to follow Cacti UI standard
 * CHANGE - Logging format to follow Cacti standards
-* CHANGE - Perfrom Map Editing through callbacks removing page refreshes
+* CHANGE - Perform Map Editing through callbacks removing page refreshes
 * CHANGE - Move Group tabs to Cacti tab standard
 * REMOVE - Dependency on overlib.js.  This file has been removed
 
@@ -309,7 +309,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - incorrect jquery path in cacti-picker
 * FIXED  - INFOURL not used without overlib
 * FIXED  - 'none' colours on LINKs were broken by typo.
-* FIXED  - NOTES, INNOTES, OUTNOTES all just flat-out borken in 0.95 and 0.95a
+* FIXED  - NOTES, INNOTES, OUTNOTES all just flat-out broken in 0.95 and 0.95a
 * FIXED  - Page title can be incorrect if filehash starts with a digit.
 * FIXED  - Cacti plugin behaves a little better with auth disabled.
 
@@ -412,7 +412,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * ADDED  - Docs link in management page too (streaker69)
 * ADDED  - Editor has a better warning for unwriteable files and directory now.
 * ADDED  - When you come TO the editor from Cacti, the Change File goes BACK to Cacti
-* ADDED  - "Show Only First" mode in Cacti UI - useful for heirarchies of maps with a parent.
+* ADDED  - "Show Only First" mode in Cacti UI - useful for hierarchies of maps with a parent.
 * ADDED  - scale: prefix for RRD datasource - multiply/divide by any value as you read an rrd datasource
 * FIXED  - Non-unique IDs in imagemaps, in overlib mode.
 * FIXED  - Better-validating HTML produced
@@ -473,7 +473,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
            Cacti mgmt tab (adrian marsh)
 * ADDED  - Logging is tidied up a bit under Cacti's poller
 * FIXED  - Added a warning for RRD data sources where the DS names you specify don't exist in the RRD file
-* ADDED  - numeric offsets for NODES lines, like for LABELOFFSET. Move the end of a link whereever you like.
+* ADDED  - numeric offsets for NODES lines, like for LABELOFFSET. Move the end of a link wherever you like.
 * ADDED  - a new 'static' datasource - you can hardcode values, if you ever needed to.
 * ADDED  - a 'gauge:' datasource to the rrd plugin. Allows you to use values from any rrd without bit/byte-conversion.
 * ADDED  - formatting tokens into most strings - you can print data on the map from various places, including 
@@ -509,14 +509,14 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * FIXED  - Minor (unreported) bug with sort order in Manage Maps
 * CHANGE - Most Cacti Plugin code to use Cacti's (logging) SQL functions. Hopefully this will help windows users
 * ADDED  - More error reporting generally.
-* FXED   - Error when creating multiple links between nodes in the editor (fozzy)
+* FIXED   - Error when creating multiple links between nodes in the editor (fozzy)
 * CHANGE - Docs update - More FAQs and config reference improvements/amendments.
 * ADDED  - 'Cycle' mode to plugin - automatically cycle between your weathermaps.
 
 --- 0.8 
 * ADDED  - Ability to have multiple targets for a LINK - aggregate your T1s
 * ADDED  - Ability to use half an RRD (use '-' as the DS name) - if you have 'in' in one RRD, and 'out' in another
-* ADDED  - Tab-seperated file datasource for TARGET lines, so you can draw anything you can dump into a textfile.
+* ADDED  - Tab-separated file datasource for TARGET lines, so you can draw anything you can dump into a textfile.
 * ADDED  - Ability to specify which corner of a NODE each LINK-end goes to - handy for busy hub nodes
 * ADDED  - Support for FreeType & GD fonts
 * ADDED  - VIA points - a link can go around corners, and they're nicely curved too.
