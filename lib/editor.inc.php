@@ -45,24 +45,6 @@
  * All the functions used by the editor.
  */
 
-/** @function fix_gpc_string
-  *
-  * Take a string (that we got from $_REQUEST) and make it back to how the
-  * user TYPED it, regardless of whether magic_quotes_gpc is turned on or off.
-  *
-  * @param string $input String to fix
-  *
-  * @returns string Fixed string
-  *
-  */
-function fix_gpc_string($input) {
-	if (true == function_exists('get_magic_quotes_gpc') && 1 == get_magic_quotes_gpc()) {
-		$input = stripslashes($input);
-	}
-
-	return ($input);
-}
-
 function display_graphs() {
 	$sql_where  = '';
 	$sql_params = array();

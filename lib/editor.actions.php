@@ -183,7 +183,7 @@ function setNodeConfig($mapfile) {
 	$map->ReadConfig($mapfile);
 
 	$node_name = get_nfilter_request_var('node_name');
-	$node_config = fix_gpc_string(get_nfilter_request_var('item_configtext'));
+	$node_config = get_nfilter_request_var('item_configtext');
 
 	if (isset($map->nodes[$node_name])) {
 		$map->nodes[$node_name]->config_override = $node_config;
@@ -210,7 +210,7 @@ function setLinkConfig($mapfile) {
 	$map->ReadConfig($mapfile);
 
 	$link_name = get_nfilter_request_var('link_name');
-	$link_config = fix_gpc_string(get_nfilter_request_var('item_configtext'));
+	$link_config = get_nfilter_request_var('item_configtext');
 
 	if (isset($map->links[$link_name])) {
 		$map->links[$link_name]->config_override = $link_config;
