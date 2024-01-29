@@ -1475,7 +1475,7 @@ class WeatherMap extends WeatherMapBase {
 		$scale_bottom = $scale_top + $tileheight * 1.5;
 		$box_bottom = $scale_bottom + $tileheight * 2 + 6;
 
-		$scale_im = imagecreatetruecolor($box_right+1, $box_bottom+1);
+		$scale_im  = imagecreatetruecolor(round($box_right+1), round($box_bottom+1));
 		$scale_ref = 'gdref_legend_'.$scalename;
 
 		// Start with a transparent box, in case the fill or outline colour is 'none'
@@ -1574,7 +1574,7 @@ class WeatherMap extends WeatherMapBase {
 		$scale_bottom = $scale_top + $height;
 		$box_bottom = $scale_bottom + $scalefactor + $tileheight/2 + 4;
 
-		$scale_im  = imagecreatetruecolor($box_right+1, $box_bottom+1);
+		$scale_im  = imagecreatetruecolor(round($box_right+1), round($box_bottom+1));
 		$scale_ref = 'gdref_legend_'.$scalename;
 
 		// Start with a transparent box, in case the fill or outline colour is 'none'
@@ -1732,7 +1732,7 @@ class WeatherMap extends WeatherMapBase {
 				$boxy += $this->height;
 			}
 
-			$scale_im  = imagecreatetruecolor((int) $boxwidth+1, (int) $boxheight+1);
+			$scale_im  = imagecreatetruecolor(round($boxwidth+1), round($boxheight+1));
 			$scale_ref = 'gdref_legend_' . $scalename;
 
 			// Start with a transparent box, in case the fill or outline colour is 'none'
@@ -3514,15 +3514,15 @@ class WeatherMap extends WeatherMapBase {
 				if (!$bgimage) {
 					wm_warn('Failed to open background image.  One possible reason: Is your BACKGROUND really a PNG?');
 				} else {
-					$this->width=imagesx($bgimage);
-					$this->height=imagesy($bgimage);
+					$this->width  = imagesx($bgimage);
+					$this->height = imagesy($bgimage);
 				}
 			} else {
 				wm_warn('Your background image file could not be read. Check the filename, and permissions, for ' . $this->background);
 			}
 		}
 
-		$image=wimagecreatetruecolor($this->width, $this->height);
+		$image = wimagecreatetruecolor($this->width, $this->height);
 
 		# $image = imagecreate($this->width, $this->height);
 		if (!$image) {
@@ -3763,7 +3763,7 @@ class WeatherMap extends WeatherMapBase {
 					$imagethumb = imagecreatetruecolor($this->thumb_width, $this->thumb_height);
 
 					imagecopyresampled($imagethumb, $image, 0, 0, 0, 0, $this->thumb_width, $this->thumb_height,
-						$this->width, $this->height
+						round($this->width), round($this->height)
 					);
 
 					$result = imagepng($imagethumb, $thumbnailfile);

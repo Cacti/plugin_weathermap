@@ -14,6 +14,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
+--- develop ---
+* issue#140: Deprecations warnings related to function imagecopyresampled and imagecreatetruecolor
+
 --- 1.2 ---
 * issue: Correct plugin INFO file for proper attribution
 * issue#119: Fixing issues with the weathermap_settings table missing a unique index

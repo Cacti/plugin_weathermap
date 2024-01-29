@@ -1988,9 +1988,12 @@ function wimagefilledpolygon($image, $points, $num_points, $color) {
 }
 
 function wimagecreatetruecolor($width, $height) {
+	$width  = round($width);
+	$height = round($height);
+
 	metadump("BLANKIMAGE $width $height");
 
-	return imagecreatetruecolor($width,$height);
+	return imagecreatetruecolor($width, $height);
 }
 
 function wimagettftext($image, $size, $angle, $x, $y, $color, $file, $string) {

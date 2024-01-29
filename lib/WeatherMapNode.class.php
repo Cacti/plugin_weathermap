@@ -330,7 +330,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 				// this is an artificial icon - we don't load a file for it
 
-				$icon_im = imagecreatetruecolor($this->iconscalew,$this->iconscaleh);
+				$icon_im = imagecreatetruecolor(round($this->iconscalew), round($this->iconscaleh));
 
 				imageSaveAlpha($icon_im, true);
 
@@ -516,12 +516,12 @@ class WeatherMapNode extends WeatherMapItem {
 								$scalefactor = $icon_h / $this->iconscaleh;
 							}
 
-							$new_width  = $icon_w / $scalefactor;
-							$new_height = $icon_h / $scalefactor;
+							$new_width  = ceil($icon_w / $scalefactor);
+							$new_height = ceil($icon_h / $scalefactor);
 							$scaled     = imagecreatetruecolor($new_width, $new_height);
 
 							imagealphablending($scaled, false);
-							imagecopyresampled($scaled, $icon_im, 0, 0, 0, 0, $new_width, $new_height, $icon_w, $icon_h);
+							imagecopyresampled($scaled, $icon_im, 0, 0, 0, 0, $new_width, $new_height, round($icon_w), round($icon_h));
 							imagedestroy($icon_im);
 
 							$icon_im = $scaled;
