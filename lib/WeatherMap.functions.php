@@ -360,6 +360,10 @@ function myimagecolorallocate($image, $red, $green, $blue) {
 		return imagecolorallocatealpha($image, 0, 0, 0, 127);
 	}
 
+	$red   = round($red);
+	$green = round($green);
+	$blue  = round($blue);
+
 	$existing = imagecolorexact($image, $red, $green, $blue);
 
 	if ($existing > -1) {
