@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2022-2023 The Cacti Group, Inc.                           |
+ | Copyright (C) 2022-2024 The Cacti Group, Inc.                           |
  |                                                                         |
  | Based on the Original Plugin developed by Howard Jones                  |
  |                                                                         |
@@ -41,7 +41,7 @@
 */
 
 if (!defined('WM_COPYRIGHT_YEARS')) {
-	define('WM_COPYRIGHT_YEARS', '2008-2023');
+	define('WM_COPYRIGHT_YEARS', '2008-2024');
 }
 
 function plugin_weathermap_install() {
@@ -1178,6 +1178,9 @@ function weathermap_poller_bottom() {
 		}
 
 		set_config_option('weathermap_render_counter', $newcount);
+
+		// Delete old users
+		db_execute('DELETE FROM weathermap_auth WHERE userid > 0 AND userid NOT IN (SELECT id FROM user_auth)');
 	}
 }
 

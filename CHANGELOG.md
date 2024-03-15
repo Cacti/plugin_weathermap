@@ -15,6 +15,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 ## Changes
 
 --- develop ---
+* issue#136: Old accounts not removed from WeatherMap Auth table
 * issue#140: Deprecations warnings related to function imagecopyresampled and imagecreatetruecolor
 
 --- 1.2 ---
