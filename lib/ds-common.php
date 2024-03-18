@@ -89,12 +89,12 @@ function UpdateCactiData(&$item, $local_data_id) {
 			if ($speed > 0) {
 				// might need to dust these off for php4...
 				if ($item->my_type() == 'NODE') {
-					$map->nodes[$item->name]->max_bandwidth_in  = $speed;
+					$map->nodes[$item->name]->max_bandwidth_in = $speed;
 					$map->nodes[$item->name]->max_bandwidth_out = $speed;
 				}
 
 				if ($item->my_type() == 'LINK') {
-					$map->links[$item->name]->max_bandwidth_in  = $speed;
+					$map->links[$item->name]->max_bandwidth_in = $speed;
 					$map->links[$item->name]->max_bandwidth_out = $speed;
 				}
 			}
@@ -122,6 +122,7 @@ function UpdateCactiData(&$item, $local_data_id) {
 	}
 
 	# By now, we have the values, one way or another.
+
 	foreach ($to_set as $k=>$v) {
 		$item->add_note($k, $v);
 	}

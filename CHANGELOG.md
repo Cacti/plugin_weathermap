@@ -15,7 +15,6 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 ## Changes
 
 --- develop ---
-* issue#128: Weathermap crash when Boost enabled
 * issue#136: Old accounts not removed from WeatherMap Auth table
 * issue#140: Deprecations warnings related to function imagecopyresampled and imagecreatetruecolor
 
