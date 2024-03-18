@@ -1856,6 +1856,7 @@ class WeatherMap extends WeatherMapBase {
 	 * @param  integer|string|DateTime $timestamp Timestamp
 	 * @return string
 	 * @author BohwaZ <https://bohwaz.net/>
+	 * @source https://github.com/alphp/strftime
 	 */
 	function strftime(string $format, $timestamp = null, ?string $locale = null): string {
 		if (null === $timestamp) {
@@ -1874,12 +1875,12 @@ class WeatherMap extends WeatherMapBase {
 			throw new InvalidArgumentException('$timestamp argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.');
 		}
 
-		$locale = substr((string) $locale, 0, 5);
+		$locale = Locale::canonicalize($locale ?? (Locale::getDefault() ?? setlocale(LC_TIME, '0')));
 
 		$intl_formats = [
-			'%a' => 'EEE',	// An abbreviated textual representation of the day	Sun through Sat
+			'%a' => 'ccc',	// An abbreviated textual representation of the day	Sun through Sat
 			'%A' => 'EEEE',	// A full textual representation of the day	Sunday through Saturday
-			'%b' => 'MMM',	// Abbreviated month name, based on the locale	Jan through Dec
+			'%b' => 'LLL',	// Abbreviated month name, based on the locale	Jan through Dec
 			'%B' => 'MMMM',	// Full month name, based on the locale	January through December
 			'%h' => 'MMM',	// Abbreviated month name, based on the locale (an alias of %b)	Jan through Dec
 		];
@@ -1908,7 +1909,23 @@ class WeatherMap extends WeatherMapBase {
 				$pattern = $intl_formats[$format];
 			}
 
-			return (new IntlDateFormatter($locale, $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
+			// In October 1582, the Gregorian calendar replaced the Julian in much of Europe, and
+			//  the 4th October was followed by the 15th October.
+			// ICU (including IntlDateFormattter) interprets and formats dates based on this cutover.
+			// Posix (including strftime) and timelib (including DateTimeImmutable) instead use
+			//  a "proleptic Gregorian calendar" - they pretend the Gregorian calendar has existed forever.
+			// This leads to the same instants in time, as expressed in Unix time, having different representations
+			//  in formatted strings.
+			// To adjust for this, a custom calendar can be supplied with a cutover date arbitrarily far in the past.
+			$calendar = IntlGregorianCalendar::createInstance();
+
+			// NOTE: IntlGregorianCalendar::createInstance DOES NOT return an IntlGregorianCalendar instance when
+			// using a non-Gregorian locale (e.g. fa_IR)! In that case, setGregorianChange will not exist.
+			if ($calendar instanceof IntlGregorianCalendar) {
+				$calendar->setGregorianChange(PHP_INT_MIN);
+			}
+
+			return (new IntlDateFormatter($locale, $date_type, $time_type, $tz, $calendar, $pattern))->format($timestamp);
 		};
 
 		// Same order as https://www.php.net/manual/en/function.strftime.php
@@ -2695,8 +2712,8 @@ class WeatherMap extends WeatherMapBase {
 				}
 
 				// one REGEXP to rule them all:
-//					if (preg_match("/^\s*SCALE\s+([A-Za-z][A-Za-z0-9_]*\s+)?(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+)\s+(\d+)\s+(\d+)(?:\s+(\d+)\s+(\d+)\s+(\d+))?\s*$/i",
-//		0.95b		if (preg_match("/^\s*SCALE\s+([A-Za-z][A-Za-z0-9_]*\s+)?(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+)\s+(\d+)\s+(\d+)(?:\s+(\d+)\s+(\d+)\s+(\d+))?\s*(.*)$/i",
+				//       if (preg_match("/^\s*SCALE\s+([A-Za-z][A-Za-z0-9_]*\s+)?(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+)\s+(\d+)\s+(\d+)(?:\s+(\d+)\s+(\d+)\s+(\d+))?\s*$/i",
+				// 0.95b if (preg_match("/^\s*SCALE\s+([A-Za-z][A-Za-z0-9_]*\s+)?(\d+\.?\d*)\s+(\d+\.?\d*)\s+(\d+)\s+(\d+)\s+(\d+)(?:\s+(\d+)\s+(\d+)\s+(\d+))?\s*(.*)$/i",
 				if (preg_match('/^\s*SCALE\s+([A-Za-z][A-Za-z0-9_]*\s+)?(\-?\d+\.?\d*[munKMGT]?)\s+(\-?\d+\.?\d*[munKMGT]?)\s+(?:(\d+)\s+(\d+)\s+(\d+)(?:\s+(\d+)\s+(\d+)\s+(\d+))?|(none))\s*(.*)$/i', $buffer, $matches)) {
 
 					// The default scale name is DEFAULT
@@ -2706,7 +2723,7 @@ class WeatherMap extends WeatherMapBase {
 						$matches[1] = trim($matches[1]);
 					}
 
-					$key=$matches[2] . '_' . $matches[3];
+					$key = $matches[2] . '_' . $matches[3];
 
 					$this->colours[$matches[1]][$key]['key'] = $key;
 
@@ -2904,7 +2921,6 @@ class WeatherMap extends WeatherMapBase {
 				}
 
 				if (($last_seen == 'LINK') && (preg_match('/^\s*(COMMENTFONT|BWBOX|BWFONT|BWOUTLINE|OUTLINE)COLOR\s+((\d+)\s+(\d+)\s+(\d+)|none|contrast|copy)\s*$/i', $buffer, $matches))) {
-
 					$key   = $matches[1];
 					$field = strtolower($matches[1]) . 'colour';
 					$val   = strtolower($matches[2]);
@@ -2982,15 +2998,15 @@ class WeatherMap extends WeatherMapBase {
 			wm_debug('Adding default SCALE colour set (no SCALE lines seen).');
 
 			$defaults = array(
-				'0_0'    => array('bottom' => 0, 'top' => 0, 'red1' => 192, 'green1' => 192, 'blue1' => 192, 'special'=>0),
-				'0_1'    => array('bottom' => 0, 'top' => 1, 'red1' => 255, 'green1' => 255, 'blue1' => 255, 'special'=>0),
-				'1_10'   => array('bottom' => 1, 'top' => 10, 'red1' => 140, 'green1' => 0, 'blue1' => 255, 'special'=>0),
-				'10_25'  => array('bottom' => 10, 'top' => 25, 'red1' => 32, 'green1' => 32, 'blue1' => 255, 'special'=>0),
-				'25_40'  => array('bottom' => 25, 'top' => 40, 'red1' => 0, 'green1' => 192, 'blue1' => 255, 'special'=>0),
-				'40_55'  => array('bottom' => 40, 'top' => 55, 'red1' => 0, 'green1' => 240, 'blue1' => 0, 'special'=>0),
-				'55_70'  => array('bottom' => 55, 'top' => 70, 'red1' => 240, 'green1' => 240, 'blue1' => 0, 'special'=>0),
-				'70_85'  => array('bottom' => 70, 'top' => 85, 'red1' => 255, 'green1' => 192, 'blue1' => 0, 'special'=>0),
-				'85_100' => array('bottom' => 85, 'top' => 100, 'red1' => 255, 'green1' => 0, 'blue1' => 0, 'special'=>0)
+				'0_0'    => array('bottom' => 0,  'top' => 0,   'red1' => 192, 'green1' => 192, 'blue1' => 192, 'special' => 0),
+				'0_1'    => array('bottom' => 0,  'top' => 1,   'red1' => 255, 'green1' => 255, 'blue1' => 255, 'special' => 0),
+				'1_10'   => array('bottom' => 1,  'top' => 10,  'red1' => 140, 'green1' => 0,   'blue1' => 255, 'special' => 0),
+				'10_25'  => array('bottom' => 10, 'top' => 25,  'red1' => 32,  'green1' => 32,  'blue1' => 255, 'special' => 0),
+				'25_40'  => array('bottom' => 25, 'top' => 40,  'red1' => 0,   'green1' => 192, 'blue1' => 255, 'special' => 0),
+				'40_55'  => array('bottom' => 40, 'top' => 55,  'red1' => 0,   'green1' => 240, 'blue1' => 0,   'special' => 0),
+				'55_70'  => array('bottom' => 55, 'top' => 70,  'red1' => 240, 'green1' => 240, 'blue1' => 0,   'special' => 0),
+				'70_85'  => array('bottom' => 70, 'top' => 85,  'red1' => 255, 'green1' => 192, 'blue1' => 0,   'special' => 0),
+				'85_100' => array('bottom' => 85, 'top' => 100, 'red1' => 255, 'green1' => 0,   'blue1' => 0,   'special' => 0)
 			);
 
 			foreach ($defaults as $key => $def) {
