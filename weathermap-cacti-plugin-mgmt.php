@@ -1260,7 +1260,7 @@ function addmap_picker($show_all = false) {
 	print '<br/><br/>';
 
 	print 'Do you want to:<p>';
-	print '<ul><li>Create A New Map:<br>';
+	print '<ul><li>Create a new Weathermap Configuration File:<br>';
 	print '<form method="GET">';
 	print 'Named: <input type="text" name="mapname" size="20">';
 
@@ -1326,7 +1326,7 @@ function addmap_picker($show_all = false) {
 	    $errorstring = "NO DIRECTORY named $mapdir";
 	}
 
-	print '<br/></li><li>Create A New Map as a copy of an existing map:<br>';
+	print '<br/></li><li>Create a new Weathermap Configuration File as a copy of an existing Weathermap:<br>';
 	print '<form method="GET">';
 	print 'Named: <input type="text" name="mapname" size="20"> based on ';
 
