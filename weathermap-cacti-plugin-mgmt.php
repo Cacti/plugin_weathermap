@@ -43,10 +43,26 @@
 chdir('../../');
 include_once('./include/auth.php');
 include_once($config['library_path'] . '/rrd.php');
+include_once($config['base_path'] . '/plugins/weathermap/lib/editor.inc.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/WeatherMap.class.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
 
 $weathermap_confdir = realpath(__DIR__ . '/configs');
+
+// add create form variables
+$mapname  = '';
+$sourcemap = '';
+if (isset_request_var('mapname')) {
+	$mapname = get_nfilter_request_var('mapname');
+	$mapname = wm_editor_sanitize_conffile($mapname);
+}
+$mapfile  = $weathermap_confdir . '/' . $mapname;
+
+if (isset_request_var('sourcemap')) {
+	$sourcemap = get_nfilter_request_var('sourcemap');
+	$sourcemap = wm_editor_sanitize_conffile($sourcemap);
+}
+$sourcemapfile = $weathermap_confdir . '/' . $sourcemap;
 
 $actions = array(
 	'1' => __('Delete', 'weathermap'),
@@ -299,6 +315,22 @@ switch (get_request_var('action')) {
 		}
 
 		break;
+	case 'newmap':
+		if ($mapfile != '') {
+			newMap($mapfile);
+		}
+		
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+
+		break;
+        case 'newmapcopy':
+                if ($mapfile != '' && $sourcemapfile != '') {
+			newMapCopy($mapfile,$sourcemapfile);
+		}
+
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+
+                break;
 	case 'rebuildnow':
 		$start = microtime(true);
 
@@ -1224,6 +1256,96 @@ function addmap_picker($show_all = false) {
 	if ($show_all) {
 		print '<p align=center>' . __('Some files are shown even though they have already been added. You can %s hide those files too %s, if you need to.', '<a href="weathermap-cacti-plugin-mgmt.php?action=addmap_picker">', '</a>', 'weathermap') . '</p>';
 	}
+
+	print '<br/><br/>';
+
+	print 'Do you want to:<p>';
+	print '<ul><li>Create A New Map:<br>';
+	print '<form method="GET">';
+	print 'Named: <input type="text" name="mapname" size="20">';
+
+	print '<input name="action" type="hidden" value="newmap">';
+
+	print '<input type="submit" value="Create">';
+
+	print '<p><small>Note: filenames must contain no spaces and end in .conf</small></p>';
+	print '</form>';
+
+	$titles = array();
+
+	$errorstring="";
+
+	if (is_dir($weathermap_confdir)) {
+		$n=0;
+		$dh=opendir($weathermap_confdir);
+
+		if ($dh) {
+		    while (false !== ($file = readdir($dh))) {
+				$realfile = $weathermap_confdir . '/' . $file;
+				$note     = "";
+
+				// skip directories, unreadable files, .files and anything that doesn't come through the sanitiser unchanged
+				if ((is_file($realfile)) && (is_readable($realfile)) && (!preg_match("/^\./",$file)) && (wm_editor_sanitize_conffile($file) == $file)) {
+					if (!is_writable($realfile)) {
+						$note .= "(read-only)";
+					}
+
+					$title='(no title)';
+					$fd=fopen($realfile, "r");
+
+					if ($fd) {
+						while (!feof($fd)) {
+							$buffer=fgets($fd, 4096);
+
+							if (preg_match('/^\s*TITLE\s+(.*)/i', $buffer, $matches)) {
+							    $title= wm_editor_sanitize_string($matches[1]);
+							}
+						}
+
+						fclose ($fd);
+
+						$titles[$file] = $title;
+						$notes[$file]  = $note;
+
+						$n++;
+					}
+				}
+		    }
+
+			closedir ($dh);
+		} else {
+			$errorstring = "Can't open weathermap_confdir to read.";
+		}
+
+		ksort($titles);
+
+		if ($n == 0) {
+			$errorstring = "No files in mapdir";
+		}
+	} else {
+	    $errorstring = "NO DIRECTORY named $mapdir";
+	}
+
+	print '<br/></li><li>Create A New Map as a copy of an existing map:<br>';
+	print '<form method="GET">';
+	print 'Named: <input type="text" name="mapname" size="20"> based on ';
+
+	print '<input name="action" type="hidden" value="newmapcopy">';
+	print '<select name="sourcemap">';
+
+	if ($errorstring == '') {
+		foreach ($titles as $file=>$title) {
+			$nicefile = html_escape($file);
+			print "<option value=\"$nicefile\">$nicefile</option>\n";
+		}
+	} else {
+		print '<option value="">'.html_escape($errorstring).'</option>';
+	}
+
+	print '</select>';
+	print '<input type="submit" value="Create Copy">';
+	print '</form></li></ul>';
+
 }
 
 function preview_config($file) {
@@ -2531,5 +2653,27 @@ function weathermap_group_delete($id) {
 	db_execute_prepared('DELETE FROM weathermap_groups
 		WHERE id = ?',
 		array($id));
+}
+
+function newMap($mapfile) {
+	$map = new WeatherMap;
+
+	$map->context = 'editor';
+
+	$map->WriteConfig($mapfile);
+}
+
+function newMapCopy($mapfile,$sourcemapfile) {
+	$map = new WeatherMap;
+
+	$map->context = 'editor';
+
+	if ($mapfile != '' && $sourcemapfile != '') {
+
+		if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
+			$map->ReadConfig($sourcemapfile);
+			$map->WriteConfig($mapfile);
+		}
+	}
 }
 
