@@ -75,11 +75,11 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 
 		// normally, DS plugins shouldn't really pollute the logs
 		// this particular one is important to most users though...
-		if ($map->context=='cli') {
+		if ($map->context == 'cli') {
 			wm_warn("RRD DS: Can't find RRDTOOL. Check line 29 of the 'weathermap' script.  RRD-based TARGETs will fail. [WMRRD02]");
 		}
 
-		if ($map->context=='cacti') {
+		if ($map->context == 'cacti') {
 			// unlikely to ever occur
 			wm_warn("RRD DS: Can't find RRDTOOL. Check your Cacti config. [WMRRD03]");
 		}
@@ -88,9 +88,9 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	}
 
 	function Recognise($targetstring) {
-		if (preg_match("/^(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/",$targetstring,$matches)) {
+		if (preg_match('/^(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/', $targetstring, $matches)) {
 			return true;
-		} elseif (preg_match("/^(.*\.rrd)$/",$targetstring,$matches)) {
+		} elseif (preg_match('/^(.*\.rrd)$/', $targetstring, $matches)) {
 			return true;
 		} else {
 			return false;

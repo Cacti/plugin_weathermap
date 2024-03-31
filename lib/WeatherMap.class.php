@@ -670,30 +670,30 @@ class WeatherMap extends WeatherMapBase {
 	function ProcessString($input, &$context, $include_notes = true, $multiline = false) {
 		global $config;
 
-		// Fix relative URL's
-		if (strpos($input, 'graph_image.php') !== false ||
-			strpos($input, 'graph.php') !== false ||
-			strpos($input, 'graph_view.php') !== false) {
-			if (strpos($input, $config['url_path']) === false) {
-				$input = $config['url_path'] . $input;
-			}
-
-			if (strpos($input, 'graph_image.php') !== false) {
-				if (strpos($input, 'graph_height') === false) {
-					$input .= '&graph_height=' . read_config_option('weathermap_height');
+		// Fix relative URL's when not using node|map|link syntax
+		if (!preg_match('/(\{(?:node|map|link)[^}]+\})/', $input)) {
+			if (strpos($input, 'graph_image.php') !== false || strpos($input, 'graph.php') !== false || strpos($input, 'graph_view.php') !== false) {
+				if (strpos($input, $config['url_path']) === false) {
+					$input = $config['url_path'] . $input;
 				}
 
-				if (strpos($input, 'graph_width') === false) {
-					$input .= '&graph_width=' . read_config_option('weathermap_width');
-				}
-
-				if (strpos($input, 'graph_nolegend') === false) {
-					if (read_config_option('weathermap_nolegend') == 'thumb') {
-						$input .= '&graph_nolegend=true';
+				if (strpos($input, 'graph_image.php') !== false) {
+					if (strpos($input, 'graph_height') === false) {
+						$input .= '&graph_height=' . read_config_option('weathermap_height');
 					}
-				}
 
-				$input .= '&random=' . rand(0, 65535);
+					if (strpos($input, 'graph_width') === false) {
+						$input .= '&graph_width=' . read_config_option('weathermap_width');
+					}
+
+					if (strpos($input, 'graph_nolegend') === false) {
+						if (read_config_option('weathermap_nolegend') == 'thumb') {
+							$input .= '&graph_nolegend=true';
+						}
+					}
+
+					$input .= '&random=' . rand(0, 65535);
+				}
 			}
 		}
 
