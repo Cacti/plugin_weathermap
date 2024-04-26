@@ -322,7 +322,7 @@ function weathermap_config_settings() {
 				1 => __('Yes (default)', 'weathermap'),
 			)
 		),
-            'weathermap_quiet_logging' => array(
+		'weathermap_quiet_logging' => array(
 			'friendly_name' => __('Quiet Logging', 'weathermap'),
 			'description'   => __('By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode.', 'weathermap'),
 			'method'        => 'drop_array',

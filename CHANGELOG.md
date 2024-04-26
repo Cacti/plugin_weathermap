@@ -18,6 +18,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#129: Weathermap crash when Boost enabled
 * issue#136: Old accounts not removed from WeatherMap Auth table
 * issue#140: Deprecations warnings related to function imagecopyresampled and imagecreatetruecolor
+* issue#143: When you add a specific right to a user (on the management of a map) you cannot remove it later, since the user disappear from the list
 * issue: WeatherMap Disabled due to invalid use of a null string.
 * issue: Correct for multiple deprecation warnings associated with the use of a float() value in a function where int() is required
 

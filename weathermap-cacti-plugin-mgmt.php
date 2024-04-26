@@ -1647,6 +1647,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 	if (get_request_var('filter') != '') {
 		if (get_request_var('type') == -1 || get_request_var('type') == 0) {
 			$sql_params[] = get_request_var('id');
+			$sql_params[] = get_request_var('id');
 
 			$sql_where1   = 'AND (username LIKE ? OR full_name LIKE ?)';
 			$sql_params[] = '%' . get_nfilter_request_var('filter') . '%';
@@ -1665,9 +1666,9 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 
 		if (get_request_var('type') == -1) {
 			$sql_params[] = get_request_var('id');
+		} elseif (get_request_var('type') == 1) {
+			$sql_params[] = get_request_var('id');
 		}
-
-		$sql_params[] = get_request_var('id');
 
 		if (get_request_var('type') == -1 || get_request_var('type') == 1) {
 			$sql_where2   = 'AND (name LIKE ? OR description LIKE ?)';
@@ -1679,6 +1680,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 	} else {
 		if (get_request_var('type') == -1 || get_request_var('type') == 0) {
 			$sql_params[] = get_request_var('id');
+			$sql_params[] = get_request_var('id');
 
 			if ($guest_user > 0) {
 				$sql_where1  .= ' AND id != ?';
@@ -1689,14 +1691,13 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				$sql_where1  .= ' AND id != ?';
 				$sql_params[] = $template_user;
 			}
-
 		}
 
 		if (get_request_var('type') == -1) {
 			$sql_params[] = get_request_var('id');
+		} elseif (get_request_var('type') == 1) {
+			$sql_params[] = get_request_var('id');
 		}
-
-		$sql_params[] = get_request_var('id');
 
 		if (get_request_var('type') == -1 || get_request_var('type') == 1) {
 			$sql_params[] = get_request_var('id');
@@ -1708,6 +1709,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 	}
 
 	if (get_request_var('type') == -1) {
+		// All Users or Groups
 		$records = db_fetch_assoc_prepared("SELECT *
 			FROM (
 				SELECT '0' AS id, 'Everyone' AS name, 'All Users in System' AS description, 'special' AS type, '-1' AS allowed, 'N/A' AS realm
@@ -1751,6 +1753,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 			) AS rs",
 			$sql_params);
 	} elseif (get_request_var('type') == 0) {
+		// All Users
 		$records = db_fetch_assoc_prepared("SELECT *
 			FROM (
 				SELECT '0' AS id, 'Everyone' AS name, 'All Users in System' AS description, 'special' AS type, '-1' AS allowed, 'N/A' AS realm
@@ -1775,6 +1778,7 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 			$sql_where1",
 			$sql_params);
 	} else {
+		// All Graoup
 		$records = db_fetch_assoc_prepared("SELECT *
 			FROM (
 				SELECT '0' AS id, 'Everyone' AS name, 'All Users in System' AS description, 'special' AS type, '-1' AS allowed, 'N/A' AS realm
