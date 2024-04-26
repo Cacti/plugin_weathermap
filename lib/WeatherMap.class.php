@@ -580,15 +580,15 @@ class WeatherMap extends WeatherMapBase {
 		 * corner of the text, where imagestring uses the upper left corener.
 		 * Big difference.
 		 */
-		$x = round($x);
-		$y = round($y);
+		$x = intval(round($x));
+		$y = intval(round($y));
 
 		if ($fontnumber > 0 && $fontnumber < 6 && $angle == 0) {
 			/**
 			 * The x and y coordinates will be different due to the change between
 			 * imagestring and imagettftext as noted above
 			 */
-			imagestring($image, $fontnumber, $x, round($y - imagefontheight($fontnumber)), $string, $colour);
+			imagestring($image, $fontnumber, $x, intval(round($y - imagefontheight($fontnumber))), $string, $colour);
 
 			if ($angle != 0) {
 				wm_warn("Angled text doesn't work with non-FreeType fonts [WMWARN02]");
@@ -601,7 +601,7 @@ class WeatherMap extends WeatherMapBase {
 
 			if ($this->fonts[$fontnumber]->type == 'gd') {
 				imagestring($image, $this->fonts[$fontnumber]->gdnumber,
-					$x, round($y - imagefontheight($this->fonts[$fontnumber]->gdnumber)),
+					$x, intval(round($y - imagefontheight($this->fonts[$fontnumber]->gdnumber))),
 					$string, $colour
 				);
 
@@ -823,15 +823,17 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		# $this->datasourceclasses = array();
-		$dh = @opendir($dir);
+		$dh = opendir($dir);
 
 		if (!$dh) {
-			// try to find it with the script, if the relative path fails
-			$srcdir = substr($_SERVER['argv'][0], 0, strrpos($_SERVER['argv'][0], '/'));
+			if (isset($_SERVER['argv'][0])) {
+				// try to find it with the script, if the relative path fails
+				$srcdir = substr($_SERVER['argv'][0], 0, strrpos($_SERVER['argv'][0], '/'));
 
-			$dh = opendir($srcdir . '/' . $dir);
-			if ($dh) {
-				$dir = $srcdir . '/' . $dir;
+				$dh = opendir($srcdir . '/' . $dir);
+				if ($dh) {
+					$dir = $srcdir . '/' . $dir;
+				}
 			}
 		}
 
@@ -1194,11 +1196,11 @@ class WeatherMap extends WeatherMapBase {
 		$apoints  = array($x1, $y1, $x1, $y2, $x2, $y2, $x2, $y1, $x - $strwidth / 2, $y + $strheight / 2);
 
 		foreach($ppoints as $index => $point) {
-			$ppoints[$index] = round($point);
+			$ppoints[$index] = intval(round($point));
 		}
 
 		foreach($apoints as $index => $point) {
-			$apoints[$index] = round($point);
+			$apoints[$index] = intval(round($point));
 		}
 
 		rotateAboutPoint($ppoints, $x, $y, $rangle);
@@ -1463,19 +1465,19 @@ class WeatherMap extends WeatherMapBase {
 		$scalefactor = $width/100;
 
 		list($tilewidth, $tileheight) = $this->myimagestringsize($font, '100%');
-		$box_left = $x;
+		$box_left    = $x;
 		# $box_left = 0;
-		$scale_left = $box_left + 4 + $scalefactor/2;
-		$box_right = $scale_left + $width + $tilewidth + 4 + $scalefactor/2;
+		$scale_left  = $box_left + 4 + $scalefactor/2;
+		$box_right   = $scale_left + $width + $tilewidth + 4 + $scalefactor/2;
 		$scale_right = $scale_left + $width;
 
-		$box_top = $y;
+		$box_top      = $y;
 		# $box_top = 0;
-		$scale_top = $box_top + $tileheight + 6;
+		$scale_top    = $box_top + $tileheight + 6;
 		$scale_bottom = $scale_top + $tileheight * 1.5;
-		$box_bottom = $scale_bottom + $tileheight * 2 + 6;
+		$box_bottom   = $scale_bottom + $tileheight * 2 + 6;
 
-		$scale_im  = imagecreatetruecolor(round($box_right+1), round($box_bottom+1));
+		$scale_im  = imagecreatetruecolor(intval(round($box_right+1)), intval(round($box_bottom+1)));
 		$scale_ref = 'gdref_legend_'.$scalename;
 
 		// Start with a transparent box, in case the fill or outline colour is 'none'
@@ -1574,7 +1576,7 @@ class WeatherMap extends WeatherMapBase {
 		$scale_bottom = $scale_top + $height;
 		$box_bottom = $scale_bottom + $scalefactor + $tileheight/2 + 4;
 
-		$scale_im  = imagecreatetruecolor(round($box_right+1), round($box_bottom+1));
+		$scale_im  = imagecreatetruecolor(intval(round($box_right+1)), intval(round($box_bottom+1)));
 		$scale_ref = 'gdref_legend_'.$scalename;
 
 		// Start with a transparent box, in case the fill or outline colour is 'none'
@@ -1732,7 +1734,7 @@ class WeatherMap extends WeatherMapBase {
 				$boxy += $this->height;
 			}
 
-			$scale_im  = imagecreatetruecolor(round($boxwidth+1), round($boxheight+1));
+			$scale_im  = imagecreatetruecolor(intval(round($boxwidth+1)), intval(round($boxheight+1)));
 			$scale_ref = 'gdref_legend_' . $scalename;
 
 			// Start with a transparent box, in case the fill or outline colour is 'none'
@@ -3779,7 +3781,7 @@ class WeatherMap extends WeatherMapBase {
 					$imagethumb = imagecreatetruecolor($this->thumb_width, $this->thumb_height);
 
 					imagecopyresampled($imagethumb, $image, 0, 0, 0, 0, $this->thumb_width, $this->thumb_height,
-						round($this->width), round($this->height)
+						intval(round($this->width)), intval(round($this->height))
 					);
 
 					$result = imagepng($imagethumb, $thumbnailfile);

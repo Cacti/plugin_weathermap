@@ -330,7 +330,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 				// this is an artificial icon - we don't load a file for it
 
-				$icon_im = imagecreatetruecolor(round($this->iconscalew), round($this->iconscaleh));
+				$icon_im = imagecreatetruecolor(intval(round($this->iconscalew)), intval(round($this->iconscaleh)));
 
 				imageSaveAlpha($icon_im, true);
 
@@ -521,7 +521,7 @@ class WeatherMapNode extends WeatherMapItem {
 							$scaled     = imagecreatetruecolor($new_width, $new_height);
 
 							imagealphablending($scaled, false);
-							imagecopyresampled($scaled, $icon_im, 0, 0, 0, 0, $new_width, $new_height, round($icon_w), round($icon_h));
+							imagecopyresampled($scaled, $icon_im, 0, 0, 0, 0, $new_width, $new_height, intval(round($icon_w)), intval(round($icon_h)));
 							imagedestroy($icon_im);
 
 							$icon_im = $scaled;
@@ -586,8 +586,8 @@ class WeatherMapNode extends WeatherMapItem {
 
 		// create TWO imagemap entries - one for the label and one for the icon
 		// (so we can have close-spaced icons better)
-		$temp_width  = round($bbox_x2 - $bbox_x1);
-		$temp_height = round($bbox_y2 - $bbox_y1);
+		$temp_width  = intval(round($bbox_x2 - $bbox_x1));
+		$temp_height = intval(round($bbox_y2 - $bbox_y1));
 
 		// create an image of that size and draw into it
 		$node_im = imagecreatetruecolor($temp_width, $temp_height);
@@ -608,15 +608,15 @@ class WeatherMapNode extends WeatherMapItem {
 		$icon_y1  -= $bbox_y1;
 		$icon_y2  -= $bbox_y1;
 
-		$icon_x1   = round($icon_x1);
-		$icon_x2   = round($icon_x2);
-		$icon_y1   = round($icon_y1);
-		$icon_y2   = round($icon_y2);
+		$icon_x1   = intval(round($icon_x1));
+		$icon_x2   = intval(round($icon_x2));
+		$icon_y1   = intval(round($icon_y1));
+		$icon_y2   = intval(round($icon_y2));
 
-		$bbox_x1   = round($bbox_x1);
-		$bbox_x2   = round($bbox_x2);
-		$bbox_y1   = round($bbox_y1);
-		$bbox_y2   = round($bbox_y2);
+		$bbox_x1   = intval(round($bbox_x1));
+		$bbox_x2   = intval(round($bbox_x2));
+		$bbox_y1   = intval(round($bbox_y1));
+		$bbox_y2   = intval(round($bbox_y2));
 
 		// Draw the icon, if any
 		if (isset($icon_im)) {

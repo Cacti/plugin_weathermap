@@ -18,6 +18,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#129: Weathermap crash when Boost enabled
 * issue#136: Old accounts not removed from WeatherMap Auth table
 * issue#140: Deprecations warnings related to function imagecopyresampled and imagecreatetruecolor
+* issue: WeatherMap Disabled due to invalid use of a null string.
+* issue: Correct for multiple deprecation warnings associated with the use of a float() value in a function where int() is required
 
 --- 1.2 ---
 * issue: Correct plugin INFO file for proper attribution

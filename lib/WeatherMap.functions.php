@@ -360,9 +360,9 @@ function myimagecolorallocate($image, $red, $green, $blue) {
 		return imagecolorallocatealpha($image, 0, 0, 0, 127);
 	}
 
-	$red   = round($red);
-	$green = round($green);
-	$blue  = round($blue);
+	$red   = intval(round($red));
+	$green = intval(round($green));
+	$blue  = intval(round($blue));
 
 	$existing = imagecolorexact($image, $red, $green, $blue);
 
@@ -506,21 +506,21 @@ function imagecreatefromfile($filename) {
  * Much nicer colorization than imagefilter does, AND no special requirements.
  * Preserves white, black and transparency.
  */
-function imagecolorize($image, $r, $g, $b) {
+function imagecolorize($image, $red, $green, $blue) {
 	//We will create a monochromatic palette based on
 	//the input color
 	//which will go from black to white
 	//Input color luminosity: this is equivalent to the
 	//position of the input color in the monochromatic
 	//palette
-	$lum_inp = round(255 * ($r + $g + $b) / 765); //765=255*3
+	$lum_inp = intval(round(255 * ($red + $green + $blue) / 765)); //765=255*3
 
 	//We fill the palette entry with the input color at its
 	//corresponding position
 
-	$pal[$lum_inp]['r'] = $r;
-	$pal[$lum_inp]['g'] = $g;
-	$pal[$lum_inp]['b'] = $b;
+	$pal[$lum_inp]['r'] = intval($red);
+	$pal[$lum_inp]['g'] = intval($green);
+	$pal[$lum_inp]['b'] = intval($blue);
 
 	//Now we complete the palette, first we'll do it to
 	//the black,and then to the white.
@@ -532,15 +532,15 @@ function imagecolorize($image, $r, $g, $b) {
 
 	//The step size for each component
 	if ($steps_to_black) {
-		$step_size_red = $r / $steps_to_black;
-		$step_size_green = $g / $steps_to_black;
-		$step_size_blue = $b / $steps_to_black;
+		$step_size_red   = $red   / $steps_to_black;
+		$step_size_green = $green / $steps_to_black;
+		$step_size_blue  = $blue  / $steps_to_black;
 	}
 
 	for ($i = $steps_to_black; $i >= 0; $i--) {
-		$pal[$steps_to_black - $i]['r'] = $r - round($step_size_red * $i);
-		$pal[$steps_to_black - $i]['g'] = $g - round($step_size_green * $i);
-		$pal[$steps_to_black - $i]['b'] = $b - round($step_size_blue * $i);
+		$pal[$steps_to_black - $i]['r'] = intval($red   - round($step_size_red   * $i));
+		$pal[$steps_to_black - $i]['g'] = intval($green - round($step_size_green * $i));
+		$pal[$steps_to_black - $i]['b'] = intval($blue  - round($step_size_blue  * $i));
 	}
 
 	//From input to white:
@@ -549,18 +549,18 @@ function imagecolorize($image, $r, $g, $b) {
 	$steps_to_white = 255 - $lum_inp;
 
 	if ($steps_to_white) {
-		$step_size_red = (255 - $r) / $steps_to_white;
-		$step_size_green = (255 - $g) / $steps_to_white;
-		$step_size_blue = (255 - $b) / $steps_to_white;
+		$step_size_red   = intval(round((255 - $red)   / $steps_to_white));
+		$step_size_green = intval(round((255 - $green) / $steps_to_white));
+		$step_size_blue  = intval(round((255 - $blue)  / $steps_to_white));
 	} else {
         $step_size_red = $step_size_green = $step_size_blue = 0;
 	}
 
 	//The step size for each component
 	for ($i = ($lum_inp + 1); $i <= 255; $i++) {
-		$pal[$i]['r'] = $r + round($step_size_red * ($i - $lum_inp));
-		$pal[$i]['g'] = $g + round($step_size_green * ($i - $lum_inp));
-		$pal[$i]['b'] = $b + round($step_size_blue * ($i - $lum_inp));
+		$pal[$i]['r'] = intval($red   + round($step_size_red   * ($i - $lum_inp)));
+		$pal[$i]['g'] = intval($green + round($step_size_green * ($i - $lum_inp)));
+		$pal[$i]['b'] = intval($blue  + round($step_size_blue  * ($i - $lum_inp)));
 	}
 
 	//--- End of palette creation
@@ -568,8 +568,8 @@ function imagecolorize($image, $r, $g, $b) {
 	//Now,let's change the original palette into the one we
 	//created
 	for ($c = 0; $c < imagecolorstotal($image); $c++) {
-		$col = imagecolorsforindex($image, $c);
-		$lum_src = round(255 * ($col['red'] + $col['green'] + $col['blue']) / 765);
+		$col     = imagecolorsforindex($image, $c);
+		$lum_src = intval(round(255 * ($col['red'] + $col['green'] + $col['blue']) / 765));
 		$col_out = $pal[$lum_src];
 
 		#     printf("%d (%d,%d,%d) -> %d -> (%d,%d,%d)\n", $c,

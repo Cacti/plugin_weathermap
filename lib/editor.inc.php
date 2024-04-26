@@ -384,7 +384,7 @@ function snap($coord, $gridsnap = 0) {
 	} else {
 		$rest = $coord % $gridsnap;
 
-		return ($coord - $rest + round($rest/$gridsnap) * $gridsnap );
+		return intval(($coord - $rest + round($rest/$gridsnap) * $gridsnap));
 	}
 }
 

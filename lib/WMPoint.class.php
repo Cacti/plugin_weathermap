@@ -73,8 +73,8 @@ class WMPoint {
 	 * round() - round the coordinates to their nearest integers, in place.
 	 */
 	public function round() {
-		$this->x = round($this->x);
-		$this->y = round($this->y);
+		$this->x = intval(round($this->x));
+		$this->y = intval(round($this->y));
 	}
 
 	/**
