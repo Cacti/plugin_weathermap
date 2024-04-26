@@ -246,9 +246,9 @@ function weathermap_repair_maps() {
 								wm_debug('Found object file reference in correct location: ' . $objfile);
 							}
 						}
-
-						$outcontents[] = rtrim($line);
 					}
+
+					$outcontents[] = rtrim($line);
 				}
 			}
 
