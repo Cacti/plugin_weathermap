@@ -676,25 +676,25 @@ class WeatherMap extends WeatherMapBase {
 				if (strpos($input, $config['url_path']) === false) {
 					$input = $config['url_path'] . $input;
 				}
+			}
+		}
 
-				if (strpos($input, 'graph_image.php') !== false) {
-					if (strpos($input, 'graph_height') === false) {
-						$input .= '&graph_height=' . read_config_option('weathermap_height');
-					}
+		if (strpos($input, 'graph_image.php') !== false) {
+			if (strpos($input, 'graph_height') === false) {
+				$input .= '&graph_height=' . read_config_option('weathermap_height');
+			}
 
-					if (strpos($input, 'graph_width') === false) {
-						$input .= '&graph_width=' . read_config_option('weathermap_width');
-					}
+			if (strpos($input, 'graph_width') === false) {
+				$input .= '&graph_width=' . read_config_option('weathermap_width');
+			}
 
-					if (strpos($input, 'graph_nolegend') === false) {
-						if (read_config_option('weathermap_nolegend') == 'thumb') {
-							$input .= '&graph_nolegend=true';
-						}
-					}
-
-					$input .= '&random=' . rand(0, 65535);
+			if (strpos($input, 'graph_nolegend') === false) {
+				if (read_config_option('weathermap_nolegend') == 'thumb') {
+					$input .= '&graph_nolegend=true';
 				}
 			}
+
+			$input .= '&random=' . rand(0, 65535);
 		}
 
 		$context_description = strtolower($context->my_type());
@@ -732,14 +732,14 @@ class WeatherMap extends WeatherMapBase {
 					}
 				}
 
-				if (($type == 'link') || ($type == 'node')) {
+				if ($type == 'link' || $type == 'node') {
 					if (preg_match('/([^:]+):([^:]+):*([^:]*)/', $args, $matches)) {
 						$itemname = $matches[1];
 						$args     = $matches[2];
 						$format   = $matches[3];
 						$the_item = null;
 
-						if (($itemname == 'this') && ($type == strtolower($context->my_type()))) {
+						if ($itemname == 'this' && $type == strtolower($context->my_type())) {
 							$the_item = $context;
 						} elseif (strtolower($context->my_type()) == 'link' && $type == 'node' && ($itemname == '_linkstart_' || $itemname == '_linkend_')) {
 							// this refers to the two nodes at either end of this link
@@ -750,14 +750,14 @@ class WeatherMap extends WeatherMapBase {
 							if ($itemname == '_linkend_') {
 								$the_item = $context->b;
 							}
-						} elseif (($itemname == 'parent') && ($type == strtolower($context->my_type())) && ($type=='node') && ($context->relative_to != '') ) {
+						} elseif ($itemname == 'parent' && $type == strtolower($context->my_type()) && $type=='node' && $context->relative_to != '') {
 							$the_item = $this->nodes[$context->relative_to];
 						} else {
-							if (($type == 'link') && isset($this->links[$itemname])) {
+							if ($type == 'link' && isset($this->links[$itemname])) {
 								$the_item = $this->links[$itemname];
 							}
 
-							if (($type == 'node') && isset($this->nodes[$itemname]) ) {
+							if ($type == 'node' && isset($this->nodes[$itemname])) {
 								$the_item = $this->nodes[$itemname];
 							}
 						}
