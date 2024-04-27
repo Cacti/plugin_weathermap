@@ -299,6 +299,16 @@ switch (get_request_var('action')) {
 		}
 
 		break;
+	case 'newmap':
+		if (isset_request_var('srcmap') && get_nfilter_request_var('srcmap') != '-1') {
+			newMap(get_nfilter_request_var('newfile'), get_nfilter_request_var('srcmap'));
+		} else {
+			newMap(get_nfilter_request_var('newfile'));
+		}
+
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker&header=false');
+
+		break;
 	case 'rebuildnow':
 		$start = microtime(true);
 
@@ -1098,131 +1108,397 @@ function maplist() {
 	<?php
 }
 
-function addmap_picker($show_all = false) {
+function create_prime_mapcache() {
 	global $weathermap_confdir;
 
+	// Create the map cache if it does not already exist
+	db_execute('CREATE TABLE IF NOT EXISTS weathermap_config_cache (
+		map_id INT UNSIGNED NOT NULL default "0",
+		filename VARCHAR(255) NOT NULL default "",
+		realfile VARCHAR(255) NOT NULL default "",
+		filesize INT UNSIGNED NOT NULL default "0",
+		title VARCHAR(128) NOT NULL default "",
+		status VARCHAR(10) NOT NULL default "",
+		create_time timestamp NOT NULL default CURRENT_TIMESTAMP(),
+		modify_time timestamp NOT NULL default CURRENT_TIMESTAMP(),
+		present tinyint NOT NULL default "1",
+		PRIMARY KEY (filename))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic
+		COMMENT="Holds a cache of map files"');
+
 	$loaded = array();
-	$flags  = array();
 
 	// find out what maps are already in the database, so we can skip those
-	$queryrows = db_fetch_assoc('SELECT * FROM weathermap_maps');
+	$maps = db_fetch_assoc('SELECT * FROM weathermap_maps');
 
-	if (is_array($queryrows)) {
-		foreach ($queryrows as $map) {
+	if (is_array($maps)) {
+		foreach ($maps as $map) {
 			$loaded[$map['id']] = $map['configfile'];
 		}
 	}
 
-	html_start_box(__('Available Weathermap Configuration Files', 'weathermap'), '100%', '', '3', 'center', '');
-
 	if (is_dir($weathermap_confdir)) {
-		$i       = 0;
-		$skipped = 0;
-
-		html_header(array( __('Actions', 'weathermap'), __('Title', 'weathermap'), __('Config File', 'weathermap')));
-
-		$form_files = array();
-
-		$id = 0;
-
 		foreach(glob("$weathermap_confdir/*.conf") as $file) {
-			$file     = basename($file);
-			$realfile = $weathermap_confdir . '/' . $file;
+			$save = array();
 
-			// Things about these files
-			$used     = array_search($file, $loaded);
-			$title    = wmap_get_title($realfile);
+			$file = basename($file);
+			$save['filename'] = $file;
+			$save['realfile'] = $weathermap_confdir . '/' . $file;
+			$save['map_id']   = array_search($file, $loaded);
+			$save['title']    = wmap_get_title($save['realfile']);
+			$save['present']  = 1;
 
-			// If it's already used, we can duplicate it
-			if ($used) {
-				$form_files[$i]['mapid']  = $used;
-				$form_files[$i]['action'] = 'duplicate';
-				$form_files[$i]['title']  = $title;
-				$form_files[$i]['file']   = $file;
+			$stats = stat($save['realfile']);
+
+			if (cacti_sizeof($stats)) {
+				$save['create_time'] = date('Y-m-d H:i:s', $stats['ctime']);
+				$save['modify_time'] = date('Y-m-d H:i:s', $stats['mtime']);
+				$save['filesize']    = $stats['size'];
 			} else {
-				$form_files[$i]['action'] = 'add';
-				$form_files[$i]['title']  = $title;
-				$form_files[$i]['file']   = $file;
+				$save['create_time'] = '0000-00-00';
+				$save['modify_time'] = '0000-00-00';
+				$save['filesize']    = 0;
 			}
 
-			$i++;
+			sql_save($save, 'weathermap_config_cache');
 		}
 
-		$i = 0;
-
-		if (cacti_sizeof($form_files)) {
-			foreach ($form_files as $details) {
-				form_alternate_row();
-
-				$action = '';
-
-				if ($details['action'] == 'add') {
-					$file   = basename($details['file']);
-					$url    = 'weathermap-cacti-plugin-mgmt.php?action=addmap&file=' . $file;
-					$tip    = __esc('Add the configuration file %s to Weathermap', $file, 'weathermap');
-					$value  = '<i class="fa fa-plus"></i>';
-					$action = "<a class='pic deviceUp' href='$url' title='$tip'>$value</a>";
-				} else {
-					$file    = basename($details['file']);
-					$newfile = map_get_next_name($file);
-
-					$url = 'weathermap-cacti-plugin-mgmt.php?' .
-						'action=dupmap' .
-						'&mapid=' . $details['mapid'] .
-						'&file=' . $file .
-						'&title=' . $details['title'] . __(' Copy', 'weathermap');
-
-					$tip    = __esc('Duplicate the configuration file %s and add to Weathermap as %s', $file, $newfile, 'weathermap');
-					$value  = '<i class="fa fa-copy"></i>';
-					$action = "<a class='pic deviceRecovering' href='$url' title='$tip'>$value</a>";
-				}
-
-				$tip   = __esc('View the configuration file %s in a new window', $file, 'weathermap');
-				$url   = 'weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file;
-				$value = '<i class="fa fa-binoculars"></i>';
-
-				$action .= "<a target='_new' href='$url' title='$tip'>$value</a>";
-
-				form_selectable_cell($action, $i, '1%');
-
-				if ($details['action'] == 'duplicate') {
-					$file = $details['file'] . ' [ ' . __('NOTE: Already in use. Click duplicate to create a new file.', 'weathermap') . ' ]';
-				} else {
-					$file = $details['file'];
-				}
-
-				form_selectable_cell($details['title'], $i);
-
-				form_selectable_cell($file, $i);
-
-				form_end_row();
-
-				$i++;
-			}
-		}
-
-		if (($i + $skipped) == 0) {
-			print '<tr><td>' . __esc('No files were found in the configs directory.', 'weathermap') . '</td></tr>';
-		}
-
-		if (($i == 0) && $skipped > 0) {
-			print '<tr><td>' . __('(%s files weren\'t shown because they are already in the database', $skipped, 'weathermp') . '</td></tr>';
-		}
+		db_execute('DELETE FROM weathermap_config_cache WHERE present = 0');
 	} else {
 		raise_message('directory_missing',  __('There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too.', $weathermap_confdir, 'weathermap'), MESSAGE_LEVEL_ERROR);
 
 		header('Location: weathermap-cacti-plugin-mgmt.php');
 		exit;
 	}
+}
+
+function addmap_filter() {
+	global $item_rows;
+
+	html_start_box(__('Existing Configuration Files', 'weathermap'), '100%', '', '3', 'center', '');
+
+	?>
+	<tr class='even'>
+		<td>
+			<form id='form_maps' action='weathermap-cacti-plugin-mgmt.php'>
+			<table class='filterTable'>
+				<tr>
+					<td>
+						<?php print __('Search', 'weathermap');?>
+					</td>
+					<td>
+						<input type='text' class='ui-state-default ui-corner-all' id='filter' name='filter' size='25' value='<?php print html_escape_request_var('filter');?>'>
+					</td>
+					<td>
+						<?php print __('Num Files', 'weathermap');?>
+					</td>
+					<td>
+						<select id='rows' name='rows' onChange='applyFilter()'>
+							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>':'>') . __('Default', 'weathermap');?></option>
+							<?php
+							if (cacti_sizeof($item_rows)) {
+								foreach ($item_rows as $key => $value) {
+									print "<option value='$key'" . (get_request_var('rows') == $key ? ' selected':'') . '>' . html_escape($value) . '</option>';
+								}
+							}
+							?>
+						</select>
+					</td>
+					<td>
+						<span>
+							<input type='checkbox' id='has_maps' <?php print (get_request_var('has_maps') == 'true' ? 'checked':'');?>>
+							<label for='has_maps'><?php print __('Has Maps', 'weathermap');?></label>
+						</span>
+					</td>
+					<td>
+						<span>
+							<input type='button' class='ui-button ui-corner-all ui-widget' id='refresh' value='<?php print __esc('Go', 'weathermap');?>' title='<?php print __esc('Set/Refresh Filters', 'weathermap');?>'>
+							<input type='button' class='ui-button ui-corner-all ui-widget' id='clear' value='<?php print __esc('Clear', 'weathermap');?>' title='<?php print __esc('Clear Filters', 'weathermap');?>'>
+						</span>
+					</td>
+				</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+	<?php
 
 	html_end_box();
 
-	if ($skipped > 0) {
-		print '<p align=center>' . __('Some files are not shown because they have already been added. You can %s show these files too %s, if you need to.', '<a href="weathermap-cacti-plugin-mgmt.php?action=addmap_picker&show=all">', '</a>', 'weathermap') . '</p>';
+	html_start_box(__('Create Options', 'weathermap'), '100%', '', '3', 'center', '');
+
+	?>
+	<tr class='even'>
+		<td>
+			<form id='form_newmap'>
+				<table class='filterTable'>
+					<tr>
+						<td>
+							<?php print __('New Map', 'weathermaps');?>
+						</td>
+						<td>
+							<input id='newfile' class='ui-state-default ui-corner-all' name='newfile' type='text' size='25' value='' placeholder='<?php print __('Name including the \.conf', 'weathermaps');?>'>
+						</td>
+						<td>
+							<?php print __('Source Map', 'weathermaps');?>
+						</td>
+						<td>
+							<select id='srcmap' name='srcmap'>
+								<option value='-1'><?php print __('Empty File', 'weathermap');?></option>
+								<?php
+								$maps = db_fetch_assoc('SELECT configfile
+									FROM weathermap_maps
+									ORDER BY configfile');
+
+								if (cacti_sizeof($maps)) {
+									foreach ($maps as $map) {
+										print "<option value='{$map['configfile']}'>" . html_escape($map['configfile']) . '</option>';
+									}
+								}
+								?>
+							</select>
+						</td>
+						<td>
+							<input type='submit' value='<?php print __('Create', 'weathermaps');?>'>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<script type='text/javascript'>
+			function applyFilter() {
+				var strURL  = 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker&header=false';
+
+				strURL += '&filter='+$('#filter').val();
+				strURL += '&rows='+$('#rows').val();
+				strURL += '&has_maps='+$('#has_maps').is(':checked');
+				loadPageNoHeader(strURL);
+			}
+
+			function clearFilter() {
+				var strURL = 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker&clear=1&header=false';
+				loadPageNoHeader(strURL);
+			}
+
+			$(function() {
+				$('#refresh').click(function() {
+					applyFilter();
+				});
+
+				$('#has_maps').click(function() {
+					applyFilter();
+				});
+
+				$('#clear').click(function() {
+					clearFilter();
+				});
+
+				$('#form_maps').submit(function(event) {
+					event.preventDefault();
+					applyFilter();
+				});
+
+				$('#form_newmap').submit(function(event) {
+					event.preventDefault();
+
+					var strURL = 'weathermap-cacti-plugin-mgmt.php?action=newmap';
+					var json   = {
+						__csrf_magic: csrfMagicToken,
+						newfile: $('#newfile').val(),
+						srcmap: $('#srcmap').val()
+					};
+
+					loadPageUsingPost(strURL, json);
+				});
+			});
+			</script>
+		</td>
+	</tr>
+	<?php
+
+	html_end_box();
+}
+
+function addmap_picker($show_all = false) {
+	global $weathermap_confdir, $item_rows;
+
+	/* ================= input validation and session storage ================= */
+	$filters = array(
+		'rows' => array(
+			'filter' => FILTER_VALIDATE_INT,
+			'pageset' => true,
+			'default' => '-1'
+		),
+		'page' => array(
+			'filter' => FILTER_VALIDATE_INT,
+			'default' => '1'
+		),
+		'filter' => array(
+			'filter' => FILTER_DEFAULT,
+			'pageset' => true,
+			'default' => ''
+		),
+		'sort_column' => array(
+			'filter' => FILTER_CALLBACK,
+			'default' => 'filename',
+			'options' => array('options' => 'sanitize_search_string')
+		),
+		'sort_direction' => array(
+			'filter' => FILTER_CALLBACK,
+			'default' => 'ASC',
+			'options' => array('options' => 'sanitize_search_string')
+		),
+		'has_maps' => array(
+			'filter' => FILTER_VALIDATE_REGEXP,
+			'options' => array('options' => array('regexp' => '(true|false)')),
+			'pageset' => true,
+			'default' => read_config_option('default_has') == 'on' ? 'true':'false'
+		)
+	);
+
+	validate_store_request_vars($filters, 'sess_mapcache');
+	/* ================= input validation ================= */
+
+	if (get_request_var('rows') == '-1') {
+		$rows = read_config_option('num_rows_table');
+	} else {
+		$rows = get_request_var('rows');
 	}
 
-	if ($show_all) {
-		print '<p align=center>' . __('Some files are shown even though they have already been added. You can %s hide those files too %s, if you need to.', '<a href="weathermap-cacti-plugin-mgmt.php?action=addmap_picker">', '</a>', 'weathermap') . '</p>';
+	addmap_filter();
+
+	// Update the map cache table
+	create_prime_mapcache();
+
+	$sql_where  = '';
+	$sql_params = array();
+	$sql_order  = get_order_string();
+	$sql_limit  = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
+
+	if (get_request_var('filter') != '') {
+		$sql_where = ($sql_where != '' ? ' AND ':'WHERE ') . 'wmc.title LIKE ? OR wmc.filename LIKE ?';
+		$sql_params[] = '%' . get_request_var('filter') . '%';
+		$sql_params[] = '%' . get_request_var('filter') . '%';
+	}
+
+	if (get_request_var('has_maps') == 'true') {
+		$sql_where = ($sql_where != '' ? ' AND ':'WHERE ') . 'wmc.map_id > 0';
+	}
+
+	$maps = db_fetch_assoc_prepared("SELECT wmc.*
+		FROM weathermap_config_cache AS wmc
+		LEFT JOIN weathermap_maps AS wm
+		ON wm.id = wmc.map_id
+		$sql_where
+		$sql_order
+		$sql_limit", $sql_params);
+
+	$total_rows = db_fetch_cell_prepared("SELECT COUNT(*)
+		FROM weathermap_config_cache AS wmc
+		LEFT JOIN weathermap_maps AS wm
+		ON wm.id = wmc.map_id
+		$sql_where", $sql_params);
+
+	$display_text = array(
+		'nosort' => array(
+			'display' => __('Actions', 'weathermap'),
+		),
+		'title' => array(
+			'display' => __('Title', 'weathermap'),
+			'sort'    => 'ASC'
+		),
+		'filename' => array(
+			'display' => __('Config File', 'weathermap'),
+			'sort'    => 'ASC'
+		),
+		'create_time' => array(
+			'display' => __('Create Date', 'weathermap'),
+			'sort'    => 'DESC',
+			'align'   => 'right'
+		),
+		'modify_time' => array(
+			'display' => __('Last Modified', 'weathermap'),
+			'sort'    => 'DESC',
+			'align'   => 'right'
+		),
+		'filesize' => array(
+			'display' => __('Size', 'weathermap'),
+			'sort'    => 'DESC',
+			'align'   => 'right'
+		)
+	);
+
+	$nav = html_nav_bar('weathermap-cacti-plugin-mgmt.php?action=addmap_picker&filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 5, __('Config Files'), 'page', 'main');
+
+	print $nav;
+
+	html_start_box('', '100%', '', '3', 'center', '');
+
+	html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'), false);
+
+	if (cacti_sizeof($maps)) {
+		$i = 0;
+
+		foreach($maps as $map) {
+			form_alternate_row();
+
+			$action = '';
+
+			if ($map['map_id'] == 0) {
+				$file   = basename($map['filename']);
+				$url    = 'weathermap-cacti-plugin-mgmt.php?action=addmap&file=' . $file;
+				$tip    = __esc('Add the configuration file %s to Weathermap', $file, 'weathermap');
+				$value  = '<i class="fa fa-plus"></i>';
+				$action = "<a class='pic deviceUp' href='$url' title='$tip'>$value</a>";
+			} else {
+				$file    = basename($map['filename']);
+				$newfile = map_get_next_name($file);
+
+				$url = 'weathermap-cacti-plugin-mgmt.php?' .
+					'action=dupmap' .
+					'&mapid=' . $map['map_id'] .
+					'&file='  . $file .
+					'&title=' . $map['title'] . __(' Copy', 'weathermap');
+
+				$tip    = __esc('Duplicate the configuration file %s and add to Weathermap as %s', $file, $newfile, 'weathermap');
+				$value  = '<i class="fa fa-copy"></i>';
+				$action = "<a class='pic deviceRecovering' href='$url' title='$tip'>$value</a>";
+			}
+
+			$tip   = __esc('View the configuration file %s in a new window', $file, 'weathermap');
+			$url   = 'weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file;
+			$value = '<i class="fa fa-binoculars"></i>';
+
+			$action .= "<a target='_new' href='$url' title='$tip'>$value</a>";
+
+			form_selectable_cell($action, $i, '1%');
+
+			if ($map['map_id'] > 0) {
+				$file = $map['filename'] . ' [ ' . __('NOTE: Already in use. Click duplicate to create a new file.', 'weathermap') . ' ]';
+			} else {
+				$file = $map['filename'];
+			}
+
+			form_selectable_cell(filter_value($map['title'], get_request_var('filter')), $i);
+
+			form_selectable_cell(filter_value($file, get_request_var('filter')), $i);
+
+			form_selectable_cell($map['create_time'], $i, '', 'right');
+
+			form_selectable_cell($map['modify_time'], $i, '', 'right');
+
+			form_selectable_cell(number_format_i18n($map['filesize']), $i, '', 'right');
+
+			form_end_row();
+		}
+	} else {
+		print '<tr><td>' . __esc('No files were found in the configs directory.', 'weathermap') . '</td></tr>';
+	}
+
+	html_end_box();
+
+	if (cacti_sizeof($maps)) {
+		print $nav;
 	}
 }
 
@@ -1308,27 +1584,35 @@ function add_config($file) {
 }
 
 function wmap_get_title($filename) {
-	$title = '(no title)';
+	global $weathermap_confdir;
 
-	$fd    = fopen($filename, 'r');
+	if ($filename == basename($filename)) {
+		$filename = $weathermap_confdir . '/' . $filename;
+	}
 
-	if (is_resource($fd)) {
-		while (!feof($fd)) {
-			$buffer = fgets($fd, 4096);
-			if (preg_match('/^\s*TITLE\s+(.*)/i', $buffer, $matches)) {
-				$title = $matches[1];
+	$title = __('(No Title)', 'weathermaps');
+
+	if (file_exists($filename)) {
+		$fd = fopen($filename, 'r');
+
+		if (is_resource($fd)) {
+			while (!feof($fd)) {
+				$buffer = fgets($fd, 4096);
+				if (preg_match('/^\s*TITLE\s+(.*)/i', $buffer, $matches)) {
+					$title = $matches[1];
+				}
+
+				// this regexp is tweaked from the ReadConfig version, to only match TITLEPOS lines *with* a title appended
+				if (preg_match('/^\s*TITLEPOS\s+\d+\s+\d+\s+(.+)/i', $buffer, $matches)) {
+					$title = $matches[1];
+				}
+
+				// strip out any DOS line endings that got through
+				$title = str_replace("\r", '', $title);
 			}
 
-			// this regexp is tweaked from the ReadConfig version, to only match TITLEPOS lines *with* a title appended
-			if (preg_match('/^\s*TITLEPOS\s+\d+\s+\d+\s+(.+)/i', $buffer, $matches)) {
-				$title = $matches[1];
-			}
-
-			// strip out any DOS line endings that got through
-			$title = str_replace("\r", '', $title);
+			fclose($fd);
 		}
-
-		fclose($fd);
 	}
 
 	return ($title);
@@ -2537,3 +2821,39 @@ function weathermap_group_delete($id) {
 		array($id));
 }
 
+function newMap($mapfile, $sourcemapfile = '') {
+	global $weathermap_confdir;
+
+	if ($mapfile == basename($mapfile)) {
+		$mapfile = $weathermap_confdir . '/' . $mapfile;
+	}
+
+	if (!file_exists($sourcemapfile) || $sourcemapfile == basename($sourcemapfile)) {
+		$sourcemapfile = $weathermap_confdir . '/' . $sourcemapfile;
+	}
+
+	if (file_exists($mapfile)) {
+		raise_message('map_message', __('The New Map File name %s already exists!', basename($mapfile), 'weathermap'), MESSAGE_LEVEL_ERROR);
+	} else {
+		$map = new WeatherMap;
+
+		$map->context = 'editor';
+
+		if ($mapfile != '') {
+			if ($sourcemapfile != '') {
+				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
+					$map->ReadConfig($sourcemapfile);
+					$map->WriteConfig($mapfile);
+					raise_message('map_message', __('New Map file %s created from %s', basename($mapfile), basename($sourcemapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
+				} else {
+					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
+				}
+			} elseif ($mapfile != '') {
+				$map->WriteConfig($mapfile);
+				raise_message('map_message', __('New Map file %s created.', basename($mapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
+			}
+		} else {
+			raise_message('map_message', __('You must include a Map File name to Create', 'weathermap'), MESSAGE_LEVEL_ERROR);
+		}
+	}
+}

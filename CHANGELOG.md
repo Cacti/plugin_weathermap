@@ -14,14 +14,16 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- develop ---
-* issue#125: Repair maps actually desroys them
+--- 1.3 ---
+* issue#125: Repair maps actually destroys them
 * issue#129: Weathermap crash when Boost enabled
-* issue#136: Old accounts not removed from WeatherMap Auth table
-* issue#140: Deprecations warnings related to function imagecopyresampled and imagecreatetruecolor
+* issue#136: Old accounts not removed from Weathermap Auth table
+* issue#140: Deprecation's warnings related to function imagecopyresampled() and imagecreatetruecolor()
 * issue#143: When you add a specific right to a user (on the management of a map) you cannot remove it later, since the user disappear from the list
-* issue: WeatherMap Disabled due to invalid use of a null string.
+* issue: Weathermap Disabled due to invalid use of a null string.
 * issue: Correct for multiple deprecation warnings associated with the use of a float() value in a function where int() is required
+* feature: Start the internationalization of Weathermap
+* feature: Restore a method to create new named files without having to resort to the command line.
 
 --- 1.2 ---
 * issue: Correct plugin INFO file for proper attribution
@@ -30,7 +32,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#128: Add missing debug column to the weathermap_maps table
 
 --- 1.1 ---
-* issue#87: WeatherMap Sort Order not respected on Top Tab
+* issue#87: Weathermap Sort Order not respected on Top Tab
 * issue#89: Allow more Graphs types to be searched for
 * issue#90: Error: You have an error in your SQL syntax, Mysql 8.0 Weathermap 1.0
 * issue#111: Weathermap permissions management errors
