@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:17-0400\n"
-"PO-Revision-Date: 2024-04-27 14:28-0400\n"
+"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"PO-Revision-Date: 2024-04-27 14:52-0400\n"
 "Last-Translator: San IPE <sanipe1949@krunsea.com>\n"
 "Language-Team: Turkish <http://translate.cacti.net/projects/cacti/audit/tr/>\n"
 "Language: tr_TR\n"
@@ -697,17 +697,21 @@ msgstr "Tüm Kullanıcılar"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
 #, php-format
+msgid "%s Groups"
+msgstr "%s Grupları"
+
+#: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
-msgid_plural "%s Groups"
-msgstr[0] "1 Grup"
-msgstr[1] " Grup"
+msgstr "1 Grup"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
 #, php-format
+msgid "%s Users"
+msgstr "%s Kullanıcıları"
+
+#: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
-msgid_plural "%s Users"
-msgstr[0] "%d  Kullanıcı"
-msgstr[1] "%s Kullanıcıları"
+msgstr "%d  Kullanıcı"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"

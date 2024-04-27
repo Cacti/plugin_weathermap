@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:17-0400\n"
-"PO-Revision-Date: 2024-04-27 14:19-0400\n"
+"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"PO-Revision-Date: 2024-04-27 14:41-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: bg_BG\n"
@@ -34,7 +34,6 @@ msgid "Network Weathermap"
 msgstr "Карта на времето в мрежата"
 
 #: setup.php:216
-#, fuzzy
 msgid "Page style"
 msgstr "Име на страницата"
 
@@ -95,7 +94,6 @@ msgid "Full Graphs"
 msgstr "Пълни графики"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "Задаване / опресняване на филтрите"
 
@@ -131,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Какъв формат предпочитате за генерираните изображения и миниатюри на картата?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "По подразбиране"
 
@@ -183,7 +180,6 @@ msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "Когато използвате групи, добавете раздел \"Всички карти\" в лентата с раздели."
 
 #: setup.php:312
-#, fuzzy
 msgid "No (default)"
 msgstr "По подразбиране"
 
@@ -204,12 +200,10 @@ msgid "No"
 msgstr "Не"
 
 #: setup.php:322
-#, fuzzy
 msgid "Yes (default)"
 msgstr "По подразбиране"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "Настройки на журнал за одит"
 
@@ -250,7 +244,6 @@ msgid "Manage Weathermap"
 msgstr "Управление на картата на времето"
 
 #: setup.php:626 setup.php:627
-#, fuzzy
 msgid "General Administration"
 msgstr "Системна администрация"
 
@@ -423,7 +416,6 @@ msgid "Revoke Access"
 msgstr "Отмяна на достъпа"
 
 #: weathermap-cacti-plugin-mgmt.php:266 weathermap-cacti-plugin-mgmt.php:290
-#, fuzzy
 msgid "No such file."
 msgstr "Файлът е твърде голям."
 
@@ -572,7 +564,6 @@ msgid "Clear"
 msgstr "Изчисти"
 
 #: weathermap-cacti-plugin-mgmt.php:729
-#, fuzzy
 msgid "Group Settings"
 msgstr "Настройки на журнал за одит"
 
@@ -697,7 +688,6 @@ msgid "Click to edit permissions"
 msgstr "Щракнете, за да редактирате разрешенията"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
-#, fuzzy
 msgid "No Users"
 msgstr "Потребители"
 
@@ -706,18 +696,22 @@ msgid "All Users"
 msgstr "Всички потребители"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
-#, fuzzy, php-format
+#, php-format
+msgid "%s Groups"
+msgstr "%s Групи"
+
+#: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
-msgid_plural "%s Groups"
-msgstr[0] "1 Група"
-msgstr[1] " Групи"
+msgstr "1 Група"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
 #, php-format
+msgid "%s Users"
+msgstr "%s потребители"
+
+#: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
-msgid_plural "%s Users"
-msgstr[0] "Потребител"
-msgstr[1] "%s потребители"
+msgstr "Потребител"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -745,7 +739,6 @@ msgid "Go"
 msgstr "Търси"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
-#, fuzzy
 msgid "Set/Refresh Filters"
 msgstr "Задаване / опресняване на филтрите"
 
@@ -807,7 +800,6 @@ msgid "Add the configuration file %s to Weathermap"
 msgstr "Добавяне на конфигурационния файл %s към Weathermap"
 
 #: weathermap-cacti-plugin-mgmt.php:1461
-#, fuzzy
 msgid " Copy"
 msgstr "Копирайте"
 
@@ -849,7 +841,6 @@ msgid "Path mismatch"
 msgstr "Несъответствие на пътя"
 
 #: weathermap-cacti-plugin-mgmt.php:1593
-#, fuzzy
 msgid "(No Title)"
 msgstr "Заглавие"
 
@@ -984,7 +975,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Все още няма настройки за карта за тази карта. Можете да добавите някои, като натиснете знака плюс \"+\" в горния десен ъгъл."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "Име на страницата"
 
@@ -1092,7 +1082,6 @@ msgid "Editing Group: %s"
 msgstr "Редактиране на група: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
-#, fuzzy
 msgid "Group Name:"
 msgstr "Име на Групата"
 
@@ -1117,7 +1106,6 @@ msgid "Rename this Group"
 msgstr "Преименуване на тази група"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "Настройки на журнал за одит"
 
@@ -1230,7 +1218,6 @@ msgid "Weathermap Management"
 msgstr "Управление на метеорологичната карта"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "Изчистване на филтрите"
 

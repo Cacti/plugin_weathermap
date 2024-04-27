@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:17-0400\n"
-"PO-Revision-Date: 2024-04-27 14:29-0400\n"
+"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"PO-Revision-Date: 2024-04-27 14:53-0400\n"
 "Last-Translator: whsir <wh@whsir.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/audit/zh-CN/>\n"
 "Language: zh_CN\n"
@@ -518,7 +518,7 @@ msgstr "本地文档"
 #: weathermap-cacti-plugin-mgmt.php:567
 #, php-format
 msgid "This is version %s"
-msgstr "版本 %s %s"
+msgstr "版本 %s "
 
 #: weathermap-cacti-plugin-mgmt.php:567
 msgid "Weathermap Website"
@@ -687,15 +687,21 @@ msgstr "所有用户"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
 #, php-format
+msgid "%s Groups"
+msgstr "%s组"
+
+#: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
-msgid_plural "%s Groups"
-msgstr[0] "1组"
+msgstr "1组"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
 #, php-format
+msgid "%s Users"
+msgstr "%s 用户"
+
+#: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
-msgid_plural "%s Users"
-msgstr[0] "%d 用户"
+msgstr "%d 用户"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"

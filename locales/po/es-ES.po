@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:17-0400\n"
-"PO-Revision-Date: 2024-04-27 14:20-0400\n"
+"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"PO-Revision-Date: 2024-04-27 14:43-0400\n"
 "Last-Translator: Tadeo Briceño <tadeobriceno@vencable.com>\n"
 "Language-Team: Spanish <http://translate.cacti.net/projects/cacti/audit/es/>\n"
 "Language: es_ES\n"
@@ -94,9 +94,8 @@ msgid "Full Graphs"
 msgstr "Gráficos completos"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
-msgstr "Definir/Refrescar Filtros"
+msgstr "Tiempo de actualización"
 
 #: setup.php:259
 msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
@@ -130,9 +129,8 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "¿Qué formato prefiere para las imágenes y miniaturas de mapas generadas?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
-msgstr "Predeterminado"
+msgstr "PNG (predeterminado)"
 
 #: setup.php:277
 msgid "JPEG"
@@ -206,9 +204,8 @@ msgid "Yes (default)"
 msgstr "Sí (predeterminado)"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
-msgstr "Opciones del log de Auditoría"
+msgstr "Registro silencioso"
 
 #: setup.php:327
 msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
@@ -700,17 +697,21 @@ msgstr "Todos los usuarios"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
 #, php-format
+msgid "%s Groups"
+msgstr "%s grupos"
+
+#: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
-msgid_plural "%s Groups"
-msgstr[0] "1 Grupo"
-msgstr[1] "%s grupos"
+msgstr "1 Grupo"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
 #, php-format
+msgid "%s Users"
+msgstr "%s Usuarios"
+
+#: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
-msgid_plural "%s Users"
-msgstr[0] "1 Usuario"
-msgstr[1] "%s Usuarios"
+msgstr "1 Usuario"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -978,9 +979,8 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Todavía no hay configuraciones por mapa para este mapa. Puede agregar algunos presionando el signo más '+' en la parte superior derecha."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
-msgstr "Nombre de Página"
+msgstr "Notas de uso"
 
 #: weathermap-cacti-plugin-mgmt.php:2280
 msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
@@ -1110,9 +1110,8 @@ msgid "Rename this Group"
 msgstr "Cambiar el nombre de este grupo"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
-msgstr "Opciones del log de Auditoría"
+msgstr "Editar la configuración del grupo"
 
 #: weathermap-cacti-plugin-mgmt.php:2722
 msgid "No Groups are defined"
@@ -1223,9 +1222,8 @@ msgid "Weathermap Management"
 msgstr "Gestión de mapas meteorológicos"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
-msgstr "Restablecer filtros"
+msgstr "Filtro de mapa del tiempo"
 
 #: weathermap-cacti-plugin.php:804
 msgid "Map to View"

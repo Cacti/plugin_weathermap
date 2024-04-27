@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:17-0400\n"
-"PO-Revision-Date: 2024-04-27 14:21-0400\n"
+"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"PO-Revision-Date: 2024-04-27 14:45-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: hi_IN\n"
@@ -34,7 +34,6 @@ msgid "Network Weathermap"
 msgstr "नेटवर्क वेदरमैप"
 
 #: setup.php:216
-#, fuzzy
 msgid "Page style"
 msgstr "पन्ने का नाम"
 
@@ -95,7 +94,6 @@ msgid "Full Graphs"
 msgstr "पूर्ण रेखांकन"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "सेट / फ़िल्टर ताज़ा करें"
 
@@ -113,12 +111,12 @@ msgid "%d Seconds"
 msgstr "%d सेकंड"
 
 #: setup.php:266
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minute"
 msgstr "% d महीना"
 
 #: setup.php:267 setup.php:268
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
 msgstr "% d माह"
 
@@ -131,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "उत्पन्न मानचित्र छवियों और थंबनेल के लिए आप कौन सा प्रारूप पसंद करते हैं?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "डिफ़ॉल्ट"
 
@@ -183,7 +180,6 @@ msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "समूहों का उपयोग करते समय, टैब बार में \"सभी मानचित्र\" टैब जोड़ें।"
 
 #: setup.php:312
-#, fuzzy
 msgid "No (default)"
 msgstr "डिफ़ॉल्ट"
 
@@ -204,12 +200,10 @@ msgid "No"
 msgstr "नहीं"
 
 #: setup.php:322
-#, fuzzy
 msgid "Yes (default)"
 msgstr "डिफ़ॉल्ट"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "ऑडिट लॉग सेटिंग्स"
 
@@ -250,7 +244,6 @@ msgid "Manage Weathermap"
 msgstr "वेदरमैप प्रबंधित करें"
 
 #: setup.php:626 setup.php:627
-#, fuzzy
 msgid "General Administration"
 msgstr "तंत्र प्रशासन"
 
@@ -318,7 +311,6 @@ msgstr "अनुमतियां संपादित करें"
 
 #: setup.php:853 setup.php:860 weathermap-cacti-plugin-mgmt.php:730
 #: weathermap-cacti-plugin.php:394
-#, fuzzy
 msgid "Map Settings"
 msgstr "ऑडिट लॉग सेटिंग्स"
 
@@ -339,7 +331,6 @@ msgid "Permissions Edit"
 msgstr "अनुमतियाँ संपादित करें"
 
 #: setup.php:895
-#, fuzzy
 msgid "Add User"
 msgstr "उपयोगकर्ता "
 
@@ -573,7 +564,6 @@ msgid "Clear"
 msgstr "明确"
 
 #: weathermap-cacti-plugin-mgmt.php:729
-#, fuzzy
 msgid "Group Settings"
 msgstr "ऑडिट लॉग सेटिंग्स"
 
@@ -698,28 +688,30 @@ msgid "Click to edit permissions"
 msgstr "अनुमतियां संपादित करने के लिए क्लिक करें"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
-#, fuzzy
 msgid "No Users"
 msgstr "उपयोगकर्ता"
 
 #: weathermap-cacti-plugin-mgmt.php:1063 weathermap-cacti-plugin-mgmt.php:2163
-#, fuzzy
 msgid "All Users"
 msgstr "उपयोगकर्ता "
 
 #: weathermap-cacti-plugin-mgmt.php:1067
-#, fuzzy, php-format
+#, php-format
+msgid "%s Groups"
+msgstr "%s समूह"
+
+#: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
-msgid_plural "%s Groups"
-msgstr[0] "1 गट"
-msgstr[1] " समूहों"
+msgstr "1 गट"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
-#, fuzzy, php-format
+#, php-format
+msgid "%s Users"
+msgstr "%s उपयोगकर्ता"
+
+#: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
-msgid_plural "%s Users"
-msgstr[0] "उपयोगकर्ता "
-msgstr[1] "उपयोगकर्ता "
+msgstr "उपयोगकर्ता "
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -747,7 +739,6 @@ msgid "Go"
 msgstr "जाएं"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
-#, fuzzy
 msgid "Set/Refresh Filters"
 msgstr "सेट / फ़िल्टर ताज़ा करें"
 
@@ -756,7 +747,6 @@ msgid "Clear"
 msgstr "明确"
 
 #: weathermap-cacti-plugin-mgmt.php:1217
-#, fuzzy
 msgid "Clear Filters"
 msgstr "साफ फिल्टर"
 
@@ -810,7 +800,6 @@ msgid "Add the configuration file %s to Weathermap"
 msgstr "Weathermap %s कॉन्फ़िगरेशन फ़ाइल जोड़ें"
 
 #: weathermap-cacti-plugin-mgmt.php:1461
-#, fuzzy
 msgid " Copy"
 msgstr "कॉपी करें"
 
@@ -986,7 +975,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "इस मानचित्र के लिए अभी तक कोई प्रति मानचित्र सेटिंग्स नहीं हैं। आप ऊपरी-दाईं ओर प्लस चिह्न '+' दबाकर कुछ जोड़ सकते हैं।"
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "पन्ने का नाम"
 
@@ -1004,7 +992,6 @@ msgid "Group Settings [ Group: %s ]"
 msgstr "समूह सेटिंग्स [ समूह: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2300
-#, fuzzy
 msgid "No Group"
 msgstr "नया समूह"
 
@@ -1095,7 +1082,6 @@ msgid "Editing Group: %s"
 msgstr "संपादन समूह: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
-#, fuzzy
 msgid "Group Name:"
 msgstr "समूह नाम"
 
@@ -1120,7 +1106,6 @@ msgid "Rename this Group"
 msgstr "इस समूह का नाम बदलें"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "ऑडिट लॉग सेटिंग्स"
 
@@ -1137,7 +1122,6 @@ msgid "Enter a new name for the Weathermap Group."
 msgstr "Weathermap समूह के लिए एक नया नाम दर्ज करें।"
 
 #: weathermap-cacti-plugin-mgmt.php:2734
-#, fuzzy
 msgid "New Group Name"
 msgstr "उपयोगकर्ता नाम"
 
@@ -1234,7 +1218,6 @@ msgid "Weathermap Management"
 msgstr "मौसममानचित्र प्रबंधन"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "साफ फिल्टर"
 

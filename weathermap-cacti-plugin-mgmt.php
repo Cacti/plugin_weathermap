@@ -1064,11 +1064,11 @@ function maplist() {
 				}
 
 				if ($ulist['groups'] > 0) {
-					$url .= ($found ? ', ':'') . __n('1 Group', '%s Groups', intval($ulist['groups']), 'weathermap');
+					$url .= ($found ? ', ':'') . ($ulist['groups'] == 1 ? __('1 Group', 'weathermap'):__('%d Groups', $ulist['groups'], 'weathermap'));
 				}
 
 				if ($ulist['users'] > 0) {
-					$url .= ($found ? ', ':'') . __n('1 User', '%s Users', intval($ulist['users']), 'weathermap');
+					$url .= ($found ? ', ':'') . ($ulist['users'] == 1 ? __('1 User', 'weathermap'):__('%d Users', $ulist['users'], 'weathermap'));
 				}
 			}
 

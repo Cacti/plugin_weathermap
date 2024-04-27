@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:17-0400\n"
-"PO-Revision-Date: 2024-04-27 14:20-0400\n"
+"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"PO-Revision-Date: 2024-04-27 14:43-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: el_GR\n"
@@ -34,7 +34,6 @@ msgid "Network Weathermap"
 msgstr "Χάρτης καιρού δικτύου"
 
 #: setup.php:216
-#, fuzzy
 msgid "Page style"
 msgstr "Όνομα σελίδας"
 
@@ -95,7 +94,6 @@ msgid "Full Graphs"
 msgstr "Πλήρη γραφήματα"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "Ρύθμιση / Ανανέωση φίλτρων"
 
@@ -108,17 +106,17 @@ msgid "Automatic"
 msgstr "Αυτόματο"
 
 #: setup.php:263 setup.php:264 setup.php:265
-#, fuzzy, php-format
+#, php-format
 msgid "%d Seconds"
 msgstr "%d δευτερόλεπτα"
 
 #: setup.php:266
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minute"
 msgstr "% d Μήνα"
 
 #: setup.php:267 setup.php:268
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
 msgstr "%d λεπτά"
 
@@ -131,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Ποια μορφή προτιμάτε για τις εικόνες και τις μικρογραφίες χαρτών που δημιουργούνται;"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "Προεπιλογή"
 
@@ -203,12 +200,10 @@ msgid "No"
 msgstr "Όχι"
 
 #: setup.php:322
-#, fuzzy
 msgid "Yes (default)"
 msgstr "Προεπιλογή"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "Ρυθμίσεις καταγραφής ελέγχου"
 
@@ -249,7 +244,6 @@ msgid "Manage Weathermap"
 msgstr "Διαχείριση χάρτη καιρού"
 
 #: setup.php:626 setup.php:627
-#, fuzzy
 msgid "General Administration"
 msgstr "Διαχείριση συστήματος"
 
@@ -694,7 +688,6 @@ msgid "Click to edit permissions"
 msgstr "Κάντε κλικ για να επεξεργαστείτε τα δικαιώματα"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
-#, fuzzy
 msgid "No Users"
 msgstr "Χρήστες"
 
@@ -703,18 +696,22 @@ msgid "All Users"
 msgstr "Όλοι οι Χρήστες"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
-#, fuzzy, php-format
+#, php-format
+msgid "%s Groups"
+msgstr "%s Ομάδες"
+
+#: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
-msgid_plural "%s Groups"
-msgstr[0] "1 Ομάδα"
-msgstr[1] " Ομαδεσ"
+msgstr "1 Ομάδα"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
 #, php-format
+msgid "%s Users"
+msgstr "%s Χρήστες"
+
+#: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
-msgid_plural "%s Users"
-msgstr[0] "Χρήστης"
-msgstr[1] "%s Χρήστες"
+msgstr "Χρήστης"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -742,7 +739,6 @@ msgid "Go"
 msgstr "Πήγαινε"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
-#, fuzzy
 msgid "Set/Refresh Filters"
 msgstr "Ρύθμιση / Ανανέωση φίλτρων"
 
@@ -979,7 +975,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Δεν υπάρχουν ακόμη ρυθμίσεις ανά χάρτη για αυτόν τον χάρτη. Μπορείτε να προσθέσετε μερικά πατώντας το σύμβολο συν '+' επάνω δεξιά."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "Όνομα σελίδας"
 
@@ -1087,7 +1082,6 @@ msgid "Editing Group: %s"
 msgstr "Ομάδα επεξεργασίας: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
-#, fuzzy
 msgid "Group Name:"
 msgstr "Όνομα Ομάδας"
 
@@ -1112,7 +1106,6 @@ msgid "Rename this Group"
 msgstr "Μετονομασία αυτής της ομάδας"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "Ρυθμίσεις καταγραφής ελέγχου"
 
@@ -1225,7 +1218,6 @@ msgid "Weathermap Management"
 msgstr "Διαχείριση χαρτών καιρού"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "Καθαρισμός Φίλτρων"
 

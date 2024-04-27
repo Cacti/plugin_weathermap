@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:17-0400\n"
-"PO-Revision-Date: 2024-04-27 14:24-0400\n"
+"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"PO-Revision-Date: 2024-04-27 14:49-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -34,7 +34,6 @@ msgid "Network Weathermap"
 msgstr "Netwerk Weerkaart"
 
 #: setup.php:216
-#, fuzzy
 msgid "Page style"
 msgstr "Pagina-opmaakprofiel"
 
@@ -95,7 +94,6 @@ msgid "Full Graphs"
 msgstr "Volledige grafieken"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "Stel in/vernieuw filters"
 
@@ -131,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Welk formaat heeft uw voorkeur voor de gegenereerde kaartafbeeldingen en miniaturen?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "Standaard"
 
@@ -183,7 +180,6 @@ msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "Als u groepen gebruikt, voegt u een tabblad 'Alle kaarten' toe aan de tabbladbalk."
 
 #: setup.php:312
-#, fuzzy
 msgid "No (default)"
 msgstr "Standaard"
 
@@ -208,7 +204,6 @@ msgid "Yes (default)"
 msgstr "Ja (Standaard)"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "Instellingen auditlogboek"
 
@@ -397,7 +392,6 @@ msgid "All"
 msgstr "Alle"
 
 #: weathermap-cacti-plugin-mgmt.php:52
-#, fuzzy
 msgid "Delete"
 msgstr "Verwijderen"
 
@@ -532,9 +526,9 @@ msgid "Local Documentation"
 msgstr "Lokale documentatie"
 
 #: weathermap-cacti-plugin-mgmt.php:567
-#, fuzzy, php-format
+#, php-format
 msgid "This is version %s"
-msgstr "Versie %s %s"
+msgstr "Versie %s "
 
 #: weathermap-cacti-plugin-mgmt.php:567
 msgid "Weathermap Website"
@@ -694,7 +688,6 @@ msgid "Click to edit permissions"
 msgstr "Klik om de machtigingen te bewerken"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
-#, fuzzy
 msgid "No Users"
 msgstr "Gebruikers"
 
@@ -703,18 +696,22 @@ msgid "All Users"
 msgstr "Alle gebruikers"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
-#, fuzzy, php-format
+#, php-format
+msgid "%s Groups"
+msgstr "%s Groepen"
+
+#: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
-msgid_plural "%s Groups"
-msgstr[0] "1 Groep"
-msgstr[1] " Groepen"
+msgstr "1 Groep"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
 #, php-format
+msgid "%s Users"
+msgstr "%s Gebruikers"
+
+#: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
-msgid_plural "%s Users"
-msgstr[0] "1 gebruiker"
-msgstr[1] "%s Gebruikers"
+msgstr "1 gebruiker"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -844,7 +841,6 @@ msgid "Path mismatch"
 msgstr "Pad komt niet overeen"
 
 #: weathermap-cacti-plugin-mgmt.php:1593
-#, fuzzy
 msgid "(No Title)"
 msgstr "Titel (--title)"
 
@@ -897,7 +893,6 @@ msgid "Account Type"
 msgstr "Account Type"
 
 #: weathermap-cacti-plugin-mgmt.php:2125
-#, fuzzy
 msgid "User/Group"
 msgstr "Klik op 'Volgende' om de volgende gebruikersgroep naar een nieuwe gebruikersgroep te kopiëren."
 
@@ -946,7 +941,6 @@ msgid "Not Permitted"
 msgstr "Niet Toegestaan"
 
 #: weathermap-cacti-plugin-mgmt.php:2187
-#, fuzzy
 msgid "Permitted"
 msgstr "Het wijzigen van de gebruikersnaam is niet toegestaan vanwege het rechtenprofiel of als u een gastgebruiker bent."
 
@@ -981,7 +975,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Er zijn nog geen instellingen per kaart voor deze kaart. Je kunt er een paar toevoegen door op het plusteken '+' rechtsboven te drukken."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "Paginanaam"
 
@@ -1113,7 +1106,6 @@ msgid "Rename this Group"
 msgstr "De naam van deze groep wijzigen"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "Instellingen auditlogboek"
 
@@ -1226,7 +1218,6 @@ msgid "Weathermap Management"
 msgstr "Beheer van weerkaarten"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "Stel filters opnieuw in"
 

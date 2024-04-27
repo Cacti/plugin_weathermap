@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:17-0400\n"
-"PO-Revision-Date: 2024-04-27 14:24-0400\n"
+"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"PO-Revision-Date: 2024-04-27 14:49-0400\n"
 "Last-Translator: Coool (github.com/Coool) <coool@mail.lv>\n"
 "Language-Team: Latvian <http://translate.cacti.net/projects/cacti/audit/lv/>\n"
 "Language: lv_LV\n"
@@ -94,7 +94,6 @@ msgid "Full Graphs"
 msgstr "Pilni grafiki"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "Atlasīt/Atjaunināt filtrus"
 
@@ -130,17 +129,14 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Kādam formātam jūs dodat priekšroku ģenerētajiem karšu attēliem un sīktēliem?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "Noklusējuma"
 
 #: setup.php:277
-#, fuzzy
 msgid "JPEG"
 msgstr "Iekļauts JPEG attēls, LN stils"
 
 #: setup.php:278
-#, fuzzy
 msgid "GIF"
 msgstr "Iekļauts GIF attēls, LN stils"
 
@@ -184,7 +180,6 @@ msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "Izmantojot grupas, cilnes joslai pievienojiet cilni \"Visas kartes\"."
 
 #: setup.php:312
-#, fuzzy
 msgid "No (default)"
 msgstr "Noklusējuma koks"
 
@@ -205,12 +200,10 @@ msgid "No"
 msgstr "Nē"
 
 #: setup.php:322
-#, fuzzy
 msgid "Yes (default)"
 msgstr "Noklusējuma"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "Revīzijas žurnāla iestatījumi"
 
@@ -338,12 +331,10 @@ msgid "Permissions Edit"
 msgstr "Atļaujas Rediģēt"
 
 #: setup.php:895
-#, fuzzy
 msgid "Add User"
 msgstr "Lietotājs"
 
 #: setup.php:902
-#, fuzzy
 msgid "Delete User"
 msgstr "Dzēst lietotāju(s)"
 
@@ -545,9 +536,9 @@ msgid "Local Documentation"
 msgstr "Vietējā dokumentācija"
 
 #: weathermap-cacti-plugin-mgmt.php:567
-#, fuzzy, php-format
+#, php-format
 msgid "This is version %s"
-msgstr "Versija %s %s"
+msgstr "Versija %s "
 
 #: weathermap-cacti-plugin-mgmt.php:567
 msgid "Weathermap Website"
@@ -583,7 +574,6 @@ msgid "Clear"
 msgstr "Notīrīt"
 
 #: weathermap-cacti-plugin-mgmt.php:729
-#, fuzzy
 msgid "Group Settings"
 msgstr "LDAP grupas iestatījumi"
 
@@ -708,30 +698,30 @@ msgid "Click to edit permissions"
 msgstr "Noklikšķiniet, lai rediģētu atļaujas"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
-#, fuzzy
 msgid "No Users"
 msgstr "Lietotāji"
 
 #: weathermap-cacti-plugin-mgmt.php:1063 weathermap-cacti-plugin-mgmt.php:2163
-#, fuzzy
 msgid "All Users"
 msgstr "Lietotājs"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
-#, fuzzy, php-format
+#, php-format
+msgid "%s Groups"
+msgstr "%s grupas"
+
+#: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
-msgid_plural "%s Groups"
-msgstr[0] "1 Grupa"
-msgstr[1] ""
-msgstr[2] ""
+msgstr "1 Grupa"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
 #, php-format
+msgid "%s Users"
+msgstr "%s lietotāji"
+
+#: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
-msgid_plural "%s Users"
-msgstr[0] "%d lietotājs"
-msgstr[1] "Lietotājs"
-msgstr[2] "Lietotājs"
+msgstr "%d lietotājs"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -820,7 +810,6 @@ msgid "Add the configuration file %s to Weathermap"
 msgstr "Konfigurācijas faila %s pievienošana laikapstākļu kartei"
 
 #: weathermap-cacti-plugin-mgmt.php:1461
-#, fuzzy
 msgid " Copy"
 msgstr "Kopēt"
 
@@ -862,7 +851,6 @@ msgid "Path mismatch"
 msgstr "Ceļa neatbilstība"
 
 #: weathermap-cacti-plugin-mgmt.php:1593
-#, fuzzy
 msgid "(No Title)"
 msgstr "Nosaukums (--title)"
 
@@ -915,12 +903,10 @@ msgid "Account Type"
 msgstr "Konta Tips"
 
 #: weathermap-cacti-plugin-mgmt.php:2125
-#, fuzzy
 msgid "User/Group"
 msgstr "Noklusējuma grafika politika šai lietotāju grupai"
 
 #: weathermap-cacti-plugin-mgmt.php:2128
-#, fuzzy
 msgid "Login Realm"
 msgstr "Nevar noteikt lietotāja pieteikšanās sfēru vai domēnu. Lūdzu, sazinieties ar sistēmas administratoru."
 
@@ -933,7 +919,6 @@ msgid "Full Name/Description"
 msgstr "Pilns nosaukums/apraksts"
 
 #: weathermap-cacti-plugin-mgmt.php:2138
-#, fuzzy
 msgid "Allowed"
 msgstr "Maksimālais atļautais pastiprināšanas tabulas izmērs:"
 
@@ -942,7 +927,6 @@ msgid "User"
 msgstr "Lietotājs"
 
 #: weathermap-cacti-plugin-mgmt.php:2161
-#, fuzzy
 msgid "User Group"
 msgstr "Noklusējuma grafika politika šai lietotāju grupai"
 
@@ -1001,7 +985,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Šai kartei vēl nav kartes iestatījumu. Dažus var pievienot, nospiežot pluszīmi \"+\" augšējā labajā stūrī."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "Lapas nosaukums"
 
@@ -1019,7 +1002,6 @@ msgid "Group Settings [ Group: %s ]"
 msgstr "Grupas iestatījumi [ Grupa: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2300
-#, fuzzy
 msgid "No Group"
 msgstr "Jauna grupa"
 
@@ -1110,7 +1092,6 @@ msgid "Editing Group: %s"
 msgstr "Rediģēšanas grupa: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
-#, fuzzy
 msgid "Group Name:"
 msgstr "Grupas nosaukums"
 
@@ -1135,7 +1116,6 @@ msgid "Rename this Group"
 msgstr "Pārdēvējiet šo grupu"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "Revīzijas žurnāla iestatījumi"
 
@@ -1152,7 +1132,6 @@ msgid "Enter a new name for the Weathermap Group."
 msgstr "Ievadiet jaunu laikapstākļu kartes grupas nosaukumu."
 
 #: weathermap-cacti-plugin-mgmt.php:2734
-#, fuzzy
 msgid "New Group Name"
 msgstr "Lietotājvārds"
 
@@ -1249,7 +1228,6 @@ msgid "Weathermap Management"
 msgstr "Laika ziņu kartes pārvaldība"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "Notīrīt filtrus"
 

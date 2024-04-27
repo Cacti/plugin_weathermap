@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:17-0400\n"
-"PO-Revision-Date: 2024-04-27 14:20-0400\n"
+"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"PO-Revision-Date: 2024-04-27 14:45-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: he_IL\n"
@@ -34,7 +34,6 @@ msgid "Network Weathermap"
 msgstr "מפת מזג אוויר ברשת"
 
 #: setup.php:216
-#, fuzzy
 msgid "Page style"
 msgstr "שם הדף "
 
@@ -95,7 +94,6 @@ msgid "Full Graphs"
 msgstr "גרפים מלאים"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "הגדר / רענן מסננים"
 
@@ -108,7 +106,7 @@ msgid "Automatic"
 msgstr "אוטומטי"
 
 #: setup.php:263 setup.php:264 setup.php:265
-#, fuzzy, php-format
+#, php-format
 msgid "%d Seconds"
 msgstr "%d שניות"
 
@@ -118,7 +116,7 @@ msgid "%d Minute"
 msgstr "‫%d דקה"
 
 #: setup.php:267 setup.php:268
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
 msgstr "דקות %d"
 
@@ -131,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "איזה פורמט אתה מעדיף עבור תמונות המפה שנוצרו ותמונות ממוזערות?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "ברירת מחדל"
 
@@ -183,7 +180,6 @@ msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "בעת שימוש בקבוצות, הוסף כרטיסייה 'כל המפות' לשורת הכרטיסיות."
 
 #: setup.php:312
-#, fuzzy
 msgid "No (default)"
 msgstr "ברירת מחדל"
 
@@ -208,7 +204,6 @@ msgid "Yes (default)"
 msgstr "כן (ברירת מחדל)"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "הגדרות יומן ביקורת"
 
@@ -249,7 +244,6 @@ msgid "Manage Weathermap"
 msgstr "ניהול מפת מזג אוויר"
 
 #: setup.php:626 setup.php:627
-#, fuzzy
 msgid "General Administration"
 msgstr "ניהול המערכת"
 
@@ -317,7 +311,6 @@ msgstr "הרשאות עריכה"
 
 #: setup.php:853 setup.php:860 weathermap-cacti-plugin-mgmt.php:730
 #: weathermap-cacti-plugin.php:394
-#, fuzzy
 msgid "Map Settings"
 msgstr "הגדרות יומן ביקורת"
 
@@ -723,22 +716,22 @@ msgid "All Users"
 msgstr "כל המשתמשים"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
-#, fuzzy, php-format
+#, php-format
+msgid "%s Groups"
+msgstr "קבוצות %s"
+
+#: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
-msgid_plural "%s Groups"
-msgstr[0] "1 קבוצה"
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr "1 קבוצה"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
-#, fuzzy, php-format
+#, php-format
+msgid "%s Users"
+msgstr "משתמשי %s"
+
+#: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
-msgid_plural "%s Users"
-msgstr[0] "משתמש"
-msgstr[1] "משתמש"
-msgstr[2] ""
-msgstr[3] ""
+msgstr "משתמש"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -766,7 +759,6 @@ msgid "Go"
 msgstr "עבור"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
-#, fuzzy
 msgid "Set/Refresh Filters"
 msgstr "הגדר / רענן מסננים"
 
@@ -1003,7 +995,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "אין עדיין הגדרות לפי מפה עבור מפה זו. אתה יכול להוסיף כמה על ידי לחיצה על סימן החיבור '+' בפינה השמאלית העליונה."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "שם הדף "
 
@@ -1135,7 +1126,6 @@ msgid "Rename this Group"
 msgstr "שינוי שם קבוצה זו"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "הגדרות יומן ביקורת"
 
@@ -1152,7 +1142,6 @@ msgid "Enter a new name for the Weathermap Group."
 msgstr "הזן שם חדש עבור הקבוצה Weathermap."
 
 #: weathermap-cacti-plugin-mgmt.php:2734
-#, fuzzy
 msgid "New Group Name"
 msgstr "שם משתמש"
 
@@ -1249,7 +1238,6 @@ msgid "Weathermap Management"
 msgstr "ניהול מפת מזג אוויר"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "מחיקת מסננים"
 
