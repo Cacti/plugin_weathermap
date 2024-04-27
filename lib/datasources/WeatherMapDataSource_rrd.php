@@ -616,7 +616,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		}
 
 		$use_poller_output = intval($map->get_hint('rrd_use_poller_output'));
-		$nowarn_po_agg = intval($map->get_hint('nowarn_rrd_poller_output_aggregation'));
+		$nowarn_po_agg     = intval($map->get_hint('nowarn_rrd_poller_output_aggregation'));
 		$aggregatefunction = $map->get_hint('rrd_aggregate_function');
 
 		if ($aggregatefunction != '' && $use_poller_output==1) {
@@ -633,9 +633,11 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			WeatherMapDataSource_rrd::wmrrd_read_from_poller_output($rrdfile, 'AVERAGE', $start, $end, $dsnames, $data, $map, $data_time, $item);
 		}
 
-		// if poller_output didn't get anything, or if it couldn't/didn't run, do it the old-fashioned way
-		// - this will still be the case for the first couple of runs after enabling poller_output support
-		//   because there won't be valid data in the weathermap_data table yet.
+		/**
+		 * if poller_output didn't get anything, or if it couldn't/didn't run, do it the old-fashioned way
+		 * this will still be the case for the first couple of runs after enabling poller_output support
+		 * because there won't be valid data in the weathermap_data table yet.
+		 */
 		if (($dsnames[IN] != '-' && $data[IN] === null) || ($dsnames[OUT] != '-' && $data[OUT] === null)) {
 			if ($use_poller_output == 1) {
 				wm_debug('poller_output didn\'t get anything useful. Kicking it old school.');
@@ -658,23 +660,22 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 				if ((1==0) && extension_loaded('RRDTool')) {
 					// fetch the values via the RRDtool Extension {
 					WeatherMapDataSource_rrd::wmrrd_read_from_php_rrd($rrdfile, $cfname, $start, $end, $dsnames, $data, $map, $data_time, $item);
+				} elseif ($aggregatefunction != '') {
+					WeatherMapDataSource_rrd::wmrrd_read_from_real_rrdtool_aggregate($rrdfile, $cfname, $aggregatefunction, $start, $end, $dsnames, $data,$map, $data_time, $item);
 				} else {
-					if ($aggregatefunction != '') {
-						WeatherMapDataSource_rrd::wmrrd_read_from_real_rrdtool_aggregate($rrdfile, $cfname, $aggregatefunction, $start, $end, $dsnames, $data,$map, $data_time, $item);
-					} else {
-						// do this the tried and trusted old-fashioned way
-						WeatherMapDataSource_rrd::wmrrd_read_from_real_rrdtool($rrdfile, $cfname, $start, $end, $dsnames, $data, $map, $data_time, $item);
-					}
+					// do this the tried and trusted old-fashioned way
+					WeatherMapDataSource_rrd::wmrrd_read_from_real_rrdtool($rrdfile, $cfname, $start, $end, $dsnames, $data, $map, $data_time, $item);
 				}
 			} else {
 				wm_warn("Target $rrdfile doesn't exist. Is it a file? [WMRRD06]");
 			}
 		}
 
-		// if the Locale says that , is the decimal point, then rrdtool
-		// will honour it. However, floatval() doesn't, so let's replace
-		// any , with . (there are never thousands separators, luckily)
-		//
+		/**
+		 * if the Locale says that , is the decimal point, then rrdtool
+		 * will honour it. However, floatval() doesn't, so let's replace
+		 * any , with . (there are never thousands separators, luckily)
+		 */
 		if ($data[IN] !== null) {
 			$data[IN] = floatval(str_replace(',', '.', $data[IN]));
 			$data[IN] = $data[IN] * $multiplier;

@@ -589,9 +589,9 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 		print '<script src="' . $config['url_path'] . 'plugins/weathermap/js/idle-timer.min.js"></script>';
 
 		if ($limit_to_group > 0) {
-			$html = __('Showing %s1%s of %s1%s. Cycling all available maps in this group.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');
+			$html = __('Showing %s %s of %s %s. Cycling all available maps in this group.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');
 		} else {
-			$html = __('Showing %s1%s of %s1%s. Cycling all available maps.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');
+			$html = __('Showing %s %s of %s %s. Cycling all available maps.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');
 		}
 
 		if ($fullscreen == 0) {
