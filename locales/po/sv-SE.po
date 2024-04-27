@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: 2024-04-27 13:59-0400\n"
+"POT-Creation-Date: 2024-04-27 14:17-0400\n"
+"PO-Revision-Date: 2024-04-27 14:27-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -94,7 +94,6 @@ msgid "Full Graphs"
 msgstr "Fullständiga grafer"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "Ange / Uppdatera filter"
 
@@ -107,17 +106,17 @@ msgid "Automatic"
 msgstr "Automatiskt"
 
 #: setup.php:263 setup.php:264 setup.php:265
-#, fuzzy, php-format
+#, php-format
 msgid "%d Seconds"
 msgstr "%d sekunder"
 
 #: setup.php:266
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minute"
 msgstr "% d månad"
 
 #: setup.php:267 setup.php:268
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
 msgstr "%d minuter"
 
@@ -130,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Vilket format föredrar du för de genererade kartbilderna och miniatyrbilderna?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "Standard"
 
@@ -182,7 +180,6 @@ msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "När du använder grupper lägger du till fliken Alla kartor i flikfältet."
 
 #: setup.php:312
-#, fuzzy
 msgid "No (default)"
 msgstr "Standard"
 
@@ -207,7 +204,6 @@ msgid "Yes (default)"
 msgstr "Ja (standardvärde)"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "Audit Log Settings"
 
@@ -396,7 +392,6 @@ msgid "All"
 msgstr "Alla"
 
 #: weathermap-cacti-plugin-mgmt.php:52
-#, fuzzy
 msgid "Delete"
 msgstr "Radera"
 
@@ -421,7 +416,6 @@ msgid "Revoke Access"
 msgstr "Återkalla åtkomst"
 
 #: weathermap-cacti-plugin-mgmt.php:266 weathermap-cacti-plugin-mgmt.php:290
-#, fuzzy
 msgid "No such file."
 msgstr "Misslyckades skriva filen till disken"
 
@@ -478,7 +472,6 @@ msgstr[0] "Klicka på \"Fortsätt\" för att duplicera följande väderkarta. Om
 msgstr[1] "Klicka på \"Fortsätt\" för att duplicera följande väderkartor. Om du vill kan du ändra titelformatet för de nya väderkartorna."
 
 #: weathermap-cacti-plugin-mgmt.php:497
-#, fuzzy
 msgid "Title Format:"
 msgstr "Rubrikformat"
 
@@ -561,7 +554,6 @@ msgid "Default"
 msgstr "Standard"
 
 #: weathermap-cacti-plugin-mgmt.php:727 weathermap-cacti-plugin-mgmt.php:1864
-#, fuzzy
 msgctxt "Button: use filter settings"
 msgid "Go"
 msgstr "Start"
@@ -696,7 +688,6 @@ msgid "Click to edit permissions"
 msgstr "Klicka här om du vill redigera behörigheter"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
-#, fuzzy
 msgid "No Users"
 msgstr "Användare"
 
@@ -705,16 +696,18 @@ msgid "All Users"
 msgstr "Alla Användare"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
+#, php-format
 msgid "1 Group"
-msgid_plural " Groups"
+msgid_plural "%s Groups"
 msgstr[0] "1 Grupp"
-msgstr[1] " Grupper"
+msgstr[1] "%sgrupper"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
+#, php-format
 msgid "1 User"
-msgid_plural " Users"
+msgid_plural "%s Users"
 msgstr[0] "Användare"
-msgstr[1] " Användare"
+msgstr[1] "%selever"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -742,7 +735,6 @@ msgid "Go"
 msgstr "Start"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
-#, fuzzy
 msgid "Set/Refresh Filters"
 msgstr "Ange / Uppdatera filter"
 
@@ -845,7 +837,6 @@ msgid "Path mismatch"
 msgstr "Matchningsfel för sökväg"
 
 #: weathermap-cacti-plugin-mgmt.php:1593
-#, fuzzy
 msgid "(No Title)"
 msgstr "Titel"
 
@@ -980,7 +971,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Det finns inga inställningar per karta för den här kartan ännu. Du kan lägga till några genom att trycka på plustecknet \"+\" längst upp till höger."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "Sidonamn"
 
@@ -1088,7 +1078,6 @@ msgid "Editing Group: %s"
 msgstr "Redigeringsgrupp: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
-#, fuzzy
 msgid "Group Name:"
 msgstr "Gruppnamn"
 
@@ -1113,7 +1102,6 @@ msgid "Rename this Group"
 msgstr "Byt namn på den här gruppen"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "Audit Log Settings"
 
@@ -1226,7 +1214,6 @@ msgid "Weathermap Management"
 msgstr "Hantering av väderkartor"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "Rensa filter"
 

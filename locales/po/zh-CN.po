@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: 2024-04-27 14:01-0400\n"
+"POT-Creation-Date: 2024-04-27 14:17-0400\n"
+"PO-Revision-Date: 2024-04-27 14:29-0400\n"
 "Last-Translator: whsir <wh@whsir.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/audit/zh-CN/>\n"
 "Language: zh_CN\n"
@@ -111,12 +111,12 @@ msgid "%d Seconds"
 msgstr "%d 秒"
 
 #: setup.php:266
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minute"
 msgstr "%d 分钟"
 
 #: setup.php:267 setup.php:268
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
 msgstr "%d分钟"
 
@@ -129,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "对于生成的地图图像和缩略图，您更喜欢哪种格式？"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "默认"
 
@@ -197,7 +196,6 @@ msgid "Show a combo-box map selector on the full-screen map view."
 msgstr "在全屏地图视图上显示组合框地图选择器。"
 
 #: setup.php:321 weathermap-cacti-plugin-mgmt.php:1008
-#, fuzzy
 msgid "No"
 msgstr "否"
 
@@ -206,7 +204,6 @@ msgid "Yes (default)"
 msgstr "是 (默认)"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "审核日志设置"
 
@@ -519,7 +516,7 @@ msgid "Local Documentation"
 msgstr "本地文档"
 
 #: weathermap-cacti-plugin-mgmt.php:567
-#, fuzzy, php-format
+#, php-format
 msgid "This is version %s"
 msgstr "版本 %s %s"
 
@@ -547,7 +544,6 @@ msgid "Default"
 msgstr "默认"
 
 #: weathermap-cacti-plugin-mgmt.php:727 weathermap-cacti-plugin-mgmt.php:1864
-#, fuzzy
 msgctxt "Button: use filter settings"
 msgid "Go"
 msgstr "Go"
@@ -690,13 +686,15 @@ msgid "All Users"
 msgstr "所有用户"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
+#, php-format
 msgid "1 Group"
-msgid_plural " Groups"
+msgid_plural "%s Groups"
 msgstr[0] "1组"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
+#, php-format
 msgid "1 User"
-msgid_plural " Users"
+msgid_plural "%s Users"
 msgstr[0] "%d 用户"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
@@ -851,7 +849,6 @@ msgid "Weathermap Permissions for Map [ %s ]"
 msgstr "地图的天气图权限 [ %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:1828
-#, fuzzy
 msgid "Type"
 msgstr "Type"
 
@@ -864,7 +861,6 @@ msgid "User Groups"
 msgstr "用户组"
 
 #: weathermap-cacti-plugin-mgmt.php:1838
-#, fuzzy
 msgid "Rows"
 msgstr "行数:"
 
@@ -925,12 +921,10 @@ msgid "LDAP/AD"
 msgstr "LDAP/AD型"
 
 #: weathermap-cacti-plugin-mgmt.php:2185
-#, fuzzy
 msgid "Not Permitted"
 msgstr "您不能访问Cacti 的这个部分."
 
 #: weathermap-cacti-plugin-mgmt.php:2187
-#, fuzzy
 msgid "Permitted"
 msgstr "您不能访问Cacti 的这个部分."
 
@@ -965,7 +959,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "此地图尚无每个地图的设置。您可以通过按右上角的加号“+”来添加一些。"
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "页面名称"
 
@@ -1073,7 +1066,6 @@ msgid "Editing Group: %s"
 msgstr "编辑组：%s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
-#, fuzzy
 msgid "Group Name:"
 msgstr "用户组名称"
 
@@ -1098,7 +1090,6 @@ msgid "Rename this Group"
 msgstr "重命名此组"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "审核日志设置"
 
@@ -1211,7 +1202,6 @@ msgid "Weathermap Management"
 msgstr "天气图管理"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "清除过滤器"
 

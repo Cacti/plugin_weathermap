@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 13:48-0400\n"
+"POT-Creation-Date: 2024-04-27 14:17-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -696,14 +696,16 @@ msgid "All Users"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php:1067
+#, php-format
 msgid "1 Group"
-msgid_plural " Groups"
+msgid_plural "%s Groups"
 msgstr[0] ""
 msgstr[1] ""
 
 #: weathermap-cacti-plugin-mgmt.php:1071
+#, php-format
 msgid "1 User"
-msgid_plural " Users"
+msgid_plural "%s Users"
 msgstr[0] ""
 msgstr[1] ""
 

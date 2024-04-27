@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: 2024-04-27 14:00-0400\n"
+"POT-Creation-Date: 2024-04-27 14:17-0400\n"
+"PO-Revision-Date: 2024-04-27 14:28-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: vi_VN\n"
@@ -94,7 +94,6 @@ msgid "Full Graphs"
 msgstr "Biểu đồ đầy đủ"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "Đặt / Làm mới Bộ lọc"
 
@@ -130,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Bạn thích định dạng nào cho hình ảnh bản đồ và hình thu nhỏ được tạo?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "Mặc định"
 
@@ -182,7 +180,6 @@ msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "Khi sử dụng nhóm, hãy thêm tab \"Tất cả bản đồ\" vào thanh tab."
 
 #: setup.php:312
-#, fuzzy
 msgid "No (default)"
 msgstr "Mặc định"
 
@@ -207,7 +204,6 @@ msgid "Yes (default)"
 msgstr "Có (mặc định)"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "Cài đặt nhật ký kiểm toán"
 
@@ -248,7 +244,6 @@ msgid "Manage Weathermap"
 msgstr "Quản lý Weathermap"
 
 #: setup.php:626 setup.php:627
-#, fuzzy
 msgid "General Administration"
 msgstr "Quản lí hệ thống"
 
@@ -683,7 +678,6 @@ msgid "Click to edit permissions"
 msgstr "Nhấp để chỉnh sửa quyền"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
-#, fuzzy
 msgid "No Users"
 msgstr "Người dùng"
 
@@ -692,13 +686,15 @@ msgid "All Users"
 msgstr "Tất cả người dùng"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
+#, php-format
 msgid "1 Group"
-msgid_plural " Groups"
+msgid_plural "%s Groups"
 msgstr[0] "1 Nhóm"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
+#, php-format
 msgid "1 User"
-msgid_plural " Users"
+msgid_plural "%s Users"
 msgstr[0] "%d Users"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
@@ -727,7 +723,6 @@ msgid "Go"
 msgstr "Đi"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
-#, fuzzy
 msgid "Set/Refresh Filters"
 msgstr "Đặt / Làm mới Bộ lọc"
 
@@ -964,7 +959,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Chưa có cài đặt nào cho mỗi Bản đồ cho Bản đồ này. Bạn có thể thêm một số bằng cách nhấn dấu cộng '+' ở trên cùng bên phải."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "Tên trang"
 
@@ -982,7 +976,6 @@ msgid "Group Settings [ Group: %s ]"
 msgstr "Cài đặt nhóm [ Nhóm: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2300
-#, fuzzy
 msgid "No Group"
 msgstr "Nhóm"
 
@@ -1097,7 +1090,6 @@ msgid "Rename this Group"
 msgstr "Đổi tên Nhóm này"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "Cài đặt nhật ký kiểm toán"
 
@@ -1114,7 +1106,6 @@ msgid "Enter a new name for the Weathermap Group."
 msgstr "Nhập tên mới cho Nhóm Weathermap."
 
 #: weathermap-cacti-plugin-mgmt.php:2734
-#, fuzzy
 msgid "New Group Name"
 msgstr "Tên người dùng"
 
@@ -1211,7 +1202,6 @@ msgid "Weathermap Management"
 msgstr "Quản lý bản đồ thời tiết"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "Xóa bộ lọc"
 

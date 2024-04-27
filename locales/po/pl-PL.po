@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: 2024-04-27 13:57-0400\n"
+"POT-Creation-Date: 2024-04-27 14:17-0400\n"
+"PO-Revision-Date: 2024-04-27 14:25-0400\n"
 "Last-Translator: kaktus <kaktus_j_p@o2.pl>\n"
 "Language-Team: Polish <http://translate.cacti.net/projects/cacti/audit/pl/>\n"
 "Language: pl_PL\n"
@@ -94,7 +94,6 @@ msgid "Full Graphs"
 msgstr "Pełne wykresy"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "Ustaw / odśwież filtry"
 
@@ -130,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Jaki format preferujesz dla generowanych obrazów map i miniatur?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "Domyślny"
 
@@ -206,7 +204,6 @@ msgid "Yes (default)"
 msgstr "Tak (domyślnie)"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "Ustawienia dziennika audytu"
 
@@ -478,7 +475,6 @@ msgstr[1] ""
 msgstr[2] ""
 
 #: weathermap-cacti-plugin-mgmt.php:497
-#, fuzzy
 msgid "Title Format:"
 msgstr "Format tytułu"
 
@@ -702,7 +698,6 @@ msgid "Click to edit permissions"
 msgstr "Kliknij, aby edytować uprawnienia"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
-#, fuzzy
 msgid "No Users"
 msgstr "Użytkownicy"
 
@@ -711,18 +706,20 @@ msgid "All Users"
 msgstr "Wszyscy użytkownicy"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
+#, php-format
 msgid "1 Group"
-msgid_plural " Groups"
+msgid_plural "%s Groups"
 msgstr[0] "1 Grupa"
 msgstr[1] ""
 msgstr[2] ""
 
 #: weathermap-cacti-plugin-mgmt.php:1071
+#, php-format
 msgid "1 User"
-msgid_plural " Users"
+msgid_plural "%s Users"
 msgstr[0] "1 użytkownik"
-msgstr[1] "Użytkownik"
-msgstr[2] "Użytkownik"
+msgstr[1] ""
+msgstr[2] ""
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -986,7 +983,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Nie ma jeszcze ustawień dla poszczególnych map dla tej mapy. Możesz je dodać, naciskając znak plus \"+\" w prawym górnym rogu."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "Nazwa Strony"
 
@@ -1094,7 +1090,6 @@ msgid "Editing Group: %s"
 msgstr "Grupa edycyjna: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
-#, fuzzy
 msgid "Group Name:"
 msgstr "Nazwa grupy"
 
@@ -1119,7 +1114,6 @@ msgid "Rename this Group"
 msgstr "Zmienianie nazwy tej grupy"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "Ustawienia dziennika audytu"
 
@@ -1232,7 +1226,6 @@ msgid "Weathermap Management"
 msgstr "Zarządzanie mapą pogody"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "Wyczyść filtry"
 

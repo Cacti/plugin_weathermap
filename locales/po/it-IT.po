@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: 2024-04-27 13:54-0400\n"
+"POT-Creation-Date: 2024-04-27 14:17-0400\n"
+"PO-Revision-Date: 2024-04-27 14:22-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -94,7 +94,6 @@ msgid "Full Graphs"
 msgstr "Grafici completi"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "Impostazione/Rifresh Filtri"
 
@@ -107,7 +106,7 @@ msgid "Automatic"
 msgstr "Automatico"
 
 #: setup.php:263 setup.php:264 setup.php:265
-#, fuzzy, php-format
+#, php-format
 msgid "%d Seconds"
 msgstr "%d Secondi"
 
@@ -117,7 +116,7 @@ msgid "%d Minute"
 msgstr "%d Minuto"
 
 #: setup.php:267 setup.php:268
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
 msgstr "%d Minuti"
 
@@ -130,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Quale formato preferisci per le immagini e le miniature delle mappe generate?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "Predefinito"
 
@@ -206,7 +204,6 @@ msgid "Yes (default)"
 msgstr "Sì (predefinito)"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "Impostazioni del registro di controllo"
 
@@ -301,7 +298,6 @@ msgid "View Configuration"
 msgstr "Visualizza configurazione"
 
 #: setup.php:832 weathermap-cacti-plugin.php:396
-#, fuzzy
 msgid "Edit Map"
 msgstr "Modifica mapping..."
 
@@ -530,9 +526,9 @@ msgid "Local Documentation"
 msgstr "Documentazione locale"
 
 #: weathermap-cacti-plugin-mgmt.php:567
-#, fuzzy, php-format
+#, php-format
 msgid "This is version %s"
-msgstr "Versione %s %s"
+msgstr "Versione %s"
 
 #: weathermap-cacti-plugin-mgmt.php:567
 msgid "Weathermap Website"
@@ -700,16 +696,18 @@ msgid "All Users"
 msgstr "Tutti gli Utenti"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
+#, php-format
 msgid "1 Group"
-msgid_plural " Groups"
+msgid_plural "%s Groups"
 msgstr[0] "1 Gruppo"
-msgstr[1] " Gruppi"
+msgstr[1] "%s gruppi"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
+#, php-format
 msgid "1 User"
-msgid_plural " Users"
-msgstr[0] "%d utenti"
-msgstr[1] "Utente"
+msgid_plural "%s Users"
+msgstr[0] "%s Unenti"
+msgstr[1] "%s Utenti"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -737,7 +735,6 @@ msgid "Go"
 msgstr "Vai"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
-#, fuzzy
 msgid "Set/Refresh Filters"
 msgstr "Impostazione/Rifresh Filtri"
 
@@ -892,7 +889,6 @@ msgid "Account Type"
 msgstr "Tipo Account"
 
 #: weathermap-cacti-plugin-mgmt.php:2125
-#, fuzzy
 msgid "User/Group"
 msgstr "Copia gruppo di utenti"
 
@@ -975,7 +971,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Non ci sono ancora impostazioni per mappa per questa mappa. Puoi aggiungerne alcuni premendo il segno più \"+\" in alto a destra."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "Nome Pagina"
 
@@ -1107,7 +1102,6 @@ msgid "Rename this Group"
 msgstr "Rinomina questo gruppo"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "Impostazioni del registro di controllo"
 
@@ -1220,7 +1214,6 @@ msgid "Weathermap Management"
 msgstr "Gestione delle mappe meteorologiche"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "Pulisci filtri"
 

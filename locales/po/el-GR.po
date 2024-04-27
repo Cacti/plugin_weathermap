@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: 2024-04-27 13:50-0400\n"
+"POT-Creation-Date: 2024-04-27 14:17-0400\n"
+"PO-Revision-Date: 2024-04-27 14:20-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: el_GR\n"
@@ -703,17 +703,18 @@ msgid "All Users"
 msgstr "Όλοι οι Χρήστες"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
+#, fuzzy, php-format
 msgid "1 Group"
-msgid_plural " Groups"
+msgid_plural "%s Groups"
 msgstr[0] "1 Ομάδα"
 msgstr[1] " Ομαδεσ"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
-#, fuzzy
+#, php-format
 msgid "1 User"
-msgid_plural " Users"
+msgid_plural "%s Users"
 msgstr[0] "Χρήστης"
-msgstr[1] "Χρήστης"
+msgstr[1] "%s Χρήστες"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"

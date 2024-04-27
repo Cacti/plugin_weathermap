@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: 2024-04-27 14:02-0400\n"
+"POT-Creation-Date: 2024-04-27 14:17-0400\n"
+"PO-Revision-Date: 2024-04-27 14:29-0400\n"
 "Last-Translator: Linya Huang <linya0405@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <http://translate.cacti.net/projects/cacti/audit/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -94,7 +94,6 @@ msgid "Full Graphs"
 msgstr "完整圖表"
 
 #: setup.php:258
-#, fuzzy
 msgid "Refresh Time"
 msgstr "設置/刷新過濾器"
 
@@ -130,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "對於生成的地圖圖像和縮圖，您更喜歡哪種格式？"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "預設"
 
@@ -206,7 +204,6 @@ msgid "Yes (default)"
 msgstr "是（預設值）"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "審核日誌設置"
 
@@ -519,7 +516,7 @@ msgid "Local Documentation"
 msgstr "本地文件"
 
 #: weathermap-cacti-plugin-mgmt.php:567
-#, fuzzy, php-format
+#, php-format
 msgid "This is version %s"
 msgstr "版本％s％s"
 
@@ -689,13 +686,15 @@ msgid "All Users"
 msgstr "所有用戶"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
+#, php-format
 msgid "1 Group"
-msgid_plural " Groups"
+msgid_plural "%s Groups"
 msgstr[0] "1組"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
+#, php-format
 msgid "1 User"
-msgid_plural " Users"
+msgid_plural "%s Users"
 msgstr[0] "%d 個使用者"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
@@ -878,7 +877,6 @@ msgid "Account Type"
 msgstr "帳戶類型"
 
 #: weathermap-cacti-plugin-mgmt.php:2125
-#, fuzzy
 msgid "User/Group"
 msgstr "單擊“繼續”將以下用戶組複製到新用戶組。"
 
@@ -923,12 +921,10 @@ msgid "LDAP/AD"
 msgstr "LDAP/AD型"
 
 #: weathermap-cacti-plugin-mgmt.php:2185
-#, fuzzy
 msgid "Not Permitted"
 msgstr "指定模板或來賓用戶不允許更改用戶名。"
 
 #: weathermap-cacti-plugin-mgmt.php:2187
-#, fuzzy
 msgid "Permitted"
 msgstr "指定模板或來賓用戶不允許更改用戶名。"
 
@@ -963,7 +959,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "此地圖尚無每個地圖的設置。您可以通過按右上角的加號“+”來添加一些。"
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "頁面名稱"
 
@@ -981,7 +976,6 @@ msgid "Group Settings [ Group: %s ]"
 msgstr "組設置 [ 組： %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2300
-#, fuzzy
 msgid "No Group"
 msgstr "群組"
 
@@ -1072,7 +1066,6 @@ msgid "Editing Group: %s"
 msgstr "編輯群組：%s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
-#, fuzzy
 msgid "Group Name:"
 msgstr "群組名稱"
 
@@ -1097,7 +1090,6 @@ msgid "Rename this Group"
 msgstr "重新命名此組"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "審核日誌設置"
 
@@ -1210,7 +1202,6 @@ msgid "Weathermap Management"
 msgstr "天氣圖管理"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "清除過濾器"
 

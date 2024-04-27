@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: 2024-04-27 14:00-0400\n"
+"POT-Creation-Date: 2024-04-27 14:17-0400\n"
+"PO-Revision-Date: 2024-04-27 14:28-0400\n"
 "Last-Translator: San IPE <sanipe1949@krunsea.com>\n"
 "Language-Team: Turkish <http://translate.cacti.net/projects/cacti/audit/tr/>\n"
 "Language: tr_TR\n"
@@ -106,7 +106,7 @@ msgid "Automatic"
 msgstr "Otomatik"
 
 #: setup.php:263 setup.php:264 setup.php:265
-#, fuzzy, php-format
+#, php-format
 msgid "%d Seconds"
 msgstr "%d saniye"
 
@@ -129,7 +129,6 @@ msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Oluşturulan harita görüntüleri ve küçük resimler için hangi formatı tercih edersiniz?"
 
 #: setup.php:276
-#, fuzzy
 msgid "PNG (default)"
 msgstr "Varsayılan"
 
@@ -181,7 +180,6 @@ msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "Grupları kullanırken, sekme çubuğuna bir 'Tüm Haritalar' sekmesi ekleyin."
 
 #: setup.php:312
-#, fuzzy
 msgid "No (default)"
 msgstr "Varsayılan"
 
@@ -202,12 +200,10 @@ msgid "No"
 msgstr "Hayır"
 
 #: setup.php:322
-#, fuzzy
 msgid "Yes (default)"
 msgstr "Varsayılan"
 
 #: setup.php:326
-#, fuzzy
 msgid "Quiet Logging"
 msgstr "Denetim Günlüğü Ayarları"
 
@@ -248,7 +244,6 @@ msgid "Manage Weathermap"
 msgstr "Hava Durumu Haritasını Yönet"
 
 #: setup.php:626 setup.php:627
-#, fuzzy
 msgid "General Administration"
 msgstr "Sistem Yönetimi"
 
@@ -701,16 +696,18 @@ msgid "All Users"
 msgstr "Tüm Kullanıcılar"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
+#, php-format
 msgid "1 Group"
-msgid_plural " Groups"
+msgid_plural "%s Groups"
 msgstr[0] "1 Grup"
 msgstr[1] " Grup"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
+#, php-format
 msgid "1 User"
-msgid_plural " Users"
+msgid_plural "%s Users"
 msgstr[0] "%d  Kullanıcı"
-msgstr[1] " Kullanıcılar"
+msgstr[1] "%s Kullanıcıları"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
@@ -840,7 +837,6 @@ msgid "Path mismatch"
 msgstr "Yol uyumsuzluğu"
 
 #: weathermap-cacti-plugin-mgmt.php:1593
-#, fuzzy
 msgid "(No Title)"
 msgstr "Başlık:"
 
@@ -975,7 +971,6 @@ msgid "There are no per Map settings for this Map yet. You can add some by press
 msgstr "Bu Harita için henüz Harita başına ayar yok. Sağ üstteki artı işareti '+' tuşuna basarak biraz ekleyebilirsiniz."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
-#, fuzzy
 msgid "Usage Notes"
 msgstr "Sayfa İsmi"
 
@@ -993,7 +988,6 @@ msgid "Group Settings [ Group: %s ]"
 msgstr "Grup Ayarları [ Grup: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2300
-#, fuzzy
 msgid "No Group"
 msgstr "Grup"
 
@@ -1084,7 +1078,6 @@ msgid "Editing Group: %s"
 msgstr "Düzenleme Grubu: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
-#, fuzzy
 msgid "Group Name:"
 msgstr "Grup Adı"
 
@@ -1109,7 +1102,6 @@ msgid "Rename this Group"
 msgstr "Bu Grubu Yeniden Adlandır"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
-#, fuzzy
 msgid "Edit Group Settings"
 msgstr "Denetim Günlüğü Ayarları"
 
@@ -1222,7 +1214,6 @@ msgid "Weathermap Management"
 msgstr "Hava Durumu Haritası Yönetimi"
 
 #: weathermap-cacti-plugin.php:795
-#, fuzzy
 msgid "Weathermap Filter"
 msgstr "Filtreleri Temizle"
 
