@@ -1,1224 +1,1227 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR The Cacti Group
-# This file is distributed under the same license as the Cacti package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti \n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Cacti Developers <developers@cacti.net>>\n"
-"Language-Team: Cacti Developers <developers@cacti.net>\n"
-"Language: \n"
+"PO-Revision-Date: 2024-04-27 13:55-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ko_KR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: lib/editor.inc.php:259
 #, php-format
 msgid "Welcome to the PHP Weathermap %s Editor"
-msgstr ""
+msgstr "PHP Weathermap %s 편집기에 오신 것을 환영합니다."
 
 #: setup.php:208 setup.php:602 setup.php:748 setup.php:755 setup.php:762
 #: setup.php:769 setup.php:776
 msgid "Weathermap"
-msgstr ""
+msgstr "날씨 지도"
 
 #: setup.php:212 weathermap-cacti-plugin.php:476
 #: weathermap-cacti-plugin.php:570
 msgid "Network Weathermap"
-msgstr ""
+msgstr "네트워크 웨더맵"
 
 #: setup.php:216
 msgid "Page style"
-msgstr ""
+msgstr "페이지 스타일"
 
 #: setup.php:217
 msgid "How to display multiple maps."
-msgstr ""
+msgstr "여러 지도를 표시하는 방법"
 
 #: setup.php:220
 msgid "Thumbnail Overview"
-msgstr ""
+msgstr "썸네일 개요"
 
 #: setup.php:221
 msgid "Full Images"
-msgstr ""
+msgstr "전체 이미지"
 
 #: setup.php:222
 msgid "Show Only First"
-msgstr ""
+msgstr "먼저 표시만"
 
 #: setup.php:226
 msgid "Thumbnail Maximum Size"
-msgstr ""
+msgstr "썸네일 최대 크기"
 
 #: setup.php:227
 msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
-msgstr ""
+msgstr "썸네일 보기에서 썸네일의 최대 너비 또는 높이(픽셀)입니다. 다음 폴러 실행 후에 적용됩니다."
 
 #: setup.php:233
 msgid "Hover Graph Default Width"
-msgstr ""
+msgstr "호버 그래프 기본 너비(Hover Graph Default Width)"
 
 #: setup.php:234
 msgid "The default width of the RRDtool Graphs that appear when you over on a Link."
-msgstr ""
+msgstr "RRDtool 그래프의 기본 너비는 링크를 넘길 때 나타납니다."
 
 #: setup.php:241
 msgid "Hover Graph Default Height"
-msgstr ""
+msgstr "호버 그래프 기본 높이(Hover Graph Default Height)"
 
 #: setup.php:242
 msgid "The default height of the RRDtool Graphs that appear when you over on a Link."
-msgstr ""
+msgstr "링크를 넘길 때 나타나는 RRDtool 그래프의 기본 높이입니다."
 
 #: setup.php:249
 msgid "Hover Graph Style"
-msgstr ""
+msgstr "호버 그래프 스타일"
 
 #: setup.php:250
 msgid "When hovering over the Links or Nodes, what style of Graph would you like displayed?"
-msgstr ""
+msgstr "링크 또는 노드 위로 마우스를 가져갈 때 어떤 스타일의 그래프를 표시하시겠습니까?"
 
 #: setup.php:253
 msgid "Thumbnail Graphs"
-msgstr ""
+msgstr "썸네일 그래프"
 
 #: setup.php:254
 msgid "Full Graphs"
-msgstr ""
+msgstr "전체 그래프"
 
 #: setup.php:258
 msgid "Refresh Time"
-msgstr ""
+msgstr "시간 새로고침"
 
 #: setup.php:259
 msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
-msgstr ""
+msgstr "주기 모드에서 페이지를 새로 고치는 빈도입니다. 자동은 사용 가능한 모든 맵을 5분 안에 맞춥니다."
 
 #: setup.php:262
 msgid "Automatic"
-msgstr ""
+msgstr "자동"
 
 #: setup.php:263 setup.php:264 setup.php:265
-#, php-format
+#, fuzzy, php-format
 msgid "%d Seconds"
-msgstr ""
+msgstr "%d 초"
 
 #: setup.php:266
 #, php-format
 msgid "%d Minute"
-msgstr ""
+msgstr "%d 분"
 
 #: setup.php:267 setup.php:268
 #, php-format
 msgid "%d Minutes"
-msgstr ""
+msgstr "%d 분"
 
 #: setup.php:272
 msgid "Output Format"
-msgstr ""
+msgstr "출력 형식"
 
 #: setup.php:273
 msgid "What format do you prefer for the generated map images and thumbnails?"
-msgstr ""
+msgstr "생성된 지도 이미지와 썸네일에 어떤 형식을 선호하십니까?"
 
 #: setup.php:276
+#, fuzzy
 msgid "PNG (default)"
-msgstr ""
+msgstr "기본값"
 
 #: setup.php:277
 msgid "JPEG"
-msgstr ""
+msgstr "JPEG (영문)"
 
 #: setup.php:278
 msgid "GIF"
-msgstr ""
+msgstr "Gif"
 
 #: setup.php:282
 msgid "Map Rendering Interval"
-msgstr ""
+msgstr "맵 렌더링 간격(Map Rendering Interval)"
 
 #: setup.php:283
 msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
-msgstr ""
+msgstr "Weathermap이 얼마나 자주 지도를 다시 계산하기를 원하십니까? 당신이 무엇을하고 있는지 알지 못하는 한 이것을 만져서는 안됩니다! 주로 비표준 폴링 설정을 사용하는 사람들에게 필요합니다."
 
 #: setup.php:286
 msgid "Never (manual updates)"
-msgstr ""
+msgstr "사용 안 함(수동 업데이트)"
 
 #: setup.php:287
 msgid "Every Poller Cycle (default)"
-msgstr ""
+msgstr "모든 폴러 주기(기본값)"
 
 #: setup.php:288 setup.php:289 setup.php:290 setup.php:291 setup.php:292
 #: setup.php:293 setup.php:294 setup.php:295 setup.php:296 setup.php:297
 #: setup.php:298
 #, php-format
 msgid "Every %d Poller Cycles"
-msgstr ""
+msgstr "%d 폴러 사이클마다"
 
 #: setup.php:302
 msgid "Show Weathermap Help Links"
-msgstr ""
+msgstr "Weathermap 도움말 링크 표시"
 
 #: setup.php:303
 msgid "If checked, all Weathermap pages will include a link to documentation."
-msgstr ""
+msgstr "이 확인란을 선택하면 모든 Weathermap 페이지에 문서 링크가 포함됩니다."
 
 #: setup.php:308
 msgid "Show 'All' Tab"
-msgstr ""
+msgstr "'전체' 탭 표시"
 
 #: setup.php:309
 msgid "When using groups, add an 'All Maps' tab to the tab bar."
-msgstr ""
+msgstr "그룹을 사용하는 경우 탭 표시줄에 '모든 지도' 탭을 추가합니다."
 
 #: setup.php:312
+#, fuzzy
 msgid "No (default)"
-msgstr ""
+msgstr "기본값"
 
 #: setup.php:313 weathermap-cacti-plugin-mgmt.php:1001
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 #: setup.php:317
 msgid "Show Map Selector"
-msgstr ""
+msgstr "지도 선택기 표시"
 
 #: setup.php:318
 msgid "Show a combo-box map selector on the full-screen map view."
-msgstr ""
+msgstr "전체 화면 지도 보기에 콤보 상자 지도 선택기를 표시합니다."
 
 #: setup.php:321 weathermap-cacti-plugin-mgmt.php:1008
 msgid "No"
-msgstr ""
+msgstr "아니오"
 
 #: setup.php:322
 msgid "Yes (default)"
-msgstr ""
+msgstr "예 (기본값)"
 
 #: setup.php:326
+#, fuzzy
 msgid "Quiet Logging"
-msgstr ""
+msgstr "감사 로그 설정"
 
 #: setup.php:327
 msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
-msgstr ""
+msgstr "기본적으로 LOW 수준 로깅에서도 Weathermap은 정상적인 활동을 기록합니다. 이렇게 하면 LOW 모드에서만 오류가 기록됩니다."
 
 #: setup.php:330
 msgid "Chatty (default)"
-msgstr ""
+msgstr "Chatty(기본값)"
 
 #: setup.php:331
 msgid "Quiet"
-msgstr ""
+msgstr "조용한"
 
 #: setup.php:612 setup.php:783 setup.php:804
 msgid "Weathermaps"
-msgstr ""
+msgstr "날씨 지도"
 
 #: setup.php:613
 msgid "Weathermap Groups"
-msgstr ""
+msgstr "Weathermap 그룹"
 
 #: setup.php:616
 msgid "Management"
-msgstr ""
+msgstr "관리"
 
 #: setup.php:620
 msgid "View Weathermaps"
-msgstr ""
+msgstr "날씨 지도 보기"
 
 #: setup.php:621
 msgid "Edit Weathermaps"
-msgstr ""
+msgstr "날씨 지도 편집"
 
 #: setup.php:622
 msgid "Manage Weathermap"
-msgstr ""
+msgstr "Weathermap 관리"
 
 #: setup.php:626 setup.php:627
+#, fuzzy
 msgid "General Administration"
-msgstr ""
+msgstr "시스템 관리"
 
 #: setup.php:628
 msgid "Normal User"
-msgstr ""
+msgstr "일반 사용자"
 
 #: setup.php:649 setup.php:689 weathermap-cacti-plugin.php:386
 #: weathermap-cacti-plugin.php:520 weathermap-cacti-plugin.php:642
 #, php-format
 msgid "Map for config file: %s"
-msgstr ""
+msgstr "구성 파일 맵: %s"
 
 #: setup.php:705
 msgid "Choose which weathermap to add to the tree."
-msgstr ""
+msgstr "트리에 추가할 날씨 맵을 선택합니다."
 
 #: setup.php:705
 msgid "Map"
-msgstr ""
+msgstr "지도"
 
 #: setup.php:713
 msgid "How should the map be displayed?"
-msgstr ""
+msgstr "맵은 어떻게 표시되어야 합니까?"
 
 #: setup.php:713
 msgid "Style"
-msgstr ""
+msgstr "스타일"
 
 #: setup.php:716
 msgid "Thumbnail"
-msgstr ""
+msgstr "썸네일"
 
 #: setup.php:717
 msgid "Full Size"
-msgstr ""
+msgstr "전체 크기"
 
 #: setup.php:790
 msgid "View Map Image"
-msgstr ""
+msgstr "지도 이미지 보기"
 
 #: setup.php:797
 msgid "View Map Thumbnail"
-msgstr ""
+msgstr "지도 썸네일 보기"
 
 #: setup.php:811 setup.php:825
 msgid "Add Map"
-msgstr ""
+msgstr "지도 추가"
 
 #: setup.php:818
 msgid "View Configuration"
-msgstr ""
+msgstr "뷰 구성"
 
 #: setup.php:832 weathermap-cacti-plugin.php:396
 msgid "Edit Map"
-msgstr ""
+msgstr "지도 편집"
 
 #: setup.php:839 weathermap-cacti-plugin-mgmt.php:567
 msgid "Weathermap Editor"
-msgstr ""
+msgstr "날씨 맵 편집기"
 
 #: setup.php:846
 msgid "Edit Permissions"
-msgstr ""
+msgstr "권한 수정"
 
 #: setup.php:853 setup.php:860 weathermap-cacti-plugin-mgmt.php:730
 #: weathermap-cacti-plugin.php:394
 msgid "Map Settings"
-msgstr ""
+msgstr "맵 설정"
 
 #: setup.php:867
 msgid "Map Settings Delete"
-msgstr ""
+msgstr "지도 설정 삭제"
 
 #: setup.php:874
 msgid "Map Settings Update"
-msgstr ""
+msgstr "맵 설정 업데이트"
 
 #: setup.php:881
 msgid "Map Settings Add"
-msgstr ""
+msgstr "지도 설정 추가"
 
 #: setup.php:888
 msgid "Permissions Edit"
-msgstr ""
+msgstr "권한 편집"
 
 #: setup.php:895
 msgid "Add User"
-msgstr ""
+msgstr "사용자 추가"
 
 #: setup.php:902
 msgid "Delete User"
-msgstr ""
+msgstr "사용자 삭제"
 
 #: setup.php:909
 msgid "Delete Map"
-msgstr ""
+msgstr "지도 삭제"
 
 #: setup.php:916 setup.php:923 weathermap-cacti-plugin-mgmt.php:1031
 msgid "Move Map Up"
-msgstr ""
+msgstr "맵 위로 이동"
 
 #: setup.php:930 weathermap-cacti-plugin-mgmt.php:2700
 msgid "Move Group Down"
-msgstr ""
+msgstr "그룹을 아래로 이동"
 
 #: setup.php:937 weathermap-cacti-plugin-mgmt.php:2694
 msgid "Move Group Up"
-msgstr ""
+msgstr "그룹 위로 이동"
 
 #: setup.php:944
 msgid "Group Edit"
-msgstr ""
+msgstr "그룹 편집"
 
 #: setup.php:951 setup.php:986
 msgid "Group Update"
-msgstr ""
+msgstr "그룹 업데이트"
 
 #: setup.php:958
 msgid "Activate Map"
-msgstr ""
+msgstr "지도 활성화"
 
 #: setup.php:965
 msgid "Deactivate Map"
-msgstr ""
+msgstr "지도 비활성화"
 
 #: setup.php:972 weathermap-cacti-plugin-mgmt.php:58
 msgid "Rebuild Now"
-msgstr ""
+msgstr "지금 재구축"
 
 #: setup.php:979 weathermap-cacti-plugin-mgmt.php:2597
 msgid "Change Group"
-msgstr ""
+msgstr "그룹 변경"
 
 #: setup.php:993
 msgid "Group Admin"
-msgstr ""
+msgstr "소모임 관리자"
 
 #: setup.php:1000
 msgid "Group Admin Delete"
-msgstr ""
+msgstr "그룹 관리자 삭제"
 
 #: weathermap-cacti-plugin-editor.php:461
 #: weathermap-cacti-plugin-editor.php:555 weathermap-cacti-plugin-mgmt.php:1832
 msgid "All"
-msgstr ""
+msgstr "모두"
 
 #: weathermap-cacti-plugin-mgmt.php:52
 msgid "Delete"
-msgstr ""
+msgstr "삭제"
 
 #: weathermap-cacti-plugin-mgmt.php:53
 msgid "Duplicate"
-msgstr ""
+msgstr "복사"
 
 #: weathermap-cacti-plugin-mgmt.php:54
 msgid "Disable"
-msgstr ""
+msgstr "비활성화"
 
 #: weathermap-cacti-plugin-mgmt.php:55
 msgid "Enable"
-msgstr ""
+msgstr "활성화"
 
 #: weathermap-cacti-plugin-mgmt.php:62
 msgid "Grant Access"
-msgstr ""
+msgstr "접근 부여"
 
 #: weathermap-cacti-plugin-mgmt.php:63
 msgid "Revoke Access"
-msgstr ""
+msgstr "접근 취소하기"
 
 #: weathermap-cacti-plugin-mgmt.php:266 weathermap-cacti-plugin-mgmt.php:290
+#, fuzzy
 msgid "No such file."
-msgstr ""
+msgstr "설정 파일"
 
 #: weathermap-cacti-plugin-mgmt.php:319
 #, php-format
 msgid "All Maps have been Rebuilt in %0.2f Seconds!"
-msgstr ""
+msgstr "모든 맵이 %0.2f초 만에 재건되었습니다!"
 
 #: weathermap-cacti-plugin-mgmt.php:337
 msgid "Editor directory permissions are not correct!"
-msgstr ""
+msgstr "편집자 디렉터리 권한이 올바르지 않습니다!"
 
 #: weathermap-cacti-plugin-mgmt.php:337
 msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
-msgstr ""
+msgstr "웹 서비스 계정에는 없는 WeatherMap 구성 디렉터리에 대한 액세스 권한이 있어야 합니다.  이 문제를 해결한 다음 에디터를 다시 실행합니다"
 
 #: weathermap-cacti-plugin-mgmt.php:337
 msgid "Weathermap Permission Error"
-msgstr ""
+msgstr "Weathermap 권한 오류"
 
 #: weathermap-cacti-plugin-mgmt.php:451
 #, php-format
 msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
-msgstr ""
+msgstr "선택한 %d 맵이 %0.2f초 만에 재건되었습니다!"
 
 #: weathermap-cacti-plugin-mgmt.php:486
 msgid "Click 'Continue' to delete the following Weather Map."
 msgid_plural "Click 'Continue' to delete following Weather Maps."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "'계속'을 클릭하여 다음 날씨 지도를 삭제합니다."
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
 #: weathermap-cacti-plugin-mgmt.php:538 weathermap-cacti-plugin-mgmt.php:2739
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
 #: weathermap-cacti-plugin-mgmt.php:538
 msgid "Continue"
-msgstr ""
+msgstr "계속"
 
 #: weathermap-cacti-plugin-mgmt.php:491
 msgid "Delete Weather Map"
 msgid_plural "Delete Weather Maps"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "날씨 지도 삭제"
 
 #: weathermap-cacti-plugin-mgmt.php:495
 msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "'계속'을 클릭하여 다음 날씨 지도를 복제합니다. 필요에 따라 새 날씨 지도의 제목 형식을 변경할 수 있습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:497
+#, fuzzy
 msgid "Title Format:"
-msgstr ""
+msgstr "제목 형식"
 
 #: weathermap-cacti-plugin-mgmt.php:503
 msgid "Config File Format:"
-msgstr ""
+msgstr "구성 파일 형식:"
 
 #: weathermap-cacti-plugin-mgmt.php:511
 msgid "Duplicate Weather Map"
 msgid_plural "Duplicate Weather Maps"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "중복된 날씨 지도"
 
 #: weathermap-cacti-plugin-mgmt.php:515
 msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "'계속'을 클릭하여 다음 날씨 지도를 비활성화합니다. 필요에 따라 새 날씨 지도의 제목 형식을 변경할 수 있습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:520
 msgid "Disable Weather Map"
 msgid_plural "Disable Weather Maps"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "날씨 지도 비활성화"
 
 #: weathermap-cacti-plugin-mgmt.php:524
 msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "'계속'을 클릭하여 다음 날씨 지도를 활성화합니다. 필요에 따라 새 날씨 지도의 제목 형식을 변경할 수 있습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:529
 msgid "Enable Weather Map"
 msgid_plural "Enable Weather Maps"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "날씨 지도 활성화"
 
 #: weathermap-cacti-plugin-mgmt.php:533
 msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "'계속'을 클릭하여 다음 날씨 지도를 다시 작성합니다. 필요에 따라 새 날씨 지도의 제목 형식을 변경할 수 있습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:538
 msgid "Rebuild Weather Map"
 msgid_plural "Rebuild Weather Maps"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "날씨 지도 재구축"
 
 #: weathermap-cacti-plugin-mgmt.php:567 weathermap-cacti-plugin.php:720
 msgid "Local Documentation"
-msgstr ""
+msgstr "로컬 문서"
 
 #: weathermap-cacti-plugin-mgmt.php:567
 #, php-format
 msgid "This is version %s"
-msgstr ""
+msgstr "버전 %s입니다."
 
 #: weathermap-cacti-plugin-mgmt.php:567
 msgid "Weathermap Website"
-msgstr ""
+msgstr "웨더맵 웹사이트"
 
 #: weathermap-cacti-plugin-mgmt.php:697
 #, php-format
 msgid "Weather Maps [ Run Details: %s ]"
-msgstr ""
+msgstr "날씨 지도 [ 실행정보: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:705 weathermap-cacti-plugin-mgmt.php:1188
 #: weathermap-cacti-plugin-mgmt.php:1822
 msgid "Search"
-msgstr ""
+msgstr "검색"
 
 #: weathermap-cacti-plugin-mgmt.php:711 weathermap-cacti-plugin-mgmt.php:908
 msgid "Maps"
-msgstr ""
+msgstr "지도"
 
 #: weathermap-cacti-plugin-mgmt.php:715 weathermap-cacti-plugin-mgmt.php:1198
 #: weathermap-cacti-plugin-mgmt.php:1842
 msgid "Default"
-msgstr ""
+msgstr "기본값"
 
 #: weathermap-cacti-plugin-mgmt.php:727 weathermap-cacti-plugin-mgmt.php:1864
 msgctxt "Button: use filter settings"
 msgid "Go"
-msgstr ""
+msgstr "가기"
 
 #: weathermap-cacti-plugin-mgmt.php:728 weathermap-cacti-plugin-mgmt.php:1865
 msgctxt "Button: reset filter settings"
 msgid "Clear"
-msgstr ""
+msgstr "지우기"
 
 #: weathermap-cacti-plugin-mgmt.php:729
 msgid "Group Settings"
-msgstr ""
+msgstr "그룹 설정"
 
 #: weathermap-cacti-plugin-mgmt.php:730
 msgid "Cacti Weathermap Map Settings"
-msgstr ""
+msgstr "Cacti Weathermap 맵 설정"
 
 #: weathermap-cacti-plugin-mgmt.php:731
 msgid "Cacti Weathermap Settings"
-msgstr ""
+msgstr "Cacti 날씨 맵 설정"
 
 #: weathermap-cacti-plugin-mgmt.php:731 weathermap-cacti-plugin-mgmt.php:934
 #: weathermap-cacti-plugin-mgmt.php:2656
 msgid "Settings"
-msgstr ""
+msgstr "설정"
 
 #: weathermap-cacti-plugin-mgmt.php:732
 msgid "Rebuild All"
-msgstr ""
+msgstr "모두 재생성"
 
 #: weathermap-cacti-plugin-mgmt.php:732
 msgid "Rebuild all maps now in background"
-msgstr ""
+msgstr "지금 백그라운드에서 모든 맵을 다시 빌드합니다."
 
 #: weathermap-cacti-plugin-mgmt.php:845
 #, php-format
 msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
-msgstr ""
+msgstr "Boost 플러그인을 사용하여 RRD 파일을 업데이트하고 있습니다. 이렇게 하면 파일에 데이터가 기록되는 것이 지연되기 때문에 Weathermap 업데이트에 문제가 발생합니다. 폴러에서 직접 데이터를 가져오는 Weathermap의 'poller_output' 지원을 사용하여 이 문제를 해결할 수 있습니다. %s 여기를 클릭하여 전 세계적으로 활성화할 수 있습니다%s"
 
 #: weathermap-cacti-plugin-mgmt.php:855
 #, php-format
 msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
-msgstr ""
+msgstr "마지막으로 실행되었을 때 Weathermap이 실행을 완료하지 않았습니다. '%s'를 처리하는 동안 실패했습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:857
 msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
-msgstr ""
+msgstr "이는 폴러 프로세스 중에 실행되는 다른 플러그인에 영향을 미쳤 <strong>을 수 있습니다</strong> ."
 
 #: weathermap-cacti-plugin-mgmt.php:859
 msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
-msgstr ""
+msgstr "이 맵을 비활성화하거나 결함을 찾아야 합니다. 가능한 원인에는 memory_limit 문제가 포함됩니다. 로그에 더 많은 정보가 있을 수 있습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:918 weathermap-cacti-plugin-mgmt.php:1407
 msgid "Title"
-msgstr ""
+msgstr "제목"
 
 #: weathermap-cacti-plugin-mgmt.php:921 weathermap-cacti-plugin-mgmt.php:1411
 msgid "Config File"
-msgstr ""
+msgstr "구성 파일"
 
 #: weathermap-cacti-plugin-mgmt.php:924
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: weathermap-cacti-plugin-mgmt.php:928
 msgid "Group"
-msgstr ""
+msgstr "그룹"
 
 #: weathermap-cacti-plugin-mgmt.php:931
 msgid "Enabled"
-msgstr ""
+msgstr "활성화"
 
 #: weathermap-cacti-plugin-mgmt.php:937 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Sort Order"
-msgstr ""
+msgstr "정렬 순서"
 
 #: weathermap-cacti-plugin-mgmt.php:941
 msgid "Order"
-msgstr ""
+msgstr "주문"
 
 #: weathermap-cacti-plugin-mgmt.php:945
 msgid "Accessible By"
-msgstr ""
+msgstr "접근 가능 기준"
 
 #: weathermap-cacti-plugin-mgmt.php:948
 msgid "Last Duration"
-msgstr ""
+msgstr "마지막 기간"
 
 #: weathermap-cacti-plugin-mgmt.php:952
 msgid "Last Runtime"
-msgstr ""
+msgstr "마지막 런타임"
 
 #: weathermap-cacti-plugin-mgmt.php:963
 msgid "Anyone"
-msgstr ""
+msgstr "누구나"
 
 #: weathermap-cacti-plugin-mgmt.php:975
 msgid "Click to start editor with this file"
-msgstr ""
+msgstr "이 파일로 편집기를 시작하려면 클릭하십시오."
 
 #: weathermap-cacti-plugin-mgmt.php:983
 msgid "Check cacti.log for this Map"
-msgstr ""
+msgstr "이 지도의 cacti.log 확인하세요"
 
 #: weathermap-cacti-plugin-mgmt.php:993
 msgid "Click to change group"
-msgstr ""
+msgstr "그룹을 변경하려면 클릭합니다."
 
 #: weathermap-cacti-plugin-mgmt.php:999
 msgid "Click to Deactivate"
-msgstr ""
+msgstr "비활성화하려면 클릭하세요."
 
 #: weathermap-cacti-plugin-mgmt.php:1006
 msgid "Click to Activate"
-msgstr ""
+msgstr "활성화하려면 클릭"
 
 #: weathermap-cacti-plugin-mgmt.php:1022 weathermap-cacti-plugin-mgmt.php:2685
 #, php-format
 msgid "%d Specials"
-msgstr ""
+msgstr "%d 스페셜"
 
 #: weathermap-cacti-plugin-mgmt.php:1024 weathermap-cacti-plugin-mgmt.php:2687
 msgid "Standard"
-msgstr ""
+msgstr "표준"
 
 #: weathermap-cacti-plugin-mgmt.php:1036
 msgid "Move Map Down"
-msgstr ""
+msgstr "맵 아래로 이동"
 
 #: weathermap-cacti-plugin-mgmt.php:1054
 msgid "Click to edit permissions"
-msgstr ""
+msgstr "권한을 편집하려면 클릭하십시오."
 
 #: weathermap-cacti-plugin-mgmt.php:1058
+#, fuzzy
 msgid "No Users"
-msgstr ""
+msgstr "사용자"
 
 #: weathermap-cacti-plugin-mgmt.php:1063 weathermap-cacti-plugin-mgmt.php:2163
 msgid "All Users"
-msgstr ""
+msgstr "모든 사용자"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
 msgid_plural " Groups"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 그룹"
 
 #: weathermap-cacti-plugin-mgmt.php:1071
+#, fuzzy
 msgid "1 User"
 msgid_plural " Users"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "사용자"
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
-msgstr ""
+msgstr "날씨 지도를 찾을 수 없습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:1169
 #, php-format
 msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
-msgstr ""
+msgstr "라는 %s디렉토리가 없습니다.  이를 만들고 웹 서버에서 읽을 수 있도록 설정해야 합니다. Cacti 내부에서 설정 파일을 업로드하려면 웹 서버에서도 <i>쓸 수</i> 있어야 합니다."
 
 #: weathermap-cacti-plugin-mgmt.php:1179
 msgid "Existing Configuration Files"
-msgstr ""
+msgstr "기존 구성 파일"
 
 #: weathermap-cacti-plugin-mgmt.php:1194
 msgid "Num Files"
-msgstr ""
+msgstr "파일 수"
 
 #: weathermap-cacti-plugin-mgmt.php:1211
 msgid "Has Maps"
-msgstr ""
+msgstr "지도 있음"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
 msgid "Go"
-msgstr ""
+msgstr "가기"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
+#, fuzzy
 msgid "Set/Refresh Filters"
-msgstr ""
+msgstr "필터 설정 / 새로 고침"
 
 #: weathermap-cacti-plugin-mgmt.php:1217
 msgid "Clear"
-msgstr ""
+msgstr "지우기"
 
 #: weathermap-cacti-plugin-mgmt.php:1217
 msgid "Clear Filters"
-msgstr ""
+msgstr "필터 지우기"
 
 #: weathermap-cacti-plugin-mgmt.php:1229
 msgid "Create Options"
-msgstr ""
+msgstr "옵션 만들기"
 
 #: weathermap-cacti-plugin-mgmt.php:1238 weathermap-cacti-plugin.php:721
 msgid "New Map"
-msgstr ""
+msgstr "새 지도"
 
 #: weathermap-cacti-plugin-mgmt.php:1241
 msgid "Name including the \\.conf"
-msgstr ""
+msgstr "\\.conf를 포함한 이름"
 
 #: weathermap-cacti-plugin-mgmt.php:1244
 msgid "Source Map"
-msgstr ""
+msgstr "소스 맵(Source Map)"
 
 #: weathermap-cacti-plugin-mgmt.php:1248
 msgid "Empty File"
-msgstr ""
+msgstr "빈 파일"
 
 #: weathermap-cacti-plugin-mgmt.php:1263 weathermap-cacti-plugin-mgmt.php:2467
 msgid "Create"
-msgstr ""
+msgstr "생성"
 
 #: weathermap-cacti-plugin-mgmt.php:1404 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Actions"
-msgstr ""
+msgstr "작업"
 
 #: weathermap-cacti-plugin-mgmt.php:1415
 msgid "Create Date"
-msgstr ""
+msgstr "등록일"
 
 #: weathermap-cacti-plugin-mgmt.php:1420
 msgid "Last Modified"
-msgstr ""
+msgstr "마지막으로 수정된"
 
 #: weathermap-cacti-plugin-mgmt.php:1425
 msgid "Size"
-msgstr ""
+msgstr "크기"
 
 #: weathermap-cacti-plugin-mgmt.php:1431
 msgid "Config Files"
-msgstr ""
+msgstr "구성 파일"
 
 #: weathermap-cacti-plugin-mgmt.php:1450
 #, php-format
 msgid "Add the configuration file %s to Weathermap"
-msgstr ""
+msgstr "구성 추가 file %s Weathermap에"
 
 #: weathermap-cacti-plugin-mgmt.php:1461
 msgid " Copy"
-msgstr ""
+msgstr " 복사"
 
 #: weathermap-cacti-plugin-mgmt.php:1463
 #, php-format
 msgid "Duplicate the configuration file %s and add to Weathermap as %s"
-msgstr ""
+msgstr "구성 파일을 %s 복제하고 Weathermap에 %s로 추가합니다."
 
 #: weathermap-cacti-plugin-mgmt.php:1468
 #, php-format
 msgid "View the configuration file %s in a new window"
-msgstr ""
+msgstr "새 창에서 구성 파일 %s 보기"
 
 #: weathermap-cacti-plugin-mgmt.php:1477
 msgid "NOTE: Already in use. Click duplicate to create a new file."
-msgstr ""
+msgstr "참고: 이미 사용 중입니다. 복제를 클릭하여 새 파일을 만듭니다."
 
 #: weathermap-cacti-plugin-mgmt.php:1495
 msgid "No files were found in the configs directory."
-msgstr ""
+msgstr "configs 디렉토리에서 파일을 찾을 수 없습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:1514
 #, php-format
 msgid "The path %s is not in the config directory."
-msgstr ""
+msgstr "경로 %s가 config 디렉토리에 없습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:1519
 #, php-format
 msgid "Preview of %s"
-msgstr ""
+msgstr "%s 미리보기"
 
 #: weathermap-cacti-plugin-mgmt.php:1536
 #, php-format
 msgid "The path %s does not appear to exist in the config directory"
-msgstr ""
+msgstr "경로 %s가 config 디렉토리에 존재하지 않는 것 같습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:1559
 msgid "Path mismatch"
-msgstr ""
+msgstr "경로 불일치"
 
 #: weathermap-cacti-plugin-mgmt.php:1593
+#, fuzzy
 msgid "(No Title)"
-msgstr ""
+msgstr "제목"
 
 #: weathermap-cacti-plugin-mgmt.php:1721
 #, php-format
 msgid "The new Map with the name %s was created using config file %s"
-msgstr ""
+msgstr "이름이 %s인 새 맵은 구성 파일 %s를 사용하여 생성되었습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:1736
 #, php-format
 msgid "The new Map with the name %s was unable to create the config file %s"
-msgstr ""
+msgstr "이름이 %s인 새 맵이 구성 파일을 만들 수 없습니다%s"
 
 #: weathermap-cacti-plugin-mgmt.php:1740
 #, php-format
 msgid "The new Map with the name %s was unable to locate the config file %s to copy"
-msgstr ""
+msgstr "이름이 %s인 새 맵이 복사할 구성 파일 %s 찾을 수 없습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:1814
 #, php-format
 msgid "Weathermap Permissions for Map [ %s ]"
-msgstr ""
+msgstr "지도에 대한 Weathermap 권한 [ %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:1828
 msgid "Type"
-msgstr ""
+msgstr "유형"
 
 #: weathermap-cacti-plugin-mgmt.php:1833
 msgid "Users"
-msgstr ""
+msgstr "사용자"
 
 #: weathermap-cacti-plugin-mgmt.php:1834
 msgid "User Groups"
-msgstr ""
+msgstr "사용자 소모임"
 
 #: weathermap-cacti-plugin-mgmt.php:1838
 msgid "Rows"
-msgstr ""
+msgstr "행"
 
 #: weathermap-cacti-plugin-mgmt.php:1859
 msgid "Has Permissions"
-msgstr ""
+msgstr "사용 권한 있음"
 
 #: weathermap-cacti-plugin-mgmt.php:2112
 msgid "Users or Groups"
-msgstr ""
+msgstr "사용자 또는 그룹"
 
 #: weathermap-cacti-plugin-mgmt.php:2122
 msgid "Account Type"
-msgstr ""
+msgstr "계정 유형"
 
 #: weathermap-cacti-plugin-mgmt.php:2125
 msgid "User/Group"
-msgstr ""
+msgstr "사용자/그룹"
 
 #: weathermap-cacti-plugin-mgmt.php:2128
 msgid "Login Realm"
-msgstr ""
+msgstr "로그인 영역"
 
 #: weathermap-cacti-plugin-mgmt.php:2131
 msgid "UID/GID"
-msgstr ""
+msgstr "UID/GID"
 
 #: weathermap-cacti-plugin-mgmt.php:2135
 msgid "Full Name/Description"
-msgstr ""
+msgstr "성명/설명"
 
 #: weathermap-cacti-plugin-mgmt.php:2138
 msgid "Allowed"
-msgstr ""
+msgstr "허용"
 
 #: weathermap-cacti-plugin-mgmt.php:2159
 msgid "User"
-msgstr ""
+msgstr "사용자"
 
 #: weathermap-cacti-plugin-mgmt.php:2161
 msgid "User Group"
-msgstr ""
+msgstr "사용자 그룹"
 
 #: weathermap-cacti-plugin-mgmt.php:2169
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #: weathermap-cacti-plugin-mgmt.php:2171
 msgid "Local"
-msgstr ""
+msgstr "로컬"
 
 #: weathermap-cacti-plugin-mgmt.php:2173
 msgid "Web Basic"
-msgstr ""
+msgstr "웹 베이직"
 
 #: weathermap-cacti-plugin-mgmt.php:2175
 msgid "LDAP/AD"
-msgstr ""
+msgstr "LDAP/광고"
 
 #: weathermap-cacti-plugin-mgmt.php:2185
 msgid "Not Permitted"
-msgstr ""
+msgstr "허용되지 않음"
 
 #: weathermap-cacti-plugin-mgmt.php:2187
 msgid "Permitted"
-msgstr ""
+msgstr "허용"
 
 #: weathermap-cacti-plugin-mgmt.php:2195
 msgid "No Users have Access to this Map"
-msgstr ""
+msgstr "이 지도에 액세스할 수 있는 사용자가 없습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2218 weathermap-cacti-plugin-mgmt.php:2296
 msgid "Global Settings [ All Maps ]"
-msgstr ""
+msgstr "전역 설정 [ 모든 지도 ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2220
 msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
-msgstr ""
+msgstr "아직 모든 맵에 대한 설정이 없습니다. 오른쪽 상단의 더하기 기호 '+'를 눌러 지도를 추가하거나 관리 화면에서 단일 지도를 선택하여 해당 지도에 대한 설정을 추가할 수 있습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2236
 #, php-format
 msgid "Edit Group Settings [ Group: %s ]"
-msgstr ""
+msgstr "그룹 설정 편집 [ 그룹: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2238
 msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
-msgstr ""
+msgstr "이 그룹에 대한 그룹별 설정은 아직 없습니다. 오른쪽 상단의 더하기 기호 '+'를 눌러 추가할 수 있습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2257
 #, php-format
 msgid "Edit Map Settings [ Weathermap: %s ]"
-msgstr ""
+msgstr "지도 설정 편집 [ Weathermap: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2259
 msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
-msgstr ""
+msgstr "이 지도에는 아직 지도별 설정이 없습니다. 오른쪽 상단의 더하기 기호 '+'를 눌러 추가할 수 있습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
+#, fuzzy
 msgid "Usage Notes"
-msgstr ""
+msgstr "페이지 이름"
 
 #: weathermap-cacti-plugin-mgmt.php:2280
 msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
-msgstr ""
+msgstr "이 그룹의 모든 맵은 다음 전역 설정의 영향도 받습니다(그룹은 전역을 재정의하고 맵은 그룹을 재정의하지만 둘 다 맵 구성 파일 내에서 SET 명령을 재정의함)."
 
 #: weathermap-cacti-plugin-mgmt.php:2288
 msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
-msgstr ""
+msgstr "이 맵은 다음 전역 및 그룹 설정(그룹은 전역을 재정의하고 맵은 그룹을 재정의하지만 둘 다 맵 구성 파일 내에서 SET 명령을 재정의함)의 영향을 받습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2300 weathermap-cacti-plugin-mgmt.php:2473
 #, php-format
 msgid "Group Settings [ Group: %s ]"
-msgstr ""
+msgstr "그룹 설정 [ 그룹: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2300
 msgid "No Group"
-msgstr ""
+msgstr "그룹화 기준"
 
 #: weathermap-cacti-plugin-mgmt.php:2307
 msgid "Action"
-msgstr ""
+msgstr "실행"
 
 #: weathermap-cacti-plugin-mgmt.php:2307 weathermap-cacti-plugin-mgmt.php:2378
 #: weathermap-cacti-plugin-mgmt.php:2449
 msgid "Name"
-msgstr ""
+msgstr "이름"
 
 #: weathermap-cacti-plugin-mgmt.php:2307 weathermap-cacti-plugin-mgmt.php:2378
 #: weathermap-cacti-plugin-mgmt.php:2456
 msgid "Value"
-msgstr ""
+msgstr "값"
 
 #: weathermap-cacti-plugin-mgmt.php:2314
 msgid "Edit this definition"
-msgstr ""
+msgstr "이 정의 편집"
 
 #: weathermap-cacti-plugin-mgmt.php:2324 weathermap-cacti-plugin-mgmt.php:2708
 msgid "Remove this definition from this Map"
-msgstr ""
+msgstr "이 맵에서 이 정의 제거"
 
 #: weathermap-cacti-plugin-mgmt.php:2350
 msgid "Back to Group Admin"
-msgstr ""
+msgstr "그룹 관리자(으)로 돌아가기"
 
 #: weathermap-cacti-plugin-mgmt.php:2354
 msgid "Back to Map Admin"
-msgstr ""
+msgstr "Map Admin(으)로 돌아가기"
 
 #: weathermap-cacti-plugin-mgmt.php:2396
 msgid "No Settings Found"
-msgstr ""
+msgstr "설정을 찾을 수 없습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2439
 msgid "Map ID"
-msgstr ""
+msgstr "지도 ID"
 
 #: weathermap-cacti-plugin-mgmt.php:2444
 msgid "Setting ID"
-msgstr ""
+msgstr "설정 ID"
 
 #: weathermap-cacti-plugin-mgmt.php:2452
 msgid "The name of the map-global SET variable"
-msgstr ""
+msgstr "map-global SET 변수의 이름"
 
 #: weathermap-cacti-plugin-mgmt.php:2459
 msgid "What to set it to"
-msgstr ""
+msgstr "무엇으로 설정할까요?"
 
 #: weathermap-cacti-plugin-mgmt.php:2464
 msgid "Edit"
-msgstr ""
+msgstr "편집"
 
 #: weathermap-cacti-plugin-mgmt.php:2471
 msgid "Global Setting for all Maps"
-msgstr ""
+msgstr "모든 맵에 대한 전역 설정"
 
 #: weathermap-cacti-plugin-mgmt.php:2475
 #, php-format
 msgid "Map Setting [ Weathermap: %s ]"
-msgstr ""
+msgstr "지도 설정 [ Weathermap: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2575
 #, php-format
 msgid "Edit Map Group for Weathermap [ %s ]"
-msgstr ""
+msgstr "웨더맵에 대한 맵 그룹 편집 [ %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2580
 msgid "Choose an existing Group"
-msgstr ""
+msgstr "기존 그룹 선택"
 
 #: weathermap-cacti-plugin-mgmt.php:2602
 #, php-format
 msgid "Or Create a New Group using the %s Group Management interface %s"
-msgstr ""
+msgstr "또는 %s 그룹 관리 인터페이스를 사용하여 새 그룹을 만듭니다%s"
 
 #: weathermap-cacti-plugin-mgmt.php:2617
 msgid "Adding a Group"
-msgstr ""
+msgstr "그룹 추가"
 
 #: weathermap-cacti-plugin-mgmt.php:2624
 #, php-format
 msgid "Editing Group: %s"
-msgstr ""
+msgstr "편집 그룹: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
+#, fuzzy
 msgid "Group Name:"
-msgstr ""
+msgstr "그룹 이름"
 
 #: weathermap-cacti-plugin-mgmt.php:2639
 msgid "Update"
-msgstr ""
+msgstr "업데이트"
 
 #: weathermap-cacti-plugin-mgmt.php:2641
 msgid "Add"
-msgstr ""
+msgstr "추가"
 
 #: weathermap-cacti-plugin-mgmt.php:2654
 msgid "Edit Map Groups"
-msgstr ""
+msgstr "맵 그룹 편집"
 
 #: weathermap-cacti-plugin-mgmt.php:2656
 msgid "Group Name"
-msgstr ""
+msgstr "그룹 이름"
 
 #: weathermap-cacti-plugin-mgmt.php:2666
 msgid "Rename this Group"
-msgstr ""
+msgstr "이 그룹의 이름을 바꿉니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2675
+#, fuzzy
 msgid "Edit Group Settings"
-msgstr ""
+msgstr "감사 로그 설정"
 
 #: weathermap-cacti-plugin-mgmt.php:2722
 msgid "No Groups are defined"
-msgstr ""
+msgstr "정의된 그룹이 없습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2730
 msgid "Rename Weathermap Group"
-msgstr ""
+msgstr "날씨맵 그룹 이름 바꾸기"
 
 #: weathermap-cacti-plugin-mgmt.php:2731
 msgid "Enter a new name for the Weathermap Group."
-msgstr ""
+msgstr "날씨맵 그룹의 새 이름을 입력합니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2734
+#, fuzzy
 msgid "New Group Name"
-msgstr ""
+msgstr "사용자 이름"
 
 #: weathermap-cacti-plugin-mgmt.php:2740
 msgid "Rename"
-msgstr ""
+msgstr "이름 변경"
 
 #: weathermap-cacti-plugin-mgmt.php:2836
 #, php-format
 msgid "The New Map File name %s already exists!"
-msgstr ""
+msgstr "새 맵 파일 이름이 이미 존재%s!"
 
 #: weathermap-cacti-plugin-mgmt.php:2847
 #, php-format
 msgid "New Map file %s created from %s"
-msgstr ""
+msgstr "%s에서 새 맵 파일을 만들 %s 있습니다."
 
 #: weathermap-cacti-plugin-mgmt.php:2849
 msgid "The Source Map File name is not readable or does not exist!"
-msgstr ""
+msgstr "소스 맵 파일 이름을 읽을 수 없거나 존재하지 않습니다!"
 
 #: weathermap-cacti-plugin-mgmt.php:2853
 #, php-format
 msgid "New Map file %s created."
-msgstr ""
+msgstr "새 맵 파일이 생성%s."
 
 #: weathermap-cacti-plugin-mgmt.php:2856
 msgid "You must include a Map File name to Create"
-msgstr ""
+msgstr "작성하려면 맵 파일 이름을 포함해야 합니다"
 
 #: weathermap-cacti-plugin.php:393 weathermap-cacti-plugin.php:400
 msgid "Return to Main Page"
-msgstr ""
+msgstr "메인 페이지로 돌아가기"
 
 #: weathermap-cacti-plugin.php:395
 msgid "Map Permissions"
-msgstr ""
+msgstr "맵 사용 권한"
 
 #: weathermap-cacti-plugin.php:414 weathermap-cacti-plugin.php:665
 msgid "This map hasn't been created yet."
-msgstr ""
+msgstr "이 지도는 아직 생성되지 않았습니다."
 
 #: weathermap-cacti-plugin.php:446
 msgid "Manage Maps"
-msgstr ""
+msgstr "지도 관리"
 
 #: weathermap-cacti-plugin.php:480
 #, php-format
 msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
-msgstr ""
+msgstr "네트워크 웨더맵 [ %s자동 순환%s ]"
 
 #: weathermap-cacti-plugin.php:528
 msgid "(thumbnail for map not created yet)"
-msgstr ""
+msgstr "(지도의 썸네일이 아직 생성되지 않음)"
 
 #: weathermap-cacti-plugin.php:532
 msgid "(Live View)"
-msgstr ""
+msgstr "(라이브 뷰)"
 
 #: weathermap-cacti-plugin.php:541 weathermap-cacti-plugin.php:695
 msgid "You Have No Maps"
-msgstr ""
+msgstr "지도가 없습니다"
 
 #: weathermap-cacti-plugin.php:544
 #, php-format
 msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
-msgstr ""
+msgstr "일정에 맵을 추가하려면 %s 관리... Weathermaps 페이지를 %s하고 추가합니다."
 
 #: weathermap-cacti-plugin.php:572
 msgid "Network Weathermaps"
-msgstr ""
+msgstr "네트워크 웨더맵"
 
 #: weathermap-cacti-plugin.php:592
 #, php-format
 msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
-msgstr ""
+msgstr "의 %s %s %s %s 보여줍니다. 이 그룹에서 사용 가능한 모든 맵을 순환합니다."
 
 #: weathermap-cacti-plugin.php:594
 #, php-format
 msgid "Showing %s %s of %s %s. Cycling all available maps."
-msgstr ""
+msgstr "의 %s %s %s %s 보여줍니다. 사용 가능한 모든 지도를 순환합니다."
 
 #: weathermap-cacti-plugin.php:716
 #, php-format
 msgid "Powered by %s PHP Weathermap Version %s %s"
-msgstr ""
+msgstr "%s PHP Weathermap Version %s %s에 의해 구동"
 
 #: weathermap-cacti-plugin.php:719
 msgid "Go to the map management page"
-msgstr ""
+msgstr "지도 관리 페이지로 이동"
 
 #: weathermap-cacti-plugin.php:719
 msgid "Weathermap Management"
-msgstr ""
+msgstr "날씨 지도 관리"
 
 #: weathermap-cacti-plugin.php:795
+#, fuzzy
 msgid "Weathermap Filter"
-msgstr ""
+msgstr "필터 지우기"
 
 #: weathermap-cacti-plugin.php:804
 msgid "Map to View"
-msgstr ""
+msgstr "Map to View"
 
 #: weathermap-cacti-plugin.php:909
 msgid "All Maps"
-msgstr ""
+msgstr "모든 전장"

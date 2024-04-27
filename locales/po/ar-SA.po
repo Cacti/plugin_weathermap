@@ -1,1224 +1,1290 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR The Cacti Group
-# This file is distributed under the same license as the Cacti package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti \n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2024-04-27 13:48-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Cacti Developers <developers@cacti.net>>\n"
-"Language-Team: Cacti Developers <developers@cacti.net>\n"
-"Language: \n"
+"PO-Revision-Date: 2024-04-27 13:49-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar_SA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: lib/editor.inc.php:259
 #, php-format
 msgid "Welcome to the PHP Weathermap %s Editor"
-msgstr ""
+msgstr "مرحبا بك في محرر %s PHP Weathermap"
 
 #: setup.php:208 setup.php:602 setup.php:748 setup.php:755 setup.php:762
 #: setup.php:769 setup.php:776
 msgid "Weathermap"
-msgstr ""
+msgstr "خريطة الطقس"
 
 #: setup.php:212 weathermap-cacti-plugin.php:476
 #: weathermap-cacti-plugin.php:570
 msgid "Network Weathermap"
-msgstr ""
+msgstr "خريطة الطقس للشبكة"
 
 #: setup.php:216
+#, fuzzy
 msgid "Page style"
-msgstr ""
+msgstr "اسم الصفحة"
 
 #: setup.php:217
 msgid "How to display multiple maps."
-msgstr ""
+msgstr "كيفية عرض خرائط متعددة."
 
 #: setup.php:220
 msgid "Thumbnail Overview"
-msgstr ""
+msgstr "نظرة عامة على الصورة المصغرة"
 
 #: setup.php:221
 msgid "Full Images"
-msgstr ""
+msgstr "صور كاملة"
 
 #: setup.php:222
 msgid "Show Only First"
-msgstr ""
+msgstr "عرض الأول فقط"
 
 #: setup.php:226
 msgid "Thumbnail Maximum Size"
-msgstr ""
+msgstr "الحد الأقصى لحجم الصورة المصغرة"
 
 #: setup.php:227
 msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
-msgstr ""
+msgstr "الحد الأقصى لعرض أو ارتفاع الصور المصغرة في عرض الصور المصغرة، بالبكسل. يسري مفعوله بعد تشغيل الاستطلاع التالي."
 
 #: setup.php:233
 msgid "Hover Graph Default Width"
-msgstr ""
+msgstr "العرض الافتراضي للرسم البياني للتمرير"
 
 #: setup.php:234
 msgid "The default width of the RRDtool Graphs that appear when you over on a Link."
-msgstr ""
+msgstr "العرض الافتراضي للرسومات البيانية RRDtool التي تظهر عند الإفراط في استخدام ارتباط."
 
 #: setup.php:241
 msgid "Hover Graph Default Height"
-msgstr ""
+msgstr "الارتفاع الافتراضي للرسم البياني للتمرير"
 
 #: setup.php:242
 msgid "The default height of the RRDtool Graphs that appear when you over on a Link."
-msgstr ""
+msgstr "الارتفاع الافتراضي للرسومات البيانية RRDtool التي تظهر عند تجاوز ارتباط."
 
 #: setup.php:249
 msgid "Hover Graph Style"
-msgstr ""
+msgstr "نمط الرسم البياني تحوم"
 
 #: setup.php:250
 msgid "When hovering over the Links or Nodes, what style of Graph would you like displayed?"
-msgstr ""
+msgstr "عند التمرير فوق الروابط أو العقد ، ما نمط الرسم البياني الذي ترغب في عرضه؟"
 
 #: setup.php:253
 msgid "Thumbnail Graphs"
-msgstr ""
+msgstr "الرسوم البيانية المصغرة"
 
 #: setup.php:254
 msgid "Full Graphs"
-msgstr ""
+msgstr "الرسوم البيانية الكاملة"
 
 #: setup.php:258
+#, fuzzy
 msgid "Refresh Time"
-msgstr ""
+msgstr "ضبط / تحديث المرشحات"
 
 #: setup.php:259
 msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
-msgstr ""
+msgstr "كم مرة لتحديث الصفحة في وضع الدورة. تلقائي يجعل جميع الخرائط المتاحة تناسب 5 دقائق."
 
 #: setup.php:262
+#, fuzzy
 msgid "Automatic"
-msgstr ""
+msgstr "تمكين إنشاء الرسم البياني التلقائي"
 
 #: setup.php:263 setup.php:264 setup.php:265
 #, php-format
 msgid "%d Seconds"
-msgstr ""
+msgstr "%d ثواني"
 
 #: setup.php:266
-#, php-format
+#, fuzzy, php-format
 msgid "%d Minute"
-msgstr ""
+msgstr "٪ د الشهر"
 
 #: setup.php:267 setup.php:268
 #, php-format
 msgid "%d Minutes"
-msgstr ""
+msgstr "%d دقيقة (دقائق)"
 
 #: setup.php:272
 msgid "Output Format"
-msgstr ""
+msgstr "تنسيق الإخراج"
 
 #: setup.php:273
 msgid "What format do you prefer for the generated map images and thumbnails?"
-msgstr ""
+msgstr "ما التنسيق الذي تفضله لصور الخرائط والصور المصغرة التي تم إنشاؤها؟"
 
 #: setup.php:276
+#, fuzzy
 msgid "PNG (default)"
-msgstr ""
+msgstr "الافتراضي"
 
 #: setup.php:277
+#, fuzzy
 msgid "JPEG"
-msgstr ""
+msgstr "Inline JPEG Image، LN Style"
 
 #: setup.php:278
 msgid "GIF"
-msgstr ""
+msgstr "گیف"
 
 #: setup.php:282
 msgid "Map Rendering Interval"
-msgstr ""
+msgstr "الفاصل الزمني لعرض الخريطة"
 
 #: setup.php:283
 msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
-msgstr ""
+msgstr "كم مرة تريد أن تعيد Weathermap حساب خرائطها؟ يجب ألا تلمس هذا إلا إذا كنت تعرف ما تفعله! هناك حاجة بشكل أساسي للأشخاص الذين لديهم إعدادات اقتراع غير قياسية."
 
 #: setup.php:286
 msgid "Never (manual updates)"
-msgstr ""
+msgstr "أبدا (التحديثات اليدوية)"
 
 #: setup.php:287
 msgid "Every Poller Cycle (default)"
-msgstr ""
+msgstr "كل دورة استطلاع (افتراضي)"
 
 #: setup.php:288 setup.php:289 setup.php:290 setup.php:291 setup.php:292
 #: setup.php:293 setup.php:294 setup.php:295 setup.php:296 setup.php:297
 #: setup.php:298
 #, php-format
 msgid "Every %d Poller Cycles"
-msgstr ""
+msgstr "كل %d دورات استطلاع"
 
 #: setup.php:302
 msgid "Show Weathermap Help Links"
-msgstr ""
+msgstr "إظهار روابط مساعدة خريطة الطقس"
 
 #: setup.php:303
 msgid "If checked, all Weathermap pages will include a link to documentation."
-msgstr ""
+msgstr "إذا تم تحديده ، فستتضمن جميع صفحات Weathermap رابطا إلى الوثائق."
 
 #: setup.php:308
 msgid "Show 'All' Tab"
-msgstr ""
+msgstr "إظهار علامة التبويب \"الكل\""
 
 #: setup.php:309
 msgid "When using groups, add an 'All Maps' tab to the tab bar."
-msgstr ""
+msgstr "عند استخدام المجموعات، أضف علامة التبويب \"كل الخرائط\" إلى شريط علامات التبويب."
 
 #: setup.php:312
+#, fuzzy
 msgid "No (default)"
-msgstr ""
+msgstr "الافتراضي"
 
 #: setup.php:313 weathermap-cacti-plugin-mgmt.php:1001
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: setup.php:317
 msgid "Show Map Selector"
-msgstr ""
+msgstr "عرض محدد الخريطة"
 
 #: setup.php:318
 msgid "Show a combo-box map selector on the full-screen map view."
-msgstr ""
+msgstr "اعرض محدد خريطة مربع التحرير والسرد على عرض الخريطة بملء الشاشة."
 
 #: setup.php:321 weathermap-cacti-plugin-mgmt.php:1008
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: setup.php:322
 msgid "Yes (default)"
-msgstr ""
+msgstr "نعم (افتراضي)"
 
 #: setup.php:326
+#, fuzzy
 msgid "Quiet Logging"
-msgstr ""
+msgstr "إعدادات سجل التدقيق"
 
 #: setup.php:327
 msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
-msgstr ""
+msgstr "بشكل افتراضي ، حتى في تسجيل المستوى المنخفض ، يسجل Weathermap النشاط العادي. هذا يجعله حقا تسجيل الأخطاء فقط في الوضع المنخفض."
 
 #: setup.php:330
 msgid "Chatty (default)"
-msgstr ""
+msgstr "شاتي (افتراضي)"
 
 #: setup.php:331
 msgid "Quiet"
-msgstr ""
+msgstr "هدوء"
 
 #: setup.php:612 setup.php:783 setup.php:804
 msgid "Weathermaps"
-msgstr ""
+msgstr "خرائط الطقس"
 
 #: setup.php:613
 msgid "Weathermap Groups"
-msgstr ""
+msgstr "مجموعات خريطة الطقس"
 
 #: setup.php:616
 msgid "Management"
-msgstr ""
+msgstr "الإدارة"
 
 #: setup.php:620
 msgid "View Weathermaps"
-msgstr ""
+msgstr "عرض خرائط الطقس"
 
 #: setup.php:621
 msgid "Edit Weathermaps"
-msgstr ""
+msgstr "تحرير خرائط الطقس"
 
 #: setup.php:622
 msgid "Manage Weathermap"
-msgstr ""
+msgstr "إدارة خريطة الطقس"
 
 #: setup.php:626 setup.php:627
 msgid "General Administration"
-msgstr ""
+msgstr "الإدارة العامة"
 
 #: setup.php:628
 msgid "Normal User"
-msgstr ""
+msgstr "المستخدم العادي"
 
 #: setup.php:649 setup.php:689 weathermap-cacti-plugin.php:386
 #: weathermap-cacti-plugin.php:520 weathermap-cacti-plugin.php:642
 #, php-format
 msgid "Map for config file: %s"
-msgstr ""
+msgstr "خريطة لملف التكوين: %s"
 
 #: setup.php:705
 msgid "Choose which weathermap to add to the tree."
-msgstr ""
+msgstr "اختر خريطة الطقس التي تريد إضافتها إلى الشجرة."
 
 #: setup.php:705
 msgid "Map"
-msgstr ""
+msgstr "الخريطة"
 
 #: setup.php:713
 msgid "How should the map be displayed?"
-msgstr ""
+msgstr "كيف يجب عرض الخريطة؟"
 
 #: setup.php:713
 msgid "Style"
-msgstr ""
+msgstr "نمط"
 
 #: setup.php:716
 msgid "Thumbnail"
-msgstr ""
+msgstr "صورة مصغرة"
 
 #: setup.php:717
 msgid "Full Size"
-msgstr ""
+msgstr " الحجم الاصلی"
 
 #: setup.php:790
 msgid "View Map Image"
-msgstr ""
+msgstr "عرض صورة الخريطة"
 
 #: setup.php:797
 msgid "View Map Thumbnail"
-msgstr ""
+msgstr "عرض الخريطة المصغرة"
 
 #: setup.php:811 setup.php:825
 msgid "Add Map"
-msgstr ""
+msgstr "إضافة خريطة"
 
 #: setup.php:818
 msgid "View Configuration"
-msgstr ""
+msgstr "عرض التكوين"
 
 #: setup.php:832 weathermap-cacti-plugin.php:396
 msgid "Edit Map"
-msgstr ""
+msgstr "تحرير الخريطة"
 
 #: setup.php:839 weathermap-cacti-plugin-mgmt.php:567
 msgid "Weathermap Editor"
-msgstr ""
+msgstr "محرر خريطة الطقس"
 
 #: setup.php:846
 msgid "Edit Permissions"
-msgstr ""
+msgstr "تحرير الأذونات"
 
 #: setup.php:853 setup.php:860 weathermap-cacti-plugin-mgmt.php:730
 #: weathermap-cacti-plugin.php:394
 msgid "Map Settings"
-msgstr ""
+msgstr "إعدادات الخريطة"
 
 #: setup.php:867
 msgid "Map Settings Delete"
-msgstr ""
+msgstr "حذف إعدادات الخريطة"
 
 #: setup.php:874
 msgid "Map Settings Update"
-msgstr ""
+msgstr "تحديث إعدادات الخريطة"
 
 #: setup.php:881
 msgid "Map Settings Add"
-msgstr ""
+msgstr "إضافة إعدادات الخريطة"
 
 #: setup.php:888
 msgid "Permissions Edit"
-msgstr ""
+msgstr "تحرير الأذونات"
 
 #: setup.php:895
 msgid "Add User"
-msgstr ""
+msgstr "إضافة مستخدم"
 
 #: setup.php:902
 msgid "Delete User"
-msgstr ""
+msgstr "حذف کاربر"
 
 #: setup.php:909
 msgid "Delete Map"
-msgstr ""
+msgstr "حذف الخريطة"
 
 #: setup.php:916 setup.php:923 weathermap-cacti-plugin-mgmt.php:1031
 msgid "Move Map Up"
-msgstr ""
+msgstr "تحريك الخريطة لأعلى"
 
 #: setup.php:930 weathermap-cacti-plugin-mgmt.php:2700
 msgid "Move Group Down"
-msgstr ""
+msgstr "نقل المجموعة لأسفل"
 
 #: setup.php:937 weathermap-cacti-plugin-mgmt.php:2694
 msgid "Move Group Up"
-msgstr ""
+msgstr "تحريك المجموعة لأعلى"
 
 #: setup.php:944
 msgid "Group Edit"
-msgstr ""
+msgstr "تحرير المجموعة"
 
 #: setup.php:951 setup.php:986
 msgid "Group Update"
-msgstr ""
+msgstr "تحديث المجموعة"
 
 #: setup.php:958
 msgid "Activate Map"
-msgstr ""
+msgstr "تفعيل الخريطة"
 
 #: setup.php:965
 msgid "Deactivate Map"
-msgstr ""
+msgstr "إلغاء تنشيط الخريطة"
 
 #: setup.php:972 weathermap-cacti-plugin-mgmt.php:58
 msgid "Rebuild Now"
-msgstr ""
+msgstr "أعد البناء الآن"
 
 #: setup.php:979 weathermap-cacti-plugin-mgmt.php:2597
 msgid "Change Group"
-msgstr ""
+msgstr "تغيير المجموعة"
 
 #: setup.php:993
 msgid "Group Admin"
-msgstr ""
+msgstr "مسؤول المجموعة"
 
 #: setup.php:1000
 msgid "Group Admin Delete"
-msgstr ""
+msgstr "حذف مسؤول المجموعة"
 
 #: weathermap-cacti-plugin-editor.php:461
 #: weathermap-cacti-plugin-editor.php:555 weathermap-cacti-plugin-mgmt.php:1832
 msgid "All"
-msgstr ""
+msgstr "الكل"
 
 #: weathermap-cacti-plugin-mgmt.php:52
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: weathermap-cacti-plugin-mgmt.php:53
 msgid "Duplicate"
-msgstr ""
+msgstr "تكرار"
 
 #: weathermap-cacti-plugin-mgmt.php:54
 msgid "Disable"
-msgstr ""
+msgstr "تعطيل"
 
 #: weathermap-cacti-plugin-mgmt.php:55
 msgid "Enable"
-msgstr ""
+msgstr "تفعيل"
 
 #: weathermap-cacti-plugin-mgmt.php:62
 msgid "Grant Access"
-msgstr ""
+msgstr "منح الوصول"
 
 #: weathermap-cacti-plugin-mgmt.php:63
 msgid "Revoke Access"
-msgstr ""
+msgstr "إلغاء صلاحيات الوصول"
 
 #: weathermap-cacti-plugin-mgmt.php:266 weathermap-cacti-plugin-mgmt.php:290
 msgid "No such file."
-msgstr ""
+msgstr "لا يوجد مثل هذا الملف."
 
 #: weathermap-cacti-plugin-mgmt.php:319
 #, php-format
 msgid "All Maps have been Rebuilt in %0.2f Seconds!"
-msgstr ""
+msgstr "تم إعادة بناء جميع الخرائط في %0.2f ثوان!"
 
 #: weathermap-cacti-plugin-mgmt.php:337
 msgid "Editor directory permissions are not correct!"
-msgstr ""
+msgstr "أذونات دليل المحرر غير صحيحة!"
 
 #: weathermap-cacti-plugin-mgmt.php:337
 msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
-msgstr ""
+msgstr "يجب أن يكون لحساب خدمة ويب حق الوصول إلى دليل تكوين WeatherMap الذي لا يملكه.  تصحيح هذه المشكلة ثم قم بإعادة تشغيل المحرر"
 
 #: weathermap-cacti-plugin-mgmt.php:337
 msgid "Weathermap Permission Error"
-msgstr ""
+msgstr "خطأ إذن خريطة الطقس"
 
 #: weathermap-cacti-plugin-mgmt.php:451
 #, php-format
 msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
-msgstr ""
+msgstr "تم إعادة بناء الخرائط المختارة %d في %0.2f ثوان!"
 
 #: weathermap-cacti-plugin-mgmt.php:486
 msgid "Click 'Continue' to delete the following Weather Map."
 msgid_plural "Click 'Continue' to delete following Weather Maps."
-msgstr[0] ""
+msgstr[0] "انقر فوق \"متابعة\" لحذف خريطة الطقس التالية."
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
 #: weathermap-cacti-plugin-mgmt.php:538 weathermap-cacti-plugin-mgmt.php:2739
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
 #: weathermap-cacti-plugin-mgmt.php:538
 msgid "Continue"
-msgstr ""
+msgstr "إستمرار"
 
 #: weathermap-cacti-plugin-mgmt.php:491
 msgid "Delete Weather Map"
 msgid_plural "Delete Weather Maps"
-msgstr[0] ""
+msgstr[0] "حذف خريطة الطقس"
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:495
 msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
-msgstr[0] ""
+msgstr[0] "انقر فوق \"متابعة\" لتكرار خريطة الطقس التالية. يمكنك اختياريا تغيير تنسيق العنوان لخريطة الطقس الجديدة."
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:497
 msgid "Title Format:"
-msgstr ""
+msgstr "شكل العنوان"
 
 #: weathermap-cacti-plugin-mgmt.php:503
 msgid "Config File Format:"
-msgstr ""
+msgstr "تنسيق ملف التكوين:"
 
 #: weathermap-cacti-plugin-mgmt.php:511
 msgid "Duplicate Weather Map"
 msgid_plural "Duplicate Weather Maps"
-msgstr[0] ""
+msgstr[0] "خريطة الطقس المكررة"
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:515
 msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
-msgstr[0] ""
+msgstr[0] "انقر فوق \"متابعة\" لتعطيل خريطة الطقس التالية. يمكنك اختياريا تغيير تنسيق العنوان لخريطة الطقس الجديدة."
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:520
 msgid "Disable Weather Map"
 msgid_plural "Disable Weather Maps"
-msgstr[0] ""
+msgstr[0] "تعطيل خريطة الطقس"
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:524
 msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
-msgstr[0] ""
+msgstr[0] "انقر فوق \"متابعة\" لتمكين خريطة الطقس التالية. يمكنك اختياريا تغيير تنسيق العنوان لخريطة الطقس الجديدة."
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:529
 msgid "Enable Weather Map"
 msgid_plural "Enable Weather Maps"
-msgstr[0] ""
+msgstr[0] "تمكين خريطة الطقس"
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:533
 msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
-msgstr[0] ""
+msgstr[0] "انقر فوق \"متابعة\" لإعادة إنشاء خريطة الطقس التالية. يمكنك اختياريا تغيير تنسيق العنوان لخريطة الطقس الجديدة."
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:538
 msgid "Rebuild Weather Map"
 msgid_plural "Rebuild Weather Maps"
-msgstr[0] ""
+msgstr[0] "إعادة بناء خريطة الطقس"
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:567 weathermap-cacti-plugin.php:720
 msgid "Local Documentation"
-msgstr ""
+msgstr "الوثائق المحلية"
 
 #: weathermap-cacti-plugin-mgmt.php:567
 #, php-format
 msgid "This is version %s"
-msgstr ""
+msgstr "هذا هو الإصدار %s"
 
 #: weathermap-cacti-plugin-mgmt.php:567
 msgid "Weathermap Website"
-msgstr ""
+msgstr "موقع خريطة الطقس"
 
 #: weathermap-cacti-plugin-mgmt.php:697
 #, php-format
 msgid "Weather Maps [ Run Details: %s ]"
-msgstr ""
+msgstr "خرائط الطقس [ تفاصيل التشغيل: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:705 weathermap-cacti-plugin-mgmt.php:1188
 #: weathermap-cacti-plugin-mgmt.php:1822
 msgid "Search"
-msgstr ""
+msgstr "بحث"
 
 #: weathermap-cacti-plugin-mgmt.php:711 weathermap-cacti-plugin-mgmt.php:908
 msgid "Maps"
-msgstr ""
+msgstr "خرائط"
 
 #: weathermap-cacti-plugin-mgmt.php:715 weathermap-cacti-plugin-mgmt.php:1198
 #: weathermap-cacti-plugin-mgmt.php:1842
 msgid "Default"
-msgstr ""
+msgstr "الافتراضي"
 
 #: weathermap-cacti-plugin-mgmt.php:727 weathermap-cacti-plugin-mgmt.php:1864
 msgctxt "Button: use filter settings"
 msgid "Go"
-msgstr ""
+msgstr "أذهب"
 
 #: weathermap-cacti-plugin-mgmt.php:728 weathermap-cacti-plugin-mgmt.php:1865
 msgctxt "Button: reset filter settings"
 msgid "Clear"
-msgstr ""
+msgstr "واضح"
 
 #: weathermap-cacti-plugin-mgmt.php:729
 msgid "Group Settings"
-msgstr ""
+msgstr "تنظیمات گروه"
 
 #: weathermap-cacti-plugin-mgmt.php:730
 msgid "Cacti Weathermap Map Settings"
-msgstr ""
+msgstr "إعدادات خريطة الطقس Cacti"
 
 #: weathermap-cacti-plugin-mgmt.php:731
 msgid "Cacti Weathermap Settings"
-msgstr ""
+msgstr "إعدادات خريطة الطقس الصبار"
 
 #: weathermap-cacti-plugin-mgmt.php:731 weathermap-cacti-plugin-mgmt.php:934
 #: weathermap-cacti-plugin-mgmt.php:2656
 msgid "Settings"
-msgstr ""
+msgstr "إعدادات"
 
 #: weathermap-cacti-plugin-mgmt.php:732
 msgid "Rebuild All"
-msgstr ""
+msgstr "إعادة بناء الكل"
 
 #: weathermap-cacti-plugin-mgmt.php:732
 msgid "Rebuild all maps now in background"
-msgstr ""
+msgstr "أعد إنشاء جميع الخرائط الآن في الخلفية"
 
 #: weathermap-cacti-plugin-mgmt.php:845
 #, php-format
 msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
-msgstr ""
+msgstr "أنت تستخدم المكون الإضافي Boost لتحديث ملفات RRD. نظرا لأن هذا يؤخر كتابة البيانات إلى الملفات ، فإنه يتسبب في حدوث مشكلات في تحديثات Weathermap. يمكنك حل هذه المشكلة باستخدام دعم \"poller_output\" الخاص ب Weathermap ، والذي يلتقط البيانات مباشرة من الاستطلاع. %s يمكنك تمكين ذلك عالميا من خلال النقر هنا %s"
 
 #: weathermap-cacti-plugin-mgmt.php:855
 #, php-format
 msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
-msgstr ""
+msgstr "آخر مرة تم تشغيلها ، لم يكمل Weathermap تشغيله. فشل أثناء معالجة \"%s\""
 
 #: weathermap-cacti-plugin-mgmt.php:857
 msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
-msgstr ""
+msgstr "<strong>قد</strong> يكون هذا قد أثر على المكونات الإضافية الأخرى التي يتم تشغيلها أثناء عملية الاقتراع."
 
 #: weathermap-cacti-plugin-mgmt.php:859
 msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
-msgstr ""
+msgstr "يجب عليك إما تعطيل هذه الخريطة ، أو البحث عن الأخطاء. تشمل الأسباب المحتملة مشاكل memory_limit. قد يحتوي السجل على مزيد من المعلومات."
 
 #: weathermap-cacti-plugin-mgmt.php:918 weathermap-cacti-plugin-mgmt.php:1407
 msgid "Title"
-msgstr ""
+msgstr "العنوان"
 
 #: weathermap-cacti-plugin-mgmt.php:921 weathermap-cacti-plugin-mgmt.php:1411
 msgid "Config File"
-msgstr ""
+msgstr "ملف التكوين"
 
 #: weathermap-cacti-plugin-mgmt.php:924
 msgid "ID"
-msgstr ""
+msgstr "المعرف"
 
 #: weathermap-cacti-plugin-mgmt.php:928
 msgid "Group"
-msgstr ""
+msgstr "مجموعة"
 
 #: weathermap-cacti-plugin-mgmt.php:931
 msgid "Enabled"
-msgstr ""
+msgstr "مفعل"
 
 #: weathermap-cacti-plugin-mgmt.php:937 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Sort Order"
-msgstr ""
+msgstr "ترتيب حسب الطلب"
 
 #: weathermap-cacti-plugin-mgmt.php:941
 msgid "Order"
-msgstr ""
+msgstr "طلب"
 
 #: weathermap-cacti-plugin-mgmt.php:945
 msgid "Accessible By"
-msgstr ""
+msgstr "يمكن الوصول إليها عن طريق"
 
 #: weathermap-cacti-plugin-mgmt.php:948
 msgid "Last Duration"
-msgstr ""
+msgstr "المدة الأخيرة"
 
 #: weathermap-cacti-plugin-mgmt.php:952
 msgid "Last Runtime"
-msgstr ""
+msgstr "آخر وقت التشغيل"
 
 #: weathermap-cacti-plugin-mgmt.php:963
 msgid "Anyone"
-msgstr ""
+msgstr "اي شخص"
 
 #: weathermap-cacti-plugin-mgmt.php:975
 msgid "Click to start editor with this file"
-msgstr ""
+msgstr "انقر لبدء المحرر مع هذا الملف"
 
 #: weathermap-cacti-plugin-mgmt.php:983
 msgid "Check cacti.log for this Map"
-msgstr ""
+msgstr "تحقق من cacti.log لهذه الخريطة"
 
 #: weathermap-cacti-plugin-mgmt.php:993
 msgid "Click to change group"
-msgstr ""
+msgstr "انقر لتغيير المجموعة"
 
 #: weathermap-cacti-plugin-mgmt.php:999
 msgid "Click to Deactivate"
-msgstr ""
+msgstr "انقر لإلغاء التنشيط"
 
 #: weathermap-cacti-plugin-mgmt.php:1006
 msgid "Click to Activate"
-msgstr ""
+msgstr "انقر للتنشيط"
 
 #: weathermap-cacti-plugin-mgmt.php:1022 weathermap-cacti-plugin-mgmt.php:2685
 #, php-format
 msgid "%d Specials"
-msgstr ""
+msgstr "%d العروض الخاصة"
 
 #: weathermap-cacti-plugin-mgmt.php:1024 weathermap-cacti-plugin-mgmt.php:2687
 msgid "Standard"
-msgstr ""
+msgstr "معيار"
 
 #: weathermap-cacti-plugin-mgmt.php:1036
 msgid "Move Map Down"
-msgstr ""
+msgstr "تحريك الخريطة لأسفل"
 
 #: weathermap-cacti-plugin-mgmt.php:1054
 msgid "Click to edit permissions"
-msgstr ""
+msgstr "انقر لتحرير الأذونات"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
+#, fuzzy
 msgid "No Users"
-msgstr ""
+msgstr "المستخدمين"
 
 #: weathermap-cacti-plugin-mgmt.php:1063 weathermap-cacti-plugin-mgmt.php:2163
 msgid "All Users"
-msgstr ""
+msgstr "جميع المستخدمين"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
 msgid "1 Group"
 msgid_plural " Groups"
-msgstr[0] ""
+msgstr[0] "1 مجموعة"
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:1071
 msgid "1 User"
 msgid_plural " Users"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "مستخدم 1"
+msgstr[1] "المستخدم"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: weathermap-cacti-plugin-mgmt.php:1089
 msgid "No Weathermaps Found"
-msgstr ""
+msgstr "لم يتم العثور على خرائط الطقس"
 
 #: weathermap-cacti-plugin-mgmt.php:1169
 #, php-format
 msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
-msgstr ""
+msgstr "لا يوجد دليل باسم %s.  يجب عليك إنشائه وتعيينه ليكون قابلا للقراءة بواسطة خادم الويب. إذا كنت ترغب في تحميل ملفات التكوين من داخل Cacti ، فيجب أن تكون <i>قابلة للكتابة</i> بواسطة خادم الويب أيضا."
 
 #: weathermap-cacti-plugin-mgmt.php:1179
 msgid "Existing Configuration Files"
-msgstr ""
+msgstr "ملفات التكوين الموجودة"
 
 #: weathermap-cacti-plugin-mgmt.php:1194
 msgid "Num Files"
-msgstr ""
+msgstr "ملفات Num"
 
 #: weathermap-cacti-plugin-mgmt.php:1211
 msgid "Has Maps"
-msgstr ""
+msgstr "لديه خرائط"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
 msgid "Go"
-msgstr ""
+msgstr "أذهب"
 
 #: weathermap-cacti-plugin-mgmt.php:1216
 msgid "Set/Refresh Filters"
-msgstr ""
+msgstr "مجموعة / تحديث الفلاتر"
 
 #: weathermap-cacti-plugin-mgmt.php:1217
 msgid "Clear"
-msgstr ""
+msgstr "واضح"
 
 #: weathermap-cacti-plugin-mgmt.php:1217
 msgid "Clear Filters"
-msgstr ""
+msgstr "مسح الفلتر"
 
 #: weathermap-cacti-plugin-mgmt.php:1229
 msgid "Create Options"
-msgstr ""
+msgstr "إنشاء خيارات"
 
 #: weathermap-cacti-plugin-mgmt.php:1238 weathermap-cacti-plugin.php:721
 msgid "New Map"
-msgstr ""
+msgstr "خريطة جديدة"
 
 #: weathermap-cacti-plugin-mgmt.php:1241
 msgid "Name including the \\.conf"
-msgstr ""
+msgstr "الاسم بما في ذلك \\.conf"
 
 #: weathermap-cacti-plugin-mgmt.php:1244
 msgid "Source Map"
-msgstr ""
+msgstr "خريطة المصدر"
 
 #: weathermap-cacti-plugin-mgmt.php:1248
 msgid "Empty File"
-msgstr ""
+msgstr "ملف فارغ"
 
 #: weathermap-cacti-plugin-mgmt.php:1263 weathermap-cacti-plugin-mgmt.php:2467
 msgid "Create"
-msgstr ""
+msgstr "أنشأ"
 
 #: weathermap-cacti-plugin-mgmt.php:1404 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Actions"
-msgstr ""
+msgstr "أفعال"
 
 #: weathermap-cacti-plugin-mgmt.php:1415
 msgid "Create Date"
-msgstr ""
+msgstr "أنشئ تاريخ"
 
 #: weathermap-cacti-plugin-mgmt.php:1420
 msgid "Last Modified"
-msgstr ""
+msgstr "آخر تعديل"
 
 #: weathermap-cacti-plugin-mgmt.php:1425
 msgid "Size"
-msgstr ""
+msgstr "مداخل خلفية الحجم"
 
 #: weathermap-cacti-plugin-mgmt.php:1431
 msgid "Config Files"
-msgstr ""
+msgstr "تكوين الملفات"
 
 #: weathermap-cacti-plugin-mgmt.php:1450
 #, php-format
 msgid "Add the configuration file %s to Weathermap"
-msgstr ""
+msgstr "إضافة ملف التكوين %s إلى خريطة الطقس"
 
 #: weathermap-cacti-plugin-mgmt.php:1461
+#, fuzzy
 msgid " Copy"
-msgstr ""
+msgstr "نسخ"
 
 #: weathermap-cacti-plugin-mgmt.php:1463
 #, php-format
 msgid "Duplicate the configuration file %s and add to Weathermap as %s"
-msgstr ""
+msgstr "قم بتكرار ملف التكوين %s وإضافته إلى Weathermap كما %s"
 
 #: weathermap-cacti-plugin-mgmt.php:1468
 #, php-format
 msgid "View the configuration file %s in a new window"
-msgstr ""
+msgstr "عرض ملف التكوين %s في نافذة جديدة"
 
 #: weathermap-cacti-plugin-mgmt.php:1477
 msgid "NOTE: Already in use. Click duplicate to create a new file."
-msgstr ""
+msgstr "ملاحظة: قيد الاستخدام بالفعل. انقر فوق تكرار لإنشاء ملف جديد."
 
 #: weathermap-cacti-plugin-mgmt.php:1495
 msgid "No files were found in the configs directory."
-msgstr ""
+msgstr "لم يتم العثور على ملفات في دليل التكوينات."
 
 #: weathermap-cacti-plugin-mgmt.php:1514
 #, php-format
 msgid "The path %s is not in the config directory."
-msgstr ""
+msgstr "المسار %s غير موجود في دليل التكوين."
 
 #: weathermap-cacti-plugin-mgmt.php:1519
 #, php-format
 msgid "Preview of %s"
-msgstr ""
+msgstr "معاينة %s"
 
 #: weathermap-cacti-plugin-mgmt.php:1536
 #, php-format
 msgid "The path %s does not appear to exist in the config directory"
-msgstr ""
+msgstr "لا يبدو أن المسار %s موجود في دليل التكوين"
 
 #: weathermap-cacti-plugin-mgmt.php:1559
 msgid "Path mismatch"
-msgstr ""
+msgstr "عدم تطابق المسار"
 
 #: weathermap-cacti-plugin-mgmt.php:1593
+#, fuzzy
 msgid "(No Title)"
-msgstr ""
+msgstr "العنوان (- العنوان)"
 
 #: weathermap-cacti-plugin-mgmt.php:1721
 #, php-format
 msgid "The new Map with the name %s was created using config file %s"
-msgstr ""
+msgstr "تم إنشاء الخريطة الجديدة التي تحمل الاسم %s باستخدام ملف التكوين %s"
 
 #: weathermap-cacti-plugin-mgmt.php:1736
 #, php-format
 msgid "The new Map with the name %s was unable to create the config file %s"
-msgstr ""
+msgstr "تعذر على الخريطة الجديدة التي تحمل الاسم %s إنشاء ملف التكوين %s"
 
 #: weathermap-cacti-plugin-mgmt.php:1740
 #, php-format
 msgid "The new Map with the name %s was unable to locate the config file %s to copy"
-msgstr ""
+msgstr "الخريطة الجديدة التي تحمل الاسم %s لم تتمكن من تحديد موقع ملف التكوين %s النسخ"
 
 #: weathermap-cacti-plugin-mgmt.php:1814
 #, php-format
 msgid "Weathermap Permissions for Map [ %s ]"
-msgstr ""
+msgstr "أذونات خريطة الطقس للخريطة [ %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:1828
 msgid "Type"
-msgstr ""
+msgstr "النوع"
 
 #: weathermap-cacti-plugin-mgmt.php:1833
 msgid "Users"
-msgstr ""
+msgstr "المستخدمين"
 
 #: weathermap-cacti-plugin-mgmt.php:1834
 msgid "User Groups"
-msgstr ""
+msgstr "مجموعات الطالب"
 
 #: weathermap-cacti-plugin-mgmt.php:1838
 msgid "Rows"
-msgstr ""
+msgstr "الصفوف"
 
 #: weathermap-cacti-plugin-mgmt.php:1859
 msgid "Has Permissions"
-msgstr ""
+msgstr "لديه أذونات"
 
 #: weathermap-cacti-plugin-mgmt.php:2112
 msgid "Users or Groups"
-msgstr ""
+msgstr "المستخدمون أو المجموعات"
 
 #: weathermap-cacti-plugin-mgmt.php:2122
 msgid "Account Type"
-msgstr ""
+msgstr "نوع الحساب"
 
 #: weathermap-cacti-plugin-mgmt.php:2125
+#, fuzzy
 msgid "User/Group"
-msgstr ""
+msgstr "نهج الرسم البياني الافتراضي لمجموعة المستخدم هذه"
 
 #: weathermap-cacti-plugin-mgmt.php:2128
 msgid "Login Realm"
-msgstr ""
+msgstr "عالم تسجيل الدخول"
 
 #: weathermap-cacti-plugin-mgmt.php:2131
 msgid "UID/GID"
-msgstr ""
+msgstr "UID/GID"
 
 #: weathermap-cacti-plugin-mgmt.php:2135
 msgid "Full Name/Description"
-msgstr ""
+msgstr "الاسم الكامل / الوصف"
 
 #: weathermap-cacti-plugin-mgmt.php:2138
 msgid "Allowed"
-msgstr ""
+msgstr "مسموح"
 
 #: weathermap-cacti-plugin-mgmt.php:2159
 msgid "User"
-msgstr ""
+msgstr "المستخدم"
 
 #: weathermap-cacti-plugin-mgmt.php:2161
 msgid "User Group"
-msgstr ""
+msgstr "گروه کاربران"
 
 #: weathermap-cacti-plugin-mgmt.php:2169
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #: weathermap-cacti-plugin-mgmt.php:2171
 msgid "Local"
-msgstr ""
+msgstr "محلي"
 
 #: weathermap-cacti-plugin-mgmt.php:2173
 msgid "Web Basic"
-msgstr ""
+msgstr "أساسيات الويب"
 
 #: weathermap-cacti-plugin-mgmt.php:2175
 msgid "LDAP/AD"
-msgstr ""
+msgstr "LDAP/AD"
 
 #: weathermap-cacti-plugin-mgmt.php:2185
+#, fuzzy
 msgid "Not Permitted"
-msgstr ""
+msgstr "تغيير اسم المستخدم غير مسموح به للقالب المحدد أو للمستخدم الضيف."
 
 #: weathermap-cacti-plugin-mgmt.php:2187
+#, fuzzy
 msgid "Permitted"
-msgstr ""
+msgstr "تغيير اسم المستخدم غير مسموح به للقالب المحدد أو للمستخدم الضيف."
 
 #: weathermap-cacti-plugin-mgmt.php:2195
 msgid "No Users have Access to this Map"
-msgstr ""
+msgstr "لا يمكن للمستخدمين الوصول إلى هذه الخريطة"
 
 #: weathermap-cacti-plugin-mgmt.php:2218 weathermap-cacti-plugin-mgmt.php:2296
 msgid "Global Settings [ All Maps ]"
-msgstr ""
+msgstr "الإعدادات العامة [ جميع الخرائط ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2220
 msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
-msgstr ""
+msgstr "لا توجد إعدادات لجميع الخرائط حتى الآن. يمكنك إضافة بعضها بالضغط على علامة الجمع \"+\" في أعلى اليمين ، أو اختيار خريطة واحدة من شاشة الإدارة لإضافة إعدادات لتلك الخريطة."
 
 #: weathermap-cacti-plugin-mgmt.php:2236
 #, php-format
 msgid "Edit Group Settings [ Group: %s ]"
-msgstr ""
+msgstr "تحرير إعدادات المجموعة [ المجموعة: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2238
 msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
-msgstr ""
+msgstr "لا توجد إعدادات لكل مجموعة لهذه المجموعة حتى الآن. يمكنك إضافة بعضها بالضغط على علامة الجمع \"+\" في أعلى اليمين."
 
 #: weathermap-cacti-plugin-mgmt.php:2257
 #, php-format
 msgid "Edit Map Settings [ Weathermap: %s ]"
-msgstr ""
+msgstr "تعديل إعدادات الخريطة [ خريطة الطقس: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2259
 msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
-msgstr ""
+msgstr "لا توجد إعدادات لكل خريطة لهذه الخريطة حتى الآن. يمكنك إضافة بعضها بالضغط على علامة الجمع \"+\" في أعلى اليمين."
 
 #: weathermap-cacti-plugin-mgmt.php:2273
+#, fuzzy
 msgid "Usage Notes"
-msgstr ""
+msgstr "اسم الصفحة"
 
 #: weathermap-cacti-plugin-mgmt.php:2280
 msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
-msgstr ""
+msgstr "تتأثر جميع الخرائط في هذه المجموعة أيضا بالإعدادات العامة التالية (تتجاوز المجموعة المجموعة عمومي، وتتجاوز الخريطة المجموعة، ولكن كلاهما يتجاوز أوامر SET داخل ملف تكوين الخريطة)"
 
 #: weathermap-cacti-plugin-mgmt.php:2288
 msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
-msgstr ""
+msgstr "تتأثر هذه الخريطة أيضا بالإعدادات العامة وإعدادات المجموعة التالية (تتجاوز المجموعة الإجمالية، وتتجاوز الخريطة المجموعة، ولكن كلاهما يتجاوز أوامر SET داخل ملف تكوين الخريطة)"
 
 #: weathermap-cacti-plugin-mgmt.php:2300 weathermap-cacti-plugin-mgmt.php:2473
 #, php-format
 msgid "Group Settings [ Group: %s ]"
-msgstr ""
+msgstr "إعدادات المجموعة [ المجموعة: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2300
+#, fuzzy
 msgid "No Group"
-msgstr ""
+msgstr "مجموعة"
 
 #: weathermap-cacti-plugin-mgmt.php:2307
 msgid "Action"
-msgstr ""
+msgstr "الإجراء"
 
 #: weathermap-cacti-plugin-mgmt.php:2307 weathermap-cacti-plugin-mgmt.php:2378
 #: weathermap-cacti-plugin-mgmt.php:2449
 msgid "Name"
-msgstr ""
+msgstr "الاسم"
 
 #: weathermap-cacti-plugin-mgmt.php:2307 weathermap-cacti-plugin-mgmt.php:2378
 #: weathermap-cacti-plugin-mgmt.php:2456
 msgid "Value"
-msgstr ""
+msgstr "القيمة"
 
 #: weathermap-cacti-plugin-mgmt.php:2314
 msgid "Edit this definition"
-msgstr ""
+msgstr "تحرير هذا التعريف"
 
 #: weathermap-cacti-plugin-mgmt.php:2324 weathermap-cacti-plugin-mgmt.php:2708
 msgid "Remove this definition from this Map"
-msgstr ""
+msgstr "إزالة هذا التعريف من هذه الخريطة"
 
 #: weathermap-cacti-plugin-mgmt.php:2350
 msgid "Back to Group Admin"
-msgstr ""
+msgstr "العودة إلى مسؤول المجموعة"
 
 #: weathermap-cacti-plugin-mgmt.php:2354
 msgid "Back to Map Admin"
-msgstr ""
+msgstr "العودة إلى مسؤول الخريطة"
 
 #: weathermap-cacti-plugin-mgmt.php:2396
 msgid "No Settings Found"
-msgstr ""
+msgstr "لم يتم العثور على إعدادات"
 
 #: weathermap-cacti-plugin-mgmt.php:2439
 msgid "Map ID"
-msgstr ""
+msgstr "معرف الخريطة"
 
 #: weathermap-cacti-plugin-mgmt.php:2444
 msgid "Setting ID"
-msgstr ""
+msgstr "معرف الإعداد"
 
 #: weathermap-cacti-plugin-mgmt.php:2452
 msgid "The name of the map-global SET variable"
-msgstr ""
+msgstr "اسم متغير SET العام للخريطة"
 
 #: weathermap-cacti-plugin-mgmt.php:2459
 msgid "What to set it to"
-msgstr ""
+msgstr "ما لضبطه على"
 
 #: weathermap-cacti-plugin-mgmt.php:2464
 msgid "Edit"
-msgstr ""
+msgstr "تحرير"
 
 #: weathermap-cacti-plugin-mgmt.php:2471
 msgid "Global Setting for all Maps"
-msgstr ""
+msgstr "الإعداد العام لجميع الخرائط"
 
 #: weathermap-cacti-plugin-mgmt.php:2475
 #, php-format
 msgid "Map Setting [ Weathermap: %s ]"
-msgstr ""
+msgstr "إعداد الخريطة [ خريطة الطقس: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2575
 #, php-format
 msgid "Edit Map Group for Weathermap [ %s ]"
-msgstr ""
+msgstr "تحرير مجموعة الخرائط لخريطة الطقس [ %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2580
 msgid "Choose an existing Group"
-msgstr ""
+msgstr "اختيار مجموعة حالية"
 
 #: weathermap-cacti-plugin-mgmt.php:2602
 #, php-format
 msgid "Or Create a New Group using the %s Group Management interface %s"
-msgstr ""
+msgstr "أو قم بإنشاء مجموعة جديدة باستخدام واجهة إدارة المجموعة %s %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2617
 msgid "Adding a Group"
-msgstr ""
+msgstr "إضافة مجموعة"
 
 #: weathermap-cacti-plugin-mgmt.php:2624
 #, php-format
 msgid "Editing Group: %s"
-msgstr ""
+msgstr "مجموعة التحرير: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
+#, fuzzy
 msgid "Group Name:"
-msgstr ""
+msgstr "أسم المجموعة"
 
 #: weathermap-cacti-plugin-mgmt.php:2639
 msgid "Update"
-msgstr ""
+msgstr "تحديث"
 
 #: weathermap-cacti-plugin-mgmt.php:2641
 msgid "Add"
-msgstr ""
+msgstr "إضافة"
 
 #: weathermap-cacti-plugin-mgmt.php:2654
 msgid "Edit Map Groups"
-msgstr ""
+msgstr "تعديل مجموعات الخرائط"
 
 #: weathermap-cacti-plugin-mgmt.php:2656
 msgid "Group Name"
-msgstr ""
+msgstr "أسم المجموعة"
 
 #: weathermap-cacti-plugin-mgmt.php:2666
 msgid "Rename this Group"
-msgstr ""
+msgstr "إعادة تسمية هذه المجموعة"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
+#, fuzzy
 msgid "Edit Group Settings"
-msgstr ""
+msgstr "إعدادات سجل التدقيق"
 
 #: weathermap-cacti-plugin-mgmt.php:2722
 msgid "No Groups are defined"
-msgstr ""
+msgstr "لا توجد مجموعات محددة"
 
 #: weathermap-cacti-plugin-mgmt.php:2730
 msgid "Rename Weathermap Group"
-msgstr ""
+msgstr "إعادة تسمية مجموعة خريطة الطقس"
 
 #: weathermap-cacti-plugin-mgmt.php:2731
 msgid "Enter a new name for the Weathermap Group."
-msgstr ""
+msgstr "أدخل اسما جديدا لمجموعة Weathermap."
 
 #: weathermap-cacti-plugin-mgmt.php:2734
 msgid "New Group Name"
-msgstr ""
+msgstr "اسم المجموعة الجديدة"
 
 #: weathermap-cacti-plugin-mgmt.php:2740
 msgid "Rename"
-msgstr ""
+msgstr "إعادة التسمية"
 
 #: weathermap-cacti-plugin-mgmt.php:2836
 #, php-format
 msgid "The New Map File name %s already exists!"
-msgstr ""
+msgstr "اسم ملف الخريطة الجديد موجود %s بالفعل!"
 
 #: weathermap-cacti-plugin-mgmt.php:2847
 #, php-format
 msgid "New Map file %s created from %s"
-msgstr ""
+msgstr "%s إنشاء ملف خريطة جديد من %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2849
 msgid "The Source Map File name is not readable or does not exist!"
-msgstr ""
+msgstr "اسم ملف خريطة المصدر غير قابل للقراءة أو غير موجود!"
 
 #: weathermap-cacti-plugin-mgmt.php:2853
 #, php-format
 msgid "New Map file %s created."
-msgstr ""
+msgstr "%s إنشاء ملف خريطة جديد."
 
 #: weathermap-cacti-plugin-mgmt.php:2856
 msgid "You must include a Map File name to Create"
-msgstr ""
+msgstr "يجب تضمين اسم ملف الخريطة لإنشائه"
 
 #: weathermap-cacti-plugin.php:393 weathermap-cacti-plugin.php:400
 msgid "Return to Main Page"
-msgstr ""
+msgstr "العودة إلى الصفحة الرئيسية"
 
 #: weathermap-cacti-plugin.php:395
 msgid "Map Permissions"
-msgstr ""
+msgstr "أذونات الخريطة"
 
 #: weathermap-cacti-plugin.php:414 weathermap-cacti-plugin.php:665
 msgid "This map hasn't been created yet."
-msgstr ""
+msgstr "لم يتم إنشاء هذه الخريطة بعد."
 
 #: weathermap-cacti-plugin.php:446
 msgid "Manage Maps"
-msgstr ""
+msgstr "إدارة الخرائط"
 
 #: weathermap-cacti-plugin.php:480
 #, php-format
 msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
-msgstr ""
+msgstr "خرائط الطقس للشبكة [ %sدورة تلقائية%s ]"
 
 #: weathermap-cacti-plugin.php:528
 msgid "(thumbnail for map not created yet)"
-msgstr ""
+msgstr "(الصورة المصغرة للخريطة لم يتم إنشاؤها بعد)"
 
 #: weathermap-cacti-plugin.php:532
 msgid "(Live View)"
-msgstr ""
+msgstr "(عرض مباشر)"
 
 #: weathermap-cacti-plugin.php:541 weathermap-cacti-plugin.php:695
 msgid "You Have No Maps"
-msgstr ""
+msgstr "ليس لديك خرائط"
 
 #: weathermap-cacti-plugin.php:544
 #, php-format
 msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
-msgstr ""
+msgstr "لإضافة خريطة إلى الجدول، انتقل إلى %s إدارة... %s صفحة خرائط الطقس وإضافة واحدة."
 
 #: weathermap-cacti-plugin.php:572
 msgid "Network Weathermaps"
-msgstr ""
+msgstr "خرائط الطقس للشبكة"
 
 #: weathermap-cacti-plugin.php:592
 #, php-format
 msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
-msgstr ""
+msgstr "عرض %s %s من %s %s. ركوب الدراجات جميع الخرائط المتاحة في هذه المجموعة."
 
 #: weathermap-cacti-plugin.php:594
 #, php-format
 msgid "Showing %s %s of %s %s. Cycling all available maps."
-msgstr ""
+msgstr "عرض %s %s من %s %s. ركوب الدراجات جميع الخرائط المتاحة."
 
 #: weathermap-cacti-plugin.php:716
 #, php-format
 msgid "Powered by %s PHP Weathermap Version %s %s"
-msgstr ""
+msgstr "مدعوم من %s PHP خريطة الطقس الإصدار %s %s"
 
 #: weathermap-cacti-plugin.php:719
 msgid "Go to the map management page"
-msgstr ""
+msgstr "انتقل إلى صفحة إدارة الخريطة"
 
 #: weathermap-cacti-plugin.php:719
 msgid "Weathermap Management"
-msgstr ""
+msgstr "إدارة خرائط الطقس"
 
 #: weathermap-cacti-plugin.php:795
+#, fuzzy
 msgid "Weathermap Filter"
-msgstr ""
+msgstr "مسح الفلتر"
 
 #: weathermap-cacti-plugin.php:804
 msgid "Map to View"
-msgstr ""
+msgstr "خريطة للعرض"
 
 #: weathermap-cacti-plugin.php:909
 msgid "All Maps"
-msgstr ""
+msgstr "جميع الخرائط"
