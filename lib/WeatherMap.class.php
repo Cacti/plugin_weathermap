@@ -1174,7 +1174,7 @@ class WeatherMap extends WeatherMapBase {
 	function DrawLabelRotated($image, $x, $y, $angle, $text, $font, $padding, $linkname, $textcolour, $bgcolour, $outlinecolour, &$map, $direction) {
 		list($strwidth, $strheight) = $this->myimagestringsize($font, $text);
 
-		if (abs($angle) > 90){
+		if (abs($angle) > 90) {
 			$angle -= 180;
 		}
 
@@ -1454,7 +1454,7 @@ class WeatherMap extends WeatherMapBase {
 
 		wm_debug("Drawing $nscales colours into SCALE");
 
-		$font=$this->keyfont;
+		$font = $this->keyfont;
 
 		# $x=$this->keyx[$scalename];
 		# $y=$this->keyy[$scalename];
@@ -1504,12 +1504,16 @@ class WeatherMap extends WeatherMapBase {
 			$dx = $p*$scalefactor;
 
 			if (($p % 25) == 0) {
-				imageline($scale_im, $scale_left + $dx, $scale_top - $tileheight,
-					$scale_left + $dx, $scale_bottom + $tileheight,
+				imageline(
+					$scale_im,
+					intval(round($scale_left + $dx)),
+					intval(round($scale_top - $tileheight)),
+					intval(round($scale_left + $dx)),
+					intval(round($scale_bottom + $tileheight)),
 					$this->colours['DEFAULT']['KEYTEXT'][$scale_ref]
 				);
 
-				$labelstring=sprintf('%d%%', $p);
+				$labelstring = sprintf('%d%%', $p);
 
 				$this->myimagestring($scale_im, $font, $scale_left + $dx + 2, $scale_top - 2, $labelstring,
 					$this->colours['DEFAULT']['KEYTEXT'][$scale_ref]);
@@ -1527,7 +1531,7 @@ class WeatherMap extends WeatherMapBase {
 			}
 		}
 
-		imagecopy($image,$scale_im,$this->keyx[$scalename],$this->keyy[$scalename],0,0,imagesx($scale_im),imagesy($scale_im));
+		imagecopy($image, $scale_im, $this->keyx[$scalename], $this->keyy[$scalename], 0, 0, imagesx($scale_im), imagesy($scale_im));
 
 		$this->keyimage[$scalename] = $scale_im;
 
@@ -1616,8 +1620,12 @@ class WeatherMap extends WeatherMapBase {
 			}
 
 			if (($p % 25) == 0) {
-				imageline($scale_im, $scale_left - $scalefactor, $scale_top + $dy,
-					$scale_right + $scalefactor, $scale_top + $dy,
+				imageline(
+					$scale_im,
+					intval(round($scale_left - $scalefactor)),
+					intval(round($scale_top + $dy)),
+					intval(round($scale_right + $scalefactor)),
+					intval(round($scale_top + $dy)),
 					$this->colours['DEFAULT']['KEYTEXT'][$scale_ref]
 				);
 
@@ -1641,6 +1649,7 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		imagecopy($image, $scale_im, $this->keyx[$scalename], $this->keyy[$scalename], 0, 0, imagesx($scale_im), imagesy($scale_im));
+
 		$this->keyimage[$scalename] = $scale_im;
 
 		$rx = $this->keyx[$scalename];
@@ -1741,6 +1750,7 @@ class WeatherMap extends WeatherMapBase {
 			imageSaveAlpha($scale_im, true);
 
 			$nothing = imagecolorallocatealpha($scale_im, 128, 0, 0, 127);
+
 			imagefill($scale_im, 0, 0, $nothing);
 
 			$this->AllocateScaleColours($scale_im,$scale_ref);
@@ -2122,7 +2132,7 @@ class WeatherMap extends WeatherMapBase {
 
 			$filename = $input;
 
-			if ($is_include){
+			if ($is_include) {
 				wm_debug('ReadConfig Detected that this is an INCLUDED config filename.');
 
 				if ($is_include && in_array($filename, $this->included_files)) {
@@ -2495,7 +2505,7 @@ class WeatherMap extends WeatherMapBase {
 				}
 
 				if ($last_seen == 'GLOBAL' && preg_match('/^\s*INCLUDE\s+(.*)\s*$/i', $buffer, $matches)) {
-					if (file_exists($matches[1])){
+					if (file_exists($matches[1])) {
 						wm_debug("Including '{$matches[1]}'");
 
 						$this->ReadConfig($matches[1], true);
@@ -3572,7 +3582,7 @@ class WeatherMap extends WeatherMapBase {
 
 			if ($bgimage) {
 				imagecopy($image, $bgimage, 0, 0, 0, 0, $this->width, $this->height);
-				imagedestroy ($bgimage);
+				imagedestroy($bgimage);
 			}
 
 			// Now it's time to draw a map

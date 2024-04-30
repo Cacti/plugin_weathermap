@@ -14,6 +14,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
+-- develop ---
+* issue: More deprecation warnings in image* functions.
+
 --- 1.3 ---
 * issue#125: Repair maps actually destroys them
 * issue#129: Weathermap crash when Boost enabled
