@@ -830,9 +830,16 @@ class WeatherMap extends WeatherMapBase {
 				// try to find it with the script, if the relative path fails
 				$srcdir = substr($_SERVER['argv'][0], 0, strrpos($_SERVER['argv'][0], '/'));
 
-				$dh = opendir($srcdir . '/' . $dir);
-				if ($dh) {
+				if (file_exists($srcdir)) {
 					$dir = $srcdir . '/' . $dir;
+
+					if (file_exists($dir)) {
+						$dh = opendir($dir);
+					} else {
+						cacti_log("WARNING: Source Directory '$dir' does not exist!", false, 'WEATHERMAP');
+					}
+				} else {
+					cacti_log("WARNING: Source Directory '$srcdir' does not exist!", false, 'WEATHERMAP');
 				}
 			}
 		}
