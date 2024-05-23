@@ -1877,7 +1877,7 @@ class WeatherMap extends WeatherMapBase {
 	 * @author BohwaZ <https://bohwaz.net/>
 	 * @source https://github.com/alphp/strftime
 	 */
-	function strftime(string $format, $timestamp = null, ?string $locale = null): string {
+	function strftime($format, $timestamp = null, $locale = null) {
 		if (null === $timestamp) {
 			$timestamp = new DateTime;
 		} elseif (is_numeric($timestamp)) {
