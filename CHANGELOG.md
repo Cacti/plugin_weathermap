@@ -14,7 +14,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
--- develop ---
+--- develop ---
+* issue#152: Dont attempt to include directories from Weathermap config files.
 * issue: More deprecation warnings in image* functions.
 
 --- 1.3 ---
