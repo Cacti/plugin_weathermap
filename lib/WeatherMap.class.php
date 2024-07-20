@@ -2146,24 +2146,28 @@ class WeatherMap extends WeatherMapBase {
 					wm_warn("Attempt to include '$filename' twice! Skipping it.");
 
 					return(false);
-				} else {
+				} elseif (is_file($filename)) {
 					$this->included_files[] = $filename;
 					$this->has_includes = true;
+				} else {
+					wm_warn("Attempt to include a directory '$filename' instead of a file! Skipping it.");
 				}
 			}
 
-			$fd = fopen($filename, 'r');
+			if (is_file($filename)) {
+				$fd = fopen($filename, 'r');
 
-			if ($fd) {
-				while (!feof($fd)) {
-					$buffer = fgets($fd, 4096);
+				if ($fd) {
+					while (!feof($fd)) {
+						$buffer = fgets($fd, 4096);
 
-					// strip out any Windows line-endings that have gotten in here
-					$buffer  = str_replace("\r", '', $buffer);
-					$lines[] = $buffer;
+						// strip out any Windows line-endings that have gotten in here
+						$buffer  = str_replace("\r", '', $buffer);
+						$lines[] = $buffer;
+					}
+
+					fclose($fd);
 				}
-
-				fclose($fd);
 			}
 		}
 
