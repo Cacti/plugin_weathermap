@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:39-0400\n"
-"PO-Revision-Date: 2024-04-27 14:49-0400\n"
+"POT-Creation-Date: 2024-07-21 16:17-0400\n"
+"PO-Revision-Date: 2024-07-21 16:36-0400\n"
 "Last-Translator: Coool (github.com/Coool) <coool@mail.lv>\n"
 "Language-Team: Latvian <http://translate.cacti.net/projects/cacti/audit/lv/>\n"
 "Language: lv_LV\n"
@@ -16,12 +16,237 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
-#: lib/editor.inc.php:259
+#: lib/editor.inc.php:261
 #, php-format
 msgid "Welcome to the PHP Weathermap %s Editor"
 msgstr "Laipni lūdzam PHP Weathermap %s redaktorā"
+
+#: lib/editor.inc.php:264
+msgid "<b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however."
+msgstr "<b>PIEZĪME:</b> Šis redaktors nav pabeigts! Ir daudzas Weathermap funkcijas, kuras jūs palaidīsit garām, ja izvēlēsities izmantot tikai redaktoru.  Tie ietver: līknes, mezglu nobīdes, fontu definīcijas, krāsu maiņu, katra mezgla/saites iestatījumus un attēlu augšupielādi. Tomēr jūs varat izmantot redaktoru, nesabojājot šīs funkcijas, ja tās pievienojāt ar roku."
+
+#: lib/editor.inc.php:270
+msgid "Do you want to:"
+msgstr "Vai jūs vēlaties:"
+
+#: lib/editor.inc.php:271
+msgid "Create A New Map:"
+msgstr "Izveidojiet jaunu karti:"
+
+#: lib/editor.inc.php:273
+msgid "Named:"
+msgstr "Nosaukts:"
+
+#: lib/editor.inc.php:277 weathermap-cacti-plugin-mgmt.php:1263
+#: weathermap-cacti-plugin-mgmt.php:2467
+msgid "Create"
+msgstr "Izveidot"
+
+#: lib/editor.inc.php:279
+msgid "Note: filenames must contain no spaces and end in .conf"
+msgstr "Piezīme: failu nosaukumos nedrīkst būt atstarpes un tie beidzas ar .conf"
+
+#: lib/editor.inc.php:838
+msgid "Ok"
+msgstr "Labi"
+
+#: lib/editor.inc.php:839
+msgid "Operation successful"
+msgstr "Operācija veiksmīga"
+
+#: lib/editor.inc.php:840
+msgid "The Operation was successful.  Details are below."
+msgstr "Operācija bija veiksmīga. Sīkāka informācija ir sniegta zemāk."
+
+#: lib/editor.inc.php:841
+msgid "Pause"
+msgstr "Pauze"
+
+#: lib/editor.inc.php:843
+msgid "Click on the map where you would like to move the node to."
+msgstr "Noklikšķiniet uz kartes, uz kuru vēlaties pārvietot mezglu."
+
+#: lib/editor.inc.php:844
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Noklikšķiniet uz kartes, caur kuru vēlaties novirzīt saiti."
+
+#: lib/editor.inc.php:845
+msgid "Click on the first node for the start of the link."
+msgstr "Noklikšķiniet uz pirmā mezgla, lai sāktu saiti."
+
+#: lib/editor.inc.php:846
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Noklikšķiniet uz kartes, kur vēlaties ievietot laikspiedolu."
+
+#: lib/editor.inc.php:847
+msgid "Click on the map where you would like to put the legend."
+msgstr "Noklikšķiniet uz kartes, kur vēlaties ievietot leģendu."
+
+#: lib/editor.inc.php:848
+msgid "Click on the map where you would like to add a new node."
+msgstr "Noklikšķiniet uz kartes, kur vēlaties pievienot jaunu mezglu."
+
+#: lib/editor.inc.php:850
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "BRĪDINĀJUMS: Nospiežot 'Dzēst mezglu', šis mezgls tiks izdzēsts."
+
+#: lib/editor.inc.php:851
+msgid "Delete Node Confirmation"
+msgstr "Dzēst mezgla apstiprinājumu"
+
+#: lib/editor.inc.php:852
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "BRĪDINĀJUMS: Nospiežot 'Dzēst saiti', šī saite tiks izdzēsta."
+
+#: lib/editor.inc.php:853
+msgid "Delete Link Confirmation"
+msgstr "Dzēst saites apstiprinājumu"
+
+#: lib/editor.inc.php:854 weathermap-cacti-plugin-editor.php:489
+#: weathermap-cacti-plugin-editor.php:610
+#: weathermap-cacti-plugin-editor.php:681
+#: weathermap-cacti-plugin-editor.php:774 weathermap-cacti-plugin-mgmt.php:491
+#: weathermap-cacti-plugin-mgmt.php:511 weathermap-cacti-plugin-mgmt.php:520
+#: weathermap-cacti-plugin-mgmt.php:529 weathermap-cacti-plugin-mgmt.php:538
+#: weathermap-cacti-plugin-mgmt.php:2739
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: lib/editor.inc.php:855 weathermap-cacti-plugin-editor.php:606
+msgid "Delete Link"
+msgstr "Dzēst saiti"
+
+#: lib/editor.inc.php:856
+msgid "Delete Node"
+msgstr "Dzēst mezglu"
+
+#: lib/editor.inc.php:857 weathermap-cacti-plugin-editor.php:409
+msgid "Position"
+msgstr "Pozīcija"
+
+#: lib/editor.inc.php:859
+msgid "Node Actions"
+msgstr "Mezgla darbības"
+
+#: lib/editor.inc.php:860
+msgid "Link Actions"
+msgstr "Saistīšanas darbības"
+
+#: lib/editor.inc.php:861 weathermap-cacti-plugin-editor.php:485
+msgid "Move"
+msgstr "Pārvietot"
+
+#: lib/editor.inc.php:862 weathermap-cacti-plugin-editor.php:487
+msgid "Clone"
+msgstr "Klonēt"
+
+#: lib/editor.inc.php:863 weathermap-cacti-plugin-editor.php:488
+#: weathermap-cacti-plugin-editor.php:607 weathermap-cacti-plugin-mgmt.php:2464
+msgid "Edit"
+msgstr "Rediģēt"
+
+#: lib/editor.inc.php:864 weathermap-cacti-plugin-editor.php:486
+#: weathermap-cacti-plugin-mgmt.php:52
+msgid "Delete"
+msgstr "Dzēst"
+
+#: lib/editor.inc.php:865 weathermap-cacti-plugin-editor.php:609
+msgid "Via"
+msgstr "Via"
+
+#: lib/editor.inc.php:866 weathermap-cacti-plugin-editor.php:608
+msgid "Tidy"
+msgstr "Kārtīgi"
+
+#: lib/editor.inc.php:867
+msgid "Properties"
+msgstr "Rekvizīti"
+
+#: lib/editor.inc.php:872
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Kur Weathermap vajadzētu iegūt datus par šo saiti? Tas var būt vai nu RRD fails, vai html ar īpašiem komentāriem tajā (parasti no MRTG)."
+
+#: lib/editor.inc.php:873
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "Cik plata tiks uzzīmēta saites bultiņa pikseļos."
+
+#: lib/editor.inc.php:874
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "Ja izmantojat \"overlib\" HTML stilu, tad šis ir URL, kas tiks atvērts, noklikšķinot uz saites"
+
+#: lib/editor.inc.php:875
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "Ja izmantojat \"overlib\" HTML stilu, tad tas ir attēla URL, kas tiks parādīts, virzot kursoru virs saites"
+
+#: lib/editor.inc.php:876
+msgid "The bandwidth from the first node to the second node"
+msgstr "Joslas platums no pirmā mezgla līdz otrajam mezglam"
+
+#: lib/editor.inc.php:877
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "Joslas platums no otrā mezgla līdz pirmajam mezglam (ja tas atšķiras)"
+
+#: lib/editor.inc.php:878 lib/editor.inc.php:879
+msgid "The text that will appear alongside the link"
+msgstr "Teksts, kas tiks parādīts līdzās saitei"
+
+#: lib/editor.inc.php:880
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "Ja izmantojat \"overlib\" HTML stilu, tad šis ir URL, kas tiks atvērts, noklikšķinot uz mezgla"
+
+#: lib/editor.inc.php:881
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "Ja izmantojat \"overlib\" HTML stilu, tad tas ir attēla URL, kas tiks parādīts, virzot kursoru virs mezgla"
+
+#: lib/editor.inc.php:882
+msgid "How far from the left to position the node, in pixels"
+msgstr "Cik tālu no kreisās puses, lai novietotu mezglu pikseļos"
+
+#: lib/editor.inc.php:883
+msgid "How far from the top to position the node, in pixels"
+msgstr "Cik tālu no augšas, lai novietotu mezglu, pikseļos"
+
+#: lib/editor.inc.php:884
+msgid "The text that appears on the node"
+msgstr "Teksts, kas tiek parādīts mezglā"
+
+#: lib/editor.inc.php:885
+msgid "The name used for this node when defining links"
+msgstr "Šim mezglam izmantotais nosaukums, definējot saites"
+
+#: lib/editor.inc.php:886
+msgid "Change to a different file, or start creating a new one."
+msgstr "Mainiet uz citu failu vai sāciet veidot jaunu failu."
+
+#: lib/editor.inc.php:887
+msgid "Add a new node to the map"
+msgstr "Jauna mezgla pievienošana kartei"
+
+#: lib/editor.inc.php:888
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "Pievienojiet kartei jaunu saiti, savienojot divus mezglus kopā."
+
+#: lib/editor.inc.php:889
+msgid "Select a different map to edit, or start a new one."
+msgstr "Atlasiet citu rediģējamo karti vai sāciet jaunu karti."
+
+#: lib/editor.inc.php:893
+msgid "This is where help appears for links"
+msgstr "Šeit tiek parādīta palīdzība saitēm"
+
+#: lib/editor.inc.php:894
+msgid "This is where help appears for maps"
+msgstr "Šeit tiek parādīta palīdzība kartēm"
+
+#: lib/editor.inc.php:895
+msgid "This is where help appears for nodes"
+msgstr "Šeit tiek parādīta palīdzība mezgliem"
+
+#: lib/editor.inc.php:896
+msgid "or click a Node or Link to edit it's properties"
+msgstr "vai noklikšķiniet uz mezgla vai saites, lai rediģētu tā rekvizītus"
 
 #: setup.php:208 setup.php:602 setup.php:748 setup.php:755 setup.php:762
 #: setup.php:769 setup.php:776
@@ -95,7 +320,7 @@ msgstr "Pilni grafiki"
 
 #: setup.php:258
 msgid "Refresh Time"
-msgstr "Atlasīt/Atjaunināt filtrus"
+msgstr "Atsvaidzināšanas laiks"
 
 #: setup.php:259
 msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
@@ -130,13 +355,15 @@ msgstr "Kādam formātam jūs dodat priekšroku ģenerētajiem karšu attēliem 
 
 #: setup.php:276
 msgid "PNG (default)"
-msgstr "Noklusējuma"
+msgstr "PNG (noklusējums)"
 
 #: setup.php:277
+#, fuzzy
 msgid "JPEG"
 msgstr "Iekļauts JPEG attēls, LN stils"
 
 #: setup.php:278
+#, fuzzy
 msgid "GIF"
 msgstr "Iekļauts GIF attēls, LN stils"
 
@@ -180,6 +407,7 @@ msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "Izmantojot grupas, cilnes joslai pievienojiet cilni \"Visas kartes\"."
 
 #: setup.php:312
+#, fuzzy
 msgid "No (default)"
 msgstr "Noklusējuma koks"
 
@@ -201,11 +429,11 @@ msgstr "Nē"
 
 #: setup.php:322
 msgid "Yes (default)"
-msgstr "Noklusējuma"
+msgstr "Jā (noklusējums)"
 
 #: setup.php:326
 msgid "Quiet Logging"
-msgstr "Revīzijas žurnāla iestatījumi"
+msgstr "Klusa mežizstrāde"
 
 #: setup.php:327
 msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
@@ -332,9 +560,10 @@ msgstr "Atļaujas Rediģēt"
 
 #: setup.php:895
 msgid "Add User"
-msgstr "Lietotājs"
+msgstr "Pievienot lietotāju"
 
 #: setup.php:902
+#, fuzzy
 msgid "Delete User"
 msgstr "Dzēst lietotāju(s)"
 
@@ -386,14 +615,314 @@ msgstr "Grupas administrators"
 msgid "Group Admin Delete"
 msgstr "Grupas administrators Dzēst"
 
+#: weathermap-cacti-plugin-editor.php:330
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "PHP laika apstākļu kartes redaktors %s"
+
+#: weathermap-cacti-plugin-editor.php:336
+msgid "Change<br>File"
+msgstr "Mainīties<br>Fails"
+
+#: weathermap-cacti-plugin-editor.php:337
+msgid "Add<br>Node"
+msgstr "Pievienot<br>Mezgls"
+
+#: weathermap-cacti-plugin-editor.php:338
+msgid "Add<br>Link"
+msgstr "Pievienot<br>Saikne"
+
+#: weathermap-cacti-plugin-editor.php:339
+msgid "Position<br>Legend"
+msgstr "Pozīcija<br>Leģenda"
+
+#: weathermap-cacti-plugin-editor.php:340
+msgid "Position<br>Timestamp"
+msgstr "Pozīcija<br>Laikspiedola"
+
+#: weathermap-cacti-plugin-editor.php:341
+msgid "Map<br>Properties"
+msgstr "Karte<br>Rekvizīti"
+
+#: weathermap-cacti-plugin-editor.php:342
+msgid "Map<br>Style"
+msgstr "Karte<br>Stils"
+
+#: weathermap-cacti-plugin-editor.php:343
+msgid "Manage<br>Colors"
+msgstr "Pārvaldīt<br>Krāsas"
+
+#: weathermap-cacti-plugin-editor.php:344
+msgid "Manage<br>Images"
+msgstr "Pārvaldīt<br>Attēlus"
+
+#: weathermap-cacti-plugin-editor.php:345
+msgid "Editor<br>Settings"
+msgstr "Redaktors<br>Iestatījumus"
+
+#: weathermap-cacti-plugin-editor.php:346
+msgid "Position<br>---, ---"
+msgstr "Pozīcija<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php:348
+msgid "Select a menu item or either right-click or click on a Node or Link to edit it's properties"
+msgstr "Atlasiet izvēlnes elementu vai ar peles labo pogu noklikšķiniet vai noklikšķiniet uz mezgla vai saites, lai rediģētu tā rekvizītus"
+
+#: weathermap-cacti-plugin-editor.php:358
+msgid "Debug"
+msgstr "Atkļūdošana"
+
+#: weathermap-cacti-plugin-editor.php:359
+msgid "Re-tidy ALL"
+msgstr "Atkārtoti sakopt VISU"
+
+#: weathermap-cacti-plugin-editor.php:360
+msgid "Re-tidy"
+msgstr "Atkārtota sakopšana"
+
+#: weathermap-cacti-plugin-editor.php:361
+msgid "Un-tidy"
+msgstr "Nekārtīgs"
+
+#: weathermap-cacti-plugin-editor.php:362
+msgid "Do Nothing"
+msgstr "Nedarīt neko"
+
+#: weathermap-cacti-plugin-editor.php:364
+msgid "mapfile"
+msgstr "kartes fails"
+
+#: weathermap-cacti-plugin-editor.php:368
+msgid "action"
+msgstr "Asa sižeta filma"
+
+#: weathermap-cacti-plugin-editor.php:372
+msgid "param"
+msgstr "param"
+
+#: weathermap-cacti-plugin-editor.php:376
+msgid "param2"
+msgstr "param2"
+
+#: weathermap-cacti-plugin-editor.php:380
+#, fuzzy
+msgid "debug"
+msgstr "Atkļūdošana"
+
+#: weathermap-cacti-plugin-editor.php:383
+msgid "See config"
+msgstr "Skatīt konfigurāciju"
+
+#: weathermap-cacti-plugin-editor.php:399
+msgid "Node Properties"
+msgstr "Mezgla rekvizīti"
+
+#: weathermap-cacti-plugin-editor.php:413
+msgid "Internal Name"
+msgstr "Iekšējais nosaukums"
+
+#: weathermap-cacti-plugin-editor.php:417
+msgid "Label"
+msgstr "Etiķete"
+
+#: weathermap-cacti-plugin-editor.php:421
+msgid "Icon Filename"
+msgstr "Ikonas faila nosaukums"
+
+#: weathermap-cacti-plugin-editor.php:445
+#: weathermap-cacti-plugin-editor.php:539
+msgid "Info URL(s)"
+msgstr "Informācijas vietrādis(-i) URL"
+
+#: weathermap-cacti-plugin-editor.php:451
+#: weathermap-cacti-plugin-editor.php:545
+msgid "Hover Graph URL(s)"
+msgstr "Norādīšanas grafika URL(-i)"
+
+#: weathermap-cacti-plugin-editor.php:457
+#: weathermap-cacti-plugin-editor.php:551
+msgid "Graph Template"
+msgstr "Grafika veidne"
+
 #: weathermap-cacti-plugin-editor.php:461
 #: weathermap-cacti-plugin-editor.php:555 weathermap-cacti-plugin-mgmt.php:1832
 msgid "All"
 msgstr "Visi"
 
-#: weathermap-cacti-plugin-mgmt.php:52
-msgid "Delete"
-msgstr "Dzēst"
+#: weathermap-cacti-plugin-editor.php:476
+#: weathermap-cacti-plugin-editor.php:570
+msgid "Graph Selector"
+msgstr "Grafiku atlasītājs"
+
+#: weathermap-cacti-plugin-editor.php:490
+#: weathermap-cacti-plugin-editor.php:611
+#: weathermap-cacti-plugin-editor.php:682
+#: weathermap-cacti-plugin-editor.php:775
+msgid "Save"
+msgstr "Saglabāt"
+
+#: weathermap-cacti-plugin-editor.php:494
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "Jūs varat modificēt Weathermap Node no šejienes.  Kolonnas Pozīcija ir X,Y pozīcija kartē.  Iekšējais nosaukums ir mezglam piešķirtais unikālais ID.  Etiķete ir tā mezgla ārējais nosaukums, kuru norādāt lietotājiem.  Ikonas faila nosaukums ir grafika, kurai vēlaties attēlot mezgla objektu.  INFO URL ir saite, kuru varat norādīt, noklikšķinot uz aktīvā kartes mezgla.  Hover Graph URL ir Kaktusi vai citi Graphs URL, kas var tikt parādīti, virzot kursoru virs mezgla.  Grafu atlasītājs ir palīgs Kaktusu grafiku atlasei Graph URL.   Ir iespējami vairāki citi mezgla rekvizīti.  Tomēr šodien mēs atbalstām tikai tos, kas iekļauti iepriekš."
+
+#: weathermap-cacti-plugin-editor.php:501
+msgid "Link Properties"
+msgstr "Saites rekvizīti"
+
+#: weathermap-cacti-plugin-editor.php:523
+#, fuzzy
+msgid "Data Source(s)"
+msgstr "Neatstājiet datu avotu(-s) neskartus."
+
+#: weathermap-cacti-plugin-editor.php:529
+msgid "Data Source Selector"
+msgstr "Datu avotu atlasītājs"
+
+#: weathermap-cacti-plugin-editor.php:535
+msgid "Link Width"
+msgstr "Saites platums"
+
+#: weathermap-cacti-plugin-editor.php:576
+#, fuzzy
+msgid "IN Comment"
+msgstr "Komentārs"
+
+#: weathermap-cacti-plugin-editor.php:589
+msgid "OUT Comment"
+msgstr "OUT komentārs"
+
+#: weathermap-cacti-plugin-editor.php:615
+msgid "You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above."
+msgstr "Jūs varat modificēt laikapstākļu kartes saiti no šejienes.  Maksimālais joslas platums attiecas uz maksimālo sasniedzamo joslas platumu.  Atbalstītie sufiksi ir K, M, G un T.  Datu avoti ir vieta, kur var pievienot RRDfile atrašanās vietas, tostarp dažas RRDfile matemātiskās vērtības.  Skatiet dokumentāciju par to.  Datu avotu atlasītājs ir palīgs kaktusu grafiku izvēlei, lai attēlotu mērķi vai mērķus.  Saites platums ir saites bultiņas platums.  INFO URL ir saite, kuru varat norādīt, noklikšķinot uz aktīvās kartes saites.  Hover Graph vietrāži URL ir kaktusi vai citi Graphs URL, kas var tikt parādīti, virzot kursoru virs saites.  Grafu atlasītājs ir palīgs Kaktusu grafiku atlasei Graph URL. IN un OUT komentāri tiek parādīti saitēs ar saitēm.  Ir iespējami vairāki citi saites rekvizīti.  Tomēr šodien mēs atbalstām tikai tos, kas iekļauti iepriekš."
+
+#: weathermap-cacti-plugin-editor.php:622
+msgid "Map Properties"
+msgstr "Kartes rekvizīti"
+
+#: weathermap-cacti-plugin-editor.php:627
+msgid "Map Title"
+msgstr "Kartes nosaukums"
+
+#: weathermap-cacti-plugin-editor.php:631
+msgid "Legend Text"
+msgstr "Leģendas teksts"
+
+#: weathermap-cacti-plugin-editor.php:635
+msgid "Background Image Filename"
+msgstr "Fona attēla faila nosaukums"
+
+#: weathermap-cacti-plugin-editor.php:657
+msgid "Timestamp Text"
+msgstr "Laikspiedola teksts"
+
+#: weathermap-cacti-plugin-editor.php:661
+msgid "Default Link Width"
+msgstr "Noklusējuma saites platums"
+
+#: weathermap-cacti-plugin-editor.php:662
+#: weathermap-cacti-plugin-editor.php:674
+#, fuzzy
+msgid "pixels"
+msgstr "%d pikseļi"
+
+#: weathermap-cacti-plugin-editor.php:665
+msgid "Default Link Bandwidth"
+msgstr "Noklusējuma saites joslas platums"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec in"
+msgstr "bit/sec in"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec out"
+msgstr "bit/sec out"
+
+#: weathermap-cacti-plugin-editor.php:671
+msgid "Map Size"
+msgstr "Kartes izmērs"
+
+#: weathermap-cacti-plugin-editor.php:686
+msgid "This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included."
+msgstr "Šis dialoglodziņš kontrolē vispārējos kartes rekvizītus.  Redaktors atbalsta šādus elementus: virsraksts, apzīmējumu teksts, fona attēls, laikspiedola teksts, noklusējuma saites platums, noklusējuma saites joslas platums un kartes lielums.  Ir iespējami vairāki papildu kartes noklusējumi.  Bet šajā redaktora versijā mēs atbalstām tikai tos, kas iekļauti."
+
+#: weathermap-cacti-plugin-editor.php:693
+msgid "Map Style"
+msgstr "Kartes stils"
+
+#: weathermap-cacti-plugin-editor.php:698
+msgid "Map Defaults"
+msgstr "Kartes noklusējumi"
+
+#: weathermap-cacti-plugin-editor.php:701
+msgid "HTML Style"
+msgstr "HTML stils"
+
+#: weathermap-cacti-plugin-editor.php:704
+msgid "Dynamic HTML"
+msgstr "Dinamiskais HTML"
+
+#: weathermap-cacti-plugin-editor.php:705
+msgid "Static HTML"
+msgstr "Statiskais HTML"
+
+#: weathermap-cacti-plugin-editor.php:710
+#, fuzzy
+msgid "Legend Font"
+msgstr "Leģendas fonta lielums"
+
+#: weathermap-cacti-plugin-editor.php:714
+msgid "Node Defaults"
+msgstr "Mezglu noklusējumi"
+
+#: weathermap-cacti-plugin-editor.php:717
+msgid "Node Font"
+msgstr "Mezgla fonts"
+
+#: weathermap-cacti-plugin-editor.php:721
+#: weathermap-cacti-plugin-editor.php:759
+msgid "Graph Width"
+msgstr "Grafika platums"
+
+#: weathermap-cacti-plugin-editor.php:727
+#: weathermap-cacti-plugin-editor.php:765
+msgid "Graph Height"
+msgstr "Grafika augstums"
+
+#: weathermap-cacti-plugin-editor.php:733
+msgid "Link Defaults"
+msgstr "Saišu noklusējumi"
+
+#: weathermap-cacti-plugin-editor.php:736
+msgid "Link Labels"
+msgstr "Saišu etiķetes"
+
+#: weathermap-cacti-plugin-editor.php:739
+msgid "Bits/sec"
+msgstr "Biti/sek."
+
+#: weathermap-cacti-plugin-editor.php:740
+msgid "Percentage"
+msgstr "Procenti"
+
+#: weathermap-cacti-plugin-editor.php:741
+msgid "None"
+msgstr "Nekāds"
+
+#: weathermap-cacti-plugin-editor.php:746
+msgid "Arrow Style"
+msgstr "Bultiņas stils"
+
+#: weathermap-cacti-plugin-editor.php:749
+msgid "Classic"
+msgstr "Klasika"
+
+#: weathermap-cacti-plugin-editor.php:750
+msgid "Compact"
+msgstr "Kompakts"
+
+#: weathermap-cacti-plugin-editor.php:755
+msgid "Link Label Font"
+msgstr "Saites etiķetes fonts"
 
 #: weathermap-cacti-plugin-mgmt.php:53
 msgid "Duplicate"
@@ -447,12 +976,6 @@ msgid_plural "Click 'Continue' to delete following Weather Maps."
 msgstr[0] "Noklikšķiniet uz \"Turpināt\", lai izdzēstu šo laikapstākļu karti."
 msgstr[1] ""
 msgstr[2] ""
-
-#: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
-#: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
-#: weathermap-cacti-plugin-mgmt.php:538 weathermap-cacti-plugin-mgmt.php:2739
-msgid "Cancel"
-msgstr "Atcelt"
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
@@ -574,6 +1097,7 @@ msgid "Clear"
 msgstr "Notīrīt"
 
 #: weathermap-cacti-plugin-mgmt.php:729
+#, fuzzy
 msgid "Group Settings"
 msgstr "LDAP grupas iestatījumi"
 
@@ -698,12 +1222,13 @@ msgid "Click to edit permissions"
 msgstr "Noklikšķiniet, lai rediģētu atļaujas"
 
 #: weathermap-cacti-plugin-mgmt.php:1058
+#, fuzzy
 msgid "No Users"
 msgstr "Lietotāji"
 
 #: weathermap-cacti-plugin-mgmt.php:1063 weathermap-cacti-plugin-mgmt.php:2163
 msgid "All Users"
-msgstr "Lietotājs"
+msgstr "Visi lietotāji"
 
 #: weathermap-cacti-plugin-mgmt.php:1067
 #, php-format
@@ -780,10 +1305,6 @@ msgstr "Avota karte"
 msgid "Empty File"
 msgstr "Tukšs fails"
 
-#: weathermap-cacti-plugin-mgmt.php:1263 weathermap-cacti-plugin-mgmt.php:2467
-msgid "Create"
-msgstr "Izveidot"
-
 #: weathermap-cacti-plugin-mgmt.php:1404 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Actions"
 msgstr "Darbības"
@@ -810,6 +1331,7 @@ msgid "Add the configuration file %s to Weathermap"
 msgstr "Konfigurācijas faila %s pievienošana laikapstākļu kartei"
 
 #: weathermap-cacti-plugin-mgmt.php:1461
+#, fuzzy
 msgid " Copy"
 msgstr "Kopēt"
 
@@ -851,6 +1373,7 @@ msgid "Path mismatch"
 msgstr "Ceļa neatbilstība"
 
 #: weathermap-cacti-plugin-mgmt.php:1593
+#, fuzzy
 msgid "(No Title)"
 msgstr "Nosaukums (--title)"
 
@@ -903,10 +1426,12 @@ msgid "Account Type"
 msgstr "Konta Tips"
 
 #: weathermap-cacti-plugin-mgmt.php:2125
+#, fuzzy
 msgid "User/Group"
 msgstr "Noklusējuma grafika politika šai lietotāju grupai"
 
 #: weathermap-cacti-plugin-mgmt.php:2128
+#, fuzzy
 msgid "Login Realm"
 msgstr "Nevar noteikt lietotāja pieteikšanās sfēru vai domēnu. Lūdzu, sazinieties ar sistēmas administratoru."
 
@@ -919,6 +1444,7 @@ msgid "Full Name/Description"
 msgstr "Pilns nosaukums/apraksts"
 
 #: weathermap-cacti-plugin-mgmt.php:2138
+#, fuzzy
 msgid "Allowed"
 msgstr "Maksimālais atļautais pastiprināšanas tabulas izmērs:"
 
@@ -927,6 +1453,7 @@ msgid "User"
 msgstr "Lietotājs"
 
 #: weathermap-cacti-plugin-mgmt.php:2161
+#, fuzzy
 msgid "User Group"
 msgstr "Noklusējuma grafika politika šai lietotāju grupai"
 
@@ -986,7 +1513,7 @@ msgstr "Šai kartei vēl nav kartes iestatījumu. Dažus var pievienot, nospiež
 
 #: weathermap-cacti-plugin-mgmt.php:2273
 msgid "Usage Notes"
-msgstr "Lapas nosaukums"
+msgstr "Lietošanas piezīmes"
 
 #: weathermap-cacti-plugin-mgmt.php:2280
 msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
@@ -1002,6 +1529,7 @@ msgid "Group Settings [ Group: %s ]"
 msgstr "Grupas iestatījumi [ Grupa: %s ]"
 
 #: weathermap-cacti-plugin-mgmt.php:2300
+#, fuzzy
 msgid "No Group"
 msgstr "Jauna grupa"
 
@@ -1055,10 +1583,6 @@ msgstr "Mainīgā SET map-global nosaukums"
 msgid "What to set it to"
 msgstr "Ko to iestatīt"
 
-#: weathermap-cacti-plugin-mgmt.php:2464
-msgid "Edit"
-msgstr "Rediģēt"
-
 #: weathermap-cacti-plugin-mgmt.php:2471
 msgid "Global Setting for all Maps"
 msgstr "Globālais iestatījums visām kartēm"
@@ -1092,6 +1616,7 @@ msgid "Editing Group: %s"
 msgstr "Rediģēšanas grupa: %s"
 
 #: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
+#, fuzzy
 msgid "Group Name:"
 msgstr "Grupas nosaukums"
 
@@ -1117,7 +1642,7 @@ msgstr "Pārdēvējiet šo grupu"
 
 #: weathermap-cacti-plugin-mgmt.php:2675
 msgid "Edit Group Settings"
-msgstr "Revīzijas žurnāla iestatījumi"
+msgstr "Rediģēt grupas iestatījumus"
 
 #: weathermap-cacti-plugin-mgmt.php:2722
 msgid "No Groups are defined"
@@ -1133,7 +1658,7 @@ msgstr "Ievadiet jaunu laikapstākļu kartes grupas nosaukumu."
 
 #: weathermap-cacti-plugin-mgmt.php:2734
 msgid "New Group Name"
-msgstr "Lietotājvārds"
+msgstr "Jauns grupas nosaukums"
 
 #: weathermap-cacti-plugin-mgmt.php:2740
 msgid "Rename"
@@ -1229,7 +1754,7 @@ msgstr "Laika ziņu kartes pārvaldība"
 
 #: weathermap-cacti-plugin.php:795
 msgid "Weathermap Filter"
-msgstr "Notīrīt filtrus"
+msgstr "Laika apstākļu kartes filtrs"
 
 #: weathermap-cacti-plugin.php:804
 msgid "Map to View"

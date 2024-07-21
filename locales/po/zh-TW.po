@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:39-0400\n"
-"PO-Revision-Date: 2024-04-27 14:54-0400\n"
+"POT-Creation-Date: 2024-07-21 16:17-0400\n"
+"PO-Revision-Date: 2024-07-21 16:44-0400\n"
 "Last-Translator: Linya Huang <linya0405@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <http://translate.cacti.net/projects/cacti/audit/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -16,12 +16,237 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
-#: lib/editor.inc.php:259
+#: lib/editor.inc.php:261
 #, php-format
 msgid "Welcome to the PHP Weathermap %s Editor"
 msgstr "歡迎使用 PHP 天氣圖%s編輯器"
+
+#: lib/editor.inc.php:264
+msgid "<b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however."
+msgstr "<b>注意：</b> 這個小編還沒完呢！如果您選擇僅使用編輯器，您將錯過 Weathermap 的許多功能。 其中包括：曲線、節點偏移、字體定義、顏色更改、每個節點/每個鏈接設置和圖像上傳。但是，如果您手動添加這些功能，則可以使用編輯器而不會損壞這些功能。"
+
+#: lib/editor.inc.php:270
+msgid "Do you want to:"
+msgstr "您是否要："
+
+#: lib/editor.inc.php:271
+msgid "Create A New Map:"
+msgstr "建立新地圖："
+
+#: lib/editor.inc.php:273
+msgid "Named:"
+msgstr "叫："
+
+#: lib/editor.inc.php:277 weathermap-cacti-plugin-mgmt.php:1263
+#: weathermap-cacti-plugin-mgmt.php:2467
+msgid "Create"
+msgstr "創建"
+
+#: lib/editor.inc.php:279
+msgid "Note: filenames must contain no spaces and end in .conf"
+msgstr "注意：檔名不能包含空格，並且以 .conf 結尾"
+
+#: lib/editor.inc.php:838
+msgid "Ok"
+msgstr "確定"
+
+#: lib/editor.inc.php:839
+msgid "Operation successful"
+msgstr "操作成功"
+
+#: lib/editor.inc.php:840
+msgid "The Operation was successful.  Details are below."
+msgstr "該行動是成功的。詳情如下。"
+
+#: lib/editor.inc.php:841
+msgid "Pause"
+msgstr "暫停"
+
+#: lib/editor.inc.php:843
+msgid "Click on the map where you would like to move the node to."
+msgstr "在地圖上按一下要將節點移動到的位置。"
+
+#: lib/editor.inc.php:844
+msgid "Click on the map via which point you want to redirect link."
+msgstr "在地圖上按下您要重定向連結的點。"
+
+#: lib/editor.inc.php:845
+msgid "Click on the first node for the start of the link."
+msgstr "按兩下連結開始的第一個節點。"
+
+#: lib/editor.inc.php:846
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "在地圖上按下要放置時間戳的位置。"
+
+#: lib/editor.inc.php:847
+msgid "Click on the map where you would like to put the legend."
+msgstr "在地圖上按一下要放置圖例的位置。"
+
+#: lib/editor.inc.php:848
+msgid "Click on the map where you would like to add a new node."
+msgstr "在地圖上按下要添加新節點的位置。"
+
+#: lib/editor.inc.php:850
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "警告：按「刪除節點」將刪除此節點。"
+
+#: lib/editor.inc.php:851
+msgid "Delete Node Confirmation"
+msgstr "刪除節點確認"
+
+#: lib/editor.inc.php:852
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "警告：按「刪除連結」將刪除此連結。"
+
+#: lib/editor.inc.php:853
+msgid "Delete Link Confirmation"
+msgstr "刪除連結確認"
+
+#: lib/editor.inc.php:854 weathermap-cacti-plugin-editor.php:489
+#: weathermap-cacti-plugin-editor.php:610
+#: weathermap-cacti-plugin-editor.php:681
+#: weathermap-cacti-plugin-editor.php:774 weathermap-cacti-plugin-mgmt.php:491
+#: weathermap-cacti-plugin-mgmt.php:511 weathermap-cacti-plugin-mgmt.php:520
+#: weathermap-cacti-plugin-mgmt.php:529 weathermap-cacti-plugin-mgmt.php:538
+#: weathermap-cacti-plugin-mgmt.php:2739
+msgid "Cancel"
+msgstr "取消"
+
+#: lib/editor.inc.php:855 weathermap-cacti-plugin-editor.php:606
+msgid "Delete Link"
+msgstr "刪除連結"
+
+#: lib/editor.inc.php:856
+msgid "Delete Node"
+msgstr "刪除節點"
+
+#: lib/editor.inc.php:857 weathermap-cacti-plugin-editor.php:409
+msgid "Position"
+msgstr "位置"
+
+#: lib/editor.inc.php:859
+msgid "Node Actions"
+msgstr "節點操作"
+
+#: lib/editor.inc.php:860
+msgid "Link Actions"
+msgstr "連結操作"
+
+#: lib/editor.inc.php:861 weathermap-cacti-plugin-editor.php:485
+msgid "Move"
+msgstr "移動"
+
+#: lib/editor.inc.php:862 weathermap-cacti-plugin-editor.php:487
+msgid "Clone"
+msgstr "複製"
+
+#: lib/editor.inc.php:863 weathermap-cacti-plugin-editor.php:488
+#: weathermap-cacti-plugin-editor.php:607 weathermap-cacti-plugin-mgmt.php:2464
+msgid "Edit"
+msgstr "編輯"
+
+#: lib/editor.inc.php:864 weathermap-cacti-plugin-editor.php:486
+#: weathermap-cacti-plugin-mgmt.php:52
+msgid "Delete"
+msgstr "刪除"
+
+#: lib/editor.inc.php:865 weathermap-cacti-plugin-editor.php:609
+msgid "Via"
+msgstr "通過"
+
+#: lib/editor.inc.php:866 weathermap-cacti-plugin-editor.php:608
+msgid "Tidy"
+msgstr "整潔"
+
+#: lib/editor.inc.php:867
+msgid "Properties"
+msgstr "屬性"
+
+#: lib/editor.inc.php:872
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Weathermap 應從哪裡獲取此鏈接的數據？這可以是 RRD 檔，也可以是其中包含特殊註釋的 HTML（通常來自 MRTG）。"
+
+#: lib/editor.inc.php:873
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "連結箭頭將繪製的寬度（以像素為單位）。"
+
+#: lib/editor.inc.php:874
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "如果您使用的是“overlib”HTML 樣式，那麼這是當您按兩下連結時將打開的URL"
+
+#: lib/editor.inc.php:875
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "如果您使用的是“overlib”HTML 樣式，那麼當您將滑鼠懸停在連結上時，這是將顯示的圖像的 URL"
+
+#: lib/editor.inc.php:876
+msgid "The bandwidth from the first node to the second node"
+msgstr "從第一個節點到第二個節點的頻寬"
+
+#: lib/editor.inc.php:877
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "從第二個節點到第一個節點的頻寬（如果不同）"
+
+#: lib/editor.inc.php:878 lib/editor.inc.php:879
+msgid "The text that will appear alongside the link"
+msgstr "將與連結一起顯示的文字"
+
+#: lib/editor.inc.php:880
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "如果您使用的是“overlib”HTML 樣式，那麼這是當您按兩下節點時將打開的URL"
+
+#: lib/editor.inc.php:881
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "如果您使用的是“overlib”HTML 樣式，那麼當您將滑鼠懸停在節點上時，這是將顯示的圖像的 URL"
+
+#: lib/editor.inc.php:882
+msgid "How far from the left to position the node, in pixels"
+msgstr "從左邊到位置節點的距離（以像素為單位）"
+
+#: lib/editor.inc.php:883
+msgid "How far from the top to position the node, in pixels"
+msgstr "從頂部到節點的位置有多遠（以像素為單位）"
+
+#: lib/editor.inc.php:884
+msgid "The text that appears on the node"
+msgstr "節點上顯示的文字"
+
+#: lib/editor.inc.php:885
+msgid "The name used for this node when defining links"
+msgstr "定義連結時用於此節點的名稱"
+
+#: lib/editor.inc.php:886
+msgid "Change to a different file, or start creating a new one."
+msgstr "更改為其他檔，或開始創建新檔。"
+
+#: lib/editor.inc.php:887
+msgid "Add a new node to the map"
+msgstr "向地圖添加新節點"
+
+#: lib/editor.inc.php:888
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "通過將兩個節點連接在一起，向地圖添加新連結。"
+
+#: lib/editor.inc.php:889
+msgid "Select a different map to edit, or start a new one."
+msgstr "選擇要編輯的其他地圖，或開始一個新地圖。"
+
+#: lib/editor.inc.php:893
+msgid "This is where help appears for links"
+msgstr "這是顯示連結説明的地方"
+
+#: lib/editor.inc.php:894
+msgid "This is where help appears for maps"
+msgstr "這是顯示地圖説明的地方"
+
+#: lib/editor.inc.php:895
+msgid "This is where help appears for nodes"
+msgstr "這是顯示節點説明的地方"
+
+#: lib/editor.inc.php:896
+msgid "or click a Node or Link to edit it's properties"
+msgstr "或單擊「節點」或「連結」以編輯其屬性"
 
 #: setup.php:208 setup.php:602 setup.php:748 setup.php:755 setup.php:762
 #: setup.php:769 setup.php:776
@@ -386,14 +611,309 @@ msgstr "群組管理員"
 msgid "Group Admin Delete"
 msgstr "群組管理員刪除"
 
+#: weathermap-cacti-plugin-editor.php:330
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "PHP Weathermap Editor %s"
+
+#: weathermap-cacti-plugin-editor.php:336
+msgid "Change<br>File"
+msgstr "改變<br>檔"
+
+#: weathermap-cacti-plugin-editor.php:337
+msgid "Add<br>Node"
+msgstr "加<br>節點"
+
+#: weathermap-cacti-plugin-editor.php:338
+msgid "Add<br>Link"
+msgstr "加<br>連結"
+
+#: weathermap-cacti-plugin-editor.php:339
+msgid "Position<br>Legend"
+msgstr "位置<br>傳說"
+
+#: weathermap-cacti-plugin-editor.php:340
+msgid "Position<br>Timestamp"
+msgstr "位置<br>時間戳"
+
+#: weathermap-cacti-plugin-editor.php:341
+msgid "Map<br>Properties"
+msgstr "地圖<br>性能"
+
+#: weathermap-cacti-plugin-editor.php:342
+msgid "Map<br>Style"
+msgstr "地圖<br>風格"
+
+#: weathermap-cacti-plugin-editor.php:343
+msgid "Manage<br>Colors"
+msgstr "管理<br>顏色"
+
+#: weathermap-cacti-plugin-editor.php:344
+msgid "Manage<br>Images"
+msgstr "管理<br>圖像"
+
+#: weathermap-cacti-plugin-editor.php:345
+msgid "Editor<br>Settings"
+msgstr "編輯器<br>設置"
+
+#: weathermap-cacti-plugin-editor.php:346
+msgid "Position<br>---, ---"
+msgstr "位置<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php:348
+msgid "Select a menu item or either right-click or click on a Node or Link to edit it's properties"
+msgstr "選擇功能表項，或者右鍵按下或按兩下節點或連結以編輯其屬性"
+
+#: weathermap-cacti-plugin-editor.php:358
+msgid "Debug"
+msgstr "除錯"
+
+#: weathermap-cacti-plugin-editor.php:359
+msgid "Re-tidy ALL"
+msgstr "重新整理所有"
+
+#: weathermap-cacti-plugin-editor.php:360
+msgid "Re-tidy"
+msgstr "重新整理"
+
+#: weathermap-cacti-plugin-editor.php:361
+msgid "Un-tidy"
+msgstr "不整潔"
+
+#: weathermap-cacti-plugin-editor.php:362
+msgid "Do Nothing"
+msgstr "不執行任何操作"
+
+#: weathermap-cacti-plugin-editor.php:364
+msgid "mapfile"
+msgstr "mapfile"
+
+#: weathermap-cacti-plugin-editor.php:368
+msgid "action"
+msgstr "動作"
+
+#: weathermap-cacti-plugin-editor.php:372
+msgid "param"
+msgstr "參數"
+
+#: weathermap-cacti-plugin-editor.php:376
+msgid "param2"
+msgstr "參數2"
+
+#: weathermap-cacti-plugin-editor.php:380
+msgid "debug"
+msgstr "偵錯"
+
+#: weathermap-cacti-plugin-editor.php:383
+msgid "See config"
+msgstr "查看配置"
+
+#: weathermap-cacti-plugin-editor.php:399
+msgid "Node Properties"
+msgstr "節點屬性"
+
+#: weathermap-cacti-plugin-editor.php:413
+msgid "Internal Name"
+msgstr "內部名稱"
+
+#: weathermap-cacti-plugin-editor.php:417
+msgid "Label"
+msgstr "標籤"
+
+#: weathermap-cacti-plugin-editor.php:421
+msgid "Icon Filename"
+msgstr "圖示檔名"
+
+#: weathermap-cacti-plugin-editor.php:445
+#: weathermap-cacti-plugin-editor.php:539
+msgid "Info URL(s)"
+msgstr "資訊網址"
+
+#: weathermap-cacti-plugin-editor.php:451
+#: weathermap-cacti-plugin-editor.php:545
+msgid "Hover Graph URL(s)"
+msgstr "懸停圖形 URL"
+
+#: weathermap-cacti-plugin-editor.php:457
+#: weathermap-cacti-plugin-editor.php:551
+msgid "Graph Template"
+msgstr "圖模板"
+
 #: weathermap-cacti-plugin-editor.php:461
 #: weathermap-cacti-plugin-editor.php:555 weathermap-cacti-plugin-mgmt.php:1832
 msgid "All"
 msgstr "全部"
 
-#: weathermap-cacti-plugin-mgmt.php:52
-msgid "Delete"
-msgstr "刪除"
+#: weathermap-cacti-plugin-editor.php:476
+#: weathermap-cacti-plugin-editor.php:570
+msgid "Graph Selector"
+msgstr "圖形選擇器"
+
+#: weathermap-cacti-plugin-editor.php:490
+#: weathermap-cacti-plugin-editor.php:611
+#: weathermap-cacti-plugin-editor.php:682
+#: weathermap-cacti-plugin-editor.php:775
+msgid "Save"
+msgstr "儲存"
+
+#: weathermap-cacti-plugin-editor.php:494
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "您可以從此處修改 Weathermap 節點。 “位置”列是地圖上的 X，Y 位置。 內部名稱是為節點提供的唯一 ID。 Label 是您提供給用戶的節點的外部名稱。 Icon Filename 是您想要表示 Node 物件的圖形。 INFO URL 是您在按兩下活動映射節點時可以提供的連結。 Hover Graph URL 是 Cacti 或其他 Graphs URL，當滑鼠懸停在節點上時可能會出現。 Graph Selector 是一個説明工具，用於為 Graph URL 選擇 Cacti Graphs。  還有其他幾個可能的 Node 屬性。 但是，今天我們只支援上述內容。"
+
+#: weathermap-cacti-plugin-editor.php:501
+msgid "Link Properties"
+msgstr "連結屬性"
+
+#: weathermap-cacti-plugin-editor.php:523
+msgid "Data Source(s)"
+msgstr "保持數據源不變。"
+
+#: weathermap-cacti-plugin-editor.php:529
+msgid "Data Source Selector"
+msgstr "數據源選擇器"
+
+#: weathermap-cacti-plugin-editor.php:535
+msgid "Link Width"
+msgstr "連結寬度"
+
+#: weathermap-cacti-plugin-editor.php:576
+msgid "IN Comment"
+msgstr "評論"
+
+#: weathermap-cacti-plugin-editor.php:589
+msgid "OUT Comment"
+msgstr "OUT評論"
+
+#: weathermap-cacti-plugin-editor.php:615
+msgid "You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above."
+msgstr "您可以從此處修改 Weathermap 連結。 最大頻寬是指可達到的最大頻寬。 支援的後綴為 K、M、G 和 T。 數據源是可以添加 RRDfile 位置（包括一些 RRDfile 數學）的位置。 請參閱文檔瞭解相關內容。 數據源選擇器是一個説明工具，用於選擇仙人掌圖來表示一個或多個目標。 連結寬度是連結箭頭的寬度。 INFO URL 是您在單擊活動地圖連結時可以提供的連結。 Hover Graph URL 是 Cacti 或其他 Graphs URL，當懸停在連結上時會出現。 Graph Selector 是一個説明工具，用於為 Graph URL 選擇 Cacti Graphs。IN 和 OUT 註解顯示在帶有連結的連結上。 還有其他幾個可能的Link屬性。 但是，今天我們只支援上述內容。"
+
+#: weathermap-cacti-plugin-editor.php:622
+msgid "Map Properties"
+msgstr "地圖屬性"
+
+#: weathermap-cacti-plugin-editor.php:627
+msgid "Map Title"
+msgstr "地圖標題"
+
+#: weathermap-cacti-plugin-editor.php:631
+msgid "Legend Text"
+msgstr "圖例文本"
+
+#: weathermap-cacti-plugin-editor.php:635
+msgid "Background Image Filename"
+msgstr "背景圖像檔名"
+
+#: weathermap-cacti-plugin-editor.php:657
+msgid "Timestamp Text"
+msgstr "時間戳文字"
+
+#: weathermap-cacti-plugin-editor.php:661
+msgid "Default Link Width"
+msgstr "默認連結寬度"
+
+#: weathermap-cacti-plugin-editor.php:662
+#: weathermap-cacti-plugin-editor.php:674
+msgid "pixels"
+msgstr "像素"
+
+#: weathermap-cacti-plugin-editor.php:665
+msgid "Default Link Bandwidth"
+msgstr "默認鏈路頻寬"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec in"
+msgstr "比特/秒輸入"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec out"
+msgstr "比特/秒輸出"
+
+#: weathermap-cacti-plugin-editor.php:671
+msgid "Map Size"
+msgstr "地圖大小"
+
+#: weathermap-cacti-plugin-editor.php:686
+msgid "This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included."
+msgstr "此對話框控制整體地圖屬性。 編輯器支援的包括：標題、圖例文本、背景圖像、時間戳文本、默認連結寬度、默認連結頻寬和地圖大小。 還有幾種可能的附加地圖預設值。 但是在這個版本的編輯器中，我們只支援那些包含的內容。"
+
+#: weathermap-cacti-plugin-editor.php:693
+msgid "Map Style"
+msgstr "地圖樣式"
+
+#: weathermap-cacti-plugin-editor.php:698
+msgid "Map Defaults"
+msgstr "地圖預設值"
+
+#: weathermap-cacti-plugin-editor.php:701
+msgid "HTML Style"
+msgstr "HTML 樣式"
+
+#: weathermap-cacti-plugin-editor.php:704
+msgid "Dynamic HTML"
+msgstr "動態 HTML"
+
+#: weathermap-cacti-plugin-editor.php:705
+msgid "Static HTML"
+msgstr "靜態 html"
+
+#: weathermap-cacti-plugin-editor.php:710
+msgid "Legend Font"
+msgstr "圖例字體大小"
+
+#: weathermap-cacti-plugin-editor.php:714
+msgid "Node Defaults"
+msgstr "節點預設值"
+
+#: weathermap-cacti-plugin-editor.php:717
+msgid "Node Font"
+msgstr "節點字體"
+
+#: weathermap-cacti-plugin-editor.php:721
+#: weathermap-cacti-plugin-editor.php:759
+msgid "Graph Width"
+msgstr "圖寬度"
+
+#: weathermap-cacti-plugin-editor.php:727
+#: weathermap-cacti-plugin-editor.php:765
+msgid "Graph Height"
+msgstr "圖形高度"
+
+#: weathermap-cacti-plugin-editor.php:733
+msgid "Link Defaults"
+msgstr "連結預設值"
+
+#: weathermap-cacti-plugin-editor.php:736
+msgid "Link Labels"
+msgstr "連結標籤"
+
+#: weathermap-cacti-plugin-editor.php:739
+msgid "Bits/sec"
+msgstr "比特/秒"
+
+#: weathermap-cacti-plugin-editor.php:740
+msgid "Percentage"
+msgstr "百分比"
+
+#: weathermap-cacti-plugin-editor.php:741
+msgid "None"
+msgstr "無"
+
+#: weathermap-cacti-plugin-editor.php:746
+msgid "Arrow Style"
+msgstr "箭頭樣式"
+
+#: weathermap-cacti-plugin-editor.php:749
+msgid "Classic"
+msgstr "經典"
+
+#: weathermap-cacti-plugin-editor.php:750
+msgid "Compact"
+msgstr "緊湊"
+
+#: weathermap-cacti-plugin-editor.php:755
+msgid "Link Label Font"
+msgstr "連結標籤字體"
 
 #: weathermap-cacti-plugin-mgmt.php:53
 msgid "Duplicate"
@@ -445,12 +965,6 @@ msgstr "%d選定的地圖已在 %0.2f 秒內重建！"
 msgid "Click 'Continue' to delete the following Weather Map."
 msgid_plural "Click 'Continue' to delete following Weather Maps."
 msgstr[0] "按兩下「繼續」以刪除以下天氣圖。"
-
-#: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
-#: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
-#: weathermap-cacti-plugin-mgmt.php:538 weathermap-cacti-plugin-mgmt.php:2739
-msgid "Cancel"
-msgstr "取消"
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
@@ -760,10 +1274,6 @@ msgstr "源映射"
 msgid "Empty File"
 msgstr "空檔"
 
-#: weathermap-cacti-plugin-mgmt.php:1263 weathermap-cacti-plugin-mgmt.php:2467
-msgid "Create"
-msgstr "創建"
-
 #: weathermap-cacti-plugin-mgmt.php:1404 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Actions"
 msgstr "動作"
@@ -1034,10 +1544,6 @@ msgstr "map-global SET 變數的名稱"
 #: weathermap-cacti-plugin-mgmt.php:2459
 msgid "What to set it to"
 msgstr "將其設置為什麼"
-
-#: weathermap-cacti-plugin-mgmt.php:2464
-msgid "Edit"
-msgstr "編輯"
 
 #: weathermap-cacti-plugin-mgmt.php:2471
 msgid "Global Setting for all Maps"

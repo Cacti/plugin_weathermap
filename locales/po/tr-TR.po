@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:39-0400\n"
-"PO-Revision-Date: 2024-04-27 14:52-0400\n"
+"POT-Creation-Date: 2024-07-21 16:17-0400\n"
+"PO-Revision-Date: 2024-07-21 16:41-0400\n"
 "Last-Translator: San IPE <sanipe1949@krunsea.com>\n"
 "Language-Team: Turkish <http://translate.cacti.net/projects/cacti/audit/tr/>\n"
 "Language: tr_TR\n"
@@ -16,12 +16,237 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
-#: lib/editor.inc.php:259
+#: lib/editor.inc.php:261
 #, php-format
 msgid "Welcome to the PHP Weathermap %s Editor"
 msgstr "PHP Hava Durumu Haritası %s Düzenleyicisine Hoş Geldiniz"
+
+#: lib/editor.inc.php:264
+msgid "<b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however."
+msgstr "<b>NOT:</b> Bu editör bitmedi! Weathermap'in yalnızca düzenleyiciyi kullanmayı seçerseniz kaçıracağınız birçok özelliği vardır.  Bunlar şunları içerir: eğriler, düğüm ofsetleri, yazı tipi tanımları, renk değiştirme, düğüm başına/bağlantı başına ayarlar ve resim yükleme. Bununla birlikte, elle eklediyseniz, bu özelliklere zarar vermeden düzenleyiciyi kullanabilirsiniz."
+
+#: lib/editor.inc.php:270
+msgid "Do you want to:"
+msgstr "Şunları yapmak istiyor musunuz:"
+
+#: lib/editor.inc.php:271
+msgid "Create A New Map:"
+msgstr "Yeni Bir Harita Oluştur:"
+
+#: lib/editor.inc.php:273
+msgid "Named:"
+msgstr "Adlı:"
+
+#: lib/editor.inc.php:277 weathermap-cacti-plugin-mgmt.php:1263
+#: weathermap-cacti-plugin-mgmt.php:2467
+msgid "Create"
+msgstr "Oluştur"
+
+#: lib/editor.inc.php:279
+msgid "Note: filenames must contain no spaces and end in .conf"
+msgstr "Not: dosya adları boşluk içermemeli ve .conf ile bitmelidir"
+
+#: lib/editor.inc.php:838
+msgid "Ok"
+msgstr "Tamam"
+
+#: lib/editor.inc.php:839
+msgid "Operation successful"
+msgstr "Operasyon Başarılı"
+
+#: lib/editor.inc.php:840
+msgid "The Operation was successful.  Details are below."
+msgstr "Operasyon başarılı oldu.  Detaylar aşağıdadır."
+
+#: lib/editor.inc.php:841
+msgid "Pause"
+msgstr "Duraklat"
+
+#: lib/editor.inc.php:843
+msgid "Click on the map where you would like to move the node to."
+msgstr "Haritada düğümü taşımak istediğiniz yere tıklayın."
+
+#: lib/editor.inc.php:844
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Haritada hangi nokta üzerinden yönlendirme yapmak istiyorsanız linki tıklayın."
+
+#: lib/editor.inc.php:845
+msgid "Click on the first node for the start of the link."
+msgstr "Bağlantının başlangıcı için ilk düğüme tıklayın."
+
+#: lib/editor.inc.php:846
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Haritada zaman damgasını koymak istediğiniz yere tıklayın."
+
+#: lib/editor.inc.php:847
+msgid "Click on the map where you would like to put the legend."
+msgstr "Haritada efsaneyi koymak istediğiniz yere tıklayın."
+
+#: lib/editor.inc.php:848
+msgid "Click on the map where you would like to add a new node."
+msgstr "Haritada yeni bir düğüm eklemek istediğiniz yere tıklayın."
+
+#: lib/editor.inc.php:850
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "UYARI: 'Düğümü Sil'e basmak bu Düğümü silecektir."
+
+#: lib/editor.inc.php:851
+msgid "Delete Node Confirmation"
+msgstr "Düğüm Onayını Sil"
+
+#: lib/editor.inc.php:852
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "UYARI: 'Bağlantıyı Sil'e basmak bu Bağlantıyı silecektir."
+
+#: lib/editor.inc.php:853
+msgid "Delete Link Confirmation"
+msgstr "Bağlantı Onayını Sil"
+
+#: lib/editor.inc.php:854 weathermap-cacti-plugin-editor.php:489
+#: weathermap-cacti-plugin-editor.php:610
+#: weathermap-cacti-plugin-editor.php:681
+#: weathermap-cacti-plugin-editor.php:774 weathermap-cacti-plugin-mgmt.php:491
+#: weathermap-cacti-plugin-mgmt.php:511 weathermap-cacti-plugin-mgmt.php:520
+#: weathermap-cacti-plugin-mgmt.php:529 weathermap-cacti-plugin-mgmt.php:538
+#: weathermap-cacti-plugin-mgmt.php:2739
+msgid "Cancel"
+msgstr "İptal"
+
+#: lib/editor.inc.php:855 weathermap-cacti-plugin-editor.php:606
+msgid "Delete Link"
+msgstr "Bağlantıyı Sil"
+
+#: lib/editor.inc.php:856
+msgid "Delete Node"
+msgstr "Düğümü Sil"
+
+#: lib/editor.inc.php:857 weathermap-cacti-plugin-editor.php:409
+msgid "Position"
+msgstr "Pozisyon"
+
+#: lib/editor.inc.php:859
+msgid "Node Actions"
+msgstr "Düğüm Eylemleri"
+
+#: lib/editor.inc.php:860
+msgid "Link Actions"
+msgstr "Bağlantı eylemlerini göster"
+
+#: lib/editor.inc.php:861 weathermap-cacti-plugin-editor.php:485
+msgid "Move"
+msgstr "Taşı"
+
+#: lib/editor.inc.php:862 weathermap-cacti-plugin-editor.php:487
+msgid "Clone"
+msgstr "Klonla"
+
+#: lib/editor.inc.php:863 weathermap-cacti-plugin-editor.php:488
+#: weathermap-cacti-plugin-editor.php:607 weathermap-cacti-plugin-mgmt.php:2464
+msgid "Edit"
+msgstr "Düzenle"
+
+#: lib/editor.inc.php:864 weathermap-cacti-plugin-editor.php:486
+#: weathermap-cacti-plugin-mgmt.php:52
+msgid "Delete"
+msgstr "Sil"
+
+#: lib/editor.inc.php:865 weathermap-cacti-plugin-editor.php:609
+msgid "Via"
+msgstr "Üzerinden"
+
+#: lib/editor.inc.php:866 weathermap-cacti-plugin-editor.php:608
+msgid "Tidy"
+msgstr "Düzenli"
+
+#: lib/editor.inc.php:867
+msgid "Properties"
+msgstr "İlanlar"
+
+#: lib/editor.inc.php:872
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Weathermap bu bağlantı için verileri nereden almalıdır? Bu bir RRD dosyası veya içinde özel yorumlar bulunan bir HTML (normalde MRTG'den) olabilir."
+
+#: lib/editor.inc.php:873
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "Bağlantı okunun piksel cinsinden ne kadar geniş çizileceği."
+
+#: lib/editor.inc.php:874
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "'Overlib' HTML stilini kullanıyorsanız, bağlantıya tıkladığınızda açılacak olan URL budur"
+
+#: lib/editor.inc.php:875
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "'Overlib' HTML stilini kullanıyorsanız, bu, bağlantının üzerine geldiğinizde gösterilecek olan resmin URL'sidir"
+
+#: lib/editor.inc.php:876
+msgid "The bandwidth from the first node to the second node"
+msgstr "İlk düğümden ikinci düğüme kadar olan bant genişliği"
+
+#: lib/editor.inc.php:877
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "İkinci düğümden ilk düğüme kadar olan bant genişliği (eğer farklıysa)"
+
+#: lib/editor.inc.php:878 lib/editor.inc.php:879
+msgid "The text that will appear alongside the link"
+msgstr "Bağlantının yanında görünecek metin"
+
+#: lib/editor.inc.php:880
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "'Overlib' HTML stilini kullanıyorsanız, düğüme tıkladığınızda açılacak olan URL budur"
+
+#: lib/editor.inc.php:881
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "'Overlib' HTML stilini kullanıyorsanız, bu, düğümün üzerine geldiğinizde gösterilecek olan görüntünün URL'sidir"
+
+#: lib/editor.inc.php:882
+msgid "How far from the left to position the node, in pixels"
+msgstr "Düğümü soldan ne kadar uzağa konumlandıracağınız, piksel cinsinden"
+
+#: lib/editor.inc.php:883
+msgid "How far from the top to position the node, in pixels"
+msgstr "Düğümün yukarıdan ne kadar uzakta konumlandırılacağı, piksel cinsinden"
+
+#: lib/editor.inc.php:884
+msgid "The text that appears on the node"
+msgstr "Düğümde görünen metin"
+
+#: lib/editor.inc.php:885
+msgid "The name used for this node when defining links"
+msgstr "Bağlantıları tanımlarken bu düğüm için kullanılan ad"
+
+#: lib/editor.inc.php:886
+msgid "Change to a different file, or start creating a new one."
+msgstr "Farklı bir dosyaya geçin veya yeni bir dosya oluşturmaya başlayın."
+
+#: lib/editor.inc.php:887
+msgid "Add a new node to the map"
+msgstr "Haritaya yeni bir düğüm ekleme"
+
+#: lib/editor.inc.php:888
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "İki düğümü birleştirerek haritaya yeni bir bağlantı ekleyin."
+
+#: lib/editor.inc.php:889
+msgid "Select a different map to edit, or start a new one."
+msgstr "Düzenlemek için farklı bir harita seçin veya yeni bir harita başlatın."
+
+#: lib/editor.inc.php:893
+msgid "This is where help appears for links"
+msgstr "Bağlantılar için yardımın göründüğü yer burasıdır"
+
+#: lib/editor.inc.php:894
+msgid "This is where help appears for maps"
+msgstr "Haritalar için yardımın göründüğü yer burasıdır"
+
+#: lib/editor.inc.php:895
+msgid "This is where help appears for nodes"
+msgstr "Düğümler için yardımın göründüğü yer burasıdır"
+
+#: lib/editor.inc.php:896
+msgid "or click a Node or Link to edit it's properties"
+msgstr "veya özelliklerini düzenlemek için bir Düğüme veya Bağlantıya tıklayın"
 
 #: setup.php:208 setup.php:602 setup.php:748 setup.php:755 setup.php:762
 #: setup.php:769 setup.php:776
@@ -386,14 +611,311 @@ msgstr "Grup Yöneticisi"
 msgid "Group Admin Delete"
 msgstr "Grup Yöneticisi Silme"
 
+#: weathermap-cacti-plugin-editor.php:330
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "PHP Hava Durumu Haritası Düzenleyici %s"
+
+#: weathermap-cacti-plugin-editor.php:336
+msgid "Change<br>File"
+msgstr "Değiştirmek<br>Dosya"
+
+#: weathermap-cacti-plugin-editor.php:337
+msgid "Add<br>Node"
+msgstr "Eklemek<br>Düğüm"
+
+#: weathermap-cacti-plugin-editor.php:338
+msgid "Add<br>Link"
+msgstr "Eklemek<br>Bağlantı"
+
+#: weathermap-cacti-plugin-editor.php:339
+msgid "Position<br>Legend"
+msgstr "Konum<br>Efsane"
+
+#: weathermap-cacti-plugin-editor.php:340
+msgid "Position<br>Timestamp"
+msgstr "Konum<br>Zaman damgası"
+
+#: weathermap-cacti-plugin-editor.php:341
+msgid "Map<br>Properties"
+msgstr "Harita<br>Özellikler"
+
+#: weathermap-cacti-plugin-editor.php:342
+msgid "Map<br>Style"
+msgstr "Harita<br>Üslup"
+
+#: weathermap-cacti-plugin-editor.php:343
+msgid "Manage<br>Colors"
+msgstr "Yönetmek<br>Renk"
+
+#: weathermap-cacti-plugin-editor.php:344
+msgid "Manage<br>Images"
+msgstr "Yönetmek<br>Görüntü"
+
+#: weathermap-cacti-plugin-editor.php:345
+msgid "Editor<br>Settings"
+msgstr "Editör<br>Ayarlar"
+
+#: weathermap-cacti-plugin-editor.php:346
+msgid "Position<br>---, ---"
+msgstr "Konum<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php:348
+msgid "Select a menu item or either right-click or click on a Node or Link to edit it's properties"
+msgstr "Bir menü öğesi seçin veya özelliklerini düzenlemek için bir Düğüme veya Bağlantıya sağ tıklayın veya tıklayın"
+
+#: weathermap-cacti-plugin-editor.php:358
+msgid "Debug"
+msgstr "Hata ayıklama"
+
+#: weathermap-cacti-plugin-editor.php:359
+msgid "Re-tidy ALL"
+msgstr "TÜMÜNÜ yeniden düzenleyin"
+
+#: weathermap-cacti-plugin-editor.php:360
+msgid "Re-tidy"
+msgstr "Yeniden düzenleme"
+
+#: weathermap-cacti-plugin-editor.php:361
+msgid "Un-tidy"
+msgstr "Düzensiz"
+
+#: weathermap-cacti-plugin-editor.php:362
+msgid "Do Nothing"
+msgstr "Hiçbir şey yapma"
+
+#: weathermap-cacti-plugin-editor.php:364
+msgid "mapfile"
+msgstr "harita dosyası"
+
+#: weathermap-cacti-plugin-editor.php:368
+msgid "action"
+msgstr "eylem"
+
+#: weathermap-cacti-plugin-editor.php:372
+msgid "param"
+msgstr "param"
+
+#: weathermap-cacti-plugin-editor.php:376
+msgid "param2"
+msgstr "param2"
+
+#: weathermap-cacti-plugin-editor.php:380
+msgid "debug"
+msgstr "Hata Ayıkla"
+
+#: weathermap-cacti-plugin-editor.php:383
+msgid "See config"
+msgstr "Yapılandırmaya bakın"
+
+#: weathermap-cacti-plugin-editor.php:399
+msgid "Node Properties"
+msgstr "Düğüm Özellikleri"
+
+#: weathermap-cacti-plugin-editor.php:413
+#, fuzzy
+msgid "Internal Name"
+msgstr "Dahili İsim"
+
+#: weathermap-cacti-plugin-editor.php:417
+msgid "Label"
+msgstr "Etiket"
+
+#: weathermap-cacti-plugin-editor.php:421
+msgid "Icon Filename"
+msgstr "Simge Dosya Adı"
+
+#: weathermap-cacti-plugin-editor.php:445
+#: weathermap-cacti-plugin-editor.php:539
+msgid "Info URL(s)"
+msgstr "Bilgi URL'leri"
+
+#: weathermap-cacti-plugin-editor.php:451
+#: weathermap-cacti-plugin-editor.php:545
+msgid "Hover Graph URL(s)"
+msgstr "Fareyle Üzerine Gelme Grafiği URL'leri"
+
+#: weathermap-cacti-plugin-editor.php:457
+#: weathermap-cacti-plugin-editor.php:551
+msgid "Graph Template"
+msgstr "Grafik Şablonu"
+
 #: weathermap-cacti-plugin-editor.php:461
 #: weathermap-cacti-plugin-editor.php:555 weathermap-cacti-plugin-mgmt.php:1832
 msgid "All"
 msgstr "Tümü"
 
-#: weathermap-cacti-plugin-mgmt.php:52
-msgid "Delete"
-msgstr "Sil"
+#: weathermap-cacti-plugin-editor.php:476
+#: weathermap-cacti-plugin-editor.php:570
+msgid "Graph Selector"
+msgstr "Grafik Seçici"
+
+#: weathermap-cacti-plugin-editor.php:490
+#: weathermap-cacti-plugin-editor.php:611
+#: weathermap-cacti-plugin-editor.php:682
+#: weathermap-cacti-plugin-editor.php:775
+msgid "Save"
+msgstr "Kaydet"
+
+#: weathermap-cacti-plugin-editor.php:494
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "Hava Durumu Haritası Düğümünü buradan değiştirebilirsiniz.  Konum sütunları, Haritadaki X,Y konumudur.  Dahili Ad, Düğüme verilen benzersiz kimliktir.  Etiket, kullanıcılara sağladığınız Düğümün dış adıdır.  Simge Dosya Adı, Düğüm Nesnesini temsil etmesini istediğiniz Grafiktir.  INFO URL'si, etkin Harita Düğümüne tıklarken sağlayabileceğiniz bir bağlantıdır.  Hover Graph URL'leri, Düğümün üzerine gelindiğinde görünebilecek Kaktüsler veya diğer Grafik URL'leridir.  Grafik Seçici, Grafik URL'leri için Kaktüs Grafiklerini seçmek için bir yardımcıdır.   Mümkün olan birkaç başka Düğüm özelliği vardır.  Ancak, bugün yalnızca yukarıda yer alanları destekliyoruz."
+
+#: weathermap-cacti-plugin-editor.php:501
+msgid "Link Properties"
+msgstr "Bağlantı Özellikleri"
+
+#: weathermap-cacti-plugin-editor.php:523
+msgid "Data Source(s)"
+msgstr "Veri Kaynakları"
+
+#: weathermap-cacti-plugin-editor.php:529
+msgid "Data Source Selector"
+msgstr "Veri Kaynağı Seçici"
+
+#: weathermap-cacti-plugin-editor.php:535
+msgid "Link Width"
+msgstr "Bağlantı Genişliği"
+
+#: weathermap-cacti-plugin-editor.php:576
+#, fuzzy
+msgid "IN Comment"
+msgstr "Yorum"
+
+#: weathermap-cacti-plugin-editor.php:589
+msgid "OUT Comment"
+msgstr "OUT Yorum"
+
+#: weathermap-cacti-plugin-editor.php:615
+msgid "You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above."
+msgstr "Hava Durumu Haritası Bağlantısını buradan değiştirebilirsiniz.  Maksimum Bant Genişliği, ulaşılabilecek Maksimum Bant Genişliğini ifade eder.  Desteklenen sonekler K, M, G ve T'dir.  Veri Kaynakları, bazı RRDfile matematiği de dahil olmak üzere RRDfile konumları ekleyebileceğiniz bir konumdur.  Bunun için belgelere bakın.  Veri Kaynağı Seçici, hedefi veya hedefleri temsil etmek için Kaktüs Grafiklerini seçmek için bir yardımcıdır.  Bağlantı genişliği, bağlantı okunun Genişliğidir.  BİLGİ URL'si, aktif Harita Bağlantısına tıkladığınızda sağlayabileceğiniz bir bağlantıdır.  Hover Graph URL'leri, Bağlantının üzerine gelindiğinde görünebilecek Kaktüsler veya diğer Grafik URL'leridir.  Grafik Seçici, Grafik URL'leri için Kaktüs Grafiklerini seçmek için bir yardımcıdır. GİRİŞ ve ÇIKIŞ Açıklamaları, Bağlantıların bulunduğu Bağlantılarda görünür.  Mümkün olan birkaç başka Bağlantı özelliği daha vardır.  Ancak, bugün yalnızca yukarıda yer alanları destekliyoruz."
+
+#: weathermap-cacti-plugin-editor.php:622
+msgid "Map Properties"
+msgstr "Harita Özellikleri"
+
+#: weathermap-cacti-plugin-editor.php:627
+msgid "Map Title"
+msgstr "Harita Başlığı"
+
+#: weathermap-cacti-plugin-editor.php:631
+msgid "Legend Text"
+msgstr " Gösterge metni"
+
+#: weathermap-cacti-plugin-editor.php:635
+msgid "Background Image Filename"
+msgstr "Arka Plan Görüntüsü Dosya Adı"
+
+#: weathermap-cacti-plugin-editor.php:657
+msgid "Timestamp Text"
+msgstr "Zaman Damgası Metni"
+
+#: weathermap-cacti-plugin-editor.php:661
+msgid "Default Link Width"
+msgstr "Varsayılan Bağlantı Genişliği"
+
+#: weathermap-cacti-plugin-editor.php:662
+#: weathermap-cacti-plugin-editor.php:674
+msgid "pixels"
+msgstr "piksel"
+
+#: weathermap-cacti-plugin-editor.php:665
+msgid "Default Link Bandwidth"
+msgstr "Varsayılan Bağlantı Bant Genişliği"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec in"
+msgstr "bit/sn içinde"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec out"
+msgstr "bit/sn çıkış"
+
+#: weathermap-cacti-plugin-editor.php:671
+msgid "Map Size"
+msgstr "Harita Boyutu"
+
+#: weathermap-cacti-plugin-editor.php:686
+msgid "This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included."
+msgstr "Bu iletişim kutusu genel Harita Özellikleri'ni kontrol eder.  Düzenleyici tarafından desteklenenler şunlardır: Başlık, Gösterge Metni, Arka Plan Resmi, Zaman Damgası Metni, Varsayılan Bağlantı Genişliği, Varsayılan Bağlantı Bant Genişliği ve Harita Boyutu.  Mümkün olan birkaç ek Harita varsayılanı vardır.  Ancak Düzenleyici'nin bu sürümünde, yalnızca dahil edilenleri destekliyoruz."
+
+#: weathermap-cacti-plugin-editor.php:693
+msgid "Map Style"
+msgstr "Harita Stili"
+
+#: weathermap-cacti-plugin-editor.php:698
+msgid "Map Defaults"
+msgstr "Harita Varsayılanları"
+
+#: weathermap-cacti-plugin-editor.php:701
+msgid "HTML Style"
+msgstr "HTML Stili"
+
+#: weathermap-cacti-plugin-editor.php:704
+msgid "Dynamic HTML"
+msgstr "Dinamik HTML"
+
+#: weathermap-cacti-plugin-editor.php:705
+msgid "Static HTML"
+msgstr "Statik HTML"
+
+#: weathermap-cacti-plugin-editor.php:710
+msgid "Legend Font"
+msgstr "Gösterge Yazı Tipi"
+
+#: weathermap-cacti-plugin-editor.php:714
+msgid "Node Defaults"
+msgstr "Düğüm Varsayılanları"
+
+#: weathermap-cacti-plugin-editor.php:717
+msgid "Node Font"
+msgstr "Düğüm Yazı Tipi"
+
+#: weathermap-cacti-plugin-editor.php:721
+#: weathermap-cacti-plugin-editor.php:759
+msgid "Graph Width"
+msgstr "Grafik Genişliği"
+
+#: weathermap-cacti-plugin-editor.php:727
+#: weathermap-cacti-plugin-editor.php:765
+msgid "Graph Height"
+msgstr "Grafik Yüksekliği"
+
+#: weathermap-cacti-plugin-editor.php:733
+msgid "Link Defaults"
+msgstr "Bağlantı Varsayılanları"
+
+#: weathermap-cacti-plugin-editor.php:736
+msgid "Link Labels"
+msgstr "Bağlantı Etiketleri"
+
+#: weathermap-cacti-plugin-editor.php:739
+msgid "Bits/sec"
+msgstr "Bit/sn"
+
+#: weathermap-cacti-plugin-editor.php:740
+msgid "Percentage"
+msgstr "Yüzde"
+
+#: weathermap-cacti-plugin-editor.php:741
+msgid "None"
+msgstr "Yok"
+
+#: weathermap-cacti-plugin-editor.php:746
+msgid "Arrow Style"
+msgstr "Ok Stili"
+
+#: weathermap-cacti-plugin-editor.php:749
+msgid "Classic"
+msgstr "Klasik"
+
+#: weathermap-cacti-plugin-editor.php:750
+msgid "Compact"
+msgstr "Kompakt"
+
+#: weathermap-cacti-plugin-editor.php:755
+msgid "Link Label Font"
+msgstr "Bağlantı Etiketi Yazı Tipi"
 
 #: weathermap-cacti-plugin-mgmt.php:53
 msgid "Duplicate"
@@ -446,12 +968,6 @@ msgid "Click 'Continue' to delete the following Weather Map."
 msgid_plural "Click 'Continue' to delete following Weather Maps."
 msgstr[0] "Aşağıdaki Hava Durumu Haritasını silmek için 'Devam'ı tıklayın."
 msgstr[1] "Aşağıdaki Hava Durumu Haritalarını silmek için 'Devam'ı tıklayın."
-
-#: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
-#: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
-#: weathermap-cacti-plugin-mgmt.php:538 weathermap-cacti-plugin-mgmt.php:2739
-msgid "Cancel"
-msgstr "İptal"
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
@@ -770,10 +1286,6 @@ msgstr "Kaynak Haritası"
 msgid "Empty File"
 msgstr "Boş Dosya"
 
-#: weathermap-cacti-plugin-mgmt.php:1263 weathermap-cacti-plugin-mgmt.php:2467
-msgid "Create"
-msgstr "Oluştur"
-
 #: weathermap-cacti-plugin-mgmt.php:1404 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Actions"
 msgstr "Eylemler"
@@ -1044,10 +1556,6 @@ msgstr "map-global SET değişkeninin adı"
 #: weathermap-cacti-plugin-mgmt.php:2459
 msgid "What to set it to"
 msgstr "Ne olarak ayarlanmalı"
-
-#: weathermap-cacti-plugin-mgmt.php:2464
-msgid "Edit"
-msgstr "Düzenle"
 
 #: weathermap-cacti-plugin-mgmt.php:2471
 msgid "Global Setting for all Maps"

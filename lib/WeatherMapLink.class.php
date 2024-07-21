@@ -157,8 +157,8 @@ class WeatherMapLink extends WeatherMapItem {
 			'labelstyle'            => 'percent',
 			'labelboxstyle'         => 'classic',
 			'linkstyle'             => 'twoway',
-			'overlibwidth'          => 0,
-			'overlibheight'         => 0,
+			'overlibwidth'          => 700,
+			'overlibheight'         => 200,
 			'outlinecolour'         => array(0, 0, 0),
 			'bwoutlinecolour'       => array(0, 0, 0),
 			'bwfontcolour'          => array(0, 0, 0),
@@ -168,11 +168,12 @@ class WeatherMapLink extends WeatherMapItem {
 			'outpercent'            => 0,
 			'inscalekey'            => '',
 			'outscalekey'           => '',
-			# 'incolour'=>-1,'outcolour'=>-1,
+			# 'incolour'            => -1,
+			# 'outcolour'           => -1,
 			'a_offset'              => 'C',
 			'b_offset'              => 'C',
-			#'incomment' => '',
-			#'outcomment' => '',
+			# 'incomment'           => '',
+			# 'outcomment'          => '',
 			'zorder'                => 300,
 			'overlibcaption'        => array('', ''),
 			'max_bandwidth_in'      => 100000000,
@@ -581,10 +582,17 @@ class WeatherMapLink extends WeatherMapItem {
 
 	function WriteConfig() {
 		$output = '';
-		# $output .= "# ID ".$this->id." - first seen in ".$this->defined_in."\n";
+
+		if (!defined('TAB')) {
+			define('TAB', "\t");
+		}
+
+		if (!defined('EOL')) {
+			define('EOL', PHP_EOL);
+		}
 
 		if ($this->config_override != '') {
-			$output = $this->config_override . "\n";
+			$output = $this->config_override . EOL;
 		} else {
 			# $defdef = $this->owner->defaultlink;
 			$dd = $this->owner->links[$this->template];
@@ -592,32 +600,32 @@ class WeatherMapLink extends WeatherMapItem {
 			wm_debug("Writing config for LINK {$this->name} against {$this->template}");
 
 			$basic_params = array(
-				array('width', 'WIDTH', CONFIG_TYPE_LITERAL),
-				array('zorder', 'ZORDER', CONFIG_TYPE_LITERAL),
-				array('overlibwidth', 'OVERLIBWIDTH', CONFIG_TYPE_LITERAL),
-				array('overlibheight', 'OVERLIBHEIGHT', CONFIG_TYPE_LITERAL),
-				array('arrowstyle', 'ARROWSTYLE', CONFIG_TYPE_LITERAL),
-				array('viastyle', 'VIASTYLE', CONFIG_TYPE_LITERAL),
-				array('linkstyle', 'LINKSTYLE', CONFIG_TYPE_LITERAL),
-				array('splitpos', 'SPLITPOS', CONFIG_TYPE_LITERAL),
-				array('duplex', 'DUPLEX', CONFIG_TYPE_LITERAL),
-				array('commentstyle', 'COMMENTSTYLE', CONFIG_TYPE_LITERAL),
-				array('labelboxstyle', 'BWSTYLE', CONFIG_TYPE_LITERAL),
-			//	array('usescale','USESCALE', CONFIG_TYPE_LITERAL),
+				array('width',             'WIDTH',            CONFIG_TYPE_LITERAL),
+				array('zorder',            'ZORDER',           CONFIG_TYPE_LITERAL),
+				array('overlibwidth',      'OVERLIBWIDTH',     CONFIG_TYPE_LITERAL),
+				array('overlibheight',     'OVERLIBHEIGHT',    CONFIG_TYPE_LITERAL),
+				array('arrowstyle',        'ARROWSTYLE',       CONFIG_TYPE_LITERAL),
+				array('viastyle',          'VIASTYLE',         CONFIG_TYPE_LITERAL),
+				array('linkstyle',         'LINKSTYLE',        CONFIG_TYPE_LITERAL),
+				array('splitpos',          'SPLITPOS',         CONFIG_TYPE_LITERAL),
+				array('duplex',            'DUPLEX',           CONFIG_TYPE_LITERAL),
+				array('commentstyle',      'COMMENTSTYLE',     CONFIG_TYPE_LITERAL),
+				array('labelboxstyle',     'BWSTYLE',          CONFIG_TYPE_LITERAL),
+			//	array('usescale',        'USESCALE',       CONFIG_TYPE_LITERAL),
 
-				array('bwfont', 'BWFONT', CONFIG_TYPE_LITERAL),
-				array('commentfont', 'COMMENTFONT', CONFIG_TYPE_LITERAL),
+				array('bwfont',            'BWFONT',           CONFIG_TYPE_LITERAL),
+				array('commentfont',       'COMMENTFONT',      CONFIG_TYPE_LITERAL),
 
-				array('bwoutlinecolour', 'BWOUTLINECOLOR', CONFIG_TYPE_COLOR),
-				array('bwboxcolour', 'BWBOXCOLOR', CONFIG_TYPE_COLOR),
-				array('outlinecolour', 'OUTLINECOLOR', CONFIG_TYPE_COLOR),
+				array('bwoutlinecolour',   'BWOUTLINECOLOR',   CONFIG_TYPE_COLOR),
+				array('bwboxcolour',       'BWBOXCOLOR',       CONFIG_TYPE_COLOR),
+				array('outlinecolour',     'OUTLINECOLOR',     CONFIG_TYPE_COLOR),
 				array('commentfontcolour', 'COMMENTFONTCOLOR', CONFIG_TYPE_COLOR),
-				array('bwfontcolour', 'BWFONTCOLOR', CONFIG_TYPE_COLOR)
+				array('bwfontcolour',      'BWFONTCOLOR',      CONFIG_TYPE_COLOR)
 			);
 
 			# TEMPLATE must come first. DEFAULT
 			if ($this->template != 'DEFAULT' && $this->template != ':: DEFAULT ::') {
-				$output .= "\tTEMPLATE " . $this->template . "\n";
+				$output .= TAB . 'TEMPLATE ' . $this->template . EOL;
 			}
 
 			foreach ($basic_params as $param) {
@@ -627,20 +635,18 @@ class WeatherMapLink extends WeatherMapItem {
 				# $output .= "# For $keyword: ".$this->$field." vs ".$dd->$field."\n";
 				if ($this->$field != $dd->$field) {
 					if ($param[2] == CONFIG_TYPE_COLOR) {
-						$output .= "\t$keyword " . render_colour($this->$field) . "\n";
-					}
-
-					if ($param[2] == CONFIG_TYPE_LITERAL) {
-						$output .= "\t$keyword " . $this->$field . "\n";
+						$output .= TAB . "$keyword " . render_colour($this->$field) . EOL;
+					} elseif ($param[2] == CONFIG_TYPE_LITERAL) {
+						$output .= TAB . "$keyword " . $this->$field . EOL;
 					}
 				}
 			}
 
-			$val = $this->usescale . ' ' . $this->scaletype;
-			$comparison = $dd->usescale . ' ' . $dd->scaletype;
+			$val        = $this->usescale . ' ' . $this->scaletype;
+			$comparison = $dd->usescale   . ' ' . $dd->scaletype;
 
 			if (($val != $comparison)) {
-				$output.="\tUSESCALE " . $val . "\n";
+				$output .= TAB . 'USESCALE ' . $val . EOL;
 			}
 
 			if ($this->infourl[IN] == $this->infourl[OUT]) {
@@ -649,9 +655,9 @@ class WeatherMapLink extends WeatherMapItem {
 				$dirs = array(IN => 'IN', OUT => 'OUT');// the full monty two-keyword version
 			}
 
-			foreach ($dirs as $dir=>$tdir) {
+			foreach ($dirs as $dir => $tdir) {
 				if ($this->infourl[$dir] != $dd->infourl[$dir]) {
-					$output .= "\t" . $tdir . 'INFOURL ' . $this->infourl[$dir] . "\n";
+					$output .= TAB . $tdir . 'INFOURL ' . $this->infourl[$dir] . EOL;
 				}
 			}
 
@@ -661,9 +667,9 @@ class WeatherMapLink extends WeatherMapItem {
 				$dirs = array(IN => 'IN', OUT => 'OUT');// the full monty two-keyword version
 			}
 
-			foreach ($dirs as $dir=>$tdir) {
+			foreach ($dirs as $dir => $tdir) {
 				if ($this->overlibcaption[$dir] != $dd->overlibcaption[$dir]) {
-					$output .= "\t" . $tdir . 'OVERLIBCAPTION ' . $this->overlibcaption[$dir] . "\n";
+					$output .= TAB . $tdir . 'OVERLIBCAPTION ' . $this->overlibcaption[$dir] . EOL;
 				}
 			}
 
@@ -673,9 +679,9 @@ class WeatherMapLink extends WeatherMapItem {
 				$dirs = array(IN => 'IN', OUT => 'OUT');// the full monty two-keyword version
 			}
 
-			foreach ($dirs as $dir=>$tdir) {
+			foreach ($dirs as $dir => $tdir) {
 				if ($this->notestext[$dir] != $dd->notestext[$dir]) {
-					$output .= "\t" . $tdir . 'NOTES ' . $this->notestext[$dir] . "\n";
+					$output .= TAB . $tdir . 'NOTES ' . $this->notestext[$dir] . EOL;
 				}
 			}
 
@@ -685,29 +691,25 @@ class WeatherMapLink extends WeatherMapItem {
 				$dirs = array(IN => 'IN', OUT => 'OUT');// the full monty two-keyword version
 			}
 
-			foreach ($dirs as $dir=>$tdir) {
+			foreach ($dirs as $dir => $tdir) {
 				if ($this->overliburl[$dir] != $dd->overliburl[$dir]) {
-					$output .= "\t" . $tdir . 'OVERLIBGRAPH ' . join(' ', $this->overliburl[$dir]) . "\n";
+					$output .= TAB . $tdir . 'OVERLIBGRAPH ' . join(' ', $this->overliburl[$dir]) . EOL;
 				}
 			}
 
 			// if formats have been set, but they're just the longform of the built-in styles, set them back to the built-in styles
 			if ($this->labelstyle == '--' && $this->bwlabelformats[IN] == FMT_PERC_IN && $this->bwlabelformats[OUT] == FMT_PERC_OUT) {
 				$this->labelstyle = 'percent';
-			}
-
-			if ($this->labelstyle == '--' && $this->bwlabelformats[IN] == FMT_BITS_IN && $this->bwlabelformats[OUT] == FMT_BITS_OUT) {
+			} elseif ($this->labelstyle == '--' && $this->bwlabelformats[IN] == FMT_BITS_IN && $this->bwlabelformats[OUT] == FMT_BITS_OUT) {
 				$this->labelstyle = 'bits';
-			}
-
-			if ($this->labelstyle == '--' && $this->bwlabelformats[IN] == FMT_UNFORM_IN && $this->bwlabelformats[OUT] == FMT_UNFORM_OUT) {
+			} elseif ($this->labelstyle == '--' && $this->bwlabelformats[IN] == FMT_UNFORM_IN && $this->bwlabelformats[OUT] == FMT_UNFORM_OUT) {
 				$this->labelstyle = 'unformatted';
 			}
 
 			// if specific formats have been set, then the style will be '--'
 			// if it isn't then use the named style
 			if ($this->labelstyle != $dd->labelstyle && $this->labelstyle != '--') {
-				$output .= "\tBWLABEL " . $this->labelstyle . "\n";
+				$output .= TAB . 'BWLABEL ' . $this->labelstyle . EOL;
 			}
 
 			// if either IN or OUT field changes, then both must be written because a regular BWLABEL can't do it
@@ -716,28 +718,28 @@ class WeatherMapLink extends WeatherMapItem {
 			$comparison2 = $dd->bwlabelformats[OUT];
 
 			if ($this->labelstyle == '--' && ($this->bwlabelformats[IN] != $comparison || $this->bwlabelformats[OUT] != '--')) {
-				$output .= "\tINBWFORMAT "  . $this->bwlabelformats[IN]  . "\n";
-				$output .= "\tOUTBWFORMAT " . $this->bwlabelformats[OUT] . "\n";
+				$output .= TAB . 'INBWFORMAT '  . $this->bwlabelformats[IN]  . EOL;
+				$output .= TAB . 'OUTBWFORMAT ' . $this->bwlabelformats[OUT] . EOL;
 			}
 
 			$comparison  = $dd->labeloffset_in;
 			$comparison2 = $dd->labeloffset_out;
 
 			if ($this->labeloffset_in != $comparison || $this->labeloffset_out != $comparison2) {
-				$output .= "\tBWLABELPOS " . $this->labeloffset_in . ' ' . $this->labeloffset_out . "\n";
+				$output .= TAB . 'BWLABELPOS ' . $this->labeloffset_in . ' ' . $this->labeloffset_out . EOL;
 			}
 
-			$comparison = $dd->commentoffset_in . ':' . $dd->commentoffset_out;
-			$mine = $this->commentoffset_in . ':' . $this->commentoffset_out;
+			$comparison = $dd->commentoffset_in   . ':' . $dd->commentoffset_out;
+			$mine       = $this->commentoffset_in . ':' . $this->commentoffset_out;
 
 			if ($mine != $comparison) {
-				$output .= "\tCOMMENTPOS " . $this->commentoffset_in . ' ' . $this->commentoffset_out . "\n";
+				$output .= TAB . 'COMMENTPOS ' . $this->commentoffset_in . ' ' . $this->commentoffset_out . EOL;
 			}
 
-			$comparison=$dd->targets;
+			$comparison = $dd->targets;
 
 			if ($this->targets != $comparison) {
-				$output .= "\tTARGET";
+				$output .= TAB . 'TARGET';
 
 				foreach ($this->targets as $target) {
 					if (strpos($target[4], ' ') == false) {
@@ -747,10 +749,10 @@ class WeatherMapLink extends WeatherMapItem {
 					}
 				}
 
-				$output .= "\n";
+				$output .= EOL;
 			}
 
-			foreach (array(IN,OUT) as $dir) {
+			foreach (array(IN, OUT) as $dir) {
 				if ($dir == IN) {
 					$tdir = 'IN';
 				}
@@ -759,15 +761,15 @@ class WeatherMapLink extends WeatherMapItem {
 					$tdir = 'OUT';
 				}
 
-				$comparison=$dd->comments[$dir];
+				$comparison = $dd->comments[$dir];
 
 				if ($this->comments[$dir] != $comparison) {
-					$output .= "\t" . $tdir . 'COMMENT ' . $this->comments[$dir] . "\n";
+					$output .= TAB . $tdir . 'COMMENT ' . $this->comments[$dir] . EOL;
 				}
 			}
 
 			if (isset($this->a) && isset($this->b))	{
-				$output .= "\tNODES " . $this->a->name;
+				$output .= TAB . 'NODES ' . $this->a->name;
 
 				if ($this->a_offset != 'C') {
 					$output .= ':' . $this->a_offset;
@@ -779,24 +781,24 @@ class WeatherMapLink extends WeatherMapItem {
 					$output .= ':' . $this->b_offset;
 				}
 
-				$output .= "\n";
+				$output .= EOL;
 			}
 
 			if (count($this->vialist) > 0) {
 				foreach ($this->vialist as $via) {
 					if ( isset($via[2])) {
-						$output .= sprintf("\tVIA %s %d %d\n", $via[2],$via[0], $via[1]);
+						$output .= sprintf(TAB . 'VIA %s %d %d' . EOL, $via[2],$via[0], $via[1]);
 					} else {
-						$output .= sprintf("\tVIA %d %d\n", $via[0], $via[1]);
+						$output .= sprintf(TAB . 'VIA %d %d' . EOL, $via[0], $via[1]);
 					}
 				}
 			}
 
 			if ($this->max_bandwidth_in != $dd->max_bandwidth_in || $this->max_bandwidth_out != $dd->max_bandwidth_out || $this->name == 'DEFAULT') {
 				if ($this->max_bandwidth_in == $this->max_bandwidth_out) {
-					$output .= "\tBANDWIDTH " . $this->max_bandwidth_in_cfg . "\n";
+					$output .= TAB . 'BANDWIDTH ' . $this->max_bandwidth_in_cfg . EOL;
 				} else {
-					$output .= "\tBANDWIDTH " . $this->max_bandwidth_in_cfg . ' ' . $this->max_bandwidth_out_cfg . "\n";
+					$output .= TAB . 'BANDWIDTH ' . $this->max_bandwidth_in_cfg . ' ' . $this->max_bandwidth_out_cfg . EOL;
 				}
 			}
 
@@ -804,12 +806,12 @@ class WeatherMapLink extends WeatherMapItem {
 				// all hints for DEFAULT node are for writing
 				// only changed ones, or unique ones, otherwise
 				if (($this->name == 'DEFAULT') || (isset($dd->hints[$hintname]) && $dd->hints[$hintname] != $hint) || (!isset($dd->hints[$hintname]))) {
-					$output .= "\tSET $hintname $hint\n";
+					$output .= TAB . "SET $hintname $hint" . EOL;
 				}
 			}
 
 			if ($output != '') {
-				$output = 'LINK ' . $this->name . "\n" . $output . "\n";
+				$output = 'LINK ' . $this->name . EOL . $output . EOL;
 			}
 		}
 

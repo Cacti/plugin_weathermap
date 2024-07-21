@@ -246,6 +246,8 @@ function show_editor_startpage() {
 
 	$matches = 0;
 
+	getEditorJs();
+
 	print '<script src="js/editor.js" type="text/javascript"></script>';
 
 	$errormessage = '';
@@ -259,22 +261,22 @@ function show_editor_startpage() {
 	html_start_box(__('Welcome to the PHP Weathermap %s Editor', $weathermap_version, 'weathermap'), '100%', '', '3', 'center', '');
 	print '<tr>';
 	print '<td>';
-	print '<div><b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however.</div>';
+	print '<div>' . __('<b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however.', 'weathermap') . '</div>';
 	print '</td>';
 	print '</tr>';
 	html_end_box();
 
 	print '<tr>';
-	print 'Do you want to:<p>';
-	print 'Create A New Map:<br>';
+	print __('Do you want to:', 'weathermap') . '<p>';
+	print __('Create A New Map:', 'weathermap') . '<br>';
 	print '<form method="GET">';
-	print 'Named: <input type="text" name="mapname" size="20">';
+	print __('Named:', 'weathermap'). ' <input type="text" name="mapname" size="20">';
 
 	print '<input name="action" type="hidden" value="newmap">';
 
-	print '<input type="submit" value="Create">';
+	print '<input type="submit" value="' . __('Create', 'weathermap') . '">';
 
-	print '<p><small>Note: filenames must contain no spaces and end in .conf</small></p>';
+	print '<p><small>' . __('Note: filenames must contain no spaces and end in .conf', 'weathermap') . '</small></p>';
 	print '</form>';
 
 	$titles = array();
@@ -512,43 +514,41 @@ function get_imagelist($imagedir) {
 
 function handle_inheritance(&$map, &$inheritables) {
 	foreach ($inheritables as $inheritable) {
-		$fieldname = $inheritable[1];
-		$formname = $inheritable[2];
+		$fieldname  = $inheritable[1];
+		$formname   = $inheritable[2];
 		$validation = $inheritable[3];
 
 		$new = get_nfilter_request_var($formname);
 
-		if ($validation != "") {
+		if ($validation != '') {
 		    switch($validation) {
-				case "int":
+				case 'int':
 				    $new = intval($new);
 
 				    break;
-				case "float":
+				case 'float':
 				    $new = floatval($new);
 
 				    break;
 		    }
 		}
 
-		$old = ($inheritable[0]=='node' ? $map->nodes['DEFAULT']->$fieldname : $map->links['DEFAULT']->$fieldname);
+		$old = ($inheritable[0] == 'node' ? $map->nodes['DEFAULT']->$fieldname:$map->links['DEFAULT']->$fieldname);
 
 		if ($old != $new) {
-			if ($inheritable[0]=='node') {
+			if ($inheritable[0] == 'node') {
 				$map->nodes['DEFAULT']->$fieldname = $new;
 
-				foreach ($map->nodes as $node) {
-					if ($node->name != ":: DEFAULT ::" && $node->$fieldname == $old) {
+				foreach ($map->nodes as $link_name => $node) {
+					if ($node->name != ':: DEFAULT ::' && $node->$fieldname == $old) {
 						$map->nodes[$node->name]->$fieldname = $new;
 					}
 				}
-			}
-
-			if ($inheritable[0]=='link') {
+			} elseif ($inheritable[0] == 'link') {
 				$map->links['DEFAULT']->$fieldname = $new;
 
-				foreach ($map->links as $link) {
-					if ($link->name != ":: DEFAULT ::" && $link->$fieldname == $old) {
+				foreach ($map->links as $link_name => $link) {
+					if ($link->name != ':: DEFAULT ::' && $link->$fieldname == $old) {
 						$map->links[$link->name]->$fieldname = $new;
 					}
 				}
@@ -558,7 +558,7 @@ function handle_inheritance(&$map, &$inheritables) {
 }
 
 function get_fontlist(&$map,$name,$current) {
-	$output = '<select class="fontcombo" name="'.$name.'">';
+	$output = '<select class="fontcombo" name="' . html_escape($name) . '">';
 
 	ksort($map->fonts);
 
@@ -566,13 +566,13 @@ function get_fontlist(&$map,$name,$current) {
 		$output .= '<option ';
 
 		if ($current == $fontnumber) {
-			$output .= 'SELECTED';
+			$output .= 'selected';
 		}
 
-		$output .= ' value="'.$fontnumber.'">'.$fontnumber.' ('.$font->type.')</option>';
+		$output .= ' value="' . $fontnumber . '">' . $fontnumber . ' (' . $font->type . ')</option>';
 	}
 
-	$output .= "</select>";
+	$output .= '</select>';
 
 	return($output);
 }
@@ -830,5 +830,72 @@ function editor_log($str) {
     // $f = fopen('editor.log','a');
     // fputs($f, $str);
     // fclose($f);
+}
+
+function getEditorJs() {
+	?>
+	<script type='text/javascript'>
+	var sessionMessageOk    = '<?php print __esc('Ok', 'weathermap');?>';
+	var sessionMessageTitle = '<?php print __esc('Operation successful', 'weathermap');?>';
+	var sessionMessageSave  = '<?php print __esc('The Operation was successful.  Details are below.', 'weathermap');?>';
+	var sessionMessagePause = '<?php print __esc('Pause', 'weathermap');?>';
+
+	var moveNodeHelp  = '<?php print __esc('Click on the map where you would like to move the node to.', 'weathermap');?>';
+	var viaLinkHelp   = '<?php print __esc('Click on the map via which point you want to redirect link.', 'weathermap');?>';
+	var addLinkHelp   = '<?php print __esc('Click on the first node for the start of the link.', 'weathermap');?>';
+	var timeStHelp    = '<?php print __esc('Click on the map where you would like to put the timestamp.', 'weathermap');?>';
+	var posLegendHelp = '<?php print __esc('Click on the map where you would like to put the legend.', 'weathermap');?>';
+	var addNodeHelp   = '<?php print __esc('Click on the map where you would like to add a new node.', 'weathermap');?>';
+
+	var delNodeWarning  = '<?php print __esc('WARNING: Pressing \'Delete Node\' will delete this Node.', 'weathermap');?>';
+	var delNodeTitle    = '<?php print __esc('Delete Node Confirmation', 'weathermap');?>';
+	var delLinkWarning  = '<?php print __esc('WARNING: Pressing \'Delete Link\' will delete this Link.', 'weathermap');?>';
+	var delLinkTitle    = '<?php print __esc('Delete Link Confirmation', 'weathermap');?>';
+	var txtCancel       = '<?php print __esc('Cancel', 'weathermap');?>';
+	var txtDelLink      = '<?php print __esc('Delete Link', 'weathermap');?>';
+	var txtDelNode      = '<?php print __esc('Delete Node', 'weathermap');?>';
+	var txtPosition     = '<?php print __esc('Position', 'weathermap');?>';
+
+	var txtNodeActions = '<?php print __esc('Node Actions', 'weathermap');?>';
+	var txtLinkActions = '<?php print __esc('Link Actions', 'weathermap');?>';
+	var txtMove        = '<?php print __esc('Move', 'weathermap');?>';
+	var txtClone       = '<?php print __esc('Clone', 'weathermap');?>';
+	var txtEdit        = '<?php print __esc('Edit', 'weathermap');?>';
+	var txtDelete      = '<?php print __esc('Delete', 'weathermap');?>';
+	var txtVia         = '<?php print __esc('Via', 'weathermap');?>';
+	var txtTidy        = '<?php print __esc('Tidy', 'weathermap');?>';
+	var txtProperties  = '<?php print __esc('Properties', 'weathermap');?>';
+
+	// seed the help text. Done in a big lump here, so we could make a foreign language version someday.
+
+	var helptexts = {
+		'link_target':        '<?php print __esc('Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG).', 'weathermap');?>',
+		'link_width':         '<?php print __esc('How wide the link arrow will be drawn, in pixels.', 'weathermap');?>',
+		'link_infourl':       '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL that will be opened when you click on the link', 'weathermap');?>',
+		'link_hover':         '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL of the image that will be shown when you hover over the link', 'weathermap');?>',
+		'link_bandwidth_in':  '<?php print __esc('The bandwidth from the first node to the second node', 'weathermap');?>',
+		'link_bandwidth_out': '<?php print __esc('The bandwidth from the second node to the first node (if that is different)', 'weathermap');?>',
+		'link_commentin':     '<?php print __esc('The text that will appear alongside the link', 'weathermap');?>',
+		'link_commentout':    '<?php print __esc('The text that will appear alongside the link', 'weathermap');?>',
+		'node_infourl':       '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL that will be opened when you click on the node', 'weathermap');?>',
+		'node_hover':         '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL of the image that will be shown when you hover over the node', 'weathermap');?>',
+		'node_x':             '<?php print __esc('How far from the left to position the node, in pixels', 'weathermap');?>',
+		'node_y':             '<?php print __esc('How far from the top to position the node, in pixels', 'weathermap');?>',
+		'node_label':         '<?php print __esc('The text that appears on the node', 'weathermap');?>',
+		'node_new_name':      '<?php print __esc('The name used for this node when defining links', 'weathermap');?>',
+		'tb_newfile':         '<?php print __esc('Change to a different file, or start creating a new one.', 'weathermap');?>',
+		'tb_addnode':         '<?php print __esc('Add a new node to the map', 'weathermap');?>',
+		'tb_addlink':         '<?php print __esc('Add a new link to the map, by joining two nodes together.', 'weathermap');?>',
+		'hover_tb_newfile':   '<?php print __esc('Select a different map to edit, or start a new one.', 'weathermap');?>',
+
+		// These are the default text - what appears when nothing more interesting
+		// is happening. One for each dialog/location.
+		'link_default':       '<?php print __esc('This is where help appears for links', 'weathermap');?>',
+		'map_default':        '<?php print __esc('This is where help appears for maps', 'weathermap');?>',
+		'node_default':       '<?php print __esc('This is where help appears for nodes', 'weathermap');?>',
+		'tb_default':         '<?php print __esc('or click a Node or Link to edit it\'s properties', 'weathermap');?>'
+	};
+	</script>
+	<?php
 }
 

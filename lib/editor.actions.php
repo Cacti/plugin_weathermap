@@ -473,10 +473,15 @@ function setMapStyle($mapfile) {
 	$map->keyfont = get_filter_request_var('mapstyle_legendfont');
 
 	$inheritables = array(
-		array('link', 'labelstyle', 'mapstyle_linklabels', ''),
-		array('link', 'bwfont', 'mapstyle_linkfont', 'int'),
-		array('link', 'arrowstyle', 'mapstyle_arrowstyle', ''),
-		array('node', 'labelfont', 'mapstyle_nodefont', 'int')
+		array('link', 'labelstyle',    'mapstyle_linklabels', ''),
+		array('link', 'bwfont',        'mapstyle_linkfont',   'int'),
+		array('link', 'overlibwidth',  'mapstyle_linkwidth',  'int'),
+		array('link', 'overlibheight', 'mapstyle_linkheight', 'int'),
+		array('link', 'arrowstyle',    'mapstyle_arrowstyle', ''),
+
+		array('node', 'labelfont',     'mapstyle_nodefont',   'int'),
+		array('node', 'overlibwidth',  'mapstyle_nodewidth',  'int'),
+		array('node', 'overlibheight', 'mapstyle_nodeheight', 'int'),
 	);
 
 	handle_inheritance($map, $inheritables);
@@ -975,3 +980,4 @@ function getImageURL($mapname, $selected) {
 
 	return $imageurl;
 }
+

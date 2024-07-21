@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:39-0400\n"
-"PO-Revision-Date: 2024-04-27 14:48-0400\n"
+"POT-Creation-Date: 2024-07-21 16:17-0400\n"
+"PO-Revision-Date: 2024-07-21 16:35-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ko_KR\n"
@@ -16,12 +16,237 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
-#: lib/editor.inc.php:259
+#: lib/editor.inc.php:261
 #, php-format
 msgid "Welcome to the PHP Weathermap %s Editor"
 msgstr "PHP Weathermap %s 편집기에 오신 것을 환영합니다."
+
+#: lib/editor.inc.php:264
+msgid "<b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however."
+msgstr "<b>메모:</b> 이 편집기는 아직 완성되지 않았습니다! 편집기만 사용하도록 선택하면 놓치게 될 Weathermap의 많은 기능이 있습니다.  여기에는 곡선, 노드 오프셋, 글꼴 정의, 색상 변경, 노드별/링크별 설정 및 이미지 업로드가 포함됩니다. 그러나 수동으로 추가한 경우 이러한 기능을 손상시키지 않고 편집기를 사용할 수 있습니다."
+
+#: lib/editor.inc.php:270
+msgid "Do you want to:"
+msgstr "원하는 작업:"
+
+#: lib/editor.inc.php:271
+msgid "Create A New Map:"
+msgstr "새 맵 만들기:"
+
+#: lib/editor.inc.php:273
+msgid "Named:"
+msgstr "명명 된:"
+
+#: lib/editor.inc.php:277 weathermap-cacti-plugin-mgmt.php:1263
+#: weathermap-cacti-plugin-mgmt.php:2467
+msgid "Create"
+msgstr "생성"
+
+#: lib/editor.inc.php:279
+msgid "Note: filenames must contain no spaces and end in .conf"
+msgstr "참고: 파일 이름은 공백을 포함하지 않아야 하며 .conf로 끝나야 합니다"
+
+#: lib/editor.inc.php:838
+msgid "Ok"
+msgstr "확인"
+
+#: lib/editor.inc.php:839
+msgid "Operation successful"
+msgstr "작업 성공"
+
+#: lib/editor.inc.php:840
+msgid "The Operation was successful.  Details are below."
+msgstr "작업이 성공했습니다.  자세한 내용은 아래와 같습니다."
+
+#: lib/editor.inc.php:841
+msgid "Pause"
+msgstr "일시 정지"
+
+#: lib/editor.inc.php:843
+msgid "Click on the map where you would like to move the node to."
+msgstr "노드를 이동하려는 맵을 클릭합니다."
+
+#: lib/editor.inc.php:844
+msgid "Click on the map via which point you want to redirect link."
+msgstr "링크를 리디렉션하려는 지점을 경유하는지지도를 클릭하십시오."
+
+#: lib/editor.inc.php:845
+msgid "Click on the first node for the start of the link."
+msgstr "링크의 시작에 대한 첫 번째 노드를 클릭합니다."
+
+#: lib/editor.inc.php:846
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "타임스탬프를 입력하려는 지도를 클릭합니다."
+
+#: lib/editor.inc.php:847
+msgid "Click on the map where you would like to put the legend."
+msgstr "범례를 넣으려는 지도를 클릭합니다."
+
+#: lib/editor.inc.php:848
+msgid "Click on the map where you would like to add a new node."
+msgstr "새 노드를 추가하려는 지도를 클릭합니다."
+
+#: lib/editor.inc.php:850
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "경고: '노드 삭제'를 누르면 이 노드가 삭제됩니다."
+
+#: lib/editor.inc.php:851
+msgid "Delete Node Confirmation"
+msgstr "노드 삭제 확인"
+
+#: lib/editor.inc.php:852
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "경고: '링크 삭제'를 누르면 이 링크가 삭제됩니다."
+
+#: lib/editor.inc.php:853
+msgid "Delete Link Confirmation"
+msgstr "링크 삭제 확인"
+
+#: lib/editor.inc.php:854 weathermap-cacti-plugin-editor.php:489
+#: weathermap-cacti-plugin-editor.php:610
+#: weathermap-cacti-plugin-editor.php:681
+#: weathermap-cacti-plugin-editor.php:774 weathermap-cacti-plugin-mgmt.php:491
+#: weathermap-cacti-plugin-mgmt.php:511 weathermap-cacti-plugin-mgmt.php:520
+#: weathermap-cacti-plugin-mgmt.php:529 weathermap-cacti-plugin-mgmt.php:538
+#: weathermap-cacti-plugin-mgmt.php:2739
+msgid "Cancel"
+msgstr "취소"
+
+#: lib/editor.inc.php:855 weathermap-cacti-plugin-editor.php:606
+msgid "Delete Link"
+msgstr "링크 삭제"
+
+#: lib/editor.inc.php:856
+msgid "Delete Node"
+msgstr "노드 삭제"
+
+#: lib/editor.inc.php:857 weathermap-cacti-plugin-editor.php:409
+msgid "Position"
+msgstr "위치"
+
+#: lib/editor.inc.php:859
+msgid "Node Actions"
+msgstr "노드 작업"
+
+#: lib/editor.inc.php:860
+msgid "Link Actions"
+msgstr "링크 동작"
+
+#: lib/editor.inc.php:861 weathermap-cacti-plugin-editor.php:485
+msgid "Move"
+msgstr "이동"
+
+#: lib/editor.inc.php:862 weathermap-cacti-plugin-editor.php:487
+msgid "Clone"
+msgstr "복제"
+
+#: lib/editor.inc.php:863 weathermap-cacti-plugin-editor.php:488
+#: weathermap-cacti-plugin-editor.php:607 weathermap-cacti-plugin-mgmt.php:2464
+msgid "Edit"
+msgstr "편집"
+
+#: lib/editor.inc.php:864 weathermap-cacti-plugin-editor.php:486
+#: weathermap-cacti-plugin-mgmt.php:52
+msgid "Delete"
+msgstr "삭제"
+
+#: lib/editor.inc.php:865 weathermap-cacti-plugin-editor.php:609
+msgid "Via"
+msgstr "Via"
+
+#: lib/editor.inc.php:866 weathermap-cacti-plugin-editor.php:608
+msgid "Tidy"
+msgstr "단정한"
+
+#: lib/editor.inc.php:867
+msgid "Properties"
+msgstr "속성"
+
+#: lib/editor.inc.php:872
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Weathermap은 이 링크에 대한 데이터를 어디에서 가져와야 합니까? 이것은 RRD 파일 또는 특수 주석이 있는 HTML(일반적으로 MRTG에서)일 수 있습니다."
+
+#: lib/editor.inc.php:873
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "링크 화살표가 그려지는 너비(픽셀)입니다."
+
+#: lib/editor.inc.php:874
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "'overlib'HTML 스타일을 사용하는 경우 링크를 클릭 할 때 열리는 URL입니다"
+
+#: lib/editor.inc.php:875
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "'overlib'HTML 스타일을 사용하는 경우 링크 위로 마우스를 가져갈 때 표시되는 이미지의 URL입니다"
+
+#: lib/editor.inc.php:876
+msgid "The bandwidth from the first node to the second node"
+msgstr "첫 번째 노드에서 두 번째 노드까지의 대역폭"
+
+#: lib/editor.inc.php:877
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "두 번째 노드에서 첫 번째 노드까지의 대역폭(다른 경우)"
+
+#: lib/editor.inc.php:878 lib/editor.inc.php:879
+msgid "The text that will appear alongside the link"
+msgstr "링크와 함께 표시되는 텍스트입니다"
+
+#: lib/editor.inc.php:880
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "'overlib'HTML 스타일을 사용하는 경우 노드를 클릭 할 때 열리는 URL입니다"
+
+#: lib/editor.inc.php:881
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "'overlib'HTML 스타일을 사용하는 경우 노드 위로 마우스를 가져갈 때 표시되는 이미지의 URL입니다"
+
+#: lib/editor.inc.php:882
+msgid "How far from the left to position the node, in pixels"
+msgstr "왼쪽에서 노드를 배치하는 거리(픽셀)입니다"
+
+#: lib/editor.inc.php:883
+msgid "How far from the top to position the node, in pixels"
+msgstr "상단에서 노드를 배치하는 거리(픽셀 단위)"
+
+#: lib/editor.inc.php:884
+msgid "The text that appears on the node"
+msgstr "노드에 표시되는 텍스트입니다"
+
+#: lib/editor.inc.php:885
+msgid "The name used for this node when defining links"
+msgstr "링크를 정의할 때 이 노드에 사용되는 이름입니다"
+
+#: lib/editor.inc.php:886
+msgid "Change to a different file, or start creating a new one."
+msgstr "다른 파일로 변경하거나 새 파일 만들기를 시작합니다."
+
+#: lib/editor.inc.php:887
+msgid "Add a new node to the map"
+msgstr "맵에 새 노드 추가"
+
+#: lib/editor.inc.php:888
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "두 노드를 함께 결합하여 맵에 새 링크를 추가합니다."
+
+#: lib/editor.inc.php:889
+msgid "Select a different map to edit, or start a new one."
+msgstr "편집할 다른 맵을 선택하거나 새 맵을 시작합니다."
+
+#: lib/editor.inc.php:893
+msgid "This is where help appears for links"
+msgstr "여기에 링크에 대한 도움말이 표시됩니다"
+
+#: lib/editor.inc.php:894
+msgid "This is where help appears for maps"
+msgstr "여기에 지도에 대한 도움말이 나타납니다"
+
+#: lib/editor.inc.php:895
+msgid "This is where help appears for nodes"
+msgstr "여기에 노드에 대한 도움말이 나타납니다"
+
+#: lib/editor.inc.php:896
+msgid "or click a Node or Link to edit it's properties"
+msgstr "또는 노드 또는 링크를 클릭하여 속성을 편집합니다."
 
 #: setup.php:208 setup.php:602 setup.php:748 setup.php:755 setup.php:762
 #: setup.php:769 setup.php:776
@@ -386,14 +611,311 @@ msgstr "소모임 관리자"
 msgid "Group Admin Delete"
 msgstr "그룹 관리자 삭제"
 
+#: weathermap-cacti-plugin-editor.php:330
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "PHP Weathermap 편집기 %s"
+
+#: weathermap-cacti-plugin-editor.php:336
+msgid "Change<br>File"
+msgstr "잔돈<br>파일"
+
+#: weathermap-cacti-plugin-editor.php:337
+msgid "Add<br>Node"
+msgstr "더하다<br>노드"
+
+#: weathermap-cacti-plugin-editor.php:338
+msgid "Add<br>Link"
+msgstr "더하다<br>링크"
+
+#: weathermap-cacti-plugin-editor.php:339
+msgid "Position<br>Legend"
+msgstr "위치<br>전설"
+
+#: weathermap-cacti-plugin-editor.php:340
+msgid "Position<br>Timestamp"
+msgstr "위치<br>타임 스탬프"
+
+#: weathermap-cacti-plugin-editor.php:341
+msgid "Map<br>Properties"
+msgstr "지도<br>속성"
+
+#: weathermap-cacti-plugin-editor.php:342
+msgid "Map<br>Style"
+msgstr "지도<br>스타일"
+
+#: weathermap-cacti-plugin-editor.php:343
+msgid "Manage<br>Colors"
+msgstr "관리하다<br>색상"
+
+#: weathermap-cacti-plugin-editor.php:344
+msgid "Manage<br>Images"
+msgstr "관리하다<br>이미지"
+
+#: weathermap-cacti-plugin-editor.php:345
+msgid "Editor<br>Settings"
+msgstr "편집자<br>설정"
+
+#: weathermap-cacti-plugin-editor.php:346
+msgid "Position<br>---, ---"
+msgstr "위치<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php:348
+msgid "Select a menu item or either right-click or click on a Node or Link to edit it's properties"
+msgstr "메뉴 항목을 선택하거나 노드 또는 링크를 마우스 오른쪽 버튼으로 클릭하거나 클릭하여 속성을 편집합니다"
+
+#: weathermap-cacti-plugin-editor.php:358
+msgid "Debug"
+msgstr "디버그"
+
+#: weathermap-cacti-plugin-editor.php:359
+msgid "Re-tidy ALL"
+msgstr "모두 재정리"
+
+#: weathermap-cacti-plugin-editor.php:360
+msgid "Re-tidy"
+msgstr "재정리"
+
+#: weathermap-cacti-plugin-editor.php:361
+msgid "Un-tidy"
+msgstr "어수선하지 않은"
+
+#: weathermap-cacti-plugin-editor.php:362
+msgid "Do Nothing"
+msgstr "아무것도하지 마세요"
+
+#: weathermap-cacti-plugin-editor.php:364
+msgid "mapfile"
+msgstr "맵파일(mapfile)"
+
+#: weathermap-cacti-plugin-editor.php:368
+msgid "action"
+msgstr "작업"
+
+#: weathermap-cacti-plugin-editor.php:372
+msgid "param"
+msgstr "매개 변수"
+
+#: weathermap-cacti-plugin-editor.php:376
+msgid "param2"
+msgstr "param2"
+
+#: weathermap-cacti-plugin-editor.php:380
+#, fuzzy
+msgid "debug"
+msgstr "디버그"
+
+#: weathermap-cacti-plugin-editor.php:383
+msgid "See config"
+msgstr "구성을 참조하십시오."
+
+#: weathermap-cacti-plugin-editor.php:399
+msgid "Node Properties"
+msgstr "노드 속성"
+
+#: weathermap-cacti-plugin-editor.php:413
+msgid "Internal Name"
+msgstr "내부 이름"
+
+#: weathermap-cacti-plugin-editor.php:417
+msgid "Label"
+msgstr "라벨"
+
+#: weathermap-cacti-plugin-editor.php:421
+msgid "Icon Filename"
+msgstr "아이콘 파일 이름"
+
+#: weathermap-cacti-plugin-editor.php:445
+#: weathermap-cacti-plugin-editor.php:539
+msgid "Info URL(s)"
+msgstr "정보 URL"
+
+#: weathermap-cacti-plugin-editor.php:451
+#: weathermap-cacti-plugin-editor.php:545
+msgid "Hover Graph URL(s)"
+msgstr "호버 그래프 URL"
+
+#: weathermap-cacti-plugin-editor.php:457
+#: weathermap-cacti-plugin-editor.php:551
+msgid "Graph Template"
+msgstr "그래프 템플릿"
+
 #: weathermap-cacti-plugin-editor.php:461
 #: weathermap-cacti-plugin-editor.php:555 weathermap-cacti-plugin-mgmt.php:1832
 msgid "All"
 msgstr "모두"
 
-#: weathermap-cacti-plugin-mgmt.php:52
-msgid "Delete"
-msgstr "삭제"
+#: weathermap-cacti-plugin-editor.php:476
+#: weathermap-cacti-plugin-editor.php:570
+msgid "Graph Selector"
+msgstr "그래프 선택기"
+
+#: weathermap-cacti-plugin-editor.php:490
+#: weathermap-cacti-plugin-editor.php:611
+#: weathermap-cacti-plugin-editor.php:682
+#: weathermap-cacti-plugin-editor.php:775
+msgid "Save"
+msgstr "저장"
+
+#: weathermap-cacti-plugin-editor.php:494
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "여기에서 Weathermap 노드를 수정할 수 있습니다.  위치 열은 지도의 X,Y 위치입니다.  내부 이름은 노드에 지정된 고유 ID입니다.  레이블은 사용자에게 제공하는 노드의 외부 이름입니다.  아이콘 파일 이름은 노드 개체를 나타내려는 그래픽입니다.  INFO URL은 활성 맵 노드를 클릭할 때 제공할 수 있는 링크입니다.  호버 그래프 URL은 노드 위로 마우스를 가져갈 때 나타날 수 있는 Cacti 또는 기타 그래프 URL입니다.  그래프 선택기는 그래프 URL에 대한 Cacti 그래프를 선택하기 위한 도우미입니다.   사용할 수 있는 몇 가지 다른 노드 속성이 있습니다.  그러나 오늘은 위에 포함된 항목만 지원하고 있습니다."
+
+#: weathermap-cacti-plugin-editor.php:501
+msgid "Link Properties"
+msgstr "링크 속성"
+
+#: weathermap-cacti-plugin-editor.php:523
+msgid "Data Source(s)"
+msgstr "데이터 소스"
+
+#: weathermap-cacti-plugin-editor.php:529
+msgid "Data Source Selector"
+msgstr "데이터 소스 선택기"
+
+#: weathermap-cacti-plugin-editor.php:535
+msgid "Link Width"
+msgstr "링크 폭"
+
+#: weathermap-cacti-plugin-editor.php:576
+#, fuzzy
+msgid "IN Comment"
+msgstr "댓글"
+
+#: weathermap-cacti-plugin-editor.php:589
+msgid "OUT Comment"
+msgstr "OUT 코멘트"
+
+#: weathermap-cacti-plugin-editor.php:615
+msgid "You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above."
+msgstr "여기에서 Weathermap 링크를 수정할 수 있습니다.  최대 대역폭은 달성할 수 있는 최대 대역폭을 나타냅니다.  지원되는 접미사는 K, M, G 및 T입니다.  데이터 소스는 일부 RRDfile 수학을 포함하여 RRD 파일 위치를 추가할 수 있는 위치입니다.  이에 대한 설명서는 설명서를 참조하십시오.  Data Source Selector 는 대상을 나타내는 Cacti 그래프를 선택하기 위한 도우미입니다.  링크 너비는 링크 화살표의 너비입니다.  INFO URL은 활성 지도 링크를 클릭할 때 제공할 수 있는 링크입니다.  호버 그래프 URL은 링크 위로 마우스를 가져갈 때 나타날 수 있는 Cacti 또는 기타 그래프 URL입니다.  그래프 선택기는 그래프 URL에 대한 Cacti 그래프를 선택하기 위한 도우미입니다. IN 및 OUT 주석은 링크가 있는 링크에 나타납니다.  사용할 수 있는 몇 가지 다른 링크 속성이 있습니다.  그러나 오늘은 위에 포함된 항목만 지원하고 있습니다."
+
+#: weathermap-cacti-plugin-editor.php:622
+msgid "Map Properties"
+msgstr "지도 속성"
+
+#: weathermap-cacti-plugin-editor.php:627
+msgid "Map Title"
+msgstr "지도 제목"
+
+#: weathermap-cacti-plugin-editor.php:631
+msgid "Legend Text"
+msgstr "범례 텍스트"
+
+#: weathermap-cacti-plugin-editor.php:635
+msgid "Background Image Filename"
+msgstr "배경 이미지 파일 이름"
+
+#: weathermap-cacti-plugin-editor.php:657
+msgid "Timestamp Text"
+msgstr "타임스탬프 텍스트"
+
+#: weathermap-cacti-plugin-editor.php:661
+msgid "Default Link Width"
+msgstr "기본 링크 너비"
+
+#: weathermap-cacti-plugin-editor.php:662
+#: weathermap-cacti-plugin-editor.php:674
+msgid "pixels"
+msgstr "px"
+
+#: weathermap-cacti-plugin-editor.php:665
+msgid "Default Link Bandwidth"
+msgstr "기본 링크 대역폭"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec in"
+msgstr "비트/초 입력"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec out"
+msgstr "비트/초 출력"
+
+#: weathermap-cacti-plugin-editor.php:671
+msgid "Map Size"
+msgstr "지도 크기"
+
+#: weathermap-cacti-plugin-editor.php:686
+msgid "This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included."
+msgstr "이 대화상자는 전체 맵 속성을 제어합니다.  에디터에서 지원하는 기능은 제목, 범례 텍스트, 배경 이미지, 타임스탬프 텍스트, 기본 링크 너비, 기본 링크 대역폭, 맵 크기입니다.  몇 가지 추가 Map 기본값을 사용할 수 있습니다.  하지만 이번 에디터 버전에서는 포함된 항목만 지원합니다."
+
+#: weathermap-cacti-plugin-editor.php:693
+msgid "Map Style"
+msgstr "지도 스타일"
+
+#: weathermap-cacti-plugin-editor.php:698
+msgid "Map Defaults"
+msgstr "맵 기본값"
+
+#: weathermap-cacti-plugin-editor.php:701
+msgid "HTML Style"
+msgstr "HTML 스타일"
+
+#: weathermap-cacti-plugin-editor.php:704
+msgid "Dynamic HTML"
+msgstr "다이나믹 HTML"
+
+#: weathermap-cacti-plugin-editor.php:705
+msgid "Static HTML"
+msgstr "정적 HTML"
+
+#: weathermap-cacti-plugin-editor.php:710
+msgid "Legend Font"
+msgstr "범례 글꼴"
+
+#: weathermap-cacti-plugin-editor.php:714
+msgid "Node Defaults"
+msgstr "노드 기본값"
+
+#: weathermap-cacti-plugin-editor.php:717
+msgid "Node Font"
+msgstr "노드 글꼴(Node Font)"
+
+#: weathermap-cacti-plugin-editor.php:721
+#: weathermap-cacti-plugin-editor.php:759
+msgid "Graph Width"
+msgstr "그래프 너비"
+
+#: weathermap-cacti-plugin-editor.php:727
+#: weathermap-cacti-plugin-editor.php:765
+msgid "Graph Height"
+msgstr "그래프 높이"
+
+#: weathermap-cacti-plugin-editor.php:733
+msgid "Link Defaults"
+msgstr "링크 기본값"
+
+#: weathermap-cacti-plugin-editor.php:736
+msgid "Link Labels"
+msgstr "링크 레이블"
+
+#: weathermap-cacti-plugin-editor.php:739
+msgid "Bits/sec"
+msgstr "비트/초"
+
+#: weathermap-cacti-plugin-editor.php:740
+msgid "Percentage"
+msgstr "백분율"
+
+#: weathermap-cacti-plugin-editor.php:741
+msgid "None"
+msgstr "없음"
+
+#: weathermap-cacti-plugin-editor.php:746
+msgid "Arrow Style"
+msgstr "화살표 스타일"
+
+#: weathermap-cacti-plugin-editor.php:749
+msgid "Classic"
+msgstr "클래식"
+
+#: weathermap-cacti-plugin-editor.php:750
+msgid "Compact"
+msgstr "컴팩트"
+
+#: weathermap-cacti-plugin-editor.php:755
+msgid "Link Label Font"
+msgstr "링크 레이블 글꼴"
 
 #: weathermap-cacti-plugin-mgmt.php:53
 msgid "Duplicate"
@@ -445,12 +967,6 @@ msgstr "선택한 %d 맵이 %0.2f초 만에 재건되었습니다!"
 msgid "Click 'Continue' to delete the following Weather Map."
 msgid_plural "Click 'Continue' to delete following Weather Maps."
 msgstr[0] "'계속'을 클릭하여 다음 날씨 지도를 삭제합니다."
-
-#: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
-#: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
-#: weathermap-cacti-plugin-mgmt.php:538 weathermap-cacti-plugin-mgmt.php:2739
-msgid "Cancel"
-msgstr "취소"
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
@@ -760,10 +1276,6 @@ msgstr "소스 맵(Source Map)"
 msgid "Empty File"
 msgstr "빈 파일"
 
-#: weathermap-cacti-plugin-mgmt.php:1263 weathermap-cacti-plugin-mgmt.php:2467
-msgid "Create"
-msgstr "생성"
-
 #: weathermap-cacti-plugin-mgmt.php:1404 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Actions"
 msgstr "작업"
@@ -1034,10 +1546,6 @@ msgstr "map-global SET 변수의 이름"
 #: weathermap-cacti-plugin-mgmt.php:2459
 msgid "What to set it to"
 msgstr "무엇으로 설정할까요?"
-
-#: weathermap-cacti-plugin-mgmt.php:2464
-msgid "Edit"
-msgstr "편집"
 
 #: weathermap-cacti-plugin-mgmt.php:2471
 msgid "Global Setting for all Maps"

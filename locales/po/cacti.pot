@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:39-0400\n"
+"POT-Creation-Date: 2024-07-21 16:17-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -18,9 +18,234 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: lib/editor.inc.php:259
+#: lib/editor.inc.php:261
 #, php-format
 msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr ""
+
+#: lib/editor.inc.php:264
+msgid "<b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however."
+msgstr ""
+
+#: lib/editor.inc.php:270
+msgid "Do you want to:"
+msgstr ""
+
+#: lib/editor.inc.php:271
+msgid "Create A New Map:"
+msgstr ""
+
+#: lib/editor.inc.php:273
+msgid "Named:"
+msgstr ""
+
+#: lib/editor.inc.php:277 weathermap-cacti-plugin-mgmt.php:1263
+#: weathermap-cacti-plugin-mgmt.php:2467
+msgid "Create"
+msgstr ""
+
+#: lib/editor.inc.php:279
+msgid "Note: filenames must contain no spaces and end in .conf"
+msgstr ""
+
+#: lib/editor.inc.php:838
+msgid "Ok"
+msgstr ""
+
+#: lib/editor.inc.php:839
+msgid "Operation successful"
+msgstr ""
+
+#: lib/editor.inc.php:840
+msgid "The Operation was successful.  Details are below."
+msgstr ""
+
+#: lib/editor.inc.php:841
+msgid "Pause"
+msgstr ""
+
+#: lib/editor.inc.php:843
+msgid "Click on the map where you would like to move the node to."
+msgstr ""
+
+#: lib/editor.inc.php:844
+msgid "Click on the map via which point you want to redirect link."
+msgstr ""
+
+#: lib/editor.inc.php:845
+msgid "Click on the first node for the start of the link."
+msgstr ""
+
+#: lib/editor.inc.php:846
+msgid "Click on the map where you would like to put the timestamp."
+msgstr ""
+
+#: lib/editor.inc.php:847
+msgid "Click on the map where you would like to put the legend."
+msgstr ""
+
+#: lib/editor.inc.php:848
+msgid "Click on the map where you would like to add a new node."
+msgstr ""
+
+#: lib/editor.inc.php:850
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr ""
+
+#: lib/editor.inc.php:851
+msgid "Delete Node Confirmation"
+msgstr ""
+
+#: lib/editor.inc.php:852
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr ""
+
+#: lib/editor.inc.php:853
+msgid "Delete Link Confirmation"
+msgstr ""
+
+#: lib/editor.inc.php:854 weathermap-cacti-plugin-editor.php:489
+#: weathermap-cacti-plugin-editor.php:610
+#: weathermap-cacti-plugin-editor.php:681
+#: weathermap-cacti-plugin-editor.php:774 weathermap-cacti-plugin-mgmt.php:491
+#: weathermap-cacti-plugin-mgmt.php:511 weathermap-cacti-plugin-mgmt.php:520
+#: weathermap-cacti-plugin-mgmt.php:529 weathermap-cacti-plugin-mgmt.php:538
+#: weathermap-cacti-plugin-mgmt.php:2739
+msgid "Cancel"
+msgstr ""
+
+#: lib/editor.inc.php:855 weathermap-cacti-plugin-editor.php:606
+msgid "Delete Link"
+msgstr ""
+
+#: lib/editor.inc.php:856
+msgid "Delete Node"
+msgstr ""
+
+#: lib/editor.inc.php:857 weathermap-cacti-plugin-editor.php:409
+msgid "Position"
+msgstr ""
+
+#: lib/editor.inc.php:859
+msgid "Node Actions"
+msgstr ""
+
+#: lib/editor.inc.php:860
+msgid "Link Actions"
+msgstr ""
+
+#: lib/editor.inc.php:861 weathermap-cacti-plugin-editor.php:485
+msgid "Move"
+msgstr ""
+
+#: lib/editor.inc.php:862 weathermap-cacti-plugin-editor.php:487
+msgid "Clone"
+msgstr ""
+
+#: lib/editor.inc.php:863 weathermap-cacti-plugin-editor.php:488
+#: weathermap-cacti-plugin-editor.php:607 weathermap-cacti-plugin-mgmt.php:2464
+msgid "Edit"
+msgstr ""
+
+#: lib/editor.inc.php:864 weathermap-cacti-plugin-editor.php:486
+#: weathermap-cacti-plugin-mgmt.php:52
+msgid "Delete"
+msgstr ""
+
+#: lib/editor.inc.php:865 weathermap-cacti-plugin-editor.php:609
+msgid "Via"
+msgstr ""
+
+#: lib/editor.inc.php:866 weathermap-cacti-plugin-editor.php:608
+msgid "Tidy"
+msgstr ""
+
+#: lib/editor.inc.php:867
+msgid "Properties"
+msgstr ""
+
+#: lib/editor.inc.php:872
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr ""
+
+#: lib/editor.inc.php:873
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr ""
+
+#: lib/editor.inc.php:874
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr ""
+
+#: lib/editor.inc.php:875
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr ""
+
+#: lib/editor.inc.php:876
+msgid "The bandwidth from the first node to the second node"
+msgstr ""
+
+#: lib/editor.inc.php:877
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr ""
+
+#: lib/editor.inc.php:878 lib/editor.inc.php:879
+msgid "The text that will appear alongside the link"
+msgstr ""
+
+#: lib/editor.inc.php:880
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr ""
+
+#: lib/editor.inc.php:881
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr ""
+
+#: lib/editor.inc.php:882
+msgid "How far from the left to position the node, in pixels"
+msgstr ""
+
+#: lib/editor.inc.php:883
+msgid "How far from the top to position the node, in pixels"
+msgstr ""
+
+#: lib/editor.inc.php:884
+msgid "The text that appears on the node"
+msgstr ""
+
+#: lib/editor.inc.php:885
+msgid "The name used for this node when defining links"
+msgstr ""
+
+#: lib/editor.inc.php:886
+msgid "Change to a different file, or start creating a new one."
+msgstr ""
+
+#: lib/editor.inc.php:887
+msgid "Add a new node to the map"
+msgstr ""
+
+#: lib/editor.inc.php:888
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr ""
+
+#: lib/editor.inc.php:889
+msgid "Select a different map to edit, or start a new one."
+msgstr ""
+
+#: lib/editor.inc.php:893
+msgid "This is where help appears for links"
+msgstr ""
+
+#: lib/editor.inc.php:894
+msgid "This is where help appears for maps"
+msgstr ""
+
+#: lib/editor.inc.php:895
+msgid "This is where help appears for nodes"
+msgstr ""
+
+#: lib/editor.inc.php:896
+msgid "or click a Node or Link to edit it's properties"
 msgstr ""
 
 #: setup.php:208 setup.php:602 setup.php:748 setup.php:755 setup.php:762
@@ -386,13 +611,308 @@ msgstr ""
 msgid "Group Admin Delete"
 msgstr ""
 
+#: weathermap-cacti-plugin-editor.php:330
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:336
+msgid "Change<br>File"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:337
+msgid "Add<br>Node"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:338
+msgid "Add<br>Link"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:339
+msgid "Position<br>Legend"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:340
+msgid "Position<br>Timestamp"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:341
+msgid "Map<br>Properties"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:342
+msgid "Map<br>Style"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:343
+msgid "Manage<br>Colors"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:344
+msgid "Manage<br>Images"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:345
+msgid "Editor<br>Settings"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:346
+msgid "Position<br>---, ---"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:348
+msgid "Select a menu item or either right-click or click on a Node or Link to edit it's properties"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:358
+msgid "Debug"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:359
+msgid "Re-tidy ALL"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:360
+msgid "Re-tidy"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:361
+msgid "Un-tidy"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:362
+msgid "Do Nothing"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:364
+msgid "mapfile"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:368
+msgid "action"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:372
+msgid "param"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:376
+msgid "param2"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:380
+msgid "debug"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:383
+msgid "See config"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:399
+msgid "Node Properties"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:413
+msgid "Internal Name"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:417
+msgid "Label"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:421
+msgid "Icon Filename"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:445
+#: weathermap-cacti-plugin-editor.php:539
+msgid "Info URL(s)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:451
+#: weathermap-cacti-plugin-editor.php:545
+msgid "Hover Graph URL(s)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:457
+#: weathermap-cacti-plugin-editor.php:551
+msgid "Graph Template"
+msgstr ""
+
 #: weathermap-cacti-plugin-editor.php:461
 #: weathermap-cacti-plugin-editor.php:555 weathermap-cacti-plugin-mgmt.php:1832
 msgid "All"
 msgstr ""
 
-#: weathermap-cacti-plugin-mgmt.php:52
-msgid "Delete"
+#: weathermap-cacti-plugin-editor.php:476
+#: weathermap-cacti-plugin-editor.php:570
+msgid "Graph Selector"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:490
+#: weathermap-cacti-plugin-editor.php:611
+#: weathermap-cacti-plugin-editor.php:682
+#: weathermap-cacti-plugin-editor.php:775
+msgid "Save"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:494
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:501
+msgid "Link Properties"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:523
+msgid "Data Source(s)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:529
+msgid "Data Source Selector"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:535
+msgid "Link Width"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:576
+msgid "IN Comment"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:589
+msgid "OUT Comment"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:615
+msgid "You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:622
+msgid "Map Properties"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:627
+msgid "Map Title"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:631
+msgid "Legend Text"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:635
+msgid "Background Image Filename"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:657
+msgid "Timestamp Text"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:661
+msgid "Default Link Width"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:662
+#: weathermap-cacti-plugin-editor.php:674
+msgid "pixels"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:665
+msgid "Default Link Bandwidth"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec in"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec out"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:671
+msgid "Map Size"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:686
+msgid "This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:693
+msgid "Map Style"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:698
+msgid "Map Defaults"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:701
+msgid "HTML Style"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:704
+msgid "Dynamic HTML"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:705
+msgid "Static HTML"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:710
+msgid "Legend Font"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:714
+msgid "Node Defaults"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:717
+msgid "Node Font"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:721
+#: weathermap-cacti-plugin-editor.php:759
+msgid "Graph Width"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:727
+#: weathermap-cacti-plugin-editor.php:765
+msgid "Graph Height"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:733
+msgid "Link Defaults"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:736
+msgid "Link Labels"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:739
+msgid "Bits/sec"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:740
+msgid "Percentage"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:741
+msgid "None"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:746
+msgid "Arrow Style"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:749
+msgid "Classic"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:750
+msgid "Compact"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:755
+msgid "Link Label Font"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php:53
@@ -446,12 +966,6 @@ msgid "Click 'Continue' to delete the following Weather Map."
 msgid_plural "Click 'Continue' to delete following Weather Maps."
 msgstr[0] ""
 msgstr[1] ""
-
-#: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
-#: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
-#: weathermap-cacti-plugin-mgmt.php:538 weathermap-cacti-plugin-mgmt.php:2739
-msgid "Cancel"
-msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
@@ -770,10 +1284,6 @@ msgstr ""
 msgid "Empty File"
 msgstr ""
 
-#: weathermap-cacti-plugin-mgmt.php:1263 weathermap-cacti-plugin-mgmt.php:2467
-msgid "Create"
-msgstr ""
-
 #: weathermap-cacti-plugin-mgmt.php:1404 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Actions"
 msgstr ""
@@ -1043,10 +1553,6 @@ msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php:2459
 msgid "What to set it to"
-msgstr ""
-
-#: weathermap-cacti-plugin-mgmt.php:2464
-msgid "Edit"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php:2471

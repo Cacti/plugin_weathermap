@@ -1,5 +1,6 @@
 html, body {
-	font-family: 'Gill Sans', Verdana, sans-serif; margin:0;
+	font-family: Verdana, sans-serif;
+	margin: 0;
 	overflow: visible !important;
 }
 
@@ -63,6 +64,7 @@ input {
 }
 
 #toolbar ul {
+	display:table;
 	float:left;
 	width:100%;
 	margin:0;
@@ -72,6 +74,7 @@ input {
 	/*background:#ccc;*/
 	background: #1958b7;
 	/* margin-bottom: 10px; */
+	list-style: none;
 }
 
 #toolbar ul li.tb_help {
@@ -80,12 +83,14 @@ input {
 }
 
 #toolbar ul li {
-	display:inline;
+	//display:table;
 }
 
 #toolbar ul li.tb_active {
-	float:left;
-	padding:5px 10px;
+	float: left;
+	height: 27px;
+	display: table;
+	padding: 5px 10px;
 	text-decoration:none;
 
 	border-left: #508fc4 2px solid;
@@ -97,7 +102,9 @@ input {
 	text-align: center;
 
 	background: #2175bc;
-	color:#fff;
+	color: #fff;
+	max-width: 55px;
+	white-space: pre-line;
 }
 
 #toolbar ul li.tb_coords {

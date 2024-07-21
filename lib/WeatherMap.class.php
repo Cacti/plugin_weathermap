@@ -3427,22 +3427,20 @@ class WeatherMap extends WeatherMapBase {
 			foreach (array('template', 'normal') as $which) {
 				if ($which == 'template') {
 					fwrite($fd, "\n# TEMPLATE-only NODEs:\n");
-				}
-
-				if ($which == 'normal') {
+				} elseif ($which == 'normal') {
 					fwrite($fd, "\n# regular NODEs:\n");
 				}
 
-				foreach ($this->nodes as $node) {
+				foreach ($this->nodes as $node_name => $node) {
 					if (!preg_match('/^::\s/', $node->name)) {
-						if ($node->defined_in == $this->configfile) {
-							if ($which == 'template' && $node->x === null) {
-								wm_debug("TEMPLATE\n");
-
+						if ($node->defined_in == $this->configfile || $node_name == 'DEFAULT') {
+							if ($which == 'template' && $node_name == 'DEFAULT') {
+								wm_debug("TEMPLATE Node DEFAULT");
 								fwrite($fd, $node->WriteConfig());
-							}
-
-							if ($which == 'normal' && $node->x !== null) {
+							} elseif ($which == 'template' && $node->x === null) {
+								wm_debug("TEMPLATE Node NON-DEFAULT");
+								fwrite($fd, $node->WriteConfig());
+							} elseif ($which == 'normal' && $node->x !== null) {
 								fwrite($fd, $node->WriteConfig());
 							}
 						}
@@ -3451,20 +3449,20 @@ class WeatherMap extends WeatherMapBase {
 
 				if ($which == 'template') {
 					fwrite($fd, "\n# TEMPLATE-only LINKs:\n");
-				}
-
-				if ($which == 'normal') {
+				} elseif ($which == 'normal') {
 					fwrite($fd, "\n# regular LINKs:\n");
 				}
 
-				foreach ($this->links as $link) {
+				foreach ($this->links as $link_name => $link) {
 					if (!preg_match('/^::\s/', $link->name)) {
-						if ($link->defined_in == $this->configfile) {
-							if ($which == 'template' && $link->a === null) {
+						if ($link->defined_in == $this->configfile || $link_name == 'DEFAULT') {
+							if ($which == 'template' && $link_name == 'DEFAULT') {
+								wm_debug("TEMPLATE Link DEFAULT");
 								fwrite($fd, $link->WriteConfig());
-							}
-
-							if ($which == 'normal' && $link->a !== null) {
+							} elseif ($which == 'template' && $link->a === null) {
+								wm_debug("TEMPLATE Link NON-DEFAULT");
+								fwrite($fd, $link->WriteConfig());
+							} elseif ($which == 'normal' && $link->a !== null) {
 								fwrite($fd, $link->WriteConfig());
 							}
 						}

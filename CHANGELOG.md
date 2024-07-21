@@ -15,8 +15,10 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 ## Changes
 
 --- develop ---
+* issue#141: Bug Weathermap - Map Style can't change Link Labels to Bits/Sec
 * issue#152: Dont attempt to include directories from Weathermap config files.
 * issue: More deprecation warnings in image* functions.
+* feature: Complete most of Internaltionalization
 
 --- 1.3 ---
 * issue#125: Repair maps actually destroys them

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-04-27 14:39-0400\n"
-"PO-Revision-Date: 2024-04-27 14:53-0400\n"
+"POT-Creation-Date: 2024-07-21 16:17-0400\n"
+"PO-Revision-Date: 2024-07-21 16:42-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: vi_VN\n"
@@ -16,12 +16,237 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
-#: lib/editor.inc.php:259
+#: lib/editor.inc.php:261
 #, php-format
 msgid "Welcome to the PHP Weathermap %s Editor"
 msgstr "Chào mừng bạn đến với PHP Weathermap %s Editor"
+
+#: lib/editor.inc.php:264
+msgid "<b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however."
+msgstr "<b>GHI:</b> Trình chỉnh sửa này chưa kết thúc! Có rất nhiều tính năng của Weathermap mà bạn sẽ bỏ lỡ nếu bạn chọn chỉ sử dụng trình chỉnh sửa.  Chúng bao gồm: đường cong, độ lệch nút, định nghĩa phông chữ, thay đổi màu sắc, cài đặt mỗi nút / mỗi liên kết và tải lên hình ảnh. Tuy nhiên, bạn CÓ THỂ sử dụng trình chỉnh sửa mà không làm hỏng các tính năng này nếu bạn thêm chúng bằng tay."
+
+#: lib/editor.inc.php:270
+msgid "Do you want to:"
+msgstr "Bạn có muốn:"
+
+#: lib/editor.inc.php:271
+msgid "Create A New Map:"
+msgstr "Tạo bản đồ mới:"
+
+#: lib/editor.inc.php:273
+msgid "Named:"
+msgstr "Tên:"
+
+#: lib/editor.inc.php:277 weathermap-cacti-plugin-mgmt.php:1263
+#: weathermap-cacti-plugin-mgmt.php:2467
+msgid "Create"
+msgstr "Tạo"
+
+#: lib/editor.inc.php:279
+msgid "Note: filenames must contain no spaces and end in .conf"
+msgstr "Lưu ý: tên tệp không được chứa khoảng trắng và kết thúc bằng .conf"
+
+#: lib/editor.inc.php:838
+msgid "Ok"
+msgstr "Đồng ý"
+
+#: lib/editor.inc.php:839
+msgid "Operation successful"
+msgstr "Operation successful"
+
+#: lib/editor.inc.php:840
+msgid "The Operation was successful.  Details are below."
+msgstr "Chiến dịch đã thành công.  Dưới đây là thông tin chi tiết."
+
+#: lib/editor.inc.php:841
+msgid "Pause"
+msgstr "Tạm dừng"
+
+#: lib/editor.inc.php:843
+msgid "Click on the map where you would like to move the node to."
+msgstr "Nhấp vào bản đồ nơi bạn muốn di chuyển nút đến."
+
+#: lib/editor.inc.php:844
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Nhấp vào bản đồ qua điểm bạn muốn chuyển hướng liên kết."
+
+#: lib/editor.inc.php:845
+msgid "Click on the first node for the start of the link."
+msgstr "Nhấp vào nút đầu tiên để bắt đầu liên kết."
+
+#: lib/editor.inc.php:846
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Nhấp vào bản đồ nơi bạn muốn đặt dấu thời gian."
+
+#: lib/editor.inc.php:847
+msgid "Click on the map where you would like to put the legend."
+msgstr "Nhấp vào bản đồ nơi bạn muốn đặt chú giải."
+
+#: lib/editor.inc.php:848
+msgid "Click on the map where you would like to add a new node."
+msgstr "Nhấp vào bản đồ nơi bạn muốn thêm một nút mới."
+
+#: lib/editor.inc.php:850
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "CẢNH BÁO: Nhấn 'Xóa nút' sẽ xóa Nút này."
+
+#: lib/editor.inc.php:851
+msgid "Delete Node Confirmation"
+msgstr "Xóa xác nhận nút"
+
+#: lib/editor.inc.php:852
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "CẢNH BÁO: Nhấn 'Xóa liên kết' sẽ xóa Liên kết này."
+
+#: lib/editor.inc.php:853
+msgid "Delete Link Confirmation"
+msgstr "Xóa xác nhận liên kết"
+
+#: lib/editor.inc.php:854 weathermap-cacti-plugin-editor.php:489
+#: weathermap-cacti-plugin-editor.php:610
+#: weathermap-cacti-plugin-editor.php:681
+#: weathermap-cacti-plugin-editor.php:774 weathermap-cacti-plugin-mgmt.php:491
+#: weathermap-cacti-plugin-mgmt.php:511 weathermap-cacti-plugin-mgmt.php:520
+#: weathermap-cacti-plugin-mgmt.php:529 weathermap-cacti-plugin-mgmt.php:538
+#: weathermap-cacti-plugin-mgmt.php:2739
+msgid "Cancel"
+msgstr "Hủy"
+
+#: lib/editor.inc.php:855 weathermap-cacti-plugin-editor.php:606
+msgid "Delete Link"
+msgstr "Xóa liên kết"
+
+#: lib/editor.inc.php:856
+msgid "Delete Node"
+msgstr "Xóa nút"
+
+#: lib/editor.inc.php:857 weathermap-cacti-plugin-editor.php:409
+msgid "Position"
+msgstr "Vị trí"
+
+#: lib/editor.inc.php:859
+msgid "Node Actions"
+msgstr "Hành động nút"
+
+#: lib/editor.inc.php:860
+msgid "Link Actions"
+msgstr "Hành động liên kết"
+
+#: lib/editor.inc.php:861 weathermap-cacti-plugin-editor.php:485
+msgid "Move"
+msgstr "Di chuyển"
+
+#: lib/editor.inc.php:862 weathermap-cacti-plugin-editor.php:487
+msgid "Clone"
+msgstr "Clone"
+
+#: lib/editor.inc.php:863 weathermap-cacti-plugin-editor.php:488
+#: weathermap-cacti-plugin-editor.php:607 weathermap-cacti-plugin-mgmt.php:2464
+msgid "Edit"
+msgstr "Sửa"
+
+#: lib/editor.inc.php:864 weathermap-cacti-plugin-editor.php:486
+#: weathermap-cacti-plugin-mgmt.php:52
+msgid "Delete"
+msgstr "Xóa"
+
+#: lib/editor.inc.php:865 weathermap-cacti-plugin-editor.php:609
+msgid "Via"
+msgstr "Thông qua"
+
+#: lib/editor.inc.php:866 weathermap-cacti-plugin-editor.php:608
+msgid "Tidy"
+msgstr "Gọn gàng"
+
+#: lib/editor.inc.php:867
+msgid "Properties"
+msgstr "Bất động sản"
+
+#: lib/editor.inc.php:872
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Weathermap nên lấy dữ liệu cho liên kết này ở đâu? Đây có thể là tệp RRD hoặc HTML có nhận xét đặc biệt trong đó (thường là từ MRTG)."
+
+#: lib/editor.inc.php:873
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "Mũi tên liên kết sẽ được vẽ rộng bao nhiêu, tính bằng pixel."
+
+#: lib/editor.inc.php:874
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "Nếu bạn đang sử dụng kiểu HTML 'overlib' thì đây là URL sẽ được mở khi bạn nhấp vào liên kết"
+
+#: lib/editor.inc.php:875
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "Nếu bạn đang sử dụng kiểu HTML 'overlib' thì đây là URL của hình ảnh sẽ được hiển thị khi bạn di chuột qua liên kết"
+
+#: lib/editor.inc.php:876
+msgid "The bandwidth from the first node to the second node"
+msgstr "Băng thông từ nút thứ nhất đến nút thứ hai"
+
+#: lib/editor.inc.php:877
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "Băng thông từ nút thứ hai đến nút thứ nhất (nếu khác)"
+
+#: lib/editor.inc.php:878 lib/editor.inc.php:879
+msgid "The text that will appear alongside the link"
+msgstr "Văn bản sẽ xuất hiện cùng với liên kết"
+
+#: lib/editor.inc.php:880
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "Nếu bạn đang sử dụng kiểu HTML 'overlib' thì đây là URL sẽ được mở khi bạn nhấp vào nút"
+
+#: lib/editor.inc.php:881
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "Nếu bạn đang sử dụng kiểu HTML 'overlib' thì đây là URL của hình ảnh sẽ được hiển thị khi bạn di chuột qua nút"
+
+#: lib/editor.inc.php:882
+msgid "How far from the left to position the node, in pixels"
+msgstr "Khoảng cách từ bên trái để định vị nút, tính bằng pixel"
+
+#: lib/editor.inc.php:883
+msgid "How far from the top to position the node, in pixels"
+msgstr "Khoảng cách từ trên cùng để định vị nút, tính bằng pixel"
+
+#: lib/editor.inc.php:884
+msgid "The text that appears on the node"
+msgstr "Văn bản xuất hiện trên nút"
+
+#: lib/editor.inc.php:885
+msgid "The name used for this node when defining links"
+msgstr "Tên được sử dụng cho nút này khi xác định liên kết"
+
+#: lib/editor.inc.php:886
+msgid "Change to a different file, or start creating a new one."
+msgstr "Thay đổi sang tệp khác hoặc bắt đầu tạo tệp mới."
+
+#: lib/editor.inc.php:887
+msgid "Add a new node to the map"
+msgstr "Thêm nút mới vào bản đồ"
+
+#: lib/editor.inc.php:888
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "Thêm một liên kết mới vào bản đồ, bằng cách nối hai nút lại với nhau."
+
+#: lib/editor.inc.php:889
+msgid "Select a different map to edit, or start a new one."
+msgstr "Chọn một bản đồ khác để chỉnh sửa hoặc bắt đầu một bản đồ mới."
+
+#: lib/editor.inc.php:893
+msgid "This is where help appears for links"
+msgstr "Đây là nơi trợ giúp xuất hiện cho các liên kết"
+
+#: lib/editor.inc.php:894
+msgid "This is where help appears for maps"
+msgstr "Đây là nơi trợ giúp xuất hiện cho bản đồ"
+
+#: lib/editor.inc.php:895
+msgid "This is where help appears for nodes"
+msgstr "Đây là nơi trợ giúp xuất hiện cho các nút"
+
+#: lib/editor.inc.php:896
+msgid "or click a Node or Link to edit it's properties"
+msgstr "hoặc nhấp vào một Nút hoặc Liên kết để chỉnh sửa thuộc tính của nút hoặc liên kết đó"
 
 #: setup.php:208 setup.php:602 setup.php:748 setup.php:755 setup.php:762
 #: setup.php:769 setup.php:776
@@ -386,14 +611,311 @@ msgstr "Quản trị viên nhóm"
 msgid "Group Admin Delete"
 msgstr "Xóa quản trị viên nhóm"
 
+#: weathermap-cacti-plugin-editor.php:330
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "PHP Weathermap Editor %s"
+
+#: weathermap-cacti-plugin-editor.php:336
+msgid "Change<br>File"
+msgstr "Thay đổi<br>Tệp"
+
+#: weathermap-cacti-plugin-editor.php:337
+msgid "Add<br>Node"
+msgstr "Thêm<br>Nút"
+
+#: weathermap-cacti-plugin-editor.php:338
+msgid "Add<br>Link"
+msgstr "Thêm<br>Liên kết"
+
+#: weathermap-cacti-plugin-editor.php:339
+msgid "Position<br>Legend"
+msgstr "Vị trí<br>Truyền thuyết"
+
+#: weathermap-cacti-plugin-editor.php:340
+msgid "Position<br>Timestamp"
+msgstr "Vị trí<br>Timestamp"
+
+#: weathermap-cacti-plugin-editor.php:341
+msgid "Map<br>Properties"
+msgstr "Bản đồ<br>Thuộc tính"
+
+#: weathermap-cacti-plugin-editor.php:342
+msgid "Map<br>Style"
+msgstr "Bản đồ<br>Phong cách"
+
+#: weathermap-cacti-plugin-editor.php:343
+msgid "Manage<br>Colors"
+msgstr "Điều khiển<br>Màu sắc"
+
+#: weathermap-cacti-plugin-editor.php:344
+msgid "Manage<br>Images"
+msgstr "Điều khiển<br>Hình ảnh"
+
+#: weathermap-cacti-plugin-editor.php:345
+msgid "Editor<br>Settings"
+msgstr "Biên tập viên<br>Cài đặt"
+
+#: weathermap-cacti-plugin-editor.php:346
+msgid "Position<br>---, ---"
+msgstr "Vị trí<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php:348
+msgid "Select a menu item or either right-click or click on a Node or Link to edit it's properties"
+msgstr "Chọn một mục menu hoặc nhấp chuột phải hoặc nhấp vào Nút hoặc Liên kết để chỉnh sửa thuộc tính của nó"
+
+#: weathermap-cacti-plugin-editor.php:358
+msgid "Debug"
+msgstr "Gỡ rối"
+
+#: weathermap-cacti-plugin-editor.php:359
+msgid "Re-tidy ALL"
+msgstr "Sắp xếp lại TẤT CẢ"
+
+#: weathermap-cacti-plugin-editor.php:360
+msgid "Re-tidy"
+msgstr "Gọn gàng lại"
+
+#: weathermap-cacti-plugin-editor.php:361
+msgid "Un-tidy"
+msgstr "Không gọn gàng"
+
+#: weathermap-cacti-plugin-editor.php:362
+msgid "Do Nothing"
+msgstr "Không làm gì"
+
+#: weathermap-cacti-plugin-editor.php:364
+msgid "mapfile"
+msgstr "tệp bản đồ"
+
+#: weathermap-cacti-plugin-editor.php:368
+msgid "action"
+msgstr "hành động"
+
+#: weathermap-cacti-plugin-editor.php:372
+msgid "param"
+msgstr "tham số"
+
+#: weathermap-cacti-plugin-editor.php:376
+msgid "param2"
+msgstr "param2"
+
+#: weathermap-cacti-plugin-editor.php:380
+#, fuzzy
+msgid "debug"
+msgstr "Gỡ rối"
+
+#: weathermap-cacti-plugin-editor.php:383
+msgid "See config"
+msgstr "Xem cấu hình"
+
+#: weathermap-cacti-plugin-editor.php:399
+msgid "Node Properties"
+msgstr "Thuộc tính nút"
+
+#: weathermap-cacti-plugin-editor.php:413
+msgid "Internal Name"
+msgstr "Tên nội bộ"
+
+#: weathermap-cacti-plugin-editor.php:417
+msgid "Label"
+msgstr "Nhãn"
+
+#: weathermap-cacti-plugin-editor.php:421
+msgid "Icon Filename"
+msgstr "Tên tập tin biểu tượng"
+
+#: weathermap-cacti-plugin-editor.php:445
+#: weathermap-cacti-plugin-editor.php:539
+msgid "Info URL(s)"
+msgstr "URL thông tin"
+
+#: weathermap-cacti-plugin-editor.php:451
+#: weathermap-cacti-plugin-editor.php:545
+msgid "Hover Graph URL(s)"
+msgstr "(Các) URL biểu đồ di chuột"
+
+#: weathermap-cacti-plugin-editor.php:457
+#: weathermap-cacti-plugin-editor.php:551
+msgid "Graph Template"
+msgstr "Mẫu đồ thị"
+
 #: weathermap-cacti-plugin-editor.php:461
 #: weathermap-cacti-plugin-editor.php:555 weathermap-cacti-plugin-mgmt.php:1832
 msgid "All"
 msgstr "Tất cả"
 
-#: weathermap-cacti-plugin-mgmt.php:52
-msgid "Delete"
-msgstr "Xóa"
+#: weathermap-cacti-plugin-editor.php:476
+#: weathermap-cacti-plugin-editor.php:570
+msgid "Graph Selector"
+msgstr "Bộ chọn biểu đồ"
+
+#: weathermap-cacti-plugin-editor.php:490
+#: weathermap-cacti-plugin-editor.php:611
+#: weathermap-cacti-plugin-editor.php:682
+#: weathermap-cacti-plugin-editor.php:775
+msgid "Save"
+msgstr "Lưu"
+
+#: weathermap-cacti-plugin-editor.php:494
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "Bạn có thể sửa đổi Nút Weathermap từ đây.  Các cột Vị trí là vị trí X, Y trên Bản đồ.  Tên nội bộ là ID duy nhất được cung cấp cho Node.  Nhãn là tên bên ngoài của Node mà bạn cung cấp cho người dùng.  Icon Filename là Graphic mà bạn muốn đại diện cho Node Object.  URL INFO là một liên kết mà bạn có thể cung cấp khi nhấp vào Nút bản đồ đang hoạt động.  URL Biểu đồ di chuột là Cacti hoặc URL Đồ thị khác có thể xuất hiện khi di chuột qua Node.  Bộ chọn biểu đồ là một trợ giúp để chọn Đồ thị xương rồng cho URL biểu đồ.   Có một số thuộc tính Node khác có thể.  Tuy nhiên, hôm nay chúng tôi chỉ hỗ trợ những người được bao gồm ở trên."
+
+#: weathermap-cacti-plugin-editor.php:501
+msgid "Link Properties"
+msgstr "Thuộc tính liên kết"
+
+#: weathermap-cacti-plugin-editor.php:523
+msgid "Data Source(s)"
+msgstr "(Các) nguồn dữ liệu"
+
+#: weathermap-cacti-plugin-editor.php:529
+msgid "Data Source Selector"
+msgstr "Bộ chọn nguồn dữ liệu"
+
+#: weathermap-cacti-plugin-editor.php:535
+msgid "Link Width"
+msgstr "Chiều rộng liên kết"
+
+#: weathermap-cacti-plugin-editor.php:576
+#, fuzzy
+msgid "IN Comment"
+msgstr "Bình luận"
+
+#: weathermap-cacti-plugin-editor.php:589
+msgid "OUT Comment"
+msgstr "OUT Bình luận"
+
+#: weathermap-cacti-plugin-editor.php:615
+msgid "You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above."
+msgstr "Bạn có thể sửa đổi Liên kết Weathermap từ đây.  Băng thông tối đa đề cập đến Băng thông tối đa có thể đạt được.  Các hậu tố được hỗ trợ là K, M, G và T.  Nguồn dữ liệu là vị trí nơi bạn có thể thêm vị trí RRDfile bao gồm một số toán học RRDfile.  Xem tài liệu cho điều đó.  Bộ chọn nguồn dữ liệu là một công cụ trợ giúp để chọn Đồ thị xương rồng để đại diện cho mục tiêu hoặc mục tiêu.  Chiều rộng liên kết là Chiều rộng của mũi tên liên kết.  URL INFO là một liên kết mà bạn có thể cung cấp khi nhấp vào Liên kết bản đồ đang hoạt động.  URL Biểu đồ di chuột là Cacti hoặc URL Đồ thị khác có thể xuất hiện khi di chuột qua Liên kết.  Bộ chọn biểu đồ là một trợ giúp để chọn Đồ thị xương rồng cho URL biểu đồ. Nhận xét VÀO và RA xuất hiện trên Liên kết có Liên kết.  Có một số thuộc tính Liên kết khác có thể.  Tuy nhiên, hôm nay chúng tôi chỉ hỗ trợ những người được bao gồm ở trên."
+
+#: weathermap-cacti-plugin-editor.php:622
+msgid "Map Properties"
+msgstr "Thuộc tính bản đồ"
+
+#: weathermap-cacti-plugin-editor.php:627
+msgid "Map Title"
+msgstr "Tiêu đề Bản đồ"
+
+#: weathermap-cacti-plugin-editor.php:631
+msgid "Legend Text"
+msgstr "Văn bản chú thích"
+
+#: weathermap-cacti-plugin-editor.php:635
+msgid "Background Image Filename"
+msgstr "Tên tệp hình nền"
+
+#: weathermap-cacti-plugin-editor.php:657
+msgid "Timestamp Text"
+msgstr "Văn bản dấu thời gian"
+
+#: weathermap-cacti-plugin-editor.php:661
+msgid "Default Link Width"
+msgstr "Chiều rộng liên kết mặc định"
+
+#: weathermap-cacti-plugin-editor.php:662
+#: weathermap-cacti-plugin-editor.php:674
+msgid "pixels"
+msgstr "pixel"
+
+#: weathermap-cacti-plugin-editor.php:665
+msgid "Default Link Bandwidth"
+msgstr "Băng thông liên kết mặc định"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec in"
+msgstr "bit/giây trong"
+
+#: weathermap-cacti-plugin-editor.php:667
+msgid "bit/sec out"
+msgstr "bit/giây ra"
+
+#: weathermap-cacti-plugin-editor.php:671
+msgid "Map Size"
+msgstr "Kích thước bản đồ"
+
+#: weathermap-cacti-plugin-editor.php:686
+msgid "This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included."
+msgstr "Hộp thoại này kiểm soát Thuộc tính Bản đồ tổng thể.  Được Trình chỉnh sửa hỗ trợ là: Tiêu đề, Văn bản chú giải, Hình nền, Văn bản dấu thời gian, Chiều rộng liên kết mặc định, Băng thông liên kết mặc định và Kích thước bản đồ.  Có thể có một số mặc định Bản đồ bổ sung.  Nhưng trong phiên bản Trình chỉnh sửa này, chúng tôi chỉ hỗ trợ những người được bao gồm."
+
+#: weathermap-cacti-plugin-editor.php:693
+msgid "Map Style"
+msgstr "Phong cách bản đồ"
+
+#: weathermap-cacti-plugin-editor.php:698
+msgid "Map Defaults"
+msgstr "Mặc định bản đồ"
+
+#: weathermap-cacti-plugin-editor.php:701
+msgid "HTML Style"
+msgstr "Kiểu HTML"
+
+#: weathermap-cacti-plugin-editor.php:704
+msgid "Dynamic HTML"
+msgstr "HTML động"
+
+#: weathermap-cacti-plugin-editor.php:705
+msgid "Static HTML"
+msgstr "HTML tĩnh"
+
+#: weathermap-cacti-plugin-editor.php:710
+msgid "Legend Font"
+msgstr "Phông chữ chú thích"
+
+#: weathermap-cacti-plugin-editor.php:714
+msgid "Node Defaults"
+msgstr "Mặc định nút"
+
+#: weathermap-cacti-plugin-editor.php:717
+msgid "Node Font"
+msgstr "Phông chữ nút"
+
+#: weathermap-cacti-plugin-editor.php:721
+#: weathermap-cacti-plugin-editor.php:759
+msgid "Graph Width"
+msgstr "Chiều rộng biểu đồ"
+
+#: weathermap-cacti-plugin-editor.php:727
+#: weathermap-cacti-plugin-editor.php:765
+msgid "Graph Height"
+msgstr "Chiều cao biểu đồ"
+
+#: weathermap-cacti-plugin-editor.php:733
+msgid "Link Defaults"
+msgstr "Mặc định liên kết"
+
+#: weathermap-cacti-plugin-editor.php:736
+msgid "Link Labels"
+msgstr "Nhãn liên kết"
+
+#: weathermap-cacti-plugin-editor.php:739
+msgid "Bits/sec"
+msgstr "Bits / giây"
+
+#: weathermap-cacti-plugin-editor.php:740
+msgid "Percentage"
+msgstr "Phần trăm"
+
+#: weathermap-cacti-plugin-editor.php:741
+msgid "None"
+msgstr "Không"
+
+#: weathermap-cacti-plugin-editor.php:746
+msgid "Arrow Style"
+msgstr "Kiểu mũi tên"
+
+#: weathermap-cacti-plugin-editor.php:749
+msgid "Classic"
+msgstr "Cổ điển"
+
+#: weathermap-cacti-plugin-editor.php:750
+msgid "Compact"
+msgstr "Gọn nhẹ"
+
+#: weathermap-cacti-plugin-editor.php:755
+msgid "Link Label Font"
+msgstr "Phông chữ nhãn liên kết"
 
 #: weathermap-cacti-plugin-mgmt.php:53
 msgid "Duplicate"
@@ -445,12 +967,6 @@ msgstr "%d Bản đồ được chọn đã được xây dựng lại trong %0.
 msgid "Click 'Continue' to delete the following Weather Map."
 msgid_plural "Click 'Continue' to delete following Weather Maps."
 msgstr[0] "Nhấp vào 'Tiếp tục' để xóa Bản đồ thời tiết sau."
-
-#: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
-#: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
-#: weathermap-cacti-plugin-mgmt.php:538 weathermap-cacti-plugin-mgmt.php:2739
-msgid "Cancel"
-msgstr "Hủy"
 
 #: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
 #: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
@@ -760,10 +1276,6 @@ msgstr "Bản đồ nguồn"
 msgid "Empty File"
 msgstr "Tệp trống"
 
-#: weathermap-cacti-plugin-mgmt.php:1263 weathermap-cacti-plugin-mgmt.php:2467
-msgid "Create"
-msgstr "Tạo"
-
 #: weathermap-cacti-plugin-mgmt.php:1404 weathermap-cacti-plugin-mgmt.php:2656
 msgid "Actions"
 msgstr "Hành động"
@@ -1034,10 +1546,6 @@ msgstr "Tên của biến map-global SET"
 #: weathermap-cacti-plugin-mgmt.php:2459
 msgid "What to set it to"
 msgstr "Những gì để đặt nó thành"
-
-#: weathermap-cacti-plugin-mgmt.php:2464
-msgid "Edit"
-msgstr "Sửa"
 
 #: weathermap-cacti-plugin-mgmt.php:2471
 msgid "Global Setting for all Maps"

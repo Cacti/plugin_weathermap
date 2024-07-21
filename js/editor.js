@@ -9,10 +9,6 @@ const MESSAGE_LEVEL_MIXED = 5;
 var sessionMessage      = null;
 var sessionMessageOpen  = null;
 var sessionMessageTimer = null;
-var sessionMessageOk    = 'Ok';
-var sessionMessageTitle = 'Operation successful';
-var sessionMessageSave  = 'The Operation was successful.  Details are below.';
-var sessionMessagePause = 'Pause';
 
 var newWindow;
 var selectedNode;
@@ -24,36 +20,6 @@ var editor_url = 'weathermap-cacti-plugin-editor.php';
 var imageWidth  = null;
 var imageHeight = null;
 var local_graph_id = null;
-
-// seed the help text. Done in a big lump here, so we could make a foreign language version someday.
-
-var helptexts = {
-	'link_target': 'Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG).',
-	'link_width': 'How wide the link arrow will be drawn, in pixels.',
-	'link_infourl': 'If you are using the \'overlib\' HTML style then this is the URL that will be opened when you click on the link',
-	'link_hover': 'If you are using the \'overlib\' HTML style then this is the URL of the image that will be shown when you hover over the link',
-	'link_bandwidth_in': 'The bandwidth from the first node to the second node',
-	'link_bandwidth_out': 'The bandwidth from the second node to the first node (if that is different)',
-	'link_commentin': 'The text that will appear alongside the link',
-	'link_commentout': 'The text that will appear alongside the link',
-	'node_infourl': 'If you are using the \'overlib\' HTML style then this is the URL that will be opened when you click on the node',
-	'node_hover': 'If you are using the \'overlib\' HTML style then this is the URL of the image that will be shown when you hover over the node',
-	'node_x': 'How far from the left to position the node, in pixels',
-	'node_y': 'How far from the top to position the node, in pixels',
-	'node_label': 'The text that appears on the node',
-	'node_new_name': 'The name used for this node when defining links',
-	'tb_newfile': 'Change to a different file, or start creating a new one.',
-	'tb_addnode': 'Add a new node to the map',
-	'tb_addlink': 'Add a new link to the map, by joining two nodes together.',
-	'hover_tb_newfile': 'Select a different map to edit, or start a new one.',
-
-	// These are the default text - what appears when nothing more interesting
-	// is happening. One for each dialog/location.
-	'link_default': 'This is where help appears for links',
-	'map_default': 'This is where help appears for maps',
-	'node_default': 'This is where help appears for nodes',
-	'tb_default': 'or click a Node or Link to edit it\'s properties'
-};
 
 function displayMessages() {
 	var error   = false;
@@ -418,23 +384,23 @@ $.fn.textBoxWidth = function() {
 
 function initContextMenu() {
 	var nodeMenu = [
-		{title: "Node Actions", cmd: "cat1", isHeader: true},
-		{title: 'Move', cmd: 'move', uiIcon: 'ui-icon-arrow-4'},
-		{title: 'Clone', cmd: 'clone', uiIcon: 'ui-icon-copy'},
-		{title: 'Edit', cmd: 'edit', uiIcon: 'ui-icon-pencil'},
-		{title: 'Delete', cmd: 'delete', uiIcon: 'ui-icon-trash'},
+		{title: txtNodeActions, cmd: "cat1", isHeader: true},
+		{title: txtMove, cmd: 'move', uiIcon: 'ui-icon-arrow-4'},
+		{title: txtClone, cmd: 'clone', uiIcon: 'ui-icon-copy'},
+		{title: txtEdit, cmd: 'edit', uiIcon: 'ui-icon-pencil'},
+		{title: txtDelete, cmd: 'delete', uiIcon: 'ui-icon-trash'},
 		{title: "----"},
-		{title: 'Properties', cmd: 'properties', uiIcon: 'ui-icon-gear'}
+		{title: txtProperties, cmd: 'properties', uiIcon: 'ui-icon-gear'}
 	];
 
 	var linkMenu = [
-		{title: "Link Actions", cmd: "cat1", isHeader: true},
-		{title: 'Tidy', cmd: 'tidy', uiIcon: 'ui-icon-arrow-4'},
-		{title: 'Via', cmd: 'via', uiIcon: 'ui-icon-copy'},
-		{title: 'Edit', cmd: 'edit', uiIcon: 'ui-icon-pencil'},
-		{title: 'Delete', cmd: 'delete', uiIcon: 'ui-icon-trash'},
+		{title: txtLinkActions, cmd: "cat1", isHeader: true},
+		{title: txtTidy, cmd: 'tidy', uiIcon: 'ui-icon-arrow-4'},
+		{title: txtVia, cmd: 'via', uiIcon: 'ui-icon-copy'},
+		{title: txtEdit, cmd: 'edit', uiIcon: 'ui-icon-pencil'},
+		{title: txtDelete, cmd: 'delete', uiIcon: 'ui-icon-trash'},
 		{title: "----"},
-		{title: 'Properties', cmd: 'properties', uiIcon: 'ui-icon-gear'}
+		{title: txtProperties, cmd: 'properties', uiIcon: 'ui-icon-gear'}
 	];
 
 	$('body').on('contextmenu', function() {
@@ -717,7 +683,7 @@ function setCanvasSize(element) {
 }
 
 function add_node() {
-	$('#tb_help').text('Click on the map where you would like to add a new node.');
+	$('#tb_help').text(addNodeHelp);
 	$('#action').val('add_node');
 
 	mapmode('xy');
@@ -728,28 +694,34 @@ function delete_node() {
 		$('body').append('<div class="dlgConfirm"></div>');
 	}
 
-	$('.dlgConfirm').text('WARNING: Pressing \'Delete Node\' will delete this Node and any Links its a part of.');
+	$('.dlgConfirm').text(delNodeWarning);
 
 	mapmode('xy');
 
 	$('.dlgConfirm').dialog({
 		resizable: false,
-		title: 'Delete Node Confirmation',
+		title: delNodeTitle,
 		height: 'auto',
 		width: 400,
 		modal: false,
-		buttons: {
-			Cancel: function() {
-				$(this).dialog('close');
-				mapmode('existing');
+		buttons: [
+			{
+				text: txtCancel,
+				click: function() {
+					$(this).dialog('close');
+					mapmode('existing');
+				}
 			},
-			'Delete Node': function() {
-				$(this).dialog('close');
-				hide_all_dialogs();
-				$('#action').val('delete_node');
-				form_submit();
+			{
+				text: txtDelNode,
+				click: function() {
+					$(this).dialog('close');
+					hide_all_dialogs();
+					$('#action').val('delete_node');
+					form_submit();
+				}
 			}
-		}
+		]
 	});
 }
 
@@ -774,7 +746,7 @@ function edit_link() {
 function move_node() {
 	hide_dialog('dlgNodeProperties');
 
-	$('#tb_help').text('Click on the map where you would like to move the node to.');
+	$('#tb_help').text(moveNodeHelp);
 	$('#action').val('move_node');
 
 	mapmode('xy');
@@ -783,14 +755,14 @@ function move_node() {
 function via_link() {
 	hide_dialog('dlgLinkProperties');
 
-	$('#tb_help').text('Click on the map via which point you want to redirect link.');
+	$('#tb_help').text(viaLinkHelp);
 	$('#action').val('via_link');
 
 	mapmode('xy');
 }
 
 function add_link() {
-	$('#tb_help').text('Click on the first node for the start of the link.');
+	$('#tb_help').text(addLinkHelp);
 	$('#action').val('add_link');
 
 	mapmode('existing');
@@ -801,28 +773,34 @@ function delete_link() {
 		$('body').append('<div class="dlgConfirm"></div>');
 	}
 
-	$('.dlgConfirm').text('WARNING: Pressing \'Delete Link\' will delete this Link.');
+	$('.dlgConfirm').text(delLinkWarning);
 
 	mapmode('xy');
 
 	$('.dlgConfirm').dialog({
 		resizable: false,
-		title: 'Delete Link Confirmation',
+		title: delLinkTitle,
 		height: 'auto',
 		width: 400,
 		modal: true,
-		buttons: {
-			Cancel: function() {
-				$(this).dialog('close');
-				mapmode('existing');
+		buttons: [
+			{
+				text: txtCancel,
+				click: function() {
+					$(this).dialog('close');
+					mapmode('existing');
+				}
 			},
-			'Delete Link': function() {
-				$(this).dialog('close');
-				hide_all_dialogs();
-				$('#action').val('delete_link');
-				form_submit();
+			{
+				text: txtDelLink,
+				click: function() {
+					$(this).dialog('close');
+					hide_all_dialogs();
+					$('#action').val('delete_link');
+					form_submit();
+				}
 			}
-		}
+		]
 	});
 }
 
@@ -880,7 +858,7 @@ function map_style() {
 }
 
 function position_timestamp() {
-	$('#tb_help').text('Click on the map where you would like to put the timestamp.');
+	$('#tb_help').text(timeStHelp);
 	$('#action').val('place_stamp');
 
 	mapmode('xy');
@@ -916,7 +894,7 @@ function position_legend(event) {
 }
 
 function real_position_legend(scalename) {
-	$('#tb_help').text('Click on the map where you would like to put the legend.');
+	$('#tb_help').text(posLegendHelp);
 	$('#action').val('place_legend');
 	$('#param').val(scalename);
 
@@ -1128,7 +1106,7 @@ function show_dialog(dlg) {
 
 function hide_dialog(dlg) {
 	if ($('#'+dlg).dialog('instance')) {
-		$('#'+dlg).dialog('close').dialog('destroy');
+		$('#'+dlg).dialog('close');
 	}
 
 	$('#action').val('');
@@ -1185,11 +1163,11 @@ function coord_update(event) {
 	//console.log('X Value:'+$('#x').val());
 	//console.log('Y Value:'+$('#y').val());
 
-	$('#tb_coords').html('Position<br />'+ windowX + ', ' + windowY);
+	$('#tb_coords').html(txtPosition+'<br />'+ windowX + ', ' + windowY);
 }
 
 function coord_release(event) {
-	$('#tb_coords').html('Position<br />---, ---');
+	$('#tb_coords').html(txtPosition+'<br />---, ---');
 }
 
 function tidy_link() {
