@@ -558,7 +558,7 @@ function weathermap_setup_table() {
 
 			if (cacti_sizeof($rows)) {
 				foreach($rows as $row) {
-					db_execcute_prepared('DELETE FROM weathermap_settings
+					db_execute_prepared('DELETE FROM weathermap_settings
 						WHERE mapid = ? AND groupid = ? AND optname = ?
 						LIMIT 1',
 						array($row['mapid'], $row['groupid'], $row['optname']));
