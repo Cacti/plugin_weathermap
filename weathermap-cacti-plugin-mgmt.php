@@ -2524,7 +2524,7 @@ function weathermap_setting_update($mapid, $settingid, $name, $value) {
 		db_execute_prepared('UPDATE weathermap_settings
 			SET optname = ?, optvalue = ?
 			WHERE id = ?',
-			array($name, $value, $id));
+			array($name, $value, $settingid));
 	} else {
 		if ($mapid > 0) {
 			db_execute_prepared('INSERT INTO weathermap_settings
