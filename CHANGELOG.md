@@ -14,7 +14,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- develop ---
+--- 1.3.1 ---
 * issue#141: Bug Weathermap - Map Style can't change Link Labels to Bits/Sec
 * issue#152: Dont attempt to include directories from Weathermap config files.
 * issue#157: There is not process interlock in WeatherMap
