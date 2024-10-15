@@ -254,6 +254,18 @@ function weathermap_config_settings() {
 				'full'  => __('Full Graphs', 'weathermap')
 			)
 		),
+		'weathermap_timeout' => array(
+			'friendly_name' => __('Map Processing Timeout', 'weathermap'),
+			'description'   => __('How much time should be allowed before timing out the periodic map generation process.', 'weathermap'),
+			'method'        => 'drop_array',
+			'default'       => 300,
+			'array'         => array(
+				'300'  => __('%d Minutes', 5, 'weathermap'),
+				'600'  => __('%d Minutes', 10, 'weathermap'),
+				'900'  => __('%d Minutes', 15, 'weathermap'),
+				'1200' => __('%d Minutes', 20, 'weathermap')
+			)
+		),
 		'weathermap_cycle_refresh' => array(
 			'friendly_name' => __('Refresh Time', 'weathermap'),
 			'description'   => __('How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes.', 'weathermap'),
@@ -1166,7 +1178,21 @@ function weathermap_poller_bottom() {
 		return;
 	} else {
 		if ($renderperiod == 0 || $rendercounter == '' || $rendercounter % $renderperiod == 0 || $rendercounter > $renderperiod) {
+			$timeout = read_config_option('weathermap_timeout');
+
+			if (empty($timeout)) {
+				set_config_option('weathermap_timeout', 300);
+				$timeout = 300;
+			}
+
+			if (!register_process_start('weathermap', 'master', 0, $timeout)) {
+				cacti_log('WARNING: Weathermap map generation process timed out.  Consider increasing the timeout in Console > Configuration > Settings > Weathermap', false, 'WEATHERMAP');
+				exit(1);
+			}
+
 			weathermap_run_maps(__DIR__);
+
+			unregister_process('weathermap', 'master', 0);
 
 			$newcount = 1;
 		} else {
