@@ -231,7 +231,7 @@ function weathermap_config_settings() {
 		),
 		'weathermap_width' => array(
 			'friendly_name' => __('Hover Graph Default Width', 'weathermap'),
-			'description'   => __('The default width of the RRDtool Graphs that appear when you over on a Link.', 'weathermap'),
+			'description'   => __('The default width of the RRDtool Graphs that appear when you hover on a Link.', 'weathermap'),
 			'method'        => 'textbox',
 			'default'       => 400,
 			'size'          => 3,
@@ -239,7 +239,7 @@ function weathermap_config_settings() {
 		),
 		'weathermap_height' => array(
 			'friendly_name' => __('Hover Graph Default Height', 'weathermap'),
-			'description'   => __('The default height of the RRDtool Graphs that appear when you over on a Link.', 'weathermap'),
+			'description'   => __('The default height of the RRDtool Graphs that appear when you hover on a Link.', 'weathermap'),
 			'method'        => 'textbox',
 			'default'       => 125,
 			'size'          => 3,
@@ -247,7 +247,7 @@ function weathermap_config_settings() {
 		),
 		'weathermap_nolegend' => array(
 			'friendly_name' => __('Hover Graph Style', 'weathermap'),
-			'description'   => __('When hovering over the Links or Nodes, what style of Graph would you like displayed?', 'weathermap'),
+			'description'   => __('When hovering over the Links or Nodes, what style of Graph is to be displayed displayed?', 'weathermap'),
 			'method'        => 'drop_array',
 			'array'         => array(
 				'thumb' => __('Thumbnail Graphs', 'weathermap'),
