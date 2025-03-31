@@ -390,9 +390,9 @@ function weathermap_singleview($mapid) {
 
 			if ($is_wm_admin) {
 				$maptitle .= '<span> [ ';
-				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a> | ';
-				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid . '">' . __esc('Map Settings', 'weathermap') . '</a> | ';
-				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid . '">' . __esc('Map Permissions', 'weathermap') . '</a> | ';
+				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin.php">' . __esc('Return to Main Page', 'weathermap') . '</a> ||*---*|| ';
+				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid . '">' . __esc('Map Settings', 'weathermap') . '</a> ||*---*|| ';
+				$maptitle .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $mapid . '">' . __esc('Map Permissions', 'weathermap') . '</a> ||*---*|| ';
 				$maptitle .= "<a class='editMap linkOverDark' href='" . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . $map['configfile']) . "'>" . __esc('Edit Map', 'weathermaps') . "</a>";
 				$maptitle .= ' ] </span>';
 			} else {
@@ -716,9 +716,9 @@ function weathermap_versionbox() {
 		$pagefoot = __('Powered by %s PHP Weathermap Version %s %s', '<a href="http://www.network-weathermap.com/?v=' . $weathermap_version . '">', $weathermap_version, '</a>', 'weathermap');
 
 		if (api_plugin_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
-			$pagefoot .= ' --- <a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php" title="' . __esc('Go to the map management page', 'weathermap') . '">' . __('Weathermap Management', 'weathermap') . '</a>';
-			$pagefoot .= ' | <a target="_blank" href="docs/">' . __('Local Documentation', 'weathermap') . '</a>';
-			$pagefoot .= ' | <a class="pic" href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=addmap_picker">' . __('New Map', 'weathermap') . '</a>';
+			$pagefoot .= ' ||*---*|| <a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php" title="' . __esc('Go to the map management page', 'weathermap') . '">' . __('Weathermap Management', 'weathermap') . '</a>';
+			$pagefoot .= ' ||*---*|| <a target="_blank" href="docs/">' . __('Local Documentation', 'weathermap') . '</a>';
+			$pagefoot .= ' ||*---*|| <a class="pic" href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=addmap_picker">' . __('New Map', 'weathermap') . '</a>';
 		}
 
 		print '<br/><table width="100%" style="background-color: #f5f5f5; border: 1px solid #bbbbbb;" align="center" cellpadding="1">';
