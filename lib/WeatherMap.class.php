@@ -3990,7 +3990,7 @@ class WeatherMap extends WeatherMapBase {
 									$data_hover .= '<br>';
 								}
 
-								$data_hover .= "<img data-height='$data_height' data-width='$data_width' src='" . $this->ProcessString($url, $myobj) . "'>";
+								$data_hover .= "<img data-height='$dheight' data-width='$dwidth' src='" . $this->ProcessString($url, $myobj) . "'>";
 								$n++;
 							}
 
