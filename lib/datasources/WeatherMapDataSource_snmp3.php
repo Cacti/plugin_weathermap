@@ -140,8 +140,8 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 	}
 
 	/**
-	 * @param  WeatherMap $map
-	 * @param  mixed $profileName
+	 * @param WeatherMap $map
+	 * @param mixed      $profileName
 	 *
 	 * @return array
 	 */
@@ -180,8 +180,8 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 	}
 
 	/**
-	 * @param  mixed $profileName
-	 * @param  int   $hostId
+	 * @param mixed $profileName
+	 * @param int   $hostId
 	 *
 	 * @return mixed
 	 */
