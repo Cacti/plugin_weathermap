@@ -169,7 +169,7 @@ $data_template_hash = 'fd841e8bb822927289b7acbc031f3d7e';
 $data_template_id = db_fetch_cell_prepared('SELECT id
 	FROM data_template
 	WHERE hash = ?',
-	[$data_template]);
+	[$data_template_hash]);
 
 $map = new WeatherMap;
 
