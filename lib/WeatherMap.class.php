@@ -819,7 +819,7 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
-	function LoadPlugins($type = 'data', $dir = 'lib/datasources') {
+	function LoadPlugins($type = 'data', $dir = 'datasources') {
 		wm_debug("Beginning to load $type plugins from $dir");
 
 		if (!file_exists($dir)) {
