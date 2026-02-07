@@ -44,15 +44,15 @@ class WeatherMapDataSource_cactihost extends WeatherMapDataSource {
 	function Init(&$map) {
 		if ($map->context == 'cacti') {
 			if (function_exists('db_fetch_row')) {
-				return(true);
+				return (true);
 			} else {
 				wm_debug('ReadData CactiHost: Cacti database library not found.');
 			}
 		} else {
-			wm_debug("ReadData CactiHost: Can only run from Cacti environment.");
+			wm_debug('ReadData CactiHost: Can only run from Cacti environment.');
 		}
 
-		return(false);
+		return (false);
 	}
 
 	function Recognise($targetstring) {
@@ -64,8 +64,8 @@ class WeatherMapDataSource_cactihost extends WeatherMapDataSource {
 	}
 
 	function ReadData($targetstring, &$map, &$item) {
-		$data[IN]  = NULL;
-		$data[OUT] = NULL;
+		$data[IN]  = null;
+		$data[OUT] = null;
 		$data_time = 0;
 
 		if (preg_match("/^cactihost:(\d+)$/",$targetstring,$matches)) {
@@ -77,54 +77,53 @@ class WeatherMapDataSource_cactihost extends WeatherMapDataSource {
 			// 2=recovering
 			// 3=up
 
-			$result = db_fetch_row_prepared("SELECT *
+			$result = db_fetch_row_prepared('SELECT *
 				FROM host
-				WHERE id = ?",
-				array($cacti_id));
+				WHERE id = ?',
+				[$cacti_id]);
 
 			if (cacti_sizeof($result)) {
 				// create a note, which can be used in icon filenames or labels more nicely
 				if ($result['status'] == 1) {
-					$state = 1;
+					$state     = 1;
 					$statename = 'down';
 				}
 
 				if ($result['status'] == 2) {
-					$state = 2;
+					$state     = 2;
 					$statename = 'recovering';
 				}
 
 				if ($result['status'] == 3) {
-					$state = 3;
+					$state     = 3;
 					$statename = 'up';
 				}
 
 				if ($result['disabled']) {
-					$state = 0;
+					$state     = 0;
 					$statename = 'disabled';
 				}
 
 				$data[IN]  = $state;
 				$data[OUT] = $state;
 
-				$item->add_note("state",$statename);
-				$item->add_note("cacti_description",$result['description']);
+				$item->add_note('state',$statename);
+				$item->add_note('cacti_description',$result['description']);
 
-				$item->add_note("cacti_hostname",$result['hostname']);
-				$item->add_note("cacti_curtime",$result['cur_time']);
-				$item->add_note("cacti_avgtime",$result['avg_time']);
-				$item->add_note("cacti_mintime",$result['min_time']);
-				$item->add_note("cacti_maxtime",$result['max_time']);
-				$item->add_note("cacti_availability",$result['availability']);
+				$item->add_note('cacti_hostname',$result['hostname']);
+				$item->add_note('cacti_curtime',$result['cur_time']);
+				$item->add_note('cacti_avgtime',$result['avg_time']);
+				$item->add_note('cacti_mintime',$result['min_time']);
+				$item->add_note('cacti_maxtime',$result['max_time']);
+				$item->add_note('cacti_availability',$result['availability']);
 
-				$item->add_note("cacti_faildate",$result['status_fail_date']);
-				$item->add_note("cacti_recdate",$result['status_rec_date']);
+				$item->add_note('cacti_faildate',$result['status_fail_date']);
+				$item->add_note('cacti_recdate',$result['status_rec_date']);
 			}
 		}
 
-		wm_debug ("CactiHost ReadData: Returning (".($data[IN]===NULL?'NULL':$data[IN]).",".($data[OUT]===NULL?'NULL':$data[OUT]).",$data_time)");
+		wm_debug('CactiHost ReadData: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)");
 
-		return(array($data[IN], $data[OUT], $data_time));
+		return ([$data[IN], $data[OUT], $data_time]);
 	}
 }
-

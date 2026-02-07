@@ -50,4 +50,3 @@ $cacti_base = $config['base_path'];
 weathermap_setup_table();
 
 weathermap_run_maps(__DIR__, true);
-

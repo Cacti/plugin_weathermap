@@ -51,16 +51,16 @@ class WeatherMapNode extends WeatherMapItem {
 	var $label, $proclabel, $labelfont;
 	var $labelangle;
 	var $name;
-	var $infourl = array();
+	var $infourl = [];
 	var $notes;
-	var $colours = array();
+	var $colours = [];
 	var $overliburl;
 	var $overlibwidth, $overlibheight;
-	var $overlibcaption = array();
+	var $overlibcaption = [];
 	var $maphtml;
 	var $selected = 0;
 	var $iconfile, $iconscalew, $iconscaleh;
-	var $targets = array();
+	var $targets = [];
 	var $bandwidth_in, $bandwidth_out;
 	var $inpercent, $outpercent;
 	var $max_bandwidth_in, $max_bandwidth_out;
@@ -81,24 +81,24 @@ class WeatherMapNode extends WeatherMapItem {
 	var $inscalekey,$outscalekey;
 	var $inscaletag, $outscaletag;
 
-	# var $incolour,$outcolour;
+	// var $incolour,$outcolour;
 	var $scalevar, $iconscalevar;
-	var $notestext = array();
+	var $notestext = [];
 	var $image;
 	var $centre_x, $centre_y;
 	var $relative_to;
 	var $zorder;
 	var $template;
 	var $polar;
-	var $boundingboxes=array();
+	var $boundingboxes = [];
 
 	// PHP 8.1. QA
 	var $aiconfillcolour;
 	var $aiconoutlinecolour;
 
 	function __construct() {
-		$this->inherit_fieldlist = array(
-			'boundingboxes'         => array(),
+		$this->inherit_fieldlist = [
+			'boundingboxes'         => [],
 			'my_default'            => null,
 			'label'                 => '',
 			'proclabel'             => '',
@@ -116,8 +116,8 @@ class WeatherMapNode extends WeatherMapItem {
 			'y'                     => null,
 			'inscalekey'            => '',
 			'outscalekey'           => '',
-			#'incolour'             => -1,
-			#'outcolour'            => -1,
+			// 'incolour'             => -1,
+			// 'outcolour'            => -1,
 			'original_x'            => 0,
 			'original_y'            => 0,
 			'inpercent'             => 0,
@@ -126,21 +126,21 @@ class WeatherMapNode extends WeatherMapItem {
 			'iconfile'              => '',
 			'iconscalew'            => 0,
 			'iconscaleh'            => 0,
-			'targets'               => array(),
-			'infourl'               => array(IN => '', OUT => ''),
-			'notestext'             => array(IN => '', OUT => ''),
-			'notes'                 => array(),
-			'hints'                 => array(),
-			'overliburl'            => array(IN => array(), OUT => array()),
+			'targets'               => [],
+			'infourl'               => [IN => '', OUT => ''],
+			'notestext'             => [IN => '', OUT => ''],
+			'notes'                 => [],
+			'hints'                 => [],
+			'overliburl'            => [IN => [], OUT => []],
 			'overlibwidth'          => 700,
 			'overlibheight'         => 200,
-			'overlibcaption'        => array(IN => '', OUT => ''),
-			'labeloutlinecolour'    => array(0, 0, 0),
-			'labelbgcolour'         => array(255, 255, 255),
-			'labelfontcolour'       => array(0, 0, 0),
-			'labelfontshadowcolour' => array(-1, -1, -1),
-			'aiconoutlinecolour'    => array(0,0,0),
-			'aiconfillcolour'       => array(-2,-2,-2), // copy from the node label
+			'overlibcaption'        => [IN => '', OUT => ''],
+			'labeloutlinecolour'    => [0, 0, 0],
+			'labelbgcolour'         => [255, 255, 255],
+			'labelfontcolour'       => [0, 0, 0],
+			'labelfontshadowcolour' => [-1, -1, -1],
+			'aiconoutlinecolour'    => [0, 0, 0],
+			'aiconfillcolour'       => [-2, -2, -2], // copy from the node label
 			'labeloffset'           => '',
 			'labeloffsetx'          => 0,
 			'labeloffsety'          => 0,
@@ -149,7 +149,7 @@ class WeatherMapNode extends WeatherMapItem {
 			'max_bandwidth_out'     => 100,
 			'max_bandwidth_in_cfg'  => '100',
 			'max_bandwidth_out_cfg' => '100'
-		);
+		];
 
 		$this->width    = 0;
 		$this->height   = 0;
@@ -177,7 +177,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 		// apparently, some versions of the gd extension will crash
 		// if we continue...
-		if ($this->label == '' && $this->iconfile=='') {
+		if ($this->label == '' && $this->iconfile == '') {
 			return;
 		}
 
@@ -198,7 +198,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 		$col = new Colour(-1, -1, -1);
 
-		# print $col->as_string();
+		// print $col->as_string();
 
 		// if a target is specified, and you haven't forced no background, then the background will
 		// come from the SCALE in USESCALE
@@ -214,12 +214,13 @@ class WeatherMapNode extends WeatherMapItem {
 				$pc  = $this->outpercent;
 				$col = $this->colours[OUT];
 			}
-		} elseif ($this->labelbgcolour != array(-1,-1,-1)) {
+		} elseif ($this->labelbgcolour != [-1, -1, -1]) {
 			// $col=myimagecolorallocate($node_im, $this->labelbgcolour[0], $this->labelbgcolour[1], $this->labelbgcolour[2]);
 			$col = new Colour($this->labelbgcolour);
 		}
 
 		$colicon = null;
+
 		if (!empty($this->targets) && $this->useiconscale != 'none') {
 			wm_debug('Colorising the icon');
 
@@ -228,22 +229,22 @@ class WeatherMapNode extends WeatherMapItem {
 
 			if ($this->iconscalevar == 'in') {
 				$pc  = $this->inpercent;
-				//$col = $this->colours[IN];
+				// $col = $this->colours[IN];
 				$val = $this->bandwidth_in;
 			}
 
 			if ($this->iconscalevar == 'out') {
 				$pc  = $this->outpercent;
-				//$col = $this->colours[OUT];
+				// $col = $this->colours[OUT];
 				$val = $this->bandwidth_out;
 			}
 
 			if ($this->iconscaletype == 'percent') {
-				list($colicon,$node_iconscalekey,$icontag) =
-					$map->NewColourFromPercent($pc, $this->useiconscale,$this->name );
+				[$colicon,$node_iconscalekey,$icontag] =
+					$map->NewColourFromPercent($pc, $this->useiconscale,$this->name);
 			} else {
 				// use the absolute value if we aren't doing percentage scales.
-				list($colicon,$node_iconscalekey,$icontag) = $map->NewColourFromPercent($val, $this->useiconscale, $this->name, false);
+				[$colicon,$node_iconscalekey,$icontag] = $map->NewColourFromPercent($val, $this->useiconscale, $this->name, false);
 			}
 		}
 
@@ -260,11 +261,11 @@ class WeatherMapNode extends WeatherMapItem {
 				$this->proclabel = screenshotify($this->proclabel);
 			}
 
-			list($strwidth, $strheight) = $map->myimagestringsize($this->labelfont, $this->proclabel);
+			[$strwidth, $strheight] = $map->myimagestringsize($this->labelfont, $this->proclabel);
 
 			if ($this->labelangle == 90 || $this->labelangle == 270) {
 				$boxwidth  = ($strheight * $padfactor) + $padding;
-				$boxheight = ($strwidth  * $padfactor) + $padding;
+				$boxheight = ($strwidth * $padfactor) + $padding;
 
 				wm_debug('Node->pre_render: ' . $this->name . " Label Metrics are: $strwidth x $strheight -> $boxwidth x $boxheight");
 
@@ -274,22 +275,22 @@ class WeatherMapNode extends WeatherMapItem {
 				$label_x2 = $this->x + ($boxwidth / 2);
 				$label_y2 = $this->y + ($boxheight / 2);
 
-				if ($this->labelangle==90) {
+				if ($this->labelangle == 90) {
 					$txt_x = $this->x + ($strheight / 2);
 					$txt_y = $this->y + ($strwidth / 2);
 				}
 
-				if ($this->labelangle==270) {
+				if ($this->labelangle == 270) {
 					$txt_x = $this->x - ($strheight / 2);
 					$txt_y = $this->y - ($strwidth / 2);
 				}
 			}
 
 			if ($this->labelangle == 0 || $this->labelangle == 180) {
-				$boxwidth  = ($strwidth  * $padfactor) + $padding;
+				$boxwidth  = ($strwidth * $padfactor) + $padding;
 				$boxheight = ($strheight * $padfactor) + $padding;
 
-				wm_debug("Node->pre_render: ".$this->name." Label Metrics are: $strwidth x $strheight -> $boxwidth x $boxheight");
+				wm_debug('Node->pre_render: ' . $this->name . " Label Metrics are: $strwidth x $strheight -> $boxwidth x $boxheight");
 
 				$label_x1 = $this->x - ($boxwidth / 2);
 				$label_y1 = $this->y - ($boxheight / 2);
@@ -305,14 +306,14 @@ class WeatherMapNode extends WeatherMapItem {
 					$txt_y = $this->y - ($strheight / 2);
 				}
 
-				# $this->width = $boxwidth;
-				# $this->height = $boxheight;
+				// $this->width = $boxwidth;
+				// $this->height = $boxheight;
 			}
 
-			$map->nodes[$this->name]->width = $boxwidth;
+			$map->nodes[$this->name]->width  = $boxwidth;
 			$map->nodes[$this->name]->height = $boxheight;
 
-			# print "TEXT at $txt_x , $txt_y\n";
+			// print "TEXT at $txt_x , $txt_y\n";
 		}
 
 		// figure out a bounding rectangle for the icon
@@ -328,13 +329,13 @@ class WeatherMapNode extends WeatherMapItem {
 				$this->iconfile == 'outpie' ||
 				$this->iconfile == 'gauge' ||
 				$this->iconfile == 'nink') {
-				wm_debug("Artificial Icon type " . $this->iconfile . " for $this->name");
+				wm_debug('Artificial Icon type ' . $this->iconfile . " for $this->name");
 
 				// this is an artificial icon - we don't load a file for it
 
 				$icon_im = imagecreatetruecolor(intval(round($this->iconscalew)), intval(round($this->iconscaleh)));
 
-				imageSaveAlpha($icon_im, true);
+				imagesavealpha($icon_im, true);
 
 				$nothing = imagecolorallocatealpha($icon_im, 128, 0, 0, 127);
 
@@ -371,25 +372,25 @@ class WeatherMapNode extends WeatherMapItem {
 					}
 
 					if ($this->iconscaletype == 'percent') {
-						list($fill, $junk, $junk) =
-						$map->NewColourFromPercent($val, $this->useiconscale,$this->name, false );
+						[$fill, $junk, $junk] =
+						$map->NewColourFromPercent($val, $this->useiconscale,$this->name, false);
 					} else {
 						// use the absolute value if we aren't doing percentage scales.
-						list($fill,  $junk, $junk) = $map->NewColourFromPercent($val, $this->useiconscale,$this->name, false );
+						[$fill,  $junk, $junk] = $map->NewColourFromPercent($val, $this->useiconscale,$this->name, false);
 					}
 				}
 
-				if ($this->aiconoutlinecolour != array(-1, -1, -1)) {
+				if ($this->aiconoutlinecolour != [-1, -1, -1]) {
 					$ink = $aiink;
 				}
 
 				if ($this->iconfile == 'box') {
 					if ($fill !== null && !$fill->is_none()) {
-						imagefilledrectangle($icon_im, 0, 0, $this->iconscalew - 1, $this->iconscaleh - 1, $fill->gdallocate($icon_im) );
+						imagefilledrectangle($icon_im, 0, 0, $this->iconscalew - 1, $this->iconscaleh - 1, $fill->gdallocate($icon_im));
 					}
 
 					if ($ink !== null && !$ink->is_none()) {
-						imagerectangle($icon_im, 0, 0, $this->iconscalew - 1, $this->iconscaleh - 1, $ink->gdallocate($icon_im) );
+						imagerectangle($icon_im, 0, 0, $this->iconscalew - 1, $this->iconscaleh - 1, $ink->gdallocate($icon_im));
 					}
 				} elseif ($this->iconfile == 'rbox') {
 					if ($fill !== null && !$fill->is_none()) {
@@ -404,11 +405,11 @@ class WeatherMapNode extends WeatherMapItem {
 					$ry = $this->iconscaleh / 2 - 1;
 
 					if ($fill !== null && !$fill->is_none()) {
-						imagefilledellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $fill->gdallocate($icon_im));
+						imagefilledellipse($icon_im, $rx, $ry, $rx * 2, $ry * 2, $fill->gdallocate($icon_im));
 					}
 
 					if ($ink !== null && !$ink->is_none()) {
-						imageellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $ink->gdallocate($icon_im));
+						imageellipse($icon_im, $rx, $ry, $rx * 2, $ry * 2, $ink->gdallocate($icon_im));
 					}
 				} elseif ($this->iconfile == 'nink') {
 					// print "NINK **************************************************************";
@@ -427,25 +428,25 @@ class WeatherMapNode extends WeatherMapItem {
 					imagefilledarc($icon_im, $rx - 1, $ry, $size, $size, 270, 90, $col1->gdallocate($icon_im), IMG_ARC_PIE);
 					imagefilledarc($icon_im, $rx + 1, $ry, $size, $size, 90, 270, $col2->gdallocate($icon_im), IMG_ARC_PIE);
 
-					imagefilledarc($icon_im, $rx - 1, $ry + $quarter, $quarter * 2, $quarter *2, 0, 360, $col1->gdallocate($icon_im), IMG_ARC_PIE);
-					imagefilledarc($icon_im, $rx + 1, $ry - $quarter, $quarter * 2, $quarter *2, 0, 360, $col2->gdallocate($icon_im), IMG_ARC_PIE);
+					imagefilledarc($icon_im, $rx - 1, $ry + $quarter, $quarter * 2, $quarter * 2, 0, 360, $col1->gdallocate($icon_im), IMG_ARC_PIE);
+					imagefilledarc($icon_im, $rx + 1, $ry - $quarter, $quarter * 2, $quarter * 2, 0, 360, $col2->gdallocate($icon_im), IMG_ARC_PIE);
 
 					if ($ink !== null && !$ink->is_none()) {
 						// XXX - need a font definition from somewhere for NINK text
 						$font = 1;
 
-						$instr  = $map->ProcessString("{node:this:bandwidth_in:%.1k}", $this);
-						$outstr = $map->ProcessString("{node:this:bandwidth_out:%.1k}", $this);
+						$instr  = $map->ProcessString('{node:this:bandwidth_in:%.1k}', $this);
+						$outstr = $map->ProcessString('{node:this:bandwidth_out:%.1k}', $this);
 
-						list($twid, $thgt) = $map->myimagestringsize($font, $instr);
+						[$twid, $thgt] = $map->myimagestringsize($font, $instr);
 
 						$map->myimagestring($icon_im, $font, $rx - $twid / 2, $ry - $quarter + ($thgt / 2), $instr, $ink->gdallocate($icon_im));
 
-						list($twid, $thgt) = $map->myimagestringsize($font, $outstr);
+						[$twid, $thgt] = $map->myimagestringsize($font, $outstr);
 
 						$map->myimagestring($icon_im, $font, $rx - $twid / 2,  $ry + $quarter + ($thgt / 2), $outstr, $ink->gdallocate($icon_im));
 
-						imageellipse($icon_im, $rx, $ry, $rx * 2, $ry * 2, $ink->gdallocate($icon_im) );
+						imageellipse($icon_im, $rx, $ry, $rx * 2, $ry * 2, $ink->gdallocate($icon_im));
 
 						// imagearc($icon_im, $rx,$ry,$quarter*4,$quarter*4, 0,360, $ink->gdallocate($icon_im));
 					}
@@ -453,7 +454,7 @@ class WeatherMapNode extends WeatherMapItem {
 					// print "NINK ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
 				} elseif ($this->iconfile == 'inpie' || $this->iconfile == 'outpie') {
 					// XXX - needs proper colours
-					# list($colpie,$node_iconscalekey,$icontag) = $map->NewColourFromPercent($pc, $this->useiconscale,$this->name);
+					// list($colpie,$node_iconscalekey,$icontag) = $map->NewColourFromPercent($pc, $this->useiconscale,$this->name);
 
 					if ($this->iconfile == 'inpie') {
 						$segment_angle = (($this->inpercent) / 100) * 360;
@@ -467,7 +468,7 @@ class WeatherMapNode extends WeatherMapItem {
 					$ry = $this->iconscaleh / 2 - 1;
 
 					if ($fill !== null && !$fill->is_none()) {
-						imagefilledellipse($icon_im, $rx, $ry, $rx*2, $ry*2, $fill->gdallocate($icon_im));
+						imagefilledellipse($icon_im, $rx, $ry, $rx * 2, $ry * 2, $fill->gdallocate($icon_im));
 					}
 
 					if ($ink !== null && !$ink->is_none()) {
@@ -492,7 +493,7 @@ class WeatherMapNode extends WeatherMapItem {
 					// draw the supplied icon, instead of the labelled box
 
 					$icon_im = imagecreatefromfile($this->iconfile);
-					# $icon_im = imagecreatefrompng($this->iconfile);
+					// $icon_im = imagecreatefrompng($this->iconfile);
 
 					if (function_exists('imagefilter') && isset($colicon) && $this->get_hint('use_imagefilter') == 1) {
 						imagefilter($icon_im, IMG_FILTER_COLORIZE, $colicon->r, $colicon->g, $colicon->b);
@@ -529,10 +530,10 @@ class WeatherMapNode extends WeatherMapItem {
 							$icon_im = $scaled;
 						}
 					} else {
-						wm_warn ('Couldn\'t open ICON: \'' . $this->iconfile . '\' - is it a PNG, JPEG or GIF? [WMWARN37]');
+						wm_warn('Couldn\'t open ICON: \'' . $this->iconfile . '\' - is it a PNG, JPEG or GIF? [WMWARN37]');
 					}
 				} elseif ($this->iconfile != 'none') {
-					wm_warn ('ICON \'' . $this->iconfile . '\' does not exist, or is not readable. Check path and permissions. [WMWARN38]');
+					wm_warn('ICON \'' . $this->iconfile . '\' does not exist, or is not readable. Check path and permissions. [WMWARN38]');
 				}
 			}
 
@@ -545,11 +546,11 @@ class WeatherMapNode extends WeatherMapItem {
 				$icon_x2 = $this->x + $icon_w / 2;
 				$icon_y2 = $this->y + $icon_h / 2;
 
-				$map->nodes[$this->name]->width = imagesx($icon_im);
+				$map->nodes[$this->name]->width  = imagesx($icon_im);
 				$map->nodes[$this->name]->height = imagesy($icon_im);
 
 				// $map->imap->addArea("Rectangle", "NODE:" . $this->name . ':0', '', array($icon_x1, $icon_y1, $icon_x2, $icon_y2));
-				$map->nodes[$this->name]->boundingboxes[] = array($icon_x1, $icon_y1, $icon_x2, $icon_y2);
+				$map->nodes[$this->name]->boundingboxes[] = [$icon_x1, $icon_y1, $icon_x2, $icon_y2];
 			}
 		}
 
@@ -561,13 +562,13 @@ class WeatherMapNode extends WeatherMapItem {
 			$this->labeloffsetx = 0;
 			$this->labeloffsety = 0;
 
-			list($dx, $dy) = calc_offset($this->labeloffset,
-				($icon_w + $boxwidth -1),
+			[$dx, $dy] = calc_offset($this->labeloffset,
+				($icon_w + $boxwidth - 1),
 				($icon_h + $boxheight)
 			);
 
-			#$this->labeloffsetx = $dx;
-			#$this->labeloffsety = $dy;
+			// $this->labeloffsetx = $dx;
+			// $this->labeloffsety = $dy;
 		}
 
 		$label_x1 += ($this->labeloffsetx + $dx);
@@ -577,7 +578,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 		if ($this->label != '') {
 			// $map->imap->addArea("Rectangle", "NODE:" . $this->name .':1', '', array($label_x1, $label_y1, $label_x2, $label_y2));
-			$map->nodes[$this->name]->boundingboxes[] = array($label_x1, $label_y1, $label_x2, $label_y2);
+			$map->nodes[$this->name]->boundingboxes[] = [$label_x1, $label_y1, $label_x2, $label_y2];
 		}
 
 		// work out the bounding box of the whole thing
@@ -595,7 +596,7 @@ class WeatherMapNode extends WeatherMapItem {
 		$node_im = imagecreatetruecolor($temp_width, $temp_height);
 
 		// ImageAlphaBlending($node_im, false);
-		imageSaveAlpha($node_im, true);
+		imagesavealpha($node_im, true);
 
 		$nothing = imagecolorallocatealpha($node_im, 128, 0, 0, 127);
 		imagefill($node_im, 0, 0, $nothing);
@@ -605,10 +606,10 @@ class WeatherMapNode extends WeatherMapItem {
 		$label_y1 -= $bbox_y1;
 		$label_y2 -= $bbox_y1;
 
-		$icon_x1  -= $bbox_x1;
-		$icon_x2  -= $bbox_x1;
-		$icon_y1  -= $bbox_y1;
-		$icon_y2  -= $bbox_y1;
+		$icon_x1 -= $bbox_x1;
+		$icon_x2 -= $bbox_x1;
+		$icon_y1 -= $bbox_y1;
+		$icon_y2 -= $bbox_y1;
 
 		$icon_x1   = intval(round($icon_x1));
 		$icon_x2   = intval(round($icon_x2));
@@ -633,7 +634,7 @@ class WeatherMapNode extends WeatherMapItem {
 			$txt_y -= $bbox_y1;
 			$txt_y += ($this->labeloffsety + $dy);
 
-			#       print "FINAL TEXT at $txt_x , $txt_y\n";
+			//       print "FINAL TEXT at $txt_x , $txt_y\n";
 
 			$label_x1 = ceil($label_x1);
 			$label_y1 = ceil($label_y1);
@@ -642,7 +643,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 			// if there's an icon, then you can choose to have no background
 			if (!$col->is_none()) {
-			    imagefilledrectangle($node_im, $label_x1, $label_y1, $label_x2, $label_y2, $col->gdallocate($node_im));
+				imagefilledrectangle($node_im, $label_x1, $label_y1, $label_x2, $label_y2, $col->gdallocate($node_im));
 			}
 
 			if ($this->selected) {
@@ -666,8 +667,8 @@ class WeatherMapNode extends WeatherMapItem {
 
 			$txcol = new Colour($this->labelfontcolour[0],$this->labelfontcolour[1],$this->labelfontcolour[2]);
 
-			#$col=myimagecolorallocate($node_im, $this->labelfontcolour[0], $this->labelfontcolour[1],
-			#	$this->labelfontcolour[2]);
+			// $col=myimagecolorallocate($node_im, $this->labelfontcolour[0], $this->labelfontcolour[1],
+			//	$this->labelfontcolour[2]);
 			if ($txcol->is_contrast()) {
 				if ($col->is_real()) {
 					$txcol = $col->contrast();
@@ -679,11 +680,11 @@ class WeatherMapNode extends WeatherMapItem {
 			}
 
 			$map->myimagestring($node_im, $this->labelfont, $txt_x, $txt_y, $this->proclabel, $txcol->gdallocate($node_im),$this->labelangle);
-			//$map->myimagestring($node_im, $this->labelfont, $txt_x, $txt_y, $this->proclabel, $txcol->gdallocate($node_im),90);
+			// $map->myimagestring($node_im, $this->labelfont, $txt_x, $txt_y, $this->proclabel, $txcol->gdallocate($node_im),90);
 		}
 
-		# imagerectangle($node_im,$label_x1,$label_y1,$label_x2,$label_y2,$map->black);
-		# imagerectangle($node_im,$icon_x1,$icon_y1,$icon_x2,$icon_y2,$map->black);
+		// imagerectangle($node_im,$label_x1,$label_y1,$label_x2,$label_y2,$map->black);
+		// imagerectangle($node_im,$icon_x1,$icon_y1,$icon_x2,$icon_y2,$map->black);
 
 		$map->nodes[$this->name]->centre_x = $this->x - $bbox_x1;
 		$map->nodes[$this->name]->centre_y = $this->y - $bbox_y1;
@@ -691,14 +692,14 @@ class WeatherMapNode extends WeatherMapItem {
 		if (1 == 0) {
 			imageellipse($node_im, $this->centre_x, $this->centre_y, 8, 8, $map->selected);
 
-			foreach (array('N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW') as $corner) {
-				list($dx, $dy) = calc_offset($corner, $this->width, $this->height);
+			foreach (['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'] as $corner) {
+				[$dx, $dy] = calc_offset($corner, $this->width, $this->height);
 
 				imageellipse($node_im, $this->centre_x + $dx, $this->centre_y + $dy, 5, 5, $map->selected);
 			}
 		}
 
-		# $this->image = $node_im;
+		// $this->image = $node_im;
 		$map->nodes[$this->name]->image = $node_im;
 	}
 
@@ -733,8 +734,8 @@ class WeatherMapNode extends WeatherMapItem {
 	}
 
 	function Reset(&$newowner) {
-		$this->owner=$newowner;
-		$template = $this->template;
+		$this->owner = $newowner;
+		$template    = $this->template;
 
 		if ($template == '') {
 			$template = 'DEFAULT';
@@ -744,9 +745,9 @@ class WeatherMapNode extends WeatherMapItem {
 
 		// the internal default-default gets it's values from inherit_fieldlist
 		// everything else comes from a node object - the template.
-		if ($this->name==':: DEFAULT ::') {
+		if ($this->name == ':: DEFAULT ::') {
 			foreach (array_keys($this->inherit_fieldlist) as $fld) {
-				$this->$fld=$this->inherit_fieldlist[$fld];
+				$this->$fld = $this->inherit_fieldlist[$fld];
 			}
 		} else {
 			$this->CopyFrom($this->owner->nodes[$template]);
@@ -765,13 +766,15 @@ class WeatherMapNode extends WeatherMapItem {
 		wm_debug("Initialising NODE $this->name from $source->name");
 		// assert('is_object($source)');
 
-		foreach (array_keys($this->inherit_fieldlist)as $fld) {
-			if ($fld != 'template') $this->$fld=$source->$fld;
+		foreach (array_keys($this->inherit_fieldlist) as $fld) {
+			if ($fld != 'template') {
+				$this->$fld = $source->$fld;
+			}
 		}
 	}
 
 	function WriteConfig() {
-		$output='';
+		$output = '';
 
 		if (!defined('TAB')) {
 			define('TAB', "\t");
@@ -786,31 +789,31 @@ class WeatherMapNode extends WeatherMapItem {
 		if ($this->config_override != '') {
 			$output  = $this->config_override . EOL;
 		} else {
-			# $defdef = $this->owner->defaultnode;
+			// $defdef = $this->owner->defaultnode;
 			$dd = $this->owner->nodes[$this->template];
 
 			wm_debug("Writing config for NODE $this->name against $this->template");
 
-			# $field = 'zorder'; $keyword = 'ZORDER';
-			$basic_params = array(
-				# array('template','TEMPLATE',CONFIG_TYPE_LITERAL),
-				array('label',                 'LABEL',                CONFIG_TYPE_LITERAL),
-				array('zorder',                'ZORDER',               CONFIG_TYPE_LITERAL),
-				array('labeloffset',           'LABELOFFSET',          CONFIG_TYPE_LITERAL),
-				array('labelfont',             'LABELFONT',            CONFIG_TYPE_LITERAL),
-				array('labelangle',            'LABELANGLE',           CONFIG_TYPE_LITERAL),
-				array('overlibwidth',          'OVERLIBWIDTH',         CONFIG_TYPE_LITERAL),
-				array('overlibheight',         'OVERLIBHEIGHT',        CONFIG_TYPE_LITERAL),
+			// $field = 'zorder'; $keyword = 'ZORDER';
+			$basic_params = [
+				// array('template','TEMPLATE',CONFIG_TYPE_LITERAL),
+				['label',                 'LABEL',                CONFIG_TYPE_LITERAL],
+				['zorder',                'ZORDER',               CONFIG_TYPE_LITERAL],
+				['labeloffset',           'LABELOFFSET',          CONFIG_TYPE_LITERAL],
+				['labelfont',             'LABELFONT',            CONFIG_TYPE_LITERAL],
+				['labelangle',            'LABELANGLE',           CONFIG_TYPE_LITERAL],
+				['overlibwidth',          'OVERLIBWIDTH',         CONFIG_TYPE_LITERAL],
+				['overlibheight',         'OVERLIBHEIGHT',        CONFIG_TYPE_LITERAL],
 
-				array('aiconoutlinecolour',    'AICONOUTLINECOLOR',    CONFIG_TYPE_COLOR),
-				array('aiconfillcolour',       'AICONFILLCOLOR',       CONFIG_TYPE_COLOR),
-				array('labeloutlinecolour',    'LABELOUTLINECOLOR',    CONFIG_TYPE_COLOR),
-				array('labelfontshadowcolour', 'LABELFONTSHADOWCOLOR', CONFIG_TYPE_COLOR),
-				array('labelbgcolour',         'LABELBGCOLOR',         CONFIG_TYPE_COLOR),
-				array('labelfontcolour',       'LABELFONTCOLOR',       CONFIG_TYPE_COLOR)
-			);
+				['aiconoutlinecolour',    'AICONOUTLINECOLOR',    CONFIG_TYPE_COLOR],
+				['aiconfillcolour',       'AICONFILLCOLOR',       CONFIG_TYPE_COLOR],
+				['labeloutlinecolour',    'LABELOUTLINECOLOR',    CONFIG_TYPE_COLOR],
+				['labelfontshadowcolour', 'LABELFONTSHADOWCOLOR', CONFIG_TYPE_COLOR],
+				['labelbgcolour',         'LABELBGCOLOR',         CONFIG_TYPE_COLOR],
+				['labelfontcolour',       'LABELFONTCOLOR',       CONFIG_TYPE_COLOR]
+			];
 
-			# TEMPLATE must come first. DEFAULT
+			// TEMPLATE must come first. DEFAULT
 			if ($this->template != 'DEFAULT' && $this->template != ':: DEFAULT ::') {
 				$output .= TAB . 'TEMPLATE ' . $this->template . EOL;
 			}
@@ -819,7 +822,7 @@ class WeatherMapNode extends WeatherMapItem {
 				$field   = $param[0];
 				$keyword = $param[1];
 
-			#	$comparison=($this->name == 'DEFAULT' ? $this->inherit_fieldlist[$field] : $defdef->$field);
+			//	$comparison=($this->name == 'DEFAULT' ? $this->inherit_fieldlist[$field] : $defdef->$field);
 				if ($this->$field != $dd->$field) {
 					if ($param[2] == CONFIG_TYPE_COLOR) {
 						$output .= TAB . "$keyword " . render_colour($this->$field) . EOL;
@@ -832,33 +835,33 @@ class WeatherMapNode extends WeatherMapItem {
 			}
 
 			// IN/OUT are the same, so we can use the simpler form here
-#			print_r($this->infourl);
-			#$comparison=($this->name == 'DEFAULT'
-			#? $this->inherit_fieldlist['infourl'][IN] : $defdef->infourl[IN]);
+//			print_r($this->infourl);
+			// $comparison=($this->name == 'DEFAULT'
+			// ? $this->inherit_fieldlist['infourl'][IN] : $defdef->infourl[IN]);
 			if ($this->infourl[IN] != $dd->infourl[IN]) {
 				$output .= TAB . 'INFOURL ' . $this->infourl[IN] . EOL;
 			}
 
-			#$comparison=($this->name == 'DEFAULT'
-			#? $this->inherit_fieldlist['overlibcaption'][IN] : $defdef->overlibcaption[IN]);
+			// $comparison=($this->name == 'DEFAULT'
+			// ? $this->inherit_fieldlist['overlibcaption'][IN] : $defdef->overlibcaption[IN]);
 			if ($this->overlibcaption[IN] != $dd->overlibcaption[IN]) {
 				$output .= TAB . 'OVERLIBCAPTION ' . $this->overlibcaption[IN] . EOL;
 			}
 
 			// IN/OUT are the same, so we can use the simpler form here
-			# $comparison=($this->name == 'DEFAULT'
-			# ? $this->inherit_fieldlist['notestext'][IN] : $defdef->notestext[IN]);
+			// $comparison=($this->name == 'DEFAULT'
+			// ? $this->inherit_fieldlist['notestext'][IN] : $defdef->notestext[IN]);
 			if ($this->notestext[IN] != $dd->notestext[IN]) {
 				$output .= TAB . 'NOTES ' . $this->notestext[IN] . EOL;
 			}
 
-			# $comparison=($this->name == 'DEFAULT'
-			# ? $this->inherit_fieldlist['overliburl'][IN] : $defdef->overliburl[IN]);
+			// $comparison=($this->name == 'DEFAULT'
+			// ? $this->inherit_fieldlist['overliburl'][IN] : $defdef->overliburl[IN]);
 			if ($this->overliburl[IN] != $dd->overliburl[IN]) {
 				$output .= TAB . 'OVERLIBGRAPH ' . join(' ', $this->overliburl[IN]) . EOL;
 			}
 
-			$val = $this->iconscalew . ' ' . $this->iconscaleh . ' ' .$this->iconfile;
+			$val = $this->iconscalew . ' ' . $this->iconscaleh . ' ' . $this->iconfile;
 
 			$comparison = $dd->iconscalew . ' ' . $dd->iconscaleh . ' ' . $dd->iconfile;
 
@@ -869,11 +872,11 @@ class WeatherMapNode extends WeatherMapItem {
 					$output .= $this->iconscalew . ' ' . $this->iconscaleh . ' ';
 				}
 
-				$output .= ($this->iconfile == '' ?  'none':$this->iconfile) . EOL;
+				$output .= ($this->iconfile == '' ? 'none' : $this->iconfile) . EOL;
 			}
 
-			# $comparison=($this->name == 'DEFAULT'
-			# ? $this->inherit_fieldlist['targets'] : $defdef->targets);
+			// $comparison=($this->name == 'DEFAULT'
+			// ? $this->inherit_fieldlist['targets'] : $defdef->targets);
 
 			if ($this->targets != $dd->targets) {
 				$output .= TAB . 'TARGET';
@@ -889,38 +892,38 @@ class WeatherMapNode extends WeatherMapItem {
 				$output .= EOL;
 			}
 
-		#	$comparison = ($this->name == 'DEFAULT' ? $this->inherit_fieldlist['usescale'] : $defdef->usescale) . " " .
-		#		($this->name == 'DEFAULT' ? $this->inherit_fieldlist['scalevar'] : $defdef->scalevar);
-			$val = $this->usescale . ' ' . $this->scalevar . ' ' . $this->scaletype;
+		//	$comparison = ($this->name == 'DEFAULT' ? $this->inherit_fieldlist['usescale'] : $defdef->usescale) . " " .
+		//		($this->name == 'DEFAULT' ? $this->inherit_fieldlist['scalevar'] : $defdef->scalevar);
+			$val        = $this->usescale . ' ' . $this->scalevar . ' ' . $this->scaletype;
 			$comparison = $dd->usescale . ' ' . $dd->scalevar . ' ' . $dd->scaletype;
 
 			if (($val != $comparison)) {
 				$output .= TAB . 'USESCALE ' . $val . EOL;
 			}
 
-#			$comparison = ($this->name == 'DEFAULT'
-#				? $this->inherit_fieldlist['useiconscale'] : $defdef->useiconscale) . " " .
-#				($this->name == 'DEFAULT' ? $this->inherit_fieldlist['iconscalevar'] : $defdef->iconscalevar);
-			$val = $this->useiconscale . ' ' . $this->iconscalevar;
-			$comparison= $dd->useiconscale . ' ' . $dd->iconscalevar;
+//			$comparison = ($this->name == 'DEFAULT'
+//				? $this->inherit_fieldlist['useiconscale'] : $defdef->useiconscale) . " " .
+//				($this->name == 'DEFAULT' ? $this->inherit_fieldlist['iconscalevar'] : $defdef->iconscalevar);
+			$val        = $this->useiconscale . ' ' . $this->iconscalevar;
+			$comparison = $dd->useiconscale . ' ' . $dd->iconscalevar;
 
 			if ($val != $comparison) {
 				$output .= TAB . 'USEICONSCALE ' . $val . EOL;
 			}
 
-			#$comparison = ($this->name == 'DEFAULT'
-			#? $this->inherit_fieldlist['labeloffsetx'] : $defdef->labeloffsetx) . " " . ($this->name == 'DEFAULT'
-		#		? $this->inherit_fieldlist['labeloffsety'] : $defdef->labeloffsety);
-			$val = $this->labeloffsetx . ' ' . $this->labeloffsety;
+			// $comparison = ($this->name == 'DEFAULT'
+			// ? $this->inherit_fieldlist['labeloffsetx'] : $defdef->labeloffsetx) . " " . ($this->name == 'DEFAULT'
+		//		? $this->inherit_fieldlist['labeloffsety'] : $defdef->labeloffsety);
+			$val        = $this->labeloffsetx . ' ' . $this->labeloffsety;
 			$comparison = $dd->labeloffsetx . ' ' . $dd->labeloffsety;
 
-			if ($comparison != $val ) {
+			if ($comparison != $val) {
 				$output .= TAB . 'LABELOFFSET ' . $val . EOL;
 			}
 
-			#$comparison=($this->name == 'DEFAULT' ? $this->inherit_fieldlist['x'] : $defdef->x) . " " .
-			#			($this->name == 'DEFAULT' ? $this->inherit_fieldlist['y'] : $defdef->y);
-			$val = $this->x . ' ' . $this->y;
+			// $comparison=($this->name == 'DEFAULT' ? $this->inherit_fieldlist['x'] : $defdef->x) . " " .
+			//			($this->name == 'DEFAULT' ? $this->inherit_fieldlist['y'] : $defdef->y);
+			$val        = $this->x . ' ' . $this->y;
 			$comparison = $dd->x . ' ' . $dd->y;
 
 			if ($val != $comparison) {
@@ -928,9 +931,9 @@ class WeatherMapNode extends WeatherMapItem {
 					$output .= TAB . 'POSITION ' . $val . EOL;
 				} else {
 					if ($this->polar) {
-						$output .= TAB . 'POSITION ' . $this->relative_to . ' ' .  $this->original_x . 'r' . $this->original_y . EOL;
+						$output .= TAB . 'POSITION ' . $this->relative_to . ' ' . $this->original_x . 'r' . $this->original_y . EOL;
 					} else {
-						$output .= TAB . 'POSITION ' . $this->relative_to . ' ' .  $this->original_x . ' ' . $this->original_y . EOL;
+						$output .= TAB . 'POSITION ' . $this->relative_to . ' ' . $this->original_x . ' ' . $this->original_y . EOL;
 					}
 				}
 			}
@@ -962,9 +965,9 @@ class WeatherMapNode extends WeatherMapItem {
 	function asJS() {
 		$js  = "\t\t\t";
 		$js .= 'Nodes[' . js_escape($this->name) . '] = {';
-		$js .= 'x:' . (is_null($this->x)? "'null'" : $this->x) . ', ';
-		$js .= 'y:' . (is_null($this->y)? "'null'" : $this->y) . ', ';
-		$js .= '"id":' . $this->id. ', ';
+		$js .= 'x:' . (is_null($this->x) ? "'null'" : $this->x) . ', ';
+		$js .= 'y:' . (is_null($this->y) ? "'null'" : $this->y) . ', ';
+		$js .= '"id":' . $this->id . ', ';
 		// $js.="y:" . $this->y . ", ";
 		$js .= 'ox:' . $this->original_x . ', ';
 		$js .= 'oy:' . $this->original_y . ', ';
@@ -992,10 +995,10 @@ class WeatherMapNode extends WeatherMapItem {
 	function asJSON($complete = true) {
 		$js  = "\t\t\t";
 		$js .= js_escape($this->name) . ': {';
-		$js .= '"id":' . $this->id. ', ';
-		$js .= '"x":' . ($this->x - $this->centre_x). ', ';
+		$js .= '"id":' . $this->id . ', ';
+		$js .= '"x":' . ($this->x - $this->centre_x) . ', ';
 		$js .= '"y":' . ($this->y - $this->centre_y) . ', ';
-		$js .= '"cx":' . $this->centre_x. ', ';
+		$js .= '"cx":' . $this->centre_x . ', ';
 		$js .= '"cy":' . $this->centre_y . ', ';
 		$js .= '"ox":' . $this->original_x . ', ';
 		$js .= '"oy":' . $this->original_y . ', ';
@@ -1010,7 +1013,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 			$js .= '"overlibwidth":' . $this->overlibheight . ', ';
 			$js .= '"overlibheight":' . $this->overlibwidth . ', ';
-			$js .= '"iconfile":' . js_escape($this->iconfile). ', ';
+			$js .= '"iconfile":' . js_escape($this->iconfile) . ', ';
 		}
 
 		$js .= '"iconcachefile":' . js_escape($this->cachefile);
@@ -1019,4 +1022,3 @@ class WeatherMapNode extends WeatherMapItem {
 		return $js;
 	}
 }
-

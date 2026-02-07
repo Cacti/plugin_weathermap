@@ -57,13 +57,13 @@ $candidates   = 0;
 $totaltargets = 0;
 
 $shortopts = 'VvHh';
-$longopts  = array (
+$longopts  =  [
 	'input:',
 	'output:',
 	'debug',
 	'help',
 	'version'
-);
+];
 
 $options = getopt($shortopts, $longopts);
 
@@ -158,4 +158,3 @@ function display_version() {
 
 	print 'Weathermap Map Tidy Up Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . WM_COPYRIGHT_YEARS . PHP_EOL;
 }
-

@@ -80,7 +80,7 @@ class WMPoint {
 	/**
 	 * Compare two points to within a few decimal places - good enough for graphics! (and unit tests)
 	 *
-	 * @param $point2
+	 * @param       $point2
 	 * @return bool
 	 */
 	public function closeEnough($point2) {
@@ -123,7 +123,7 @@ class WMPoint {
 
 	/**
 	 * @param WMVector $v
-	 * @param float $fraction
+	 * @param float    $fraction
 	 *
 	 * @return $this - to allow for chaining of operations
 	 */
@@ -141,8 +141,8 @@ class WMPoint {
 	/**
 	 * Linear Interpolate between two points
 	 *
-	 * @param $point2 - other point we're interpolating to
-	 * @param $ratio - how far (0-1) between the two
+	 * @param          $point2 - other point we're interpolating to
+	 * @param          $ratio  - how far (0-1) between the two
 	 * @return WMPoint - a new WMPoint
 	 */
 	public function LERPWith($point2, $ratio) {
@@ -159,11 +159,11 @@ class WMPoint {
 	}
 
 	public function asConfig() {
-		return sprintf("%d %d", $this->x, $this->y);
+		return sprintf('%d %d', $this->x, $this->y);
 	}
 
 	public function __toString() {
-		return sprintf("(%s,%s)", floatval($this->x), floatval($this->y));
+		return sprintf('(%s,%s)', floatval($this->x), floatval($this->y));
 	}
 
 	public function translate($deltaX, $deltaY) {
@@ -182,4 +182,3 @@ class WMPoint {
 		return $this;
 	}
 }
-

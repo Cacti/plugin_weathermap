@@ -46,923 +46,922 @@
  * this way, we don't scan the whole table, and we call preg_match a WHOLE lot less
  * there will be more lines in the array, but we'll be checking less of them
  */
-$WM_config_keywords2 = array(
-	'GLOBAL' => array(
-		'FONTDEFINE' => array(
-			array('GLOBAL',"/^\s*FONTDEFINE\s+(\d+)\s+(\S+)\s+(\d+)\s*$/i",'ReadConfig_Handle_FONTDEFINE'),
-			array('GLOBAL',"/^\s*FONTDEFINE\s+(\d+)\s+(\S+)\s*$/i",'ReadConfig_Handle_FONTDEFINE'),
-		),
-		'KEYOUTLINECOLOR' => array(
-			array(
+$WM_config_keywords2 = [
+	'GLOBAL' => [
+		'FONTDEFINE' => [
+			['GLOBAL', "/^\s*FONTDEFINE\s+(\d+)\s+(\S+)\s+(\d+)\s*$/i", 'ReadConfig_Handle_FONTDEFINE'],
+			['GLOBAL', "/^\s*FONTDEFINE\s+(\d+)\s+(\S+)\s*$/i", 'ReadConfig_Handle_FONTDEFINE'],
+		],
+		'KEYOUTLINECOLOR' => [
+			[
 				'GLOBAL',
 				'/^KEYOUTLINECOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_GLOBALCOLOR'
-			),
-			array(
+			],
+			[
 				'GLOBAL',
 				'/^KEYOUTLINECOLOR\s+(none)$/',
 				'ReadConfig_Handle_GLOBALCOLOR'
-			),
-		),
-		'KEYTEXTCOLOR' => array(
-			array(
+			],
+		],
+		'KEYTEXTCOLOR' => [
+			[
 				'GLOBAL',
 				'/^KEYTEXTCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_GLOBALCOLOR'
-			),
-		),
-		'TITLECOLOR' => array(
-			array(
+			],
+		],
+		'TITLECOLOR' => [
+			[
 				'GLOBAL',
 				'/^TITLECOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_GLOBALCOLOR'
-			),
-		),
-		'TIMECOLOR' => array(
-			array(
+			],
+		],
+		'TIMECOLOR' => [
+			[
 				'GLOBAL',
 				'/^TIMECOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_GLOBALCOLOR'
-			),
-		),
-		'KEYBGCOLOR' => array(
-			array(
+			],
+		],
+		'KEYBGCOLOR' => [
+			[
 				'GLOBAL',
 				'/^KEYBGCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_GLOBALCOLOR'
-			),
-			array(
+			],
+			[
 				'GLOBAL',
 				'/^KEYBGCOLOR\s+(none)$/',
 				'ReadConfig_Handle_GLOBALCOLOR'
-			),
-		),
-		'BGCOLOR' => array(
-			array(
+			],
+		],
+		'BGCOLOR' => [
+			[
 				'GLOBAL',
 				'/^BGCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_GLOBALCOLOR'
-			),
-		),
-		'SET' => array(
-			array(
+			],
+		],
+		'SET' => [
+			[
 				'GLOBAL',
 				'SET',
 				'ReadConfig_Handle_SET'
-			),
-		),
-		'HTMLSTYLESHEET' => array(
-			array(
+			],
+		],
+		'HTMLSTYLESHEET' => [
+			[
 				'GLOBAL',
 				'/^HTMLSTYLESHEET\s+(.*)\s*$/i',
-				array('htmlstylesheet' => 1)
-			),
-		),
-		'HTMLOUTPUTFILE' => array(
-			array(
+				['htmlstylesheet' => 1]
+			],
+		],
+		'HTMLOUTPUTFILE' => [
+			[
 				'GLOBAL',
 				'/^HTMLOUTPUTFILE\s+(.*)\s*$/i',
-				array('htmloutputfile' => 1)
-			),
-		),
-		'BACKGROUND' => array(
-			array(
+				['htmloutputfile' => 1]
+			],
+		],
+		'BACKGROUND' => [
+			[
 				'GLOBAL',
 				'/^BACKGROUND\s+(.*)\s*$/i',
-				array('background' => 1)
-			),
-		),
-		'IMAGEOUTPUTFILE' => array(
-			array(
+				['background' => 1]
+			],
+		],
+		'IMAGEOUTPUTFILE' => [
+			[
 				'GLOBAL',
 				'/^IMAGEOUTPUTFILE\s+(.*)\s*$/i',
-				array('imageoutputfile' => 1)
-			),
-		),
-		'DATAOUTPUTFILE' => array(
-			array(
+				['imageoutputfile' => 1]
+			],
+		],
+		'DATAOUTPUTFILE' => [
+			[
 				'GLOBAL',
 				'/^DATAOUTPUTFILE\s+(.*)\s*$/i',
-				array('dataoutputfile' => 1)
-			),
-		),
-		'IMAGEURI' => array(
-			array(
+				['dataoutputfile' => 1]
+			],
+		],
+		'IMAGEURI' => [
+			[
 				'GLOBAL',
 				'/^IMAGEURI\s+(.*)\s*$/i',
-				array('imageuri' => 1)
-			),
-		),
-		'TITLE' => array(
-			array(
+				['imageuri' => 1]
+			],
+		],
+		'TITLE' => [
+			[
 				'GLOBAL',
 				'/^TITLE\s+(.*)\s*$/i',
-				array('title' => 1)
-			),
-		),
-		'HTMLSTYLE' => array(
-			array(
+				['title' => 1]
+			],
+		],
+		'HTMLSTYLE' => [
+			[
 				'GLOBAL',
 				'/^HTMLSTYLE\s+(static|overlib)\s*$/i',
-				array('htmlstyle' => 1)
-			),
-		),
-		'KILO' => array(
-			array(
+				['htmlstyle' => 1]
+			],
+		],
+		'KILO' => [
+			[
 				'GLOBAL',
 				'/^KILO\s+(\d+)\s*$/i',
-				array('kilo' => 1)
-			),
-		),
-		'KEYFONT' => array(
-			array(
+				['kilo' => 1]
+			],
+		],
+		'KEYFONT' => [
+			[
 				'GLOBAL',
 				'/^KEYFONT\s+(\d+)\s*$/i',
-				array('keyfont' => 1)
-			),
-		),
-		'TITLEFONT' => array(
-			array(
+				['keyfont' => 1]
+			],
+		],
+		'TITLEFONT' => [
+			[
 				'GLOBAL',
 				'/^TITLEFONT\s+(\d+)\s*$/i',
-				array('titlefont' => 1)
-			),
-		),
-		'TIMEFONT' => array(
-			array(
+				['titlefont' => 1]
+			],
+		],
+		'TIMEFONT' => [
+			[
 				'GLOBAL',
 				'/^TIMEFONT\s+(\d+)\s*$/i',
-				array('timefont' => 1)
-			),
-		),
-		'WIDTH' => array(
-			array(
+				['timefont' => 1]
+			],
+		],
+		'WIDTH' => [
+			[
 				'GLOBAL',
 				"/^WIDTH\s+(\d+)\s*$/i",
-				array('width' => 1)
-			),
-		),
-		'HEIGHT' => array(
-			array(
+				['width' => 1]
+			],
+		],
+		'HEIGHT' => [
+			[
 				'(GLOBAL)',
 				"/^HEIGHT\s+(\d+)\s*$/i",
-				array('height' => 1)
-			),
-		),
-		'TITLEPOS' => array(
-			array(
+				['height' => 1]
+			],
+		],
+		'TITLEPOS' => [
+			[
 				'GLOBAL',
 				'/^TITLEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i',
-				array(
+				[
 					'titlex' => 1,
 					'titley' => 2
-				)
-			),
-			array(
+				]
+			],
+			[
 				'GLOBAL',
 				'/^TITLEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i',
-				array(
+				[
 					'titlex' => 1,
 					'titley' => 2,
-					'title' => 3
-				)
-			),
-		),
-		'TIMEPOS' => array(
-			array(
+					'title'  => 3
+				]
+			],
+		],
+		'TIMEPOS' => [
+			[
 				'GLOBAL',
 				'/^TIMEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i',
-				array(
+				[
 					'timex' => 1,
 					'timey' => 2
-				)
-			),
-			array(
+				]
+			],
+			[
 				'GLOBAL',
 				'/^TIMEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i',
-				array(
-					'timex' => 1,
-					'timey' => 2,
+				[
+					'timex'     => 1,
+					'timey'     => 2,
 					'stamptext' => 3
-				)
-			),
-		),
-		'MINTIMEPOS' => array(
-			array(
+				]
+			],
+		],
+		'MINTIMEPOS' => [
+			[
 				'GLOBAL',
 				'/^MINTIMEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i',
-				array(
+				[
 					'mintimex' => 1,
 					'mintimey' => 2
-				)
-			),
-			array(
+				]
+			],
+			[
 				'GLOBAL',
 				'/^MINTIMEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i',
-				array(
-					'mintimex' => 1,
-					'mintimey' => 2,
+				[
+					'mintimex'     => 1,
+					'mintimey'     => 2,
 					'minstamptext' => 3
-				)
-			),
-		),
-		'MAXTIMEPOS' => array(
-			array(
+				]
+			],
+		],
+		'MAXTIMEPOS' => [
+			[
 				'GLOBAL',
 				'/^MAXTIMEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i',
-				array(
+				[
 					'maxtimex' => 1,
 					'maxtimey' => 2
-				)
-			),
-			array(
+				]
+			],
+			[
 				'GLOBAL',
 				'/^MAXTIMEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i',
-				array(
-					'maxtimex' => 1,
-					'maxtimey' => 2,
+				[
+					'maxtimex'     => 1,
+					'maxtimey'     => 2,
 					'maxstamptext' => 3
-				)
-			),
-		),
-	), // end of global
-	'NODE' => array(
-		'TARGET' => array(
-			array(
+				]
+			],
+		],
+	], // end of global
+	'NODE' => [
+		'TARGET' => [
+			[
 				'NODE',
 				'TARGET',
 				'ReadConfig_Handle_TARGET'
-			),
-		),
-        'SET' => array(
-			array(
+			],
+		],
+		'SET' => [
+			[
 				'NODE',
 				'SET',
 				'ReadConfig_Handle_SET'
-			),
-		),
-		'AICONOUTLINECOLOR' => array(
-			array(
+			],
+		],
+		'AICONOUTLINECOLOR' => [
+			[
 				'NODE',
 				'/^AICONOUTLINECOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-			array(
+			],
+			[
 				'NODE',
 				'/^AICONOUTLINECOLOR\s+(none)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'AICONFILLCOLOR' => array(
-			array(
+			],
+		],
+		'AICONFILLCOLOR' => [
+			[
 				'NODE',
 				'/^AICONFILLCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-			array(
+			],
+			[
 				'NODE',
 				'/^AICONFILLCOLOR\s+(copy)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'LABELOUTLINECOLOR' => array(
-			array(
+			],
+		],
+		'LABELOUTLINECOLOR' => [
+			[
 				'NODE',
 				'/^LABELOUTLINECOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-			array(
+			],
+			[
 				'NODE',
 				'/^LABELOUTLINECOLOR\s+(none)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'LABELBGCOLOR' => array(
-			array(
+			],
+		],
+		'LABELBGCOLOR' => [
+			[
 				'NODE',
 				'/^LABELBGCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-			array(
+			],
+			[
 				'NODE',
 				'/^LABELBGCOLOR\s+(none)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-        ),
-        'LABELFONTCOLOR' => array(
-			array(
+			],
+		],
+		'LABELFONTCOLOR' => [
+			[
 				'NODE',
 				'/^LABELFONTCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-			array(
+			],
+			[
 				'NODE',
 				'/^LABELFONTCOLOR\s+(contrast)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'LABELFONTSHADOWCOLOR' => array(
-			array(
+			],
+		],
+		'LABELFONTSHADOWCOLOR' => [
+			[
 				'NODE',
 				'/^LABELFONTSHADOWCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'NOTES' => array(
-			array(
+			],
+		],
+		'NOTES' => [
+			[
 				'NODE',
 				'/^NOTES\s+(.*)\s*$/i',
-				array(
-					'notestext[IN]' => 1,
+				[
+					'notestext[IN]'  => 1,
 					'notestext[OUT]' => 1
-				)
-			),
-		),
-		'MAXVALUE' => array(
-			array(
+				]
+			],
+		],
+		'MAXVALUE' => [
+			[
 				'NODE',
 				'/^(MAXVALUE)\s+(\d+\.?\d*[KMGT]?)\s+(\d+\.?\d*[KMGT]?)\s*$/i',
-				array(
-					'max_bandwidth_in_cfg' => 2,
+				[
+					'max_bandwidth_in_cfg'  => 2,
 					'max_bandwidth_out_cfg' => 3
-				)
-			),
-			array(
+				]
+			],
+			[
 				'NODE',
 				'/^(MAXVALUE)\s+(\d+\.?\d*[KMGT]?)\s*$/i',
-				array(
-					'max_bandwidth_in_cfg' => 2,
+				[
+					'max_bandwidth_in_cfg'  => 2,
 					'max_bandwidth_out_cfg' => 2
-				)
-			),
-        ),
-        'ORIGIN' => array(
-			array('NODE',
+				]
+			],
+		],
+		'ORIGIN' => [
+			['NODE',
 				"/^ORIGIN\s+(C|NE|SE|NW|SW|N|S|E|W)/i",
-				array("position_origin" => 1)
-			)
-        ),
-        'POSITION' => array(
-			array(
+				['position_origin' => 1]
+			]
+		],
+		'POSITION' => [
+			[
 				'NODE',
 				"/^POSITION\s+([-+]?\d+)\s+([-+]?\d+)\s*$/i",
-				array(
+				[
 					'x' => 1,
 					'y' => 2
-				)
-			),
-			array(
+				]
+			],
+			[
 				'NODE',
 				"/^POSITION\s+(\S+)\s+([-+]?\d+)\s+([-+]?\d+)\s*$/i",
-				array(
-					'x' => 2,
-					'y' => 3,
-					'original_x' => 2,
-					'original_y' => 3,
-					'relative_to' => 1,
+				[
+					'x'                 => 2,
+					'y'                 => 3,
+					'original_x'        => 2,
+					'original_y'        => 3,
+					'relative_to'       => 1,
 					'relative_resolved' => false
-				)
-			),
-			array(
+				]
+			],
+			[
 				'NODE',
 				"/^POSITION\s+(\S+)\s+([-+]?\d+)r(\d+)\s*$/i",
-				array(
-					'x' => 2,
-					'y' => 3,
-					'original_x' => 2,
-					'original_y' => 3,
-					'relative_to' => 1,
-					'polar' => true,
+				[
+					'x'                 => 2,
+					'y'                 => 3,
+					'original_x'        => 2,
+					'original_y'        => 3,
+					'relative_to'       => 1,
+					'polar'             => true,
 					'relative_resolved' => false
-				)
-			),
-		),
-		'INFOURL' => array(
-			array(
+				]
+			],
+		],
+		'INFOURL' => [
+			[
 				'NODE',
 				'/^INFOURL\s+(.*)\s*$/i',
-				array(
-					'infourl[IN]' => 1,
+				[
+					'infourl[IN]'  => 1,
 					'infourl[OUT]' => 1
-				)
-			),
-		),
-		'OVERLIBCAPTION' => array(
-			array(
+				]
+			],
+		],
+		'OVERLIBCAPTION' => [
+			[
 				'NODE',
 				'/^OVERLIBCAPTION\s+(.*)\s*$/i',
-				array(
-					'overlibcaption[IN]' => 1,
+				[
+					'overlibcaption[IN]'  => 1,
 					'overlibcaption[OUT]' => 1
-				)
-			),
-		),
-		'ZORDER' => array(
-			array(
+				]
+			],
+		],
+		'ZORDER' => [
+			[
 				'NODE',
 				"/^ZORDER\s+([-+]?\d+)\s*$/i",
-				array('zorder' => 1)
-			),
-		),
-		'OVERLIBHEIGHT' => array(
-			array(
+				['zorder' => 1]
+			],
+		],
+		'OVERLIBHEIGHT' => [
+			[
 				'NODE',
 				"/^OVERLIBHEIGHT\s+(\d+)\s*$/i",
-				array('overlibheight' => 1)
-			),
-		),
-		'OVERLIBWIDTH' => array(
-			array(
+				['overlibheight' => 1]
+			],
+		],
+		'OVERLIBWIDTH' => [
+			[
 				'NODE',
 				"/^OVERLIBWIDTH\s+(\d+)\s*$/i",
-				array('overlibwidth' => 1)
-			),
-		),
-		'LABELFONT' => array(
-			array(
+				['overlibwidth' => 1]
+			],
+		],
+		'LABELFONT' => [
+			[
 				'NODE',
 				'/^LABELFONT\s+(\d+)\s*$/i',
-				array('labelfont' => 1)
-			),
-		),
-		'LABELANGLE' => array(
-			array(
+				['labelfont' => 1]
+			],
+		],
+		'LABELANGLE' => [
+			[
 				'NODE',
 				'/^LABELANGLE\s+(0|90|180|270)\s*$/i',
-				array('labelangle' => 1)
-			),
-		),
-		'ICON' => array(
-			array(
+				['labelangle' => 1]
+			],
+		],
+		'ICON' => [
+			[
 				'NODE',
 				'/^ICON\s+(\S+)\s*$/i',
-				array(
-					'iconfile' => 1,
+				[
+					'iconfile'   => 1,
 					'iconscalew' => '#0',
 					'iconscaleh' => '#0'
-				)
-			),
-			array(
+				]
+			],
+			[
 				'NODE',
 				'/^ICON\s+(\S+)\s*$/i',
-				array('iconfile' => 1)
-			),
-            array(
+				['iconfile' => 1]
+			],
+			[
 				'NODE',
 				'/^ICON\s+(\d+)\s+(\d+)\s+(inpie|outpie|box|rbox|round|gauge|nink)\s*$/i',
-				array(
-					'iconfile' => 3,
+				[
+					'iconfile'   => 3,
 					'iconscalew' => 1,
 					'iconscaleh' => 2
-				)
-			),
-			array(
+				]
+			],
+			[
 				'NODE',
 				'/^ICON\s+(\d+)\s+(\d+)\s+(\S+)\s*$/i',
-				array(
-					'iconfile' => 3,
+				[
+					'iconfile'   => 3,
 					'iconscalew' => 1,
 					'iconscaleh' => 2
-				)
-			),
-		),
-		'LABEL' => array(
-			array(
+				]
+			],
+		],
+		'LABEL' => [
+			[
 				'NODE',
 				"/^LABEL\s*$/i",
-				array('label' => '')
-			), # special case for blank labels
-			array(
+				['label' => '']
+			], // special case for blank labels
+			[
 				'NODE',
 				"/^LABEL\s+(.*)\s*$/i",
-				array('label' => 1)
-			),
-		),
-		'LABELOFFSET' => array(
-			array(
+				['label' => 1]
+			],
+		],
+		'LABELOFFSET' => [
+			[
 				'NODE',
 				'/^LABELOFFSET\s+([-+]?\d+)\s+([-+]?\d+)\s*$/i',
-				array(
+				[
 					'labeloffsetx' => 1,
 					'labeloffsety' => 2
-				)
-			),
-			array(
+				]
+			],
+			[
 				'NODE',
 				'/^LABELOFFSET\s+(C|NE|SE|NW|SW|N|S|E|W)\s*$/i',
-				array('labeloffset' => 1)
-			),
-			array(
+				['labeloffset' => 1]
+			],
+			[
 				'NODE',
 				'/^LABELOFFSET\s+((C|NE|SE|NW|SW|N|S|E|W)\d+)\s*$/i',
-				array('labeloffset' => 1)
-			),
-			array(
+				['labeloffset' => 1]
+			],
+			[
 				'NODE',
 				'/^LABELOFFSET\s+(-?\d+r\d+)\s*$/i',
-				array('labeloffset' => 1)
-			),
-		),
-		'USESCALE' => array(
-			array(
+				['labeloffset' => 1]
+			],
+		],
+		'USESCALE' => [
+			[
 				'NODE',
 				"/^(USESCALE)\s+([A-Za-z][A-Za-z0-9_]*)(\s+(in|out))?(\s+(absolute|percent))?\s*$/i",
-				"ReadConfig_Handle_NODE_USESCALE"
-			),
-		),
-		'USEICONSCALE' => array(
-			array(
+				'ReadConfig_Handle_NODE_USESCALE'
+			],
+		],
+		'USEICONSCALE' => [
+			[
 				'NODE',
 				"/^(USEICONSCALE)\s+([A-Za-z][A-Za-z0-9_]*)(\s+(in|out))?(\s+(absolute|percent))?\s*$/i",
-				"ReadConfig_Handle_NODE_USESCALE"
-			),
-		),
-		'OVERLIBGRAPH' => array(
-			array(
+				'ReadConfig_Handle_NODE_USESCALE'
+			],
+		],
+		'OVERLIBGRAPH' => [
+			[
 				'NODE',
 				"/^OVERLIBGRAPH\s+(.+)$/i",
-				"ReadConfig_Handle_OVERLIB"
-			)
-		),
-	),
-	'LINK' => array(
-		'TARGET' => array(
-			array(
+				'ReadConfig_Handle_OVERLIB'
+			]
+		],
+	],
+	'LINK' => [
+		'TARGET' => [
+			[
 				'LINK',
 				'TARGET',
 				'ReadConfig_Handle_TARGET'
-			),
-		),
-		'SET' => array(
-			array(
+			],
+		],
+		'SET' => [
+			[
 				'LINK',
 				'SET',
 				'ReadConfig_Handle_SET'
-			),
-		),
-		'NODES' => array(
-			array(
+			],
+		],
+		'NODES' => [
+			[
 				'LINK',
 				'NODES',
 				'ReadConfig_Handle_NODES'
-			),
-		),
-		'VIA' => array(
-			array(
+			],
+		],
+		'VIA' => [
+			[
 				'LINK',
 				'VIA',
 				'ReadConfig_Handle_VIA'
-			),
-		),
-		'COMMENTFONTCOLOR' => array(
-			array(
+			],
+		],
+		'COMMENTFONTCOLOR' => [
+			[
 				'LINK',
 				'/^COMMENTFONTCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-			array(
+			],
+			[
 				'LINK',
 				'/^COMMENTFONTCOLOR\s+(contrast)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'OUTLINECOLOR' => array(
-			array(
+			],
+		],
+		'OUTLINECOLOR' => [
+			[
 				'LINK',
 				'/^OUTLINECOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-			array(
+			],
+			[
 				'LINK',
 				'/^OUTLINECOLOR\s+(none)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'BWOUTLINECOLOR' => array(
-			array(
+			],
+		],
+		'BWOUTLINECOLOR' => [
+			[
 				'LINK',
 				'/^BWOUTLINECOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-			array(
+			],
+			[
 				'LINK',
 				'/^BWOUTLINECOLOR\s+(none)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'BWBOXCOLOR' => array(
-			array(
+			],
+		],
+		'BWBOXCOLOR' => [
+			[
 				'LINK',
 				'/^BWBOXCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-			array(
+			],
+			[
 				'LINK',
 				'/^BWBOXCOLOR\s+(none)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'BWFONTCOLOR' => array(
-			array(
+			],
+		],
+		'BWFONTCOLOR' => [
+			[
 				'LINK',
 				'/^BWFONTCOLOR\s+(\d+)\s+(\d+)\s+(\d+)$/',
 				'ReadConfig_Handle_COLOR'
-			),
-		),
-		'NOTES' => array(
-			array(
+			],
+		],
+		'NOTES' => [
+			[
 				'LINK',
 				'/^NOTES\s+(.*)\s*$/i',
-				array(
-					'notestext[IN]' => 1,
+				[
+					'notestext[IN]'  => 1,
 					'notestext[OUT]' => 1
-				)
-			),
-		),
-		'MAXVALUE' => array(
-			array(
+				]
+			],
+		],
+		'MAXVALUE' => [
+			[
 				'LINK',
 				'/^(MAXVALUE)\s+(\d+\.?\d*[KMGT]?)\s+(\d+\.?\d*[KMGT]?)\s*$/i',
-				array(
-					'max_bandwidth_in_cfg' => 2,
+				[
+					'max_bandwidth_in_cfg'  => 2,
 					'max_bandwidth_out_cfg' => 3
-				)
-			),
-			array(
+				]
+			],
+			[
 				'LINK',
 				'/^(MAXVALUE)\s+(\d+\.?\d*[KMGT]?)\s*$/i',
-				array(
-					'max_bandwidth_in_cfg' => 2,
+				[
+					'max_bandwidth_in_cfg'  => 2,
 					'max_bandwidth_out_cfg' => 2
-				)
-			),
-		),
-		'WIDTH' => array(
-			array(
+				]
+			],
+		],
+		'WIDTH' => [
+			[
 				'LINK',
 				"/^WIDTH\s+(\d+)\s*$/i",
-				array('width' => 1)
-			),
-			array(
+				['width' => 1]
+			],
+			[
 				'LINK',
 				"/^WIDTH\s+(\d+\.\d+)\s*$/i",
-				array('width' => 1)
-			),
-		),
-		'SPLITPOS' => array(
-			array(
+				['width' => 1]
+			],
+		],
+		'SPLITPOS' => [
+			[
 				'LINK',
 				'/^SPLITPOS\s+(\d+)\s*$/i',
-				array('splitpos' => 1)
-			),
-		),
-		'BWLABELPOS' => array(
-			array(
+				['splitpos' => 1]
+			],
+		],
+		'BWLABELPOS' => [
+			[
 				'LINK',
 				'/^BWLABELPOS\s+(\d+)\s(\d+)\s*$/i',
-				array(
-					'labeloffset_in' => 1,
+				[
+					'labeloffset_in'  => 1,
 					'labeloffset_out' => 2
-				)
-			),
-		),
-		'COMMENTPOS' => array(
-			array(
+				]
+			],
+		],
+		'COMMENTPOS' => [
+			[
 				'LINK',
 				'/^COMMENTPOS\s+(\d+)\s(\d+)\s*$/i',
-				array(
-					'commentoffset_in' => 1,
+				[
+					'commentoffset_in'  => 1,
 					'commentoffset_out' => 2
-				)
-			),
-		),
-		'DUPLEX' => array(
-			array(
+				]
+			],
+		],
+		'DUPLEX' => [
+			[
 				'LINK',
 				'/^DUPLEX\s+(full|half)\s*$/i',
-				array('duplex' => 1)
-			),
-		),
-		'BWSTYLE' => array(
-			array(
+				['duplex' => 1]
+			],
+		],
+		'BWSTYLE' => [
+			[
 				'LINK',
 				'/^BWSTYLE\s+(classic|angled)\s*$/i',
-				array('labelboxstyle' => 1)
-			),
-		),
-		'LINKSTYLE' => array(
-			array(
+				['labelboxstyle' => 1]
+			],
+		],
+		'LINKSTYLE' => [
+			[
 				'LINK',
 				'/^LINKSTYLE\s+(twoway|oneway)\s*$/i',
-				array('linkstyle' => 1)
-			),
-		),
-		'COMMENTSTYLE' => array(
-			array(
+				['linkstyle' => 1]
+			],
+		],
+		'COMMENTSTYLE' => [
+			[
 				'LINK',
 				'/^COMMENTSTYLE\s+(edge|center)\s*$/i',
-				array('commentstyle' => 1)
-			),
-		),
-		'ARROWSTYLE' => array(
-			array(
+				['commentstyle' => 1]
+			],
+		],
+		'ARROWSTYLE' => [
+			[
 				'LINK',
 				'/^ARROWSTYLE\s+(classic|compact)\s*$/i',
-				array('arrowstyle' => 1)
-			),
-		),
-		'VIASTYLE' => array(
-			array(
+				['arrowstyle' => 1]
+			],
+		],
+		'VIASTYLE' => [
+			[
 				'LINK',
 				'/^VIASTYLE\s+(curved|angled)\s*$/i',
-				array('viastyle' => 1)
-			),
-		),
-		'INCOMMENT' => array(
-			array(
+				['viastyle' => 1]
+			],
+		],
+		'INCOMMENT' => [
+			[
 				'LINK',
 				'/^INCOMMENT\s+(.*)\s*$/i',
-				array('comments[IN]' => 1)
-			),
-		),
-		'OUTCOMMENT' => array(
-			array(
+				['comments[IN]' => 1]
+			],
+		],
+		'OUTCOMMENT' => [
+			[
 				'LINK',
 				'/^OUTCOMMENT\s+(.*)\s*$/i',
-				array('comments[OUT]' => 1)
-			),
-		),
-		'OVERLIBGRAPH' => array(
-			array(
+				['comments[OUT]' => 1]
+			],
+		],
+		'OVERLIBGRAPH' => [
+			[
 				'LINK',
 				"/^OVERLIBGRAPH\s+(.+)$/i",
-				"ReadConfig_Handle_OVERLIB"
-			)
-		),
-		'INOVERLIBGRAPH' => array(
-			array(
+				'ReadConfig_Handle_OVERLIB'
+			]
+		],
+		'INOVERLIBGRAPH' => [
+			[
 				'LINK',
 				"/^INOVERLIBGRAPH\s+(.+)$/i",
-				"ReadConfig_Handle_OVERLIB"
-			)
-		),
-		'OUTOVERLIBGRAPH' => array(
-			array(
+				'ReadConfig_Handle_OVERLIB'
+			]
+		],
+		'OUTOVERLIBGRAPH' => [
+			[
 				'LINK',
 				"/^OUTOVERLIBGRAPH\s+(.+)$/i",
-				"ReadConfig_Handle_OVERLIB"
-			)
-		),
-		'USESCALE' => array(
-			array(
+				'ReadConfig_Handle_OVERLIB'
+			]
+		],
+		'USESCALE' => [
+			[
 				'LINK',
 				'/^USESCALE\s+([A-Za-z][A-Za-z0-9_]*)\s*$/i',
-				array('usescale' => 1)
-			),
-			array(
+				['usescale' => 1]
+			],
+			[
 				'LINK',
 				'/^USESCALE\s+([A-Za-z][A-Za-z0-9_]*)\s+(absolute|percent)\s*$/i',
-				array(
-					'usescale' => 1,
+				[
+					'usescale'  => 1,
 					'scaletype' => 2
-				)
-			),
-		),
-		'BWFONT' => array(
-			array(
+				]
+			],
+		],
+		'BWFONT' => [
+			[
 				'LINK',
 				'/^BWFONT\s+(\d+)\s*$/i',
-				array('bwfont' => 1)
-			),
-		),
-		'COMMENTFONT' => array(
-			array(
+				['bwfont' => 1]
+			],
+		],
+		'COMMENTFONT' => [
+			[
 				'LINK',
 				'/^COMMENTFONT\s+(\d+)\s*$/i',
-				array('commentfont' => 1)
-			),
-		),
-		'BANDWIDTH' => array(
-			array(
+				['commentfont' => 1]
+			],
+		],
+		'BANDWIDTH' => [
+			[
 				'LINK',
 				'/^(BANDWIDTH)\s+(\d+\.?\d*[KMGT]?)\s+(\d+\.?\d*[KMGT]?)\s*$/i',
-				array(
-					'max_bandwidth_in_cfg' => 2,
+				[
+					'max_bandwidth_in_cfg'  => 2,
 					'max_bandwidth_out_cfg' => 3
-				)
-			),
-			array(
+				]
+			],
+			[
 				'LINK',
 				'/^(BANDWIDTH)\s+(\d+\.?\d*[KMGT]?)\s*$/i',
-				array(
-					'max_bandwidth_in_cfg' => 2,
+				[
+					'max_bandwidth_in_cfg'  => 2,
 					'max_bandwidth_out_cfg' => 2
-				)
-			),
-		),
-		'OUTBWFORMAT' => array(
-			array(
+				]
+			],
+		],
+		'OUTBWFORMAT' => [
+			[
 				'LINK',
 				'/^OUTBWFORMAT\s+(.*)\s*$/i',
-				array(
+				[
 					'bwlabelformats[OUT]' => 1,
-					'labelstyle' => '--'
-				)
-			),
-		),
-		'INBWFORMAT' => array(
-			array(
+					'labelstyle'          => '--'
+				]
+			],
+		],
+		'INBWFORMAT' => [
+			[
 				'LINK',
 				'/^INBWFORMAT\s+(.*)\s*$/i',
-				array(
+				[
 					'bwlabelformats[IN]' => 1,
-					'labelstyle' => '--'
-				)
-			),
-		),
-		'INNOTES' => array(
-			array(
+					'labelstyle'         => '--'
+				]
+			],
+		],
+		'INNOTES' => [
+			[
 				'LINK',
 				'/^INNOTES\s+(.*)\s*$/i',
-				array('notestext[IN]' => 1)
-			),
-		),
-		'OUTNOTES' => array(
-			array(
+				['notestext[IN]' => 1]
+			],
+		],
+		'OUTNOTES' => [
+			[
 				'LINK',
 				'/^OUTNOTES\s+(.*)\s*$/i',
-				array('notestext[OUT]' => 1)
-			),
-		),
-		'INFOURL' => array(
-			array(
+				['notestext[OUT]' => 1]
+			],
+		],
+		'INFOURL' => [
+			[
 				'LINK',
 				'/^INFOURL\s+(.*)\s*$/i',
-				array(
-					'infourl[IN]' => 1,
+				[
+					'infourl[IN]'  => 1,
 					'infourl[OUT]' => 1
-				)
-			),
-		),
-		'ININFOURL' => array(
-			array(
+				]
+			],
+		],
+		'ININFOURL' => [
+			[
 				'LINK',
 				'/^ININFOURL\s+(.*)\s*$/i',
-				array('infourl[IN]' => 1)
-			),
-		),
-		'OUTINFOURL' => array(
-			array(
+				['infourl[IN]' => 1]
+			],
+		],
+		'OUTINFOURL' => [
+			[
 				'LINK',
 				'/^OUTINFOURL\s+(.*)\s*$/i',
-				array('infourl[OUT]' => 1)
-			),
-		),
-		'OVERLIBCAPTION' => array(
-			array(
+				['infourl[OUT]' => 1]
+			],
+		],
+		'OVERLIBCAPTION' => [
+			[
 				'LINK',
 				'/^OVERLIBCAPTION\s+(.*)\s*$/i',
-				array(
-					'overlibcaption[IN]' => 1,
+				[
+					'overlibcaption[IN]'  => 1,
 					'overlibcaption[OUT]' => 1
-				)
-			),
-		),
-		'INOVERLIBCAPTION' => array(
-			array(
+				]
+			],
+		],
+		'INOVERLIBCAPTION' => [
+			[
 				'LINK',
 				'/^INOVERLIBCAPTION\s+(.*)\s*$/i',
-				array('overlibcaption[IN]' => 1)
-			),
-		),
-		'OUTOVERLIBCAPTION' => array(
-			array(
+				['overlibcaption[IN]' => 1]
+			],
+		],
+		'OUTOVERLIBCAPTION' => [
+			[
 				'LINK',
 				'/^OUTOVERLIBCAPTION\s+(.*)\s*$/i',
-				array('overlibcaption[OUT]' => 1)
-			),
-		),
-		'ZORDER' => array(
-			array(
+				['overlibcaption[OUT]' => 1]
+			],
+		],
+		'ZORDER' => [
+			[
 				'LINK',
 				"/^ZORDER\s+([-+]?\d+)\s*$/i",
-				array('zorder' => 1)
-			),
-		),
-		'OVERLIBWIDTH' => array(
-			array(
+				['zorder' => 1]
+			],
+		],
+		'OVERLIBWIDTH' => [
+			[
 				'LINK',
 				"/^OVERLIBWIDTH\s+(\d+)\s*$/i",
-				array('overlibwidth' => 1)
-			),
-		),
-		'OVERLIBHEIGHT' => array(
-			array(
+				['overlibwidth' => 1]
+			],
+		],
+		'OVERLIBHEIGHT' => [
+			[
 				'LINK',
 				"/^OVERLIBHEIGHT\s+(\d+)\s*$/i",
-				array('overlibheight' => 1)
-			),
-		),
-	) // end of link
-);
-
+				['overlibheight' => 1]
+			],
+		],
+	] // end of link
+];

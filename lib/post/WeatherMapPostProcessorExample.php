@@ -54,7 +54,7 @@ class WeatherMapPostProcessorExample extends WeatherMapPostProcessor {
 		if ($enable) {
 			wm_debug(__CLASS__ . ' is here');
 
-            /**
+			/**
 			 * do your work in here...
 			 */
 
@@ -65,4 +65,3 @@ class WeatherMapPostProcessorExample extends WeatherMapPostProcessor {
 		}
 	}
 }
-

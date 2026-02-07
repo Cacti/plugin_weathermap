@@ -48,18 +48,18 @@
  * TARGET fping:hostname
  */
 class WeatherMapDataSource_fping extends WeatherMapDataSource {
-	var $addresscache = array();
-	var $donepings = false;
-	var $results = array();
+	var $addresscache = [];
+	var $donepings    = false;
+	var $results      = [];
 	var $fping_cmd;
 
 	function Init(&$map) {
-		#
-		# You may need to change the line below to have something like "/usr/local/bin/fping" or "/usr/bin/fping" instead.
-		#
-		$this->fping_cmd = "/usr/local/sbin/fping";
+		//
+		// You may need to change the line below to have something like "/usr/local/bin/fping" or "/usr/bin/fping" instead.
+		//
+		$this->fping_cmd = '/usr/local/sbin/fping';
 
-		return(true);
+		return (true);
 	}
 
 	// this function will get called for every datasource, even if we replied false to Init.
@@ -69,7 +69,8 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 		if (preg_match("/^fping:(\S+)$/",$targetstring,$matches)) {
 			// save the address. This way, we can do ONE fping call for all the pings in the map.
 			// fping does it all in parallel, so 10 hosts takes the same time as 1
-			$this->addresscache[]=$matches[1];
+			$this->addresscache[] = $matches[1];
+
 			return true;
 		} else {
 			return false;
@@ -82,7 +83,8 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 		$data_time = 0;
 
 		$ping_count = intval($map->get_hint('fping_ping_count'));
-		if ($ping_count==0) {
+
+		if ($ping_count == 0) {
 			$ping_count = 5;
 		}
 
@@ -91,7 +93,7 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 
 			$pattern = "/^$target\s:";
 
-			for($i=0;$i<$ping_count;$i++) {
+			for ($i = 0; $i < $ping_count; $i++) {
 				$pattern .= '\s(\S+)';
 			}
 
@@ -103,10 +105,12 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 				wm_debug("Running $command");
 				$pipe = popen($command, 'r');
 
-				$count = 0; $hitcount=0;
+				$count    = 0;
+				$hitcount = 0;
+
 				if (isset($pipe)) {
 					while (!feof($pipe)) {
-						$line=fgets($pipe, 4096);
+						$line = fgets($pipe, 4096);
 						$count++;
 
 						wm_debug("Output: $line");
@@ -122,9 +126,9 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 							$min   = 999999;
 							$max   = 0;
 
-							for($i=1;$i<=$ping_count;$i++) {
-								if ($matches[$i]=='-') {
-									$loss+=(100/$ping_count);
+							for ($i = 1; $i <= $ping_count; $i++) {
+								if ($matches[$i] == '-') {
+									$loss += (100 / $ping_count);
 								} else {
 									$cnt++;
 									$total += $matches[$i];
@@ -133,17 +137,17 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 								}
 							}
 
-							if ($cnt >0) {
-								$ave = $total/$cnt;
+							if ($cnt > 0) {
+								$ave = $total / $cnt;
 							}
 
 							wm_debug("Result: $cnt $min -> $max $ave $loss");
 						}
 					}
 
-					pclose ($pipe);
+					pclose($pipe);
 
-					if ($count==0) {
+					if ($count == 0) {
 						wm_warn("FPing ReadData: No lines read. Bad hostname? ($target) [WMFPING03]");
 					} else {
 						if ($hitcount == 0) {
@@ -162,9 +166,8 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 			}
 		}
 
-		wm_debug ('FPing ReadData: Returning (' . ($data[IN] === null ? 'NULL':$data[IN]) . ',' . ($data[OUT] === null ? 'NULL':$data[OUT]) . ",$data_time)");
+		wm_debug('FPing ReadData: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)");
 
-		return(array($data[IN], $data[OUT], $data_time));
+		return ([$data[IN], $data[OUT], $data_time]);
 	}
 }
-

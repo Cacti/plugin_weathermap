@@ -47,46 +47,46 @@
 
 class WeatherMapDataSource_tabfile extends WeatherMapDataSource {
 	function Recognise($targetstring) {
-		if(preg_match("/\.(tsv|txt)$/",$targetstring,$matches)) {
-			return TRUE;
+		if (preg_match("/\.(tsv|txt)$/",$targetstring,$matches)) {
+			return true;
 		} else {
-			return FALSE;
+			return false;
 		}
 	}
 
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map)
 	function ReadData($targetstring, &$map, &$item) {
-		$data[IN]  = NULL;
-		$data[OUT] = NULL;
+		$data[IN]  = null;
+		$data[OUT] = null;
 		$data_time = 0;
 		$itemname  = $item->name;
 
 		$matches = 0;
 
-		$fd = fopen($targetstring, "r");
+		$fd = fopen($targetstring, 'r');
 
 		if ($fd) {
 			while (!feof($fd)) {
-				$buffer=fgets($fd, 4096);
+				$buffer = fgets($fd, 4096);
 
-				# strip out any Windows line-endings that have gotten in here
-				$buffer=str_replace("\r", "", $buffer);
+				// strip out any Windows line-endings that have gotten in here
+				$buffer = str_replace("\r", '', $buffer);
 
 				if (preg_match("/^$itemname\t(\d+\.?\d*[KMGT]*)\t(\d+\.?\d*[KMGT]*)/", $buffer, $matches)) {
-					$data[IN]=unformat_number($matches[1]);
-					$data[OUT]=unformat_number($matches[2]);
+					$data[IN]  = unformat_number($matches[1]);
+					$data[OUT] = unformat_number($matches[2]);
 				}
 			}
 
-			$stats = stat($targetstring);
+			$stats     = stat($targetstring);
 			$data_time = $stats['mtime'];
 		} else {
 			// some error code to go in here
-			wm_debug ("TabText ReadData: Couldn't open ($targetstring)");
+			wm_debug("TabText ReadData: Couldn't open ($targetstring)");
 		}
 
-		wm_debug ("TabText ReadData: Returning (".($data[IN]===NULL?'NULL':$data[IN]).",".($data[OUT]===NULL?'NULL':$data[OUT]).",$data_time)");
+		wm_debug('TabText ReadData: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)");
 
-		return(array($data[IN], $data[OUT], $data_time));
+		return ([$data[IN], $data[OUT], $data_time]);
 	}
 }

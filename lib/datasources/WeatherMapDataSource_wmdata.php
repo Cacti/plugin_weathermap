@@ -71,7 +71,7 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 
 				while (!feof($fd)) {
 					$buffer = fgets($fd, 4096);
-					# strip out any Windows line-endings that have gotten in here
+					// strip out any Windows line-endings that have gotten in here
 					$buffer = str_replace("\r", '', $buffer);
 
 					$fields = explode("\t",$buffer);
@@ -84,8 +84,8 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 					}
 				}
 
-				if ($found===true) {
-					$stats = stat($datafile);
+				if ($found === true) {
+					$stats     = stat($datafile);
 					$data_time = $stats['mtime'];
 				} else {
 					wm_warn("WMData ReadData: Data name ($dataname) didn't exist in ($datafile). [WMWMDATA03]");
@@ -98,7 +98,7 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 		}
 
 		wm_debug(
-			sprintf("WMData ReadData: Returning (%s, %s, %s)",
+			sprintf('WMData ReadData: Returning (%s, %s, %s)',
 				string_or_null($data[IN]),
 				string_or_null($data[OUT]),
 				$data_time
@@ -106,12 +106,11 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 		);
 
 		return (
-			array (
+			[
 				$data[IN],
 				$data[OUT],
 				$data_time
-			)
+			]
 		);
 	}
 }
-

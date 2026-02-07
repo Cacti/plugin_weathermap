@@ -58,8 +58,8 @@ class WeatherMapDataSource_static extends WeatherMapDataSource {
 	}
 
 	function ReadData($targetstring, &$map, &$item) {
-		$inbw      = NULL;
-		$outbw     = NULL;
+		$inbw      = null;
+		$outbw     = null;
 		$data_time = 0;
 
 		if (preg_match("/^static:(\-?\d+\.?\d*[KMGT]*):(\-?\d+\.?\d*[KMGT]*)$/", $targetstring, $matches)) {
@@ -76,7 +76,6 @@ class WeatherMapDataSource_static extends WeatherMapDataSource {
 
 		wm_debug("Static ReadData: Returning ($inbw, $outbw, $data_time)");
 
-		return (array($inbw, $outbw, $data_time));
+		return ([$inbw, $outbw, $data_time]);
 	}
 }
-

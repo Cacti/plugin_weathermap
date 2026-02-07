@@ -50,7 +50,7 @@ function UpdateCactiData(&$item, $local_data_id) {
 	if (isset($map->dsinfocache[$local_data_id])) {
 		$to_set = $map->dsinfocache[$local_data_id];
 	} else {
-		$to_set = array();
+		$to_set = [];
 
 		$set_speed = intval($item->get_hint('cacti_use_ifspeed'));
 
@@ -61,11 +61,11 @@ function UpdateCactiData(&$item, $local_data_id) {
 			AND dl.snmp_index = hsc.snmp_index
 			AND dl.snmp_query_id = hsc.snmp_query_id
 			WHERE dl.id = ?',
-			array($local_data_id));
+			[$local_data_id]);
 
 		if (cacti_sizeof($r3)) {
 			foreach ($r3 as $vv) {
-				$vname = 'cacti_' . $vv['field_name'];
+				$vname          = 'cacti_' . $vv['field_name'];
 				$to_set[$vname] = $vv['field_value'];
 			}
 		}
@@ -80,7 +80,7 @@ function UpdateCactiData(&$item, $local_data_id) {
 				$speed = $ifSpeed;
 			}
 
-			# see https://lists.oetiker.ch/pipermail/mrtg/2004-November/029312.html
+			// see https://lists.oetiker.ch/pipermail/mrtg/2004-November/029312.html
 			if ($ifHighSpeed > 20) {
 				// NOTE: this is NOT using $kilo - it's always 1000000 bits/sec according to the MIB
 				$speed = $ifHighSpeed * 1000000;
@@ -112,7 +112,7 @@ function UpdateCactiData(&$item, $local_data_id) {
 			ON dtr.id = gti.task_item_id
 			AND dtr.local_data_id = ?
 			LIMIT 1',
-			array($local_data_id));
+			[$local_data_id]);
 
 		if (isset($r4['local_graph_id'])) {
 			$to_set['cacti_graph_id'] = intval($r4['local_graph_id']);
@@ -121,9 +121,8 @@ function UpdateCactiData(&$item, $local_data_id) {
 		$map->dsinfocache[$local_data_id] = $to_set;
 	}
 
-	# By now, we have the values, one way or another.
+	// By now, we have the values, one way or another.
 	foreach ($to_set as $k=>$v) {
 		$item->add_note($k, $v);
 	}
 }
-

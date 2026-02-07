@@ -45,7 +45,7 @@ $php_version = phpversion();
 $mem_allowed = ini_get('memory_limit');
 $php_os      = php_uname();
 
-$mem_warning = '(Ok)';
+$mem_warning     = '(Ok)';
 $mem_allowed_int = return_bytes($mem_allowed);
 
 if (($mem_allowed_int > 0) && ($mem_allowed_int < 500000000)) {
@@ -70,7 +70,7 @@ foreach (explode("\n",$s) as $line) {
 	if ($sep_pos !== false) {
 		// by here, it should be a straight 'name => value'
 		$name  = substr($line,0,$sep_pos);
-		$value = substr($line,$sep_pos+4);
+		$value = substr($line,$sep_pos + 4);
 
 		$php_general[$name] = $value;
 	}
@@ -142,7 +142,7 @@ if (isset($argv)) {
 	print wordwrap($gdstring) . PHP_EOL;
 } else {
 	$environment = 'web';
-?>
+	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -182,71 +182,71 @@ if (isset($argv)) {
 <?php
 }
 
-$critical=0;
-$noncritical=0;
+$critical    = 0;
+$noncritical = 0;
 
-# critical, what-it-affects, what-it-is
-$functions = array(
-	'imagepng' => array(
+// critical, what-it-affects, what-it-is
+$functions = [
+	'imagepng' => [
 		true,
 		false,
 		'all of Weathermap',
 		'part of the GD library and the "gd" PHP extension'
-	),
-	'imagecreatetruecolor' => array(
+	],
+	'imagecreatetruecolor' => [
 		true,
 		false,
 		'all of Weathermap',
 		'part of the GD library and the "gd" PHP extension'
-	),
-	'imagealphablending' => array(
+	],
+	'imagealphablending' => [
 		true,
 		false,
 		'all of Weathermap',
 		'part of the GD library and the "gd" PHP extension'
-	),
-	'imageSaveAlpha' => array(
+	],
+	'imageSaveAlpha' => [
 		true,
 		false,
 		'all of Weathermap',
 		'part of the GD library and the "gd" PHP extension'
-	),
-	'preg_match' => array(
+	],
+	'preg_match' => [
 		true,
 		false,
 		'configuration reading',
 		'provided by the "pcre" extension'
-	),
-	'imagecreatefrompng' => array(
+	],
+	'imagecreatefrompng' => [
 		true,
 		false,
 		'all of Weathermap',
 		'part of the GD library and the "gd" PHP extension'
-	),
-	'imagecreatefromjpeg' => array(
+	],
+	'imagecreatefromjpeg' => [
 		false,
 		false,
 		'JPEG input support for ICON and BACKGROUND',
 		'an optional part of the GD library and the "gd" PHP extension'
-	),
-	'imagecreatefromgif' => array(
+	],
+	'imagecreatefromgif' => [
 		false,
 		false,
 		'GIF input support for ICON and BACKGROUND',
 		'an optional part of the GD library and the "gd" PHP extension'
-	),
-	'imagejpeg' => array(
+	],
+	'imagejpeg' => [
 		false,
 		false,
 		'JPEG output support',
 		'an optional part of the GD library and the "gd" PHP extension'
-	),
-	'imagegif' => array(
+	],
+	'imagegif' => [
 		false,
 		false,
 		'GIF output support',
 		'an optional part of the GD library and the "gd" PHP extension'
-	),
+	],
 	/*
 	'imagefilter' => array(
 		false,
@@ -254,26 +254,26 @@ $functions = array(
 		'colorizing icons',
 		'a special function of the PHP-supplied GD library ONLY (not the external GD library' . ($gdbuiltin ? '':' that you are using').')'
 	), */
-	'imagecopyresampled' => array(
+	'imagecopyresampled' => [
 		false,
 		false,
 		'Thumbnail creation in the Cacti plugin',
 		'an optional part of the GD library and the "gd" PHP extension'
-	),
-	'imagettfbbox' => array(
+	],
+	'imagettfbbox' => [
 		false,
 		false,
 		'TrueType font support',
 		'an optional part of the GD library and the "gd" PHP extension'
-	),
-	'memory_get_usage' => array(
+	],
+	'memory_get_usage' => [
 		false, true,
 		'memory-usage debugging',
 		'not supported on all PHP versions and platforms'
-	)
-);
+	]
+];
 
-$results = array();
+$results = [];
 
 foreach ($functions as $function=>$details) {
 	$exists = '';
@@ -415,16 +415,16 @@ function return_bytes($val) {
 	$val = trim($val);
 
 	if ($val != '') {
-		$last = strtolower($val[strlen($val)-1]);
+		$last = strtolower($val[strlen($val) - 1]);
 
 		switch($last) {
 			// The 'G' modifier is available since PHP 5.1.0
 			case 'g':
-			$val *= 1024;
+				$val *= 1024;
 			case 'm':
-			$val *= 1024;
+				$val *= 1024;
 			case 'k':
-			$val *= 1024;
+				$val *= 1024;
 		}
 	} else {
 		$val = 0;

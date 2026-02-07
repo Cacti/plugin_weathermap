@@ -50,13 +50,13 @@ $cacti_url  = $config['url_path'];
 $width  = 4000;
 $height = 3000;
 
-# figure out which template has interface traffic. This might be wrong for you.
+// figure out which template has interface traffic. This might be wrong for you.
 $data_template_hash = 'fd841e8bb822927289b7acbc031f3d7e';
 
-$data_template_id = db_fetch_cell_prepared("SELECT id
+$data_template_id = db_fetch_cell_prepared('SELECT id
 	FROM data_template
-	WHERE hash = ?",
-	array($data_template_hash));
+	WHERE hash = ?',
+	[$data_template_hash]);
 
 $queryrows = db_fetch_assoc("SELECT h.snmp_version, h.snmp_community, h.snmp_username,
 	h.snmp_password, h.snmp_auth_protocol, h.snmp_priv_passphrase, h.snmp_priv_protocol,
@@ -74,24 +74,24 @@ $queryrows = db_fetch_assoc("SELECT h.snmp_version, h.snmp_community, h.snmp_use
 
 if (cacti_sizeof($queryrows)) {
 	foreach ($queryrows as $line) {
-		$key = sprintf("%06d-%010d", $line['host_id'], $line['snmp_index']);
+		$key = sprintf('%06d-%010d', $line['host_id'], $line['snmp_index']);
 
 		$hosts[$line['host_id']]['description'] = $line['description'];
-		$hosts[$line['host_id']]['hostname'] = $line['hostname'];
+		$hosts[$line['host_id']]['hostname']    = $line['hostname'];
 
-		$hosts[$line['host_id']]['snmp_version'] = $line['snmp_version'];
-		$hosts[$line['host_id']]['snmp_username'] = $line['snmp_username'];
-		$hosts[$line['host_id']]['snmp_password'] = $line['snmp_password'];
-		$hosts[$line['host_id']]['snmp_auth_protocol'] = $line['snmp_auth_protocol'];
-		$hosts[$line['host_id']]['snmp_context'] = $line['snmp_context'];
-		$hosts[$line['host_id']]['snmp_port'] = $line['snmp_port'];
-		$hosts[$line['host_id']]['snmp_timeout'] = $line['snmp_timeout'];
-		$hosts[$line['host_id']]['snmp_priv_protocol'] = $line['snmp_priv_protocol'];
+		$hosts[$line['host_id']]['snmp_version']         = $line['snmp_version'];
+		$hosts[$line['host_id']]['snmp_username']        = $line['snmp_username'];
+		$hosts[$line['host_id']]['snmp_password']        = $line['snmp_password'];
+		$hosts[$line['host_id']]['snmp_auth_protocol']   = $line['snmp_auth_protocol'];
+		$hosts[$line['host_id']]['snmp_context']         = $line['snmp_context'];
+		$hosts[$line['host_id']]['snmp_port']            = $line['snmp_port'];
+		$hosts[$line['host_id']]['snmp_timeout']         = $line['snmp_timeout'];
+		$hosts[$line['host_id']]['snmp_priv_protocol']   = $line['snmp_priv_protocol'];
 		$hosts[$line['host_id']]['snmp_priv_passphrase'] = $line['snmp_priv_passphrase'];
-		$hosts[$line['host_id']]['snmp_community'] = $line['snmp_community'];
+		$hosts[$line['host_id']]['snmp_community']       = $line['snmp_community'];
 
 		$interfaces[$key]['index'] = $line['snmp_index'];
-		$interfaces[$key]['host'] = $line['host_id'];
+		$interfaces[$key]['host']  = $line['host_id'];
 
 		if ($line['field_name'] == 'ifIP') {
 			$interfaces[$key]['ip'] = $line['field_value'];
@@ -118,16 +118,17 @@ if (file_exists('../output/mapper-cache.txt')) {
 
 	$fd = fopen('../output/mapper-cache.txt', 'r');
 
-	while(!feof($fd)) {
+	while (!feof($fd)) {
 		$str = fgets($fd,4096);
 		$str = str_replace("\r", '', $str);
 
 		trim($str);
 
-		list($key, $mask) = explode("\t", $str);
+		[$key, $mask] = explode("\t", $str);
 
 		if (preg_match('/^(\d+\.\d+\.\d+\.\d+)$/', $mask, $m) && $mask != '0.0.0.0') {
-			$interfaces[$key]['netmask'] = $m[1]; $count++;
+			$interfaces[$key]['netmask'] = $m[1];
+			$count++;
 		}
 	}
 
@@ -141,12 +142,12 @@ print 'Collected information on ' . sizeof($interfaces) . ' interfaces and ' . s
 $cleaned = 0;
 
 if (cacti_sizeof($interfaces)) {
-	foreach($interfaces as $key=>$int) {
+	foreach ($interfaces as $key=>$int) {
 		if (!isset($int['ip'])) {
 			unset($interfaces[$key]);
 			$cleaned++;
 		} else {
-			$interfaces[$key]['nicename'] = (isset($int['name']) ? $int['name']:(isset($int['descr'])?$int['descr'] : (isset($int['alias']) ? $int['alias'] : 'Interface #' . $int['index'])));
+			$interfaces[$key]['nicename'] = (isset($int['name']) ? $int['name'] : (isset($int['descr']) ? $int['descr'] : (isset($int['alias']) ? $int['alias'] : 'Interface #' . $int['index'])));
 		}
 	}
 }
@@ -156,7 +157,7 @@ print "Removed $cleaned interfaces from search, which have no IP address.\n";
 $count = 0;
 
 if (cacti_sizeof($interfaces)) {
-	foreach($interfaces as $key=>$int) {
+	foreach ($interfaces as $key=>$int) {
 		if (!isset($int['netmask'])) {
 			$oid = '.1.3.6.1.2.1.4.20.1.3.' . $int['ip'];
 
@@ -202,7 +203,7 @@ print 'Writing Netmask cache...' . PHP_EOL;
 $fd = fopen('../output/mapper-cache.txt', 'w');
 
 if (cacti_sizeof($interfaces)) {
-	foreach($interfaces as $key=>$int) {
+	foreach ($interfaces as $key=>$int) {
 		if (isset($int['netmask'])) {
 			fputs($fd, $key . "\t" . $int['netmask'] . "\n");
 
@@ -215,13 +216,13 @@ fclose($fd);
 
 print "Wrote $count cache entries.\n";
 
-# SNMP netmask => .1.3.6.1.2.1.4.20.1.3.10.1.1.254
-# SNMP interface index => .1.3.6.1.2.1.4.20.1.2.10.1.1.254
+// SNMP netmask => .1.3.6.1.2.1.4.20.1.3.10.1.1.254
+// SNMP interface index => .1.3.6.1.2.1.4.20.1.2.10.1.1.254
 
 $count = 0;
 
 if (cacti_sizeof($interfaces)) {
-	foreach($interfaces as $key=>$int) {
+	foreach ($interfaces as $key=>$int) {
 		if (isset($int['netmask'])) {
 			$network = get_network($int['ip'], $int['netmask']) . '/' . get_cidr($int['netmask']);
 
@@ -239,7 +240,7 @@ print "Assembled $count different network/netmask pairs" . PHP_EOL;
 
 $link_config = '';
 $node_config = '';
-$nodes_seen  = array();
+$nodes_seen  = [];
 $count       = 0;
 $linkid      = 0;
 $lannodeid   = 0;
@@ -254,7 +255,7 @@ if (cacti_sizeof($interfaces)) {
 		if (cacti_sizeof($members) == 2) {
 			print 'Create LINK between' . PHP_EOL;
 
-			foreach($members as $int) {
+			foreach ($members as $int) {
 				$h = $interfaces[$int]['host'];
 
 				print '  ' . $interfaces[$int]['nicename'];
@@ -266,14 +267,14 @@ if (cacti_sizeof($interfaces)) {
 
 			$linkid++;
 			$link_config .= "LINK link_$linkid" . PHP_EOL;
-			$link_config .= "WIDTH 4" . PHP_EOL;
-			$link_config .= "\tNODES node_" . $interfaces[$members[0]]['host'] . ' node_' . $interfaces[$members[1]]['host']. PHP_EOL;
-			$link_config .= "\tSET in_interface "  . $interfaces[$members[1]]['nicename'] . PHP_EOL;
+			$link_config .= 'WIDTH 4' . PHP_EOL;
+			$link_config .= "\tNODES node_" . $interfaces[$members[0]]['host'] . ' node_' . $interfaces[$members[1]]['host'] . PHP_EOL;
+			$link_config .= "\tSET in_interface " . $interfaces[$members[1]]['nicename'] . PHP_EOL;
 			$link_config .= "\tSET out_interface " . $interfaces[$members[0]]['nicename'] . PHP_EOL;
 			$link_config .= PHP_EOL;
 		}
 
-		if (cacti_sizeof($members)>2) {
+		if (cacti_sizeof($members) > 2) {
 			print "Create LAN NODE called $network and add LINKs from these NODEs to it:" . PHP_EOL;
 
 			$x = rand(0, $width);
@@ -282,25 +283,25 @@ if (cacti_sizeof($interfaces)) {
 			$lan_key = preg_replace('/[.\/]/', '_', $network);
 
 			$node_config .= "NODE LAN_$lan_key" . PHP_EOL;
-			$node_config .= "LABELBGCOLOR 255 240 240" . PHP_EOL;
+			$node_config .= 'LABELBGCOLOR 255 240 240' . PHP_EOL;
 			$node_config .= "\tPOSITION $x $y" . PHP_EOL;
 			$node_config .= "\tLABEL $network" . PHP_EOL;
 			$node_config .= "\tICON 96 24 rbox" . PHP_EOL;
 			$node_config .= "\tLABELOFFSET C" . PHP_EOL;
 			$node_config .= "\tLABELOUTLINECOLOR none" . PHP_EOL;
-			$node_config .= "USESCALE none in" . PHP_EOL . PHP_EOL;
+			$node_config .= 'USESCALE none in' . PHP_EOL . PHP_EOL;
 
-			foreach($members as $int) {
+			foreach ($members as $int) {
 				$h = $interfaces[$int]['host'];
 
 				print "  $int:: " . $interfaces[$int]['nicename'];
-				print ' on '.$hosts[$h]['description'];
+				print ' on ' . $hosts[$h]['description'];
 				print ' (' . $hosts[$h]['hostname'] . ')' . PHP_EOL;
 
 				$nodes_seen[$h] = 1;
 				$linkid++;
 				$link_config .= "LINK link_$linkid" . PHP_EOL;
-				$link_config .= "SET out_interface ".$interfaces[$int]['nicename'] . PHP_EOL;
+				$link_config .= 'SET out_interface ' . $interfaces[$int]['nicename'] . PHP_EOL;
 				$link_config .= "\tNODES node_$h LAN_$lan_key" . PHP_EOL;
 				$link_config .= "\tWIDTH 2" . PHP_EOL;
 				$link_config .= "\tOUTCOMMENT {link:this:out_interface}" . PHP_EOL;
@@ -320,7 +321,7 @@ if (cacti_sizeof($nodes_seen)) {
 
 		$node_config .= "NODE node_$h" . PHP_EOL;
 		$node_config .= "\tSET cacti_id $h" . PHP_EOL;
-		$node_config .= "\tLABEL ".$hosts[$h]['description'] . PHP_EOL;
+		$node_config .= "\tLABEL " . $hosts[$h]['description'] . PHP_EOL;
 		$node_config .= "\tPOSITION $x $y" . PHP_EOL;
 		$node_config .= "\tUSESCALE cactiupdown in " . PHP_EOL;
 		$node_config .= "\tLABELFONTCOLOR contrast" . PHP_EOL;
@@ -365,28 +366,29 @@ fputs($fd, $link_config);
 
 fclose($fd);
 
-///////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////
 
 function ip_to_int($_ip) {
 	if (preg_match('/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/', $_ip, $matches)) {
 		$_output = 0;
 
-		for($i = 1; $i < 5; $i++) {
+		for ($i = 1; $i < 5; $i++) {
 			$_output <<= 8;
 			$_output += $matches[$i];
 		}
 
-		return($_output);
+		return ($_output);
 	} else {
 		print "Something funny: $_ip\n";
-		return(-1);
+
+		return (-1);
 	}
 }
 
 function int_to_ip($_int) {
 	$tmp = $_int;
 
-	for ($i=0; $i < 4; $i++) {
+	for ($i = 0; $i < 4; $i++) {
 		$IPBit[] = ($tmp & 255);
 		$tmp >>= 8;
 	}
@@ -405,7 +407,7 @@ function get_network($_ip, $_mask) {
 }
 
 function get_cidr($mask) {
-	$lookup = array(
+	$lookup = [
 		'255.255.255.255' => '32',
 		'255.255.255.254' => '31',
 		'255.255.255.252' => '30',
@@ -426,7 +428,7 @@ function get_cidr($mask) {
 		'255.254.0.0'     => '15',
 		'255.252.0.0'     => '14',
 		'0.0.0.0.0'       => '0'
-	);
+	];
 
 	if ($lookup[$mask]) {
 		return ($lookup[$mask]);
@@ -434,6 +436,5 @@ function get_cidr($mask) {
 
 	print "HUH: $mask\n";
 
-	return('-1');
+	return ('-1');
 }
-

@@ -54,11 +54,11 @@ global $weathermap_debugging;
 $weathermap_debugging = false;
 
 $shortopts = 'VvHh';
-$longopts  = array (
+$longopts  =  [
 	'debug',
 	'help',
 	'version'
-);
+];
 
 $options = getopt($shortopts, $longopts);
 
@@ -117,4 +117,3 @@ function display_version() {
 
 	print 'Weathermap Config Upgrade Utility, The Cacti Group, Inc., Version ' . $info['version'] . ', ' . WM_COPYRIGHT_YEARS . PHP_EOL;
 }
-
