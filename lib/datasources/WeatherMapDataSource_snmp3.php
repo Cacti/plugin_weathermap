@@ -56,16 +56,7 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		// We can keep a list of unresponsive nodes, so we can give up earlier
 		$this->downCache = [];
 
-		if (function_exists('snmp3_get')) {
-			return true;
-		}
-		wm_debug("SNMP3 DS: snmp3_ get() not found. Do you have the PHP SNMP module?\n");
-
-		$this->owner = $map;
-		$this->getMapGlobals();
-		$this->data = [];
-
-		return false;
+		return true;
 	}
 
 	public function Recognise($targetString) {
@@ -119,14 +110,11 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 			$oids        = [IN => $matches[3], OUT => $matches[4]];
 
 			if (!$this->isHostAborted($host)) {
-				$this->prepareSNMPGlobals();
 				$params = $this->buildSNMPParams($map, $profileName);
 
 				wm_debug(sprintf("SNMPv3 ReadData: SNMP settings are %s\n", json_encode($params)));
 
 				$this->getSNMPData($host, $params, $oids, $mapItem, $this->timeout, $this->retryCount);
-
-				$this->restoreSNMPGlobals();
 			} else {
 				wm_warn("SNMP for $host has reached $this->abortCount failures. Skipping. [WMSNMP01]");
 			}
@@ -153,7 +141,7 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 
 	/**
 	 * @param  WeatherMap $map
-	 * @param             $profileName
+	 * @param  $profileName
 	 * @return array
 	 */
 	public function buildSNMPParams(&$map, $profileName) {
@@ -207,13 +195,12 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 
 			return $params;
 		}
-		// TODO: this is something that should be cached or done in prefetch
-		$result = \db_fetch_assoc(
-			sprintf(
-				'select * from host where snmp_version=3 and id=%d LIMIT 1',
-				$hostId
-			)
-		);
+
+		$result = db_fetch_row_prepared('SELECT * 
+			FROM host 
+			WHERE snmp_version = 3 
+			AND id = ?', 
+			[$hostId]);
 
 		if (!$result) {
 			wm_warn('SNMPv3 ReadData snmp3_' . $profileName . "_import failed to read data from Cacti host id $hostId");
@@ -249,31 +236,6 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		return $params;
 	}
 
-	private function prepareSNMPGlobals() {
-		if (function_exists('snmp_get_quick_print')) {
-			$this->originalQuickPrint = snmp_get_quick_print();
-			snmp_set_quick_print(1);
-		}
-
-		if (function_exists('snmp_get_valueretrieval')) {
-			$this->originalValueRetrieval = snmp_get_valueretrieval();
-		}
-
-		if (function_exists('snmp_set_oid_output_format')) {
-			snmp_set_oid_output_format(SNMP_OID_OUTPUT_NUMERIC);
-		}
-
-		if (function_exists('snmp_set_valueretrieval')) {
-			snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
-		}
-	}
-
-	private function restoreSNMPGlobals() {
-		if (function_exists('snmp_set_quick_print')) {
-			snmp_set_quick_print($this->originalQuickPrint);
-		}
-	}
-
 	/**
 	 * @param $host
 	 * @param $params
@@ -287,6 +249,7 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 			'in'  => IN,
 			'out' => OUT
 		];
+
 		$results      = [];
 		$results[IN]  = null;
 		$results[OUT] = null;
@@ -296,18 +259,9 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 				if ($oids[$id] != '-') {
 					$oid = $oids[$id];
 					wm_debug("Going to get $oid\n");
-					$results[$id] = snmp3_get(
-						$host,
-						$params['username'],
-						$params['seclevel'],
-						$params['authproto'],
-						$params['authpass'],
-						$params['privproto'],
-						$params['privpass'],
-						$oid,
-						$timeout,
-						$retries
-					);
+
+					$results[$id] = cacti_snmp_get($host, '', $oid, 3, $params['username'], $params['authpass'], $params['authproto'],
+						$params['privpass'], $params['privproto'], '', 161, $timeout, $retries);
 
 					if ($results[$id] !== false) {
 						$this->data[$id] = floatval($results[$id]);
@@ -345,5 +299,3 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 function valueOrNull($value) {
 	return $value === null ? '{null}' : $value;
 }
-
-// vim:ts=4:sw=4:

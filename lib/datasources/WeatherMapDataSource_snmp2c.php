@@ -18,12 +18,7 @@ class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
 		// We can keep a list of unresponsive nodes, so we can give up earlier
 		$this->down_cache = [];
 
-		if (function_exists('snmp2_get')) {
-			return true;
-		}
-		wm_debug("SNMP DS: snmp2_get() not found. Do you have the PHP SNMP module?\n");
-
-		return false;
+		return true;
 	}
 
 	function Recognise($targetstring) {
@@ -74,25 +69,8 @@ class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
 					&& (!isset($this->down_cache[$host]) || intval($this->down_cache[$host]) < $abort_count)
 				)
 			) {
-				if (function_exists('snmp_get_quick_print')) {
-					$was = snmp_get_quick_print();
-					snmp_set_quick_print(1);
-				}
-
-				if (function_exists('snmp_get_valueretrieval')) {
-					$was2 = snmp_get_valueretrieval();
-				}
-
-				if (function_exists('snmp_set_oid_output_format')) {
-					snmp_set_oid_output_format(SNMP_OID_OUTPUT_NUMERIC);
-				}
-
-				if (function_exists('snmp_set_valueretrieval')) {
-					snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
-				}
-
 				if ($in_oid != '-') {
-					$in_result = snmp2_get($host, $community, $in_oid, $timeout, $retries);
+					$in_result = cacti_snmp_get($host, $community, $in_oid, '2', '', '', '', '', '', '', '', $timeout, $retries);
 
 					if ($in_result !== false) {
 						$data[IN] = floatval($in_result);
@@ -103,7 +81,7 @@ class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
 				}
 
 				if ($out_oid != '-') {
-					$out_result = snmp2_get($host, $community, $out_oid, $timeout, $retries);
+					$out_result = cacti_snmp_get($host, $community, $out_oid, '2', '', '', '', '', '', '', '', $timeout, $retries);
 
 					if ($out_result !== false) {
 						// use floatval() here to force the output to be *some* kind of number
@@ -118,10 +96,6 @@ class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
 				wm_debug("SNMP2c ReadData: Got $in_result and $out_result\n");
 
 				$data_time = time();
-
-				if (function_exists('snmp_set_quick_print')) {
-					snmp_set_quick_print($was);
-				}
 			} else {
 				wm_warn("SNMP for $host has reached $abort_count failures. Skipping. [WMSNMP01]");
 			}
@@ -132,5 +106,3 @@ class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
 		return ([$data[IN], $data[OUT], $data_time]);
 	}
 }
-
-// vim:ts=4:sw=4:
