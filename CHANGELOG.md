@@ -15,6 +15,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 ## Changes
 
 --- 1.4 ---
+* issue#161: WeatherMap not respecting default width in Cacti
 * issue#176: Networklink under Hover-Graph can not be clicked
 * issue#180: It impossible to click on links in Weathermap due to cursor tracking
 * issue: The Load plugins was using the wrong default path
