@@ -54,14 +54,14 @@ $candidates   = 0;
 $totaltargets = 0;
 
 $shortopts = 'VvHh';
-$longopts  = array(
+$longopts  = [
 	'input:',
 	'output:',
 	'reverse',
 	'debug',
 	'help',
 	'version',
-);
+];
 
 $options = getopt($shortopts, $longopts);
 
@@ -101,11 +101,11 @@ if (cacti_sizeof($options)) {
 
 				break;
 			default:
-                print 'ERROR: Invalid Parameter ' . $arg . PHP_EOL . PHP_EOL;
+				print 'ERROR: Invalid Parameter ' . $arg . PHP_EOL . PHP_EOL;
 
-                display_help();
+				display_help();
 
-                exit(1);
+				exit(1);
 		}
 	}
 }
@@ -118,7 +118,7 @@ if ($inputfile == '' || $outputfile == '') {
 
 $map = new WeatherMap;
 
-$map->context = 'cacti';
+$map->context  = 'cacti';
 $map->rrdtool  = read_config_option('path_rrdtool');
 
 print 'Reading config from $inputfile' . PHP_EOL;
@@ -133,24 +133,24 @@ $allitems = $map->buildAllItemsList();
 foreach ($allitems as $myobj) {
 	$type = $myobj->my_type();
 
-	$name=$myobj->name;
-	wm_debug ("ReadData for $type $name:");
+	$name = $myobj->name;
+	wm_debug("ReadData for $type $name:");
 
-	if (($type=='LINK' && isset($myobj->a)) || ($type=='NODE' && !is_null($myobj->x))) {
-		if (count($myobj->targets)>0) {
+	if (($type == 'LINK' && isset($myobj->a)) || ($type == 'NODE' && !is_null($myobj->x))) {
+		if (count($myobj->targets) > 0) {
 			$totaltargets++;
 			$tindex = 0;
 
 			foreach ($myobj->targets as $target) {
-				wm_debug ('ReadData: New Target: ' . $target[4]);
+				wm_debug('ReadData: New Target: ' . $target[4]);
 
 				$targetstring = $target[0];
-				$multiply = $target[1];
+				$multiply     = $target[1];
 
 				if ($reverse == false && $target[5] == 'WeatherMapDataSource_rrd') {
 					$candidates++;
 
-					# list($in,$out,$datatime) =  $map->plugins['data'][ $target[5] ]->ReadData($targetstring, $map, $myobj);
+					// list($in,$out,$datatime) =  $map->plugins['data'][ $target[5] ]->ReadData($targetstring, $map, $myobj);
 					wm_debug("ConvertDS: $targetstring is a candidate for conversion.");
 
 					$rrdfile      = $targetstring;
@@ -185,7 +185,7 @@ foreach ($allitems as $myobj) {
 					$db_rrdname = $rrdfile;
 					$db_rrdname = str_replace($path_rra, '<path_rra>', $db_rrdname);
 
-					# special case for relative paths
+					// special case for relative paths
 					$db_rrdname = str_replace('../../rra', '<path_rra>', $db_rrdname);
 
 					if ($db_rrdname != $rrdfile) {
@@ -196,7 +196,7 @@ foreach ($allitems as $myobj) {
 							INNER JOIN data_template_rrd AS dtr
 							ON dtd.local_data_id = dtr.local_data_id
 							AND dtd.data_source_path = ?',
-							array($db_rrdname));
+							[$db_rrdname]);
 
 						if (cacti_sizeof($results)) {
 							$new_target = sprintf('dsstats:%d:%s:%s', $results['local_data_id'], $dsnames[IN], $dsnames[OUT]);
@@ -237,7 +237,7 @@ foreach ($allitems as $myobj) {
 				if ($reverse == true && $target[5] == 'WeatherMapDataSource_dsstats' && 1 == 0) {
 					$candidates++;
 
-					# list($in,$out,$datatime) =  $map->plugins['data'][ $target[5] ]->ReadData($targetstring, $map, $myobj);
+					// list($in,$out,$datatime) =  $map->plugins['data'][ $target[5] ]->ReadData($targetstring, $map, $myobj);
 					wm_debug("ConvertDS: $targetstring is a candidate for conversion.");
 
 					$multiplier   = 1;
@@ -248,7 +248,7 @@ foreach ($allitems as $myobj) {
 					$db_rrdname = $rrdfile;
 					$db_rrdname = str_replace($path_rra, '<path_rra>', $db_rrdname);
 
-					# special case for relative paths
+					// special case for relative paths
 					$db_rrdname = str_replace('../../rra', '<path_rra>', $db_rrdname);
 
 					wm_debug("ConvertDS: Looking for $db_rrdname in the database.");
@@ -258,13 +258,13 @@ foreach ($allitems as $myobj) {
 						INNER JOIN data_template_rrd AS dtr
 						WHERE dtd.local_data_id = dtr.local_data_id
 						AND dtd.data_source_path = ?',
-						array($db_rrdname));
+						[$db_rrdname]);
 
 					if (cacti_sizeof($results)) {
 						$new_target = sprintf('dsstats:%d:%s:%s', $results['local_data_id'], $dsnames[IN], $dsnames[OUT]);
-						$m = $multiply * $multiplier;
+						$m          = $multiply * $multiplier;
 
-						if ( $m != 1) {
+						if ($m != 1) {
 							if ($m == -1) {
 								$new_target = '-' . $new_target;
 							}
@@ -295,7 +295,7 @@ foreach ($allitems as $myobj) {
 				$tindex++;
 			}
 
-			wm_debug ("ReadData complete for $type $name");
+			wm_debug("ReadData complete for $type $name");
 		} else {
 			wm_debug("ReadData: No targets for $type $name");
 		}
@@ -332,4 +332,3 @@ function display_help() {
 	print ' --reverse                  - Convert from DSStats to RRDtool instead' . PHP_EOL;
 	print ' --debug                    - Enable debugging output' . PHP_EOL;
 }
-

@@ -45,7 +45,7 @@
 
 function weathermap_memory_check($note = 'MEM') {
 	if (function_exists('memory_get_usage')) {
-		$mem_used = nice_bandwidth(memory_get_usage());
+		$mem_used    = nice_bandwidth(memory_get_usage());
 		$mem_allowed = ini_get('memory_limit');
 
 		wm_debug("$note: memory_get_usage() says " . $mem_used . 'Bytes used. Limit is ' . $mem_allowed);
@@ -84,7 +84,7 @@ function weathermap_check_cron($time, $string) {
 
 	$lt = localtime($time, true);
 
-	list($minute, $hour, $wday, $day, $month) = preg_split('/\s+/', $string);
+	[$minute, $hour, $wday, $day, $month] = preg_split('/\s+/', $string);
 
 	$matched = true;
 
@@ -116,7 +116,7 @@ function weathermap_repair_maps() {
 	chdir($mydir);
 
 	if (cacti_sizeof($maps)) {
-		foreach($maps as $map) {
+		foreach ($maps as $map) {
 			$changes = 0;
 
 			$configfile = $confdir . '/' . $map['configfile'];
@@ -126,9 +126,9 @@ function weathermap_repair_maps() {
 
 			if (file_exists($configfile) && is_writable($configfile)) {
 				$contents    = file($configfile);
-				$outcontents = array();
+				$outcontents = [];
 
-				foreach($contents as $line) {
+				foreach ($contents as $line) {
 					if (strpos($line, 'BACKGROUND') !== false) {
 						$parts   = explode('BACKGROUND', $line);
 						$dirgood = false;
@@ -262,7 +262,7 @@ function weathermap_repair_maps() {
 	}
 }
 
-function weathermap_run_maps($mydir, $force = false, $maps = array()) {
+function weathermap_run_maps($mydir, $force = false, $maps = []) {
 	global $config;
 	global $weathermap_debugging;
 	global $weathermap_map;
@@ -293,10 +293,10 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 
 	$mapcount = 0;
 
-    // take our debugging cue from the poller - turn on Poller debugging to get weathermap debugging
+	// take our debugging cue from the poller - turn on Poller debugging to get weathermap debugging
 	if (read_config_option('log_verbosity') >= POLLER_VERBOSITY_DEBUG) {
 		$weathermap_debugging = true;
-		$mode_message = 'DEBUG mode is on';
+		$mode_message         = 'DEBUG mode is on';
 	} else {
 		$mode_message = 'Normal logging mode. Turn on DEBUG in Cacti for more information';
 	}
@@ -347,12 +347,12 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 					db_execute_prepared('UPDATE weathermap_maps
 						SET filehash = LEFT(MD5(CONCAT(id, configfile, rand())), 20)
 						WHERE id = ?',
-						array($map['id']));
+						[$map['id']]);
 
 					$map['filehash'] = db_fetch_cell_prepared('SELECT filehash
 						FROM weathermap_maps
 						WHERE id = ?',
-						array($map['id']));
+						[$map['id']]);
 				}
 
 				// this is what will prefix log entries for this map
@@ -362,11 +362,11 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 
 				if (weathermap_check_cron($weathermap_poller_start_time, $map['schedule']) || $force) {
 					$mapfile        = $confdir . '/' . $map['configfile'];
-					$htmlfile       = $outdir  . '/' . $map['filehash'] . '.html';
-					$imagefile      = $outdir  . '/' . $map['filehash'] . '.' . $imageformat;
-					$thumbimagefile = $outdir  . '/' . $map['filehash'] . '.thumb.' . $imageformat;
-					$resultsfile    = $outdir  . '/' . $map['filehash'] . '.results.txt';
-					$tempfile       = $outdir  . '/' . $map['filehash'] . '.tmp.png';
+					$htmlfile       = $outdir . '/' . $map['filehash'] . '.html';
+					$imagefile      = $outdir . '/' . $map['filehash'] . '.' . $imageformat;
+					$thumbimagefile = $outdir . '/' . $map['filehash'] . '.thumb.' . $imageformat;
+					$resultsfile    = $outdir . '/' . $map['filehash'] . '.results.txt';
+					$tempfile       = $outdir . '/' . $map['filehash'] . '.tmp.png';
 
 					if (file_exists($mapfile)) {
 						wm_debug("Map: $mapfile -> $htmlfile & $imagefile", true);
@@ -379,7 +379,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 
 						weathermap_memory_check("MEM starting $mapcount");
 
-						$wmap = new Weathermap;
+						$wmap          = new Weathermap;
 						$wmap->context = 'cacti';
 
 						// we can grab the rrdtool path from Cacti's config, in this case
@@ -390,8 +390,8 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 						$wmap->add_hint('mapgroup', $map['groupname']);
 						$wmap->add_hint('mapgroupextra', ($map['group_id'] == 1 ? '' : $map['groupname']));
 
-						# in the order of precedence - global extras, group extras, and finally map extras
-						$queries = array();
+						// in the order of precedence - global extras, group extras, and finally map extras
+						$queries   = [];
 						$queries[] = 'SELECT * FROM weathermap_settings WHERE mapid = 0 AND groupid = 0';
 						$queries[] = 'SELECT * FROM weathermap_settings WHERE mapid = 0 AND groupid = ' . intval($map['group_id']);
 						$queries[] = 'SELECT * FROM weathermap_settings WHERE mapid = ' . intval($map['id']);
@@ -418,7 +418,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 										$wmap->add_hint($setting['optname'], $setting['optvalue']);
 
 										if (substr($setting['optname'], 0, 7) == 'nowarn_') {
-											$code = strtoupper(substr($setting['optname'], 7));
+											$code                        = strtoupper(substr($setting['optname'], 7));
 											$weathermap_error_suppress[] = $code;
 										}
 									}
@@ -433,7 +433,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 						// why did I change this before? It's useful...
 						// $wmap->imageuri = $config['url_path'].'/plugins/weathermap/output/weathermap_'.$map['id'].".".$imageformat;
 						$configured_imageuri = $wmap->imageuri;
-						$wmap->imageuri = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewimage&id=' . $map['filehash'] . '&time=' . time();
+						$wmap->imageuri      = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewimage&id=' . $map['filehash'] . '&time=' . time();
 
 						weathermap_memory_check("MEM pre-render $mapcount");
 
@@ -482,7 +482,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 						// but using the configured imageuri and imagefilename
 						if ($wmap->htmloutputfile != '') {
 							$htmlfile = $wmap->htmloutputfile;
-							$fd = @fopen($htmlfile, 'w');
+							$fd       = @fopen($htmlfile, 'w');
 
 							if ($fd !== false) {
 								fwrite($fd, $wmap->MakeHTML('weathermap_' . $map['filehash'] . '_imap'));
@@ -508,13 +508,13 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 						db_execute_prepared('UPDATE weathermap_maps
 							SET titlecache = ?
 							WHERE id = ?',
-							array($processed_title, intval($map['id'])));
+							[$processed_title, intval($map['id'])]);
 
 						if (intval($wmap->thumb_width) > 0) {
 							db_execute_prepared('UPDATE weathermap_maps
 								SET thumb_width = ?, thumb_height = ?
 								WHERE id = ?',
-								array(intval($wmap->thumb_width), intval($wmap->thumb_height), intval($map['id'])));
+								[intval($wmap->thumb_width), intval($wmap->thumb_height), intval($map['id'])]);
 						}
 
 						$wmap->CleanUp();
@@ -538,11 +538,11 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 					db_execute_prepared('UPDATE weathermap_maps
 						SET warncount = ?
 						WHERE id = ?',
-						array(intval($weathermap_warncount), intval($map['id'])));
+						[intval($weathermap_warncount), intval($map['id'])]);
 
 					$total_warnings += $weathermap_warncount;
 					$weathermap_warncount = 0;
-					$weathermap_map = '';
+					$weathermap_map       = '';
 
 					$end = microtime(true);
 
@@ -552,7 +552,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 						db_execute_prepared('UPDATE weathermap_maps
 							SET duration = ?, last_runtime = ?
 							WHERE id = ?',
-							array($end - $start, time(), $map['id']));
+							[$end - $start, time(), $map['id']]);
 					}
 				} else {
 					wm_debug('Skipping ' . $map['id'] . ' (' . $map['configfile'] . ') due to schedule.');
@@ -596,4 +596,3 @@ function weathermap_run_maps($mydir, $force = false, $maps = array()) {
 		set_config_option('weathermap_last_finish_time', time());
 	}
 }
-

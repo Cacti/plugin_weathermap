@@ -1,0 +1,216 @@
+# +-------------------------------------------------------------------------+
+# | Copyright (C) 2004-2025 The Cacti Group                                 |
+# |                                                                         |
+# | This program is free software; you can redistribute it and/or           |
+# | modify it under the terms of the GNU General Public License             |
+# | as published by the Free Software Foundation; either version 2          |
+# | of the License, or (at your option) any later version.                  |
+# |                                                                         |
+# | This program is distributed in the hope that it will be useful,         |
+# | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
+# | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
+# | GNU General Public License for more details.                            |
+# +-------------------------------------------------------------------------+
+# | Cacti: The Complete RRDtool-based Graphing Solution                     |
+# +-------------------------------------------------------------------------+
+# | This code is designed, written, and maintained by the Cacti Group. See  |
+# | about.php and/or the AUTHORS file for specific developer information.   |
+# +-------------------------------------------------------------------------+
+# | http://www.cacti.net/                                                   |
+# +-------------------------------------------------------------------------+
+
+name: Plugin Integration Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  integration-test:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.2', '8.3', '8.4']
+        os: [ubuntu-latest]
+    
+    services:
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MYSQL_ROOT_PASSWORD: cactiroot
+          MYSQL_DATABASE: cacti
+          MYSQL_USER: cactiuser
+          MYSQL_PASSWORD: cactiuser
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    
+    name: PHP ${{ matrix.php }} Integration Test on ${{ matrix.os }}
+    
+    steps:
+    - name: Checkout Cacti
+      uses: actions/checkout@v4
+      with:
+        repository: Cacti/cacti
+        path: cacti
+    
+    - name: Checkout Weathermap Plugin
+      uses: actions/checkout@v4
+      with:
+        path: cacti/plugins/intropage
+    
+    - name: Install PHP ${{ matrix.php }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: intl, mysql, gd, ldap, gmp, xml, curl, json, mbstring
+        ini-values: "post_max_size=256M, max_execution_time=60, date.timezone=America/New_York"
+    
+    - name: Check PHP version
+      run: php -v
+    
+    - name: Run apt-get update
+      run: sudo apt-get update
+    
+    - name: Install System Dependencies
+      run: sudo apt-get install -y apache2 snmp snmpd rrdtool fping libapache2-mod-php${{ matrix.php }}
+    
+    - name: Start SNMPD Agent and Test
+      run: |
+        sudo systemctl start snmpd
+        sudo snmpwalk -c public -v2c -On localhost .1.3.6.1.2.1.1
+    
+    - name: Setup Permissions
+      run: |
+        sudo chown -R www-data:runner ${{ github.workspace }}/cacti
+        sudo find ${{ github.workspace }}/cacti -type d -exec chmod 775 {} \;
+        sudo find ${{ github.workspace }}/cacti -type f -exec chmod 664 {} \;
+        sudo chmod +x ${{ github.workspace }}/cacti/cmd.php
+        sudo chmod +x ${{ github.workspace }}/cacti/poller.php
+    
+    - name: Create MySQL Config
+      run: |
+        echo -e "[client]\nuser = root\npassword = cactiroot\nhost = 127.0.0.1\n" > ~/.my.cnf
+        cat ~/.my.cnf
+    
+    - name: Initialize Cacti Database
+      env:
+        MYSQL_AUTH_USR: '--defaults-file=~/.my.cnf'
+      run: |
+        mysql $MYSQL_AUTH_USR -e 'CREATE DATABASE IF NOT EXISTS cacti;'
+        mysql $MYSQL_AUTH_USR -e "CREATE USER IF NOT EXISTS 'cactiuser'@'localhost' IDENTIFIED BY 'cactiuser';"
+        mysql $MYSQL_AUTH_USR -e "GRANT ALL PRIVILEGES ON cacti.* TO 'cactiuser'@'localhost';"
+        mysql $MYSQL_AUTH_USR -e "GRANT SELECT ON mysql.time_zone_name TO 'cactiuser'@'localhost';"
+        mysql $MYSQL_AUTH_USR -e "FLUSH PRIVILEGES;"
+        mysql $MYSQL_AUTH_USR cacti < ${{ github.workspace }}/cacti/cacti.sql
+        mysql $MYSQL_AUTH_USR -e "INSERT INTO settings (name, value) VALUES ('path_php_binary', '/usr/bin/php')" cacti
+    
+    - name: Validate composer files
+      run: |
+        cd ${{ github.workspace }}/cacti
+        if [ -f composer.json ]; then
+          composer validate --strict || true
+        fi
+    
+    - name: Install Composer Dependencies
+      run: |
+        cd ${{ github.workspace }}/cacti
+        if [ -f composer.json ]; then
+          sudo composer install --prefer-dist --no-progress
+        fi
+    
+    - name: Create Cacti config.php
+      run: |
+        cat ${{ github.workspace }}/cacti/include/config.php.dist | \
+        sed -r "s/localhost/127.0.0.1/g" | \
+        sed -r "s/'cacti'/'cacti'/g" | \
+        sed -r "s/'cactiuser'/'cactiuser'/g" | \
+        sed -r "s/'cactiuser'/'cactiuser'/g" > ${{ github.workspace }}/cacti/include/config.php
+        sudo chmod 664 ${{ github.workspace }}/cacti/include/config.php
+    
+    - name: Configure Apache
+      run: |
+        cat << 'EOF' | sed 's#GITHUB_WORKSPACE#${{ github.workspace }}#g' > /tmp/cacti.conf
+        <VirtualHost *:80>
+          ServerAdmin webmaster@localhost
+          DocumentRoot GITHUB_WORKSPACE/cacti
+          
+          <Directory GITHUB_WORKSPACE/cacti>
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Require all granted
+          </Directory>
+          
+          ErrorLog ${APACHE_LOG_DIR}/error.log
+          CustomLog ${APACHE_LOG_DIR}/access.log combined
+        </VirtualHost>
+        EOF
+        sudo cp /tmp/cacti.conf /etc/apache2/sites-available/000-default.conf
+        sudo systemctl restart apache2
+    
+    - name: Install Cacti via CLI
+      run: |
+        cd ${{ github.workspace }}/cacti
+        sudo php cli/install_cacti.php --accept-eula --install --force
+    
+    - name: Install Weathermap Plugin
+      run: |
+        cd ${{ github.workspace }}/cacti
+        sudo php cli/plugin_manage.php --plugin=weathermap --install --enable
+    
+    - name: Check PHP Syntax for Plugin
+      run: |
+        cd ${{ github.workspace }}/cacti/plugins/weathermap
+        if find . -name '*.php' -exec php -l {} 2>&1 \; | grep -iv 'no syntax errors detected'; then
+          echo "Syntax errors found!"
+          exit 1
+        fi
+
+    - name: Remove the plugins directory exclusion from the .phpstan.neon
+      run: sed '/plugins/d' -i .phpstan.neon
+      working-directory: ${{ github.workspace }}/cacti
+
+    - name: Mark composer scripts executable
+      run: sudo chmod +x ${{ github.workspace }}/cacti/include/vendor/bin/*
+
+    - name: Run Linter on base code
+      run: composer run-script lint ${{ github.workspace }}/cacti/plugins/weathermap
+      working-directory: ${{ github.workspace }}/cacti
+
+    - name: Checking coding standards on base code
+      run: composer run-script phpcsfixer ${{ github.workspace }}/cacti/plugins/weathermap
+      working-directory: ${{ github.workspace }}/cacti
+
+#    - name: Run PHPStan at Level 6 on base code outside of Composer due to technical issues
+#      run: ./include/vendor/bin/phpstan analyze --level 6 ${{ github.workspace }}/cacti/plugins/weathermap
+#      working-directory: ${{ github.workspace }}/cacti
+    
+    - name: Run Cacti Poller
+      run: |
+        cd ${{ github.workspace }}/cacti
+        sudo php poller.php --poller=1 --force --debug
+        if ! grep -q "SYSTEM STATS" log/cacti.log; then
+          echo "Cacti poller did not finish successfully"
+          cat log/cacti.log
+          exit 1
+        fi
+
+    - name: View Cacti Logs
+      if: always()
+      run: |
+        if [ -f ${{ github.workspace }}/cacti/log/cacti.log ]; then
+          echo "=== Cacti Log ==="
+          sudo cat ${{ github.workspace }}/cacti/log/cacti.log
+        fi

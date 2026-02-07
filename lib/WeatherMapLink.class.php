@@ -58,10 +58,10 @@ class WeatherMapLink extends WeatherMapItem {
 	var $labelstyle;
 	var $labelboxstyle;
 	var $zorder;
-	var $overliburl = array();
-	var $infourl = array();
+	var $overliburl = [];
+	var $infourl    = [];
 	var $notes;
-	var $overlibcaption = array();
+	var $overlibcaption = [];
 
 	var $overlibwidth;
 	var $overlibheight;
@@ -75,7 +75,7 @@ class WeatherMapLink extends WeatherMapItem {
 	var $max_bandwidth_in_cfg;
 	var $max_bandwidth_out_cfg;
 
-	var $targets = array();
+	var $targets = [];
 
 	var $a_offset;
 	var $b_offset;
@@ -83,14 +83,14 @@ class WeatherMapLink extends WeatherMapItem {
 	var $in_ds;
 	var $out_ds;
 
-	var $colours = array();
+	var $colours = [];
 	var $selected;
 
 	var $inpercent;
 	var $outpercent;
 
 	var $inherit_fieldlist;
-	var $vialist = array();
+	var $vialist = [];
 	var $viastyle;
 	var $usescale;
 	var $duplex;
@@ -100,7 +100,7 @@ class WeatherMapLink extends WeatherMapItem {
 	var $bwboxcolour;
 	var $splitpos;
 	var $commentfont;
-	var $notestext = array();
+	var $notestext = [];
 
 	var $inscalekey;
 	var $outscalekey;
@@ -108,16 +108,16 @@ class WeatherMapLink extends WeatherMapItem {
 	var $inscaletag;
 	var $outscaletag;
 
-	# var $incolour,$outcolour;
+	// var $incolour,$outcolour;
 
 	var $commentfontcolour;
 	var $commentstyle;
 	var $bwfontcolour;
 
-	# var $incomment, $outcomment;
+	// var $incomment, $outcomment;
 
-	var $comments = array();
-	var $bwlabelformats = array();
+	var $comments       = [];
+	var $bwlabelformats = [];
 	var $curvepoints;
 
 	var $labeloffset_in;
@@ -129,8 +129,8 @@ class WeatherMapLink extends WeatherMapItem {
 	var $template;
 
 	function __construct() {
-	    $this->inherit_fieldlist = array (
-			'my_default'            => NULL,
+		$this->inherit_fieldlist =  [
+			'my_default'            => null,
 			'width'                 => 7,
 			'commentfont'           => 1,
 			'bwfont'                => 2,
@@ -145,42 +145,42 @@ class WeatherMapLink extends WeatherMapItem {
 			'viastyle'              => 'curved',
 			'usescale'              => 'DEFAULT',
 			'scaletype'             => 'percent',
-			'targets'               => array(),
+			'targets'               => [],
 			'duplex'                => 'full',
-			'infourl'               => array('', ''),
-			'notes'                 => array(),
-			'hints'                 => array(),
-			'comments'              => array('', ''),
-			'bwlabelformats'        => array(FMT_PERC_IN, FMT_PERC_OUT),
-			'overliburl'            => array(array(), array()),
-			'notestext'             => array(IN => '', OUT => ''),
+			'infourl'               => ['', ''],
+			'notes'                 => [],
+			'hints'                 => [],
+			'comments'              => ['', ''],
+			'bwlabelformats'        => [FMT_PERC_IN, FMT_PERC_OUT],
+			'overliburl'            => [[], []],
+			'notestext'             => [IN => '', OUT => ''],
 			'labelstyle'            => 'percent',
 			'labelboxstyle'         => 'classic',
 			'linkstyle'             => 'twoway',
 			'overlibwidth'          => 700,
 			'overlibheight'         => 200,
-			'outlinecolour'         => array(0, 0, 0),
-			'bwoutlinecolour'       => array(0, 0, 0),
-			'bwfontcolour'          => array(0, 0, 0),
-			'bwboxcolour'           => array(255, 255, 255),
-			'commentfontcolour'     => array(192, 192, 192),
+			'outlinecolour'         => [0, 0, 0],
+			'bwoutlinecolour'       => [0, 0, 0],
+			'bwfontcolour'          => [0, 0, 0],
+			'bwboxcolour'           => [255, 255, 255],
+			'commentfontcolour'     => [192, 192, 192],
 			'inpercent'             => 0,
 			'outpercent'            => 0,
 			'inscalekey'            => '',
 			'outscalekey'           => '',
-			# 'incolour'            => -1,
-			# 'outcolour'           => -1,
+			// 'incolour'            => -1,
+			// 'outcolour'           => -1,
 			'a_offset'              => 'C',
 			'b_offset'              => 'C',
-			# 'incomment'           => '',
-			# 'outcomment'          => '',
+			// 'incomment'           => '',
+			// 'outcomment'          => '',
 			'zorder'                => 300,
-			'overlibcaption'        => array('', ''),
+			'overlibcaption'        => ['', ''],
 			'max_bandwidth_in'      => 100000000,
 			'max_bandwidth_out'     => 100000000,
 			'max_bandwidth_in_cfg'  => '100M',
 			'max_bandwidth_out_cfg' => '100M'
-		);
+		];
 
 		// $this->a_offset = 'C';
 		// $this->b_offset = 'C';
@@ -200,7 +200,7 @@ class WeatherMapLink extends WeatherMapItem {
 
 		// the internal default-default gets it's values from inherit_fieldlist
 		// everything else comes from a link object - the template.
-		if ($this->name==':: DEFAULT ::') {
+		if ($this->name == ':: DEFAULT ::') {
 			foreach (array_keys($this->inherit_fieldlist) as $fld) {
 				$this->$fld = $this->inherit_fieldlist[$fld];
 			}
@@ -227,7 +227,9 @@ class WeatherMapLink extends WeatherMapItem {
 		// assert('is_object($source)');
 
 		foreach (array_keys($this->inherit_fieldlist) as $fld) {
-			 if ($fld != 'template') $this->$fld = $source->$fld;
+			if ($fld != 'template') {
+				$this->$fld = $source->$fld;
+			}
 		}
 	}
 
@@ -235,6 +237,9 @@ class WeatherMapLink extends WeatherMapItem {
 	 * image = GD image references
 	 * col = array of Colour objects
 	 * widths = array of link widths
+	 * @param mixed $image
+	 * @param mixed $col
+	 * @param mixed $widths
 	 */
 	function DrawComments($image, $col, $widths) {
 		$curvepoints = &$this->curvepoints;
@@ -249,62 +254,63 @@ class WeatherMapLink extends WeatherMapItem {
 		$start[IN]       = $last;
 
 		if ($this->linkstyle == 'oneway') {
-			$dirs = array(OUT);
+			$dirs = [OUT];
 		} else {
-			$dirs = array(OUT, IN);
+			$dirs = [OUT, IN];
 		}
 
 		foreach ($dirs as $dir) {
 			// Time to deal with Link Comments, if any
 			$comment = $this->owner->ProcessString($this->comments[$dir], $this);
 
-			# print "COMMENT: $comment";
+			// print "COMMENT: $comment";
 
 			if ($this->owner->get_hint('screenshot_mode') == 1) {
 				$comment = screenshotify($comment);
 			}
 
 			if ($comment != '') {
-				# print "\n\n----------------------------------------------------------------\nComment $dir for ".$this->name."\n";;
+				// print "\n\n----------------------------------------------------------------\nComment $dir for ".$this->name."\n";;
 
-				list($textlength, $textheight) = $this->owner->myimagestringsize($this->commentfont, $comment);
+				[$textlength, $textheight] = $this->owner->myimagestringsize($this->commentfont, $comment);
 
 				$extra_percent = $commentpos[$dir];
 
 				// $font = $this->commentfont;
 				// nudge pushes the comment out along the link arrow a little bit
 				// (otherwise there are more problems with text disappearing underneath links)
-				# $nudgealong = 0; $nudgeout=0;
+				// $nudgealong = 0; $nudgeout=0;
 
 				$nudgealong = intval($this->get_hint('comment_nudgealong'));
 				$nudgeout   = intval($this->get_hint('comment_nudgeout'));
 
 				$extra = ($totaldistance * ($extra_percent / 100));
-				# $comment_index = find_distance($curvepoints,$extra);
+				// $comment_index = find_distance($curvepoints,$extra);
 
-				list($x, $y, $comment_index, $angle) = find_distance_coords_angle($curvepoints,$extra);
+				[$x, $y, $comment_index, $angle] = find_distance_coords_angle($curvepoints,$extra);
 
-				#  print "$extra_percent => $extra ($totaldistance)\n";
-				#printf("  Point A is %f,%f\n",$curvepoints[$comment_index][0], $curvepoints[$comment_index][1]);
-				#printf("  Point B is %f,%f\n",$curvepoints[$comment_index+1][0], $curvepoints[$comment_index+1][1]);
-				#printf("  Point X is %f,%f\n",$x, $y);
+				//  print "$extra_percent => $extra ($totaldistance)\n";
+				// printf("  Point A is %f,%f\n",$curvepoints[$comment_index][0], $curvepoints[$comment_index][1]);
+				// printf("  Point B is %f,%f\n",$curvepoints[$comment_index+1][0], $curvepoints[$comment_index+1][1]);
+				// printf("  Point X is %f,%f\n",$x, $y);
 
-				# if ( ($comment_index != 0)) print "I ";
-				# if (($x != $curvepoints[$comment_index][0]) ) print "X ";
-				# if (($y != $curvepoints[$comment_index][1]) ) print "Y ";
-				# print "\n";
+				// if ( ($comment_index != 0)) print "I ";
+				// if (($x != $curvepoints[$comment_index][0]) ) print "X ";
+				// if (($y != $curvepoints[$comment_index][1]) ) print "Y ";
+				// print "\n";
 
 				if ($comment_index != 0 && ($x != $curvepoints[$comment_index][0] || $y != $curvepoints[$comment_index][1])) {
-					#	print "  -> Path 1\n";
+					//	print "  -> Path 1\n";
 					$dx = $x - $curvepoints[$comment_index][0];
 					$dy = $y - $curvepoints[$comment_index][1];
 				} else {
-				#	print "  -> Path 2\n";
-					$dx = $curvepoints[$comment_index+1][0] - $x;
-					$dy = $curvepoints[$comment_index+1][1] - $y;
+				//	print "  -> Path 2\n";
+					$dx = $curvepoints[$comment_index + 1][0] - $x;
+					$dy = $curvepoints[$comment_index + 1][1] - $y;
 				}
 
 				$centre_distance = $widths[$dir] + 4 + $nudgeout;
+
 				if ($this->commentstyle == 'center') {
 					$centre_distance = $nudgeout - ($textheight / 2);
 				}
@@ -313,7 +319,7 @@ class WeatherMapLink extends WeatherMapItem {
 
 				$l = sqrt(($dx * $dx) + ($dy * $dy));
 
-				# print "$extra => $comment_index/$last => $x,$y => $dx,$dy => $l\n";
+				// print "$extra => $comment_index/$last => $x,$y => $dx,$dy => $l\n";
 
 				$dx = $dx / $l;
 				$dy = $dy / $l;
@@ -325,8 +331,9 @@ class WeatherMapLink extends WeatherMapItem {
 				// if the text will be upside-down, rotate it, flip it, and right-justify it
 				// not quite as catchy as Missy's version
 				if (abs($angle) > 90) {
-					# $col = $map->selected;
+					// $col = $map->selected;
 					$angle -= 180;
+
 					if ($angle < -180) {
 						$angle += 360;
 					}
@@ -340,25 +347,25 @@ class WeatherMapLink extends WeatherMapItem {
 					$edge_y = $y + ($nudgealong * $dy) + ($ny * $centre_distance);
 				}
 
-				if ( !$flipped && ($extra + $textlength) > $totaldistance) {
+				if (!$flipped && ($extra + $textlength) > $totaldistance) {
 					$edge_x -= $dx * $textlength;
 					$edge_y -= $dy * $textlength;
-					# $comment .= "#";
+					// $comment .= "#";
 				}
 
-				if ( $flipped && ($extra - $textlength) < 0) {
+				if ($flipped && ($extra - $textlength) < 0) {
 					$edge_x += $dx * $textlength;
 					$edge_y += $dy * $textlength;
-					# $comment .= "%";
+					// $comment .= "%";
 				}
 
 				// FINALLY, draw the text!
-				# imagefttext($image, $fontsize, $angle, $edge_x, $edge_y, $col, $font,$comment);
+				// imagefttext($image, $fontsize, $angle, $edge_x, $edge_y, $col, $font,$comment);
 
 				$this->owner->myimagestring($image, $this->commentfont, $edge_x, $edge_y, $comment, $col[$dir], $angle);
 
-				#imagearc($image,$x,$y,10,10,0, 360,$this->owner->selected);
-				#imagearc($image,$edge_x,$edge_y,10,10,0, 360,$this->owner->selected);
+				// imagearc($image,$x,$y,10,10,0, 360,$this->owner->selected);
+				// imagearc($image,$edge_x,$edge_y,10,10,0, 360,$this->owner->selected);
 			}
 		}
 	}
@@ -373,21 +380,25 @@ class WeatherMapLink extends WeatherMapItem {
 
 		if (is_null($x1)) {
 			wm_warn('LINK ' . $this->name . ' uses a NODE with no POSITION! [WMWARN35]');
+
 			return;
 		}
 
 		if (is_null($y1)) {
 			wm_warn('LINK ' . $this->name . ' uses a NODE with no POSITION! [WMWARN35]');
+
 			return;
 		}
 
 		if (is_null($x2)) {
 			wm_warn('LINK ' . $this->name . ' uses a NODE with no POSITION! [WMWARN35]');
+
 			return;
 		}
 
 		if (is_null($y2)) {
 			wm_warn('LINK ' . $this->name . ' uses a NODE with no POSITION! [WMWARN35]');
+
 			return;
 		}
 
@@ -395,18 +406,19 @@ class WeatherMapLink extends WeatherMapItem {
 			wm_warn('LINK ' . $this->name . ' probably has it\'s BWLABELPOSs the wrong way around [WMWARN50]');
 		}
 
-		list($dx, $dy)=calc_offset($this->a_offset, $map->nodes[$this->a->name]->width, $map->nodes[$this->a->name]->height);
+		[$dx, $dy] = calc_offset($this->a_offset, $map->nodes[$this->a->name]->width, $map->nodes[$this->a->name]->height);
 
 		$x1 += $dx;
 		$y1 += $dy;
 
-		list($dx, $dy)=calc_offset($this->b_offset, $map->nodes[$this->b->name]->width, $map->nodes[$this->b->name]->height);
+		[$dx, $dy] = calc_offset($this->b_offset, $map->nodes[$this->b->name]->width, $map->nodes[$this->b->name]->height);
 
 		$x2 += $dx;
 		$y2 += $dy;
 
 		if (($x1 == $x2) && ($y1 == $y2) && sizeof($this->vialist) == 0) {
 			wm_warn('Zero-length link ' . $this->name . ' skipped. [WMWARN45]');
+
 			return;
 		}
 
@@ -415,15 +427,15 @@ class WeatherMapLink extends WeatherMapItem {
 
 		$outline_colour = $outlinecol->gdallocate($image);
 
-		$xpoints = array();
-		$ypoints = array();
+		$xpoints = [];
+		$ypoints = [];
 
 		$xpoints[] = $x1;
 		$ypoints[] = $y1;
 
-		# warn("There are VIAs.\n");
+		// warn("There are VIAs.\n");
 		foreach ($this->vialist as $via) {
-			# imagearc($image, $via[0],$via[1],20,20,0,360,$map->selected);
+			// imagearc($image, $via[0],$via[1],20,20,0,360,$map->selected);
 			if (isset($via[2])) {
 				$xpoints[] = $map->nodes[$via[2]]->x + $via[0];
 				$ypoints[] = $map->nodes[$via[2]]->y + $via[1];
@@ -436,8 +448,8 @@ class WeatherMapLink extends WeatherMapItem {
 		$xpoints[] = $x2;
 		$ypoints[] = $y2;
 
-		# list($link_in_colour,$link_in_scalekey, $link_in_scaletag) = $map->NewColourFromPercent($this->inpercent,$this->usescale,$this->name);
-		# list($link_out_colour,$link_out_scalekey, $link_out_scaletag) = $map->NewColourFromPercent($this->outpercent,$this->usescale,$this->name);
+		// list($link_in_colour,$link_in_scalekey, $link_in_scaletag) = $map->NewColourFromPercent($this->inpercent,$this->usescale,$this->name);
+		// list($link_out_colour,$link_out_scalekey, $link_out_scaletag) = $map->NewColourFromPercent($this->outpercent,$this->usescale,$this->name);
 
 		$link_in_colour  = $this->colours[IN];
 		$link_out_colour = $this->colours[OUT];
@@ -474,8 +486,8 @@ class WeatherMapLink extends WeatherMapItem {
 
 			// then draw the "curve" itself
 			draw_straight($image, $this->curvepoints,
-				array($link_in_width, $link_out_width), $outline_colour, array($gd_in_colour, $gd_out_colour),
-				$this->name, $map, $this->splitpos, ($this->linkstyle == 'oneway' ? true:false)
+				[$link_in_width, $link_out_width], $outline_colour, [$gd_in_colour, $gd_out_colour],
+				$this->name, $map, $this->splitpos, ($this->linkstyle == 'oneway' ? true : false)
 			);
 		} elseif ($this->viastyle == 'curved') {
 			// Calculate the spine points - the actual curve
@@ -483,8 +495,8 @@ class WeatherMapLink extends WeatherMapItem {
 
 			// then draw the curve itself
 			draw_curve($image, $this->curvepoints,
-				array($link_in_width, $link_out_width), $outline_colour, array($gd_in_colour, $gd_out_colour),
-				$this->name, $map, $this->splitpos, ($this->linkstyle == 'oneway' ? true:false)
+				[$link_in_width, $link_out_width], $outline_colour, [$gd_in_colour, $gd_out_colour],
+				$this->name, $map, $this->splitpos, ($this->linkstyle == 'oneway' ? true : false)
 			);
 		}
 
@@ -500,22 +512,22 @@ class WeatherMapLink extends WeatherMapItem {
 			$comment_colour_in  = $commentcol_in->gdallocate($image);
 			$comment_colour_out = $commentcol_out->gdallocate($image);
 
-			$this->DrawComments($image,array($comment_colour_in, $comment_colour_out),array($link_in_width*1.1,$link_out_width*1.1));
+			$this->DrawComments($image,[$comment_colour_in, $comment_colour_out],[$link_in_width * 1.1, $link_out_width * 1.1]);
 		}
 
-		$curvelength = $this->curvepoints[count($this->curvepoints)-1][2];
+		$curvelength = $this->curvepoints[count($this->curvepoints) - 1][2];
 
 		// figure out where the labels should be, and what the angle of the curve is at that point
-		list($q1_x, $q1_y, $junk, $q1_angle) = find_distance_coords_angle($this->curvepoints, ($this->labeloffset_out / 100) * $curvelength);
-		list($q3_x, $q3_y, $junk, $q3_angle) = find_distance_coords_angle($this->curvepoints, ($this->labeloffset_in / 100) * $curvelength);
+		[$q1_x, $q1_y, $junk, $q1_angle] = find_distance_coords_angle($this->curvepoints, ($this->labeloffset_out / 100) * $curvelength);
+		[$q3_x, $q3_y, $junk, $q3_angle] = find_distance_coords_angle($this->curvepoints, ($this->labeloffset_in / 100) * $curvelength);
 
-		# imageline($image, $q1_x+20*cos(deg2rad($q1_angle)),$q1_y-20*sin(deg2rad($q1_angle)), $q1_x-20*cos(deg2rad($q1_angle)), $q1_y+20*sin(deg2rad($q1_angle)), $this->owner->selected );
-		# imageline($image, $q3_x+20*cos(deg2rad($q3_angle)),$q3_y-20*sin(deg2rad($q3_angle)), $q3_x-20*cos(deg2rad($q3_angle)), $q3_y+20*sin(deg2rad($q3_angle)), $this->owner->selected );
+		// imageline($image, $q1_x+20*cos(deg2rad($q1_angle)),$q1_y-20*sin(deg2rad($q1_angle)), $q1_x-20*cos(deg2rad($q1_angle)), $q1_y+20*sin(deg2rad($q1_angle)), $this->owner->selected );
+		// imageline($image, $q3_x+20*cos(deg2rad($q3_angle)),$q3_y-20*sin(deg2rad($q3_angle)), $q3_x-20*cos(deg2rad($q3_angle)), $q3_y+20*sin(deg2rad($q3_angle)), $this->owner->selected );
 
-		# warn("$q1_angle $q3_angle\n");
+		// warn("$q1_angle $q3_angle\n");
 
 		if (!is_null($q1_x)) {
-			$outbound = array (
+			$outbound =  [
 				$q1_x,
 				$q1_y,
 				0,
@@ -524,9 +536,9 @@ class WeatherMapLink extends WeatherMapItem {
 				$this->bandwidth_out,
 				$q1_angle,
 				OUT
-			);
+			];
 
-			$inbound = array (
+			$inbound =  [
 				$q3_x,
 				$q3_y,
 				0,
@@ -535,7 +547,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$this->bandwidth_in,
 				$q3_angle,
 				IN
-			);
+			];
 
 			if ($map->sizedebug) {
 				$outbound[5] = $this->max_bandwidth_out;
@@ -543,9 +555,9 @@ class WeatherMapLink extends WeatherMapItem {
 			}
 
 			if ($this->linkstyle == 'oneway') {
-				$tasks = array($outbound);
+				$tasks = [$outbound];
 			} else {
-				$tasks = array($inbound, $outbound);
+				$tasks = [$inbound, $outbound];
 			}
 
 			foreach ($tasks as $task) {
@@ -594,36 +606,36 @@ class WeatherMapLink extends WeatherMapItem {
 		if ($this->config_override != '') {
 			$output = $this->config_override . EOL;
 		} else {
-			# $defdef = $this->owner->defaultlink;
+			// $defdef = $this->owner->defaultlink;
 			$dd = $this->owner->links[$this->template];
 
 			wm_debug("Writing config for LINK {$this->name} against {$this->template}");
 
-			$basic_params = array(
-				array('width',             'WIDTH',            CONFIG_TYPE_LITERAL),
-				array('zorder',            'ZORDER',           CONFIG_TYPE_LITERAL),
-				array('overlibwidth',      'OVERLIBWIDTH',     CONFIG_TYPE_LITERAL),
-				array('overlibheight',     'OVERLIBHEIGHT',    CONFIG_TYPE_LITERAL),
-				array('arrowstyle',        'ARROWSTYLE',       CONFIG_TYPE_LITERAL),
-				array('viastyle',          'VIASTYLE',         CONFIG_TYPE_LITERAL),
-				array('linkstyle',         'LINKSTYLE',        CONFIG_TYPE_LITERAL),
-				array('splitpos',          'SPLITPOS',         CONFIG_TYPE_LITERAL),
-				array('duplex',            'DUPLEX',           CONFIG_TYPE_LITERAL),
-				array('commentstyle',      'COMMENTSTYLE',     CONFIG_TYPE_LITERAL),
-				array('labelboxstyle',     'BWSTYLE',          CONFIG_TYPE_LITERAL),
+			$basic_params = [
+				['width',             'WIDTH',            CONFIG_TYPE_LITERAL],
+				['zorder',            'ZORDER',           CONFIG_TYPE_LITERAL],
+				['overlibwidth',      'OVERLIBWIDTH',     CONFIG_TYPE_LITERAL],
+				['overlibheight',     'OVERLIBHEIGHT',    CONFIG_TYPE_LITERAL],
+				['arrowstyle',        'ARROWSTYLE',       CONFIG_TYPE_LITERAL],
+				['viastyle',          'VIASTYLE',         CONFIG_TYPE_LITERAL],
+				['linkstyle',         'LINKSTYLE',        CONFIG_TYPE_LITERAL],
+				['splitpos',          'SPLITPOS',         CONFIG_TYPE_LITERAL],
+				['duplex',            'DUPLEX',           CONFIG_TYPE_LITERAL],
+				['commentstyle',      'COMMENTSTYLE',     CONFIG_TYPE_LITERAL],
+				['labelboxstyle',     'BWSTYLE',          CONFIG_TYPE_LITERAL],
 			//	array('usescale',        'USESCALE',       CONFIG_TYPE_LITERAL),
 
-				array('bwfont',            'BWFONT',           CONFIG_TYPE_LITERAL),
-				array('commentfont',       'COMMENTFONT',      CONFIG_TYPE_LITERAL),
+				['bwfont',            'BWFONT',           CONFIG_TYPE_LITERAL],
+				['commentfont',       'COMMENTFONT',      CONFIG_TYPE_LITERAL],
 
-				array('bwoutlinecolour',   'BWOUTLINECOLOR',   CONFIG_TYPE_COLOR),
-				array('bwboxcolour',       'BWBOXCOLOR',       CONFIG_TYPE_COLOR),
-				array('outlinecolour',     'OUTLINECOLOR',     CONFIG_TYPE_COLOR),
-				array('commentfontcolour', 'COMMENTFONTCOLOR', CONFIG_TYPE_COLOR),
-				array('bwfontcolour',      'BWFONTCOLOR',      CONFIG_TYPE_COLOR)
-			);
+				['bwoutlinecolour',   'BWOUTLINECOLOR',   CONFIG_TYPE_COLOR],
+				['bwboxcolour',       'BWBOXCOLOR',       CONFIG_TYPE_COLOR],
+				['outlinecolour',     'OUTLINECOLOR',     CONFIG_TYPE_COLOR],
+				['commentfontcolour', 'COMMENTFONTCOLOR', CONFIG_TYPE_COLOR],
+				['bwfontcolour',      'BWFONTCOLOR',      CONFIG_TYPE_COLOR]
+			];
 
-			# TEMPLATE must come first. DEFAULT
+			// TEMPLATE must come first. DEFAULT
 			if ($this->template != 'DEFAULT' && $this->template != ':: DEFAULT ::') {
 				$output .= TAB . 'TEMPLATE ' . $this->template . EOL;
 			}
@@ -632,7 +644,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$field   = $param[0];
 				$keyword = $param[1];
 
-				# $output .= "# For $keyword: ".$this->$field." vs ".$dd->$field."\n";
+				// $output .= "# For $keyword: ".$this->$field." vs ".$dd->$field."\n";
 				if ($this->$field != $dd->$field) {
 					if ($param[2] == CONFIG_TYPE_COLOR) {
 						$output .= TAB . "$keyword " . render_colour($this->$field) . EOL;
@@ -643,16 +655,16 @@ class WeatherMapLink extends WeatherMapItem {
 			}
 
 			$val        = $this->usescale . ' ' . $this->scaletype;
-			$comparison = $dd->usescale   . ' ' . $dd->scaletype;
+			$comparison = $dd->usescale . ' ' . $dd->scaletype;
 
 			if (($val != $comparison)) {
 				$output .= TAB . 'USESCALE ' . $val . EOL;
 			}
 
 			if ($this->infourl[IN] == $this->infourl[OUT]) {
-				$dirs = array(IN => ''); // only use the IN value, since they're both the same, but don't prefix the output keyword
+				$dirs = [IN => '']; // only use the IN value, since they're both the same, but don't prefix the output keyword
 			} else {
-				$dirs = array(IN => 'IN', OUT => 'OUT');// the full monty two-keyword version
+				$dirs = [IN => 'IN', OUT => 'OUT']; // the full monty two-keyword version
 			}
 
 			foreach ($dirs as $dir => $tdir) {
@@ -662,9 +674,9 @@ class WeatherMapLink extends WeatherMapItem {
 			}
 
 			if ($this->overlibcaption[IN] == $this->overlibcaption[OUT]) {
-				$dirs = array(IN => ''); // only use the IN value, since they're both the same, but don't prefix the output keyword
+				$dirs = [IN => '']; // only use the IN value, since they're both the same, but don't prefix the output keyword
 			} else {
-				$dirs = array(IN => 'IN', OUT => 'OUT');// the full monty two-keyword version
+				$dirs = [IN => 'IN', OUT => 'OUT']; // the full monty two-keyword version
 			}
 
 			foreach ($dirs as $dir => $tdir) {
@@ -674,9 +686,9 @@ class WeatherMapLink extends WeatherMapItem {
 			}
 
 			if ($this->notestext[IN] == $this->notestext[OUT]) {
-				$dirs = array(IN => ''); // only use the IN value, since they're both the same, but don't prefix the output keyword
+				$dirs = [IN => '']; // only use the IN value, since they're both the same, but don't prefix the output keyword
 			} else {
-				$dirs = array(IN => 'IN', OUT => 'OUT');// the full monty two-keyword version
+				$dirs = [IN => 'IN', OUT => 'OUT']; // the full monty two-keyword version
 			}
 
 			foreach ($dirs as $dir => $tdir) {
@@ -686,9 +698,9 @@ class WeatherMapLink extends WeatherMapItem {
 			}
 
 			if ($this->overliburl[IN] == $this->overliburl[OUT]) {
-				$dirs = array(IN => ''); // only use the IN value, since they're both the same, but don't prefix the output keyword
+				$dirs = [IN => '']; // only use the IN value, since they're both the same, but don't prefix the output keyword
 			} else {
-				$dirs = array(IN => 'IN', OUT => 'OUT');// the full monty two-keyword version
+				$dirs = [IN => 'IN', OUT => 'OUT']; // the full monty two-keyword version
 			}
 
 			foreach ($dirs as $dir => $tdir) {
@@ -718,7 +730,7 @@ class WeatherMapLink extends WeatherMapItem {
 			$comparison2 = $dd->bwlabelformats[OUT];
 
 			if ($this->labelstyle == '--' && ($this->bwlabelformats[IN] != $comparison || $this->bwlabelformats[OUT] != '--')) {
-				$output .= TAB . 'INBWFORMAT '  . $this->bwlabelformats[IN]  . EOL;
+				$output .= TAB . 'INBWFORMAT ' . $this->bwlabelformats[IN] . EOL;
 				$output .= TAB . 'OUTBWFORMAT ' . $this->bwlabelformats[OUT] . EOL;
 			}
 
@@ -729,7 +741,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$output .= TAB . 'BWLABELPOS ' . $this->labeloffset_in . ' ' . $this->labeloffset_out . EOL;
 			}
 
-			$comparison = $dd->commentoffset_in   . ':' . $dd->commentoffset_out;
+			$comparison = $dd->commentoffset_in . ':' . $dd->commentoffset_out;
 			$mine       = $this->commentoffset_in . ':' . $this->commentoffset_out;
 
 			if ($mine != $comparison) {
@@ -752,7 +764,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$output .= EOL;
 			}
 
-			foreach (array(IN, OUT) as $dir) {
+			foreach ([IN, OUT] as $dir) {
 				if ($dir == IN) {
 					$tdir = 'IN';
 				}
@@ -768,7 +780,7 @@ class WeatherMapLink extends WeatherMapItem {
 				}
 			}
 
-			if (isset($this->a) && isset($this->b))	{
+			if (isset($this->a) && isset($this->b)) {
 				$output .= TAB . 'NODES ' . $this->a->name;
 
 				if ($this->a_offset != 'C') {
@@ -786,7 +798,7 @@ class WeatherMapLink extends WeatherMapItem {
 
 			if (count($this->vialist) > 0) {
 				foreach ($this->vialist as $via) {
-					if ( isset($via[2])) {
+					if (isset($via[2])) {
 						$output .= sprintf(TAB . 'VIA %s %d %d' . EOL, $via[2],$via[0], $via[1]);
 					} else {
 						$output .= sprintf(TAB . 'VIA %d %d' . EOL, $via[0], $via[1]);
@@ -815,13 +827,13 @@ class WeatherMapLink extends WeatherMapItem {
 			}
 		}
 
-		return($output);
+		return ($output);
 	}
 
 	function asJS() {
 		$js  = "\t\t\t";
 		$js .= 'Links[' . js_escape($this->name) . '] = {';
-		$js .= '"id":' . $this->id. ', ';
+		$js .= '"id":' . $this->id . ', ';
 
 		if (isset($this->a)) {
 			$js .= 'a:"' . $this->a->name . '", ';
@@ -863,12 +875,12 @@ class WeatherMapLink extends WeatherMapItem {
 		$js .= 'overliburl:' . js_escape(join(' ', $this->overliburl[IN]));
 
 		$js .= "};\n";
-		$js .= "\t\t\t" . 'LinkIDs["L' . $this->id . '"] = '. js_escape($this->name) . ";\n";
+		$js .= "\t\t\t" . 'LinkIDs["L' . $this->id . '"] = ' . js_escape($this->name) . ";\n";
 
 		return $js;
 	}
 
-	function asJSON($complete=true) {
+	function asJSON($complete = true) {
 		$js  = '';
 		$js .= '' . js_escape($this->name) . ': {';
 		$js .= '"id":' . $this->id . ', ';
@@ -880,7 +892,7 @@ class WeatherMapLink extends WeatherMapItem {
 
 		if ($complete) {
 			$js .= '"infourl":' . js_escape($this->infourl) . ', ';
-			$js .= '"overliburl":' . js_escape($this->overliburl). ', ';
+			$js .= '"overliburl":' . js_escape($this->overliburl) . ', ';
 			$js .= '"width":"' . $this->width . '", ';
 			$js .= '"target":';
 
@@ -918,4 +930,3 @@ class WeatherMapLink extends WeatherMapItem {
 		return $js;
 	}
 }
-

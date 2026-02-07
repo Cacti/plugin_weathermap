@@ -61,19 +61,19 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 
 	function Init(&$map) {
 		// We can keep a list of unresponsive nodes, so we can give up earlier
-		$this->down_cache = array();
+		$this->down_cache = [];
 
 		if (function_exists('snmpget')) {
-			return(true);
+			return (true);
 		}
 
-		wm_debug("SNMP DS: snmpget() not found. Do you have the PHP SNMP module?");
+		wm_debug('SNMP DS: snmpget() not found. Do you have the PHP SNMP module?');
 
-		return(false);
+		return (false);
 	}
 
 	function Recognise($targetstring) {
-		if (preg_match("/^snmp:([^:]+):([^:]+):([^:]+):([^:]+)$/",$targetstring,$matches)) {
+		if (preg_match('/^snmp:([^:]+):([^:]+):([^:]+):([^:]+)$/',$targetstring,$matches)) {
 			return true;
 		} else {
 			return false;
@@ -105,7 +105,7 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 
 		if ($map->get_hint('snmp_retries') != '') {
 			$retries = intval($map->get_hint('snmp_retries'));
-			wm_debug("Number of retries changed to ".$retries);
+			wm_debug('Number of retries changed to ' . $retries);
 		}
 
 		if (preg_match('/^snmp:([^:]+):([^:]+):([^:]+):([^:]+)$/', $targetstring, $matches)) {
@@ -115,8 +115,7 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 			$out_oid   = $matches[4];
 
 			if ($abort_count == 0 ||
-				($abort_count > 0 && (!isset($this->down_cache[$host]) || intval($this->down_cache[$host]) < $abort_count ))) {
-
+				($abort_count > 0 && (!isset($this->down_cache[$host]) || intval($this->down_cache[$host]) < $abort_count))) {
 				if (function_exists('snmp_get_quick_print')) {
 					$was = snmp_get_quick_print();
 					snmp_set_quick_print(1);
@@ -127,7 +126,7 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 				}
 
 				if (function_exists('snmp_set_oid_output_format')) {
-					snmp_set_oid_output_format  ( SNMP_OID_OUTPUT_NUMERIC  );
+					snmp_set_oid_output_format(SNMP_OID_OUTPUT_NUMERIC);
 				}
 
 				if (function_exists('snmp_set_valueretrieval')) {
@@ -170,9 +169,8 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 			}
 		}
 
-		wm_debug ('SNMP ReadData: Returning (' . ($data[IN] === null ? 'NULL':$data[IN]) . ',' . ($data[OUT]=== null ? 'NULL':$data[OUT]) . ",$data_time)");
+		wm_debug('SNMP ReadData: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)");
 
-		return(array($data[IN], $data[OUT], $data_time));
+		return ([$data[IN], $data[OUT], $data_time]);
 	}
 }
-

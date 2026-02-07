@@ -13,353 +13,337 @@
 // TARGET snmp:public:hostname:1.3.6.1.4.1.3711.1.1:1.3.6.1.4.1.3711.1.2
 // (that is, TARGET snmp:community:host:in_oid:out_oid
 
-class WeatherMapDataSource_snmp3 extends WeatherMapDataSource
-{
-    protected $owner;
-    protected $regexpsHandled;
-    protected $recognised;
-    protected $name;
-    protected $data;
-    protected $dataTime;
+class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
+	protected $owner;
+	protected $regexpsHandled;
+	protected $recognised;
+	protected $name;
+	protected $data;
+	protected $dataTime;
 
-    protected $downCache;
+	protected $downCache;
 
-    private $snmpParamDefaults = array(
-        "username" => "",
-        "seclevel" => "noAuthNoPriv",
-        "authpass" => "",
-        "privpass" => "",
-        "authproto" => "",
-        "privproto" => ""
-    );
+	private $snmpParamDefaults = [
+		'username'  => '',
+		'seclevel'  => 'noAuthNoPriv',
+		'authpass'  => '',
+		'privpass'  => '',
+		'authproto' => '',
+		'privproto' => ''
+	];
 
-    private $originalQuickPrint;
-    private $originalValueRetrieval;
-    private $abortCount;
-    private $timeout;
-    private $retryCount;
+	private $originalQuickPrint;
+	private $originalValueRetrieval;
+	private $abortCount;
+	private $timeout;
+	private $retryCount;
 
-    public function __construct()
-    {
-        $this->recognised = 0;
+	public function __construct() {
+		$this->recognised = 0;
 
-        $this->data = array();
-        $this->dataTime = 0;
-        $this->data[IN] = null;
-        $this->data[OUT] = null;
+		$this->data      = [];
+		$this->dataTime  = 0;
+		$this->data[IN]  = null;
+		$this->data[OUT] = null;
 
-        $this->regexpsHandled = array(
-            '/^snmp3:([^:]+):([^:]+):([^:]+):([^:]+)$/'
-        );
-        $this->name = "SNMP3";
-    }
+		$this->regexpsHandled = [
+			'/^snmp3:([^:]+):([^:]+):([^:]+):([^:]+)$/'
+		];
+		$this->name = 'SNMP3';
+	}
 
-    function Init(&$map)
-    {
-        // We can keep a list of unresponsive nodes, so we can give up earlier
-        $this->downCache = array();
+	function Init(&$map) {
+		// We can keep a list of unresponsive nodes, so we can give up earlier
+		$this->downCache = [];
 
-        if (function_exists('snmp3_get')) {
-            return true;
-        }
-        wm_debug("SNMP3 DS: snmp3_ get() not found. Do you have the PHP SNMP module?\n");
+		if (function_exists('snmp3_get')) {
+			return true;
+		}
+		wm_debug("SNMP3 DS: snmp3_ get() not found. Do you have the PHP SNMP module?\n");
 
-        $this->owner = $map;
-        $this->getMapGlobals();
-        $this->data = array();
+		$this->owner = $map;
+		$this->getMapGlobals();
+		$this->data = [];
 
-        return false;
-    }
+		return false;
+	}
 
-    public function Recognise($targetString)
-    {
-        foreach ($this->regexpsHandled as $regexp) {
-            if (preg_match($regexp, $targetString)) {
-                $this->recognised++;
-                return true;
-            }
-        }
-        return false;
-    }
+	public function Recognise($targetString) {
+		foreach ($this->regexpsHandled as $regexp) {
+			if (preg_match($regexp, $targetString)) {
+				$this->recognised++;
 
+				return true;
+			}
+		}
 
-    public function Register($targetstring, &$map, &$item)
-    {
-        parent::Register($targetstring, $map, $item);
+		return false;
+	}
 
-        if (preg_match($this->regexpsHandled[0], $targetstring, $matches)) {
-            // make sure there is a key for every host in the down_cache
-            $host = $matches[2];
-            $this->downCache[$host] = 0;
-        }
-    }
+	public function Register($targetstring, &$map, &$item) {
+		parent::Register($targetstring, $map, $item);
 
-    /**
-     * Decide if this host has failed too much already
-     *
-     * @param string $host
-     * @return bool
-     */
-    private function isHostAborted($host)
-    {
-        // we're not keeping score
-        if ($this->abortCount == 0) {
-            return false;
-        }
+		if (preg_match($this->regexpsHandled[0], $targetstring, $matches)) {
+			// make sure there is a key for every host in the down_cache
+			$host                   = $matches[2];
+			$this->downCache[$host] = 0;
+		}
+	}
 
-        if (!isset($this->downCache[$host]) || intval($this->downCache[$host]) < $this->abortCount) {
-            return false;
-        }
+	/**
+	 * Decide if this host has failed too much already
+	 *
+	 * @param  string $host
+	 * @return bool
+	 */
+	private function isHostAborted($host) {
+		// we're not keeping score
+		if ($this->abortCount == 0) {
+			return false;
+		}
 
-        return true;
-    }
+		if (!isset($this->downCache[$host]) || intval($this->downCache[$host]) < $this->abortCount) {
+			return false;
+		}
 
+		return true;
+	}
 
+	public function ReadData($targetString, &$map, &$mapItem) {
+		$this->data[IN]  = null;
+		$this->data[OUT] = null;
 
-    public function ReadData($targetString, &$map, &$mapItem)
-    {
-        $this->data[IN] = null;
-        $this->data[OUT] = null;
+		if (preg_match($this->regexpsHandled[0], $targetString, $matches)) {
+			$profileName = $matches[1];
+			$host        = $matches[2];
+			$oids        = [IN => $matches[3], OUT => $matches[4]];
 
-        if (preg_match($this->regexpsHandled[0], $targetString, $matches)) {
-            $profileName = $matches[1];
-            $host = $matches[2];
-            $oids = array(IN => $matches[3], OUT => $matches[4]);
+			if (!$this->isHostAborted($host)) {
+				$this->prepareSNMPGlobals();
+				$params = $this->buildSNMPParams($map, $profileName);
 
-            if (!$this->isHostAborted($host)) {
-                $this->prepareSNMPGlobals();
-                $params = $this->buildSNMPParams($map, $profileName);
+				wm_debug(sprintf("SNMPv3 ReadData: SNMP settings are %s\n", json_encode($params)));
 
-                wm_debug(sprintf("SNMPv3 ReadData: SNMP settings are %s\n", json_encode($params)));
+				$this->getSNMPData($host, $params, $oids, $mapItem, $this->timeout, $this->retryCount);
 
-                $this->getSNMPData($host, $params, $oids, $mapItem, $this->timeout, $this->retryCount);
+				$this->restoreSNMPGlobals();
+			} else {
+				wm_warn("SNMP for $host has reached $this->abortCount failures. Skipping. [WMSNMP01]");
+			}
+		} else {
+			wm_debug("SNMPv3 ReadData: regexp didn't match after Recognise did - this is odd!\n");
+		}
 
-                $this->restoreSNMPGlobals();
-            } else {
-                wm_warn("SNMP for $host has reached $this->abortCount failures. Skipping. [WMSNMP01]");
-            }
-        } else {
-            wm_debug("SNMPv3 ReadData: regexp didn't match after Recognise did - this is odd!\n");
-        }
+		return $this->returnData();
+	}
 
-        return $this->returnData();
-    }
+	protected function returnData() {
+		wm_debug(
+			sprintf(
+				"%s ReadData: Returning (%s, %s, %s)\n",
+				$this->name,
+				valueOrNull($this->data[IN]),
+				valueOrNull($this->data[OUT]),
+				$this->dataTime
+			)
+		);
 
+		return [$this->data[IN], $this->data[OUT], $this->dataTime];
+	}
 
-    protected function returnData()
-    {
-        wm_debug(
-            sprintf(
-                "%s ReadData: Returning (%s, %s, %s)\n",
-                $this->name,
-                valueOrNull($this->data[IN]),
-                valueOrNull($this->data[OUT]),
-                $this->dataTime
-            )
-        );
+	/**
+	 * @param  WeatherMap $map
+	 * @param             $profileName
+	 * @return array
+	 */
+	public function buildSNMPParams(&$map, $profileName) {
+		// snmp3_PROFILE1_import 33
+		//
+		// OR
+		//
+		// snmp3_PROFILE1_username
+		// snmp3_PROFILE1_seclevel
+		// snmp3_PROFILE1_authproto
+		// snmp3_PROFILE1_authpass
+		// snmp3_PROFILE1_privproto
+		// snmp3_PROFILE1_privpass
 
-        return array($this->data[IN], $this->data[OUT], $this->dataTime);
-    }
+		$import = $map->get_hint('snmp3_' . $profileName . '_import');
 
-    /**
-     * @param WeatherMap $map
-     * @param $profileName
-     * @return array
-     */
-    public function buildSNMPParams(&$map, $profileName)
-    {
-        # snmp3_PROFILE1_import 33
-        #
-        # OR
-        #
-        # snmp3_PROFILE1_username
-        # snmp3_PROFILE1_seclevel
-        # snmp3_PROFILE1_authproto
-        # snmp3_PROFILE1_authpass
-        # snmp3_PROFILE1_privproto
-        # snmp3_PROFILE1_privpass
+		$params = [];
 
-        $import = $map->get_hint("snmp3_" . $profileName . "_import");
+		if (is_null($import)) {
+			// If they are explicitly defined...
+			wm_debug("SNMPv3 ReadData: no import, defining profile $profileName from SET variables\n");
 
-        $params = array();
+			foreach ($this->snmpParamDefaults as $keyname => $default) {
+				$params[$keyname] = $map->get_hint('snmp3_' . $profileName . '_' . $keyname, $default);
+			}
+		} else {
+			// if they are to be copied from a Cacti profile...
+			$import = intval($import);
+			wm_debug("SNMPv3 ReadData: will try to import profile $profileName from Cacti host id $import\n");
 
-        if (is_null($import)) {
-            // If they are explicitly defined...
-            wm_debug("SNMPv3 ReadData: no import, defining profile $profileName from SET variables\n");
-            foreach ($this->snmpParamDefaults as $keyname => $default) {
-                $params[$keyname] = $map->get_hint("snmp3_" . $profileName . "_" . $keyname, $default);
-            }
-        } else {
-            // if they are to be copied from a Cacti profile...
-            $import = intval($import);
-            wm_debug("SNMPv3 ReadData: will try to import profile $profileName from Cacti host id $import\n");
+			$params = $this->copyParamsFromCacti($profileName, $import);
+		}
 
-            $params = $this->copyParamsFromCacti($profileName, $import);
-        }
-        return $params;
-    }
+		return $params;
+	}
 
-    /**
-     * @param $profileName
-     * @param $hostId
-     * @return mixed
-     */
-    private function copyParamsFromCacti($profileName, $hostId)
-    {
-        $params = array();
+	/**
+	 * @param        $profileName
+	 * @param        $hostId
+	 * @return mixed
+	 */
+	private function copyParamsFromCacti($profileName, $hostId) {
+		$params = [];
 
-        foreach ($this->snmpParamDefaults as $keyname => $default) {
-            $params[$keyname] = $default;
-        }
+		foreach ($this->snmpParamDefaults as $keyname => $default) {
+			$params[$keyname] = $default;
+		}
 
-        if (!function_exists("db_fetch_row")) {
-            wm_warn("SNMPv3 ReadData snmp3_" . $profileName . "_import is set but not running in Cacti");
-            return $params;
-        }
-        // TODO: this is something that should be cached or done in prefetch
-        $result = \db_fetch_assoc(
-            sprintf(
-                "select * from host where snmp_version=3 and id=%d LIMIT 1",
-                $hostId
-            )
-        );
+		if (!function_exists('db_fetch_row')) {
+			wm_warn('SNMPv3 ReadData snmp3_' . $profileName . '_import is set but not running in Cacti');
 
-        if (!$result) {
-            wm_warn("SNMPv3 ReadData snmp3_" . $profileName . "_import failed to read data from Cacti host id $hostId");
-            return $params;
-        }
+			return $params;
+		}
+		// TODO: this is something that should be cached or done in prefetch
+		$result = \db_fetch_assoc(
+			sprintf(
+				'select * from host where snmp_version=3 and id=%d LIMIT 1',
+				$hostId
+			)
+		);
 
-        $dbFieldMapping = array(
-            "username" => "snmp_username",
-            "authpass" => "snmp_password",
-            "privpass" => "snmp_priv_passphrase",
-            "authproto" => "snmp_auth_protocol",
-            "privproto" => "snmp_priv_protocol"
-        );
+		if (!$result) {
+			wm_warn('SNMPv3 ReadData snmp3_' . $profileName . "_import failed to read data from Cacti host id $hostId");
 
-        foreach ($dbFieldMapping as $param => $fieldname) {
-            $params[$param] = $result[0][$fieldname];
-        }
+			return $params;
+		}
 
-        if ($params['privproto'] == "[None]" || $params['privpass'] == '') {
-            $params['seclevel'] = "authNoPriv";
-            $params['privproto'] = "";
-        } else {
-            $params['seclevel'] = "authPriv";
-        }
+		$dbFieldMapping = [
+			'username'  => 'snmp_username',
+			'authpass'  => 'snmp_password',
+			'privpass'  => 'snmp_priv_passphrase',
+			'authproto' => 'snmp_auth_protocol',
+			'privproto' => 'snmp_priv_protocol'
+		];
 
-        wm_debug(sprintf(
-                "SNMPv3 ReadData Imported Cacti info for device %d into profile named %s\n",
-                $hostId,
-                $profileName)
-        );
+		foreach ($dbFieldMapping as $param => $fieldname) {
+			$params[$param] = $result[0][$fieldname];
+		}
 
-        return $params;
-    }
+		if ($params['privproto'] == '[None]' || $params['privpass'] == '') {
+			$params['seclevel']  = 'authNoPriv';
+			$params['privproto'] = '';
+		} else {
+			$params['seclevel'] = 'authPriv';
+		}
 
-    private function prepareSNMPGlobals()
-    {
-        if (function_exists("snmp_get_quick_print")) {
-            $this->originalQuickPrint = snmp_get_quick_print();
-            snmp_set_quick_print(1);
-        }
-        if (function_exists("snmp_get_valueretrieval")) {
-            $this->originalValueRetrieval = snmp_get_valueretrieval();
-        }
+		wm_debug(sprintf(
+			"SNMPv3 ReadData Imported Cacti info for device %d into profile named %s\n",
+			$hostId,
+			$profileName)
+		);
 
-        if (function_exists('snmp_set_oid_output_format')) {
-            snmp_set_oid_output_format(SNMP_OID_OUTPUT_NUMERIC);
-        }
+		return $params;
+	}
 
-        if (function_exists('snmp_set_valueretrieval')) {
-            snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
-        }
-    }
+	private function prepareSNMPGlobals() {
+		if (function_exists('snmp_get_quick_print')) {
+			$this->originalQuickPrint = snmp_get_quick_print();
+			snmp_set_quick_print(1);
+		}
 
-    private function restoreSNMPGlobals()
-    {
-        if (function_exists("snmp_set_quick_print")) {
-            snmp_set_quick_print($this->originalQuickPrint);
-        }
-    }
+		if (function_exists('snmp_get_valueretrieval')) {
+			$this->originalValueRetrieval = snmp_get_valueretrieval();
+		}
 
-    /**
-     * @param $host
-     * @param $params
-     * @param $oids
-     * @param $item
-     * @param $timeout
-     * @param $retries
-     */
-    private function getSNMPData($host, $params, $oids, &$item, $timeout, $retries)
-    {
-        $channels = array(
-            'in' => IN,
-            'out' => OUT
-        );
-        $results = array();
-        $results[IN] = null;
-        $results[OUT] = null;
+		if (function_exists('snmp_set_oid_output_format')) {
+			snmp_set_oid_output_format(SNMP_OID_OUTPUT_NUMERIC);
+		}
 
-        if ($params['username'] != "") {
-            foreach ($channels as $name => $id) {
-                if ($oids[$id] != '-') {
-                    $oid = $oids[$id];
-                    wm_debug("Going to get $oid\n");
-                    $results[$id] = snmp3_get(
-                        $host,
-                        $params['username'],
-                        $params['seclevel'],
-                        $params['authproto'],
-                        $params['authpass'],
-                        $params['privproto'],
-                        $params['privpass'],
-                        $oid,
-                        $timeout,
-                        $retries
-                    );
+		if (function_exists('snmp_set_valueretrieval')) {
+			snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
+		}
+	}
 
+	private function restoreSNMPGlobals() {
+		if (function_exists('snmp_set_quick_print')) {
+			snmp_set_quick_print($this->originalQuickPrint);
+		}
+	}
 
-                    if ($results[$id] !== false) {
-                        $this->data[$id] = floatval($results[$id]);
-                        $item->add_hint("snmp_" . $name . "_raw", $results[$id]);
-                    } else {
-                        $this->downCache[$host]++;
-                    }
-                } else {
-                    wm_debug("SNMPv3 ReadData: skipping $name channel: OID is '-'\n");
-                }
-            }
-        } else {
-            wm_debug("SNMPv3 ReadData: no username defined, not going to try.\n");
-        }
+	/**
+	 * @param $host
+	 * @param $params
+	 * @param $oids
+	 * @param $item
+	 * @param $timeout
+	 * @param $retries
+	 */
+	private function getSNMPData($host, $params, $oids, &$item, $timeout, $retries) {
+		$channels = [
+			'in'  => IN,
+			'out' => OUT
+		];
+		$results      = [];
+		$results[IN]  = null;
+		$results[OUT] = null;
 
-        wm_debug(sprintf("SNMPv3 ReadData: Got '%s' and '%s'\n", $results[IN], $results[OUT]));
+		if ($params['username'] != '') {
+			foreach ($channels as $name => $id) {
+				if ($oids[$id] != '-') {
+					$oid = $oids[$id];
+					wm_debug("Going to get $oid\n");
+					$results[$id] = snmp3_get(
+						$host,
+						$params['username'],
+						$params['seclevel'],
+						$params['authproto'],
+						$params['authpass'],
+						$params['privproto'],
+						$params['privpass'],
+						$oid,
+						$timeout,
+						$retries
+					);
 
-        $this->dataTime = time();
-    }
+					if ($results[$id] !== false) {
+						$this->data[$id] = floatval($results[$id]);
+						$item->add_hint('snmp_' . $name . '_raw', $results[$id]);
+					} else {
+						$this->downCache[$host]++;
+					}
+				} else {
+					wm_debug("SNMPv3 ReadData: skipping $name channel: OID is '-'\n");
+				}
+			}
+		} else {
+			wm_debug("SNMPv3 ReadData: no username defined, not going to try.\n");
+		}
 
-    /**
-     * Get the map-global SNMP settings
-     */
-    private function getMapGlobals()
-    {
-        $this->timeout = intval($this->owner->get_hint("snmp_timeout", 1000000));
-        $this->abortCount = intval($this->owner->get_hint("snmp_abort_count", 0));
-        $this->retryCount = intval($this->owner->get_hint("snmp_retries", 2));
+		wm_debug(sprintf("SNMPv3 ReadData: Got '%s' and '%s'\n", $results[IN], $results[OUT]));
 
-        wm_debug("Timeout changed to " . $this->timeout . " microseconds.\n");
-        wm_debug("Will abort after $this->abortCount failures for a given host.\n");
-        wm_debug("Number of retries changed to " . $this->retryCount . ".\n");
-    }
+		$this->dataTime = time();
+	}
 
+	/**
+	 * Get the map-global SNMP settings
+	 */
+	private function getMapGlobals() {
+		$this->timeout    = intval($this->owner->get_hint('snmp_timeout', 1000000));
+		$this->abortCount = intval($this->owner->get_hint('snmp_abort_count', 0));
+		$this->retryCount = intval($this->owner->get_hint('snmp_retries', 2));
 
-
+		wm_debug('Timeout changed to ' . $this->timeout . " microseconds.\n");
+		wm_debug("Will abort after $this->abortCount failures for a given host.\n");
+		wm_debug('Number of retries changed to ' . $this->retryCount . ".\n");
+	}
 }
 
-function valueOrNull($value)
-{
-    return $value === null ? '{null}' : $value;
+function valueOrNull($value) {
+	return $value === null ? '{null}' : $value;
 }
 
 // vim:ts=4:sw=4:

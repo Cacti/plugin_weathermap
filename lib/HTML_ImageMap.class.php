@@ -57,9 +57,9 @@ class HTML_ImageMap_Area {
 	var $extrahtml;
 
 	function common_html() {
-		$h = "";
+		$h = '';
 
-		if ($this->name != "") {
+		if ($this->name != '') {
 			// $h .= " alt=\"".$this->name."\" ";
 			$h .= 'id="' . $this->name . '" ';
 		}
@@ -85,7 +85,7 @@ class HTML_ImageMap_Area {
 }
 
 class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
-	var $points = array();
+	var $points = [];
 	var $minx;
 	var $maxx;
 	var $miny;
@@ -98,14 +98,14 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 			$flatpoints[] = $point[1];
 		}
 
-		$coordstring = join(",", $flatpoints);
+		$coordstring = join(',', $flatpoints);
 
 		return "\t\t\t\t\t<area " . $this->common_html() . "shape='poly' coords='" . $coordstring . "' />";
 	}
 
 	function asJSON() {
 		$json = "{ 'shape':'poly', 'npoints':" .
-			$this->npoints . ", \"name\":'"    .
+			$this->npoints . ", \"name\":'" .
 			$this->name . "',";
 
 		$xlist = '';
@@ -116,14 +116,14 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 			$ylist .= $point[1] . ',';
 		}
 
-		$xlist = rtrim($xlist,", ");
-		$ylist = rtrim($ylist,", ");
+		$xlist = rtrim($xlist,', ');
+		$ylist = rtrim($ylist,', ');
 		$json .= " 'x': [ $xlist ], 'y':[ $ylist ], 'minx': " .
 			$this->minx . ", 'miny': " .
-			$this->miny . ", 'maxx':"  .
-			$this->maxx . ", 'maxy':"  . $this->maxy . '}';
+			$this->miny . ", 'maxx':" .
+			$this->maxx . ", 'maxy':" . $this->maxy . '}';
 
-		return($json);
+		return ($json);
 	}
 
 	function hitTest($x,$y) {
@@ -168,7 +168,7 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 			$x = intval(round($c[$i]));
 			$y = intval(round($c[$i + 1]));
 
-			$point = array($x, $y);
+			$point = [$x, $y];
 
 			$xlist[] = $x; // these two are used to get the bounding box in a moment
 			$ylist[] = $y;
@@ -191,7 +191,7 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	var $y1;
 	var $y2;
 
-	function __construct ($name = '', $href = '', $coords = '') {
+	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
 
 		$x1 = intval(round($c[0]));
@@ -225,7 +225,7 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	}
 
 	function asHTML() {
-		$coordstring = join(',', array($this->x1, $this->y1, $this->x2, $this->y2));
+		$coordstring = join(',', [$this->x1, $this->y1, $this->x2, $this->y2]);
 
 		return "\t\t\t\t\t<area " . $this->common_html() . 'shape="rect" coords="' . $coordstring . '" />';
 	}
@@ -239,7 +239,7 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 			", 'y2':" . $this->y2 .
 			", 'name':'" . $this->name . "'}";
 
-		return($json);
+		return ($json);
 	}
 }
 
@@ -247,7 +247,7 @@ class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 	var $centx,$centy, $edgex, $edgey;
 
 	function asHTML() {
-		$coordstring = join(',', array($this->centx, $this->centy, $this->edgex, $this->edgey));
+		$coordstring = join(',', [$this->centx, $this->centy, $this->edgex, $this->edgey]);
 
 		return "\t\t\t\t\t<area " . $this->common_html() . " shape='circle' coords='" . $coordstring . "' />";
 	}
@@ -286,7 +286,7 @@ class HTML_ImageMap {
 	}
 
 	function Reset() {
-		$this->shapes  = array();
+		$this->shapes  = [];
 		$this->nshapes = 0;
 		$this->name    = '';
 	}
@@ -296,8 +296,8 @@ class HTML_ImageMap {
 		if (is_object($element) && is_subclass_of($element, 'html_imagemap_area')) {
 			$elementObject = &$element;
 		} else {
-			$args = func_get_args();
-			$className = 'HTML_ImageMap_Area_' . $element;
+			$args          = func_get_args();
+			$className     = 'HTML_ImageMap_Area_' . $element;
 			$elementObject = new $className($args[1], $args[2], array_slice($args, 3));
 		}
 
@@ -329,7 +329,7 @@ class HTML_ImageMap {
 	function setProp($which, $what, $where) {
 		$count = 0;
 
-		for($i = 0; $i < count($this->shapes); $i++) {
+		for ($i = 0; $i < count($this->shapes); $i++) {
 			// this USED to be a substring match, but that broke some things
 			// and wasn't actually used as one anywhere.
 			if (($where == '') || ($this->shapes[$i]->name == $where)) {
@@ -340,7 +340,7 @@ class HTML_ImageMap {
 						break;
 					case 'extrahtml':
 						$this->shapes[$i]->extrahtml = $what;
-						#print "IMAGEMAP: Found $where and adding $which\n";
+						// print "IMAGEMAP: Found $where and adding $which\n";
 
 						break;
 				}
@@ -358,7 +358,7 @@ class HTML_ImageMap {
 	function setPropSub($which, $what, $where) {
 		$count = 0;
 
-		for($i = 0; $i < count($this->shapes); $i++) {
+		for ($i = 0; $i < count($this->shapes); $i++) {
 			if (($where == '') || (strstr($this->shapes[$i]->name, $where) != false)) {
 				switch($which) {
 					case 'href':
@@ -366,7 +366,7 @@ class HTML_ImageMap {
 
 						break;
 					case 'extrahtml':
-						$this->shapes[$i]->extrahtml= $what;
+						$this->shapes[$i]->extrahtml = $what;
 
 						break;
 				}
@@ -428,7 +428,7 @@ class HTML_ImageMap {
 		$preg = '/' . $namefilter . '/';
 
 		foreach ($this->shapes as $shape) {
-			# if ( ($namefilter == '') || ( preg_match($preg,$shape->name) ))
+			// if ( ($namefilter == '') || ( preg_match($preg,$shape->name) ))
 			if (($namefilter == '') || (strstr($shape->name, $namefilter) !== false)) {
 				if (!$skipnolinks || $shape->href != '' || $shape->extrahtml != '') {
 					if ($reverseorder) {
@@ -443,4 +443,3 @@ class HTML_ImageMap {
 		return $html;
 	}
 }
-

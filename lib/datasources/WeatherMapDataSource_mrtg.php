@@ -56,8 +56,8 @@ class WeatherMapDataSource_mrtg extends WeatherMapDataSource {
 	}
 
 	function ReadData($targetstring, &$map, &$item) {
-		$data[IN]  = NULL;
-		$data[OUT] = NULL;
+		$data[IN]  = null;
+		$data[OUT] = null;
 		$data_time = 0;
 
 		$matchvalue  = $item->get_hint('mrtg_value');
@@ -66,55 +66,59 @@ class WeatherMapDataSource_mrtg extends WeatherMapDataSource {
 		$swap   = intval($item->get_hint('mrtg_swap'));
 		$negate = intval($item->get_hint('mrtg_negate'));
 
-		if ($matchvalue =='') {
-			$matchvalue = "cu";
+		if ($matchvalue == '') {
+			$matchvalue = 'cu';
 		}
 
-		if ($matchperiod =='') {
-			$matchperiod = "d";
+		if ($matchperiod == '') {
+			$matchperiod = 'd';
 		}
 
-		$fd = fopen($targetstring, "r");
+		$fd = fopen($targetstring, 'r');
 
 		if ($fd) {
 			while (!feof($fd)) {
-				$buffer=fgets($fd, 4096);
+				$buffer = fgets($fd, 4096);
 				wm_debug("MRTG ReadData: Matching on '{$matchvalue}in $matchperiod' and '{$matchvalue}out $matchperiod'");
 
-				if (preg_match("/<\!-- {$matchvalue}in $matchperiod ([-+]?\d+\.?\d*) -->/", $buffer, $matches)) { $data[IN] = $matches[1] * 8; }
-				if (preg_match("/<\!-- {$matchvalue}out $matchperiod ([-+]?\d+\.?\d*) -->/", $buffer, $matches)) { $data[OUT] = $matches[1] * 8; }
+				if (preg_match("/<\!-- {$matchvalue}in $matchperiod ([-+]?\d+\.?\d*) -->/", $buffer, $matches)) {
+					$data[IN] = $matches[1] * 8;
+				}
+
+				if (preg_match("/<\!-- {$matchvalue}out $matchperiod ([-+]?\d+\.?\d*) -->/", $buffer, $matches)) {
+					$data[OUT] = $matches[1] * 8;
+				}
 			}
 
 			fclose($fd);
 
-			# don't bother with the modified time if the target is a URL
-			if (! preg_match('/^[a-z]+:\/\//',$targetstring) ) {
+			// don't bother with the modified time if the target is a URL
+			if (! preg_match('/^[a-z]+:\/\//',$targetstring)) {
 				$data_time = filemtime($targetstring);
 			}
 		} else {
 			// some error code to go in here
-			wm_debug ("MRTG ReadData: Couldn't open ($targetstring)");
+			wm_debug("MRTG ReadData: Couldn't open ($targetstring)");
 		}
 
-		if ($swap==1) {
-			wm_debug("MRTG ReadData: Swapping IN and OUT");
+		if ($swap == 1) {
+			wm_debug('MRTG ReadData: Swapping IN and OUT');
 
 			$t = $data[OUT];
 
 			$data[OUT] = $data[IN];
-			$data[IN] = $t;
+			$data[IN]  = $t;
 		}
 
 		if ($negate) {
-			wm_debug("MRTG ReadData: Negating values");
+			wm_debug('MRTG ReadData: Negating values');
 
 			$data[OUT] = -$data[OUT];
-			$data[IN] = -$data[IN];
+			$data[IN]  = -$data[IN];
 		}
 
-		wm_debug ("MRTG ReadData: Returning (".($data[IN]===NULL?'NULL':$data[IN]).",".($data[OUT]===NULL?'NULL':$data[OUT]).",$data_time)");
+		wm_debug('MRTG ReadData: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)");
 
-		return( array($data[IN], $data[OUT], $data_time) );
+		return ([$data[IN], $data[OUT], $data_time]);
 	}
 }
-

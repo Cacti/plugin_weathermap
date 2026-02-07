@@ -60,7 +60,7 @@ $cacti_url  = $config['url_path'];
 
 // adjust width of link based on bandwidth.
 // NOTE: These are bands - the value has to be up to or including the value in the list to match
-$width_map = array (
+$width_map =  [
 	'1000000'     => '1', // up to 1meg
 	'9999999'     => '1', // 1-10meg
 	'10000000'    => '2', // 10meg
@@ -71,7 +71,7 @@ $width_map = array (
 	'9999999999'  => '6', // 1gig-10gig
 	'10000000000' => '8', // 10gig
 	'99999999999' => '8'  // 10gig-100gig
-);
+];
 
 // the following are defaults. You can change those from the command-line
 // options now.
@@ -84,7 +84,7 @@ $outputmapfile     = '';
 $inputmapfile      = '';
 
 $shortopts = 'VvHh';
-$longopts  = array (
+$longopts  =  [
 	'input:',
 	'output:',
 	'target-dsstats',
@@ -94,7 +94,7 @@ $longopts  = array (
 	'debug',
 	'help',
 	'version'
-);
+];
 
 $options = getopt($shortopts, $longopts);
 
@@ -156,20 +156,20 @@ if (cacti_sizeof($options)) {
 }
 
 if ($inputmapfile == '' || $outputmapfile == '') {
-    print 'FATAL: You MUST specify an input and output file.' . PHP_EOL;
+	print 'FATAL: You MUST specify an input and output file.' . PHP_EOL;
 
 	display_help();
 
-    exit(1);
+	exit(1);
 }
 
 // figure out which template has interface traffic. This might be wrong for you.
 $data_template_hash = 'fd841e8bb822927289b7acbc031f3d7e';
 
-$data_template_id = db_fetch_cell_prepared("SELECT id
+$data_template_id = db_fetch_cell_prepared('SELECT id
 	FROM data_template
-	WHERE hash = ?",
-	array($data_template));
+	WHERE hash = ?',
+	[$data_template]);
 
 $map = new WeatherMap;
 
@@ -195,7 +195,7 @@ foreach ($map->nodes as $node) {
 	$address  = $node->get_hint('address');
 
 	if ($host_id != '') {
-		$res1 = db_fetch_row_prepared('SELECT hostname, description FROM host WHERE id = ?', array(intval($host_id)));
+		$res1 = db_fetch_row_prepared('SELECT hostname, description FROM host WHERE id = ?', [intval($host_id)]);
 
 		if ($res1) {
 			if ($hostname == '') {
@@ -212,7 +212,7 @@ foreach ($map->nodes as $node) {
 		// by now, if there was a host_id, all 3 are populated. If not, then we should try one of the others to get a host_id
 
 		if ($address != '') {
-			$res2 = db_fetch_row_prepared('SELECT id, description FROM host WHERE hostname = ?', array($address));
+			$res2 = db_fetch_row_prepared('SELECT id, description FROM host WHERE hostname = ?', [$address]);
 
 			if ($res2) {
 				$host_id = $res2['id'];
@@ -224,7 +224,7 @@ foreach ($map->nodes as $node) {
 				}
 			}
 		} elseif ($hostname != '') {
-			$res3 = db_fetch_row_prepared('SELECT id, description FROM host WHERE description = ?', array($hostname));
+			$res3 = db_fetch_row_prepared('SELECT id, description FROM host WHERE description = ?', [$hostname]);
 
 			if ($res3) {
 				$host_id = $res3['id'];
@@ -240,17 +240,17 @@ foreach ($map->nodes as $node) {
 
 	if ($host_id != '') {
 		$info = $config['url_path'] . 'host.php?id=' . $host_id;
-		$tgt = 'cactimonitor:' . $host_id;
+		$tgt  = 'cactimonitor:' . $host_id;
 
-		$map->nodes[$node->name]->targets = array(
-			array(
+		$map->nodes[$node->name]->targets = [
+			[
 				$tgt,
 				'',
 				'',
 				0,
 				$tgt
-			)
-		);
+			]
+		];
 
 		$map->nodes[$node->name]->infourl[IN] = $info;
 	}
@@ -264,16 +264,16 @@ foreach ($map->links as $link) {
 	if (isset($link->a)) {
 		$name = $link->name;
 
-		$a = $link->a->name;
-		$b = $link->b->name;
-		$int_in = $link->get_hint('in_interface');
+		$a       = $link->a->name;
+		$b       = $link->b->name;
+		$int_in  = $link->get_hint('in_interface');
 		$int_out = $link->get_hint('out_interface');
-		$a_id = intval($map->nodes[$a]->get_hint('cacti_id'));
-		$b_id = intval($map->nodes[$b]->get_hint('cacti_id'));
+		$a_id    = intval($map->nodes[$a]->get_hint('cacti_id'));
+		$b_id    = intval($map->nodes[$b]->get_hint('cacti_id'));
 
 		print 'LINK ' . $name . PHP_EOL;
 
-		if (count($link->targets) == 0 || $overwrite_targets ) {
+		if (count($link->targets) == 0 || $overwrite_targets) {
 			if ((($a_id + $b_id) > 0) && ($int_out . $int_in == '')) {
 				print '  (could do if there were interfaces)' . PHP_EOL;
 			}
@@ -302,9 +302,9 @@ foreach ($map->links as $link) {
 			}
 
 			if ($tgt_host != '') {
-				$int_list = explode(':::', $tgt_interface);
-				$total_speed = 0;
-				$total_target = array ();
+				$int_list     = explode(':::', $tgt_interface);
+				$total_speed  = 0;
+				$total_target =  [];
 
 				foreach ($int_list as $interface) {
 					print '  Interface: ' . $interface . PHP_EOL;
@@ -325,7 +325,7 @@ foreach ($map->links as $link) {
 						AND dl.data_template_id = ?
 						ORDER BY dtd.id DESC
 						LIMIT 1',
-						array($tgt_host, 'ifName', 'ifDescr', 'ifAlias', $interface, $data_template_id));
+						[$tgt_host, 'ifName', 'ifDescr', 'ifAlias', $interface, $data_template_id]);
 
 					// if we found one, add the interface to the targets for this link
 					if ($res4) {
@@ -336,23 +336,23 @@ foreach ($map->links as $link) {
 						$tgt           = $tgt . $ds_names;
 
 						if ($use_dsstats) {
-							$map->links[$link->name]->targets[] = array (
+							$map->links[$link->name]->targets[] =  [
 								$tgt,
 								'',
 								'',
 								0,
 								$tgt
-							);
+							];
 						} else {
 							$tgt = "8*dsstats:$local_data_id" . $ds_names;
 
-							$map->links[$link->name]->targets[] = array (
+							$map->links[$link->name]->targets[] =  [
 								$tgt,
 								'',
 								'',
 								0,
 								$tgt
-							);
+							];
 						}
 
 						$speed = db_fetch_cell_prepared('SELECT field_value
@@ -360,18 +360,18 @@ foreach ($map->links as $link) {
 							WHERE field_name = "ifSpeed"
 							AND host_id = ?
 							AND snmp_index = ?',
-							array($tgt_host, $snmp_index));
+							[$tgt_host, $snmp_index]);
 
 						$hspeed = db_fetch_cell_prepared('SELECT field_value
 							FROM host_snmp_cache
 							WHERE field_name = "ifHighSpeed"
 							AND host_id = ?
 							AND snmp_index = ?',
-							array($tgt_host, $snmp_index));
+							[$tgt_host, $snmp_index]);
 
 						if ($hspeed && intval($hspeed) > 20) {
 							$total_speed += ($hspeed * 1000000);
-						} else if ($speed) {
+						} elseif ($speed) {
 							$total_speed += intval($speed);
 						}
 
@@ -381,14 +381,14 @@ foreach ($map->links as $link) {
 							ON gti.task_item_id = dtr.id
 							WHERE local_data_id = ?
 							LIMIT 1',
-							array($local_data_id));
+							[$local_data_id]);
 
 						if ($graph_id) {
 							$overlib = sprintf($fmt_cacti_graph, $graph_id);
 							$infourl = sprintf($fmt_cacti_graphpage, $graph_id);
 
 							print '    INFO ' . $infourl . PHP_EOL;
-							print '    OVER ' .$overlib  . PHP_EOL;
+							print '    OVER ' . $overlib . PHP_EOL;
 
 							$map->links[$name]->overliburl[IN][]  = $overlib;
 							$map->links[$name]->overliburl[OUT][] = $overlib;
@@ -404,9 +404,9 @@ foreach ($map->links as $link) {
 
 				print '    SPEED ' . $total_speed . PHP_EOL;
 
-				$map->links[$name]->max_bandwidth_in = $total_speed;
-				$map->links[$name]->max_bandwidth_out = $total_speed;
-				$map->links[$name]->max_bandwidth_in_cfg = nice_bandwidth($total_speed);
+				$map->links[$name]->max_bandwidth_in      = $total_speed;
+				$map->links[$name]->max_bandwidth_out     = $total_speed;
+				$map->links[$name]->max_bandwidth_in_cfg  = nice_bandwidth($total_speed);
 				$map->links[$name]->max_bandwidth_out_cfg = nice_bandwidth($total_speed);
 
 				if ($map_widths) {
@@ -432,15 +432,15 @@ $map->WriteConfig($outputmapfile);
 print 'Wrote config to ' . $outputmapfile . PHP_EOL;
 
 function display_version() {
-    global $config;
+	global $config;
 
-    if (!function_exists('plugin_weathermap_version')) {
-        include_once($config['base_path'] . '/plugins/weathermap/setup.php');
-    }
+	if (!function_exists('plugin_weathermap_version')) {
+		include_once($config['base_path'] . '/plugins/weathermap/setup.php');
+	}
 
-    $info = plugin_weathermap_version();
+	$info = plugin_weathermap_version();
 
-    print 'Weathermap Cacti Integrate Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . WM_COPYRIGHT_YEARS . PHP_EOL;
+	print 'Weathermap Cacti Integrate Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . WM_COPYRIGHT_YEARS . PHP_EOL;
 }
 
 function display_help() {
@@ -454,4 +454,3 @@ function display_help() {
 	print ' --target-dsstats        -  generate DSStats targets' . PHP_EOL;
 	print ' --debug                 -  enable debugging' . PHP_EOL;
 }
-

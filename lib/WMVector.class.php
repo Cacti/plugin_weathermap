@@ -77,7 +77,7 @@ class WMVector {
 	 * @param float $angle
 	 */
 	public function rotate($angle) {
-		$points = array();
+		$points    = [];
 		$points[0] = $this->dx;
 		$points[1] = $this->dy;
 
@@ -93,7 +93,7 @@ class WMVector {
 	public function getNormal() {
 		$len = $this->length();
 
-		if ($len==0) {
+		if ($len == 0) {
 			return new WMVector(0, 0);
 		}
 
@@ -132,7 +132,7 @@ class WMVector {
 	 * @return float
 	 */
 	public function length() {
-		if ($this->dx==0 && $this->dy==0) {
+		if ($this->dx == 0 && $this->dy == 0) {
 			return 0;
 		}
 
@@ -143,11 +143,10 @@ class WMVector {
 		return $this->__toString();
 	}
 
-    /**
+	/**
 	 * @return string
 	 */
 	public function __toString() {
-		return sprintf("[%f,%f]", $this->dx, $this->dy);
+		return sprintf('[%f,%f]', $this->dx, $this->dy);
 	}
 }
-

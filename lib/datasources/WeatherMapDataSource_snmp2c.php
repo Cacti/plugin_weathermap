@@ -13,125 +13,124 @@
 // TARGET snmp2c:public:hostname:1.3.6.1.4.1.3711.1.1:1.3.6.1.4.1.3711.1.2
 // (that is, TARGET snmp:community:host:in_oid:out_oid
 
-class WeatherMapDataSource_snmp2c extends WeatherMapDataSource
-{
+class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
+	function Init(&$map) {
+		// We can keep a list of unresponsive nodes, so we can give up earlier
+		$this->down_cache = [];
 
-    function Init(&$map)
-    {
-        // We can keep a list of unresponsive nodes, so we can give up earlier
-        $this->down_cache = array();
+		if (function_exists('snmp2_get')) {
+			return true;
+		}
+		wm_debug("SNMP DS: snmp2_get() not found. Do you have the PHP SNMP module?\n");
 
-        if (function_exists('snmp2_get')) {
-            return true;
-        }
-        wm_debug("SNMP DS: snmp2_get() not found. Do you have the PHP SNMP module?\n");
+		return false;
+	}
 
-        return false;
-    }
+	function Recognise($targetstring) {
+		if (preg_match('/^snmp2c:([^:]+):([^:]+):([^:]+):([^:]+)$/', $targetstring, $matches)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
+	function ReadData($targetstring, &$map, &$item) {
+		$data[IN]  = null;
+		$data[OUT] = null;
+		$data_time = 0;
 
-    function Recognise($targetstring)
-    {
-        if (preg_match("/^snmp2c:([^:]+):([^:]+):([^:]+):([^:]+)$/", $targetstring, $matches)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+		$in_result  = null;
+		$out_result = null;
 
-    function ReadData($targetstring, &$map, &$item)
-    {
-        $data[IN] = null;
-        $data[OUT] = null;
-        $data_time = 0;
+		$timeout     = 1000000;
+		$retries     = 2;
+		$abort_count = 0;
 
-        $in_result = null;
-        $out_result = null;
+		if ($map->get_hint('snmp_timeout') != '') {
+			$timeout = intval($map->get_hint('snmp_timeout'));
+			wm_debug('Timeout changed to ' . $timeout . " microseconds.\n");
+		}
 
-        $timeout = 1000000;
-        $retries = 2;
-        $abort_count = 0;
+		if ($map->get_hint('snmp_abort_count') != '') {
+			$abort_count = intval($map->get_hint('snmp_abort_count'));
+			wm_debug("Will abort after $abort_count failures for a given host.\n");
+		}
 
-        if ($map->get_hint("snmp_timeout") != '') {
-            $timeout = intval($map->get_hint("snmp_timeout"));
-            wm_debug("Timeout changed to " . $timeout . " microseconds.\n");
-        }
+		if ($map->get_hint('snmp_retries') != '') {
+			$retries = intval($map->get_hint('snmp_retries'));
+			wm_debug('Number of retries changed to ' . $retries . ".\n");
+		}
 
-        if ($map->get_hint("snmp_abort_count") != '') {
-            $abort_count = intval($map->get_hint("snmp_abort_count"));
-            wm_debug("Will abort after $abort_count failures for a given host.\n");
-        }
+		if (preg_match('/^snmp2c:([^:]+):([^:]+):([^:]+):([^:]+)$/', $targetstring, $matches)) {
+			$community = $matches[1];
+			$host      = $matches[2];
+			$in_oid    = $matches[3];
+			$out_oid   = $matches[4];
 
-        if ($map->get_hint("snmp_retries") != '') {
-            $retries = intval($map->get_hint("snmp_retries"));
-            wm_debug("Number of retries changed to " . $retries . ".\n");
-        }
+			if (
+				($abort_count == 0)
+				|| (
+					($abort_count > 0)
+					&& (!isset($this->down_cache[$host]) || intval($this->down_cache[$host]) < $abort_count)
+				)
+			) {
+				if (function_exists('snmp_get_quick_print')) {
+					$was = snmp_get_quick_print();
+					snmp_set_quick_print(1);
+				}
 
-        if (preg_match("/^snmp2c:([^:]+):([^:]+):([^:]+):([^:]+)$/", $targetstring, $matches)) {
-            $community = $matches[1];
-            $host = $matches[2];
-            $in_oid = $matches[3];
-            $out_oid = $matches[4];
+				if (function_exists('snmp_get_valueretrieval')) {
+					$was2 = snmp_get_valueretrieval();
+				}
 
-            if (
-                ($abort_count == 0)
-                || (
-                    ($abort_count > 0)
-                    && (!isset($this->down_cache[$host]) || intval($this->down_cache[$host]) < $abort_count)
-                )
-            ) {
-                if (function_exists("snmp_get_quick_print")) {
-                    $was = snmp_get_quick_print();
-                    snmp_set_quick_print(1);
-                }
-                if (function_exists("snmp_get_valueretrieval")) {
-                    $was2 = snmp_get_valueretrieval();
-                }
+				if (function_exists('snmp_set_oid_output_format')) {
+					snmp_set_oid_output_format(SNMP_OID_OUTPUT_NUMERIC);
+				}
 
-                if (function_exists('snmp_set_oid_output_format')) {
-                    snmp_set_oid_output_format(SNMP_OID_OUTPUT_NUMERIC);
-                }
-                if (function_exists('snmp_set_valueretrieval')) {
-                    snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
-                }
+				if (function_exists('snmp_set_valueretrieval')) {
+					snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
+				}
 
-                if ($in_oid != '-') {
-                    $in_result = snmp2_get($host, $community, $in_oid, $timeout, $retries);
-                    if ($in_result !== false) {
-                        $data[IN] = floatval($in_result);
-                        $item->add_hint("snmp_in_raw", $in_result);
-                    } else {
-                        $this->down_cache[$host]++;
-                    }
-                }
-                if ($out_oid != '-') {
-                    $out_result = snmp2_get($host, $community, $out_oid, $timeout, $retries);
-                    if ($out_result !== false) {
-                        // use floatval() here to force the output to be *some* kind of number
-                        // just in case the stupid formatting stuff doesn't stop net-snmp returning 'down' instead of 2
-                        $data[OUT] = floatval($out_result);
-                        $item->add_hint("snmp_out_raw", $out_result);
-                    } else {
-                        $this->down_cache[$host]++;
-                    }
-                }
+				if ($in_oid != '-') {
+					$in_result = snmp2_get($host, $community, $in_oid, $timeout, $retries);
 
-                wm_debug("SNMP2c ReadData: Got $in_result and $out_result\n");
+					if ($in_result !== false) {
+						$data[IN] = floatval($in_result);
+						$item->add_hint('snmp_in_raw', $in_result);
+					} else {
+						$this->down_cache[$host]++;
+					}
+				}
 
-                $data_time = time();
+				if ($out_oid != '-') {
+					$out_result = snmp2_get($host, $community, $out_oid, $timeout, $retries);
 
-                if (function_exists("snmp_set_quick_print")) {
-                    snmp_set_quick_print($was);
-                }
-            } else {
-                wm_warn("SNMP for $host has reached $abort_count failures. Skipping. [WMSNMP01]");
-            }
-        }
+					if ($out_result !== false) {
+						// use floatval() here to force the output to be *some* kind of number
+						// just in case the stupid formatting stuff doesn't stop net-snmp returning 'down' instead of 2
+						$data[OUT] = floatval($out_result);
+						$item->add_hint('snmp_out_raw', $out_result);
+					} else {
+						$this->down_cache[$host]++;
+					}
+				}
 
-        wm_debug("SNMP2c ReadData: Returning (" . ($data[IN] === null ? 'NULL' : $data[IN]) . "," . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)\n");
+				wm_debug("SNMP2c ReadData: Got $in_result and $out_result\n");
 
-        return (array($data[IN], $data[OUT], $data_time));
-    }
+				$data_time = time();
+
+				if (function_exists('snmp_set_quick_print')) {
+					snmp_set_quick_print($was);
+				}
+			} else {
+				wm_warn("SNMP for $host has reached $abort_count failures. Skipping. [WMSNMP01]");
+			}
+		}
+
+		wm_debug('SNMP2c ReadData: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)\n");
+
+		return ([$data[IN], $data[OUT], $data_time]);
+	}
 }
 
 // vim:ts=4:sw=4:

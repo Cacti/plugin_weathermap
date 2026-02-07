@@ -68,55 +68,57 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 
 		if ($map->context == 'cacti') {
 			if (!function_exists('db_fetch_row')) {
-				wm_debug("ReadData CactiTHold: Cacti database library not found. [THOLD001]");
+				wm_debug('ReadData CactiTHold: Cacti database library not found. [THOLD001]');
 
-				return(false);
+				return (false);
 			}
 
 			$thold_present = false;
 
-			if (function_exists("api_plugin_is_enabled")) {
+			if (function_exists('api_plugin_is_enabled')) {
 				if (api_plugin_is_enabled('thold')) {
 					$thold_present = true;
 				}
 			}
 
-			if (isset($plugins) && in_array('thold',$plugins)) {
+			if (isset($plugins) && in_array('thold',$plugins, true)) {
 				$thold_present = true;
 			}
 
 			if (!$thold_present) {
-				wm_debug("ReadData CactiTHold: THold plugin not enabled. [THOLD002]");
+				wm_debug('ReadData CactiTHold: THold plugin not enabled. [THOLD002]');
 			}
 
-			$sql    = "show tables";
+			$sql    = 'show tables';
 			$result = db_fetch_assoc($sql);
-			$tables = array();
+			$tables = [];
 
-			foreach($result as $index => $arr) {
+			foreach ($result as $index => $arr) {
 				foreach ($arr as $t) {
 					$tables[] = $t;
 				}
 			}
 
-			if (!in_array('thold_data', $tables)) {
+			if (!in_array('thold_data', $tables, true)) {
 				wm_debug('ReadData CactiTHold: thold_data database table not found. [THOLD003]');
 
-				return(false);
+				return (false);
 			}
 
-			return(true);
+			return (true);
 		} else {
-			wm_debug("ReadData CactiTHold: Can only run from Cacti environment. [THOLD004]");
+			wm_debug('ReadData CactiTHold: Can only run from Cacti environment. [THOLD004]');
 		}
 
-		return(false);
+		return (false);
 	}
 
 	function Recognise($targetstring) {
 		if (preg_match("/^cacti(thold|monitor):(\d+)$/",$targetstring,$matches)) {
 			return true;
-		} elseif (preg_match("/^cactithold:(\d+):(\d+)$/",$targetstring,$matches)) {
+		}
+
+		if (preg_match("/^cactithold:(\d+):(\d+)$/",$targetstring,$matches)) {
 			return true;
 		} else {
 			return false;
@@ -124,8 +126,8 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 	}
 
 	function ReadData($targetstring, &$map, &$item) {
-		$data[IN]  = NULL;
-		$data[OUT] = NULL;
+		$data[IN]  = null;
+		$data[OUT] = null;
 		$data_time = 0;
 
 		if (preg_match("/^cactithold:(\d+):(\d+)$/",$targetstring,$matches)) {
@@ -133,7 +135,7 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 			// use target aggregation to build these up into a 'badness' percentage
 			// takes the same two values that are visible in thold's own URLs (the actual thold ID isn't shown anywhere)
 
-			$local_data_id = intval($matches[1]);
+			$local_data_id        = intval($matches[1]);
 			$data_template_rrd_id = intval($matches[2]);
 
 			$result = db_fetch_row_prepared("SELECT thold_alert
@@ -141,11 +143,11 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 				WHERE local_data_id = ?
 				AND data_template_rrd_id = ?
 				AND thold_enabled='on'",
-				array($local_data_id, $data_template_rrd_id));
+				[$local_data_id, $data_template_rrd_id]);
 
 			if (isset($result)) {
 				if ($result['thold_alert'] > 0) {
-					$data[IN]=1;
+					$data[IN] = 1;
 				} else {
 					$data[IN] = 0;
 				}
@@ -163,11 +165,11 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 					FROM thold_data
 					WHERE id = ?
 					AND thold_enabled = 'on'",
-					array($id));
+					[$id]);
 
 				if (isset($result)) {
 					if ($result['thold_alert'] > 0) {
-						$data[IN]=1;
+						$data[IN] = 1;
 					} else {
 						$data[IN] = 0;
 					}
@@ -176,7 +178,7 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 				}
 			}
 
-			if ($type=='monitor') {
+			if ($type == 'monitor') {
 				wm_debug("CactiTHold ReadData: Getting cacti basic state for host $id");
 
 				// 0=disabled
@@ -185,50 +187,50 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 				// 3=up
 				// 4=tholdbreached
 
-				$state = -1;
+				$state     = -1;
 				$statename = '';
-				$result = db_fetch_row_prepared("SELECT *
+				$result    = db_fetch_row_prepared('SELECT *
 					FROM host
-					WHERE id = ?",
-					array($id));
+					WHERE id = ?',
+					[$id]);
 
 				if (isset($result)) {
 					// create a note, which can be used in icon filenames or labels more nicely
 					if ($result['status'] == 1) {
-						$state = 1;
+						$state     = 1;
 						$statename = 'down';
 					}
 
 					if ($result['status'] == 2) {
-						$state = 2;
+						$state     = 2;
 						$statename = 'recovering';
 					}
 
 					if ($result['status'] == 3) {
-						$state = 3;
+						$state     = 3;
 						$statename = 'up';
 					}
 
-					if ($result['disabled'])  {
-						$state = 0;
+					if ($result['disabled']) {
+						$state     = 0;
 						$statename = 'disabled';
 					}
 
 					$data[IN]  = $state;
 					$data[OUT] = 0;
 
-					$item->add_note("state",$statename);
-					$item->add_note("cacti_description",$result['description']);
+					$item->add_note('state',$statename);
+					$item->add_note('cacti_description',$result['description']);
 
-					$item->add_note("cacti_hostname",$result['hostname']);
-					$item->add_note("cacti_curtime",$result['cur_time']);
-					$item->add_note("cacti_avgtime",$result['avg_time']);
-					$item->add_note("cacti_mintime",$result['min_time']);
-					$item->add_note("cacti_maxtime",$result['max_time']);
-					$item->add_note("cacti_availability",$result['availability']);
+					$item->add_note('cacti_hostname',$result['hostname']);
+					$item->add_note('cacti_curtime',$result['cur_time']);
+					$item->add_note('cacti_avgtime',$result['avg_time']);
+					$item->add_note('cacti_mintime',$result['min_time']);
+					$item->add_note('cacti_maxtime',$result['max_time']);
+					$item->add_note('cacti_availability',$result['availability']);
 
-					$item->add_note("cacti_faildate",$result['status_fail_date']);
-					$item->add_note("cacti_recdate",$result['status_rec_date']);
+					$item->add_note('cacti_faildate',$result['status_fail_date']);
+					$item->add_note('cacti_recdate',$result['status_rec_date']);
 				}
 
 				wm_debug("CactiTHold ReadData: Basic state for host $id is $state/$statename");
@@ -242,12 +244,12 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 					WHERE thold_data.local_data_id = data_local.id
 					AND data_local.host_id = ?
 					AND thold_enabled = 'on'",
-					array($id));
+					[$id]);
 
-				if ( is_array($queryrows) ) {
+				if (is_array($queryrows)) {
 					foreach ($queryrows as $th) {
-						$desc = $th['local_data_id']."/".$th['data_template_rrd_id'];
-						$v = $th['thold_alert'];
+						$desc = $th['local_data_id'] . '/' . $th['data_template_rrd_id'];
+						$v    = $th['thold_alert'];
 						$numthresh++;
 
 						if (intval($th['thold_alert']) > 0) {
@@ -264,30 +266,29 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 
 				wm_debug("CactiTHold ReadData: Checked $numthresh and found $numfailing failing");
 
-				if (($numfailing > 0) && ($numthresh > 0) && ($state==3)) {
-					$state = 4;
-					$statename = "tholdbreached";
+				if (($numfailing > 0) && ($numthresh > 0) && ($state == 3)) {
+					$state     = 4;
+					$statename = 'tholdbreached';
 
-					$item->add_note("state",$statename);
-					$item->add_note("thold_failcount",$numfailing);
-					$item->add_note("thold_failpercent",($numfailing/$numthresh)*100);
+					$item->add_note('state',$statename);
+					$item->add_note('thold_failcount',$numfailing);
+					$item->add_note('thold_failpercent',($numfailing / $numthresh) * 100);
 
 					$data[IN]  = $state;
 					$data[OUT] = $numfailing;
 
 					wm_debug("CactiTHold ReadData: State is $state/$statename");
-				} elseif ($numthresh>0) {
-					$item->add_note("thold_failcount",0);
-					$item->add_note("thold_failpercent",0);
+				} elseif ($numthresh > 0) {
+					$item->add_note('thold_failcount',0);
+					$item->add_note('thold_failpercent',0);
 
 					wm_debug("CactiTHold ReadData: Leaving state as $state");
 				}
 			}
 		}
 
-		wm_debug ("CactiTHold ReadData: Returning (".($data[IN]===NULL?'NULL':$data[IN]).",".($data[OUT]===NULL?'NULL':$data[OUT]).",$data_time)");
+		wm_debug('CactiTHold ReadData: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)");
 
-		return(array($data[IN], $data[OUT], $data_time));
+		return ([$data[IN], $data[OUT], $data_time]);
 	}
 }
-

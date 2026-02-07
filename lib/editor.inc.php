@@ -47,7 +47,7 @@
 
 function display_graphs() {
 	$sql_where  = '';
-	$sql_params = array();
+	$sql_params = [];
 
 	if (get_nfilter_request_var('term') != '') {
 		$sql_where .= 'WHERE title_cache LIKE ' . db_qstr('%' . get_nfilter_request_var('term') . '%') . ' AND local_graph_id > 0';
@@ -56,13 +56,13 @@ function display_graphs() {
 	}
 
 	if (get_nfilter_request_var('graph_template_id') > 0) {
-		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gl.graph_template_id = ?';
+		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'gl.graph_template_id = ?';
 
 		$sql_params[] = get_request_var('graph_template_id');
 	}
 
 	if (get_request_var('target') == 'link_target_picker') {
-		$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
+		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 	}
 
 	$graphs = db_fetch_assoc_prepared("SELECT DISTINCT
@@ -81,14 +81,14 @@ function display_graphs() {
 		LIMIT " . read_config_option('autocomplete_rows'),
 		$sql_params);
 
-	$return = array();
+	$return = [];
 
 	if (cacti_sizeof($graphs)) {
-		foreach($graphs as $index => $g) {
+		foreach ($graphs as $index => $g) {
 			if (!is_graph_allowed($g['id'])) {
 				unset($graphs[$index]);
 			} else {
-				$return[] = array('label' => $g['title'], 'value' => $g['title'], 'id' => $g['id']);
+				$return[] = ['label' => $g['title'], 'value' => $g['title'], 'id' => $g['id']];
 			}
 		}
 	}
@@ -105,7 +105,7 @@ function display_datasources() {
 		$sql_where .= 'WHERE local_graph_id > 0';
 	}
 
-	$sql_where .= ($sql_where != '' ? ' AND ':'WHERE ') . 'dl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
+	$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'dl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 
 	$graphs = db_fetch_assoc("SELECT DISTINCT
 		gti.local_graph_id AS id,
@@ -128,14 +128,14 @@ function display_datasources() {
 		ORDER BY name_cache
 		LIMIT " . read_config_option('autocomplete_rows'));
 
-	$return = array();
+	$return = [];
 
 	if (cacti_sizeof($graphs)) {
-		foreach($graphs as $index => $g) {
+		foreach ($graphs as $index => $g) {
 			if (!is_graph_allowed($g['id'])) {
 				unset($graphs[$index]);
 			} else {
-				$return[] = array('label' => $g['title'], 'value' => $g['title'], 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'), 'local_graph_id' => $g['id']);
+				$return[] = ['label' => $g['title'], 'value' => $g['title'], 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'), 'local_graph_id' => $g['id']];
 			}
 		}
 	}
@@ -145,31 +145,32 @@ function display_datasources() {
 
 /**
  * Clean up URI (function taken from Cacti) to protect against XSS
+ * @param mixed $str
  */
 function wm_editor_sanitize_uri($str) {
-	static $drop_char_match   =   array(' ','^', '$', '<', '>', '`', '\'', '"', '|', '+', '[', ']', '{', '}', ';', '!', '%');
-	static $drop_char_replace = array('', '', '',  '',  '',  '',  '',   '',  '',  '',  '',  '',  '',  '',  '',  '', '');
+	static $drop_char_match   =   [' ', '^', '$', '<', '>', '`', '\'', '"', '|', '+', '[', ']', '{', '}', ';', '!', '%'];
+	static $drop_char_replace = ['', '', '',  '',  '',  '',  '',   '',  '',  '',  '',  '',  '',  '',  '',  '', ''];
 
 	return str_replace($drop_char_match, $drop_char_replace, urldecode($str));
 }
 
 // much looser sanitise for general strings that shouldn't have HTML in them
 function wm_editor_sanitize_string($str) {
-	static $drop_char_match   = array('<', '>' );
-	static $drop_char_replace = array('', '');
+	static $drop_char_match   = ['<', '>' ];
+	static $drop_char_replace = ['', ''];
 
 	return str_replace($drop_char_match, $drop_char_replace, html_escape($str));
 }
 
 function wm_editor_validate_bandwidth($bw) {
-	if (preg_match( '/^(\d+\.?\d*[KMGT]?)$/', $bw) ) {
+	if (preg_match('/^(\d+\.?\d*[KMGT]?)$/', $bw)) {
 		return true;
 	}
 
 	return false;
 }
 
-function wm_editor_validate_one_of($input,$valid=array(),$case_sensitive=false) {
+function wm_editor_validate_one_of($input,$valid = [],$case_sensitive = false) {
 	if (!$case_sensitive) {
 		$input = strtolower($input);
 	}
@@ -189,37 +190,38 @@ function wm_editor_validate_one_of($input,$valid=array(),$case_sensitive=false) 
 
 // Labels for Nodes, Links and Scales shouldn't have spaces in
 function wm_editor_sanitize_name($str) {
-	return str_replace(array(' '), '', $str);
+	return str_replace([' '], '', $str);
 }
 
 function wm_editor_sanitize_selected($str) {
 	$res = urldecode($str);
 
-	if ( ! preg_match("/^(LINK|NODE):/",$res)) {
-	    return "";
+	if (! preg_match('/^(LINK|NODE):/',$res)) {
+		return '';
 	}
 
 	return wm_editor_sanitize_name($res);
 }
 
-function wm_editor_sanitize_file($filename,$allowed_exts=array()) {
+function wm_editor_sanitize_file($filename,$allowed_exts = []) {
 	$filename = wm_editor_sanitize_uri($filename);
 
-	if ($filename == "") {
-		return "";
+	if ($filename == '') {
+		return '';
 	}
 
 	$ok = false;
-	foreach ($allowed_exts as $ext) {
-		$match = "." . $ext;
 
-		if ( substr($filename, -strlen($match),strlen($match)) == $match) {
+	foreach ($allowed_exts as $ext) {
+		$match = '.' . $ext;
+
+		if (substr($filename, -strlen($match),strlen($match)) == $match) {
 			$ok = true;
 		}
 	}
 
-    if (!$ok) {
-		return "";
+	if (!$ok) {
+		return '';
 	}
 
 	return $filename;
@@ -228,14 +230,14 @@ function wm_editor_sanitize_file($filename,$allowed_exts=array()) {
 function wm_editor_sanitize_conffile($filename) {
 	$filename = wm_editor_sanitize_uri($filename);
 
-	# If we've been fed something other than a .conf filename, just pretend it didn't happen
-	if ( substr($filename,-5,5) != ".conf" ) {
-		$filename = "";
+	// If we've been fed something other than a .conf filename, just pretend it didn't happen
+	if (substr($filename,-5,5) != '.conf') {
+		$filename = '';
 	}
 
-	# on top of the url stuff, we don't ever need to see a / in a config filename (CVE-2013-3739)
-	if (strstr($filename,"/") !== false ) {
-		$filename = "";
+	// on top of the url stuff, we don't ever need to see a / in a config filename (CVE-2013-3739)
+	if (strstr($filename,'/') !== false) {
+		$filename = '';
 	}
 
 	return $filename;
@@ -270,7 +272,7 @@ function show_editor_startpage() {
 	print __('Do you want to:', 'weathermap') . '<p>';
 	print __('Create A New Map:', 'weathermap') . '<br>';
 	print '<form method="GET">';
-	print __('Named:', 'weathermap'). ' <input type="text" name="mapname" size="20">';
+	print __('Named:', 'weathermap') . ' <input type="text" name="mapname" size="20">';
 
 	print '<input name="action" type="hidden" value="newmap">';
 
@@ -279,38 +281,38 @@ function show_editor_startpage() {
 	print '<p><small>' . __('Note: filenames must contain no spaces and end in .conf', 'weathermap') . '</small></p>';
 	print '</form>';
 
-	$titles = array();
+	$titles = [];
 
-	$errorstring="";
+	$errorstring = '';
 
 	if (is_dir($mapdir)) {
-		$n=0;
-		$dh=opendir($mapdir);
+		$n  = 0;
+		$dh = opendir($mapdir);
 
 		if ($dh) {
-		    while (false !== ($file = readdir($dh))) {
+			while (false !== ($file = readdir($dh))) {
 				$realfile = $mapdir . '/' . $file;
-				$note     = "";
+				$note     = '';
 
 				// skip directories, unreadable files, .files and anything that doesn't come through the sanitiser unchanged
 				if ((is_file($realfile)) && (is_readable($realfile)) && (!preg_match("/^\./",$file)) && (wm_editor_sanitize_conffile($file) == $file)) {
 					if (!is_writable($realfile)) {
-						$note .= "(read-only)";
+						$note .= '(read-only)';
 					}
 
-					$title='(no title)';
-					$fd=fopen($realfile, "r");
+					$title = '(no title)';
+					$fd    = fopen($realfile, 'r');
 
 					if ($fd) {
 						while (!feof($fd)) {
-							$buffer=fgets($fd, 4096);
+							$buffer = fgets($fd, 4096);
 
 							if (preg_match('/^\s*TITLE\s+(.*)/i', $buffer, $matches)) {
-							    $title= wm_editor_sanitize_string($matches[1]);
+								$title = wm_editor_sanitize_string($matches[1]);
 							}
 						}
 
-						fclose ($fd);
+						fclose($fd);
 
 						$titles[$file] = $title;
 						$notes[$file]  = $note;
@@ -318,9 +320,9 @@ function show_editor_startpage() {
 						$n++;
 					}
 				}
-		    }
+			}
 
-			closedir ($dh);
+			closedir($dh);
 		} else {
 			$errorstring = "Can't open mapdir to read.";
 		}
@@ -328,10 +330,10 @@ function show_editor_startpage() {
 		ksort($titles);
 
 		if ($n == 0) {
-			$errorstring = "No files in mapdir";
+			$errorstring = 'No files in mapdir';
 		}
 	} else {
-	    $errorstring = "NO DIRECTORY named $mapdir";
+		$errorstring = "NO DIRECTORY named $mapdir";
 	}
 
 	print 'OR<br />Create A New Map as a copy of an existing map:<br>';
@@ -347,7 +349,7 @@ function show_editor_startpage() {
 			print "<option value=\"$nicefile\">$nicefile</option>\n";
 		}
 	} else {
-		print '<option value="">'.html_escape($errorstring).'</option>';
+		print '<option value="">' . html_escape($errorstring) . '</option>';
 	}
 
 	print '</select>';
@@ -358,7 +360,7 @@ function show_editor_startpage() {
 
 	if ($errorstring == '') {
 		foreach ($titles as $file=>$title) {
-			# $title = $titles[$file];
+			// $title = $titles[$file];
 			$note      = $notes[$file];
 			$nicefile  = html_escape($file);
 			$nicetitle = html_escape($title);
@@ -371,13 +373,13 @@ function show_editor_startpage() {
 
 	print '</ul>';
 
-	print "</div>"; // dlgbody
+	print '</div>'; // dlgbody
 	print '<div class="dlgHelp" id="start_help">PHP Weathermap ' . $weathermap_version
 		. ' Copyright &copy; 2005-2019 Howard Jones - howie@thingy.com<br />The current version should always be <a href="http://www.network-weathermap.com/">available here</a>, along with other related software. PHP Weathermap is licensed under the GNU Public License, version 2. See COPYING for details. This distribution also includes the Overlib library by Erik Bosrup.</div>';
 
-	print "</div>"; // dlgStart
-	print "</div>"; // withjs
-	print "</body></html>";
+	print '</div>'; // dlgStart
+	print '</div>'; // withjs
+	print '</body></html>';
 }
 
 function snap($coord, $gridsnap = 0) {
@@ -386,50 +388,50 @@ function snap($coord, $gridsnap = 0) {
 	} else {
 		$rest = $coord % $gridsnap;
 
-		return intval(($coord - $rest + round($rest/$gridsnap) * $gridsnap));
+		return intval(($coord - $rest + round($rest / $gridsnap) * $gridsnap));
 	}
 }
 
-function extract_with_validation($array, $paramarray, $prefix = "") {
+function extract_with_validation($array, $paramarray, $prefix = '') {
 	$all_present = true;
-	$candidates  = array();
+	$candidates  = [];
 
 	foreach ($paramarray as $var) {
-		$varname=$var[0];
-		$vartype=$var[1];
-		$varreqd=$var[2];
+		$varname = $var[0];
+		$vartype = $var[1];
+		$varreqd = $var[2];
 
 		if ($varreqd == 'req' && !array_key_exists($varname, $array)) {
-	            $all_present=false;
-        }
+			$all_present = false;
+		}
 
 		if (array_key_exists($varname, $array)) {
-			$varvalue=$array[$varname];
+			$varvalue = $array[$varname];
 
-			$waspresent=$all_present;
+			$waspresent = $all_present;
 
 			switch ($vartype) {
 				case 'int':
 					if (!preg_match('/^\-*\d+$/', $varvalue)) {
-						$all_present=false;
+						$all_present = false;
 					}
 
 					break;
 				case 'float':
 					if (!preg_match('/^\d+\.\d+$/', $varvalue)) {
-						$all_present=false;
+						$all_present = false;
 					}
 
 					break;
 				case 'yesno':
 					if (!preg_match('/^(y|n|yes|no)$/i', $varvalue)) {
-						$all_present=false;
+						$all_present = false;
 					}
 
 					break;
 				case 'sqldate':
 					if (!preg_match('/^\d\d\d\d\-\d\d\-\d\d$/i', $varvalue)) {
-						$all_present=false;
+						$all_present = false;
 					}
 
 					break;
@@ -438,55 +440,55 @@ function extract_with_validation($array, $paramarray, $prefix = "") {
 
 					break;
 				case 'ip':
-					if (!preg_match( '/^((\d|[1-9]\d|2[0-4]\d|25[0-5]|1\d\d)(?:\.(\d|[1-9]\d|2[0-4]\d|25[0-5]|1\d\d)){3})$/', $varvalue)) {
-						$all_present=false;
+					if (!preg_match('/^((\d|[1-9]\d|2[0-4]\d|25[0-5]|1\d\d)(?:\.(\d|[1-9]\d|2[0-4]\d|25[0-5]|1\d\d)){3})$/', $varvalue)) {
+						$all_present = false;
 					}
 
 					break;
 				case 'alpha':
 					if (!preg_match('/^[A-Za-z]+$/', $varvalue)) {
-						$all_present=false;
+						$all_present = false;
 					}
 
 					break;
 				case 'alphanum':
 					if (!preg_match('/^[A-Za-z0-9]+$/', $varvalue)) {
-						$all_present=false;
+						$all_present = false;
 					}
 
 					break;
 				case 'bandwidth':
 					if (!preg_match('/^\d+\.?\d*[KMGT]*$/i', $varvalue)) {
-						$all_present=false;
+						$all_present = false;
 					}
 
 					break;
 				default:
 					// an unknown type counts as an error, really
-					$all_present=false;
+					$all_present = false;
 
 					break;
 			}
 
 			if ($all_present) {
-				$candidates["{$prefix}{$varname}"]=$varvalue;
+				$candidates["{$prefix}{$varname}"] = $varvalue;
 			}
 		}
 	}
 
 	if ($all_present) {
-	    foreach ($candidates as $key => $value) {
-			$GLOBALS[$key]=$value;
-	    }
+		foreach ($candidates as $key => $value) {
+			$GLOBALS[$key] = $value;
+		}
 	}
 
-	return array($all_present,$candidates);
+	return [$all_present, $candidates];
 }
 
 function get_imagelist($imagedir) {
 	global $config;
 
-	$imagelist = array();
+	$imagelist = [];
 
 	$imdir = $config['base_path'] . '/plugins/weathermap/images/' . $imagedir;
 
@@ -505,7 +507,7 @@ function get_imagelist($imagedir) {
 				}
 			}
 
-			closedir ($dh);
+			closedir($dh);
 		}
 	}
 
@@ -521,26 +523,26 @@ function handle_inheritance(&$map, &$inheritables) {
 		$new = get_nfilter_request_var($formname);
 
 		if ($validation != '') {
-		    switch($validation) {
+			switch($validation) {
 				case 'int':
-				    $new = intval($new);
+					$new = intval($new);
 
-				    break;
+					break;
 				case 'float':
-				    $new = floatval($new);
+					$new = floatval($new);
 
-				    break;
-		    }
+					break;
+			}
 		}
 
-		$old = ($inheritable[0] == 'node' ? $map->nodes['DEFAULT']->$fieldname:$map->links['DEFAULT']->$fieldname);
+		$old = ($inheritable[0] == 'node' ? $map->nodes['DEFAULT']->$fieldname : $map->links['DEFAULT']->$fieldname);
 
 		if ($old != $new) {
 			if ($inheritable[0] == 'node') {
 				$map->nodes['DEFAULT']->$fieldname = $new;
 
 				foreach ($map->nodes as $link_name => $node) {
-					if ($node->name != ':: DEFAULT ::' && $node->$fieldname == $old) {
+					if ($node->name != ':: DEFAULT ::' && $old == $node->$fieldname) {
 						$map->nodes[$node->name]->$fieldname = $new;
 					}
 				}
@@ -548,7 +550,7 @@ function handle_inheritance(&$map, &$inheritables) {
 				$map->links['DEFAULT']->$fieldname = $new;
 
 				foreach ($map->links as $link_name => $link) {
-					if ($link->name != ':: DEFAULT ::' && $link->$fieldname == $old) {
+					if ($link->name != ':: DEFAULT ::' && $old == $link->$fieldname) {
 						$map->links[$link->name]->$fieldname = $new;
 					}
 				}
@@ -574,7 +576,7 @@ function get_fontlist(&$map,$name,$current) {
 
 	$output .= '</select>';
 
-	return($output);
+	return ($output);
 }
 
 function range_overlaps($a_min, $a_max, $b_min, $b_max) {
@@ -589,28 +591,32 @@ function range_overlaps($a_min, $a_max, $b_min, $b_max) {
 	return true;
 }
 
-function common_range ($a_min,$a_max, $b_min, $b_max) {
+function common_range($a_min,$a_max, $b_min, $b_max) {
 	$min_overlap = max($a_min, $b_min);
 	$max_overlap = min($a_max, $b_max);
 
-	return array($min_overlap,$max_overlap);
+	return [$min_overlap, $max_overlap];
 }
 
 /**
  * distance - find the distance between two points
  *
+ * @param mixed $ax
+ * @param mixed $ay
+ * @param mixed $bx
+ * @param mixed $by
  */
 function distance($ax, $ay, $bx, $by) {
 	$dx = $bx - $ax;
 	$dy = $by - $ay;
 
-	return sqrt($dx * $dx + $dy * $dy );
+	return sqrt($dx * $dx + $dy * $dy);
 }
 
-function tidy_links(&$map, $targets, $ignore_tidied=false) {
+function tidy_links(&$map, $targets, $ignore_tidied = false) {
 	// not very efficient, but it saves looking for special cases (a->b & b->a together)
 	$ntargets = count($targets);
-	$i = 1;
+	$i        = 1;
 
 	foreach ($targets as $target) {
 		tidy_link($map, $target, $i, $ntargets, $ignore_tidied);
@@ -621,15 +627,20 @@ function tidy_links(&$map, $targets, $ignore_tidied=false) {
 /**
  * tidy_link - change link offsets so that link is horizontal or vertical, if possible.
  *             if not possible, change offsets to the closest facing compass points
+ * @param mixed $map
+ * @param mixed $target
+ * @param mixed $linknumber
+ * @param mixed $linktotal
+ * @param mixed $ignore_tidied
  */
-function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=false) {
+function tidy_link(&$map,$target, $linknumber = 1, $linktotal = 1, $ignore_tidied = false) {
 	// print "\n-----------------------------------\nTidying $target...\n";
 	if (isset($map->links[$target]) && isset($map->links[$target]->a)) {
 		$node_a = $map->links[$target]->a;
 		$node_b = $map->links[$target]->b;
 
-		$new_a_offset = "0:0";
-		$new_b_offset = "0:0";
+		$new_a_offset = '0:0';
+		$new_b_offset = '0:0';
 
 		// Update TODO: if the nodes are already directly left/right or up/down, then use compass-points, not pixel offsets
 		// (e.g. N90) so if the label changes, they won't need to be re-tidied
@@ -642,8 +653,10 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=fa
 		$x_overlap = range_overlaps($bb_a[0], $bb_a[2], $bb_b[0], $bb_b[2]);
 		$y_overlap = range_overlaps($bb_a[1], $bb_a[3], $bb_b[1], $bb_b[3]);
 
-		$a_x_offset = 0; $a_y_offset = 0;
-		$b_x_offset = 0; $b_y_offset = 0;
+		$a_x_offset = 0;
+		$a_y_offset = 0;
+		$b_x_offset = 0;
+		$b_y_offset = 0;
 
 		// if they are side by side, and there's some common y coords, make link horizontal
 		if (!$x_overlap && $y_overlap) {
@@ -661,20 +674,20 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=fa
 			}
 
 			// this should be true whichever way around they are
-			list($min_overlap,$max_overlap) = common_range($bb_a[1],$bb_a[3],$bb_b[1],$bb_b[3]);
+			[$min_overlap,$max_overlap] = common_range($bb_a[1],$bb_a[3],$bb_b[1],$bb_b[3]);
 
 			$overlap = $max_overlap - $min_overlap;
-			$n = $overlap/($linktotal+1);
+			$n       = $overlap / ($linktotal + 1);
 
-			$a_y_offset = $min_overlap + ($linknumber*$n) - $node_a->y;
-			$b_y_offset = $min_overlap + ($linknumber*$n) - $node_b->y;
+			$a_y_offset = $min_overlap + ($linknumber * $n) - $node_a->y;
+			$b_y_offset = $min_overlap + ($linknumber * $n) - $node_b->y;
 
-			$new_a_offset = sprintf("%d:%d", $a_x_offset,$a_y_offset);
-			$new_b_offset = sprintf("%d:%d", $b_x_offset,$b_y_offset);
+			$new_a_offset = sprintf('%d:%d', $a_x_offset,$a_y_offset);
+			$new_b_offset = sprintf('%d:%d', $b_x_offset,$b_y_offset);
 		}
 
 		// if they are above and below, and there's some common x coords, make link vertical
-		if ( !$y_overlap && $x_overlap ) {
+		if (!$y_overlap && $x_overlap) {
 			// print "ABOVE/BELOW\n";
 
 			// snap the Y coord to the appropriate edge of the node
@@ -688,17 +701,17 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=fa
 				$b_y_offset = $bb_b[3] - $node_b->y;
 			}
 
-			list($min_overlap,$max_overlap) = common_range($bb_a[0],$bb_a[2],$bb_b[0],$bb_b[2]);
+			[$min_overlap,$max_overlap] = common_range($bb_a[0],$bb_a[2],$bb_b[0],$bb_b[2]);
 
 			$overlap = $max_overlap - $min_overlap;
-			$n = $overlap/($linktotal+1);
+			$n       = $overlap / ($linktotal + 1);
 
 			// move the X coord to the centre of the overlapping area
-			$a_x_offset = $min_overlap + ($linknumber*$n) - $node_a->x;
-			$b_x_offset = $min_overlap + ($linknumber*$n) - $node_b->x;
+			$a_x_offset = $min_overlap + ($linknumber * $n) - $node_a->x;
+			$b_x_offset = $min_overlap + ($linknumber * $n) - $node_b->x;
 
-			$new_a_offset = sprintf("%d:%d", $a_x_offset,$a_y_offset);
-			$new_b_offset = sprintf("%d:%d", $b_x_offset,$b_y_offset);
+			$new_a_offset = sprintf('%d:%d', $a_x_offset,$a_y_offset);
+			$new_b_offset = sprintf('%d:%d', $b_x_offset,$b_y_offset);
 		}
 
 		// if no common coordinates, figure out the best diagonal...
@@ -713,8 +726,8 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=fa
 
 			$normal = $tangent->getNormal();
 
-			$pt_a->AddVector( $normal, 15 * ($linknumber-1) );
-			$pt_b->AddVector( $normal, 15 * ($linknumber-1) );
+			$pt_a->AddVector($normal, 15 * ($linknumber - 1));
+			$pt_b->AddVector($normal, 15 * ($linknumber - 1));
 
 			$a_x_offset = $pt_a->x - $node_a->x;
 			$a_y_offset = $pt_a->y - $node_a->y;
@@ -722,31 +735,31 @@ function tidy_link(&$map,$target, $linknumber=1, $linktotal=1, $ignore_tidied=fa
 			$b_x_offset = $pt_b->x - $node_b->x;
 			$b_y_offset = $pt_b->y - $node_b->y;
 
-			$new_a_offset = sprintf("%d:%d", $a_x_offset,$a_y_offset);
-			$new_b_offset = sprintf("%d:%d", $b_x_offset,$b_y_offset);
+			$new_a_offset = sprintf('%d:%d', $a_x_offset,$a_y_offset);
+			$new_b_offset = sprintf('%d:%d', $b_x_offset,$b_y_offset);
 		}
 
 		// if no common coordinates, figure out the best diagonal...
 		// currently - brute force search the compass points for the shortest distance
 		// potentially - intersect link line with rectangles to get exact crossing point
-		if (1==0 && !$y_overlap && !$x_overlap) {
+		if (1 == 0 && !$y_overlap && !$x_overlap) {
 			// print "DIAGONAL\n";
 
-			$corners = array("NE","E","SE","S","SW","W","NW","N");
+			$corners = ['NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'];
 
 			// start with what we have now
-			$best_distance = distance( $node_a->x, $node_a->y, $node_b->x, $node_b->y );
-			$best_offset_a = "C";
-			$best_offset_b = "C";
+			$best_distance = distance($node_a->x, $node_a->y, $node_b->x, $node_b->y);
+			$best_offset_a = 'C';
+			$best_offset_b = 'C';
 
 			foreach ($corners as $corner1) {
-				list ($ax,$ay) = calc_offset($corner1, $bb_a[2] - $bb_a[0], $bb_a[3] - $bb_a[1]);
+				[$ax,$ay] = calc_offset($corner1, $bb_a[2] - $bb_a[0], $bb_a[3] - $bb_a[1]);
 
 				$axx = $node_a->x + $ax;
 				$ayy = $node_a->y + $ay;
 
 				foreach ($corners as $corner2) {
-					list($bx,$by) = calc_offset($corner2, $bb_b[2] - $bb_b[0], $bb_b[3] - $bb_b[1]);
+					[$bx,$by] = calc_offset($corner2, $bb_b[2] - $bb_b[0], $bb_b[3] - $bb_b[1]);
 
 					$bxx = $node_b->x + $bx;
 					$byy = $node_b->y + $by;
@@ -785,15 +798,15 @@ function untidy_links(&$map) {
 	}
 }
 
-function retidy_links(&$map, $ignore_tidied=false) {
-	$routes = array();
-	$done = array();
+function retidy_links(&$map, $ignore_tidied = false) {
+	$routes = [];
+	$done   = [];
 
 	foreach ($map->links as $link) {
 		if (isset($link->a)) {
 			$route = $link->a->name . ' ' . $link->b->name;
 
-			if (strcmp( $link->a->name, $link->b->name) > 0) {
+			if (strcmp($link->a->name, $link->b->name) > 0) {
 				$route = $link->b->name . ' ' . $link->a->name;
 			}
 
@@ -810,12 +823,12 @@ function retidy_links(&$map, $ignore_tidied=false) {
 			}
 
 			if (($ignore_tidied || $link->get_hint('_tidied') == 1) && !isset($done[$route]) && isset($routes[$route])) {
-				if ( sizeof($routes[$route]) == 1) {
+				if (sizeof($routes[$route]) == 1) {
 					tidy_link($map, $link->name);
 
 					$done[$route] = 1;
 				} else {
-					# handle multi-links specially...
+					// handle multi-links specially...
 					tidy_links($map, $routes[$route]);
 
 					// mark it so we don't do it again when the other links come by
@@ -827,75 +840,74 @@ function retidy_links(&$map, $ignore_tidied=false) {
 }
 
 function editor_log($str) {
-    // $f = fopen('editor.log','a');
-    // fputs($f, $str);
-    // fclose($f);
+	// $f = fopen('editor.log','a');
+	// fputs($f, $str);
+	// fclose($f);
 }
 
 function getEditorJs() {
 	?>
 	<script type='text/javascript'>
-	var sessionMessageOk    = '<?php print __esc('Ok', 'weathermap');?>';
-	var sessionMessageTitle = '<?php print __esc('Operation successful', 'weathermap');?>';
-	var sessionMessageSave  = '<?php print __esc('The Operation was successful.  Details are below.', 'weathermap');?>';
-	var sessionMessagePause = '<?php print __esc('Pause', 'weathermap');?>';
+	var sessionMessageOk    = '<?php print __esc('Ok', 'weathermap'); ?>';
+	var sessionMessageTitle = '<?php print __esc('Operation successful', 'weathermap'); ?>';
+	var sessionMessageSave  = '<?php print __esc('The Operation was successful.  Details are below.', 'weathermap'); ?>';
+	var sessionMessagePause = '<?php print __esc('Pause', 'weathermap'); ?>';
 
-	var moveNodeHelp  = '<?php print __esc('Click on the map where you would like to move the node to.', 'weathermap');?>';
-	var viaLinkHelp   = '<?php print __esc('Click on the map via which point you want to redirect link.', 'weathermap');?>';
-	var addLinkHelp   = '<?php print __esc('Click on the first node for the start of the link.', 'weathermap');?>';
-	var timeStHelp    = '<?php print __esc('Click on the map where you would like to put the timestamp.', 'weathermap');?>';
-	var posLegendHelp = '<?php print __esc('Click on the map where you would like to put the legend.', 'weathermap');?>';
-	var addNodeHelp   = '<?php print __esc('Click on the map where you would like to add a new node.', 'weathermap');?>';
+	var moveNodeHelp  = '<?php print __esc('Click on the map where you would like to move the node to.', 'weathermap'); ?>';
+	var viaLinkHelp   = '<?php print __esc('Click on the map via which point you want to redirect link.', 'weathermap'); ?>';
+	var addLinkHelp   = '<?php print __esc('Click on the first node for the start of the link.', 'weathermap'); ?>';
+	var timeStHelp    = '<?php print __esc('Click on the map where you would like to put the timestamp.', 'weathermap'); ?>';
+	var posLegendHelp = '<?php print __esc('Click on the map where you would like to put the legend.', 'weathermap'); ?>';
+	var addNodeHelp   = '<?php print __esc('Click on the map where you would like to add a new node.', 'weathermap'); ?>';
 
-	var delNodeWarning  = '<?php print __esc('WARNING: Pressing \'Delete Node\' will delete this Node.', 'weathermap');?>';
-	var delNodeTitle    = '<?php print __esc('Delete Node Confirmation', 'weathermap');?>';
-	var delLinkWarning  = '<?php print __esc('WARNING: Pressing \'Delete Link\' will delete this Link.', 'weathermap');?>';
-	var delLinkTitle    = '<?php print __esc('Delete Link Confirmation', 'weathermap');?>';
-	var txtCancel       = '<?php print __esc('Cancel', 'weathermap');?>';
-	var txtDelLink      = '<?php print __esc('Delete Link', 'weathermap');?>';
-	var txtDelNode      = '<?php print __esc('Delete Node', 'weathermap');?>';
-	var txtPosition     = '<?php print __esc('Position', 'weathermap');?>';
+	var delNodeWarning  = '<?php print __esc('WARNING: Pressing \'Delete Node\' will delete this Node.', 'weathermap'); ?>';
+	var delNodeTitle    = '<?php print __esc('Delete Node Confirmation', 'weathermap'); ?>';
+	var delLinkWarning  = '<?php print __esc('WARNING: Pressing \'Delete Link\' will delete this Link.', 'weathermap'); ?>';
+	var delLinkTitle    = '<?php print __esc('Delete Link Confirmation', 'weathermap'); ?>';
+	var txtCancel       = '<?php print __esc('Cancel', 'weathermap'); ?>';
+	var txtDelLink      = '<?php print __esc('Delete Link', 'weathermap'); ?>';
+	var txtDelNode      = '<?php print __esc('Delete Node', 'weathermap'); ?>';
+	var txtPosition     = '<?php print __esc('Position', 'weathermap'); ?>';
 
-	var txtNodeActions = '<?php print __esc('Node Actions', 'weathermap');?>';
-	var txtLinkActions = '<?php print __esc('Link Actions', 'weathermap');?>';
-	var txtMove        = '<?php print __esc('Move', 'weathermap');?>';
-	var txtClone       = '<?php print __esc('Clone', 'weathermap');?>';
-	var txtEdit        = '<?php print __esc('Edit', 'weathermap');?>';
-	var txtDelete      = '<?php print __esc('Delete', 'weathermap');?>';
-	var txtVia         = '<?php print __esc('Via', 'weathermap');?>';
-	var txtTidy        = '<?php print __esc('Tidy', 'weathermap');?>';
-	var txtProperties  = '<?php print __esc('Properties', 'weathermap');?>';
+	var txtNodeActions = '<?php print __esc('Node Actions', 'weathermap'); ?>';
+	var txtLinkActions = '<?php print __esc('Link Actions', 'weathermap'); ?>';
+	var txtMove        = '<?php print __esc('Move', 'weathermap'); ?>';
+	var txtClone       = '<?php print __esc('Clone', 'weathermap'); ?>';
+	var txtEdit        = '<?php print __esc('Edit', 'weathermap'); ?>';
+	var txtDelete      = '<?php print __esc('Delete', 'weathermap'); ?>';
+	var txtVia         = '<?php print __esc('Via', 'weathermap'); ?>';
+	var txtTidy        = '<?php print __esc('Tidy', 'weathermap'); ?>';
+	var txtProperties  = '<?php print __esc('Properties', 'weathermap'); ?>';
 
 	// seed the help text. Done in a big lump here, so we could make a foreign language version someday.
 
 	var helptexts = {
-		'link_target':        '<?php print __esc('Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG).', 'weathermap');?>',
-		'link_width':         '<?php print __esc('How wide the link arrow will be drawn, in pixels.', 'weathermap');?>',
-		'link_infourl':       '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL that will be opened when you click on the link', 'weathermap');?>',
-		'link_hover':         '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL of the image that will be shown when you hover over the link', 'weathermap');?>',
-		'link_bandwidth_in':  '<?php print __esc('The bandwidth from the first node to the second node', 'weathermap');?>',
-		'link_bandwidth_out': '<?php print __esc('The bandwidth from the second node to the first node (if that is different)', 'weathermap');?>',
-		'link_commentin':     '<?php print __esc('The text that will appear alongside the link', 'weathermap');?>',
-		'link_commentout':    '<?php print __esc('The text that will appear alongside the link', 'weathermap');?>',
-		'node_infourl':       '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL that will be opened when you click on the node', 'weathermap');?>',
-		'node_hover':         '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL of the image that will be shown when you hover over the node', 'weathermap');?>',
-		'node_x':             '<?php print __esc('How far from the left to position the node, in pixels', 'weathermap');?>',
-		'node_y':             '<?php print __esc('How far from the top to position the node, in pixels', 'weathermap');?>',
-		'node_label':         '<?php print __esc('The text that appears on the node', 'weathermap');?>',
-		'node_new_name':      '<?php print __esc('The name used for this node when defining links', 'weathermap');?>',
-		'tb_newfile':         '<?php print __esc('Change to a different file, or start creating a new one.', 'weathermap');?>',
-		'tb_addnode':         '<?php print __esc('Add a new node to the map', 'weathermap');?>',
-		'tb_addlink':         '<?php print __esc('Add a new link to the map, by joining two nodes together.', 'weathermap');?>',
-		'hover_tb_newfile':   '<?php print __esc('Select a different map to edit, or start a new one.', 'weathermap');?>',
+		'link_target':        '<?php print __esc('Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG).', 'weathermap'); ?>',
+		'link_width':         '<?php print __esc('How wide the link arrow will be drawn, in pixels.', 'weathermap'); ?>',
+		'link_infourl':       '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL that will be opened when you click on the link', 'weathermap'); ?>',
+		'link_hover':         '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL of the image that will be shown when you hover over the link', 'weathermap'); ?>',
+		'link_bandwidth_in':  '<?php print __esc('The bandwidth from the first node to the second node', 'weathermap'); ?>',
+		'link_bandwidth_out': '<?php print __esc('The bandwidth from the second node to the first node (if that is different)', 'weathermap'); ?>',
+		'link_commentin':     '<?php print __esc('The text that will appear alongside the link', 'weathermap'); ?>',
+		'link_commentout':    '<?php print __esc('The text that will appear alongside the link', 'weathermap'); ?>',
+		'node_infourl':       '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL that will be opened when you click on the node', 'weathermap'); ?>',
+		'node_hover':         '<?php print __esc('If you are using the \'overlib\' HTML style then this is the URL of the image that will be shown when you hover over the node', 'weathermap'); ?>',
+		'node_x':             '<?php print __esc('How far from the left to position the node, in pixels', 'weathermap'); ?>',
+		'node_y':             '<?php print __esc('How far from the top to position the node, in pixels', 'weathermap'); ?>',
+		'node_label':         '<?php print __esc('The text that appears on the node', 'weathermap'); ?>',
+		'node_new_name':      '<?php print __esc('The name used for this node when defining links', 'weathermap'); ?>',
+		'tb_newfile':         '<?php print __esc('Change to a different file, or start creating a new one.', 'weathermap'); ?>',
+		'tb_addnode':         '<?php print __esc('Add a new node to the map', 'weathermap'); ?>',
+		'tb_addlink':         '<?php print __esc('Add a new link to the map, by joining two nodes together.', 'weathermap'); ?>',
+		'hover_tb_newfile':   '<?php print __esc('Select a different map to edit, or start a new one.', 'weathermap'); ?>',
 
 		// These are the default text - what appears when nothing more interesting
 		// is happening. One for each dialog/location.
-		'link_default':       '<?php print __esc('This is where help appears for links', 'weathermap');?>',
-		'map_default':        '<?php print __esc('This is where help appears for maps', 'weathermap');?>',
-		'node_default':       '<?php print __esc('This is where help appears for nodes', 'weathermap');?>',
-		'tb_default':         '<?php print __esc('or click a Node or Link to edit it\'s properties', 'weathermap');?>'
+		'link_default':       '<?php print __esc('This is where help appears for links', 'weathermap'); ?>',
+		'map_default':        '<?php print __esc('This is where help appears for maps', 'weathermap'); ?>',
+		'node_default':       '<?php print __esc('This is where help appears for nodes', 'weathermap'); ?>',
+		'tb_default':         '<?php print __esc('or click a Node or Link to edit it\'s properties', 'weathermap'); ?>'
 	};
 	</script>
 	<?php
 }
-
