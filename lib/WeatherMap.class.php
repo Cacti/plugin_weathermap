@@ -3950,35 +3950,36 @@ class WeatherMap extends WeatherMapBase {
 
 					$left      = '';
 					$above     = '';
+					$dheight   = '';
+					$dwidth    = '';
 
 					if ($myobj->overlibwidth != 0) {
-						$left = 'WIDTH,' . $myobj->overlibwidth . ',';
-						$style .= ($style != '' ? ';' : '') . 'width:' . $myobj->overlibwidth . 'px';
+						$left   = 'WIDTH,' . $myobj->overlibwidth . ',';
+						$dwidth = $myobj->overlibwidth;
 
 						if ($mid_x > $center_x) {
 							$left .= 'LEFT,';
 						}
 					} else {
-						$style .= ($style != '' ? ';' : '') . 'width:' . read_config_option('weathermap_width') . 'px';
+						$dwidth = read_config_option('weathermap_width');
 					}
 
 					if ($myobj->overlibheight != 0) {
-						$above = 'HEIGHT,' . $myobj->overlibheight . ',';
-
-						$style .= ($style != '' ? ';' : '') . 'height:' . $myobj->overlibheight . 'px;';
+						$above   = 'HEIGHT,' . $myobj->overlibheight . ',';
+						$dheight = $myobj->overlibheight;
 
 						if ($mid_y > $center_y) {
 							$above .= 'ABOVE,';
 						}
 					} else {
-						$style .= ($style != '' ? ';' : '') . 'height:' . read_config_option('weathermap_height') . 'px';
+						$dheight = read_config_option('weathermap_height');
 					}
 
 					foreach ($dirs as $dir => $parts) {
 						$caption = ($myobj->overlibcaption[$dir] != '' ? $myobj->overlibcaption[$dir] : $myobj->name);
 						$caption = $this->ProcessString($caption, $myobj);
 
-						$data_hover  = 'data-hover="<ul class=\'wm_container\'>';
+						$data_hover  = 'data-hover="<div>';
 
 						$n = 0;
 
@@ -3989,11 +3990,11 @@ class WeatherMap extends WeatherMapBase {
 									$data_hover .= '<br>';
 								}
 
-								$data_hover .= "<li class='wm_child'><img style='{$style}' src='" . $this->ProcessString($url, $myobj) . "'></li>";
+								$data_hover .= "<img data-height='$data_height' data-width='$data_width' src='" . $this->ProcessString($url, $myobj) . "'>";
 								$n++;
 							}
 
-							$data_hover .= '</ul>';
+							$data_hover .= '</div>';
 						}
 
 						// print "Added $n for $dir\n";
