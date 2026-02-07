@@ -69,7 +69,7 @@ jobs:
     - name: Checkout Weathermap Plugin
       uses: actions/checkout@v4
       with:
-        path: cacti/plugins/intropage
+        path: cacti/plugins/weathermap
     
     - name: Install PHP ${{ matrix.php }}
       uses: shivammathur/setup-php@v2
