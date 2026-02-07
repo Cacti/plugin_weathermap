@@ -141,7 +141,8 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 
 	/**
 	 * @param  WeatherMap $map
-	 * @param  $profileName
+	 * @param  mixed $profileName
+	 *
 	 * @return array
 	 */
 	public function buildSNMPParams(&$map, $profileName) {
@@ -179,8 +180,9 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 	}
 
 	/**
-	 * @param        $profileName
-	 * @param        $hostId
+	 * @param  mixed $profileName
+	 * @param  int   $hostId
+	 *
 	 * @return mixed
 	 */
 	private function copyParamsFromCacti($profileName, $hostId) {
@@ -196,10 +198,10 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 			return $params;
 		}
 
-		$result = db_fetch_row_prepared('SELECT * 
-			FROM host 
-			WHERE snmp_version = 3 
-			AND id = ?', 
+		$result = db_fetch_row_prepared('SELECT *
+			FROM host
+			WHERE snmp_version = 3
+			AND id = ?',
 			[$hostId]);
 
 		if (!$result) {
