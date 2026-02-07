@@ -26,13 +26,20 @@ class WeatherMapDataSource_cacti extends WeatherMapDataSource {
 		$data[IN]  = null;
 		$data[OUT] = null;
 		$data_time = 0;
+		$result    = [];
 
 		if (preg_match('/^cacti:(\d+)$/', $targetstring, $matches) === 1) {
 			$local_data_id = intval($matches[1]);
 
-			$SQL = 'select * from weathermap_data where local_data_id=' . $local_data_id;
+			$sql = 'SELECT * FROM weathermap_data WHERE local_data_id = ? LIMIT 1';
 
-			$result = db_fetch_row($SQL);
+			$result = db_fetch_row_prepared($sql, [$local_data_id]);
+		}
+
+		if (cacti_sizeof($result)) {
+			$data[IN]  = $result['last_calc'];
+			$data[OUT] = $result['last_value'];
+			$data_time = $result['last_time'];
 		}
 
 		wm_debug(sprintf("cacti ReadData: Returning (%s, %s, %s)\n",
