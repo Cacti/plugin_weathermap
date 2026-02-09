@@ -715,12 +715,12 @@ function weathermap_versionbox() {
 	$weathermap_version = plugin_weathermap_numeric_version();
 
 	if ($showversionbox) {
-		$pagefoot = __('Powered by %s PHP Weathermap Version %s %s', '<a href="http://www.network-weathermap.com/?v=' . $weathermap_version . '">', $weathermap_version, '</a>', 'weathermap');
+		$pagefoot = __('Powered by %s PHP Weathermap Version %s %s', '<a href="https://github.com/cacti/plugin_weathermap/releases">', $weathermap_version, '</a>', 'weathermap');
 
 		if (api_plugin_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
-			$pagefoot .= ' ||*---*|| <a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php" title="' . __esc('Go to the map management page', 'weathermap') . '">' . __('Weathermap Management', 'weathermap') . '</a>';
-			$pagefoot .= ' ||*---*|| <a target="_blank" href="docs/">' . __('Local Documentation', 'weathermap') . '</a>';
-			$pagefoot .= ' ||*---*|| <a class="pic" href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=addmap_picker">' . __('New Map', 'weathermap') . '</a>';
+			$pagefoot .= ' | <a href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php" title="' . __esc('Go to the Map Management page', 'weathermap') . '">' . __('Weathermap Management', 'weathermap') . '</a>';
+			$pagefoot .= ' | <a target="_blank" href="docs/">' . __('Local Documentation', 'weathermap') . '</a>';
+			$pagefoot .= ' | <a class="pic" href="' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=addmap_picker">' . __('New Map', 'weathermap') . '</a>';
 		}
 
 		print '<br/><table width="100%" style="background-color: #f5f5f5; border: 1px solid #bbbbbb;" align="center" cellpadding="1">';

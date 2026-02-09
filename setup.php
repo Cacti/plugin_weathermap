@@ -214,6 +214,12 @@ function weathermap_config_settings() {
 			'friendly_name' => __('Network Weathermap', 'weathermap'),
 			'method'        => 'spacer',
 		],
+		'weathermap_debug' => [
+			'friendly_name' => __('Debug Mode', 'weathermap'),
+			'description'   => __('If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box.', 'weathermap'),
+			'method'        => 'checkbox',
+			'default'       => ''
+		],
 		'weathermap_pagestyle' => [
 			'friendly_name' => __('Page style', 'weathermap'),
 			'description'   => __('How to display multiple maps.', 'weathermap'),
