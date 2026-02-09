@@ -15,6 +15,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 ## Changes
 
 --- 1.4 ---
+* issue#158: Don't allow Weathermaps with special characters filenames
 * issue#161: WeatherMap not respecting default width in Cacti
 * issue#164: User Group permissions not working as expected
 * issue#176: Networklink under Hover-Graph can not be clicked
