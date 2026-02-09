@@ -294,7 +294,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 	$mapcount = 0;
 
 	// take our debugging cue from the poller - turn on Poller debugging to get weathermap debugging
-	if (read_config_option('log_verbosity') >= POLLER_VERBOSITY_DEBUG) {
+	if (read_config_option('log_verbosity') >= POLLER_VERBOSITY_DEBUG || read_config_option('weathermap_debug') == 'on') {
 		$weathermap_debugging = true;
 		$mode_message         = 'DEBUG mode is on';
 	} else {
