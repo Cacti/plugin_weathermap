@@ -1063,7 +1063,7 @@ class WeatherMap extends WeatherMapBase {
 								if ($target[0] != '') {
 									$matched_by = $target[5];
 
-									[$in,$out,$datatime] =  $this->plugins['data'][$target[5]]->ReadData($targetstring, $this, $myobj);
+									[$in, $out, $datatime] =  $this->plugins['data'][$target[5]]->ReadData($targetstring, $this, $myobj);
 								}
 
 								if (($in === null) && ($out === null)) {
