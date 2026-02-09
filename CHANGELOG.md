@@ -21,6 +21,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue: The LoadPlugins was using the wrong default path - Reported on forums
 * feature#178: Support Setting KEYSTYLE DEFAULT via the UI
 * feature: Add 3 missing plugins from upstream weathermap
+* feature: Add a Debug option from the main Cacti Weathermap settings page
 
 --- 1.3.1 ---
 * issue#141: Bug Weathermap - Map Style can't change Link Labels to Bits/Sec
