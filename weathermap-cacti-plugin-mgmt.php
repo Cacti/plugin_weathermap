@@ -1068,6 +1068,7 @@ function maplist() {
 
 				if ($ulist['groups'] > 0) {
 					$url .= ($found ? ', ' : '') . ($ulist['groups'] == 1 ? __('1 Group', 'weathermap') : __('%d Groups', $ulist['groups'], 'weathermap'));
+					$found = true;
 				}
 
 				if ($ulist['users'] > 0) {
@@ -2010,7 +2011,8 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 				SELECT id, name, description, 'group' AS type, wa.mapid AS allowed, 'N/A' AS realm
 				FROM user_auth_group AS uag
 				$join JOIN (SELECT * FROM weathermap_auth WHERE mapid = ?) AS wa
-				ON uag.id = -wa.userid
+				ON wa.userid < 0
+				AND uag.id = ABS(wa.userid)
 				AND uag.enabled = 'on'
 				WHERE (wa.mapid = ? OR (wa.mapid IS NULL AND uag.enabled = 'on'))
 				$sql_where2
