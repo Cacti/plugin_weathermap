@@ -107,6 +107,12 @@ function display_datasources() {
 
 	$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'dl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 
+	$rows = read_config_option('autocomplete_rows');
+
+	if (empty($rows) || $rows > 100 || $rows < 0) {
+		$rows = 100;
+	}
+
 	$graphs = db_fetch_assoc("SELECT DISTINCT
 		gti.local_graph_id AS id,
 		dtd.name_cache AS title,
@@ -126,7 +132,7 @@ function display_datasources() {
 		ON gt.id = gti.graph_template_id
 		$sql_where
 		ORDER BY name_cache
-		LIMIT " . read_config_option('autocomplete_rows'));
+		LIMIT $rows");
 
 	$return = [];
 
