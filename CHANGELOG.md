@@ -16,12 +16,15 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- 1.4 ---
 * issue#161: WeatherMap not respecting default width in Cacti
+* issue#164: User Group permissions not working as expected
 * issue#176: Networklink under Hover-Graph can not be clicked
 * issue#180: It impossible to click on links in Weathermap due to cursor tracking
 * issue: The LoadPlugins was using the wrong default path - Reported on forums
+* feature#177: WeatherMap is missing snmp2c and snmp3 datasource agent extensions
 * feature#178: Support Setting KEYSTYLE DEFAULT via the UI
 * feature: Add 3 missing plugins from upstream weathermap
 * feature: Add a Debug option from the main Cacti Weathermap settings page
+* feature: Default the autocomplete rows to 100 if the user has set too high
 
 --- 1.3.1 ---
 * issue#141: Bug Weathermap - Map Style can't change Link Labels to Bits/Sec
