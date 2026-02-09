@@ -1157,26 +1157,15 @@ function weathermap_poller_output(&$rrd_update_array) {
 			}
 
 			db_execute_prepared('UPDATE weathermap_data
-				SET `last_time` = ?, `last_calc` = ?, `last_value` = ?,`sequence`=`sequence`+1
+				SET `last_time` = ?, `last_calc` = ?, `last_value` = ?,`sequence` = `sequence` + 1
 				WHERE `id` = ?',
 				[$newtime, $newvalue, $newlastvalue, $required['id']]);
 
 			if ($debug) {
 				cacti_log("WM poller_output: Final value is $newvalue (was $lastval, period was $period)", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 			}
-		} else {
-			if ($debug) {
-				cacti_log('WM poller_output: Didn\'t find it.', true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
-				cacti_log('WM poller_output: DID find these:', true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
-			}
-
-			foreach (array_keys($rrd_update_array) as $key) {
-				$local_data_id = $rrd_update_array[$key]['local_data_id'];
-
-				if ($debug) {
-					cacti_log("WM poller_output:    $key ($local_data_id)", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
-				}
-			}
+		} elseif ($debug) {
+			cacti_log(sprintf('WARNING: FILE[%s] DS[%s] Didn\'t find data sources for processing.', $file, $local_data_id), true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 		}
 	}
 
