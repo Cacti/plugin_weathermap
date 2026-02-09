@@ -1131,6 +1131,8 @@ function create_prime_mapcache() {
 		ROW_FORMAT=Dynamic
 		COMMENT="Holds a cache of map files"');
 
+	db_execute('TRUNCATE TABLE weathermap_config_cache');
+
 	$loaded = [];
 
 	// find out what maps are already in the database, so we can skip those
@@ -1242,7 +1244,7 @@ function addmap_filter() {
 							<?php print __('New Map', 'weathermaps'); ?>
 						</td>
 						<td>
-							<input id='newfile' class='ui-state-default ui-corner-all' name='newfile' type='text' size='25' value='' placeholder='<?php print __('Name including the \.conf', 'weathermaps'); ?>'>
+							<input id='newfile' class='ui-state-default ui-corner-all' name='newfile' type='text' size='25' value='' placeholder='<?php print __('Name including .conf', 'weathermaps'); ?>'>
 						</td>
 						<td>
 							<?php print __('Source Map', 'weathermaps'); ?>
@@ -2827,7 +2829,9 @@ function newMap($mapfile, $sourcemapfile = '') {
 	global $weathermap_confdir;
 
 	if ($mapfile == basename($mapfile)) {
-		$mapfile = $weathermap_confdir . '/' . $mapfile;
+		$mapfile = $weathermap_confdir . '/' . clean_up_name(basename($mapfile, '.conf')) . '.conf';
+	} else {
+		$mapfile = dirname($mapfile) . '/' . clean_up_name(basename($mapfile, '.conf')) . '.conf';
 	}
 
 	if (!file_exists($sourcemapfile) || $sourcemapfile == basename($sourcemapfile)) {
