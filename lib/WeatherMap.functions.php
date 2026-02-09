@@ -84,10 +84,10 @@ function is_weathermap_allowed($mapid, $userid) {
 	$params    = [$mapid];
 
 	// Try all users first
-	$allowed = db_fetch_cell_prepared("SELECT mapid
+	$allowed = db_fetch_cell_prepared('SELECT mapid
 		FROM weathermap_auth
 		WHERE userid = 0
-		AND mapid = ?",
+		AND mapid = ?',
 		$params);
 
 	if ($allowed) {
@@ -97,10 +97,10 @@ function is_weathermap_allowed($mapid, $userid) {
 	$params[] = $userid;
 
 	// Try specific user second
-	$allowed = db_fetch_cell_prepared("SELECT mapid
+	$allowed = db_fetch_cell_prepared('SELECT mapid
 		FROM weathermap_auth
 		WHERE mapid = ?
-		AND userid = ?",
+		AND userid = ?',
 		$params);
 
 	if ($allowed) {
@@ -108,7 +108,7 @@ function is_weathermap_allowed($mapid, $userid) {
 	}
 
 	// Try user group last
-	$allowed = db_fetch_cell_prepared("SELECT mapid
+	$allowed = db_fetch_cell_prepared('SELECT mapid
 		FROM weathermap_auth AS wa
 		INNER JOIN user_auth_group AS uag
 		ON wa.userid < 0
@@ -117,8 +117,8 @@ function is_weathermap_allowed($mapid, $userid) {
 		ON uag.id = uagm.group_id
 		WHERE wa.mapid = ?
 		AND uagm.user_id = ?
-		AND uag.enabled = 'on'
-		AND uagm.group_id > 0",
+		AND uag.enabled = "on"
+		AND uagm.group_id > 0',
 		$params);
 
 	if ($allowed) {
