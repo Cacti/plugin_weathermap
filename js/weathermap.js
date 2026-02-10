@@ -55,5 +55,6 @@ $(function() {
 
 function adjustTooltipWindow() {
     $('.ui-tooltip').find('img').css('max-width', '100%');
+	$('.ui-tooltip').css('transform', 'translateX(+20px)');
     $('.wmcontent').show();
 }
