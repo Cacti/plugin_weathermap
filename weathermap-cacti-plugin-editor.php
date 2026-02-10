@@ -387,12 +387,13 @@ $weathermap_version = plugin_weathermap_numeric_version();
 		<div class='scriptData'>
 			<script type='text/javascript'>
 			<?php getMapJavaScript($mapfile); ?>
+			<?php print 'var infoUrlStyle=' . intval(read_config_option('weathermap_infourl_style')) . ';'; ?>
 			</script>
 		</div>
 		<div class='mapData'>
 			<?php getMapAreaData($mapfile); ?>
 		</div>
-		<!-- End DAta for overlay and selection -->
+		<!-- End Data for overlay and selection -->
 
 		<!-- Node Properties -->
 		<div id='dlgNodeProperties' class='dlgProperties' title='<?php print __('Node Properties', 'weathermap'); ?>'>
