@@ -15,7 +15,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 ## Changes
 
 --- develop ---
-* issue#124: Weatermap slow when some graphs are broken
+* issue#124: Weathermap slow when some graphs are broken
 
 --- 1.4 ---
 * issue#158: Don't allow Weathermaps with special characters filenames
