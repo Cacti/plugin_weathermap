@@ -195,7 +195,7 @@ function graphPicker() {
 						$('#link_hover').val(hover + local_graph_id);
 					}
 
-					if (einfo == '' && infoUrlStyle == 1) {
+					if (einfo == '' || infoUrlStyle == 1) {
 						$('#link_infourl').val(infourl + local_graph_id);
 					}
 				}

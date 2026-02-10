@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 * issue#124: Weathermap slow when some graphs are broken
-* featur#193: Allow the Info URL to be either "Time View Graph" or "Classic View Graph"
+* feature#193: Allow the Info URL to be either "Time View Graph" or "Classic View Graph"
 
 --- 1.4 ---
 * issue#158: Don't allow Weathermaps with special characters filenames
