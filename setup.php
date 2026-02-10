@@ -1040,7 +1040,7 @@ function weathermap_poller_output(&$rrd_update_array) {
 
 	static $debug = null;
 
-	if ($debug == null) {
+	if ($debug === null) {
 		$debug = intval(read_config_option('log_verbosity')) >= 5 ? true : false;
 	}
 
