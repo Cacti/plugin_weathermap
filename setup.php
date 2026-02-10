@@ -220,6 +220,16 @@ function weathermap_config_settings() {
 			'method'        => 'checkbox',
 			'default'       => ''
 		],
+		'weathermap_infourl_style' => [
+			'friendly_name' => __('Info URL Style', 'weathermap'),
+			'description'   => __('When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph.', 'weathermap'),
+			'method'        => 'drop_array',
+			'default'       => 0,
+			'array'         => [
+				0 => __('Standard Graph View', 'weathermap'),
+				1 => __('Time Graph View', 'weathermap')
+			]
+		],
 		'weathermap_pagestyle' => [
 			'friendly_name' => __('Page style', 'weathermap'),
 			'description'   => __('How to display multiple maps.', 'weathermap'),

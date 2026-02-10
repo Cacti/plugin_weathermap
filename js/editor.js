@@ -20,6 +20,7 @@ var editor_url = 'weathermap-cacti-plugin-editor.php';
 var imageWidth  = null;
 var imageHeight = null;
 var local_graph_id = null;
+var infoUrlTarget = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
 
 function displayMessages() {
 	var error   = false;
@@ -177,7 +178,7 @@ function graphPicker() {
 
 		$('#' + id + '_add').off('click').on('click', function() {
 			var hover   = 'graph_image.php?local_graph_id=';;
-			var infourl = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
+			var infourl = infoUrlTarget;
 
 			if (id == 'link_target_picker') {
 				var target = $('#' + id).val();
@@ -194,13 +195,13 @@ function graphPicker() {
 						$('#link_hover').val(hover + local_graph_id);
 					}
 
-					if (einfo == '') {
+					if (einfo == '' || infoUrlStyle == 1) {
 						$('#link_infourl').val(infourl + local_graph_id);
 					}
 				}
 			} else {
 				var hover   = 'graph_image.php?local_graph_id=';;
-				var infourl = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
+				var infourl = infoUrlTarget;
 
 				if (id == 'link_picker') {
 					var target = $('#' + id).val();
@@ -212,7 +213,11 @@ function graphPicker() {
 					}
 
 					$('#link_hover').val(ehover + (ehover != '' ? ' ':'') + hover + target);
-					$('#link_infourl').val(einfo + (einfo != '' ? ',':'') + target);
+					if (infoUrlStyle == 0) {
+						$('#link_infourl').val(einfo + (einfo != '' ? ',':'') + target);
+					} else {
+						$('#link_infourl').val(infourl + target);
+					}
 				} else if (id == 'node_picker') {
 					var target = $('#' + id).val();
 					var ehover = $('#node_hover').val();
@@ -223,7 +228,12 @@ function graphPicker() {
 					}
 
 					$('#node_hover').val(ehover + (ehover != '' ? ' ':'') + hover + target);
-					$('#node_infourl').val(einfo + (einfo != '' ? ',':'') + target);
+
+					if (infoUrlStyle == 0) {
+						$('#node_infourl').val(einfo + (einfo != '' ? ',':'') + target);
+					} else {
+						$('#node_infourl').val(infourl + target);
+					}
 				}
 			}
 		});
@@ -231,10 +241,10 @@ function graphPicker() {
 		$('#' + id + '_rep').off('click').on('click', function() {
 			if (id == 'link_picker') {
 				$('#link_hover').val('graph_image.php?local_graph_id=' + $('#' + id).val());
-				$('#link_infourl').val('graph_view.php?action=preview&reset=true&style=selective&graph_list=' + $('#' + id).val());
+				$('#link_infourl').val(infoUrlTarget + $('#' + id).val());
 			} else if (id == 'node_picker') {
 				$('#node_hover').val('graph_image.php?local_graph_id=' + $('#' + id).val());
-				$('#node_infourl').val('graph_view.php?action=preview&reset=true&style=selective&graph_list=' + $('#' + id).val());
+				$('#node_infourl').val(infoUrlTarget + $('#' + id).val());
 			} else if (id == 'link_target_picker') {
 				$('#link_target').val($('#' + id).val());
 			}
@@ -364,6 +374,12 @@ function initJS() {
 	initContextMenu();
 
 	graphPicker();
+
+	if (infoUrlStyle == 0) {
+		infoUrlTarget = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
+	} else {
+		infoUrlTarget = 'graph.php?rra_id=all&local_graph_id=';
+	}
 }
 
 /** textBoxWidth - This function will return the natural width of a string
