@@ -117,7 +117,7 @@ function display_datasources() {
 		$rows = 100;
 	}
 
-	$graphs = db_fetch_assoc("SELECT gti.local_graph_id AS id, dtd.name_cache AS title, dtd.data_source_path AS path, COUNT(*) AS items
+	$graphs = db_fetch_assoc_prepared("SELECT gti.local_graph_id AS id, dtd.name_cache AS title, dtd.data_source_path AS path, COUNT(*) AS items
 		FROM data_template_data AS dtd
 		INNER JOIN data_local AS dl
 		ON dl.id = dtd.local_data_id
@@ -128,7 +128,7 @@ function display_datasources() {
 		$sql_where
 		GROUP BY gti.local_graph_id
 		ORDER BY name_cache
-		LIMIT $rows");
+		LIMIT $rows", $sql_params);
 
 	$return = [];
 
