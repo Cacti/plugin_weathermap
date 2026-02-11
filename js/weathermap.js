@@ -48,7 +48,7 @@ $(function() {
 			// Turn the hover data into an html object
 			var object = $($.parseHTML(hoverData));
 
-			// Peal the size of the image from the object data
+			// Peel the size of the image from the object data
             var width  = object.find('img:first-child').attr('data-width');
             var height = object.find('img:first-child').attr('data-height');
 
