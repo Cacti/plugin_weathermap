@@ -453,19 +453,23 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 
 						wm_debug("Wrote map to $imagefile and $thumbimagefile", true);
 
-						$fd = @fopen($htmlfile, 'w');
+						if ((is_dir(dirname($htmlfile)) && is_writable(dirname($htmlfile))) || is_writable($htmlfile)) {
+							$fd = fopen($htmlfile, 'w');
 
-						if ($fd != false) {
-							fwrite($fd, $wmap->MakeHTML('weathermap_' . $map['filehash'] . '_imap'));
-							fclose($fd);
+							if ($fd != false) {
+								fwrite($fd, $wmap->MakeHTML('weathermap_' . $map['filehash'] . '_imap'));
+								fclose($fd);
 
-							wm_debug("Wrote HTML to $htmlfile");
-						} else {
-							if (file_exists($htmlfile)) {
-								wm_warn("Failed to overwrite $htmlfile - permissions of existing file are wrong? [WMPOLL02]");
+								wm_debug("Wrote HTML to $htmlfile");
 							} else {
-								wm_warn("Failed to create $htmlfile - permissions of output directory are wrong? [WMPOLL03]");
+								if (file_exists($htmlfile)) {
+									wm_warn("Failed to overwrite $htmlfile - permissions of existing file are wrong? [WMPOLL02]");
+								} else {
+									wm_warn("Failed to create $htmlfile - permissions of output directory are wrong? [WMPOLL03]");
+								}
 							}
+						} else {
+							wm_warn('Failed to write or create ' . $htmlfile . ' - permissions of output directory are wrong? [WMPOLL03]');
 						}
 
 						$wmap->WriteDataFile($resultsfile);
@@ -478,29 +482,38 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 						// put back the configured imageuri
 						$wmap->imageuri = $configured_imageuri;
 
-						// if an htmloutputfile was configured, output the HTML there too
-						// but using the configured imageuri and imagefilename
+						/**
+						 * If an htmloutputfile was configured, output the HTML there too.
+						 * We need to make the htmloutputfile standalone and to include
+						 * things like onhover events.  So, we will add some additional
+						 * libraries once covered by overlib.js prior to 1.4.
+						 */
 						if ($wmap->htmloutputfile != '') {
 							$htmlfile = $wmap->htmloutputfile;
-							$fd       = @fopen($htmlfile, 'w');
 
-							if ($fd !== false) {
-								fwrite($fd, $wmap->MakeHTML('weathermap_' . $map['filehash'] . '_imap'));
-								fclose($fd);
+							if ((is_dir(dirname($htmlfile)) && is_writable(dirname($htmlfile))) || is_writable($htmlfile)) {
+								$fd = fopen($htmlfile, 'w');
 
-								wm_debug('Wrote HTML to %s', $htmlfile);
-							} else {
-								if (file_exists($htmlfile)) {
-									wm_warn('Failed to overwrite ' . $htmlfile . ' - permissions of existing file are wrong? [WMPOLL02]');
+								if ($fd !== false) {
+									fwrite($fd, $wmap->MakeHTML('weathermap_' . $map['filehash'] . '_imap', true));
+									fclose($fd);
+
+									wm_debug(sprintf('Wrote HTML to %s', $htmlfile));
 								} else {
-									wm_warn('Failed to create ' . $htmlfile . ' - permissions of output directory are wrong? [WMPOLL03]');
+									if (file_exists($htmlfile)) {
+										wm_warn('Failed to overwrite ' . $htmlfile . ' - permissions of existing file are wrong? [WMPOLL02]');
+									} else {
+										wm_warn('Failed to create ' . $htmlfile . ' - permissions of output directory are wrong? [WMPOLL03]');
+									}
 								}
+							} else {
+								wm_warn('Failed to write or create ' . $htmlfile . ' - permissions of output directory are wrong? [WMPOLL03]');
 							}
 						}
 
+						// copy the existing image file to the configured location too
 						if ($wmap->imageoutputfile != '' && $wmap->imageoutputfile != 'weathermap.png' && file_exists($imagefile)) {
-							// copy the existing image file to the configured location too
-							@copy($imagefile, $wmap->imageoutputfile);
+							copy($imagefile, $wmap->imageoutputfile);
 						}
 
 						$processed_title = $wmap->ProcessString($wmap->title, $wmap);
@@ -590,7 +603,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 	if (!$force && !cacti_sizeof($maps)) {
 		$stats_string = sprintf('Time:%0.2f Maps:%d Warnings:%s Notes:%s', $duration, $mapcount, $total_warnings, $warning_notes);
 
-		cacti_log("STATS: WEATHERMAP $stats_string", true, 'SYSTEM');
+		cacti_log("WEATHERMAP STATS: $stats_string", true, 'SYSTEM');
 
 		set_config_option('weathermap_last_stats', $stats_string);
 		set_config_option('weathermap_last_finish_time', time());

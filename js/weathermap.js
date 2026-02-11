@@ -10,8 +10,12 @@ $(function() {
 				return false;
 			}
 
-			var id = $(ui.tooltip).attr('id');
+			// Nasty tracking issue this prevents
+			// multiple tooltips from being visible
+			// on a trigger
+			$('.ui-helper-hidden-accessible').hide();
 
+			var id = $(ui.tooltip).attr('id');
 			$('div.ui-tooltip').not('#'+ id).remove();
 
 			ui.tooltip.position({
@@ -20,7 +24,8 @@ $(function() {
 				of: event
 			});
 
-			tooltipObject      = ui.tooltip;
+			tooltipObject  = ui.tooltip;
+
 			wmHoverTimeout = setTimeout(adjustTooltipWindow, 200);
 		},
 		close: function(event, ui) {
@@ -35,14 +40,20 @@ $(function() {
 			});
 		},
 		content: function(callback) {
-			var object = $($.parseHTML($(this).attr('data-hover')));
+			$('.ui-helper-hidden-accessible').empty();
+
+			// Grab the hover data
+			var hoverData = atob($(this).attr('data-hover'));
+
+			// Turn the hover data into an html object
+			var object = $($.parseHTML(hoverData));
+
+			// Peel the size of the image from the object data
             var width  = object.find('img:first-child').attr('data-width');
             var height = object.find('img:first-child').attr('data-height');
 
-			var data = $('<div id="wm_hover" class="cactiTable"><div><div id="wm_hover_child" class="cactiTableTitleRow"></div></div><div class="cactiTable"><div class="wmcontent" style="height:'+height+';width:'+width+';display:none"></div></div></div>');
-
-			data.find('#wm_hover_child.cactiTableTitleRow').html($(this).attr('data-caption'));
-			data.find('.wmcontent').html($(this).attr('data-hover')).hide();
+			// Create the container for the object data
+			var data = '<div id="wm_hover" class="cactiTable"><div id="wm_hover_child" class="cactiTableTitleRow">'+$(this).attr('data-caption') + '</div><div class="cactiTable wmcontent" style="height:'+height+';width:'+width+';display:none">'+hoverData+'</div></div>';
 
 			callback(data);
 		}
@@ -58,3 +69,22 @@ function adjustTooltipWindow() {
 	$('.ui-tooltip').css('transform', 'translateX(+20px)');
     $('.wmcontent').show();
 }
+
+/**
+ * only perform the recalculation of elements at the final end of the windows resize event
+ */
+var waitForFinalEvent = (function () {
+  var timers = {};
+
+  return function (callback, ms, uniqueId) {
+    if (!uniqueId) {
+      uniqueId = "Don't call this twice without a uniqueId";
+    }
+
+    if (timers[uniqueId]) {
+      clearTimeout(timers[uniqueId]);
+    }
+
+    timers[uniqueId] = setTimeout(callback, ms);
+  };
+})();
