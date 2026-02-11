@@ -50,11 +50,11 @@ function display_graphs() {
 	$sql_params = [];
 
 	if (get_nfilter_request_var('term') != '') {
-		$sql_where .= 'WHERE title_cache LIKE ? AND local_graph_id > 0';
+		$sql_where .= 'WHERE title_cache LIKE ?';
 
 		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 	} else {
-		$sql_where .= 'WHERE local_graph_id > 0';
+		$sql_where .= '';
 	}
 
 	if (get_nfilter_request_var('graph_template_id') > 0) {
@@ -73,17 +73,10 @@ function display_graphs() {
 		$rows = 100;
 	}
 
-	$graphs = db_fetch_assoc_prepared("SELECT DISTINCT
-		gtg.local_graph_id AS id,
-		gtg.title_cache AS title,
-		gt.name AS template_name
+	$graphs = db_fetch_assoc_prepared("SELECT DISTINCT gtg.local_graph_id AS id, gtg.title_cache AS title
 		FROM graph_templates_graph AS gtg
-		LEFT JOIN graph_templates AS gt
-		ON gt.id=gtg.graph_template_id
-		LEFT JOIN graph_local AS gl
+		INNER JOIN graph_local AS gl
 		ON gtg.local_graph_id = gl.id
-		LEFT JOIN host as h
-		ON gl.host_id = h.id
 		$sql_where
 		ORDER BY title_cache
 		LIMIT $rows",
@@ -105,12 +98,15 @@ function display_graphs() {
 }
 
 function display_datasources() {
-	$sql_where = '';
+	$sql_where  = '';
+	$sql_params = [];
 
 	if (get_nfilter_request_var('term') != '') {
-		$sql_where .= 'WHERE name_cache LIKE ' . db_qstr('%' . get_nfilter_request_var('term') . '%') . ' AND local_graph_id > 0';
+		$sql_where .= 'WHERE name_cache LIKE ? OR dl.snmp_index LIKE ?';
+		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
+		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 	} else {
-		$sql_where .= 'WHERE local_graph_id > 0';
+		$sql_where .= '';
 	}
 
 	$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'dl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
@@ -121,24 +117,16 @@ function display_datasources() {
 		$rows = 100;
 	}
 
-	$graphs = db_fetch_assoc("SELECT DISTINCT
-		gti.local_graph_id AS id,
-		dtd.name_cache AS title,
-		dtd.data_source_path AS path
+	$graphs = db_fetch_assoc("SELECT gti.local_graph_id AS id, dtd.name_cache AS title, dtd.data_source_path AS path, COUNT(*) AS items
 		FROM data_template_data AS dtd
 		INNER JOIN data_local AS dl
 		ON dl.id = dtd.local_data_id
 		INNER JOIN data_template_rrd AS dtr
 		ON dtd.local_data_id = dtr.local_data_id
-		INNER JOIN (
-			SELECT DISTINCT graph_template_id, local_graph_id, task_item_id
-			FROM graph_templates_item
-			WHERE local_graph_id > 0
-		) AS gti
+		INNER JOIN graph_templates_item AS gti
 		ON gti.task_item_id = dtr.id
-		INNER JOIN graph_templates AS gt
-		ON gt.id = gti.graph_template_id
 		$sql_where
+		GROUP BY gti.local_graph_id
 		ORDER BY name_cache
 		LIMIT $rows");
 

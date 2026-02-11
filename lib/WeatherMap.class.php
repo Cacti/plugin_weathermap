@@ -3980,7 +3980,7 @@ class WeatherMap extends WeatherMapBase {
 						$caption = ($myobj->overlibcaption[$dir] != '' ? $myobj->overlibcaption[$dir] : $myobj->name);
 						$caption = $this->ProcessString($caption, $myobj);
 
-						$data_hover  = 'data-hover="<div>';
+						$data_hover = '<div>';
 
 						$n = 0;
 
@@ -3994,8 +3994,6 @@ class WeatherMap extends WeatherMapBase {
 								$data_hover .= "<img data-height='$dheight' data-width='$dwidth' src='" . $this->ProcessString($url, $myobj) . "'>";
 								$n++;
 							}
-
-							$data_hover .= '</div>';
 						}
 
 						// print "Added $n for $dir\n";
@@ -4013,7 +4011,10 @@ class WeatherMap extends WeatherMapBase {
 							$data_hover .= $note;
 						}
 
-						$data_hover .= '" data-caption="' . html_escape($caption) . '"';
+						$data_hover .= '</div>';
+
+						$data_hover  = 'data-hover="' . base64_encode($data_hover) . '"';
+						$data_hover .= ' data-caption="' . html_escape($caption) . '"';
 
 						foreach ($parts as $part) {
 							$areaname = $type . ':' . $prefix . $myobj->id . ':' . $part;
@@ -4111,28 +4112,51 @@ class WeatherMap extends WeatherMapBase {
 	// which will populate the ImageMap with regions.
 	//
 	// imagemapname is a parameter, so we can stack up several maps in the Cacti plugin with their own imagemaps
-	function MakeHTML($imagemapname = 'weathermap_imap') {
+	function MakeHTML($imagemapname = 'weathermap_imap', $standalone = false) {
+		global $config;
+
 		wm_debug('Trace: MakeHTML()');
+
+		$html = '';
+		$path = rtrim($config['url_path'], '/ ');
 
 		// PreloadMapHTML fills in the ImageMap info, ready for the HTML to be created.
 		$this->PreloadMapHTML();
 
-		$html = '<div class="weathermapimage">' . PHP_EOL;
+		if ($standalone) {
+			$theme = get_selected_theme();
+
+			$html .= '<!DOCTYPE html>' . PHP_EOL;
+			$html .= '<html>' . PHP_EOL;
+			$html .= "\t<head>" . PHP_EOL;
+
+			// Add scripts for rendering hover graphs
+			$html .= sprintf("\t\t<script type='text/javascript' src='%s/include/js/jquery.js'></script>", $path) . PHP_EOL;
+			$html .= sprintf("\t\t<script type='text/javascript' src='%s/include/js/jquery-ui.js'></script>", $path) . PHP_EOL;
+			$html .= sprintf("\t\t<script type='text/javascript' src='%s/include/js/pace.js'></script>", $path) . PHP_EOL;
+			$html .= sprintf("\t\t<script type='text/javascript' src='%s/plugins/weathermap/js/weathermap.js'></script>", $path) . PHP_EOL;
+			$html .= sprintf("\t\t<link rel='stylesheet' href='%s/plugins/weathermap/css/weathermap.css' />", $path) . PHP_EOL;
+			$html .= sprintf("\t\t<link rel='stylesheet' href='%s/include/themes/%s/main.css' />", $path, $theme) . PHP_EOL;
+
+			$html .= "\t</head>" . PHP_EOL;
+			$html .= "\t<body>" . PHP_EOL;
+		}
+
+		$html .= "\t\t<div class='weathermapimage'>" . PHP_EOL;
 
 		if ($this->imageuri != '') {
 			$html .= sprintf(
-				'<center><img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
+				"\t\t\t<center><img id='wmapimage' src='%s' width='%d' height='%d' border='0' usemap='#%s'",
 				$this->imageuri,
 				$this->width,
 				$this->height,
 				$imagemapname
 			);
 
-			// $html .=  'alt="network weathermap" ';
 			$html .= '/></center>' . PHP_EOL;
 		} else {
 			$html .= sprintf(
-				'<center><img id="wmapimage" src="%s" width="%d" height="%d" border="0" usemap="#%s"',
+				"\t\t\t<center><img id='wmapimage' src='%s' width='%d' height='%d' border='0' usemap='#%s'",
 				$this->imagefile,
 				$this->width,
 				$this->height,
@@ -4142,14 +4166,19 @@ class WeatherMap extends WeatherMapBase {
 			$html .= '/></center>' . PHP_EOL;
 		}
 
-		$html .= '</div>' . PHP_EOL;
+		$html .= "\t\t</div>" . PHP_EOL;
 		$html .= $this->SortedImagemap($imagemapname);
+
+		if ($standalone) {
+			$html .= "\t</body>" . PHP_EOL;
+			$html .= '</html>';
+		}
 
 		return ($html);
 	}
 
 	function SortedImagemap($imagemapname) {
-		$html = '<map name="' . $imagemapname . '" id="' . $imagemapname . '">' . PHP_EOL;
+		$html = "\t\t" . '<map name="' . $imagemapname . '" id="' . $imagemapname . '">' . PHP_EOL;
 
 		// $html.=$this->imap->subHTML("NODE:",true);
 		// $html.=$this->imap->subHTML("LINK:",true);
@@ -4200,7 +4229,7 @@ class WeatherMap extends WeatherMapBase {
 			}
 		}
 
-		$html .= "\t\t\t\t" . '</map>' . PHP_EOL;
+		$html .= "\t\t" . '</map>' . PHP_EOL;
 
 		return ($html);
 	}

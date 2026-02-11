@@ -100,7 +100,7 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 
 		$coordstring = join(',', $flatpoints);
 
-		return "\t\t\t\t\t<area " . $this->common_html() . "shape='poly' coords='" . $coordstring . "' />";
+		return "\t\t\t<area " . $this->common_html() . "shape='poly' coords='" . $coordstring . "' />";
 	}
 
 	function asJSON() {
@@ -227,7 +227,7 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	function asHTML() {
 		$coordstring = join(',', [$this->x1, $this->y1, $this->x2, $this->y2]);
 
-		return "\t\t\t\t\t<area " . $this->common_html() . 'shape="rect" coords="' . $coordstring . '" />';
+		return "\t\t\t<area " . $this->common_html() . 'shape="rect" coords="' . $coordstring . '" />';
 	}
 
 	function asJSON() {
@@ -249,7 +249,7 @@ class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 	function asHTML() {
 		$coordstring = join(',', [$this->centx, $this->centy, $this->edgex, $this->edgey]);
 
-		return "\t\t\t\t\t<area " . $this->common_html() . " shape='circle' coords='" . $coordstring . "' />";
+		return "\t\t\t<area " . $this->common_html() . " shape='circle' coords='" . $coordstring . "' />";
 	}
 
 	function hitTest($x,$y) {
