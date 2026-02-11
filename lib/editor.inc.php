@@ -102,7 +102,7 @@ function display_datasources() {
 	$sql_params = [];
 
 	if (get_nfilter_request_var('term') != '') {
-		$sql_where .= 'WHERE name_cache LIKE ? OR dl.snmp_index LIKE ?';
+		$sql_where .= 'WHERE (name_cache LIKE ? OR dl.snmp_index LIKE ?)';
 		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 	} else {
