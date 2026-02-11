@@ -498,7 +498,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 									fwrite($fd, $wmap->MakeHTML('weathermap_' . $map['filehash'] . '_imap', true));
 									fclose($fd);
 
-									wm_debug('Wrote HTML to %s', $htmlfile);
+									wm_debug(sprintf('Wrote HTML to %s', $htmlfile));
 								} else {
 									if (file_exists($htmlfile)) {
 										wm_warn('Failed to overwrite ' . $htmlfile . ' - permissions of existing file are wrong? [WMPOLL02]');
