@@ -301,6 +301,7 @@ class WeatherMap extends WeatherMapBase {
 	var $usage_stats    = [];
 	var $coverage       = [];
 	var $colourtable    = [];
+	var $down_cache     = [];
 	var $warncount      = 0;
 
 	// PHP 8.1 QA
@@ -991,7 +992,7 @@ class WeatherMap extends WeatherMapBase {
 							}
 						}
 
-						if (! $matched) {
+						if (!$matched) {
 							wm_warn("ProcessTargets: $type $name, target: $target[4] on config line $target[3] of $target[2] was not recognised as a valid TARGET [WMWARN08]");
 						}
 
