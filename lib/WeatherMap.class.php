@@ -98,6 +98,8 @@ class WeatherMapDataSource {
 	// Cacti Integration
 	var $local_data_id;
 
+	var $down_cache = [];
+
 	// Initialize - called after config has been read (so SETs are processed)
 	// but just before ReadData. Used to allow plugins to verify their dependencies
 	// (if any) and bow out gracefully. Return false to signal that the plugin is not
@@ -301,7 +303,6 @@ class WeatherMap extends WeatherMapBase {
 	var $usage_stats    = [];
 	var $coverage       = [];
 	var $colourtable    = [];
-	var $down_cache     = [];
 	var $warncount      = 0;
 
 	// PHP 8.1 QA
