@@ -98,6 +98,8 @@ class WeatherMapDataSource {
 	// Cacti Integration
 	var $local_data_id;
 
+	var $down_cache = [];
+
 	// Initialize - called after config has been read (so SETs are processed)
 	// but just before ReadData. Used to allow plugins to verify their dependencies
 	// (if any) and bow out gracefully. Return false to signal that the plugin is not
@@ -991,7 +993,7 @@ class WeatherMap extends WeatherMapBase {
 							}
 						}
 
-						if (! $matched) {
+						if (!$matched) {
 							wm_warn("ProcessTargets: $type $name, target: $target[4] on config line $target[3] of $target[2] was not recognised as a valid TARGET [WMWARN08]");
 						}
 
