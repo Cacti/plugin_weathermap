@@ -111,29 +111,13 @@ JavaScript (frontend)
 
 ## Implementation notes for maintainers of this file
 
-- Place this file at `.github/copilot/copilot-instructions.md` so Copilot and other tooling can consult repository-specific guidance.
+- Place this file at `.github/copilot-instructions.md` so Copilot and other tooling can consult repository-specific guidance.
 - Only include guidance that can be directly traced to files or docs in this repository. Do not recommend external frameworks or newer language features unless the repo shows them in use.
 
 ---
 
 Generated from the repository’s `README.md`, `.github` guidance files, and representative plugin files such as `weathermap-cacti-plugin-mgmt.php`, `weathermap-cacti-rebuild.php`, and files in `lib/`.
-# GitHub Copilot Instructions
 
-## Priority Guidelines
-
-When generating code for this repository:
-
-1. Version Compatibility: always detect and respect explicit version statements found in the repo (see README and .github guidance) and do not use language features beyond those versions.
-2. Context Files: prefer guidance already present under `.github/` (for example the repository contains PHP-focused agent guidance). Use those as authoritative instructions when present.
-3. Codebase Patterns: follow the exact coding patterns used in the existing codebase (procedural PHP files, `include_once` usage, `cacti_` helper functions, `html_escape`/`__esc` escaping patterns, and jQuery-based frontend code).
-4. Architectural Consistency: respect the plugin-style layout (PHP plugin integrated into Cacti) and maintain the clear boundary between plugin code and Cacti core functions.
-5. Code Quality: prioritize maintainability, security, and compatibility with the Cacti 1.2.x plugin model.
-
-## Technology Version Detection
-
-Before generating code, scan the repository for explicit version information and configuration. Key places to check in this repo:
-
-- [README.md](README.md#L1-L40) — documents this project as "PHP Network Weathermap" and states compatibility with Cacti 1.2.x.
 - `.github` guidance files (for example `.github/agents/php-developer.agent.md`) — these files indicate the intended PHP guidance for contributors and mention PSR-12 and support for modern PHP versions (8.1+).
 
 Rules:
@@ -224,7 +208,7 @@ JavaScript (frontend)
 
 - Logging fatal plugin errors:
 
-  cacti_log("FATAL: The map config directory ($mapdir) is not writable...", true, 'WEATERMAP');
+  cacti_log("FATAL: The map config directory ($mapdir) is not writable...", true, 'WEATHERMAP');
 
   (See [weathermap-cacti-plugin-mgmt.php](weathermap-cacti-plugin-mgmt.php#L335)).
 
