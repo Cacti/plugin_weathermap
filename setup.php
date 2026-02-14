@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2022-2025 The Cacti Group, Inc.                           |
+ | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
  |                                                                         |
  | Based on the Original Plugin developed by Howard Jones                  |
  |                                                                         |
@@ -41,7 +41,7 @@
 */
 
 if (!defined('WM_COPYRIGHT_YEARS')) {
-	define('WM_COPYRIGHT_YEARS', '2008-2024');
+	define('WM_COPYRIGHT_YEARS', '2008-2026');
 }
 
 function plugin_weathermap_install() {
