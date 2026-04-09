@@ -100,7 +100,15 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 			$pattern .= '/';
 
 			if (is_executable($this->fping_cmd)) {
-				$command = $this->fping_cmd . " -t100 -r1 -p20 -u -C $ping_count -i10 -q $target 2>&1";
+				/* Validate before exec: only IP addresses and hostnames are allowed.
+				 * Shell metacharacters in $target would otherwise reach popen() directly. */
+				if (!preg_match('/^[a-zA-Z0-9.\-:]+$/', $target)) {
+					wm_warn("FPing ReadData: rejected target with illegal characters ($target) [WMFPING04]");
+
+					return ([null, null, 0]);
+				}
+
+				$command = $this->fping_cmd . " -t100 -r1 -p20 -u -C $ping_count -i10 -q " . escapeshellarg($target) . " 2>&1";
 
 				wm_debug("Running $command");
 				$pipe = popen($command, 'r');

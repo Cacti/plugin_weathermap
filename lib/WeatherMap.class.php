@@ -1257,7 +1257,7 @@ class WeatherMap extends WeatherMapBase {
 		$nowarn_scalemisses = intval($this->get_hint('nowarn_scalemisses'));
 
 		$bt       = debug_backtrace();
-		$function = (isset($bt[1]['function']) ? $bt[1]['function'] : '');
+		$function = ($bt[1]['function'] ?? '');
 
 		print "$function calls ColourFromPercent\n";
 
@@ -3395,7 +3395,7 @@ class WeatherMap extends WeatherMapBase {
 							$top = nice_bandwidth($colour['top'], $this->kilo);
 						}
 
-						$tag = (isset($colour['tag']) ? $colour['tag'] : '');
+						$tag = ($colour['tag'] ?? '');
 
 						if (($colour['red1'] == -1) && ($colour['green1'] == -1) && ($colour['blue1'] == -1)) {
 							$output .= sprintf("SCALE %s %-4s %-4s   none   %s\n", $scalename, $bottom, $top, $tag);

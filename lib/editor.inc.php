@@ -242,6 +242,11 @@ function wm_editor_sanitize_conffile($filename) {
 		$filename = '';
 	}
 
+	// Defense-in-depth: reject Windows path separators to prevent traversal on Windows hosts.
+	if (strstr($filename, '\\') !== false) {
+		$filename = '';
+	}
+
 	return $filename;
 }
 

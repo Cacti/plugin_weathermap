@@ -1647,9 +1647,7 @@ function format_number($number, $precision = 2, $trailing_zeroes = 0) {
 		$decimal = substr($number, strlen($integer) + 1);
 	}
 
-	if (!isset($decimal)) {
-		$decimal = '';
-	}
+	$decimal ??= '';
 
 	$integer = $sign * $integer;
 

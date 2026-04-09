@@ -311,11 +311,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$command = $map->rrdtool;
 
 		foreach ($args as $arg) {
-			if (strchr($arg, ' ') != false) {
-				$command .= ' "' . $arg . '"';
-			} else {
-				$command .= ' ' . $arg;
-			}
+			$command .= ' ' . escapeshellarg($arg);
 		}
 
 		$command .= ' ' . $extra_options;
@@ -415,11 +411,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$command = $map->rrdtool;
 
 		foreach ($args as $arg) {
-			if (strchr($arg, ' ') != false) {
-				$command .= ' "' . $arg . '"';
-			} else {
-				$command .= ' ' . $arg;
-			}
+			$command .= ' ' . escapeshellarg($arg);
 		}
 
 		$command .= ' ' . $extra_options;
