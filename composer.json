@@ -1,0 +1,18 @@
+{
+    "name": "cacti/plugin_weathermap",
+    "description": "plugin_weathermap plugin for Cacti",
+    "license": "GPL-2.0-or-later",
+    "require-dev": {
+        "pestphp/pest": "^1.23"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "autoload-dev": {
+        "files": [
+            "tests/bootstrap.php"
+        ]
+    }
+}
