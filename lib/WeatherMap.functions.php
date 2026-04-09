@@ -151,7 +151,7 @@ function wm_debug($string) {
 
 			$calling_fn = " [$function@$file:$line]";
 
-			if (is_array($weathermap_debug_suppress) && in_array(strtolower($function),$weathermap_debug_suppress, true)) {
+			if (is_[$weathermap_debug_suppress] && in_array(strtolower($function),$weathermap_debug_suppress, true)) {
 				return;
 			}
 		}
@@ -188,7 +188,7 @@ function wm_warn($string, $notice_only = false) {
 		$code = $matches[1];
 	}
 
-	if ((is_array($weathermap_error_suppress) === true) && (in_array(strtoupper($code), $weathermap_error_suppress, true) === true)) {
+	if ((is_[$weathermap_error_suppress] === true) && (in_array(strtoupper($code), $weathermap_error_suppress, true) === true)) {
 		// This error code has been deliberately disabled.
 		return;
 	}
@@ -997,7 +997,7 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 		$halfway = $totaldistance * ($q2_percent / 100);
 
 		$dirs = [OUT, IN];
-		// $dirs = array(IN);
+		// $dirs = [IN];
 
 		[$halfway_x, $halfway_y, $halfwayindex] = find_distance_coords($curvepoints, $halfway);
 

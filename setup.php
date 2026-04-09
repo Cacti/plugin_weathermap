@@ -1078,7 +1078,7 @@ function weathermap_poller_output(&$rrd_update_array) {
 	 * use local_data_id as the key...
 	 */
 	foreach (array_keys($rrd_update_array) as $key) {
-		if (isset($rrd_update_array[$key]['times']) && is_array($rrd_update_array[$key]['times'])) {
+		if (isset($rrd_update_array[$key]['times']) && is_[$rrd_update_array[$key]['times']]) {
 			if ($debug) {
 				cacti_log("WM poller_output: Adding $key", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 			}
@@ -1104,8 +1104,8 @@ function weathermap_poller_output(&$rrd_update_array) {
 			cacti_log("WM poller_output: Looking for $file ($local_data_id) ({$required['data_source_path']})", true, 'WEATHERMAP', POLLER_VERBOSITY_DEBUG);
 		}
 
-		if (isset($rrd_update_array[$file]) && is_array($rrd_update_array[$file]) && isset($rrd_update_array[$file]['times']) &&
-			is_array($rrd_update_array[$file]['times']) &&
+		if (isset($rrd_update_array[$file]) && is_[$rrd_update_array[$file]] && isset($rrd_update_array[$file]['times']) &&
+			is_[$rrd_update_array[$file]['times']] &&
 			isset($rrd_update_array[$file]['times'][key($rrd_update_array[$file]['times'])][$dsname])) {
 			$value = $rrd_update_array[$file]['times'][key($rrd_update_array[$file]['times'])][$dsname];
 			$time  = key($rrd_update_array[$file]['times']);

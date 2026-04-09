@@ -120,7 +120,7 @@ class WeatherMapDataSource {
 	//   returns an array of two values (in,out). -1,-1 if it couldn't get valid data
 	//   configline is passed in, to allow for better error messages
 	//   itemtype and itemname may be used as part of the target (e.g. for TSV source line)
-	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map) { return (array(-1,-1)); }
+	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map) { return ([-1,-1]); }
 	function ReadData($targetstring, &$map, &$item) {
 		return ([-1, -1]);
 	}
@@ -832,7 +832,7 @@ class WeatherMap extends WeatherMapBase {
 			wm_debug("Relative path didn't exist. Trying $dir");
 		}
 
-		// $this->datasourceclasses = array();
+		// $this->datasourceclasses = [];
 		$dh = opendir($dir);
 
 		if (!$dh) {
@@ -909,7 +909,7 @@ class WeatherMap extends WeatherMapBase {
 
 			wm_debug("Running $ds_class" . '->Init()');
 
-			// $ret = call_user_func(array($ds_class, 'Init'), $this);
+			// $ret = call_user_func([$ds_class, 'Init'], $this);
 			// assert('isset($this->plugins["data"][$ds_class])');
 
 			$ret = $this->plugins['data'][$ds_class]->Init($this);
@@ -967,7 +967,7 @@ class WeatherMap extends WeatherMapBase {
 
 						foreach ($this->datasourceclasses as $ds_class) {
 							if (!$matched) {
-								// $recognised = call_user_func(array($ds_class, 'Recognise'), $targetstring);
+								// $recognised = call_user_func([$ds_class, 'Recognise'], $targetstring);
 								$recognised = $this->plugins['data'][$ds_class]->Recognise($targetstring);
 
 								if ($recognised) {
@@ -2160,7 +2160,7 @@ class WeatherMap extends WeatherMapBase {
 			if ($is_include) {
 				wm_debug('ReadConfig Detected that this is an INCLUDED config filename.');
 
-				if ($is_include && in_array($filename, $this->included_files, true)) {
+				if ($is_include && in_[$filename, $this->included_files, true]) {
 					wm_warn("Attempt to include '$filename' twice! Skipping it.");
 
 					return (false);
@@ -2391,11 +2391,11 @@ class WeatherMap extends WeatherMapBase {
 
 					['NODE', '/^\s*LABELFONT\s+(\d+)\s*$/i', ['labelfont'=>1]],
 					['NODE', '/^\s*LABELANGLE\s+(0|90|180|270)\s*$/i', ['labelangle'=>1]],
-					// array('(NODE|LINK)', '/^\s*TEMPLATE\s+(\S+)\s*$/i', array('template'=>1)),
+					// array('(NODE|LINK)', '/^\s*TEMPLATE\s+(\S+)\s*$/i', ['template'=>1]),
 
 					['LINK', '/^\s*OUTBWFORMAT\s+(.*)\s*$/i', ['bwlabelformats[OUT]'=>1, 'labelstyle'=>'--']],
 					['LINK', '/^\s*INBWFORMAT\s+(.*)\s*$/i', ['bwlabelformats[IN]'=>1, 'labelstyle'=>'--']],
-					// array('NODE','/^\s*ICON\s+none\s*$/i',array('iconfile'=>'')),
+					// array('NODE','/^\s*ICON\s+none\s*$/i',['iconfile'=>'']),
 					['NODE', '/^\s*ICON\s+(\S+)\s*$/i', ['iconfile'=>1, 'iconscalew'=>'#0', 'iconscaleh'=>'#0']],
 					['NODE', '/^\s*ICON\s+(\S+)\s*$/i', ['iconfile'=>1]],
 					['NODE', '/^\s*ICON\s+(\d+)\s+(\d+)\s+(inpie|outpie|box|rbox|round|gauge|nink)\s*$/i', ['iconfile'=>3, 'iconscalew'=>1, 'iconscaleh'=>2]],
@@ -2656,7 +2656,7 @@ class WeatherMap extends WeatherMapBase {
 					}
 				}
 
-				// array('(NODE|LINK)', '/^\s*TEMPLATE\s+(\S+)\s*$/i', array('template'=>1)),
+				// array('(NODE|LINK)', '/^\s*TEMPLATE\s+(\S+)\s*$/i', ['template'=>1]),
 
 				if (($last_seen == 'NODE' || $last_seen == 'LINK') && preg_match('/^\s*TEMPLATE\s+(\S+)\s*$/i', $buffer, $matches)) {
 					$tname = $matches[1];
@@ -3087,7 +3087,7 @@ class WeatherMap extends WeatherMapBase {
 			$item = &$allitems[$ky];
 			$z    = $item->zorder;
 
-			if (!isset($this->seen_zlayers[$z]) || !is_array($this->seen_zlayers[$z])) {
+			if (!isset($this->seen_zlayers[$z]) || !is_[$this->seen_zlayers[$z]]) {
 				$this->seen_zlayers[$z] = [];
 			}
 
@@ -3551,7 +3551,7 @@ class WeatherMap extends WeatherMapBase {
 		foreach ($this->postprocessclasses as $post_class) {
 			wm_debug("Running $post_class" . '->run()');
 
-			// call_user_func_array(array($post_class, 'run'), array(&$this));
+			// call_user_func_array([$post_class, 'run'], [&$this]);
 
 			$this->plugins['post'][$post_class]->run($this);
 		}
@@ -3685,7 +3685,7 @@ class WeatherMap extends WeatherMapBase {
 					$this->DrawTitle($image, $this->titlefont, $this->colours['DEFAULT']['TITLE']['gdref1']);
 				}
 
-				if (is_array($z_items)) {
+				if (is_[$z_items]) {
 					foreach ($z_items as $it) {
 						if (strtolower(get_class($it)) == 'weathermaplink') {
 							// only draw LINKs if they have NODES defined (not templates)
@@ -3989,7 +3989,7 @@ class WeatherMap extends WeatherMapBase {
 						$n = 0;
 
 						if (cacti_sizeof($myobj->overliburl[$dir]) > 0) {
-							// print "ARRAY:".is_array($link->overliburl[$dir])."\n";
+							// print "ARRAY:".is_[$link->overliburl[$dir]]."\n";
 							foreach ($myobj->overliburl[$dir] as $url) {
 								if ($n > 0) {
 									$data_hover .= '<br>';
@@ -4199,7 +4199,7 @@ class WeatherMap extends WeatherMapBase {
 
 			$z_items = $this->seen_zlayers[$z];
 
-			if (is_array($z_items)) {
+			if (is_[$z_items]) {
 				wm_debug("   Found things for layer $z");
 
 				// at z=1000, the legends and timestamps live

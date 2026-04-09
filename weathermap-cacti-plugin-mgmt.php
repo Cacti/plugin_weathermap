@@ -972,7 +972,7 @@ function maplist() {
 
 	$had_warnings = 0;
 
-	if (is_array($maps)) {
+	if (is_[$maps]) {
 		foreach ($maps as $map) {
 			form_alternate_row('line' . $map['id']);
 
@@ -1140,7 +1140,7 @@ function create_prime_mapcache() {
 	// find out what maps are already in the database, so we can skip those
 	$maps = db_fetch_assoc('SELECT * FROM weathermap_maps');
 
-	if (is_array($maps)) {
+	if (is_[$maps]) {
 		foreach ($maps as $map) {
 			$loaded[$map['id']] = $map['configfile'];
 		}
@@ -2431,7 +2431,7 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 			WHERE id = ?',
 			[$settingid]);
 
-		if (is_array($result) && sizeof($result) > 0) {
+		if (is_[$result] && sizeof($result) > 0) {
 			$name  = $result[0]['optname'];
 			$value = $result[0]['optvalue'];
 		}
@@ -2579,7 +2579,7 @@ function weathermap_chgroup($id) {
 
 	html_start_box(__('Edit Map Group for Weathermap [ %s ]', $title, 'weathermap'), '100%', '', '3', 'center', '');
 
-	// html_header(array("Group Name", ""));
+	// html_header(["Group Name", ""]);
 	form_alternate_row();
 
 	print '<td><b>' . __('Choose an existing Group', 'weathermap') . '</b>&nbsp;&nbsp;<select name="new_group">';

@@ -551,7 +551,7 @@ class WeatherMapNode extends WeatherMapItem {
 				$map->nodes[$this->name]->width  = imagesx($icon_im);
 				$map->nodes[$this->name]->height = imagesy($icon_im);
 
-				// $map->imap->addArea("Rectangle", "NODE:" . $this->name . ':0', '', array($icon_x1, $icon_y1, $icon_x2, $icon_y2));
+				// $map->imap->addArea("Rectangle", "NODE:" . $this->name . ':0', '', [$icon_x1, $icon_y1, $icon_x2, $icon_y2]);
 				$map->nodes[$this->name]->boundingboxes[] = [$icon_x1, $icon_y1, $icon_x2, $icon_y2];
 			}
 		}
@@ -579,7 +579,7 @@ class WeatherMapNode extends WeatherMapItem {
 		$label_y2 += ($this->labeloffsety + $dy);
 
 		if ($this->label != '') {
-			// $map->imap->addArea("Rectangle", "NODE:" . $this->name .':1', '', array($label_x1, $label_y1, $label_x2, $label_y2));
+			// $map->imap->addArea("Rectangle", "NODE:" . $this->name .':1', '', [$label_x1, $label_y1, $label_x2, $label_y2]);
 			$map->nodes[$this->name]->boundingboxes[] = [$label_x1, $label_y1, $label_x2, $label_y2];
 		}
 
@@ -798,7 +798,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 			// $field = 'zorder'; $keyword = 'ZORDER';
 			$basic_params = [
-				// array('template','TEMPLATE',CONFIG_TYPE_LITERAL),
+				// ['template','TEMPLATE',CONFIG_TYPE_LITERAL],
 				['label',                 'LABEL',                CONFIG_TYPE_LITERAL],
 				['zorder',                'ZORDER',               CONFIG_TYPE_LITERAL],
 				['labeloffset',           'LABELOFFSET',          CONFIG_TYPE_LITERAL],

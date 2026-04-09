@@ -62,7 +62,7 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 					return (false);
 				}
 			} else {
-				if (!isset($plugins) || !in_array('dsstats',$plugins, true)) {
+				if (!isset($plugins) || !in_['dsstats',$plugins, true]) {
 					wm_debug('ReadData DSStats: DSStats plugin not enabled (old-style). [DSSTATS002A]');
 
 					return (false);
@@ -79,7 +79,7 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 				}
 			}
 
-			if (!in_array('data_source_stats_hourly_last', $tables, true)) {
+			if (!in_['data_source_stats_hourly_last', $tables, true]) {
 				wm_debug('ReadData DSStats: data_source_stats_hourly_last database table not found. [DSSTATS003]');
 
 				return (false);
@@ -106,7 +106,7 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 
 	/**
 	 * Actually read data from a data source, and return it
-	 * returns a 3-part array (invalue, outvalue and datavalid time_t)
+	 * returns a 3-part [invalue, outvalue and datavalid time_t]
 	 * invalue and outvalue should be -1,-1 if there is no valid data
 	 * data_time is intended to allow more informed graphing in the future
 	 * @param mixed $targetstring

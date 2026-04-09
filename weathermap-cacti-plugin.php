@@ -377,7 +377,7 @@ function weathermap_singleview($mapid) {
 			[$mapid]);
 
 		if (cacti_sizeof($map)) {
-			// print do_hook_function ('weathermap_page_top', array($map[0]['id'], $map[0]['titlecache']));
+			// print do_hook_function ('weathermap_page_top', [$map[0]['id'], $map[0]['titlecache']]);
 
 			print do_hook_function('weathermap_page_top', '');
 

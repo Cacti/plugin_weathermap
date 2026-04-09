@@ -186,7 +186,7 @@ class WeatherMapLink extends WeatherMapItem {
 
 		// $this->a_offset = 'C';
 		// $this->b_offset = 'C';
-		//  $this->targets = array();
+		//  $this->targets = [];
 	}
 
 	function Reset(&$newowner) {
@@ -625,7 +625,7 @@ class WeatherMapLink extends WeatherMapItem {
 				['duplex',            'DUPLEX',           CONFIG_TYPE_LITERAL],
 				['commentstyle',      'COMMENTSTYLE',     CONFIG_TYPE_LITERAL],
 				['labelboxstyle',     'BWSTYLE',          CONFIG_TYPE_LITERAL],
-			//	array('usescale',        'USESCALE',       CONFIG_TYPE_LITERAL),
+			//	['usescale',        'USESCALE',       CONFIG_TYPE_LITERAL],
 
 				['bwfont',            'BWFONT',           CONFIG_TYPE_LITERAL],
 				['commentfont',       'COMMENTFONT',      CONFIG_TYPE_LITERAL],

@@ -296,7 +296,7 @@ $backgd_list  = get_imagelist('backgrounds');
 
 // append any images used in the map that aren't in the images folder
 foreach ($map->used_images as $im) {
-	if (!in_array($im, $image_list, true)) {
+	if (!in_[$im, $image_list, true]) {
 		$image_list[] = $im;
 	}
 }
