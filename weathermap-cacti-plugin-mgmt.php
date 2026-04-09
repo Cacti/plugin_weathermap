@@ -752,32 +752,32 @@ function wm_filter() {
 			}
 
 			$(function() {
-				$('#refresh').click(function() {
+				$('#refresh').on('click', function() {
 					applyFilter();
 				});
 
-				$('#clear').click(function() {
+				$('#clear').on('click', function() {
 					clearFilter();
 				});
 
-				$('#form_wm').submit(function(event) {
+				$('#form_wm').on('submit', function(event) {
 					event.preventDefault();
 					applyFilter();
 				});
 
-				$('#wm_group_settings').click(function() {
+				$('#wm_group_settings').on('click', function() {
 					loadPageNoHeader(urlPath + 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=groupadmin&header=false');
 				});
 
-				$('#wm_map_settings').click(function() {
+				$('#wm_map_settings').on('click', function() {
 					loadPageNoHeader(urlPath + 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=map_settings&id=0&header=false');
 				});
 
-				$('#wm_rebuild').click(function() {
+				$('#wm_rebuild').on('click', function() {
 					loadPageNoHeader(urlPath + 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=rebuildnow&header=false');
 				});
 
-				$('#wm_settings').click(function() {
+				$('#wm_settings').on('click', function() {
 					loadPageNoHeader(urlPath + 'settings.php?tab=misc&header=false');
 				});
 			});
@@ -1287,24 +1287,24 @@ function addmap_filter() {
 			}
 
 			$(function() {
-				$('#refresh').click(function() {
+				$('#refresh').on('click', function() {
 					applyFilter();
 				});
 
-				$('#has_maps').click(function() {
+				$('#has_maps').on('click', function() {
 					applyFilter();
 				});
 
-				$('#clear').click(function() {
+				$('#clear').on('click', function() {
 					clearFilter();
 				});
 
-				$('#form_maps').submit(function(event) {
+				$('#form_maps').on('submit', function(event) {
 					event.preventDefault();
 					applyFilter();
 				});
 
-				$('#form_newmap').submit(function(event) {
+				$('#form_newmap').on('submit', function(event) {
 					event.preventDefault();
 
 					var strURL = 'weathermap-cacti-plugin-mgmt.php?action=newmap';
@@ -1893,19 +1893,19 @@ function perms_filter($id) {
 			}
 
 			$(function() {
-				$('#refresh').click(function() {
+				$('#refresh').on('click', function() {
 					applyFilter();
 				});
 
-				$('#clear').click(function() {
+				$('#clear').on('click', function() {
 					clearFilter();
 				});
 
-				$('#has_perms').change(function() {
+				$('#has_perms').on('change', function() {
 					applyFilter();
 				});
 
-				$('#form_perms').submit(function(event) {
+				$('#form_perms').on('submit', function(event) {
 					event.preventDefault();
 					applyFilter();
 				});
@@ -2750,14 +2750,14 @@ function weathermap_group_editor() {
 	?>
 	<script type='text/javascript'>
 	$(function() {
-		$('.fa-wrench').click(function(event) {
+		$('.fa-wrench').on('click', function(event) {
 			event.preventDefault();
 			event.stopPropagation();
 
 			var id    = $(this).closest('a').attr('data-id');
 			var title = $(this).closest('a').attr('data-name');
 
-			$('#renameform').submit(function(event) {
+			$('#renameform').on('submit', function(event) {
 				event.preventDefault();
 				event.stopPropagation();
 

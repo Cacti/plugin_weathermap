@@ -428,7 +428,7 @@ function weathermap_singleview($mapid) {
 			?>
 			<script type='text/javascript'>
 			$(function() {
-				$('.editMap').click(function(event) {
+				$('.editMap').on('click', function(event) {
 					event.preventDefault();
 					document.location = $(this).attr('href');
 				});
@@ -856,7 +856,7 @@ function weathermap_mapselector($current_id = 0) {
 					}
 
 					$(function() {
-						$('#id').change(function() {
+						$('#id').on('change', function() {
 							applyFilter();
 						});
 					});
