@@ -3087,7 +3087,7 @@ class WeatherMap extends WeatherMapBase {
 			$item = &$allitems[$ky];
 			$z    = $item->zorder;
 
-			if (!isset($this->seen_zlayers[$z]) || !is_array($this->seen_zlayers[$z)]) {
+			if (!isset($this->seen_zlayers[$z]) || !is_array($this->seen_zlayers[$z])) {
 				$this->seen_zlayers[$z] = [];
 			}
 
