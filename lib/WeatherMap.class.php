@@ -2160,7 +2160,7 @@ class WeatherMap extends WeatherMapBase {
 			if ($is_include) {
 				wm_debug('ReadConfig Detected that this is an INCLUDED config filename.');
 
-				if ($is_include && in_[$filename, $this->included_files, true]) {
+				if ($is_include && in_array($filename, $this->included_files, true)) {
 					wm_warn("Attempt to include '$filename' twice! Skipping it.");
 
 					return (false);
@@ -3087,7 +3087,7 @@ class WeatherMap extends WeatherMapBase {
 			$item = &$allitems[$ky];
 			$z    = $item->zorder;
 
-			if (!isset($this->seen_zlayers[$z]) || !is_[$this->seen_zlayers[$z]]) {
+			if (!isset($this->seen_zlayers[$z]) || !is_array($this->seen_zlayers[$z)]) {
 				$this->seen_zlayers[$z] = [];
 			}
 
@@ -3685,7 +3685,7 @@ class WeatherMap extends WeatherMapBase {
 					$this->DrawTitle($image, $this->titlefont, $this->colours['DEFAULT']['TITLE']['gdref1']);
 				}
 
-				if (is_[$z_items]) {
+				if (is_array($z_items)) {
 					foreach ($z_items as $it) {
 						if (strtolower(get_class($it)) == 'weathermaplink') {
 							// only draw LINKs if they have NODES defined (not templates)
@@ -3989,7 +3989,7 @@ class WeatherMap extends WeatherMapBase {
 						$n = 0;
 
 						if (cacti_sizeof($myobj->overliburl[$dir]) > 0) {
-							// print "ARRAY:".is_[$link->overliburl[$dir]]."\n";
+							// print "ARRAY:".is_array($link->overliburl[$dir)]."\n";
 							foreach ($myobj->overliburl[$dir] as $url) {
 								if ($n > 0) {
 									$data_hover .= '<br>';
@@ -4199,7 +4199,7 @@ class WeatherMap extends WeatherMapBase {
 
 			$z_items = $this->seen_zlayers[$z];
 
-			if (is_[$z_items]) {
+			if (is_array($z_items)) {
 				wm_debug("   Found things for layer $z");
 
 				// at z=1000, the legends and timestamps live

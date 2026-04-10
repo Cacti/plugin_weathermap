@@ -151,7 +151,7 @@ function wm_debug($string) {
 
 			$calling_fn = " [$function@$file:$line]";
 
-			if (is_[$weathermap_debug_suppress] && in_array(strtolower($function),$weathermap_debug_suppress, true)) {
+			if (is_array($weathermap_debug_suppress) && in_array(strtolower($function),$weathermap_debug_suppress, true)) {
 				return;
 			}
 		}
@@ -188,7 +188,7 @@ function wm_warn($string, $notice_only = false) {
 		$code = $matches[1];
 	}
 
-	if ((is_[$weathermap_error_suppress] === true) && (in_array(strtoupper($code), $weathermap_error_suppress, true) === true)) {
+	if ((is_array($weathermap_error_suppress) === true) && (in_array(strtoupper($code), $weathermap_error_suppress, true) === true)) {
 		// This error code has been deliberately disabled.
 		return;
 	}

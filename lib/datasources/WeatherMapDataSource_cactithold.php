@@ -83,7 +83,7 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 				}
 			}
 
-			if (isset($plugins) && in_['thold',$plugins, true]) {
+			if (isset($plugins) && in_array('thold',$plugins, true)) {
 				$thold_present = true;
 			}
 
@@ -101,7 +101,7 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 				}
 			}
 
-			if (!in_['thold_data', $tables, true]) {
+			if (!in_array('thold_data', $tables, true)) {
 				wm_debug('ReadData CactiTHold: thold_data database table not found. [THOLD003]');
 
 				return (false);
@@ -248,7 +248,7 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 					AND thold_enabled = 'on'",
 					[$id]);
 
-				if (is_[$queryrows]) {
+				if (is_array($queryrows)) {
 					foreach ($queryrows as $th) {
 						$desc = $th['local_data_id'] . '/' . $th['data_template_rrd_id'];
 						$v    = $th['thold_alert'];

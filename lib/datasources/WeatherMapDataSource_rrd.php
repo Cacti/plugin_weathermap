@@ -463,8 +463,8 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			wm_debug("RRD ReadData: Read $linecount lines from rrdtool");
 			wm_debug("RRD ReadData: Headings are: $headings");
 
-			if ((in_[$dsnames[IN], $heads, true] || $dsnames[IN] == '-') &&
-				(in_[$dsnames[OUT],$heads, true] || $dsnames[OUT] == '-')) {
+			if ((in_array($dsnames[IN), $heads, true] || $dsnames[IN] == '-') &&
+				(in_array($dsnames[OUT),$heads, true] || $dsnames[OUT] == '-')) {
 				// deal with the data, starting with the last line of output
 				$rlines = array_reverse($lines);
 

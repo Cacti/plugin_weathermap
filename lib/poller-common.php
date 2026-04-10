@@ -333,7 +333,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 			$sql_where
 			ORDER BY sortorder, id");
 
-		if (is_[$queryrows]) {
+		if (is_array($queryrows)) {
 			wm_debug('Iterating all maps.');
 
 			$imageformat  = strtolower(read_config_option('weathermap_output_format'));
