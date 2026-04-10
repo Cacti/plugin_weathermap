@@ -57,7 +57,7 @@ describe('auth guard presence in weathermap', function () {
 			if ($contents === false) continue;
 
 			// Check for get_filter_request_var usage for numeric IDs
-			if (preg_match('/get_request_var\s*\(\s*['"]id['"]/', $contents)) {
+			if (preg_match('/get_request_var\s*\(\s*[\'\"]id[\'\"]/', $contents)) {
 				// Should use get_filter_request_var for 'id' params
 				$hasFilter = (
 					strpos($contents, 'get_filter_request_var') !== false ||

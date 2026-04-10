@@ -28,7 +28,7 @@ describe('redirect safety in weathermap', function () {
 			$missingExit = 0;
 
 			for ($i = 0; $i < count($lines); $i++) {
-				if (preg_match('/header\s*\(\s*['"]Location/', $lines[$i])) {
+				if (preg_match('/header\s*\(\s*[\'\"]Location/', $lines[$i])) {
 					// Next non-empty line should contain exit, die, or return
 					$foundExit = false;
 					for ($j = $i + 1; $j < min($i + 4, count($lines)); $j++) {
