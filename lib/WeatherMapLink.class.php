@@ -272,7 +272,7 @@ class WeatherMapLink extends WeatherMapItem {
 			}
 
 			if ($comment != '') {
-				// print "\n\n----------------------------------------------------------------\nComment $dir for ".$this->name."\n";;
+				// print "\n\n----------------------------------------------------------------\nComment $dir for ".$this->name."\n";
 
 				[$textlength, $textheight] = $this->owner->myimagestringsize($this->commentfont, $comment);
 
