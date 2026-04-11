@@ -192,6 +192,18 @@ function wm_editor_validate_one_of($input,$valid = [],$case_sensitive = false) {
 	return false;
 }
 
+function wm_editor_sanitize_action($action, $valid = []) {
+	if ($action === '') {
+		return '';
+	}
+
+	if (!wm_editor_validate_one_of($action, $valid, true)) {
+		return '';
+	}
+
+	return $action;
+}
+
 // Labels for Nodes, Links and Scales shouldn't have spaces in
 function wm_editor_sanitize_name($str) {
 	return str_replace([' '], '', $str);
