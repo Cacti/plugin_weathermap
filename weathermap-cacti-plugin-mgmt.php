@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
@@ -2577,7 +2579,7 @@ function weathermap_chgroup($id) {
 
 	html_start_box(__('Edit Map Group for Weathermap [ %s ]', $title, 'weathermap'), '100%', '', '3', 'center', '');
 
-	// html_header(array("Group Name", ""));
+	// html_header(["Group Name", ""]);
 	form_alternate_row();
 
 	print '<td><b>' . __('Choose an existing Group', 'weathermap') . '</b>&nbsp;&nbsp;<select name="new_group">';

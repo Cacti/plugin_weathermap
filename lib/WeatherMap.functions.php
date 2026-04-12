@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
@@ -995,7 +997,7 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 		$halfway = $totaldistance * ($q2_percent / 100);
 
 		$dirs = [OUT, IN];
-		// $dirs = array(IN);
+		// $dirs = [IN];
 
 		[$halfway_x, $halfway_y, $halfwayindex] = find_distance_coords($curvepoints, $halfway);
 
