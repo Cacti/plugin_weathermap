@@ -1,2 +1,2 @@
-configs/
-output/
+configs/**
+output/**
