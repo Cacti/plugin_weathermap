@@ -2491,17 +2491,17 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 
 function weathermap_setting_save($mapid, $name, $value) {
 	if ($mapid > 0) {
-		db_execute_prepared('REPLACE INFO weathermap_settings
+		db_execute_prepared('REPLACE INTO weathermap_settings
 			(mapid, groupid, optname, optvalue)
 			VALUES (?, ?, ?, ?)',
 			[$mapid, 0, $name, $value]);
 	} elseif ($mapid < 0) {
-		db_execute_prepared('REPLACE INFO weathermap_settings
+		db_execute_prepared('REPLACE INTO weathermap_settings
 			(mapid, groupid, optname, optvalue)
 			VALUES (?, ?, ?, ?)',
 			[0, -$mapid, $name, $value]);
 	} else {
-		db_execute_prepared('REPLACE INFO weathermap_settings
+		db_execute_prepared('REPLACE INTO weathermap_settings
 			(mapid, groupid, optname, optvalue)
 			VALUES (?, ?, ?, ?)',
 			[0, 0, $name, $value]);
