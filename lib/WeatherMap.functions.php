@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2022-2025 The Cacti Group, Inc.                           |
+ | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
  |                                                                         |
  | Based on the Original Plugin developed by Howard Jones                  |
  |                                                                         |
@@ -291,15 +291,14 @@ function mysprintf($format, $value, $kilo = 1000) {
 
 // ParseString is based on code from:
 // http://www.webscriptexpert.com/Php/Space-Separated%20Tag%20Parser/
-
 function wm_parse_string($input) {
-	$output       = [];            // Array of Output
+	$output       = [];     // Array of Output
 	$cPhraseQuote = null;   // Record of the quote that opened the current phrase
-	$sPhrase      = null;                // Temp storage for the current phrase we are building
+	$sPhrase      = null;   // Temp storage for the current phrase we are building
 
 	// Define some constants
 	$sTokens = " \t";    // Space, Tab
-	$sQuotes = "'\"";                // Single and Double Quotes
+	$sQuotes = "'\"";    // Single and Double Quotes
 
 	// Start the State Machine
 	do {

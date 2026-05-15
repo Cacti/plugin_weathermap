@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2022-2025 The Cacti Group, Inc.                           |
+ | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
  |                                                                         |
  | Based on the Original Plugin developed by Howard Jones                  |
  |                                                                         |
@@ -97,6 +97,8 @@ define('DISTANCE', 2);
 class WeatherMapDataSource {
 	// Cacti Integration
 	var $local_data_id;
+
+	var $down_cache = [];
 
 	// Initialize - called after config has been read (so SETs are processed)
 	// but just before ReadData. Used to allow plugins to verify their dependencies
@@ -991,7 +993,7 @@ class WeatherMap extends WeatherMapBase {
 							}
 						}
 
-						if (! $matched) {
+						if (!$matched) {
 							wm_warn("ProcessTargets: $type $name, target: $target[4] on config line $target[3] of $target[2] was not recognised as a valid TARGET [WMWARN08]");
 						}
 

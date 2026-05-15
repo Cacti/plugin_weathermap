@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2022-2025 The Cacti Group, Inc.                           |
+ | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
  |                                                                         |
  | Based on the Original Plugin developed by Howard Jones                  |
  |                                                                         |
@@ -102,11 +102,11 @@ function display_datasources() {
 	$sql_params = [];
 
 	if (get_nfilter_request_var('term') != '') {
-		$sql_where .= 'WHERE (name_cache LIKE ? OR dl.snmp_index LIKE ?)';
+		$sql_where .= 'WHERE (name_cache LIKE ? OR dl.snmp_index LIKE ?) AND dtd.data_source_path != ""';
 		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 	} else {
-		$sql_where .= '';
+		$sql_where .= 'WHERE dtd.data_source_path != ""';
 	}
 
 	$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'dl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';

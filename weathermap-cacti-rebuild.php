@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2022-2025 The Cacti Group, Inc.                           |
+ | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
  |                                                                         |
  | Based on the Original Plugin developed by Howard Jones                  |
  |                                                                         |
@@ -42,6 +42,7 @@
 
 chdir('../../');
 include('./include/cli_check.php');
+include_once($config['base_path'] . '/lib/rrd.php');
 include_once($config['base_path'] . '/plugins/weathermap/setup.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
 
