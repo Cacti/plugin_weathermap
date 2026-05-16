@@ -471,6 +471,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 										print ' value="' . $gt['id'] . '">' . html_escape($gt['name']) . '</option>';
 									}
 									?>
+								</select>
 							</td>
 						</tr>
 						<tr>
