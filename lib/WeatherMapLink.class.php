@@ -871,6 +871,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$js .= 'commentposout:' . intval($this->commentoffset_out) . ', ';
 
 		$js .= 'infourl:' . js_escape($this->infourl[IN]) . ', ';
+		$js .= 'viastyle:' . js_escape($this->viastyle) . ', ';
 
 		$js .= 'overliburl:' . js_escape(join(' ', $this->overliburl[IN]));
 
