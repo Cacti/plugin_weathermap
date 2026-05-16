@@ -118,7 +118,7 @@ class WeatherMapLink extends WeatherMapItem {
 
 	var $comments       = [];
 	var $bwlabelformats = [];
-	var $curvepoints;
+	var $curvepoints    = [];
 
 	var $labeloffset_in;
 	var $labeloffset_out;
@@ -242,7 +242,7 @@ class WeatherMapLink extends WeatherMapItem {
 	 * @param mixed $widths
 	 */
 	function DrawComments($image, $col, $widths) {
-		$curvepoints = &$this->curvepoints;
+		$curvepoints = $this->curvepoints;
 
 		$last = count($curvepoints) - 1;
 
