@@ -554,12 +554,13 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 						[intval($weathermap_warncount), intval($map['id'])]);
 
 					$total_warnings += $weathermap_warncount;
-					$weathermap_warncount = 0;
-					$weathermap_map       = '';
+					$weathermap_map = '';
 
 					$end = microtime(true);
 
 					cacti_log(sprintf('MAPSTATS Time:%0.2f MapId:%d MapFile:%s Warnings:%d', $end - $start, $map['id'], basename($mapfile), $weathermap_warncount), false, 'WEATHERMAP', POLLER_VERBOSITY_MEDIUM);
+
+					$weathermap_warncount = 0;
 
 					if (db_column_exists('weathermap_maps', 'last_runtime')) {
 						db_execute_prepared('UPDATE weathermap_maps
