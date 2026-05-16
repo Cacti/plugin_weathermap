@@ -18,6 +18,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#124: Weathermap slow when some graphs are broken
 * issue#173: Data Source select queries slow or not working
 * issue#186: Popups are not working in standalone mode
+* feature#219: Add Via Style as a Link form Option
 * feature#193: Allow the Info URL to be either "Time View Graph" or "Classic View Graph"
 
 --- 1.4 ---
