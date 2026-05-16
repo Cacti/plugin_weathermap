@@ -331,7 +331,7 @@ msgid "Hover Graph Style"
 msgstr ""
 
 #: setup.php:268
-msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed displayed?"
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
 msgstr ""
 
 #: setup.php:271
