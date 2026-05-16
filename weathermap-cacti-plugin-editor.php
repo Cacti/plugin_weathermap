@@ -529,6 +529,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 									<option value='angled'><?php print __('Angled', 'weathermap');?></option>
 								</select>
 							</td>
+						</tr>
 						<tr>
 							<td><?php print __('Data Source(s)', 'weathermap'); ?></td>
 							<td>
