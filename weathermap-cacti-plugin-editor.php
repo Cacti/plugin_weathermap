@@ -512,11 +512,11 @@ $weathermap_version = plugin_weathermap_numeric_version();
 							</td>
 						</tr>
 						<tr>
-							<td><?php print __('Maximum Bandwidth', 'weathermap');?><br /><?php print __('Into', 'weathermap');?>'<span id='link_nodename1a'>%NODE1%</span>'</td>
+							<td><?php print __('Maximum Bandwidth', 'weathermap');?><br /><?php print __('Into', 'weathermap');?><span id='link_nodename1a'>%NODE1%</span>'</td>
 							<td><input id='link_bandwidth_in' name='link_bandwidth_in' type='text' class='ui-state-default ui-corner-all' size='8'/> bits/sec</td>
 						</tr>
 						<tr>
-							<td><?php print __('Maximum Bandwidth', 'weathermap');?><br /><?php print __('Out of', 'weathermap');?>'<span id='link_nodename1b'>%NODE1%</span>'</td>
+							<td><?php print __('Maximum Bandwidth', 'weathermap');?><br /><?php print __('Out of', 'weathermap');?><span id='link_nodename1b'>%NODE1%</span>'</td>
 							<td>
 								<input id='link_bandwidth_out_cb' name='link_bandwidth_out_cb' type='checkbox' value='symmetric' />Same As 'In' or <input id='link_bandwidth_out' name='link_bandwidth_out' type='text' class='ui-state-default ui-corner-all' size='8' /> bits/sec
 							</td>
