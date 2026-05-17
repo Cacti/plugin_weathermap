@@ -244,6 +244,10 @@ class WeatherMapLink extends WeatherMapItem {
 	function DrawComments($image, $col, $widths) {
 		$curvepoints = $this->curvepoints;
 
+		if (cacti_sizeof($curvepoints) === 0) {
+			return;
+		}
+
 		$last = cacti_count($curvepoints) - 1;
 
 		$totaldistance = $curvepoints[$last][2];
@@ -513,6 +517,10 @@ class WeatherMapLink extends WeatherMapItem {
 			$comment_colour_out = $commentcol_out->gdallocate($image);
 
 			$this->DrawComments($image,[$comment_colour_in, $comment_colour_out],[$link_in_width * 1.1, $link_out_width * 1.1]);
+		}
+
+		if (cacti_sizeof($this->curvepoints) === 0) {
+			return;
 		}
 
 		$curvelength = $this->curvepoints[cacti_count($this->curvepoints) - 1][2];
