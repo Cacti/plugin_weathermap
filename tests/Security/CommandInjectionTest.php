@@ -106,6 +106,22 @@ describe('Weathermap fping command injection (WM-CMD-01)', function (): void {
     });
 });
 
+describe('fping ping_count integer cast (WM-CMD-01b)', function (): void {
+    $src = file_get_contents(realpath(__DIR__ . '/../../lib/datasources/WeatherMapDataSource_fping.php'));
+
+    it('casts $ping_count to int before interpolating into popen command', function () use ($src): void {
+        // Without (int) cast, a map config PINGCOUNT value containing shell metacharacters
+        // would be interpolated unquoted into the popen command alongside the shell-escaped $target.
+        expect($src)->toContain('(int) $ping_count');
+    });
+
+    it('does not interpolate raw $ping_count into the popen command string', function () use ($src): void {
+        // Raw variable interpolation inside a double-quoted string would bypass the (int) guard.
+        expect($src)->not->toContain('" -t100 -r1 -p20 -u -C $ping_count');
+        expect($src)->not->toContain("\" -t100 -r1 -p20 -u -C \$ping_count");
+    });
+});
+
 describe('Weathermap RRD popen command injection (WM-CMD-02)', function (): void {
     it('demonstrates that rrdfile path without escapeshellarg allows metacharacter injection (pre-fix)', function (): void {
         // WeatherMapDataSource_rrd.php (pre-fix) built args then assembled with manual strchr quoting:
