@@ -93,27 +93,28 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 		if (preg_match('/^fping:(\S+)$/', $targetstring, $matches)) {
 			$target = $matches[1];
 
-			$pattern = "/^$target\s:";
-
-			for ($i = 0; $i < $ping_count; $i++) {
-				$pattern .= '\s(\S+)';
-			}
-
-			$pattern .= '/';
-
 			if (is_executable($this->fping_cmd)) {
-				/* Validate before exec: only IP addresses and hostnames are allowed.
+				/* Validate before exec: allow IPv4/IPv6 addresses (including zone IDs with %),
+				 * hostnames (underscore-containing per RFC 2181), and bracketed IPv6 literals.
 				 * Shell metacharacters in $target would otherwise reach popen() directly. */
-				if (!preg_match('/^[a-zA-Z0-9.\-:]+$/', $target)) {
-					wm_warn("FPing ReadData: rejected target with illegal characters ($target) [WMFPING04]");
+				if (!preg_match('/^[a-zA-Z0-9._\-:%\[\]]+$/', $target)) {
+					wm_warn("FPing ReadData: rejected target with illegal characters (" . json_encode($target) . ") [WMFPING04]");
 
 					return ([null, null, 0]);
 				}
 
+				$pattern = '/^' . preg_quote($target, '/') . '\s:';
+
+				for ($i = 0; $i < $ping_count; $i++) {
+					$pattern .= '\s(\S+)';
+				}
+
+				$pattern .= '/';
+
 				$command = $this->fping_cmd . " -t100 -r1 -p20 -u -C $ping_count -i10 -q " . escapeshellarg($target) . " 2>&1";
 
 				wm_debug("Running $command");
-				$pipe = popen($command, 'r');
+				$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- target validated above, all flags are hardcoded
 
 				$count    = 0;
 				$hitcount = 0;

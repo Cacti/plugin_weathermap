@@ -416,15 +416,15 @@ function is_none($arr) {
 }
 
 function render_colour($col) {
-	if (($col[0] == -1) && ($col[1] == -1) && ($col[1] == -1)) {
+	if (($col[0] == -1) && ($col[1] == -1) && ($col[2] == -1)) {
 		return 'none';
 	}
 
-	if (($col[0] == -2) && ($col[1] == -2) && ($col[1] == -2)) {
+	if (($col[0] == -2) && ($col[1] == -2) && ($col[2] == -2)) {
 		return 'copy';
 	}
 
-	if (($col[0] == -3) && ($col[1] == -3) && ($col[1] == -3)) {
+	if (($col[0] == -3) && ($col[1] == -3) && ($col[2] == -3)) {
 		return 'contrast';
 	} else {
 		return sprintf('%d %d %d', $col[0], $col[1], $col[2]);

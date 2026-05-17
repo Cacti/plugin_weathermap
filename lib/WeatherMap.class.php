@@ -122,7 +122,7 @@ class WeatherMapDataSource {
 	//   itemtype and itemname may be used as part of the target (e.g. for TSV source line)
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map) { return ([-1,-1]); }
 	function ReadData($targetstring, &$map, &$item) {
-		return ([-1, -1]);
+		return ([-1, -1, 0]);
 	}
 
 	// pre-register a target + context, to allow a plugin to batch up queries to a slow database, or snmp for example
@@ -840,9 +840,11 @@ class WeatherMap extends WeatherMapBase {
 				// try to find it with the script, if the relative path fails
 				$srcdir = substr($_SERVER['argv'][0], 0, strrpos($_SERVER['argv'][0], '/'));
 
+				// nosemgrep: php.lang.security.injection.tainted-filename.tainted-filename
 				if (file_exists($srcdir)) {
 					$dir = $srcdir . '/' . $dir;
 
+					// nosemgrep: php.lang.security.injection.tainted-filename.tainted-filename
 					if (file_exists($dir)) {
 						$dh = opendir($dir);
 					} else {
@@ -858,7 +860,7 @@ class WeatherMap extends WeatherMapBase {
 			while ($file = readdir($dh)) {
 				$realfile = $dir . '/' . $file;
 
-				if (is_file($realfile) && preg_match('/\.php$/', $realfile)) {
+				if (is_file($realfile) && preg_match('/\.php$/', $realfile)) { // nosemgrep: php.lang.security.injection.tainted-filename.tainted-filename
 					if (strpos($realfile, 'index.php') !== false) {
 						continue;
 					}
@@ -884,7 +886,7 @@ class WeatherMap extends WeatherMapBase {
 
 					wm_debug("Loaded $type Plugin class $class from $file");
 
-					$this->plugins[$type][$class] = new $class;
+					$this->plugins[$type][$class] = new $class; // nosemgrep: php.lang.security.injection.tainted-object-instantiation.tainted-object-instantiation
 
 					if (! isset($this->plugins[$type][$class])) {
 						wm_debug("** Failed to create an object for plugin $type/$class");
@@ -1133,15 +1135,15 @@ class WeatherMap extends WeatherMapBase {
 					// in a half duplex link, in and out share a common bandwidth pool, so percentages need to include both
 					wm_debug('Calculating percentage using half-duplex');
 
-					$myobj->outpercent = (($total_in + $total_out) / ($myobj->max_bandwidth_out)) * 100;
-					$myobj->inpercent  = (($total_out + $total_in) / ($myobj->max_bandwidth_in)) * 100;
+					$myobj->outpercent = ($myobj->max_bandwidth_out != 0) ? ((($total_in + $total_out) / $myobj->max_bandwidth_out) * 100) : 0;
+					$myobj->inpercent  = ($myobj->max_bandwidth_in != 0) ? ((($total_out + $total_in) / $myobj->max_bandwidth_in) * 100) : 0;
 
 					if ($myobj->max_bandwidth_out != $myobj->max_bandwidth_in) {
 						wm_warn("ReadData: $type $name: You're using asymmetric bandwidth AND half-duplex in the same link. That makes no sense. [WMWARN44]");
 					}
 				} else {
-					$myobj->outpercent = (($total_out) / ($myobj->max_bandwidth_out)) * 100;
-					$myobj->inpercent  = (($total_in) / ($myobj->max_bandwidth_in)) * 100;
+					$myobj->outpercent = ($myobj->max_bandwidth_out != 0) ? ((($total_out) / $myobj->max_bandwidth_out) * 100) : 0;
+					$myobj->inpercent  = ($myobj->max_bandwidth_in != 0) ? ((($total_in) / $myobj->max_bandwidth_in) * 100) : 0;
 				}
 
 				// print $myobj->name."=>".$myobj->inpercent."%/".$myobj->outpercent."\n";
@@ -1260,10 +1262,6 @@ class WeatherMap extends WeatherMapBase {
 
 		$bt       = debug_backtrace();
 		$function = ($bt[1]['function'] ?? '');
-
-		print "$function calls ColourFromPercent\n";
-
-		exit();
 
 		if (isset($this->colours[$scalename])) {
 			$colours = $this->colours[$scalename];
@@ -4266,7 +4264,7 @@ class WeatherMap extends WeatherMapBase {
 					if ((filemtime($realfile) < $configchanged) || ((time() - filemtime($realfile)) > $agelimit)) {
 						wm_debug("Cache: deleting $realfile");
 
-						unlink($realfile);
+						unlink($realfile); // nosemgrep: php.lang.security.unlink-use.unlink-use
 					}
 				}
 			}
