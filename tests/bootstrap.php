@@ -52,3 +52,10 @@ if (!defined('POLLER_VERBOSITY_MEDIUM')) { define('POLLER_VERBOSITY_MEDIUM', 3);
 if (!defined('POLLER_VERBOSITY_DEBUG')) { define('POLLER_VERBOSITY_DEBUG', 5); }
 if (!defined('POLLER_VERBOSITY_NONE')) { define('POLLER_VERBOSITY_NONE', 6); }
 if (!defined('MESSAGE_LEVEL_ERROR')) { define('MESSAGE_LEVEL_ERROR', 1); }
+
+// Pest v1 has no global describe(); provide a passthrough so test files load.
+if (!function_exists('describe')) {
+    function describe(string $description, Closure $tests): void {
+        $tests();
+    }
+}

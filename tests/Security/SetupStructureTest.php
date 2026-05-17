@@ -26,8 +26,9 @@ describe('weathermap setup.php structure', function () {
 		expect($source)->toMatch('/[\'\""]name[\'\""]\s*=>/');
 	});
 
-	it('returns version array with version key', function () use ($source) {
-		expect($source)->toMatch('/[\'\""]version[\'\""]\s*=>/');
+	it('reads version from INFO ini file', function () use ($source) {
+		// setup.php reads version info via parse_ini_file, not a literal array.
+		expect($source)->toContain('parse_ini_file');
 	});
 
 	it('registers hooks in install function', function () use ($source) {
