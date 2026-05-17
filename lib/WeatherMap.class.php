@@ -1610,16 +1610,16 @@ class WeatherMap extends WeatherMapBase {
 
 		if (!is_none($this->colours['DEFAULT']['KEYBG'])) {
 			wimagefilledrectangle($scale_im, $box_left, $box_top, $box_right, $box_bottom,
-				$this->colours['DEFAULT']['KEYBG']['gdref1']);
+				$this->colours['DEFAULT']['KEYBG'][$scale_ref]);
 		}
 
 		if (!is_none($this->colours['DEFAULT']['KEYOUTLINE'])) {
 			wimagerectangle($scale_im, $box_left, $box_top, $box_right, $box_bottom,
-				$this->colours['DEFAULT']['KEYOUTLINE']['gdref1']);
+				$this->colours['DEFAULT']['KEYOUTLINE'][$scale_ref]);
 		}
 
 		$this->myimagestring($scale_im, $font, $scale_left - $scalefactor, $scale_top - $tileheight , $title,
-			$this->colours['DEFAULT']['KEYTEXT']['gdref1']
+			$this->colours['DEFAULT']['KEYTEXT'][$scale_ref]
 		);
 
 		$updown = 1;
@@ -1749,8 +1749,6 @@ class WeatherMap extends WeatherMapBase {
 
 			$boxx = $x;
 			$boxy = $y;
-			$boxx = 0;
-			$boxy = 0;
 
 			// allow for X11-style negative positioning
 			if ($boxx < 0) {
@@ -2143,7 +2141,7 @@ class WeatherMap extends WeatherMapBase {
 		// if it isn't, it's the filename
 		$lines = [];
 
-		if (strchr($input, "\n") != false || strchr($input, "\r") != false) {
+		if (strchr($input, "\n") !== false || strchr($input, "\r") !== false) {
 			wm_debug('ReadConfig Detected that this is a config fragment.');
 
 			// strip out any Windows line-endings that have gotten in here
@@ -3536,7 +3534,7 @@ class WeatherMap extends WeatherMapBase {
 			if (file_exists($this->configfile)) {
 				$this->cachefile_version = crc32(file_get_contents($this->configfile));
 			} else {
-				wm_warn('Failed to find configuration file: ' . $this->configFile);
+				wm_warn('Failed to find configuration file: ' . $this->configfile);
 			}
 		}
 
@@ -4492,8 +4490,6 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	function LoadCoverage($file) {
-		// ToDo - Why the return?
-		return 0;
 		$i = 0;
 
 		$fd = fopen($file, 'r');

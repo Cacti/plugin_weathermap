@@ -860,8 +860,8 @@ class WeatherMapLink extends WeatherMapItem {
 		$js .= 'bw_out:' . js_escape($this->max_bandwidth_out_cfg) . ', ';
 
 		$js .= 'name:' . js_escape($this->name) . ', ';
-		$js .= 'overlibwidth:"' . $this->overlibheight . '", ';
-		$js .= 'overlibheight:"' . $this->overlibwidth . '", ';
+		$js .= 'overlibwidth:"' . $this->overlibwidth . '", ';
+		$js .= 'overlibheight:"' . $this->overlibheight . '", ';
 		$js .= 'overlibcaption:' . js_escape($this->overlibcaption[IN]) . ', ';
 
 		$js .= 'commentin:' . js_escape($this->comments[IN]) . ', ';
@@ -910,8 +910,8 @@ class WeatherMapLink extends WeatherMapItem {
 			$js .= '"bw_out":' . js_escape($this->max_bandwidth_out_cfg) . ', ';
 
 			$js .= '"name":' . js_escape($this->name) . ', ';
-			$js .= '"overlibwidth":"' . $this->overlibheight . '", ';
-			$js .= '"overlibheight":"' . $this->overlibwidth . '", ';
+			$js .= '"overlibwidth":"' . $this->overlibwidth . '", ';
+			$js .= '"overlibheight":"' . $this->overlibheight . '", ';
 			$js .= '"overlibcaption":' . js_escape($this->overlibcaption) . ', ';
 		}
 
