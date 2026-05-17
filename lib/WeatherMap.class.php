@@ -1774,18 +1774,18 @@ class WeatherMap extends WeatherMapBase {
 			$this->AllocateScaleColours($scale_im,$scale_ref);
 
 			if (!is_none($this->colours['DEFAULT']['KEYBG'])) {
-				wimagefilledrectangle($scale_im, $boxx, $boxy, $boxx + $boxwidth, $boxy + $boxheight,
+				wimagefilledrectangle($scale_im, 0, 0, $boxwidth, $boxheight,
 					$this->colours['DEFAULT']['KEYBG'][$scale_ref]
 				);
 			}
 
 			if (!is_none($this->colours['DEFAULT']['KEYOUTLINE'])) {
-				wimagerectangle($scale_im, $boxx, $boxy, $boxx + $boxwidth, $boxy + $boxheight,
+				wimagerectangle($scale_im, 0, 0, $boxwidth, $boxheight,
 					$this->colours['DEFAULT']['KEYOUTLINE'][$scale_ref]
 				);
 			}
 
-			$this->myimagestring($scale_im, $font, $boxx + 4, $boxy + 4 + $tileheight, $title,
+			$this->myimagestring($scale_im, $font, 4, 4 + $tileheight, $title,
 				$this->colours['DEFAULT']['KEYTEXT'][$scale_ref]
 			);
 
@@ -1800,8 +1800,8 @@ class WeatherMap extends WeatherMapBase {
 
 					//  debug("$i: drawing\n");
 					if (($hide_zero == 0) || $colour['key'] != '0_0') {
-						$y = $boxy + $tilespacing * $i + 8;
-						$x = $boxx + 6;
+						$y = $tilespacing * $i + 8;
+						$x = 6;
 
 						$fudgefactor = 0;
 

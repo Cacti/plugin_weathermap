@@ -242,7 +242,7 @@ function mysprintf($format, $value, $kilo = 1000) {
 		wm_debug("KMGT formatting $value with $spec.");
 
 		$result = nice_scalar($value, $kilo, $places);
-		$output = preg_replace_callback('/%' . $spec . 'k/', function() use ($result) { return $result; }, $format);
+		$output = preg_replace_callback('/%' . preg_quote($spec, '/') . 'k/', function() use ($result) { return $result; }, $format);
 	} elseif (preg_match('/%(-*)(\d*)([Tt])/', $format, $matches)) {
 		$spec      = $matches[3];
 		$precision = ($matches[2] == '' ? 10 : intval($matches[2]));
@@ -878,7 +878,7 @@ function calc_curve(&$in_xarray, &$in_yarray, $pointsperspan = 32) {
 			$yarray[$i], $xarray[$i + 1], $yarray[$i + 1], $xarray[$i + 2],
 			$yarray[$i + 2], $xarray[$i + 3], $yarray[$i + 3]);
 
-		$curvepoints = array_merge($curvepoints, $newpoints);
+		$curvepoints = array_merge($curvepoints, array_slice($newpoints, 1));
 	}
 
 	return $curvepoints;
