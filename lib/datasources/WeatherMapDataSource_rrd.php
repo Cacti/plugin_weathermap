@@ -314,8 +314,14 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			$command .= ' ' . cacti_escapeshellarg($arg);
 		}
 
-		foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
-			$command .= ' ' . cacti_escapeshellarg($opt);
+		if ($extra_options !== '' && $extra_options !== null) {
+			if (preg_match('/["\'\\]/', (string) $extra_options)) {
+				wm_warn('RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]');
+			} else {
+				foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
+					$command .= ' ' . cacti_escapeshellarg($opt);
+				}
+			}
 		}
 
 		wm_debug("RRD ReadData: Running: $command");
@@ -416,8 +422,14 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			$command .= ' ' . cacti_escapeshellarg($arg);
 		}
 
-		foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
-			$command .= ' ' . cacti_escapeshellarg($opt);
+		if ($extra_options !== '' && $extra_options !== null) {
+			if (preg_match('/["\'\\]/', (string) $extra_options)) {
+				wm_warn('RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]');
+			} else {
+				foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
+					$command .= ' ' . cacti_escapeshellarg($opt);
+				}
+			}
 		}
 
 		wm_debug("RRD ReadData: Running: $command");
