@@ -3987,7 +3987,7 @@ class WeatherMap extends WeatherMapBase {
 						$n = 0;
 
 						if (cacti_sizeof($myobj->overliburl[$dir]) > 0) {
-							// print "ARRAY:".is_array($link->overliburl[$dir)]."\n";
+							// print "ARRAY:".is_array($link->overliburl[$dir])."\n";
 							foreach ($myobj->overliburl[$dir] as $url) {
 								if ($n > 0) {
 									$data_hover .= '<br>';

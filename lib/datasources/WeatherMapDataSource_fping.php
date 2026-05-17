@@ -100,7 +100,7 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 				if (!preg_match('/^[a-zA-Z0-9._\-:%\[\]]+$/', $target)) {
 					wm_warn("FPing ReadData: rejected target with illegal characters (" . json_encode($target) . ") [WMFPING04]");
 
-					return ([null, null, 0]);
+					return ([-1, -1, 0]);
 				}
 
 				$pattern = '/^' . preg_quote($target, '/') . '\s:';
