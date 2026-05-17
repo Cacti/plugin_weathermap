@@ -308,7 +308,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			$args[] = "PRINT:agg_out:'OUT %lf'";
 		}
 
-		$command = $map->rrdtool;
+		$command = cacti_escapeshellarg($map->rrdtool);
 
 		foreach ($args as $arg) {
 			$command .= ' ' . cacti_escapeshellarg($arg);
@@ -416,7 +416,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$args[] = '--end';
 		$args[] = $end;
 
-		$command = $map->rrdtool;
+		$command = cacti_escapeshellarg($map->rrdtool);
 
 		foreach ($args as $arg) {
 			$command .= ' ' . cacti_escapeshellarg($arg);
