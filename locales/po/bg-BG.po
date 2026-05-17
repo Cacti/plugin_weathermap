@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2024-07-21 16:17-0400\n"
+"POT-Creation-Date: 2026-03-09 19:12-0700\n"
 "PO-Revision-Date: 2024-07-21 16:25-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,693 +18,731 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.4\n"
 
-#: lib/editor.inc.php:261
+#: lib/editor.inc.php:265
 #, php-format
 msgid "Welcome to the PHP Weathermap %s Editor"
 msgstr "Добре дошли в PHP Weathermap %s Editor"
 
-#: lib/editor.inc.php:264
+#: lib/editor.inc.php:268
 msgid "<b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however."
 msgstr "<b>БЕЛЕЖКА:</b> Този редактор не е завършен! Има много функции на Weathermap, които ще пропуснете, ако решите да използвате само редактора.  Те включват: криви, измествания на възли, дефиниции на шрифтове, промяна на цвета, настройки за възел/връзка и качване на изображения. Можете обаче да използвате редактора, без да повредите тези функции, ако сте ги добавили на ръка."
 
-#: lib/editor.inc.php:270
+#: lib/editor.inc.php:274
 msgid "Do you want to:"
 msgstr "Искате ли:"
 
-#: lib/editor.inc.php:271
+#: lib/editor.inc.php:275
 msgid "Create A New Map:"
 msgstr "Създайте нова карта:"
 
-#: lib/editor.inc.php:273
+#: lib/editor.inc.php:277
 msgid "Named:"
 msgstr "Име"
 
-#: lib/editor.inc.php:277 weathermap-cacti-plugin-mgmt.php:1263
-#: weathermap-cacti-plugin-mgmt.php:2467
+#: lib/editor.inc.php:281 weathermap-cacti-plugin-mgmt.php:1269
+#: weathermap-cacti-plugin-mgmt.php:2470
 msgid "Create"
 msgstr "Създай"
 
-#: lib/editor.inc.php:279
+#: lib/editor.inc.php:283
 msgid "Note: filenames must contain no spaces and end in .conf"
 msgstr "Забележка: имената на файловете не трябва да съдържат интервали и да завършват на .conf"
 
-#: lib/editor.inc.php:838
+#: lib/editor.inc.php:853
 msgid "Ok"
 msgstr "Добре"
 
-#: lib/editor.inc.php:839
+#: lib/editor.inc.php:854
 msgid "Operation successful"
 msgstr "Операцията е успешна"
 
-#: lib/editor.inc.php:840
+#: lib/editor.inc.php:855
 msgid "The Operation was successful.  Details are below."
 msgstr "Операцията е успешна.  Подробности са по-долу."
 
-#: lib/editor.inc.php:841
+#: lib/editor.inc.php:856
 msgid "Pause"
 msgstr "Пауза"
 
-#: lib/editor.inc.php:843
+#: lib/editor.inc.php:858
 msgid "Click on the map where you would like to move the node to."
 msgstr "Кликнете върху картата, където искате да преместите възела."
 
-#: lib/editor.inc.php:844
+#: lib/editor.inc.php:859
 msgid "Click on the map via which point you want to redirect link."
 msgstr "Кликнете върху картата, през която искате да пренасочите връзката."
 
-#: lib/editor.inc.php:845
+#: lib/editor.inc.php:860
 msgid "Click on the first node for the start of the link."
 msgstr "Кликнете върху първия възел за началото на връзката."
 
-#: lib/editor.inc.php:846
+#: lib/editor.inc.php:861
 msgid "Click on the map where you would like to put the timestamp."
 msgstr "Кликнете върху картата, където искате да поставите времевия печат."
 
-#: lib/editor.inc.php:847
+#: lib/editor.inc.php:862
 msgid "Click on the map where you would like to put the legend."
 msgstr "Кликнете върху картата, където искате да поставите легендата."
 
-#: lib/editor.inc.php:848
+#: lib/editor.inc.php:863
 msgid "Click on the map where you would like to add a new node."
 msgstr "Кликнете върху картата, където искате да добавите нов възел."
 
-#: lib/editor.inc.php:850
+#: lib/editor.inc.php:865
 msgid "WARNING: Pressing 'Delete Node' will delete this Node."
 msgstr "ВНИМАНИЕ: Натискането на \"Изтриване на възел\" ще изтрие този възел."
 
-#: lib/editor.inc.php:851
+#: lib/editor.inc.php:866
 msgid "Delete Node Confirmation"
 msgstr "Конфигуриране на изгледа"
 
-#: lib/editor.inc.php:852
+#: lib/editor.inc.php:867
 msgid "WARNING: Pressing 'Delete Link' will delete this Link."
 msgstr "ВНИМАНИЕ: Натискането на \"Изтриване на връзката\" ще изтрие тази връзка."
 
-#: lib/editor.inc.php:853
+#: lib/editor.inc.php:868
 msgid "Delete Link Confirmation"
 msgstr "Конфигуриране на изгледа"
 
-#: lib/editor.inc.php:854 weathermap-cacti-plugin-editor.php:489
-#: weathermap-cacti-plugin-editor.php:610
-#: weathermap-cacti-plugin-editor.php:681
-#: weathermap-cacti-plugin-editor.php:774 weathermap-cacti-plugin-mgmt.php:491
-#: weathermap-cacti-plugin-mgmt.php:511 weathermap-cacti-plugin-mgmt.php:520
-#: weathermap-cacti-plugin-mgmt.php:529 weathermap-cacti-plugin-mgmt.php:538
-#: weathermap-cacti-plugin-mgmt.php:2739
+#: lib/editor.inc.php:869 weathermap-cacti-plugin-editor.php:490
+#: weathermap-cacti-plugin-editor.php:611
+#: weathermap-cacti-plugin-editor.php:683
+#: weathermap-cacti-plugin-editor.php:796 weathermap-cacti-plugin-mgmt.php:493
+#: weathermap-cacti-plugin-mgmt.php:513 weathermap-cacti-plugin-mgmt.php:522
+#: weathermap-cacti-plugin-mgmt.php:531 weathermap-cacti-plugin-mgmt.php:540
+#: weathermap-cacti-plugin-mgmt.php:2743
 msgid "Cancel"
 msgstr "Отказ"
 
-#: lib/editor.inc.php:855 weathermap-cacti-plugin-editor.php:606
+#: lib/editor.inc.php:870 weathermap-cacti-plugin-editor.php:607
 msgid "Delete Link"
 msgstr "Изтрий"
 
-#: lib/editor.inc.php:856
+#: lib/editor.inc.php:871
 msgid "Delete Node"
 msgstr "Изтриване на потребител"
 
-#: lib/editor.inc.php:857 weathermap-cacti-plugin-editor.php:409
+#: lib/editor.inc.php:872 weathermap-cacti-plugin-editor.php:409
 msgid "Position"
 msgstr "Позиция"
 
-#: lib/editor.inc.php:859
+#: lib/editor.inc.php:874
 msgid "Node Actions"
 msgstr "Действия"
 
-#: lib/editor.inc.php:860
+#: lib/editor.inc.php:875
 msgid "Link Actions"
 msgstr "Действия"
 
-#: lib/editor.inc.php:861 weathermap-cacti-plugin-editor.php:485
+#: lib/editor.inc.php:876 weathermap-cacti-plugin-editor.php:486
 msgid "Move"
 msgstr "Премести"
 
-#: lib/editor.inc.php:862 weathermap-cacti-plugin-editor.php:487
+#: lib/editor.inc.php:877 weathermap-cacti-plugin-editor.php:488
 msgid "Clone"
 msgstr "Дублирай"
 
-#: lib/editor.inc.php:863 weathermap-cacti-plugin-editor.php:488
-#: weathermap-cacti-plugin-editor.php:607 weathermap-cacti-plugin-mgmt.php:2464
+#: lib/editor.inc.php:878 weathermap-cacti-plugin-editor.php:489
+#: weathermap-cacti-plugin-editor.php:608 weathermap-cacti-plugin-mgmt.php:2467
 msgid "Edit"
 msgstr "Редактирай"
 
-#: lib/editor.inc.php:864 weathermap-cacti-plugin-editor.php:486
+#: lib/editor.inc.php:879 weathermap-cacti-plugin-editor.php:487
 #: weathermap-cacti-plugin-mgmt.php:52
 msgid "Delete"
 msgstr "Изтрий"
 
-#: lib/editor.inc.php:865 weathermap-cacti-plugin-editor.php:609
+#: lib/editor.inc.php:880 weathermap-cacti-plugin-editor.php:610
 msgid "Via"
 msgstr "Чрез"
 
-#: lib/editor.inc.php:866 weathermap-cacti-plugin-editor.php:608
+#: lib/editor.inc.php:881 weathermap-cacti-plugin-editor.php:609
 msgid "Tidy"
 msgstr "Спретнат"
 
-#: lib/editor.inc.php:867
+#: lib/editor.inc.php:882
 msgid "Properties"
 msgstr "Имоти"
 
-#: lib/editor.inc.php:872
+#: lib/editor.inc.php:887
 msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
 msgstr "Откъде Weathermap трябва да получи данни за тази връзка? Това може да бъде или RRD файл, или HTML със специални коментари в него (обикновено от MRTG)."
 
-#: lib/editor.inc.php:873
+#: lib/editor.inc.php:888
 msgid "How wide the link arrow will be drawn, in pixels."
 msgstr "Колко широка ще бъде нарисувана стрелката на връзката, в пиксели."
 
-#: lib/editor.inc.php:874
+#: lib/editor.inc.php:889
 msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
 msgstr "Ако използвате HTML стила \"overlib\", това е URL адресът, който ще се отвори, когато щракнете върху връзката"
 
-#: lib/editor.inc.php:875
+#: lib/editor.inc.php:890
 msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
 msgstr "Ако използвате HTML стила \"overlib\", това е URL адресът на изображението, който ще се показва, когато задържите курсора на мишката върху връзката"
 
-#: lib/editor.inc.php:876
+#: lib/editor.inc.php:891
 msgid "The bandwidth from the first node to the second node"
 msgstr "Честотната лента от първия възел до втория възел"
 
-#: lib/editor.inc.php:877
+#: lib/editor.inc.php:892
 msgid "The bandwidth from the second node to the first node (if that is different)"
 msgstr "Честотната лента от втория възел до първия възел (ако това е различно)"
 
-#: lib/editor.inc.php:878 lib/editor.inc.php:879
+#: lib/editor.inc.php:893 lib/editor.inc.php:894
 msgid "The text that will appear alongside the link"
 msgstr "Текстът, който ще се появи до връзката"
 
-#: lib/editor.inc.php:880
+#: lib/editor.inc.php:895
 msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
 msgstr "Ако използвате HTML стила \"overlib\", това е URL адресът, който ще се отвори, когато щракнете върху възела"
 
-#: lib/editor.inc.php:881
+#: lib/editor.inc.php:896
 msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
 msgstr "Ако използвате HTML стила \"overlib\", това е URL адресът на изображението, който ще се показва, когато задържите курсора на мишката върху възела"
 
-#: lib/editor.inc.php:882
+#: lib/editor.inc.php:897
 msgid "How far from the left to position the node, in pixels"
 msgstr "Колко далеч от ляво да позиционирате възела, в пиксели"
 
-#: lib/editor.inc.php:883
+#: lib/editor.inc.php:898
 msgid "How far from the top to position the node, in pixels"
 msgstr "Колко далеч от върха да позиционирате възела, в пиксели"
 
-#: lib/editor.inc.php:884
+#: lib/editor.inc.php:899
 msgid "The text that appears on the node"
 msgstr "Текстът, който се появява на възела"
 
-#: lib/editor.inc.php:885
+#: lib/editor.inc.php:900
 msgid "The name used for this node when defining links"
 msgstr "Името, използвано за този възел при дефиниране на връзки"
 
-#: lib/editor.inc.php:886
+#: lib/editor.inc.php:901
 msgid "Change to a different file, or start creating a new one."
 msgstr "Променете към друг файл или започнете да създавате нов."
 
-#: lib/editor.inc.php:887
+#: lib/editor.inc.php:902
 msgid "Add a new node to the map"
 msgstr "Добавяне на нов възел към картата"
 
-#: lib/editor.inc.php:888
+#: lib/editor.inc.php:903
 msgid "Add a new link to the map, by joining two nodes together."
 msgstr "Добавете нова връзка към картата, като съедините два възела заедно."
 
-#: lib/editor.inc.php:889
+#: lib/editor.inc.php:904
 msgid "Select a different map to edit, or start a new one."
 msgstr "Изберете друга карта за редактиране или започнете нова."
 
-#: lib/editor.inc.php:893
+#: lib/editor.inc.php:908
 msgid "This is where help appears for links"
 msgstr "Тук се появява помощ за връзки"
 
-#: lib/editor.inc.php:894
+#: lib/editor.inc.php:909
 msgid "This is where help appears for maps"
 msgstr "Тук се появява помощ за карти"
 
-#: lib/editor.inc.php:895
+#: lib/editor.inc.php:910
 msgid "This is where help appears for nodes"
 msgstr "Тук се появява помощ за възли"
 
-#: lib/editor.inc.php:896
+#: lib/editor.inc.php:911
 msgid "or click a Node or Link to edit it's properties"
 msgstr "или щракнете върху възел или връзка, за да редактирате свойствата му"
 
-#: setup.php:208 setup.php:602 setup.php:748 setup.php:755 setup.php:762
-#: setup.php:769 setup.php:776
+#: setup.php:210 setup.php:642 setup.php:787 setup.php:794 setup.php:801
+#: setup.php:808 setup.php:815
 msgid "Weathermap"
 msgstr "Карта сайта"
 
-#: setup.php:212 weathermap-cacti-plugin.php:476
-#: weathermap-cacti-plugin.php:570
+#: setup.php:214 weathermap-cacti-plugin.php:476
+#: weathermap-cacti-plugin.php:571
 msgid "Network Weathermap"
 msgstr "Карта на времето в мрежата"
 
-#: setup.php:216
+#: setup.php:218
+#, fuzzy
+msgid "Debug Mode"
+msgstr "отстраняване на грешки"
+
+#: setup.php:219
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr ""
+
+#: setup.php:224
+#, fuzzy
+msgid "Info URL Style"
+msgstr "Информационни URL адреси"
+
+#: setup.php:225
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr ""
+
+#: setup.php:229
+msgid "Standard Graph View"
+msgstr ""
+
+#: setup.php:230
+msgid "Time Graph View"
+msgstr ""
+
+#: setup.php:234
 msgid "Page style"
 msgstr "Име на страницата"
 
-#: setup.php:217
+#: setup.php:235
 msgid "How to display multiple maps."
 msgstr "Как да се показват няколко карти."
 
-#: setup.php:220
+#: setup.php:238
 msgid "Thumbnail Overview"
 msgstr "Общ преглед на миниатюри"
 
-#: setup.php:221
+#: setup.php:239
 msgid "Full Images"
 msgstr "Пълни изображения"
 
-#: setup.php:222
+#: setup.php:240
 msgid "Show Only First"
 msgstr "Покажи първо само"
 
-#: setup.php:226
+#: setup.php:244
 msgid "Thumbnail Maximum Size"
 msgstr "Максимален размер на миниатюра"
 
-#: setup.php:227
+#: setup.php:245
 msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
 msgstr "Максималната ширина или височина за миниатюри в изглед на миниатюри, в пиксели. Влиза в сила след следващото гласуване."
 
-#: setup.php:233
+#: setup.php:251
 msgid "Hover Graph Default Width"
 msgstr "Ширина по подразбиране на графиката на посочване"
 
-#: setup.php:234
-msgid "The default width of the RRDtool Graphs that appear when you over on a Link."
+#: setup.php:252
+#, fuzzy
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
 msgstr "Ширината по подразбиране на графиките на RRDtool, които се появяват, когато преминете върху връзка."
 
-#: setup.php:241
+#: setup.php:259
 msgid "Hover Graph Default Height"
 msgstr "Височина по подразбиране на графиката на посочване"
 
-#: setup.php:242
-msgid "The default height of the RRDtool Graphs that appear when you over on a Link."
+#: setup.php:260
+#, fuzzy
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
 msgstr "Височината по подразбиране на графиките на RRDtool, които се появяват, когато преминете върху връзка."
 
-#: setup.php:249
+#: setup.php:267
 msgid "Hover Graph Style"
 msgstr "Стил на графиката на посочване"
 
-#: setup.php:250
-msgid "When hovering over the Links or Nodes, what style of Graph would you like displayed?"
+#: setup.php:268
+#, fuzzy
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed displayed?"
 msgstr "Когато задържите курсора на мишката над връзките или възлите, какъв стил на Graph бихте искали да се показва?"
 
-#: setup.php:253
+#: setup.php:271
 msgid "Thumbnail Graphs"
 msgstr "Графики с миниатюри"
 
-#: setup.php:254
+#: setup.php:272
 msgid "Full Graphs"
 msgstr "Пълни графики"
 
-#: setup.php:258
-msgid "Refresh Time"
-msgstr "Задаване / опресняване на филтрите"
+#: setup.php:276
+msgid "Map Processing Timeout"
+msgstr ""
 
-#: setup.php:259
-msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
-msgstr "Колко често да обновявате страницата в режим на цикъл. Автоматично прави всички налични карти да се поберат в 5 минути."
+#: setup.php:277
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr ""
 
-#: setup.php:262
-msgid "Automatic"
-msgstr "Автоматично"
-
-#: setup.php:263 setup.php:264 setup.php:265
-#, php-format
-msgid "%d Seconds"
-msgstr "%d секунди"
-
-#: setup.php:266
-#, php-format
-msgid "%d Minute"
-msgstr "%d минута"
-
-#: setup.php:267 setup.php:268
+#: setup.php:281 setup.php:282 setup.php:283 setup.php:284 setup.php:297
+#: setup.php:298
 #, php-format
 msgid "%d Minutes"
 msgstr "%d минути"
 
-#: setup.php:272
+#: setup.php:288
+msgid "Refresh Time"
+msgstr "Задаване / опресняване на филтрите"
+
+#: setup.php:289
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "Колко често да обновявате страницата в режим на цикъл. Автоматично прави всички налични карти да се поберат в 5 минути."
+
+#: setup.php:292
+msgid "Automatic"
+msgstr "Автоматично"
+
+#: setup.php:293 setup.php:294 setup.php:295
+#, php-format
+msgid "%d Seconds"
+msgstr "%d секунди"
+
+#: setup.php:296
+#, php-format
+msgid "%d Minute"
+msgstr "%d минута"
+
+#: setup.php:302
 msgid "Output Format"
 msgstr "Формат на изходните данни"
 
-#: setup.php:273
+#: setup.php:303
 msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr "Какъв формат предпочитате за генерираните изображения и миниатюри на картата?"
 
-#: setup.php:276
+#: setup.php:306
 msgid "PNG (default)"
 msgstr "По подразбиране"
 
-#: setup.php:277
+#: setup.php:307
 msgid "JPEG"
 msgstr "JPEG"
 
-#: setup.php:278
+#: setup.php:308
 msgid "GIF"
 msgstr "GIF"
 
-#: setup.php:282
+#: setup.php:312
 msgid "Map Rendering Interval"
 msgstr "Интервал на рендиране на картата"
 
-#: setup.php:283
+#: setup.php:313
 msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
 msgstr "Колко често искате Weathermap да преизчислява картите си? Не трябва да докосвате това, освен ако не знаете какво правите! Тя е необходима главно за хора с нестандартни настройки за гласуване."
 
-#: setup.php:286
+#: setup.php:316
 msgid "Never (manual updates)"
 msgstr "Никога (ръчни актуализации)"
 
-#: setup.php:287
+#: setup.php:317
 msgid "Every Poller Cycle (default)"
 msgstr "Всеки цикъл на Poller (по подразбиране)"
 
-#: setup.php:288 setup.php:289 setup.php:290 setup.php:291 setup.php:292
-#: setup.php:293 setup.php:294 setup.php:295 setup.php:296 setup.php:297
-#: setup.php:298
+#: setup.php:318 setup.php:319 setup.php:320 setup.php:321 setup.php:322
+#: setup.php:323 setup.php:324 setup.php:325 setup.php:326 setup.php:327
+#: setup.php:328
 #, php-format
 msgid "Every %d Poller Cycles"
 msgstr "Всеки %d Poller цикли"
 
-#: setup.php:302
+#: setup.php:332
 msgid "Show Weathermap Help Links"
 msgstr "Показване на връзките за помощ на метеорологичната карта"
 
-#: setup.php:303
+#: setup.php:333
 msgid "If checked, all Weathermap pages will include a link to documentation."
 msgstr "Ако е отметнато, всички страници на Weathermap ще включват връзка към документацията."
 
-#: setup.php:308
+#: setup.php:338
 msgid "Show 'All' Tab"
 msgstr "Показване на раздела \"Всички\""
 
-#: setup.php:309
+#: setup.php:339
 msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr "Когато използвате групи, добавете раздел \"Всички карти\" в лентата с раздели."
 
-#: setup.php:312
+#: setup.php:342
 msgid "No (default)"
 msgstr "По подразбиране"
 
-#: setup.php:313 weathermap-cacti-plugin-mgmt.php:1001
+#: setup.php:343 weathermap-cacti-plugin-mgmt.php:1003
 msgid "Yes"
 msgstr "Да"
 
-#: setup.php:317
+#: setup.php:347
 msgid "Show Map Selector"
 msgstr "Покажи селектора на картата"
 
-#: setup.php:318
+#: setup.php:348
 msgid "Show a combo-box map selector on the full-screen map view."
 msgstr "Показване на селектор на карта с разгъващ се бокс в изгледа на картата на цял екран."
 
-#: setup.php:321 weathermap-cacti-plugin-mgmt.php:1008
+#: setup.php:351 weathermap-cacti-plugin-mgmt.php:1010
 msgid "No"
 msgstr "Не"
 
-#: setup.php:322
+#: setup.php:352
 msgid "Yes (default)"
 msgstr "По подразбиране"
 
-#: setup.php:326
+#: setup.php:356
 msgid "Quiet Logging"
 msgstr "Настройки на журнал за одит"
 
-#: setup.php:327
+#: setup.php:357
 msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
 msgstr "По подразбиране, дори при регистриране на ниско ниво, Weathermap регистрира нормалната активност. Това го прави наистина регистрирате само грешки в режим LOW."
 
-#: setup.php:330
+#: setup.php:360
 msgid "Chatty (default)"
 msgstr "Бъбрив (по подразбиране)"
 
-#: setup.php:331
+#: setup.php:361
 msgid "Quiet"
 msgstr "Тих"
 
-#: setup.php:612 setup.php:783 setup.php:804
+#: setup.php:652 setup.php:822 setup.php:843
 msgid "Weathermaps"
 msgstr "Карта сайта"
 
-#: setup.php:613
+#: setup.php:653
 msgid "Weathermap Groups"
 msgstr "Групи метеорологични карти"
 
-#: setup.php:616
+#: setup.php:656
 msgid "Management"
 msgstr "управление"
 
-#: setup.php:620
+#: setup.php:660
 msgid "View Weathermaps"
 msgstr "Преглед на метеорологичните карти"
 
-#: setup.php:621
+#: setup.php:661
 msgid "Edit Weathermaps"
 msgstr "Редактиране на метеорологични карти"
 
-#: setup.php:622
+#: setup.php:662
 msgid "Manage Weathermap"
 msgstr "Управление на картата на времето"
 
-#: setup.php:626 setup.php:627
+#: setup.php:666 setup.php:667
 msgid "General Administration"
 msgstr "Системна администрация"
 
-#: setup.php:628
+#: setup.php:668
 msgid "Normal User"
 msgstr "Обикновен потребител"
 
-#: setup.php:649 setup.php:689 weathermap-cacti-plugin.php:386
-#: weathermap-cacti-plugin.php:520 weathermap-cacti-plugin.php:642
+#: setup.php:689 setup.php:729 weathermap-cacti-plugin.php:386
+#: weathermap-cacti-plugin.php:521 weathermap-cacti-plugin.php:644
 #, php-format
 msgid "Map for config file: %s"
 msgstr "Карта за конфигурационния файл: %s"
 
-#: setup.php:705
+#: setup.php:744
 msgid "Choose which weathermap to add to the tree."
 msgstr "Изберете коя метеорологична карта да добавите към дървото."
 
-#: setup.php:705
+#: setup.php:744
 msgid "Map"
 msgstr "Карта"
 
-#: setup.php:713
+#: setup.php:752
 msgid "How should the map be displayed?"
 msgstr "Как трябва да се показва картата?"
 
-#: setup.php:713
+#: setup.php:752
 msgid "Style"
 msgstr "Стил"
 
-#: setup.php:716
+#: setup.php:755
 msgid "Thumbnail"
 msgstr "Миниатюра"
 
-#: setup.php:717
+#: setup.php:756
 msgid "Full Size"
 msgstr "Пълен размер"
 
-#: setup.php:790
+#: setup.php:829
 msgid "View Map Image"
 msgstr "Виж изображението на картата"
 
-#: setup.php:797
+#: setup.php:836
 msgid "View Map Thumbnail"
 msgstr "Виж миниатюрата на картата"
 
-#: setup.php:811 setup.php:825
+#: setup.php:850 setup.php:864
 msgid "Add Map"
 msgstr "Добави карта"
 
-#: setup.php:818
+#: setup.php:857
 msgid "View Configuration"
 msgstr "Конфигуриране на изгледа"
 
-#: setup.php:832 weathermap-cacti-plugin.php:396
+#: setup.php:871 weathermap-cacti-plugin.php:396
 msgid "Edit Map"
 msgstr "Редактиране на карта"
 
-#: setup.php:839 weathermap-cacti-plugin-mgmt.php:567
+#: setup.php:878 weathermap-cacti-plugin-mgmt.php:569
 msgid "Weathermap Editor"
 msgstr "Редактор на метеорологични карти"
 
-#: setup.php:846
+#: setup.php:885
 msgid "Edit Permissions"
 msgstr "Редактиране на разрешения"
 
-#: setup.php:853 setup.php:860 weathermap-cacti-plugin-mgmt.php:730
+#: setup.php:892 setup.php:899 weathermap-cacti-plugin-mgmt.php:732
 #: weathermap-cacti-plugin.php:394
 msgid "Map Settings"
 msgstr "Настройки на картата"
 
-#: setup.php:867
+#: setup.php:906
 msgid "Map Settings Delete"
 msgstr "Настройки на картата Изтриване"
 
-#: setup.php:874
+#: setup.php:913
 msgid "Map Settings Update"
 msgstr "Актуализиране на настройките на картата"
 
-#: setup.php:881
+#: setup.php:920
 msgid "Map Settings Add"
 msgstr "Настройки на картата Добавяне"
 
-#: setup.php:888
+#: setup.php:927
 msgid "Permissions Edit"
 msgstr "Разрешения Редактиране"
 
-#: setup.php:895
+#: setup.php:934
 msgid "Add User"
 msgstr "Добавяне на потребител"
 
-#: setup.php:902
+#: setup.php:941
 msgid "Delete User"
 msgstr "Изтриване на потребител"
 
-#: setup.php:909
+#: setup.php:948
 msgid "Delete Map"
 msgstr "Изтриване на карта"
 
-#: setup.php:916 setup.php:923 weathermap-cacti-plugin-mgmt.php:1031
+#: setup.php:955 setup.php:962 weathermap-cacti-plugin-mgmt.php:1033
 msgid "Move Map Up"
 msgstr "Премести картата нагоре"
 
-#: setup.php:930 weathermap-cacti-plugin-mgmt.php:2700
+#: setup.php:969 weathermap-cacti-plugin-mgmt.php:2704
 msgid "Move Group Down"
 msgstr "Премести групата надолу"
 
-#: setup.php:937 weathermap-cacti-plugin-mgmt.php:2694
+#: setup.php:976 weathermap-cacti-plugin-mgmt.php:2698
 msgid "Move Group Up"
 msgstr "Премести групата нагоре"
 
-#: setup.php:944
+#: setup.php:983
 msgid "Group Edit"
 msgstr "Редактиране на група"
 
-#: setup.php:951 setup.php:986
+#: setup.php:990 setup.php:1025
 msgid "Group Update"
 msgstr "Групова актуализация"
 
-#: setup.php:958
+#: setup.php:997
 msgid "Activate Map"
 msgstr "Активиране на картата"
 
-#: setup.php:965
+#: setup.php:1004
 msgid "Deactivate Map"
 msgstr "Дезактивиране на картата"
 
-#: setup.php:972 weathermap-cacti-plugin-mgmt.php:58
+#: setup.php:1011 weathermap-cacti-plugin-mgmt.php:58
 msgid "Rebuild Now"
 msgstr "Възстанови сега"
 
-#: setup.php:979 weathermap-cacti-plugin-mgmt.php:2597
+#: setup.php:1018 weathermap-cacti-plugin-mgmt.php:2600
 msgid "Change Group"
 msgstr "Промяна на група"
 
-#: setup.php:993
+#: setup.php:1032
 msgid "Group Admin"
 msgstr "Администратор на група"
 
-#: setup.php:1000
+#: setup.php:1039
 msgid "Group Admin Delete"
 msgstr "Изтриване на администратор на група"
 
-#: weathermap-cacti-plugin-editor.php:330
+#: weathermap-cacti-plugin-editor.php:329
 #, php-format
 msgid "PHP Weathermap Editor %s"
 msgstr "Редактор на метеорологични карти на PHP %s"
 
-#: weathermap-cacti-plugin-editor.php:336
+#: weathermap-cacti-plugin-editor.php:335
 msgid "Change<br>File"
 msgstr "Променям<br>Файл"
 
-#: weathermap-cacti-plugin-editor.php:337
+#: weathermap-cacti-plugin-editor.php:336
 msgid "Add<br>Node"
 msgstr "Добавям<br>Възел"
 
-#: weathermap-cacti-plugin-editor.php:338
+#: weathermap-cacti-plugin-editor.php:337
 msgid "Add<br>Link"
 msgstr "Добавям<br>Връзка"
 
-#: weathermap-cacti-plugin-editor.php:339
+#: weathermap-cacti-plugin-editor.php:338
 msgid "Position<br>Legend"
 msgstr "Положение<br>Легенда"
 
-#: weathermap-cacti-plugin-editor.php:340
+#: weathermap-cacti-plugin-editor.php:339
 msgid "Position<br>Timestamp"
 msgstr "Положение<br>Клеймото"
 
-#: weathermap-cacti-plugin-editor.php:341
+#: weathermap-cacti-plugin-editor.php:340
 msgid "Map<br>Properties"
 msgstr "Карта<br>Свойства"
 
-#: weathermap-cacti-plugin-editor.php:342
+#: weathermap-cacti-plugin-editor.php:341
 msgid "Map<br>Style"
 msgstr "Карта<br>Стил"
 
-#: weathermap-cacti-plugin-editor.php:343
+#: weathermap-cacti-plugin-editor.php:342
 msgid "Manage<br>Colors"
 msgstr "Управлявам<br>Цветове"
 
-#: weathermap-cacti-plugin-editor.php:344
+#: weathermap-cacti-plugin-editor.php:343
 msgid "Manage<br>Images"
 msgstr "управление"
 
-#: weathermap-cacti-plugin-editor.php:345
+#: weathermap-cacti-plugin-editor.php:344
 msgid "Editor<br>Settings"
 msgstr "Настройки на журнал за одит"
 
-#: weathermap-cacti-plugin-editor.php:346
+#: weathermap-cacti-plugin-editor.php:345
 msgid "Position<br>---, ---"
 msgstr "Положение<br>---, ---"
 
-#: weathermap-cacti-plugin-editor.php:348
+#: weathermap-cacti-plugin-editor.php:347
 msgid "Select a menu item or either right-click or click on a Node or Link to edit it's properties"
 msgstr "Изберете елемент от менюто или щракнете с десния бутон или щракнете върху възел или връзка, за да редактирате свойствата му"
 
-#: weathermap-cacti-plugin-editor.php:358
+#: weathermap-cacti-plugin-editor.php:357
 msgid "Debug"
 msgstr "отстраняване на грешки"
 
-#: weathermap-cacti-plugin-editor.php:359
+#: weathermap-cacti-plugin-editor.php:358
 msgid "Re-tidy ALL"
 msgstr "Подредете отново ВСИЧКИ"
 
-#: weathermap-cacti-plugin-editor.php:360
+#: weathermap-cacti-plugin-editor.php:359
 msgid "Re-tidy"
 msgstr "Подредете се"
 
-#: weathermap-cacti-plugin-editor.php:361
+#: weathermap-cacti-plugin-editor.php:360
 msgid "Un-tidy"
 msgstr "Неподреден"
 
-#: weathermap-cacti-plugin-editor.php:362
+#: weathermap-cacti-plugin-editor.php:361
 msgid "Do Nothing"
 msgstr "Не правете нищо"
 
-#: weathermap-cacti-plugin-editor.php:364
+#: weathermap-cacti-plugin-editor.php:363
 msgid "mapfile"
 msgstr "картографски файл"
 
-#: weathermap-cacti-plugin-editor.php:368
+#: weathermap-cacti-plugin-editor.php:367
 msgid "action"
 msgstr "екшън"
 
-#: weathermap-cacti-plugin-editor.php:372
+#: weathermap-cacti-plugin-editor.php:371
 msgid "param"
 msgstr "парам"
 
-#: weathermap-cacti-plugin-editor.php:376
+#: weathermap-cacti-plugin-editor.php:375
 msgid "param2"
 msgstr "парам2"
 
-#: weathermap-cacti-plugin-editor.php:380
+#: weathermap-cacti-plugin-editor.php:379
 msgid "debug"
 msgstr "отстраняване на грешки"
 
-#: weathermap-cacti-plugin-editor.php:383
+#: weathermap-cacti-plugin-editor.php:382
 msgid "See config"
 msgstr "Вижте конфигурацията"
 
@@ -724,194 +762,216 @@ msgstr "Етикет"
 msgid "Icon Filename"
 msgstr "Име на файл на икона"
 
-#: weathermap-cacti-plugin-editor.php:445
-#: weathermap-cacti-plugin-editor.php:539
+#: weathermap-cacti-plugin-editor.php:446
+#: weathermap-cacti-plugin-editor.php:540
 msgid "Info URL(s)"
 msgstr "Информационни URL адреси"
 
-#: weathermap-cacti-plugin-editor.php:451
-#: weathermap-cacti-plugin-editor.php:545
+#: weathermap-cacti-plugin-editor.php:452
+#: weathermap-cacti-plugin-editor.php:546
 msgid "Hover Graph URL(s)"
 msgstr "Стил на графиката на посочване"
 
-#: weathermap-cacti-plugin-editor.php:457
-#: weathermap-cacti-plugin-editor.php:551
+#: weathermap-cacti-plugin-editor.php:458
+#: weathermap-cacti-plugin-editor.php:552
 msgid "Graph Template"
 msgstr "Шаблони за елементи на графиката"
 
-#: weathermap-cacti-plugin-editor.php:461
-#: weathermap-cacti-plugin-editor.php:555 weathermap-cacti-plugin-mgmt.php:1832
+#: weathermap-cacti-plugin-editor.php:462
+#: weathermap-cacti-plugin-editor.php:556 weathermap-cacti-plugin-mgmt.php:1836
 msgid "All"
 msgstr "Всички"
 
-#: weathermap-cacti-plugin-editor.php:476
-#: weathermap-cacti-plugin-editor.php:570
+#: weathermap-cacti-plugin-editor.php:477
+#: weathermap-cacti-plugin-editor.php:571
 msgid "Graph Selector"
 msgstr "Покажи селектора на картата"
 
-#: weathermap-cacti-plugin-editor.php:490
-#: weathermap-cacti-plugin-editor.php:611
-#: weathermap-cacti-plugin-editor.php:682
-#: weathermap-cacti-plugin-editor.php:775
+#: weathermap-cacti-plugin-editor.php:491
+#: weathermap-cacti-plugin-editor.php:612
+#: weathermap-cacti-plugin-editor.php:684
+#: weathermap-cacti-plugin-editor.php:797
 msgid "Save"
 msgstr "Запази"
 
-#: weathermap-cacti-plugin-editor.php:494
+#: weathermap-cacti-plugin-editor.php:495
 msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
 msgstr "Можете да промените възела Weathermap от тук.  Колоните Позиция са позицията X,Y на картата.  Вътрешното име е уникалният идентификатор, даден на възела.  Етикетът е външното име на възела, който предоставяте на потребителите.  Името на файла на иконата е графиката, която искате да представите обекта на възела.  URL адресът на INFO е връзка, която можете да предоставите, когато щракнете върху активния възел на картата.  URL адресите на Hover Graph са кактуси или други URL адреси на графики, които могат да се появят при задържане на курсора на мишката върху възела.  Селекторът на графики е помощник за избор на кактусови графики за URL адресите на графиката.   Възможни са няколко други свойства на Node.  Днес обаче подкрепяме само включените по-горе."
 
-#: weathermap-cacti-plugin-editor.php:501
+#: weathermap-cacti-plugin-editor.php:502
 msgid "Link Properties"
 msgstr "Свойства на връзката"
 
-#: weathermap-cacti-plugin-editor.php:523
+#: weathermap-cacti-plugin-editor.php:524
 msgid "Data Source(s)"
 msgstr "Източник(ци) на данни"
 
-#: weathermap-cacti-plugin-editor.php:529
+#: weathermap-cacti-plugin-editor.php:530
 msgid "Data Source Selector"
 msgstr "Селектор на източник на данни"
 
-#: weathermap-cacti-plugin-editor.php:535
+#: weathermap-cacti-plugin-editor.php:536
 msgid "Link Width"
 msgstr "Ширина на връзката"
 
-#: weathermap-cacti-plugin-editor.php:576
+#: weathermap-cacti-plugin-editor.php:577
 msgid "IN Comment"
 msgstr "Коментар"
 
-#: weathermap-cacti-plugin-editor.php:589
+#: weathermap-cacti-plugin-editor.php:590
 msgid "OUT Comment"
 msgstr "OUT Коментар"
 
-#: weathermap-cacti-plugin-editor.php:615
+#: weathermap-cacti-plugin-editor.php:616
 msgid "You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above."
 msgstr "Можете да промените връзката към метеорологичната карта от тук.  Максималната честотна лента се отнася до максималната постижима честотна лента.  Поддържаните суфикси са K, M, G и T.  Източници на данни е местоположение, където можете да добавяте местоположения на RRDfile, включително някои математически изчисления на RRDfile.  Вижте документацията за това.  Селекторът на източник на данни е помощник за избор на кактусови графики за представяне на целта или целите.  Ширината на връзката е ширината на стрелката на връзката.  URL адресът на INFO е връзка, която можете да предоставите, когато щракнете върху активната връзка към картата.  URL адресите на Hover Graph са кактуси или други URL адреси на графики, които могат да се появят при задържане на курсора на мишката върху връзката.  Селекторът на графики е помощник за избор на кактусови графики за URL адресите на графиката. Коментарите IN и OUT се появяват на връзките с връзките.  Възможни са няколко други свойства на Link.  Днес обаче подкрепяме само включените по-горе."
 
-#: weathermap-cacti-plugin-editor.php:622
+#: weathermap-cacti-plugin-editor.php:623
 msgid "Map Properties"
 msgstr "Разрешения за карта"
 
-#: weathermap-cacti-plugin-editor.php:627
+#: weathermap-cacti-plugin-editor.php:628
 msgid "Map Title"
 msgstr "Заглавие"
 
-#: weathermap-cacti-plugin-editor.php:631
+#: weathermap-cacti-plugin-editor.php:632
 msgid "Legend Text"
 msgstr "Текст на легендата"
 
-#: weathermap-cacti-plugin-editor.php:635
+#: weathermap-cacti-plugin-editor.php:636
 msgid "Background Image Filename"
 msgstr "Име на файл на фоново изображение"
 
-#: weathermap-cacti-plugin-editor.php:657
+#: weathermap-cacti-plugin-editor.php:659
 msgid "Timestamp Text"
 msgstr "Текст на времевия печат"
 
-#: weathermap-cacti-plugin-editor.php:661
+#: weathermap-cacti-plugin-editor.php:663
 msgid "Default Link Width"
 msgstr "Ширина по подразбиране на графиката на посочване"
 
-#: weathermap-cacti-plugin-editor.php:662
-#: weathermap-cacti-plugin-editor.php:674
+#: weathermap-cacti-plugin-editor.php:664
+#: weathermap-cacti-plugin-editor.php:676
 msgid "pixels"
 msgstr "пиксела"
 
-#: weathermap-cacti-plugin-editor.php:665
+#: weathermap-cacti-plugin-editor.php:667
 msgid "Default Link Bandwidth"
 msgstr "Честотна лента на връзката по подразбиране"
 
-#: weathermap-cacti-plugin-editor.php:667
+#: weathermap-cacti-plugin-editor.php:669
 msgid "bit/sec in"
 msgstr "бит/сек в"
 
-#: weathermap-cacti-plugin-editor.php:667
+#: weathermap-cacti-plugin-editor.php:669
 msgid "bit/sec out"
 msgstr "бит/сек изход"
 
-#: weathermap-cacti-plugin-editor.php:671
+#: weathermap-cacti-plugin-editor.php:673
 msgid "Map Size"
 msgstr "Размер"
 
-#: weathermap-cacti-plugin-editor.php:686
+#: weathermap-cacti-plugin-editor.php:688
 msgid "This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included."
 msgstr "Този диалогов прозорец контролира цялостните свойства на картата.  Редакторът се поддържа от следното: заглавие, текст на легендата, фоново изображение, текст на клеймото за час, ширина на връзката по подразбиране, честотна лента на връзката по подразбиране и размер на картата.  Възможни са няколко допълнителни настройки по подразбиране на картата.  Но в тази версия на редактора ние подкрепяме само включените."
 
-#: weathermap-cacti-plugin-editor.php:693
+#: weathermap-cacti-plugin-editor.php:695
 msgid "Map Style"
 msgstr "Стил на картата"
 
-#: weathermap-cacti-plugin-editor.php:698
+#: weathermap-cacti-plugin-editor.php:700
 msgid "Map Defaults"
 msgstr "По подразбиране"
 
-#: weathermap-cacti-plugin-editor.php:701
+#: weathermap-cacti-plugin-editor.php:703
 msgid "HTML Style"
 msgstr "Стил"
 
-#: weathermap-cacti-plugin-editor.php:704
+#: weathermap-cacti-plugin-editor.php:706
 msgid "Dynamic HTML"
 msgstr "Динамичен HTML"
 
-#: weathermap-cacti-plugin-editor.php:705
+#: weathermap-cacti-plugin-editor.php:707
 msgid "Static HTML"
 msgstr "Статичен HTML"
 
-#: weathermap-cacti-plugin-editor.php:710
-msgid "Legend Font"
-msgstr "Шрифт Legend"
-
-#: weathermap-cacti-plugin-editor.php:714
-msgid "Node Defaults"
-msgstr "По подразбиране"
-
-#: weathermap-cacti-plugin-editor.php:717
-msgid "Node Font"
-msgstr "Шрифт на възел"
-
-#: weathermap-cacti-plugin-editor.php:721
-#: weathermap-cacti-plugin-editor.php:759
-msgid "Graph Width"
-msgstr "Ширина по подразбиране на графиката на посочване"
-
-#: weathermap-cacti-plugin-editor.php:727
-#: weathermap-cacti-plugin-editor.php:765
-msgid "Graph Height"
-msgstr "Височина по подразбиране на графиката на посочване"
-
-#: weathermap-cacti-plugin-editor.php:733
-msgid "Link Defaults"
-msgstr "По подразбиране"
-
-#: weathermap-cacti-plugin-editor.php:736
-msgid "Link Labels"
-msgstr "Етикети за връзки"
-
-#: weathermap-cacti-plugin-editor.php:739
-msgid "Bits/sec"
-msgstr "Битове/сек"
-
-#: weathermap-cacti-plugin-editor.php:740
-msgid "Percentage"
-msgstr "Проценти"
-
-#: weathermap-cacti-plugin-editor.php:741
-msgid "None"
-msgstr "Няма"
-
-#: weathermap-cacti-plugin-editor.php:746
-msgid "Arrow Style"
+#: weathermap-cacti-plugin-editor.php:712
+#, fuzzy
+msgid "Key Style"
 msgstr "Стил"
 
-#: weathermap-cacti-plugin-editor.php:749
+#: weathermap-cacti-plugin-editor.php:717
+#: weathermap-cacti-plugin-editor.php:771
 msgid "Classic"
 msgstr "Класически"
 
-#: weathermap-cacti-plugin-editor.php:750
+#: weathermap-cacti-plugin-editor.php:718
+msgid "Horizontal"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:719
+msgid "Vertical"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:720
+msgid "Inverted"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:721
+msgid "Tags"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php:732
+msgid "Legend Font"
+msgstr "Шрифт Legend"
+
+#: weathermap-cacti-plugin-editor.php:736
+msgid "Node Defaults"
+msgstr "По подразбиране"
+
+#: weathermap-cacti-plugin-editor.php:739
+msgid "Node Font"
+msgstr "Шрифт на възел"
+
+#: weathermap-cacti-plugin-editor.php:743
+#: weathermap-cacti-plugin-editor.php:781
+msgid "Graph Width"
+msgstr "Ширина по подразбиране на графиката на посочване"
+
+#: weathermap-cacti-plugin-editor.php:749
+#: weathermap-cacti-plugin-editor.php:787
+msgid "Graph Height"
+msgstr "Височина по подразбиране на графиката на посочване"
+
+#: weathermap-cacti-plugin-editor.php:755
+msgid "Link Defaults"
+msgstr "По подразбиране"
+
+#: weathermap-cacti-plugin-editor.php:758
+msgid "Link Labels"
+msgstr "Етикети за връзки"
+
+#: weathermap-cacti-plugin-editor.php:761
+msgid "Bits/sec"
+msgstr "Битове/сек"
+
+#: weathermap-cacti-plugin-editor.php:762
+msgid "Percentage"
+msgstr "Проценти"
+
+#: weathermap-cacti-plugin-editor.php:763
+msgid "None"
+msgstr "Няма"
+
+#: weathermap-cacti-plugin-editor.php:768
+msgid "Arrow Style"
+msgstr "Стил"
+
+#: weathermap-cacti-plugin-editor.php:772
 msgid "Compact"
 msgstr "Компактен"
 
-#: weathermap-cacti-plugin-editor.php:755
+#: weathermap-cacti-plugin-editor.php:777
 msgid "Link Label Font"
 msgstr "Шрифт на етикета на връзката"
 
@@ -956,705 +1016,706 @@ msgstr "Акаунтът на уеб услугата трябва да има �
 msgid "Weathermap Permission Error"
 msgstr "Грешка в разрешението за карта на времето"
 
-#: weathermap-cacti-plugin-mgmt.php:451
+#: weathermap-cacti-plugin-mgmt.php:453
 #, php-format
 msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
 msgstr "%d избрани карти са възстановени за %0.2f секунди!"
 
-#: weathermap-cacti-plugin-mgmt.php:486
+#: weathermap-cacti-plugin-mgmt.php:488
 msgid "Click 'Continue' to delete the following Weather Map."
 msgid_plural "Click 'Continue' to delete following Weather Maps."
 msgstr[0] "Кликнете върху \"Продължи\", за да изтриете следната метеорологична карта."
 msgstr[1] "Кликнете върху \"Продължи\", за да изтриете следните метеорологични карти."
 
-#: weathermap-cacti-plugin-mgmt.php:491 weathermap-cacti-plugin-mgmt.php:511
-#: weathermap-cacti-plugin-mgmt.php:520 weathermap-cacti-plugin-mgmt.php:529
-#: weathermap-cacti-plugin-mgmt.php:538
+#: weathermap-cacti-plugin-mgmt.php:493 weathermap-cacti-plugin-mgmt.php:513
+#: weathermap-cacti-plugin-mgmt.php:522 weathermap-cacti-plugin-mgmt.php:531
+#: weathermap-cacti-plugin-mgmt.php:540
 msgid "Continue"
 msgstr "Продължи"
 
-#: weathermap-cacti-plugin-mgmt.php:491
+#: weathermap-cacti-plugin-mgmt.php:493
 msgid "Delete Weather Map"
 msgid_plural "Delete Weather Maps"
 msgstr[0] "Изтриване на карта за времето"
 msgstr[1] "Изтриване на карти за времето"
 
-#: weathermap-cacti-plugin-mgmt.php:495
+#: weathermap-cacti-plugin-mgmt.php:497
 msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
 msgstr[0] "Кликнете върху \"Продължи\", за да дублирате следната метеорологична карта. По желание можете да промените формата на заглавието за новата карта на времето."
 msgstr[1] "Кликнете върху \"Продължи\", за да дублирате следните метеорологични карти. По желание можете да промените формата на заглавието за новите метеорологични карти."
 
-#: weathermap-cacti-plugin-mgmt.php:497
+#: weathermap-cacti-plugin-mgmt.php:499
 msgid "Title Format:"
 msgstr "Формат на заглавието:"
 
-#: weathermap-cacti-plugin-mgmt.php:503
+#: weathermap-cacti-plugin-mgmt.php:505
 msgid "Config File Format:"
 msgstr "Формат на конфигурационния файл:"
 
-#: weathermap-cacti-plugin-mgmt.php:511
+#: weathermap-cacti-plugin-mgmt.php:513
 msgid "Duplicate Weather Map"
 msgid_plural "Duplicate Weather Maps"
 msgstr[0] "Дублиране на картата на времето"
 msgstr[1] "Дублиране на метеорологичните карти"
 
-#: weathermap-cacti-plugin-mgmt.php:515
+#: weathermap-cacti-plugin-mgmt.php:517
 msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
 msgstr[0] "Кликнете върху \"Продължи\", за да деактивирате следната карта на времето. По желание можете да промените формата на заглавието за новата карта на времето."
 msgstr[1] "Кликнете върху \"Продължи\", за да деактивирате следните метеорологични карти. По желание можете да промените формата на заглавието за новите метеорологични карти."
 
-#: weathermap-cacti-plugin-mgmt.php:520
+#: weathermap-cacti-plugin-mgmt.php:522
 msgid "Disable Weather Map"
 msgid_plural "Disable Weather Maps"
 msgstr[0] "Деактивиране на картата на времето"
 msgstr[1] "Изключване на картите за времето"
 
-#: weathermap-cacti-plugin-mgmt.php:524
+#: weathermap-cacti-plugin-mgmt.php:526
 msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
 msgstr[0] "Кликнете върху \"Продължи\", за да активирате следната карта на времето. По желание можете да промените формата на заглавието за новата карта на времето."
 msgstr[1] "Кликнете върху \"Продължи\", за да активирате следните метеорологични карти. По желание можете да промените формата на заглавието за новите метеорологични карти."
 
-#: weathermap-cacti-plugin-mgmt.php:529
+#: weathermap-cacti-plugin-mgmt.php:531
 msgid "Enable Weather Map"
 msgid_plural "Enable Weather Maps"
 msgstr[0] "Активиране на картата на времето"
 msgstr[1] "Активиране на карти за прогноза за времето"
 
-#: weathermap-cacti-plugin-mgmt.php:533
+#: weathermap-cacti-plugin-mgmt.php:535
 msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
 msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
 msgstr[0] "Кликнете върху \"Продължи\", за да възстановите следната метеорологична карта. По желание можете да промените формата на заглавието за новата карта на времето."
 msgstr[1] "Кликнете върху \"Продължи\", за да възстановите следните метеорологични карти. По желание можете да промените формата на заглавието за новите метеорологични карти."
 
-#: weathermap-cacti-plugin-mgmt.php:538
+#: weathermap-cacti-plugin-mgmt.php:540
 msgid "Rebuild Weather Map"
 msgid_plural "Rebuild Weather Maps"
 msgstr[0] "Възстановяване на картата на времето"
 msgstr[1] "Възстановяване на метеорологичните карти"
 
-#: weathermap-cacti-plugin-mgmt.php:567 weathermap-cacti-plugin.php:720
+#: weathermap-cacti-plugin-mgmt.php:569 weathermap-cacti-plugin.php:722
 msgid "Local Documentation"
 msgstr "Местна документация"
 
-#: weathermap-cacti-plugin-mgmt.php:567
+#: weathermap-cacti-plugin-mgmt.php:569
 #, php-format
 msgid "This is version %s"
 msgstr "Това е версия %s"
 
-#: weathermap-cacti-plugin-mgmt.php:567
+#: weathermap-cacti-plugin-mgmt.php:569
 msgid "Weathermap Website"
 msgstr "Карта сайта"
 
-#: weathermap-cacti-plugin-mgmt.php:697
+#: weathermap-cacti-plugin-mgmt.php:699
 #, php-format
 msgid "Weather Maps [ Run Details: %s ]"
 msgstr "Карта сайта [ Подробности за изпълнение: %s ]"
 
-#: weathermap-cacti-plugin-mgmt.php:705 weathermap-cacti-plugin-mgmt.php:1188
-#: weathermap-cacti-plugin-mgmt.php:1822
+#: weathermap-cacti-plugin-mgmt.php:707 weathermap-cacti-plugin-mgmt.php:1194
+#: weathermap-cacti-plugin-mgmt.php:1826
 msgid "Search"
 msgstr "Търсене"
 
-#: weathermap-cacti-plugin-mgmt.php:711 weathermap-cacti-plugin-mgmt.php:908
+#: weathermap-cacti-plugin-mgmt.php:713 weathermap-cacti-plugin-mgmt.php:910
 msgid "Maps"
 msgstr "Карти"
 
-#: weathermap-cacti-plugin-mgmt.php:715 weathermap-cacti-plugin-mgmt.php:1198
-#: weathermap-cacti-plugin-mgmt.php:1842
+#: weathermap-cacti-plugin-mgmt.php:717 weathermap-cacti-plugin-mgmt.php:1204
+#: weathermap-cacti-plugin-mgmt.php:1846
 msgid "Default"
 msgstr "По подразбиране"
 
-#: weathermap-cacti-plugin-mgmt.php:727 weathermap-cacti-plugin-mgmt.php:1864
+#: weathermap-cacti-plugin-mgmt.php:729 weathermap-cacti-plugin-mgmt.php:1868
 msgctxt "Button: use filter settings"
 msgid "Go"
 msgstr "Търси"
 
-#: weathermap-cacti-plugin-mgmt.php:728 weathermap-cacti-plugin-mgmt.php:1865
+#: weathermap-cacti-plugin-mgmt.php:730 weathermap-cacti-plugin-mgmt.php:1869
 msgctxt "Button: reset filter settings"
 msgid "Clear"
 msgstr "Изчисти"
 
-#: weathermap-cacti-plugin-mgmt.php:729
+#: weathermap-cacti-plugin-mgmt.php:731
 msgid "Group Settings"
 msgstr "Настройки на журнал за одит"
 
-#: weathermap-cacti-plugin-mgmt.php:730
+#: weathermap-cacti-plugin-mgmt.php:732
 msgid "Cacti Weathermap Map Settings"
 msgstr "Настройки на картата на картата на Cacti Weathermap"
 
-#: weathermap-cacti-plugin-mgmt.php:731
+#: weathermap-cacti-plugin-mgmt.php:733
 msgid "Cacti Weathermap Settings"
 msgstr "Настройки на картата на времето на кактуси"
 
-#: weathermap-cacti-plugin-mgmt.php:731 weathermap-cacti-plugin-mgmt.php:934
-#: weathermap-cacti-plugin-mgmt.php:2656
+#: weathermap-cacti-plugin-mgmt.php:733 weathermap-cacti-plugin-mgmt.php:936
+#: weathermap-cacti-plugin-mgmt.php:2660
 msgid "Settings"
 msgstr "Настойки"
 
-#: weathermap-cacti-plugin-mgmt.php:732
+#: weathermap-cacti-plugin-mgmt.php:734
 msgid "Rebuild All"
 msgstr "Възстановяване на всички"
 
-#: weathermap-cacti-plugin-mgmt.php:732
+#: weathermap-cacti-plugin-mgmt.php:734
 msgid "Rebuild all maps now in background"
 msgstr "Възстановяване на всички карти сега във фонов режим"
 
-#: weathermap-cacti-plugin-mgmt.php:845
+#: weathermap-cacti-plugin-mgmt.php:847
 #, php-format
 msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
 msgstr "Използвате приставката Boost, за да актуализирате RRD файлове. Тъй като това забавя записването на данни във файловете, това води до проблеми с актуализациите на Weathermap. Можете да разрешите това, като използвате поддръжката \"poller_output\" на Weathermap, която взема данни директно от избирателя. %s Можете да активирате това глобално, като кликнете тук %s"
 
-#: weathermap-cacti-plugin-mgmt.php:855
+#: weathermap-cacti-plugin-mgmt.php:857
 #, php-format
 msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
 msgstr "Последният път, когато се завтече, Weathermap НЕ завърши изпълнението му. Той не успя по време на обработката за \"%s\""
 
-#: weathermap-cacti-plugin-mgmt.php:857
+#: weathermap-cacti-plugin-mgmt.php:859
 msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
 msgstr "Това <strong>може да</strong> е засегнало други плъгини, които се изпълняват по време на процеса на гласуване."
 
-#: weathermap-cacti-plugin-mgmt.php:859
+#: weathermap-cacti-plugin-mgmt.php:861
 msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
 msgstr "Трябва или да забраните тази карта, или да откриете грешка. Възможните причини включват memory_limit проблеми. Регистрационният файл може да съдържа повече информация."
 
-#: weathermap-cacti-plugin-mgmt.php:918 weathermap-cacti-plugin-mgmt.php:1407
+#: weathermap-cacti-plugin-mgmt.php:920 weathermap-cacti-plugin-mgmt.php:1413
 msgid "Title"
 msgstr "Заглавие"
 
-#: weathermap-cacti-plugin-mgmt.php:921 weathermap-cacti-plugin-mgmt.php:1411
+#: weathermap-cacti-plugin-mgmt.php:923 weathermap-cacti-plugin-mgmt.php:1417
 msgid "Config File"
 msgstr "Конфигурационен файл"
 
-#: weathermap-cacti-plugin-mgmt.php:924
+#: weathermap-cacti-plugin-mgmt.php:926
 msgid "ID"
 msgstr "ID"
 
-#: weathermap-cacti-plugin-mgmt.php:928
+#: weathermap-cacti-plugin-mgmt.php:930
 msgid "Group"
 msgstr "Група"
 
-#: weathermap-cacti-plugin-mgmt.php:931
+#: weathermap-cacti-plugin-mgmt.php:933
 msgid "Enabled"
 msgstr "Разрешен"
 
-#: weathermap-cacti-plugin-mgmt.php:937 weathermap-cacti-plugin-mgmt.php:2656
+#: weathermap-cacti-plugin-mgmt.php:939 weathermap-cacti-plugin-mgmt.php:2660
 msgid "Sort Order"
 msgstr "Подреди поръчките"
 
-#: weathermap-cacti-plugin-mgmt.php:941
+#: weathermap-cacti-plugin-mgmt.php:943
 msgid "Order"
 msgstr "Поръчка"
 
-#: weathermap-cacti-plugin-mgmt.php:945
+#: weathermap-cacti-plugin-mgmt.php:947
 msgid "Accessible By"
 msgstr "Достъпен от"
 
-#: weathermap-cacti-plugin-mgmt.php:948
+#: weathermap-cacti-plugin-mgmt.php:950
 msgid "Last Duration"
 msgstr "Последна продължителност"
 
-#: weathermap-cacti-plugin-mgmt.php:952
+#: weathermap-cacti-plugin-mgmt.php:954
 msgid "Last Runtime"
 msgstr "Време на последно изпълнение"
 
-#: weathermap-cacti-plugin-mgmt.php:963
+#: weathermap-cacti-plugin-mgmt.php:965
 msgid "Anyone"
 msgstr "Всеки"
 
-#: weathermap-cacti-plugin-mgmt.php:975
+#: weathermap-cacti-plugin-mgmt.php:977
 msgid "Click to start editor with this file"
 msgstr "Щракнете, за да стартирате редактора с този файл"
 
-#: weathermap-cacti-plugin-mgmt.php:983
+#: weathermap-cacti-plugin-mgmt.php:985
 msgid "Check cacti.log for this Map"
 msgstr "Проверете cacti.log за тази карта"
 
-#: weathermap-cacti-plugin-mgmt.php:993
+#: weathermap-cacti-plugin-mgmt.php:995
 msgid "Click to change group"
 msgstr "Щракнете, за да промените групата"
 
-#: weathermap-cacti-plugin-mgmt.php:999
+#: weathermap-cacti-plugin-mgmt.php:1001
 msgid "Click to Deactivate"
 msgstr "Щракнете, за да дезактивирате"
 
-#: weathermap-cacti-plugin-mgmt.php:1006
+#: weathermap-cacti-plugin-mgmt.php:1008
 msgid "Click to Activate"
 msgstr "Щракнете, за да активирате"
 
-#: weathermap-cacti-plugin-mgmt.php:1022 weathermap-cacti-plugin-mgmt.php:2685
+#: weathermap-cacti-plugin-mgmt.php:1024 weathermap-cacti-plugin-mgmt.php:2689
 #, php-format
 msgid "%d Specials"
 msgstr "%d Промоции"
 
-#: weathermap-cacti-plugin-mgmt.php:1024 weathermap-cacti-plugin-mgmt.php:2687
+#: weathermap-cacti-plugin-mgmt.php:1026 weathermap-cacti-plugin-mgmt.php:2691
 msgid "Standard"
 msgstr "Стандарт"
 
-#: weathermap-cacti-plugin-mgmt.php:1036
+#: weathermap-cacti-plugin-mgmt.php:1038
 msgid "Move Map Down"
 msgstr "Премести картата надолу"
 
-#: weathermap-cacti-plugin-mgmt.php:1054
+#: weathermap-cacti-plugin-mgmt.php:1056
 msgid "Click to edit permissions"
 msgstr "Щракнете, за да редактирате разрешенията"
 
-#: weathermap-cacti-plugin-mgmt.php:1058
+#: weathermap-cacti-plugin-mgmt.php:1060
 msgid "No Users"
 msgstr "Потребители"
 
-#: weathermap-cacti-plugin-mgmt.php:1063 weathermap-cacti-plugin-mgmt.php:2163
+#: weathermap-cacti-plugin-mgmt.php:1066 weathermap-cacti-plugin-mgmt.php:2168
 msgid "All Users"
 msgstr "Всички потребители"
 
-#: weathermap-cacti-plugin-mgmt.php:1067
-#, php-format
-msgid "%s Groups"
+#: weathermap-cacti-plugin-mgmt.php:1070
+#, fuzzy, php-format
+msgid "%d Groups"
 msgstr "%s Групи"
 
-#: weathermap-cacti-plugin-mgmt.php:1067
+#: weathermap-cacti-plugin-mgmt.php:1070
 msgid "1 Group"
 msgstr "1 Група"
 
-#: weathermap-cacti-plugin-mgmt.php:1071
-#, php-format
-msgid "%s Users"
+#: weathermap-cacti-plugin-mgmt.php:1075
+#, fuzzy, php-format
+msgid "%d Users"
 msgstr "%s потребители"
 
-#: weathermap-cacti-plugin-mgmt.php:1071
+#: weathermap-cacti-plugin-mgmt.php:1075
 msgid "1 User"
 msgstr "Потребител"
 
-#: weathermap-cacti-plugin-mgmt.php:1089
+#: weathermap-cacti-plugin-mgmt.php:1093
 msgid "No Weathermaps Found"
 msgstr "Не са намерени метеорологични карти"
 
-#: weathermap-cacti-plugin-mgmt.php:1169
+#: weathermap-cacti-plugin-mgmt.php:1175
 #, php-format
 msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
 msgstr "Няма директория с име %s.  Трябва да го създадете и да го настроите да бъде четлив от уеб сървъра. Ако искате да качите конфигурационни файлове от вътрешността на Cacti, тогава тя трябва да бъде <i>записваема</i> и от уеб сървъра."
 
-#: weathermap-cacti-plugin-mgmt.php:1179
+#: weathermap-cacti-plugin-mgmt.php:1185
 msgid "Existing Configuration Files"
 msgstr "Съществуващи конфигурационни файлове"
 
-#: weathermap-cacti-plugin-mgmt.php:1194
+#: weathermap-cacti-plugin-mgmt.php:1200
 msgid "Num Files"
 msgstr "Брой файлове"
 
-#: weathermap-cacti-plugin-mgmt.php:1211
+#: weathermap-cacti-plugin-mgmt.php:1217
 msgid "Has Maps"
 msgstr "Има карти"
 
-#: weathermap-cacti-plugin-mgmt.php:1216
+#: weathermap-cacti-plugin-mgmt.php:1222
 msgid "Go"
 msgstr "Търси"
 
-#: weathermap-cacti-plugin-mgmt.php:1216
+#: weathermap-cacti-plugin-mgmt.php:1222
 msgid "Set/Refresh Filters"
 msgstr "Задаване / опресняване на филтрите"
 
-#: weathermap-cacti-plugin-mgmt.php:1217
+#: weathermap-cacti-plugin-mgmt.php:1223
 msgid "Clear"
 msgstr "Изчисти"
 
-#: weathermap-cacti-plugin-mgmt.php:1217
+#: weathermap-cacti-plugin-mgmt.php:1223
 msgid "Clear Filters"
 msgstr "Изчистване на филтрите"
 
-#: weathermap-cacti-plugin-mgmt.php:1229
+#: weathermap-cacti-plugin-mgmt.php:1235
 msgid "Create Options"
 msgstr "Опции за създаване"
 
-#: weathermap-cacti-plugin-mgmt.php:1238 weathermap-cacti-plugin.php:721
+#: weathermap-cacti-plugin-mgmt.php:1244 weathermap-cacti-plugin.php:723
 msgid "New Map"
 msgstr "Нова карта"
 
-#: weathermap-cacti-plugin-mgmt.php:1241
-msgid "Name including the \\.conf"
+#: weathermap-cacti-plugin-mgmt.php:1247
+#, fuzzy
+msgid "Name including .conf"
 msgstr "Име, включително \\.conf"
 
-#: weathermap-cacti-plugin-mgmt.php:1244
+#: weathermap-cacti-plugin-mgmt.php:1250
 msgid "Source Map"
 msgstr "Карта на източника"
 
-#: weathermap-cacti-plugin-mgmt.php:1248
+#: weathermap-cacti-plugin-mgmt.php:1254
 msgid "Empty File"
 msgstr "Празен файл"
 
-#: weathermap-cacti-plugin-mgmt.php:1404 weathermap-cacti-plugin-mgmt.php:2656
+#: weathermap-cacti-plugin-mgmt.php:1410 weathermap-cacti-plugin-mgmt.php:2660
 msgid "Actions"
 msgstr "Действия"
 
-#: weathermap-cacti-plugin-mgmt.php:1415
+#: weathermap-cacti-plugin-mgmt.php:1421
 msgid "Create Date"
 msgstr "Дата на създаване"
 
-#: weathermap-cacti-plugin-mgmt.php:1420
+#: weathermap-cacti-plugin-mgmt.php:1426
 msgid "Last Modified"
 msgstr "Последна промяна"
 
-#: weathermap-cacti-plugin-mgmt.php:1425
+#: weathermap-cacti-plugin-mgmt.php:1431
 msgid "Size"
 msgstr "Размер"
 
-#: weathermap-cacti-plugin-mgmt.php:1431
+#: weathermap-cacti-plugin-mgmt.php:1437
 msgid "Config Files"
 msgstr "Конфигурационни файлове"
 
-#: weathermap-cacti-plugin-mgmt.php:1450
+#: weathermap-cacti-plugin-mgmt.php:1456
 #, php-format
 msgid "Add the configuration file %s to Weathermap"
 msgstr "Добавяне на конфигурационния файл %s към Weathermap"
 
-#: weathermap-cacti-plugin-mgmt.php:1461
+#: weathermap-cacti-plugin-mgmt.php:1467
 msgid " Copy"
 msgstr "Копирайте"
 
-#: weathermap-cacti-plugin-mgmt.php:1463
+#: weathermap-cacti-plugin-mgmt.php:1469
 #, php-format
 msgid "Duplicate the configuration file %s and add to Weathermap as %s"
 msgstr "Дублирайте конфигурационния файл %s и добавете към Weathermap като %s"
 
-#: weathermap-cacti-plugin-mgmt.php:1468
+#: weathermap-cacti-plugin-mgmt.php:1474
 #, php-format
 msgid "View the configuration file %s in a new window"
 msgstr "Преглед на %s на конфигурационния файл в нов прозорец"
 
-#: weathermap-cacti-plugin-mgmt.php:1477
+#: weathermap-cacti-plugin-mgmt.php:1483
 msgid "NOTE: Already in use. Click duplicate to create a new file."
 msgstr "ЗАБЕЛЕЖКА: Вече се използва. Щракнете върху дублиране, за да създадете нов файл."
 
-#: weathermap-cacti-plugin-mgmt.php:1495
+#: weathermap-cacti-plugin-mgmt.php:1501
 msgid "No files were found in the configs directory."
 msgstr "Не са намерени файлове в директорията на конфигурациите."
 
-#: weathermap-cacti-plugin-mgmt.php:1514
+#: weathermap-cacti-plugin-mgmt.php:1520
 #, php-format
 msgid "The path %s is not in the config directory."
 msgstr "Пътят %s не е в директорията за конфигуриране."
 
-#: weathermap-cacti-plugin-mgmt.php:1519
+#: weathermap-cacti-plugin-mgmt.php:1525
 #, php-format
 msgid "Preview of %s"
 msgstr "Преглед на %s"
 
-#: weathermap-cacti-plugin-mgmt.php:1536
+#: weathermap-cacti-plugin-mgmt.php:1542
 #, php-format
 msgid "The path %s does not appear to exist in the config directory"
 msgstr "Пътят %s изглежда не съществува в конфигурационната директория"
 
-#: weathermap-cacti-plugin-mgmt.php:1559
+#: weathermap-cacti-plugin-mgmt.php:1565
 msgid "Path mismatch"
 msgstr "Несъответствие на пътя"
 
-#: weathermap-cacti-plugin-mgmt.php:1593
+#: weathermap-cacti-plugin-mgmt.php:1599
 msgid "(No Title)"
 msgstr "Заглавие"
 
-#: weathermap-cacti-plugin-mgmt.php:1721
+#: weathermap-cacti-plugin-mgmt.php:1727
 #, php-format
 msgid "The new Map with the name %s was created using config file %s"
 msgstr "Новата карта с името %s е създадена с помощта на конфигурационен файл %s"
 
-#: weathermap-cacti-plugin-mgmt.php:1736
+#: weathermap-cacti-plugin-mgmt.php:1742
 #, php-format
 msgid "The new Map with the name %s was unable to create the config file %s"
 msgstr "Новата карта с името %s не можа да създаде конфигурационния файл %s"
 
-#: weathermap-cacti-plugin-mgmt.php:1740
+#: weathermap-cacti-plugin-mgmt.php:1745
 #, php-format
 msgid "The new Map with the name %s was unable to locate the config file %s to copy"
 msgstr "Новата карта с името %s не можа да намери конфигурационния файл %s да копира"
 
-#: weathermap-cacti-plugin-mgmt.php:1814
+#: weathermap-cacti-plugin-mgmt.php:1818
 #, php-format
 msgid "Weathermap Permissions for Map [ %s ]"
 msgstr "Разрешения за карта на времето за карта [ %s ]"
 
-#: weathermap-cacti-plugin-mgmt.php:1828
+#: weathermap-cacti-plugin-mgmt.php:1832
 msgid "Type"
 msgstr "Тип"
 
-#: weathermap-cacti-plugin-mgmt.php:1833
+#: weathermap-cacti-plugin-mgmt.php:1837
 msgid "Users"
 msgstr "Потребители"
 
-#: weathermap-cacti-plugin-mgmt.php:1834
+#: weathermap-cacti-plugin-mgmt.php:1838
 msgid "User Groups"
 msgstr "Потребителски групи"
 
-#: weathermap-cacti-plugin-mgmt.php:1838
+#: weathermap-cacti-plugin-mgmt.php:1842
 msgid "Rows"
 msgstr "Редове"
 
-#: weathermap-cacti-plugin-mgmt.php:1859
+#: weathermap-cacti-plugin-mgmt.php:1863
 msgid "Has Permissions"
 msgstr "Има разрешения"
 
-#: weathermap-cacti-plugin-mgmt.php:2112
+#: weathermap-cacti-plugin-mgmt.php:2117
 msgid "Users or Groups"
 msgstr "Потребители или групи"
 
-#: weathermap-cacti-plugin-mgmt.php:2122
+#: weathermap-cacti-plugin-mgmt.php:2127
 msgid "Account Type"
 msgstr "Тип акаунт"
 
-#: weathermap-cacti-plugin-mgmt.php:2125
+#: weathermap-cacti-plugin-mgmt.php:2130
 msgid "User/Group"
 msgstr "Потребител/група"
 
-#: weathermap-cacti-plugin-mgmt.php:2128
+#: weathermap-cacti-plugin-mgmt.php:2133
 msgid "Login Realm"
 msgstr "Вход Realm"
 
-#: weathermap-cacti-plugin-mgmt.php:2131
+#: weathermap-cacti-plugin-mgmt.php:2136
 msgid "UID/GID"
 msgstr "UID/GID"
 
-#: weathermap-cacti-plugin-mgmt.php:2135
+#: weathermap-cacti-plugin-mgmt.php:2140
 msgid "Full Name/Description"
 msgstr "Пълно име/описание"
 
-#: weathermap-cacti-plugin-mgmt.php:2138
+#: weathermap-cacti-plugin-mgmt.php:2143
 msgid "Allowed"
 msgstr "Позволено"
 
-#: weathermap-cacti-plugin-mgmt.php:2159
+#: weathermap-cacti-plugin-mgmt.php:2164
 msgid "User"
 msgstr "Потребител"
 
-#: weathermap-cacti-plugin-mgmt.php:2161
+#: weathermap-cacti-plugin-mgmt.php:2166
 msgid "User Group"
 msgstr "Потребителска група"
 
-#: weathermap-cacti-plugin-mgmt.php:2169
+#: weathermap-cacti-plugin-mgmt.php:2174
 msgid "N/A"
 msgstr "Няма"
 
-#: weathermap-cacti-plugin-mgmt.php:2171
+#: weathermap-cacti-plugin-mgmt.php:2176
 msgid "Local"
 msgstr "Местен"
 
-#: weathermap-cacti-plugin-mgmt.php:2173
+#: weathermap-cacti-plugin-mgmt.php:2178
 msgid "Web Basic"
 msgstr "Уеб Basic"
 
-#: weathermap-cacti-plugin-mgmt.php:2175
+#: weathermap-cacti-plugin-mgmt.php:2180
 msgid "LDAP/AD"
 msgstr "ЛДАП/АД"
 
-#: weathermap-cacti-plugin-mgmt.php:2185
+#: weathermap-cacti-plugin-mgmt.php:2190
 msgid "Not Permitted"
 msgstr "Не е разрешено"
 
-#: weathermap-cacti-plugin-mgmt.php:2187
+#: weathermap-cacti-plugin-mgmt.php:2192
 msgid "Permitted"
 msgstr "Разрешено"
 
-#: weathermap-cacti-plugin-mgmt.php:2195
+#: weathermap-cacti-plugin-mgmt.php:2200
 msgid "No Users have Access to this Map"
 msgstr "Няма потребители с достъп до тази карта"
 
-#: weathermap-cacti-plugin-mgmt.php:2218 weathermap-cacti-plugin-mgmt.php:2296
+#: weathermap-cacti-plugin-mgmt.php:2223 weathermap-cacti-plugin-mgmt.php:2300
 msgid "Global Settings [ All Maps ]"
 msgstr "Глобални настройки [ Всички карти ]"
 
-#: weathermap-cacti-plugin-mgmt.php:2220
+#: weathermap-cacti-plugin-mgmt.php:2225
 msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
 msgstr "Все още няма настройки за всички карти. Можете да добавите някои, като натиснете знака плюс \"+\" в горния десен ъгъл или изберете една карта от екрана за управление, за да добавите настройки за тази карта."
 
-#: weathermap-cacti-plugin-mgmt.php:2236
+#: weathermap-cacti-plugin-mgmt.php:2241
 #, php-format
 msgid "Edit Group Settings [ Group: %s ]"
 msgstr "Редактиране на настройките на групата [ Група: %s ]"
 
-#: weathermap-cacti-plugin-mgmt.php:2238
+#: weathermap-cacti-plugin-mgmt.php:2243
 msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
 msgstr "Все още няма настройки за всяка група за тази група. Можете да добавите някои, като натиснете знака плюс \"+\" в горния десен ъгъл."
 
-#: weathermap-cacti-plugin-mgmt.php:2257
+#: weathermap-cacti-plugin-mgmt.php:2262
 #, php-format
 msgid "Edit Map Settings [ Weathermap: %s ]"
 msgstr "Редактиране на настройките на картата [ Weathermap: %s ]"
 
-#: weathermap-cacti-plugin-mgmt.php:2259
+#: weathermap-cacti-plugin-mgmt.php:2264
 msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
 msgstr "Все още няма настройки за карта за тази карта. Можете да добавите някои, като натиснете знака плюс \"+\" в горния десен ъгъл."
 
-#: weathermap-cacti-plugin-mgmt.php:2273
+#: weathermap-cacti-plugin-mgmt.php:2278
 msgid "Usage Notes"
 msgstr "Име на страницата"
 
-#: weathermap-cacti-plugin-mgmt.php:2280
+#: weathermap-cacti-plugin-mgmt.php:2285
 msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
 msgstr "Всички карти в тази група също са засегнати от следните глобални настройки (групата отменя глобалната, картата замества групата, но и двете заместват командите на SET в конфигурационния файл на картата)"
 
-#: weathermap-cacti-plugin-mgmt.php:2288
+#: weathermap-cacti-plugin-mgmt.php:2292
 msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
 msgstr "Тази карта се влияе и от следните глобални и групови настройки (групата отменя Global, Map отменя Group, но и двете заместват командите SET в конфигурационния файл на картата)"
 
-#: weathermap-cacti-plugin-mgmt.php:2300 weathermap-cacti-plugin-mgmt.php:2473
+#: weathermap-cacti-plugin-mgmt.php:2304 weathermap-cacti-plugin-mgmt.php:2476
 #, php-format
 msgid "Group Settings [ Group: %s ]"
 msgstr "Настройки на група [ Група: %s ]"
 
-#: weathermap-cacti-plugin-mgmt.php:2300
+#: weathermap-cacti-plugin-mgmt.php:2304
 msgid "No Group"
 msgstr "Няма група"
 
-#: weathermap-cacti-plugin-mgmt.php:2307
+#: weathermap-cacti-plugin-mgmt.php:2311
 msgid "Action"
 msgstr "Действие"
 
-#: weathermap-cacti-plugin-mgmt.php:2307 weathermap-cacti-plugin-mgmt.php:2378
-#: weathermap-cacti-plugin-mgmt.php:2449
+#: weathermap-cacti-plugin-mgmt.php:2311 weathermap-cacti-plugin-mgmt.php:2382
+#: weathermap-cacti-plugin-mgmt.php:2452
 msgid "Name"
 msgstr "Име"
 
-#: weathermap-cacti-plugin-mgmt.php:2307 weathermap-cacti-plugin-mgmt.php:2378
-#: weathermap-cacti-plugin-mgmt.php:2456
+#: weathermap-cacti-plugin-mgmt.php:2311 weathermap-cacti-plugin-mgmt.php:2382
+#: weathermap-cacti-plugin-mgmt.php:2459
 msgid "Value"
 msgstr "Стойност"
 
-#: weathermap-cacti-plugin-mgmt.php:2314
+#: weathermap-cacti-plugin-mgmt.php:2318
 msgid "Edit this definition"
 msgstr "Редактиране на тази дефиниция"
 
-#: weathermap-cacti-plugin-mgmt.php:2324 weathermap-cacti-plugin-mgmt.php:2708
+#: weathermap-cacti-plugin-mgmt.php:2328 weathermap-cacti-plugin-mgmt.php:2712
 msgid "Remove this definition from this Map"
 msgstr "Премахни тази дефиниция от тази карта"
 
-#: weathermap-cacti-plugin-mgmt.php:2350
+#: weathermap-cacti-plugin-mgmt.php:2354
 msgid "Back to Group Admin"
 msgstr "Обратно към администратор на група"
 
-#: weathermap-cacti-plugin-mgmt.php:2354
+#: weathermap-cacti-plugin-mgmt.php:2358
 msgid "Back to Map Admin"
 msgstr "Обратно към картата Admin"
 
-#: weathermap-cacti-plugin-mgmt.php:2396
+#: weathermap-cacti-plugin-mgmt.php:2400
 msgid "No Settings Found"
 msgstr "Не са намерени настройки"
 
-#: weathermap-cacti-plugin-mgmt.php:2439
+#: weathermap-cacti-plugin-mgmt.php:2442
 msgid "Map ID"
 msgstr "ИД на картата"
 
-#: weathermap-cacti-plugin-mgmt.php:2444
+#: weathermap-cacti-plugin-mgmt.php:2447
 msgid "Setting ID"
 msgstr "ИД на настройка"
 
-#: weathermap-cacti-plugin-mgmt.php:2452
+#: weathermap-cacti-plugin-mgmt.php:2455
 msgid "The name of the map-global SET variable"
 msgstr "Името на променливата map-global SET"
 
-#: weathermap-cacti-plugin-mgmt.php:2459
+#: weathermap-cacti-plugin-mgmt.php:2462
 msgid "What to set it to"
 msgstr "На какво да го настроите"
 
-#: weathermap-cacti-plugin-mgmt.php:2471
+#: weathermap-cacti-plugin-mgmt.php:2474
 msgid "Global Setting for all Maps"
 msgstr "Глобална настройка за всички карти"
 
-#: weathermap-cacti-plugin-mgmt.php:2475
+#: weathermap-cacti-plugin-mgmt.php:2478
 #, php-format
 msgid "Map Setting [ Weathermap: %s ]"
 msgstr "Настройка на картата [ Метеорологична карта: %s ]"
 
-#: weathermap-cacti-plugin-mgmt.php:2575
+#: weathermap-cacti-plugin-mgmt.php:2578
 #, php-format
 msgid "Edit Map Group for Weathermap [ %s ]"
 msgstr "Редактиране на група карти за Weathermap [ %s ]"
 
-#: weathermap-cacti-plugin-mgmt.php:2580
+#: weathermap-cacti-plugin-mgmt.php:2583
 msgid "Choose an existing Group"
 msgstr "Избор на съществуваща група"
 
-#: weathermap-cacti-plugin-mgmt.php:2602
+#: weathermap-cacti-plugin-mgmt.php:2605
 #, php-format
 msgid "Or Create a New Group using the %s Group Management interface %s"
 msgstr "Или Създаване на нова група с помощта на интерфейса за управление на %s група %s"
 
-#: weathermap-cacti-plugin-mgmt.php:2617
+#: weathermap-cacti-plugin-mgmt.php:2621
 msgid "Adding a Group"
 msgstr "Добавяне на група"
 
-#: weathermap-cacti-plugin-mgmt.php:2624
+#: weathermap-cacti-plugin-mgmt.php:2628
 #, php-format
 msgid "Editing Group: %s"
 msgstr "Редактиране на група: %s"
 
-#: weathermap-cacti-plugin-mgmt.php:2635 weathermap-cacti-plugin-mgmt.php:2639
+#: weathermap-cacti-plugin-mgmt.php:2639 weathermap-cacti-plugin-mgmt.php:2643
 msgid "Group Name:"
 msgstr "Име на Групата"
 
-#: weathermap-cacti-plugin-mgmt.php:2639
+#: weathermap-cacti-plugin-mgmt.php:2643
 msgid "Update"
 msgstr "Обновяване"
 
-#: weathermap-cacti-plugin-mgmt.php:2641
+#: weathermap-cacti-plugin-mgmt.php:2645
 msgid "Add"
 msgstr "Добави"
 
-#: weathermap-cacti-plugin-mgmt.php:2654
+#: weathermap-cacti-plugin-mgmt.php:2658
 msgid "Edit Map Groups"
 msgstr "Редактиране на групи карти"
 
-#: weathermap-cacti-plugin-mgmt.php:2656
+#: weathermap-cacti-plugin-mgmt.php:2660
 msgid "Group Name"
 msgstr "Име на Групата"
 
-#: weathermap-cacti-plugin-mgmt.php:2666
+#: weathermap-cacti-plugin-mgmt.php:2670
 msgid "Rename this Group"
 msgstr "Преименуване на тази група"
 
-#: weathermap-cacti-plugin-mgmt.php:2675
+#: weathermap-cacti-plugin-mgmt.php:2679
 msgid "Edit Group Settings"
 msgstr "Настройки на журнал за одит"
 
-#: weathermap-cacti-plugin-mgmt.php:2722
+#: weathermap-cacti-plugin-mgmt.php:2726
 msgid "No Groups are defined"
 msgstr "Не са дефинирани групи"
 
-#: weathermap-cacti-plugin-mgmt.php:2730
+#: weathermap-cacti-plugin-mgmt.php:2734
 msgid "Rename Weathermap Group"
 msgstr "Преименуване на група \"Карта на времето\""
 
-#: weathermap-cacti-plugin-mgmt.php:2731
+#: weathermap-cacti-plugin-mgmt.php:2735
 msgid "Enter a new name for the Weathermap Group."
 msgstr "Въведете ново име за групата Weathermap."
 
-#: weathermap-cacti-plugin-mgmt.php:2734
+#: weathermap-cacti-plugin-mgmt.php:2738
 msgid "New Group Name"
 msgstr "Име на новата Група"
 
-#: weathermap-cacti-plugin-mgmt.php:2740
+#: weathermap-cacti-plugin-mgmt.php:2744
 msgid "Rename"
 msgstr "Преименуване"
 
-#: weathermap-cacti-plugin-mgmt.php:2836
+#: weathermap-cacti-plugin-mgmt.php:2842
 #, php-format
 msgid "The New Map File name %s already exists!"
 msgstr "Новото име на файла с картата вече %s съществува!"
 
-#: weathermap-cacti-plugin-mgmt.php:2847
+#: weathermap-cacti-plugin-mgmt.php:2853
 #, php-format
 msgid "New Map file %s created from %s"
 msgstr "Нов файл на картата %s създаден от %s"
 
-#: weathermap-cacti-plugin-mgmt.php:2849
+#: weathermap-cacti-plugin-mgmt.php:2855
 msgid "The Source Map File name is not readable or does not exist!"
 msgstr "Името на файла с картата на източника не може да се чете или не съществува!"
 
-#: weathermap-cacti-plugin-mgmt.php:2853
+#: weathermap-cacti-plugin-mgmt.php:2859
 #, php-format
 msgid "New Map file %s created."
 msgstr "Създаден %s нов файл на картата."
 
-#: weathermap-cacti-plugin-mgmt.php:2856
+#: weathermap-cacti-plugin-mgmt.php:2862
 msgid "You must include a Map File name to Create"
 msgstr "Трябва да включите име на файл с карта, за да създадете"
 
@@ -1666,7 +1727,7 @@ msgstr "Връщане към главната страница"
 msgid "Map Permissions"
 msgstr "Разрешения за карта"
 
-#: weathermap-cacti-plugin.php:414 weathermap-cacti-plugin.php:665
+#: weathermap-cacti-plugin.php:414 weathermap-cacti-plugin.php:667
 msgid "This map hasn't been created yet."
 msgstr "Тази карта все още не е създадена."
 
@@ -1679,58 +1740,59 @@ msgstr "Управление на карти"
 msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
 msgstr "Мрежови метеорологични карти [ %sАвтоматичен цикъл%s ]"
 
-#: weathermap-cacti-plugin.php:528
+#: weathermap-cacti-plugin.php:529
 msgid "(thumbnail for map not created yet)"
 msgstr "(миниатюрата за картата все още не е създадена)"
 
-#: weathermap-cacti-plugin.php:532
+#: weathermap-cacti-plugin.php:533
 msgid "(Live View)"
 msgstr "(Изглед на живо)"
 
-#: weathermap-cacti-plugin.php:541 weathermap-cacti-plugin.php:695
+#: weathermap-cacti-plugin.php:542 weathermap-cacti-plugin.php:697
 msgid "You Have No Maps"
 msgstr "Нямате карти"
 
-#: weathermap-cacti-plugin.php:544
+#: weathermap-cacti-plugin.php:545
 #, php-format
 msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
 msgstr "За да добавите карта към графика, отидете на %s Управление... Страницата Weathermaps %s и добавете една."
 
-#: weathermap-cacti-plugin.php:572
+#: weathermap-cacti-plugin.php:573
 msgid "Network Weathermaps"
 msgstr "Мрежови метеорологични карти"
 
-#: weathermap-cacti-plugin.php:592
+#: weathermap-cacti-plugin.php:594
 #, php-format
 msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
 msgstr "Показване на %s %s от %s %s. Колоездене на всички налични карти в тази група."
 
-#: weathermap-cacti-plugin.php:594
+#: weathermap-cacti-plugin.php:596
 #, php-format
 msgid "Showing %s %s of %s %s. Cycling all available maps."
 msgstr "Показване на %s %s от %s %s. Колоездене на всички налични карти."
 
-#: weathermap-cacti-plugin.php:716
+#: weathermap-cacti-plugin.php:718
 #, php-format
 msgid "Powered by %s PHP Weathermap Version %s %s"
 msgstr "Осъществено от %s PHP Weathermap версия %s %s"
 
-#: weathermap-cacti-plugin.php:719
-msgid "Go to the map management page"
+#: weathermap-cacti-plugin.php:721
+#, fuzzy
+msgid "Go to the Map Management page"
 msgstr "Отидете на страницата за управление на картата"
 
-#: weathermap-cacti-plugin.php:719
+#: weathermap-cacti-plugin.php:721
 msgid "Weathermap Management"
 msgstr "Управление на метеорологичната карта"
 
-#: weathermap-cacti-plugin.php:795
+#: weathermap-cacti-plugin.php:797
 msgid "Weathermap Filter"
 msgstr "Изчистване на филтрите"
 
-#: weathermap-cacti-plugin.php:804
+#: weathermap-cacti-plugin.php:806
 msgid "Map to View"
 msgstr "Карта за преглед"
 
-#: weathermap-cacti-plugin.php:909
+#: weathermap-cacti-plugin.php:912
 msgid "All Maps"
 msgstr "Всички карти"
