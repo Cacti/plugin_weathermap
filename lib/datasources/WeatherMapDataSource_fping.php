@@ -111,7 +111,7 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 
 				$pattern .= '/';
 
-				$command = $this->fping_cmd . " -t100 -r1 -p20 -u -C $ping_count -i10 -q " . escapeshellarg($target) . " 2>&1";
+				$command = $this->fping_cmd . " -t100 -r1 -p20 -u -C $ping_count -i10 -q " . cacti_escapeshellarg($target) . " 2>&1";
 
 				wm_debug("Running $command");
 				$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- target validated above, all flags are hardcoded

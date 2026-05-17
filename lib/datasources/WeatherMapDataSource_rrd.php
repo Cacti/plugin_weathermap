@@ -313,11 +313,11 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$command = $map->rrdtool;
 
 		foreach ($args as $arg) {
-			$command .= ' ' . escapeshellarg($arg);
+			$command .= ' ' . cacti_escapeshellarg($arg);
 		}
 
 		foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
-			$command .= ' ' . escapeshellarg($opt);
+			$command .= ' ' . cacti_escapeshellarg($opt);
 		}
 
 		wm_debug("RRD ReadData: Running: $command");
@@ -415,11 +415,11 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$command = $map->rrdtool;
 
 		foreach ($args as $arg) {
-			$command .= ' ' . escapeshellarg($arg);
+			$command .= ' ' . cacti_escapeshellarg($arg);
 		}
 
 		foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
-			$command .= ' ' . escapeshellarg($opt);
+			$command .= ' ' . cacti_escapeshellarg($opt);
 		}
 
 		wm_debug("RRD ReadData: Running: $command");
