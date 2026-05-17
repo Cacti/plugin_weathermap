@@ -74,9 +74,8 @@ describe('prepared statement consistency in weathermap', function () {
 				}
 			}
 
-			// This is a heuristic; some false positives expected for complex queries
-			expect($interpolatedSql)->toBeLessThanOrEqual(2,
-				"File {$relativeFile} may have SQL interpolation in prepared calls"
+			expect($interpolatedSql)->toBe(0,
+				"File {$relativeFile} has SQL interpolation in prepared calls"
 			);
 		}
 	});

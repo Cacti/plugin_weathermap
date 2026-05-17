@@ -679,16 +679,10 @@ function weathermap_group_move($id, $direction) {
 			$otherid = $target['id'];
 
 			// move $mapid in direction $direction
-			$sql[] = "UPDATE weathermap_groups SET sortorder = $neworder WHERE id = $id";
+			db_execute_prepared('UPDATE weathermap_groups SET sortorder = ? WHERE id = ?', array($neworder, $id));
 
 			// then find the other one with the same sortorder and move that in the opposite direction
-			$sql[] = "UPDATE weathermap_groups SET sortorder = $oldorder WHERE id = $otherid";
-		}
-
-		if (!empty($sql)) {
-			for ($a = 0; $a < count($sql); $a++) {
-				$result = db_execute($sql[$a]);
-			}
+			db_execute_prepared('UPDATE weathermap_groups SET sortorder = ? WHERE id = ?', array($oldorder, $otherid));
 		}
 	}
 }
@@ -1536,7 +1530,7 @@ function preview_config($file) {
 
 			while (!feof($fd)) {
 				$buffer = fgets($fd, 4096);
-				print $buffer;
+				print html_escape($buffer);
 			}
 
 			fclose($fd);
@@ -2422,7 +2416,6 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 			[-$mapid]);
 	}
 
-	$name  = '';
 	$value = '';
 
 	if ($settingid != 0) {
@@ -2493,17 +2486,17 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 
 function weathermap_setting_save($mapid, $name, $value) {
 	if ($mapid > 0) {
-		db_execute_prepared('REPLACE INFO weathermap_settings
+		db_execute_prepared('REPLACE INTO weathermap_settings
 			(mapid, groupid, optname, optvalue)
 			VALUES (?, ?, ?, ?)',
 			[$mapid, 0, $name, $value]);
 	} elseif ($mapid < 0) {
-		db_execute_prepared('REPLACE INFO weathermap_settings
+		db_execute_prepared('REPLACE INTO weathermap_settings
 			(mapid, groupid, optname, optvalue)
 			VALUES (?, ?, ?, ?)',
 			[0, -$mapid, $name, $value]);
 	} else {
-		db_execute_prepared('REPLACE INFO weathermap_settings
+		db_execute_prepared('REPLACE INTO weathermap_settings
 			(mapid, groupid, optname, optvalue)
 			VALUES (?, ?, ?, ?)',
 			[0, 0, $name, $value]);

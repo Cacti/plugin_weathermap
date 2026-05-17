@@ -1,11 +1,4 @@
 // global variable for subwindow reference
-// Escape HTML special characters to prevent XSS
-function escapeHtml(str) {
-	if (typeof str !== 'string') return '';
-	return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-}
-
-
 const MESSAGE_LEVEL_NONE  = 0;
 const MESSAGE_LEVEL_INFO  = 1;
 const MESSAGE_LEVEL_WARN  = 2;

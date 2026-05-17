@@ -83,12 +83,13 @@ switch (get_request_var('action')) {
 					$orig_cwd = getcwd();
 					chdir(__DIR__);
 
-					header('Content-type: image/png');
+					$mime_map = ['png' => 'image/png', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'gif' => 'image/gif'];
+					header('Content-type: ' . ($mime_map[$imageformat] ?? 'image/png'));
 
 					// readfile_chunked($imagefile);
 					readfile($imagefile);
 
-					dir($orig_cwd);
+					chdir($orig_cwd);
 				} else {
 					// no permission to view this map
 				}
@@ -130,7 +131,7 @@ switch (get_request_var('action')) {
 					$map->ReadData();
 					$map->DrawMap('', '', 250, true, false);
 
-					dir($orig_cwd);
+					chdir($orig_cwd);
 				}
 			}
 		}
@@ -181,7 +182,7 @@ switch (get_request_var('action')) {
 					$confdir = __DIR__ . '/configs/';
 
 					// everything else in this file is inside this else
-					$mapname = $map[0]['configfile'];
+					$mapname = $map['configfile'];
 					$mapfile = $confdir . '/' . $mapname;
 
 					$orig_cwd = getcwd();
@@ -404,7 +405,7 @@ function weathermap_singleview($mapid) {
 			}
 
 			print '<div class="cactiTable">';
-			print '<div class="cactiTableTitleRow">' . $maptitle . '</div>';
+			print '<div class="cactiTableTitleRow">' . html_escape($maptitle) . '</div>';
 			print '</div>';
 
 			print '<table class="cactiTable">';
@@ -655,7 +656,7 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 				<tr class='tableHeader'>
 					<td class='left'>
 						<a name='map_<?php print $map['filehash']; ?>'></a>
-						<?php print $maptitle; ?>
+						<?php print html_escape($maptitle); ?>
 					</td>
 				</tr>
 				<tr>
