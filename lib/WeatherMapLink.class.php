@@ -754,7 +754,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$output .= TAB . 'TARGET';
 
 				foreach ($this->targets as $target) {
-					if (strpos($target[4], ' ') == false) {
+					if (strpos($target[4], ' ') === false) {
 						$output .= ' ' . $target[4];
 					} else {
 						$output .= ' "' . $target[4] . '"';
@@ -846,7 +846,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$tgt = '';
 
 		foreach ($this->targets as $target) {
-			if (strpos($target[4], ' ') == false) {
+			if (strpos($target[4], ' ') === false) {
 				$tgt .= $target[4] . ' ';
 			} else {
 				$tgt .= '"' . $target[4] . '" ';
