@@ -311,18 +311,16 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$command = $map->rrdtool;
 
 		foreach ($args as $arg) {
-			if (strchr($arg, ' ') != false) {
-				$command .= ' "' . $arg . '"';
-			} else {
-				$command .= ' ' . $arg;
-			}
+			$command .= ' ' . cacti_escapeshellarg($arg);
 		}
 
-		$command .= ' ' . $extra_options;
+		foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
+			$command .= ' ' . cacti_escapeshellarg($opt);
+		}
 
 		wm_debug("RRD ReadData: Running: $command");
 
-		$pipe = popen($command, 'r');
+		$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- rrdtool path is admin-configured; all args cacti_escapeshellarg'd
 
 		$lines     = [];
 		$count     = 0;
@@ -415,18 +413,16 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$command = $map->rrdtool;
 
 		foreach ($args as $arg) {
-			if (strchr($arg, ' ') != false) {
-				$command .= ' "' . $arg . '"';
-			} else {
-				$command .= ' ' . $arg;
-			}
+			$command .= ' ' . cacti_escapeshellarg($arg);
 		}
 
-		$command .= ' ' . $extra_options;
+		foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
+			$command .= ' ' . cacti_escapeshellarg($opt);
+		}
 
 		wm_debug("RRD ReadData: Running: $command");
 
-		$pipe = popen($command, 'r');
+		$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- rrdtool path is admin-configured; all args cacti_escapeshellarg'd
 
 		$lines     =  [];
 		$count     = 0;

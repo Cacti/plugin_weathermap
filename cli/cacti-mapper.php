@@ -58,7 +58,7 @@ $data_template_id = db_fetch_cell_prepared('SELECT id
 	WHERE hash = ?',
 	[$data_template_hash]);
 
-$queryrows = db_fetch_assoc("SELECT h.snmp_version, h.snmp_community, h.snmp_username,
+$queryrows = db_fetch_assoc_prepared("SELECT h.snmp_version, h.snmp_community, h.snmp_username,
 	h.snmp_password, h.snmp_auth_protocol, h.snmp_priv_passphrase, h.snmp_priv_protocol,
 	h.snmp_context, h.snmp_port, h.snmp_timeout, h.description, h.hostname,
 	h.disabled, hsc.*
@@ -70,7 +70,8 @@ $queryrows = db_fetch_assoc("SELECT h.snmp_version, h.snmp_community, h.snmp_use
 	AND field_value != '127.0.0.1'
 	AND field_value != '0.0.0.0'
 	AND h.status = 3
-	AND h.snmp_version > 0");
+	AND h.snmp_version > 0",
+	array());
 
 if (cacti_sizeof($queryrows)) {
 	foreach ($queryrows as $line) {
