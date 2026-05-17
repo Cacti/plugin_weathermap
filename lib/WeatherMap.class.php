@@ -1785,9 +1785,11 @@ class WeatherMap extends WeatherMapBase {
 				);
 			}
 
-			$this->myimagestring($scale_im, $font, 4, 4 + $tileheight, $title,
-				$this->colours['DEFAULT']['KEYTEXT'][$scale_ref]
-			);
+			if (isset($this->colours['DEFAULT']['KEYTEXT'][$scale_ref])) {
+				$this->myimagestring($scale_im, $font, 4, 4 + $tileheight, $title,
+					$this->colours['DEFAULT']['KEYTEXT'][$scale_ref]
+				);
+			}
 
 			$i = 1;
 
@@ -4532,7 +4534,15 @@ class WeatherMap extends WeatherMapBase {
 	function SaveCoverage($file) {
 		$i = 0;
 
-		$fd = fopen($file, 'w+');
+		$dir  = realpath(dirname($file));
+		$base = defined('CACTI_PATH_BASE') ? realpath(CACTI_PATH_BASE) : realpath(dirname(dirname(__FILE__)));
+
+		if ($dir === false || $base === false || strpos($dir . DIRECTORY_SEPARATOR, $base . DIRECTORY_SEPARATOR) !== 0) {
+			return;
+		}
+
+		$safe = $dir . DIRECTORY_SEPARATOR . basename($file);
+		$fd   = fopen($safe, 'w+');
 
 		foreach ($this->coverage as $key=>$val) {
 			fputs($fd, "$val\t$key\n");
