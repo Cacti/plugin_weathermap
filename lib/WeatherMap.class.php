@@ -1608,19 +1608,21 @@ class WeatherMap extends WeatherMapBase {
 
 		$this->AllocateScaleColours($scale_im,$scale_ref);
 
-		if (!is_none($this->colours['DEFAULT']['KEYBG'])) {
+		if (!is_none($this->colours['DEFAULT']['KEYBG']) && isset($this->colours['DEFAULT']['KEYBG'][$scale_ref])) {
 			wimagefilledrectangle($scale_im, $box_left, $box_top, $box_right, $box_bottom,
 				$this->colours['DEFAULT']['KEYBG'][$scale_ref]);
 		}
 
-		if (!is_none($this->colours['DEFAULT']['KEYOUTLINE'])) {
+		if (!is_none($this->colours['DEFAULT']['KEYOUTLINE']) && isset($this->colours['DEFAULT']['KEYOUTLINE'][$scale_ref])) {
 			wimagerectangle($scale_im, $box_left, $box_top, $box_right, $box_bottom,
 				$this->colours['DEFAULT']['KEYOUTLINE'][$scale_ref]);
 		}
 
-		$this->myimagestring($scale_im, $font, $scale_left - $scalefactor, $scale_top - $tileheight , $title,
-			$this->colours['DEFAULT']['KEYTEXT'][$scale_ref]
-		);
+		if (isset($this->colours['DEFAULT']['KEYTEXT'][$scale_ref])) {
+			$this->myimagestring($scale_im, $font, $scale_left - $scalefactor, $scale_top - $tileheight , $title,
+				$this->colours['DEFAULT']['KEYTEXT'][$scale_ref]
+			);
+		}
 
 		$updown = 1;
 
@@ -4492,14 +4494,27 @@ class WeatherMap extends WeatherMapBase {
 	function LoadCoverage($file) {
 		$i = 0;
 
-		$fd = fopen($file, 'r');
+		$real = realpath($file);
+		$base = defined('CACTI_PATH_BASE') ? realpath(CACTI_PATH_BASE) : realpath(dirname(dirname(__FILE__)));
+
+		if ($real === false || $base === false || strpos($real, $base . DIRECTORY_SEPARATOR) !== 0) {
+			return;
+		}
+
+		$fd = fopen($real, 'r');
 
 		if (is_resource($fd)) {
 			while (!feof($fd)) {
-				$line = fgets($fd,1024);
+				$line = fgets($fd, 1024);
 				$line = trim($line);
 
-				[$val,$key] = explode("\t",$line);
+				$parts = explode("\t", $line);
+
+				if (count($parts) < 2) {
+					continue;
+				}
+
+				[$val, $key] = $parts;
 
 				if ($key != '') {
 					$this->coverage[$key] = $val;
