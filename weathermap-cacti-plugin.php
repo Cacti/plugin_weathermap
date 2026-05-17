@@ -86,7 +86,7 @@ switch (get_request_var('action')) {
 					// readfile_chunked($imagefile);
 					readfile($imagefile);
 
-					dir($orig_cwd);
+					chdir($orig_cwd);
 				} else {
 					// no permission to view this map
 				}
@@ -128,7 +128,7 @@ switch (get_request_var('action')) {
 					$map->ReadData();
 					$map->DrawMap('', '', 250, true, false);
 
-					dir($orig_cwd);
+					chdir($orig_cwd);
 				}
 			}
 		}

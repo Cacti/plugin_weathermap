@@ -120,7 +120,7 @@ class WeatherMapDataSource {
 	//   itemtype and itemname may be used as part of the target (e.g. for TSV source line)
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map) { return (array(-1,-1)); }
 	function ReadData($targetstring, &$map, &$item) {
-		return ([-1, -1]);
+		return ([-1, -1, 0]);
 	}
 
 	// pre-register a target + context, to allow a plugin to batch up queries to a slow database, or snmp for example
