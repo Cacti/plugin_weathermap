@@ -543,7 +543,7 @@ function handle_inheritance(&$map, &$inheritables) {
 			if ($inheritable[0] == 'node') {
 				$map->nodes['DEFAULT']->$fieldname = $new;
 
-				foreach ($map->nodes as $link_name => $node) {
+				foreach ($map->nodes as $node_name => $node) {
 					if ($node->name != ':: DEFAULT ::' && $old == $node->$fieldname) {
 						$map->nodes[$node->name]->$fieldname = $new;
 					}
