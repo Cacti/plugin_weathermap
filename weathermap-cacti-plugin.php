@@ -766,7 +766,7 @@ function weathermap_footer_links() {
 
 	print '<br />';
 
-	html_start_box("<center><a target=\"_blank\" class=\"linkOverDark\" href=\"docs/\">Local Documentation</a> -- <a target=\"_blank\" class=\"linkOverDark\" href=\"http://www.network-weathermap.com/\">Weathermap Website</a> -- <a target=\"_target\" class=\"linkOverDark\" href=\"weathermap-cacti-plugin-editor.php?plug=1\">Weathermap Editor</a> -- This is version $weathermap_version</center>", '100%', '', '3', 'center', '');
+	html_start_box("<center><a target=\"_blank\" class=\"linkOverDark\" href=\"docs/\">Local Documentation</a> -- <a target=\"_blank\" class=\"linkOverDark\" href=\"http://www.network-weathermap.com/\">Weathermap Website</a> -- <a target=\"_target\" class=\"linkOverDark\" href=\"weathermap-cacti-plugin-editor.php?plug=1\">Weathermap Editor</a> -- This is version $weathermap_version</center>", '100%', false, 3, 'center', '');
 	html_end_box();
 }
 
@@ -793,7 +793,7 @@ function weathermap_mapselector($current_id = 0) {
 	if (cacti_sizeof($maps) > 1) {
 		// include graph view filter selector
 
-		html_start_box(__('Weathermap Filter', 'weathermap'), '100%', '', '3', 'center', '');
+		html_start_box(__('Weathermap Filter', 'weathermap'), '100%', false, 3, 'center', '');
 		?>
 		<tr class='even noprint'>
 			<td class='noprint'>
