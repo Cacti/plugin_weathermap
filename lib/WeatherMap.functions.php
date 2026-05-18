@@ -816,11 +816,12 @@ function find_distance(&$pointarray, $distance) {
 /**
  * Give a list of key points, calculate a curve through them
  * return value is an array of triples (x,y,distance)
+ *
  * @param mixed $in_xarray
  * @param mixed $in_yarray
  * @param mixed $pointsperspan
  */
-function calc_curve(&$in_xarray, &$in_yarray,$pointsperspan = 32) {
+function calc_curve(&$in_xarray, &$in_yarray, $pointsperspan = 32) {
 	// search through the point list, for consecutive duplicate points
 	// (most common case will be a straight link with both NODEs at the same place, I think)
 	// strip those out, because they'll break the binary search/centre-point stuff
@@ -882,7 +883,7 @@ function calc_curve(&$in_xarray, &$in_yarray,$pointsperspan = 32) {
 		$curvepoints = $curvepoints + $newpoints;
 	}
 
-	return ($curvepoints);
+	return $curvepoints;
 }
 
 /**
@@ -890,11 +891,12 @@ function calc_curve(&$in_xarray, &$in_yarray,$pointsperspan = 32) {
  * return value is an array of triples (x,y,distance)
  * this is here to mirror the real 'curve' version when we're using angled VIAs
  * it means that all the stuff that expects an array of points with distances won't be upset.
+ *
  * @param mixed $in_xarray
  * @param mixed $in_yarray
  * @param mixed $pointsperspan
  */
-function calc_straight(&$in_xarray, &$in_yarray,$pointsperspan = 12) {
+function calc_straight(&$in_xarray, &$in_yarray, $pointsperspan = 12) {
 	// search through the point list, for consecutive duplicate points
 	// (most common case will be a straight link with both NODEs at the same place, I think)
 	// strip those out, because they'll break the binary search/centre-point stuff
@@ -950,9 +952,7 @@ function calc_straight(&$in_xarray, &$in_yarray,$pointsperspan = 12) {
 
 	$curvepoints[] = [$xarray[$npoints - 1], $yarray[$npoints - 1], $distance];
 
-//	print_r($curvepoints);
-
-	return ($curvepoints);
+	return $curvepoints;
 }
 
 function calc_arrowsize($width,&$map,$linkname) {

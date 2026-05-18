@@ -380,6 +380,14 @@ function setLinkProperties($mapfile) {
 			$map->links[$link_name]->max_bandwidth_out     = unformat_number($bwout, $map->kilo);
 		}
 
+		$viastyle = get_nfilter_request_var('viastyle');
+
+		if (!wm_editor_validate_one_of($viastyle, array('curved', 'angled'))) {
+			$viastyle = $map->links[$link_name]->viastyle;
+		}
+
+		$map->links[$link_name]->viastyle = $viastyle;
+
 		// $map->links[$link_name]->SetBandwidth($bwin,$bwout);
 
 		$map->WriteConfig($mapfile);

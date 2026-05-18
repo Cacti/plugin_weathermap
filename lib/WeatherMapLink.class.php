@@ -120,7 +120,7 @@ class WeatherMapLink extends WeatherMapItem {
 
 	var $comments       = [];
 	var $bwlabelformats = [];
-	var $curvepoints;
+	var $curvepoints    = [];
 
 	var $labeloffset_in;
 	var $labeloffset_out;
@@ -244,9 +244,9 @@ class WeatherMapLink extends WeatherMapItem {
 	 * @param mixed $widths
 	 */
 	function DrawComments($image, $col, $widths) {
-		$curvepoints = &$this->curvepoints;
+		$curvepoints = $this->curvepoints;
 
-		$last = count($curvepoints) - 1;
+		$last = cacti_count($curvepoints) - 1;
 
 		$totaldistance = $curvepoints[$last][2];
 
@@ -418,7 +418,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$x2 += $dx;
 		$y2 += $dy;
 
-		if (($x1 == $x2) && ($y1 == $y2) && sizeof($this->vialist) == 0) {
+		if (($x1 == $x2) && ($y1 == $y2) && cacti_sizeof($this->vialist) == 0) {
 			wm_warn('Zero-length link ' . $this->name . ' skipped. [WMWARN45]');
 
 			return;
@@ -479,7 +479,7 @@ class WeatherMapLink extends WeatherMapItem {
 		}
 
 		// If there are no vias, treat this as a 2-point angled link, not curved
-		if (sizeof($this->vialist) == 0 || $this->viastyle == 'angled') {
+		if (cacti_sizeof($this->vialist) == 0 || $this->viastyle == 'angled') {
 			// Calculate the spine points - the actual not a curve really, but we
 			// need to create the array, and calculate the distance bits, otherwise
 			// things like bwlabels won't know where to go.
@@ -517,7 +517,7 @@ class WeatherMapLink extends WeatherMapItem {
 			$this->DrawComments($image,[$comment_colour_in, $comment_colour_out],[$link_in_width * 1.1, $link_out_width * 1.1]);
 		}
 
-		$curvelength = $this->curvepoints[count($this->curvepoints) - 1][2];
+		$curvelength = $this->curvepoints[cacti_count($this->curvepoints) - 1][2];
 
 		// figure out where the labels should be, and what the angle of the curve is at that point
 		[$q1_x, $q1_y, $junk, $q1_angle] = find_distance_coords_angle($this->curvepoints, ($this->labeloffset_out / 100) * $curvelength);
@@ -798,7 +798,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$output .= EOL;
 			}
 
-			if (count($this->vialist) > 0) {
+			if (cacti_count($this->vialist) > 0) {
 				foreach ($this->vialist as $via) {
 					if (isset($via[2])) {
 						$output .= sprintf(TAB . 'VIA %s %d %d' . EOL, $via[2],$via[0], $via[1]);
@@ -873,6 +873,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$js .= 'commentposout:' . intval($this->commentoffset_out) . ', ';
 
 		$js .= 'infourl:' . js_escape($this->infourl[IN]) . ', ';
+		$js .= 'viastyle:' . js_escape($this->viastyle) . ', ';
 
 		$js .= 'overliburl:' . js_escape(join(' ', $this->overliburl[IN]));
 

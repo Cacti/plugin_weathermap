@@ -1042,6 +1042,7 @@ function prime_link_form(name) {
 
 		$('#link_infourl').val(mylink.infourl);
 		$('#link_hover').val(mylink.overliburl);
+		$('#viastyle').val(mylink.viastyle);
 
 		$('#link_commentin').val(mylink.commentin);
 		$('#link_commentout').val(mylink.commentout);
