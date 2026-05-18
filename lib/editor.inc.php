@@ -262,7 +262,7 @@ function show_editor_startpage() {
 		$errormessage .= $configerror . '<p>';
 	}
 
-	html_start_box(__('Welcome to the PHP Weathermap %s Editor', $weathermap_version, 'weathermap'), '100%', '', '3', 'center', '');
+	html_start_box(__('Welcome to the PHP Weathermap %s Editor', $weathermap_version, 'weathermap'), '100%', false, 3, 'center', '');
 	print '<tr>';
 	print '<td>';
 	print '<div>' . __('<b>NOTE:</b> This editor is not finished! There are many features of Weathermap that you will be missing out on if you choose to use the editor only.  These include: curves, node offsets, font definitions, colour changing, per-node/per-link settings and image uploading. You CAN use the editor without damaging these features if you added them by hand, however.', 'weathermap') . '</div>';

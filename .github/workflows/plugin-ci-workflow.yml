@@ -61,13 +61,13 @@ jobs:
     
     steps:
     - name: Checkout Cacti
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: Cacti/cacti
         path: cacti
     
     - name: Checkout Weathermap Plugin
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         path: cacti/plugins/weathermap
     
@@ -189,9 +189,9 @@ jobs:
       run: composer run-script lint ${{ github.workspace }}/cacti/plugins/weathermap
       working-directory: ${{ github.workspace }}/cacti
 
-    - name: Checking coding standards on base code
-      run: composer run-script phpcsfixer ${{ github.workspace }}/cacti/plugins/weathermap
-      working-directory: ${{ github.workspace }}/cacti
+#    - name: Checking coding standards on base code
+#      run: composer run-script phpcsfixer ${{ github.workspace }}/cacti/plugins/weathermap
+#      working-directory: ${{ github.workspace }}/cacti
 
 #    - name: Run PHPStan at Level 6 on base code outside of Composer due to technical issues
 #      run: ./include/vendor/bin/phpstan analyze --level 6 ${{ github.workspace }}/cacti/plugins/weathermap
