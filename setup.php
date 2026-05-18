@@ -113,7 +113,7 @@ function plugin_weathermap_upgrade() {
 
 	$current = plugin_weathermap_version();
 	$current = $current['version'];
-	$old     = db_fetch_cell_prepared("SELECT version FROM plugin_config WHERE directory = ?", ['weathermap']);
+	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory = 'weathermap'");
 
 	if ($current != $old) {
 		db_execute_prepared('UPDATE plugin_realms
