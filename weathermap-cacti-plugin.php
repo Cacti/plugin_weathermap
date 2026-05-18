@@ -42,8 +42,7 @@
 
 $guest_account  = true;
 
-chdir('../../');
-include_once('./include/auth.php');
+include_once('../../include/auth.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/WeatherMap.class.php');
 
 $showversionbox = read_config_option('weathermap_showversion');
