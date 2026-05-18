@@ -242,14 +242,14 @@ function mysprintf($format, $value, $kilo = 1000) {
 		wm_debug("KMGT formatting $value with $spec.");
 
 		$result = nice_scalar($value, $kilo, $places);
-		$output = preg_replace('/%' . $spec . 'k/', $format, $result);
+		$output = preg_replace_callback('/%' . preg_quote($spec, '/') . 'k/', function() use ($result) { return $result; }, $format);
 	} elseif (preg_match('/%(-*)(\d*)([Tt])/', $format, $matches)) {
 		$spec      = $matches[3];
 		$precision = ($matches[2] == '' ? 10 : intval($matches[2]));
 		$joinchar  = ' ';
 
 		if ($matches[1] == '-') {
-			$joinchar = ' ';
+			$joinchar = '-';
 		}
 
 		// special formatting for time_t (t) and SNMP TimeTicks (T)
@@ -414,15 +414,15 @@ function is_none($arr) {
 }
 
 function render_colour($col) {
-	if (($col[0] == -1) && ($col[1] == -1) && ($col[1] == -1)) {
+	if (($col[0] == -1) && ($col[1] == -1) && ($col[2] == -1)) {
 		return 'none';
 	}
 
-	if (($col[0] == -2) && ($col[1] == -2) && ($col[1] == -2)) {
+	if (($col[0] == -2) && ($col[1] == -2) && ($col[2] == -2)) {
 		return 'copy';
 	}
 
-	if (($col[0] == -3) && ($col[1] == -3) && ($col[1] == -3)) {
+	if (($col[0] == -3) && ($col[1] == -3) && ($col[2] == -3)) {
 		return 'contrast';
 	} else {
 		return sprintf('%d %d %d', $col[0], $col[1], $col[2]);
@@ -878,7 +878,7 @@ function calc_curve(&$in_xarray, &$in_yarray, $pointsperspan = 32) {
 			$yarray[$i], $xarray[$i + 1], $yarray[$i + 1], $xarray[$i + 2],
 			$yarray[$i + 2], $xarray[$i + 3], $yarray[$i + 3]);
 
-		$curvepoints = $curvepoints + $newpoints;
+		$curvepoints = array_merge($curvepoints, array_slice($newpoints, 1));
 	}
 
 	return $curvepoints;

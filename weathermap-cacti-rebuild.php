@@ -40,8 +40,7 @@
  +-------------------------------------------------------------------------+
 */
 
-chdir('../../');
-include('./include/cli_check.php');
+include('../../include/cli_check.php');
 include_once($config['base_path'] . '/lib/rrd.php');
 include_once($config['base_path'] . '/plugins/weathermap/setup.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
