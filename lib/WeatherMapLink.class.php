@@ -244,6 +244,10 @@ class WeatherMapLink extends WeatherMapItem {
 	function DrawComments($image, $col, $widths) {
 		$curvepoints = $this->curvepoints;
 
+		if (cacti_sizeof($curvepoints) === 0) {
+			return;
+		}
+
 		$last = cacti_count($curvepoints) - 1;
 
 		$totaldistance = $curvepoints[$last][2];
@@ -515,6 +519,10 @@ class WeatherMapLink extends WeatherMapItem {
 			$this->DrawComments($image,[$comment_colour_in, $comment_colour_out],[$link_in_width * 1.1, $link_out_width * 1.1]);
 		}
 
+		if (cacti_sizeof($this->curvepoints) === 0) {
+			return;
+		}
+
 		$curvelength = $this->curvepoints[cacti_count($this->curvepoints) - 1][2];
 
 		// figure out where the labels should be, and what the angle of the curve is at that point
@@ -754,7 +762,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$output .= TAB . 'TARGET';
 
 				foreach ($this->targets as $target) {
-					if (strpos($target[4], ' ') == false) {
+					if (strpos($target[4], ' ') === false) {
 						$output .= ' ' . $target[4];
 					} else {
 						$output .= ' "' . $target[4] . '"';
@@ -846,7 +854,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$tgt = '';
 
 		foreach ($this->targets as $target) {
-			if (strpos($target[4], ' ') == false) {
+			if (strpos($target[4], ' ') === false) {
 				$tgt .= $target[4] . ' ';
 			} else {
 				$tgt .= '"' . $target[4] . '" ';

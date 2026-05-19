@@ -379,7 +379,7 @@ function weathermap_singleview($mapid) {
 			print do_hook_function('weathermap_page_top', '');
 
 			$htmlfile = $outdir . $map['filehash'] . '.html';
-			$maptitle = $map['titlecache'];
+			$maptitle = html_escape($map['titlecache']);
 
 			if ($maptitle == '') {
 				$maptitle = __esc('Map for config file: %s', $map['configfile']);

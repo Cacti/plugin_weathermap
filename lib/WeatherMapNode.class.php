@@ -882,7 +882,7 @@ class WeatherMapNode extends WeatherMapItem {
 				$output .= TAB . 'TARGET';
 
 				foreach ($this->targets as $target) {
-					if (strpos($target[4], ' ') == false) {
+					if (strpos($target[4], ' ') === false) {
 						$output .= ' ' . $target[4];
 					} else {
 						$output .= ' "' . $target[4] . '"';
