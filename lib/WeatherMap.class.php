@@ -118,7 +118,7 @@ class WeatherMapDataSource {
 	//   returns an array of two values (in,out). -1,-1 if it couldn't get valid data
 	//   configline is passed in, to allow for better error messages
 	//   itemtype and itemname may be used as part of the target (e.g. for TSV source line)
-	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map) { return (array(-1,-1)); }
+	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map) { return ([-1,-1]); }
 	function ReadData($targetstring, &$map, &$item) {
 		return ([-1, -1, 0]);
 	}
@@ -830,7 +830,7 @@ class WeatherMap extends WeatherMapBase {
 			wm_debug("Relative path didn't exist. Trying $dir");
 		}
 
-		// $this->datasourceclasses = array();
+		// $this->datasourceclasses = [];
 		$dh = opendir($dir);
 
 		if (!$dh) {
@@ -838,9 +838,11 @@ class WeatherMap extends WeatherMapBase {
 				// try to find it with the script, if the relative path fails
 				$srcdir = substr($_SERVER['argv'][0], 0, strrpos($_SERVER['argv'][0], '/'));
 
+				// nosemgrep: php.lang.security.injection.tainted-filename.tainted-filename
 				if (file_exists($srcdir)) {
 					$dir = $srcdir . '/' . $dir;
 
+					// nosemgrep: php.lang.security.injection.tainted-filename.tainted-filename
 					if (file_exists($dir)) {
 						$dh = opendir($dir);
 					} else {
@@ -856,7 +858,7 @@ class WeatherMap extends WeatherMapBase {
 			while ($file = readdir($dh)) {
 				$realfile = $dir . '/' . $file;
 
-				if (is_file($realfile) && preg_match('/\.php$/', $realfile)) {
+				if (is_file($realfile) && preg_match('/\.php$/', $realfile)) { // nosemgrep: php.lang.security.injection.tainted-filename.tainted-filename
 					if (strpos($realfile, 'index.php') !== false) {
 						continue;
 					}
@@ -882,7 +884,7 @@ class WeatherMap extends WeatherMapBase {
 
 					wm_debug("Loaded $type Plugin class $class from $file");
 
-					$this->plugins[$type][$class] = new $class;
+					$this->plugins[$type][$class] = new $class; // nosemgrep: php.lang.security.injection.tainted-object-instantiation.tainted-object-instantiation
 
 					if (! isset($this->plugins[$type][$class])) {
 						wm_debug("** Failed to create an object for plugin $type/$class");
@@ -907,7 +909,7 @@ class WeatherMap extends WeatherMapBase {
 
 			wm_debug("Running $ds_class" . '->Init()');
 
-			// $ret = call_user_func(array($ds_class, 'Init'), $this);
+			// $ret = call_user_func([$ds_class, 'Init'], $this);
 			// assert('isset($this->plugins["data"][$ds_class])');
 
 			$ret = $this->plugins['data'][$ds_class]->Init($this);
@@ -965,7 +967,7 @@ class WeatherMap extends WeatherMapBase {
 
 						foreach ($this->datasourceclasses as $ds_class) {
 							if (!$matched) {
-								// $recognised = call_user_func(array($ds_class, 'Recognise'), $targetstring);
+								// $recognised = call_user_func([$ds_class, 'Recognise'], $targetstring);
 								$recognised = $this->plugins['data'][$ds_class]->Recognise($targetstring);
 
 								if ($recognised) {
@@ -1131,15 +1133,15 @@ class WeatherMap extends WeatherMapBase {
 					// in a half duplex link, in and out share a common bandwidth pool, so percentages need to include both
 					wm_debug('Calculating percentage using half-duplex');
 
-					$myobj->outpercent = (($total_in + $total_out) / ($myobj->max_bandwidth_out)) * 100;
-					$myobj->inpercent  = (($total_out + $total_in) / ($myobj->max_bandwidth_in)) * 100;
+					$myobj->outpercent = ($myobj->max_bandwidth_out != 0) ? ((($total_in + $total_out) / $myobj->max_bandwidth_out) * 100) : 0;
+					$myobj->inpercent  = ($myobj->max_bandwidth_in != 0) ? ((($total_out + $total_in) / $myobj->max_bandwidth_in) * 100) : 0;
 
 					if ($myobj->max_bandwidth_out != $myobj->max_bandwidth_in) {
 						wm_warn("ReadData: $type $name: You're using asymmetric bandwidth AND half-duplex in the same link. That makes no sense. [WMWARN44]");
 					}
 				} else {
-					$myobj->outpercent = (($total_out) / ($myobj->max_bandwidth_out)) * 100;
-					$myobj->inpercent  = (($total_in) / ($myobj->max_bandwidth_in)) * 100;
+					$myobj->outpercent = ($myobj->max_bandwidth_out != 0) ? ((($total_out) / $myobj->max_bandwidth_out) * 100) : 0;
+					$myobj->inpercent  = ($myobj->max_bandwidth_in != 0) ? ((($total_in) / $myobj->max_bandwidth_in) * 100) : 0;
 				}
 
 				// print $myobj->name."=>".$myobj->inpercent."%/".$myobj->outpercent."\n";
@@ -1257,11 +1259,7 @@ class WeatherMap extends WeatherMapBase {
 		$nowarn_scalemisses = intval($this->get_hint('nowarn_scalemisses'));
 
 		$bt       = debug_backtrace();
-		$function = (isset($bt[1]['function']) ? $bt[1]['function'] : '');
-
-		print "$function calls ColourFromPercent\n";
-
-		exit();
+		$function = ($bt[1]['function'] ?? '');
 
 		if (isset($this->colours[$scalename])) {
 			$colours = $this->colours[$scalename];
@@ -2391,11 +2389,11 @@ class WeatherMap extends WeatherMapBase {
 
 					['NODE', '/^\s*LABELFONT\s+(\d+)\s*$/i', ['labelfont'=>1]],
 					['NODE', '/^\s*LABELANGLE\s+(0|90|180|270)\s*$/i', ['labelangle'=>1]],
-					// array('(NODE|LINK)', '/^\s*TEMPLATE\s+(\S+)\s*$/i', array('template'=>1)),
+					// array('(NODE|LINK)', '/^\s*TEMPLATE\s+(\S+)\s*$/i', ['template'=>1]),
 
 					['LINK', '/^\s*OUTBWFORMAT\s+(.*)\s*$/i', ['bwlabelformats[OUT]'=>1, 'labelstyle'=>'--']],
 					['LINK', '/^\s*INBWFORMAT\s+(.*)\s*$/i', ['bwlabelformats[IN]'=>1, 'labelstyle'=>'--']],
-					// array('NODE','/^\s*ICON\s+none\s*$/i',array('iconfile'=>'')),
+					// array('NODE','/^\s*ICON\s+none\s*$/i',['iconfile'=>'']),
 					['NODE', '/^\s*ICON\s+(\S+)\s*$/i', ['iconfile'=>1, 'iconscalew'=>'#0', 'iconscaleh'=>'#0']],
 					['NODE', '/^\s*ICON\s+(\S+)\s*$/i', ['iconfile'=>1]],
 					['NODE', '/^\s*ICON\s+(\d+)\s+(\d+)\s+(inpie|outpie|box|rbox|round|gauge|nink)\s*$/i', ['iconfile'=>3, 'iconscalew'=>1, 'iconscaleh'=>2]],
@@ -2656,7 +2654,7 @@ class WeatherMap extends WeatherMapBase {
 					}
 				}
 
-				// array('(NODE|LINK)', '/^\s*TEMPLATE\s+(\S+)\s*$/i', array('template'=>1)),
+				// array('(NODE|LINK)', '/^\s*TEMPLATE\s+(\S+)\s*$/i', ['template'=>1]),
 
 				if (($last_seen == 'NODE' || $last_seen == 'LINK') && preg_match('/^\s*TEMPLATE\s+(\S+)\s*$/i', $buffer, $matches)) {
 					$tname = $matches[1];
@@ -3397,7 +3395,7 @@ class WeatherMap extends WeatherMapBase {
 							$top = nice_bandwidth($colour['top'], $this->kilo);
 						}
 
-						$tag = (isset($colour['tag']) ? $colour['tag'] : '');
+						$tag = ($colour['tag'] ?? '');
 
 						if (($colour['red1'] == -1) && ($colour['green1'] == -1) && ($colour['blue1'] == -1)) {
 							$output .= sprintf("SCALE %s %-4s %-4s   none   %s\n", $scalename, $bottom, $top, $tag);
@@ -3551,7 +3549,7 @@ class WeatherMap extends WeatherMapBase {
 		foreach ($this->postprocessclasses as $post_class) {
 			wm_debug("Running $post_class" . '->run()');
 
-			// call_user_func_array(array($post_class, 'run'), array(&$this));
+			// call_user_func_array([$post_class, 'run'], [&$this]);
 
 			$this->plugins['post'][$post_class]->run($this);
 		}
@@ -4266,7 +4264,7 @@ class WeatherMap extends WeatherMapBase {
 					if ((filemtime($realfile) < $configchanged) || ((time() - filemtime($realfile)) > $agelimit)) {
 						wm_debug("Cache: deleting $realfile");
 
-						unlink($realfile);
+						unlink($realfile); // nosemgrep: php.lang.security.unlink-use.unlink-use
 					}
 				}
 			}

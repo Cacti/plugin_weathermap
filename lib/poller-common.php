@@ -84,7 +84,7 @@ function weathermap_check_cron($time, $string) {
 
 	$lt = localtime($time, true);
 
-	[$minute, $hour, $wday, $day, $month] = preg_split('/\s+/', $string);
+	[$minute, $hour, $day, $month, $wday] = preg_split('/\s+/', $string);
 
 	$matched = true;
 
@@ -224,7 +224,7 @@ function weathermap_repair_maps() {
 										$old = $mydir . $objfile;
 										$new = $mydir . 'images/objects/' . basename($objfile);
 
-										if (is_writable($mydir . $bgfile)) {
+										if (is_writable($mydir . $objfile)) {
 											if (is_writeable($old) && is_writeable(dirname($new)) && is_writeable($new)) {
 												if (rename($old, $new)) {
 													$line = "\tICON images/objects/" . basename($objfile);
@@ -445,7 +445,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 						if (file_exists($tempfile)) {
 							// Don't try and delete a non-existent file (first run)
 							if (file_exists($imagefile)) {
-								unlink($imagefile);
+								unlink($imagefile); // nosemgrep: php.lang.security.unlink-use.unlink-use -- path derived from plugin output dir, not user input
 							}
 
 							rename($tempfile, $imagefile);

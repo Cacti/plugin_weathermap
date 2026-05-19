@@ -153,7 +153,7 @@ var WMcycler = {
     },
 
     initKeys: function (that) {
-        $(document).keyup(function (event) {
+        $(document).on('keyup', function(event) {
             if (event.keyCode === that.KEYCODE_ESCAPE) {
                 window.location.href = $('#cycle_stop').attr('href');
                 event.preventDefault();
@@ -178,13 +178,13 @@ var WMcycler = {
 
     initEvents: function (that) {
 
-        $("#cycle_pause").click(function () {
+        $("#cycle_pause").on('click', function() {
             that.pauseAction();
         });
-        $("#cycle_next").click(function () {
+        $("#cycle_next").on('click', function() {
             that.nextAction();
         });
-        $("#cycle_prev").click(function () {
+        $("#cycle_prev").on('click', function() {
             that.previousAction();
         });
     },

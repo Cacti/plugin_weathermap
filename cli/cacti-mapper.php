@@ -147,7 +147,7 @@ if (cacti_sizeof($interfaces)) {
 			unset($interfaces[$key]);
 			$cleaned++;
 		} else {
-			$interfaces[$key]['nicename'] = (isset($int['name']) ? $int['name'] : (isset($int['descr']) ? $int['descr'] : (isset($int['alias']) ? $int['alias'] : 'Interface #' . $int['index'])));
+			$interfaces[$key]['nicename'] = ($int['name'] ?? ($int['descr'] ?? ($int['alias'] ?? 'Interface #' . $int['index'])));
 		}
 	}
 }

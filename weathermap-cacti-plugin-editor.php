@@ -86,7 +86,15 @@ $selected = '';
 set_default_action('');
 
 if (isset_request_var('action')) {
-	$action = get_nfilter_request_var('action');
+	$action = wm_editor_sanitize_action(get_nfilter_request_var('action'), [
+		'graphs', 'datasources', 'newmap', 'newmapcopy', 'font_samples', 'draw',
+		'show_config', 'fetch_config', 'set_link_config', 'set_node_config',
+		'set_node_properties', 'set_link_properties', 'set_map_properties',
+		'set_map_style', 'add_link2', 'place_legend', 'place_stamp', 'via_link',
+		'move_node', 'link_tidy', 'retidy', 'retidy_all', 'untidy',
+		'delete_link', 'add_node', 'editor_settings', 'delete_node',
+		'clone_node', 'load_area_data', 'load_map_javascript', 'nothing'
+	]);
 }
 
 if (isset_request_var('mapname')) {
@@ -945,4 +953,3 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	</form>
 </body>
 </html>
-

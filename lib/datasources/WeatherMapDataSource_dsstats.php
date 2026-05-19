@@ -104,7 +104,7 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 
 	/**
 	 * Actually read data from a data source, and return it
-	 * returns a 3-part array (invalue, outvalue and datavalid time_t)
+	 * returns a 3-part [invalue, outvalue and datavalid time_t]
 	 * invalue and outvalue should be -1,-1 if there is no valid data
 	 * data_time is intended to allow more informed graphing in the future
 	 * @param mixed $targetstring

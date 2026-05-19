@@ -91,15 +91,18 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 		if (preg_match('/^fping:(\S+)$/', $targetstring, $matches)) {
 			$target = $matches[1];
 
-			$pattern = "/^$target\s:";
-
-			for ($i = 0; $i < $ping_count; $i++) {
-				$pattern .= '\s(\S+)';
-			}
-
-			$pattern .= '/';
-
 			if (is_executable($this->fping_cmd)) {
+				/* Validate before exec: allow IPv4/IPv6 addresses (including zone IDs with %),
+				 * hostnames (underscore-containing per RFC 2181), and bracketed IPv6 literals.
+				 * Shell metacharacters in $target would otherwise reach popen() directly. */
+				if (!preg_match('/^[a-zA-Z0-9._\-:%\[\]]+$/', $target)) {
+					wm_warn("FPing ReadData: rejected target with illegal characters (" . json_encode($target) . ") [WMFPING04]");
+
+					return ([-1, -1, 0]);
+				}
+
+				$pattern = '/^' . preg_quote($target, '/') . '\s:';
+
 				$command = cacti_escapeshellarg($this->fping_cmd) . ' -t100 -r1 -p20 -u -C ' . (int) $ping_count . ' -i10 -q ' . cacti_escapeshellarg($target) . ' 2>&1'; // nosemgrep: php.lang.security.exec-use.exec-use -- fping_cmd is admin-configured; target validated against fping: pattern
 
 				wm_debug("Running $command");

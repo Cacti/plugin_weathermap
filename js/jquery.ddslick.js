@@ -192,7 +192,7 @@
 				});
 
 				// Watch for and handle keypress when popup options list is open.
-				ddOptions.keydown(function(event) {
+				ddOptions.on('keydown', function(event) {
 					var ddOptions = $(this);
 					if (ddOptions.attr("aria-hidden") != "false") {
 						return;
@@ -361,7 +361,7 @@
 			//Check if already destroyed
 			if (pluginData) {
 				var originalElement = pluginData.original;
-				$this.removeData("ddslick").unbind(".ddslick").replaceWith(originalElement);
+				$this.removeData("ddslick").off(".ddslick").replaceWith(originalElement);
 			}
 		});
 	};
