@@ -105,7 +105,6 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 
 				$pattern = '/^' . preg_quote($target, '/') . '\s:';
 
-			if (is_executable($this->fping_cmd)) {
 				$command = cacti_escapeshellarg($this->fping_cmd) . ' -t100 -r1 -p20 -u -C ' . (int) $ping_count . ' -i10 -q ' . cacti_escapeshellarg($target) . ' 2>&1'; // nosemgrep: php.lang.security.exec-use.exec-use -- fping_cmd is admin-configured; target validated against fping: pattern
 
 				wm_debug("Running $command");
