@@ -105,16 +105,11 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 
 				$pattern = '/^' . preg_quote($target, '/') . '\s:';
 
-				for ($i = 0; $i < $ping_count; $i++) {
-					$pattern .= '\s(\S+)';
-				}
-
-				$pattern .= '/';
-
-				$command = $this->fping_cmd . ' -t100 -r1 -p20 -u -C ' . (int) $ping_count . ' -i10 -q ' . cacti_escapeshellarg($target) . ' 2>&1';
+			if (is_executable($this->fping_cmd)) {
+				$command = cacti_escapeshellarg($this->fping_cmd) . ' -t100 -r1 -p20 -u -C ' . (int) $ping_count . ' -i10 -q ' . cacti_escapeshellarg($target) . ' 2>&1'; // nosemgrep: php.lang.security.exec-use.exec-use -- fping_cmd is admin-configured; target validated against fping: pattern
 
 				wm_debug("Running $command");
-				$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- target validated above, all flags are hardcoded
+				$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- fping_cmd is admin-configured; target validated above via cacti_escapeshellarg
 
 				$count    = 0;
 				$hitcount = 0;

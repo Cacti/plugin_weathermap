@@ -42,8 +42,7 @@ declare(strict_types=1);
  +-------------------------------------------------------------------------+
 */
 
-chdir('../../');
-include_once('./include/auth.php');
+include_once('../../include/auth.php');
 include_once($config['library_path'] . '/rrd.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/WeatherMap.class.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
@@ -481,7 +480,7 @@ function weathermap_form_actions() {
 
 	form_start('weathermap-cacti-plugin-mgmt.php', 'actions');
 
-	html_start_box($actions[get_nfilter_request_var('drp_action')], '60%', '', '3', 'center', '');
+	html_start_box($actions[get_nfilter_request_var('drp_action')], '60%', false, 3, 'center', '');
 
 	if (isset($array)) {
 		if (get_nfilter_request_var('drp_action') === '1') { // delete
@@ -568,7 +567,7 @@ function weathermap_footer_links() {
 
 	print '<br />';
 
-	html_start_box('<a target="_blank" class="linkOverDark" href="docs/">' . __('Local Documentation', 'weathermap') . '</a> -- <a target="_blank" class="linkOverDark" href="http://www.network-weathermap.com/">' . __('Weathermap Website', 'weathermap') . '</a> -- <a target="_target" class="linkOverDark" href="weathermap-cacti-plugin-editor.php">' . __('Weathermap Editor', 'weathermap') . '</a> -- ' . __('This is version %s', $weathermap_version), '100%', '', '3', 'center', '');
+	html_start_box('<a target="_blank" class="linkOverDark" href="docs/">' . __('Local Documentation', 'weathermap') . '</a> -- <a target="_blank" class="linkOverDark" href="http://www.network-weathermap.com/">' . __('Weathermap Website', 'weathermap') . '</a> -- <a target="_target" class="linkOverDark" href="weathermap-cacti-plugin-editor.php">' . __('Weathermap Editor', 'weathermap') . '</a> -- ' . __('This is version %s', $weathermap_version), '100%', false, 3, 'center', '');
 
 	html_end_box();
 }
@@ -692,7 +691,7 @@ function wm_filter() {
 
 	$last_stats = read_config_option('weathermap_last_stats', true);
 
-	html_start_box(__('Weather Maps [ Run Details: %s ]', $last_stats, 'weathermap'), '100%', '', '3', 'center', 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+	html_start_box(__('Weather Maps [ Run Details: %s ]', $last_stats, 'weathermap'), '100%', false, 3, 'center', 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
 	?>
 	<tr class='even'>
 		<td>
@@ -909,7 +908,7 @@ function maplist() {
 
 	print $nav;
 
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	$display_text = [
 		[
@@ -1178,7 +1177,7 @@ function create_prime_mapcache() {
 function addmap_filter() {
 	global $item_rows;
 
-	html_start_box(__('Existing Configuration Files', 'weathermap'), '100%', '', '3', 'center', '');
+	html_start_box(__('Existing Configuration Files', 'weathermap'), '100%', false, 3, 'center', '');
 
 	?>
 	<tr class='even'>
@@ -1228,7 +1227,7 @@ function addmap_filter() {
 
 	html_end_box();
 
-	html_start_box(__('Create Options', 'weathermap'), '100%', '', '3', 'center', '');
+	html_start_box(__('Create Options', 'weathermap'), '100%', false, 3, 'center', '');
 
 	?>
 	<tr class='even'>
@@ -1434,7 +1433,7 @@ function addmap_picker($show_all = false) {
 
 	print $nav;
 
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'), false);
 
@@ -1518,7 +1517,7 @@ function preview_config($file) {
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
 		exit;
 	} else {
-		html_start_box(__('Preview of %s', $file, 'weathermap'), '100%', '', '3', 'center', '');
+		html_start_box(__('Preview of %s', $file, 'weathermap'), '100%', false, 3, 'center', '');
 
 		print '<tr><td class="textArea">';
 		print '<pre>';
@@ -1811,7 +1810,7 @@ function perms_filter($id) {
 		WHERE id = ?',
 		[$id]);
 
-	html_start_box(__('Weathermap Permissions for Map [ %s ]', $title, 'weathermap'), '100%', '', '3', 'center', '');
+	html_start_box(__('Weathermap Permissions for Map [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
 	?>
 	<tr class='even'>
 		<td>
@@ -2116,7 +2115,7 @@ function perms_list($id) {
 
 	print $nav;
 
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	$display_text = [
 		[
@@ -2271,7 +2270,7 @@ function weathermap_map_settings($id) {
 	$do_map_settings = false;
 
 	if ($type == 'group' || $type == 'map') {
-		html_start_box(__('Usage Notes', 'weathermap'), '100%', '', '3', 'center', '');
+		html_start_box(__('Usage Notes', 'weathermap'), '100%', false, 3, 'center', '');
 
 		print '<tr class="even"><td>';
 
@@ -2301,7 +2300,7 @@ function weathermap_map_settings($id) {
 		}
 	}
 
-	html_start_box($title, '100%', '', '3', 'center', 'weathermap-cacti-plugin-mgmt.php?action=map_settings_form&mapid=' . intval($id));
+	html_start_box($title, '100%', false, 3, 'center', 'weathermap-cacti-plugin-mgmt.php?action=map_settings_form&mapid=' . intval($id));
 
 	if (cacti_sizeof($settingrows)) {
 		html_header([__('Action', 'weathermap'), __('Name', 'weathermap'), __('Value', 'weathermap')], 2);
@@ -2373,7 +2372,7 @@ function weathermap_readonly_settings($id, $title = 'Settings') {
 			[$id]);
 	}
 
-	html_start_box($title, '100%', '', '3', 'center', '');
+	html_start_box($title, '100%', false, 3, 'center', '');
 
 	html_header([__('Name', 'weathermap'), __('Value', 'weathermap')]);
 
@@ -2475,7 +2474,7 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 
 	form_start('weathermap-cacti-plugin-mgmt.php');
 
-	html_start_box("$action $title", '100%', '', '3', 'center', '');
+	html_start_box("$action $title", '100%', false, 3, 'center', '');
 
 	draw_edit_form(['config' => $values_ar, 'fields' => $field_ar]);
 
@@ -2570,7 +2569,7 @@ function weathermap_chgroup($id) {
 	print "<input type=hidden name='map_id' value='" . $id . "'>";
 	print "<input type=hidden name='action' value='chgroup_update'>";
 
-	html_start_box(__('Edit Map Group for Weathermap [ %s ]', $title, 'weathermap'), '100%', '', '3', 'center', '');
+	html_start_box(__('Edit Map Group for Weathermap [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
 
 	// html_header(["Group Name", ""]);
 	form_alternate_row();
@@ -2623,7 +2622,7 @@ function weathermap_group_form($id = 0) {
 		$header = __esc('Editing Group: %s', $grouptext, 'weathermap');
 	}
 
-	html_start_box($header, '100%', '', '3', 'center', '');
+	html_start_box($header, '100%', false, 3, 'center', '');
 
 	print '<tr><td>';
 
@@ -2650,7 +2649,7 @@ function weathermap_group_form($id = 0) {
 function weathermap_group_editor() {
 	global $config;
 
-	html_start_box(__('Edit Map Groups', 'weathermap'), '100%', '', '3', 'center', 'weathermap-cacti-plugin-mgmt.php?action=group_form&id=0');
+	html_start_box(__('Edit Map Groups', 'weathermap'), '100%', false, 3, 'center', 'weathermap-cacti-plugin-mgmt.php?action=group_form&id=0');
 
 	html_header([__('Actions', 'weathermap'), __('Group Name', 'weathermap'), __('Settings', 'weathermap'), __('Sort Order', 'weathermap')], 2);
 

@@ -310,19 +310,27 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			$args[] = "PRINT:agg_out:'OUT %lf'";
 		}
 
-		$command = $map->rrdtool;
+		$command = cacti_escapeshellarg($map->rrdtool);
 
 		foreach ($args as $arg) {
 			$command .= ' ' . cacti_escapeshellarg($arg);
 		}
 
-		foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
-			$command .= ' ' . cacti_escapeshellarg($opt);
+		if ($extra_options !== '' && $extra_options !== null) {
+			if (preg_match('/["\'\\]/', (string) $extra_options)) {
+				$msg = 'RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]';
+				wm_warn($msg);
+				cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
+			} else {
+				foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
+					$command .= ' ' . cacti_escapeshellarg($opt);
+				}
+			}
 		}
 
 		wm_debug("RRD ReadData: Running: $command");
 
-		$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- all args escaped above; rrdtool path is admin-configured
+		$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- rrdtool path is admin-configured; all args cacti_escapeshellarg'd
 
 		$lines     = [];
 		$count     = 0;
@@ -412,19 +420,27 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		$args[] = '--end';
 		$args[] = $end;
 
-		$command = $map->rrdtool;
+		$command = cacti_escapeshellarg($map->rrdtool);
 
 		foreach ($args as $arg) {
 			$command .= ' ' . cacti_escapeshellarg($arg);
 		}
 
-		foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
-			$command .= ' ' . cacti_escapeshellarg($opt);
+		if ($extra_options !== '' && $extra_options !== null) {
+			if (preg_match('/["\'\\]/', (string) $extra_options)) {
+				$msg = 'RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]';
+				wm_warn($msg);
+				cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
+			} else {
+				foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) as $opt) {
+					$command .= ' ' . cacti_escapeshellarg($opt);
+				}
+			}
 		}
 
 		wm_debug("RRD ReadData: Running: $command");
 
-		$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- all args escaped above; rrdtool path is admin-configured
+		$pipe = popen($command, 'r'); // nosemgrep: php.lang.security.exec-use.exec-use -- rrdtool path is admin-configured; all args cacti_escapeshellarg'd
 
 		$lines     =  [];
 		$count     = 0;

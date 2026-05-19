@@ -884,7 +884,7 @@ class WeatherMapNode extends WeatherMapItem {
 				$output .= TAB . 'TARGET';
 
 				foreach ($this->targets as $target) {
-					if (strpos($target[4], ' ') == false) {
+					if (strpos($target[4], ' ') === false) {
 						$output .= ' ' . $target[4];
 					} else {
 						$output .= ' "' . $target[4] . '"';
@@ -979,8 +979,8 @@ class WeatherMapNode extends WeatherMapItem {
 		$js .= 'infourl:' . js_escape($this->infourl[IN]) . ', ';
 		$js .= 'overlibcaption:' . js_escape($this->overlibcaption[IN]) . ', ';
 		$js .= 'overliburl:' . js_escape(join(' ',$this->overliburl[IN])) . ', ';
-		$js .= 'overlibwidth:' . $this->overlibheight . ', ';
-		$js .= 'overlibheight:' . $this->overlibwidth . ', ';
+		$js .= 'overlibwidth:' . $this->overlibwidth . ', ';
+		$js .= 'overlibheight:' . $this->overlibheight . ', ';
 
 		if (preg_match('/^(none|nink|inpie|outpie|box|rbox|gauge|round)$/', $this->iconfile)) {
 			$js .= 'iconfile:' . js_escape('::' . $this->iconfile);
@@ -1013,8 +1013,8 @@ class WeatherMapNode extends WeatherMapItem {
 			$js .= '"overliburl":' . js_escape($this->overliburl) . ', ';
 			$js .= '"overlibcaption":' . js_escape($this->overlibcaption) . ', ';
 
-			$js .= '"overlibwidth":' . $this->overlibheight . ', ';
-			$js .= '"overlibheight":' . $this->overlibwidth . ', ';
+			$js .= '"overlibwidth":' . $this->overlibwidth . ', ';
+			$js .= '"overlibheight":' . $this->overlibheight . ', ';
 			$js .= '"iconfile":' . js_escape($this->iconfile) . ', ';
 		}
 
