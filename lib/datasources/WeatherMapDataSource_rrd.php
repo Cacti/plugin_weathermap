@@ -474,7 +474,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 			wm_debug("RRD ReadData: Headings are: $headings");
 
 			if ((in_array($dsnames[IN], $heads, true) || $dsnames[IN] == '-') &&
-				(in_array($dsnames[OUT],$heads, true) || $dsnames[OUT] == '-')) {
+				(in_array($dsnames[OUT], $heads, true) || $dsnames[OUT] == '-')) {
 				// deal with the data, starting with the last line of output
 				$rlines = array_reverse($lines);
 
@@ -546,7 +546,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 
 	/**
 	 * Actually read data from a data source, and return it
-	 * returns a 3-part array (invalue, outvalue and datavalid time_t)
+	 * returns a 3-part [invalue, outvalue and datavalid time_t]
 	 * invalue and outvalue should be -1,-1 if there is no valid data
 	 * data_time is intended to allow more informed graphing in the future
 	 * @param mixed $targetstring

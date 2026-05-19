@@ -995,7 +995,7 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 		$halfway = $totaldistance * ($q2_percent / 100);
 
 		$dirs = [OUT, IN];
-		// $dirs = array(IN);
+		// $dirs = [IN];
 
 		[$halfway_x, $halfway_y, $halfwayindex] = find_distance_coords($curvepoints, $halfway);
 
@@ -1647,9 +1647,7 @@ function format_number($number, $precision = 2, $trailing_zeroes = 0) {
 		$decimal = substr($number, strlen($integer) + 1);
 	}
 
-	if (!isset($decimal)) {
-		$decimal = '';
-	}
+	$decimal ??= '';
 
 	$integer = $sign * $integer;
 

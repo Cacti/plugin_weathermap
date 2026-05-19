@@ -1051,11 +1051,11 @@ function prime_link_form(name) {
 
 		// if that didn't 'stick', then we need to add the special value
 		if ($('#link_commentposout').val() != mylink.commentposout) {
-			$('#link_commentposout').prepend("<option selected value='" + mylink.commentposout + "'>" + mylink.commentposout + "%</option>");
+			$('#link_commentposout').prepend($('<option>', { selected: true, value: mylink.commentposout, text: mylink.commentposout + '%' }));
 		}
 
 		if ($('#link_commentposin').val() != mylink.commentposin) {
-			$('#link_commentposin').prepend("<option selected value='" + mylink.commentposin + "'>" + mylink.commentposin + "%</option>");
+			$('#link_commentposin').prepend($('<option>', { selected: true, value: mylink.commentposin, text: mylink.commentposin + '%' }));
 		}
 
 		document.getElementById('link_nodename1').firstChild.nodeValue  = mylink.a;
