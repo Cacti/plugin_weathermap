@@ -265,7 +265,7 @@ function weathermap_config_settings() {
 		],
 		'weathermap_nolegend' => [
 			'friendly_name' => __('Hover Graph Style', 'weathermap'),
-			'description'   => __('When hovering over the Links or Nodes, what style of Graph is to be displayed displayed?', 'weathermap'),
+			'description'   => __('When hovering over the Links or Nodes, what style of Graph is to be displayed?', 'weathermap'),
 			'method'        => 'drop_array',
 			'array'         => [
 				'thumb' => __('Thumbnail Graphs', 'weathermap'),
