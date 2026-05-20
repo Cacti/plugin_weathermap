@@ -14,14 +14,16 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- 1.5 ---
-* issue#124: Weathermap slow when some graphs are broken
-* issue#173: Data Source select queries slow or not working
-* issue#186: Popups are not working in standalone mode
+--- 1.6 ---
 * issue#211: Warn Count is being reset too early
 * issue: Attempt to keep the plugin basepath the weathermap directory
 * issue: Miscellaneous security hardening and preparation for Cacti 1.3
 * feature#219: Add Via Style as a Link form Option
+
+--- 1.5 ---
+* issue#124: Weathermap slow when some graphs are broken
+* issue#173: Data Source select queries slow or not working
+* issue#186: Popups are not working in standalone mode
 * feature#193: Allow the Info URL to be either "Time View Graph" or "Classic View Graph"
 
 --- 1.4 ---
