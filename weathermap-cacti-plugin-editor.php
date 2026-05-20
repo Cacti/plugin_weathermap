@@ -951,5 +951,11 @@ $weathermap_version = plugin_weathermap_numeric_version();
 		</div>
 		<!-- TextEditSettings -->
 	</form>
+	<?php
+	$showversionbox = read_config_option('weathermap_showversion');
+	if ($showversionbox == 'on') {
+		weathermap_footer_links();
+	}
+	?>
 </body>
 </html>
