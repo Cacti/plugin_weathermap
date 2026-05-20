@@ -28,6 +28,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#202: Graph-Preview not working on Release 1.5 after Upgrade
 * issue: Attempt to keep the plugin basepath the weathermap directory
 * issue: Miscellaneous security hardening and preparation for Cacti 1.3
+* issue: Restoring documentation links to editor and management pages
 * feature#219: Add Via Style as a Link form Option
 
 --- 1.5 ---
