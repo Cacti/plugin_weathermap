@@ -1082,6 +1082,11 @@ function maplist() {
 
 	form_end();
 
+	$showversionbox = read_config_option('weathermap_showversion');
+	if ($showversionbox == 'on') {
+		weathermap_footer_links();
+	}
+
 	?>
 	<script type='text/javascript'>
 	$(function() {
