@@ -816,6 +816,8 @@ function weathermap_mapselector($current_id = 0) {
 										}
 									}
 
+									$lastgroup = '------lasdjflkjsdlfkjlksdjflksjdflkjsldjlkjsd';
+
 									foreach ($maps as $map) {
 										if ($ngroups > 1 && $map['name'] != $lastgroup) {
 											print "<option disabled style='font-weight: bold; font-style: italic' value='$nullhash'>" . html_escape($map['name']) . '</option>';
