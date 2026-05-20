@@ -15,7 +15,17 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 ## Changes
 
 --- 1.6 ---
+* security#205: weathermap_group_move() uses raw SQL instead of parameterized queries
+* security#216: Security: defense-in-depth audit findings
+* issue#214: In weathermap v1.5, the Hover Graph’s height and width values cannot be modified.
+* issue#212: $bgfile used instead of $objfile in ICON writability check in weathermap_repair_maps()
 * issue#211: Warn Count is being reset too early
+* issue#209: $name clobbered immediately after fetch in weathermap_map_settings_form()
+* issue#208: cron field order wrong in weathermap_check_cron() — DOM/month/DOW swapped
+* issue#207: liveview uses $map[0]['configfile'] on flat row from db_fetch_row_prepared()
+* issue#206: dir() used instead of chdir() in viewimage/viewthumb — working directory never restored
+* issue#204: weathermap_footer_links() duplicated across two files
+* issue#202: Graph-Preview not working on Release 1.5 after Upgrade
 * issue: Attempt to keep the plugin basepath the weathermap directory
 * issue: Miscellaneous security hardening and preparation for Cacti 1.3
 * feature#219: Add Via Style as a Link form Option
