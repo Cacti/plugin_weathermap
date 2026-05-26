@@ -242,12 +242,22 @@ switch (get_request_var('action')) {
 				$guid     = $map['filehash'];
 
 				if ($maptitle == '') {
-					$maptitle = 'Map for config file: ' . $map['configfile'];
+					$maptitle = __esc('Map for config file: %s', $map['configfile']);
 				}
 
-				printf('<item><title>%s</title><description>Network Weathermap named "%s"</description><link>%s</link><media:thumbnail url="%s"/><media:content url="%s"/><guid isPermaLink="false">%s%s</guid></item>',
-					$maptitle, $maptitle, $linkurl, $thumburl, $bigurl, $config['url_path'], $guid);
-				print "\n";
+				print '<item>';
+
+				printf('<title>%s</title>', $maptitle);
+
+				printf('<description>' . __('Network Weathermap named "%s"', $maptitle) . '</description>
+					<link>%s</link>
+					<media:thumbnail url="%s"/>
+					<media:content url="%s"/>
+					<guid isPermaLink="false">%s%s</guid>
+					</item>',
+					$linkurl, $thumburl, $bigurl, $config['url_path'], $guid);
+
+				print PHP_EOL;
 			}
 		}
 
@@ -402,7 +412,7 @@ function weathermap_singleview($mapid) {
 			}
 
 			print '<div class="cactiTable">';
-			print '<div class="cactiTableTitleRow">' . html_escape($maptitle) . '</div>';
+			print '<div class="cactiTableTitleRow">' . $maptitle . '</div>';
 			print '</div>';
 
 			print '<table class="cactiTable">';
