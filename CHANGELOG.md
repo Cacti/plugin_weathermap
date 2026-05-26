@@ -14,6 +14,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
+--- develop ---
+* issue#233: Rendering issues when the page includes several maps with dropdown
+
 --- 1.6 ---
 * security#205: weathermap_group_move() uses raw SQL instead of parameterized queries
 * security#216: Security: defense-in-depth audit findings
