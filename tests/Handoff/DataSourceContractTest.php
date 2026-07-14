@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 describe('data source ReadData return contract', function (): void {
 	it('base WeatherMapDataSource::ReadData() returns a 3-element [-1,-1,0] array', function (): void {

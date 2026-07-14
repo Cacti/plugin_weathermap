@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 describe('weathermap settings persistence', function (): void {
 	it('does not contain the REPLACE INFO typo', function (): void {
@@ -37,6 +37,7 @@ describe('weathermap settings persistence', function (): void {
 		// by scanning for db_execute_prepared that is followed (within three lines)
 		// by a REPLACE INTO weathermap_settings fragment.
 		$replaceBlocks = [];
+
 		foreach ($lines as $n => $line) {
 			if (str_contains($line, "db_execute_prepared('REPLACE INTO weathermap_settings")) {
 				$replaceBlocks[] = $n;

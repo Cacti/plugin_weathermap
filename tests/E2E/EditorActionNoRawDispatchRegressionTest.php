@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 describe('Weathermap editor action dispatch regression', function (): void {
 	it('does not leave raw action assignment in the editor entrypoint', function (): void {

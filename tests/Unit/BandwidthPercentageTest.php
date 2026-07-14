@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 // Mirrors the guarded formula used in WeatherMap.class.php lines 1138-1146.
 // Defined inline to avoid pulling in class-level dependencies.

@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /**
  * Parse-check a PHP file entirely in-process using token_get_all().
@@ -18,8 +18,7 @@ declare(strict_types=1);
  *
  * Returns null on success, or an error message string on failure.
  */
-function wm_smoke_check_syntax(string $path): ?string
-{
+function wm_smoke_check_syntax(string $path): ?string {
 	$source = file_get_contents($path);
 
 	if ($source === false) {
@@ -30,6 +29,7 @@ function wm_smoke_check_syntax(string $path): ?string
 
 	set_error_handler(static function (int $errno, string $msg) use (&$error): bool {
 		$error = $msg;
+
 		return true;
 	});
 

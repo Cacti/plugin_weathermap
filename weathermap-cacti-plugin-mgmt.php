@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
@@ -678,10 +678,10 @@ function weathermap_group_move($id, $direction) {
 			$otherid = $target['id'];
 
 			// move $mapid in direction $direction
-			db_execute_prepared('UPDATE weathermap_groups SET sortorder = ? WHERE id = ?', array($neworder, $id));
+			db_execute_prepared('UPDATE weathermap_groups SET sortorder = ? WHERE id = ?', [$neworder, $id]);
 
 			// then find the other one with the same sortorder and move that in the opposite direction
-			db_execute_prepared('UPDATE weathermap_groups SET sortorder = ? WHERE id = ?', array($oldorder, $otherid));
+			db_execute_prepared('UPDATE weathermap_groups SET sortorder = ? WHERE id = ?', [$oldorder, $otherid]);
 		}
 	}
 }

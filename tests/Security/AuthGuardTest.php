@@ -9,17 +9,23 @@
 
 describe('auth guard presence in weathermap', function () {
 	it('includes auth.php or global.php in all web UI entry points', function () {
-		$uiFiles = array(
+		$uiFiles = [
 			'weathermap-cacti-plugin.php',
 			'weathermap-cacti-plugin-mgmt.php',
 			'weathermap-cacti-plugin-editor.php',
-		);
+		];
 
 		foreach ($uiFiles as $relativeFile) {
 			$path = realpath(__DIR__ . '/../../' . $relativeFile);
-			if ($path === false) continue;
+
+			if ($path === false) {
+				continue;
+			}
 			$contents = file_get_contents($path);
-			if ($contents === false) continue;
+
+			if ($contents === false) {
+				continue;
+			}
 
 			$hasAuth = (
 				strpos($contents, 'auth.php') !== false ||
@@ -34,17 +40,23 @@ describe('auth guard presence in weathermap', function () {
 	});
 
 	it('validates numeric IDs from request variables before DB queries', function () {
-		$uiFiles = array(
+		$uiFiles = [
 			'weathermap-cacti-plugin.php',
 			'weathermap-cacti-plugin-mgmt.php',
 			'weathermap-cacti-plugin-editor.php',
-		);
+		];
 
 		foreach ($uiFiles as $relativeFile) {
 			$path = realpath(__DIR__ . '/../../' . $relativeFile);
-			if ($path === false) continue;
+
+			if ($path === false) {
+				continue;
+			}
 			$contents = file_get_contents($path);
-			if ($contents === false) continue;
+
+			if ($contents === false) {
+				continue;
+			}
 
 			if (preg_match('/get_request_var\s*\(\s*[\'\"]id[\'\"]/', $contents)) {
 				$hasFilter = (

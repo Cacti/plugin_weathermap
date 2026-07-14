@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 describe('poller-common cron field destructuring order', function (): void {
 	it('uses the correct minute, hour, day, month, wday order', function (): void {

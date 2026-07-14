@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * Minimal bootstrap for the plugin_weathermap security regression suite.

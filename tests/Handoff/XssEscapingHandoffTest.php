@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 describe('XSS escaping handoff at output boundaries', function (): void {
 	describe('weathermap-cacti-plugin.php', function (): void {
@@ -15,7 +15,7 @@ describe('XSS escaping handoff at output boundaries', function (): void {
 			$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin.php');
 
 			// Line ~408: single-map view title row.
-			expect($source)->toContain("html_escape(\$maptitle)");
+			expect($source)->toContain('html_escape($maptitle)');
 
 			// Both occurrences must be present (single-map and cycle/thumbnail views).
 			$count = substr_count($source, 'html_escape($maptitle)');

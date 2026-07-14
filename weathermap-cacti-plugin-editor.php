@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
@@ -468,17 +468,17 @@ $weathermap_version = plugin_weathermap_numeric_version();
 								<select id='node_template' name='node_template'>
 									<?php
 									print '<option value="-1"' . (get_request_var('node_template') == -1 ? 'selected' : '') . '>' . __('All', 'weathermap') . '</option>';
-									$graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
+$graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
 										FROM graph_templates AS gt
 										INNER JOIN graph_local AS gl
 										ON gt.id = gl.graph_template_id
 										ORDER BY gt.name');
 
-									foreach ($graph_templates as $gt) {
-										print '<option ' . (get_request_var('node_template') == $gt['id'] ? 'selected' : '');
-										print ' value="' . $gt['id'] . '">' . html_escape($gt['name']) . '</option>';
-									}
-									?>
+foreach ($graph_templates as $gt) {
+	print '<option ' . (get_request_var('node_template') == $gt['id'] ? 'selected' : '');
+	print ' value="' . $gt['id'] . '">' . html_escape($gt['name']) . '</option>';
+}
+?>
 								</select>
 							</td>
 						</tr>
@@ -521,21 +521,21 @@ $weathermap_version = plugin_weathermap_numeric_version();
 							</td>
 						</tr>
 						<tr>
-							<td><?php print __('Maximum Bandwidth', 'weathermap');?><br /><?php print __('Into', 'weathermap');?><span id='link_nodename1a'>%NODE1%</span>'</td>
+							<td><?php print __('Maximum Bandwidth', 'weathermap'); ?><br /><?php print __('Into', 'weathermap'); ?><span id='link_nodename1a'>%NODE1%</span>'</td>
 							<td><input id='link_bandwidth_in' name='link_bandwidth_in' type='text' class='ui-state-default ui-corner-all' size='8'/> bits/sec</td>
 						</tr>
 						<tr>
-							<td><?php print __('Maximum Bandwidth', 'weathermap');?><br /><?php print __('Out of', 'weathermap');?><span id='link_nodename1b'>%NODE1%</span>'</td>
+							<td><?php print __('Maximum Bandwidth', 'weathermap'); ?><br /><?php print __('Out of', 'weathermap'); ?><span id='link_nodename1b'>%NODE1%</span>'</td>
 							<td>
 								<input id='link_bandwidth_out_cb' name='link_bandwidth_out_cb' type='checkbox' value='symmetric' />Same As 'In' or <input id='link_bandwidth_out' name='link_bandwidth_out' type='text' class='ui-state-default ui-corner-all' size='8' /> bits/sec
 							</td>
 						</tr>
 						<tr>
-							<td><?php print __('Via Style', 'weathermap');?></td>
+							<td><?php print __('Via Style', 'weathermap'); ?></td>
 							<td>
 								<select id='viastyle' name='viastyle'>
-									<option value='curved'><?php print __('Curved', 'weathermap');?></option>
-									<option value='angled'><?php print __('Angled', 'weathermap');?></option>
+									<option value='curved'><?php print __('Curved', 'weathermap'); ?></option>
+									<option value='angled'><?php print __('Angled', 'weathermap'); ?></option>
 								</select>
 							</td>
 						</tr>
@@ -572,18 +572,18 @@ $weathermap_version = plugin_weathermap_numeric_version();
 							<td>
 								<select id='link_template' name='link_template'>
 									<?php
-									print '<option value="-1"' . (get_request_var('node_template') == -1 ? 'selected' : '') . '>' . __('All', 'weathermap') . '</option>';
-									$graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
+print '<option value="-1"' . (get_request_var('node_template') == -1 ? 'selected' : '') . '>' . __('All', 'weathermap') . '</option>';
+$graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
 										FROM graph_templates AS gt
 										INNER JOIN graph_local AS gl
 										ON gt.id = gl.graph_template_id
 										ORDER BY gt.name');
 
-									foreach ($graph_templates as $gt) {
-										print '<option ' . (get_request_var('node_template') == $gt['id'] ? 'selected' : '');
-										print ' value="' . $gt['id'] . '">' . html_escape($gt['name']) . '</option>';
-									}
-									?>
+foreach ($graph_templates as $gt) {
+	print '<option ' . (get_request_var('node_template') == $gt['id'] ? 'selected' : '');
+	print ' value="' . $gt['id'] . '">' . html_escape($gt['name']) . '</option>';
+}
+?>
 							</td>
 						</tr>
 						<tr>
@@ -656,21 +656,21 @@ $weathermap_version = plugin_weathermap_numeric_version();
 							<td>
 								<select id='map_bgfile' name='map_bgfile'>
 									<?php
-									if (count($backgd_list) == 0) {
-										print '<option data-value="--NONE--">(no images are available)</option>';
-									} else {
-										print '<option data-description="Solid White Background" data-imagesrc="" value="--NONE--">--NO BACKGROUND--</option>';
+if (count($backgd_list) == 0) {
+	print '<option data-value="--NONE--">(no images are available)</option>';
+} else {
+	print '<option data-description="Solid White Background" data-imagesrc="" value="--NONE--">--NO BACKGROUND--</option>';
 
-										foreach ($backgd_list as $im) {
-											$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($im)));
+	foreach ($backgd_list as $im) {
+		$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($im)));
 
-											print '<option ' . ($im == $map->background ? 'selected ' : '');
-											print 'data-description="' . $display . '" ';
-											print 'data-imagesrc="' . $im . '" ';
-											print 'value="' . html_escape($im) . '">' . $display . '</option>';
-										}
-									}
-									?>
+		print '<option ' . ($im == $map->background ? 'selected ' : '');
+		print 'data-description="' . $display . '" ';
+		print 'data-imagesrc="' . $im . '" ';
+		print 'value="' . html_escape($im) . '">' . $display . '</option>';
+	}
+}
+?>
 								</select>
 							</td>
 						</tr>
@@ -732,18 +732,18 @@ $weathermap_version = plugin_weathermap_numeric_version();
 							<td>
 								<select id='mapstyle_keystyle' name='mapstyle_keystyle' class='ui-state-default ui-corner-all'>
 									<?php
-									$styles = [
-										'classic'    => __('Classic', 'weathermap'),
-										'horizontal' => __('Horizontal', 'weathermap'),
-										'vertical'   => __('Vertical', 'weathermap'),
-										'inverted'   => __('Inverted', 'weathermap'),
-										'tags'       => __('Tags', 'weathermap')
-									];
+$styles = [
+	'classic'    => __('Classic', 'weathermap'),
+	'horizontal' => __('Horizontal', 'weathermap'),
+	'vertical'   => __('Vertical', 'weathermap'),
+	'inverted'   => __('Inverted', 'weathermap'),
+	'tags'       => __('Tags', 'weathermap')
+];
 
-									foreach ($styles as $id => $name) {
-										print "<option value='$id' " . ($map->keystyle['DEFAULT'] == $id ? 'selected' : '') . '>' . $name . '</option>';
-									}
-									?>
+foreach ($styles as $id => $name) {
+	print "<option value='$id' " . ($map->keystyle['DEFAULT'] == $id ? 'selected' : '') . '>' . $name . '</option>';
+}
+?>
 								</select>
 							</td>
 						</tr>
