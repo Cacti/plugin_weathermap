@@ -953,5 +953,11 @@ foreach ($styles as $id => $name) {
 		</div>
 		<!-- TextEditSettings -->
 	</form>
+	<?php
+	$showversionbox = read_config_option('weathermap_showversion');
+	if ($showversionbox == 'on') {
+		weathermap_footer_links();
+	}
+	?>
 </body>
 </html>

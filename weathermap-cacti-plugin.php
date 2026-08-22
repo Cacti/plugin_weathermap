@@ -244,12 +244,22 @@ switch (get_request_var('action')) {
 				$guid     = $map['filehash'];
 
 				if ($maptitle == '') {
-					$maptitle = 'Map for config file: ' . $map['configfile'];
+					$maptitle = __esc('Map for config file: %s', $map['configfile']);
 				}
 
-				printf('<item><title>%s</title><description>Network Weathermap named "%s"</description><link>%s</link><media:thumbnail url="%s"/><media:content url="%s"/><guid isPermaLink="false">%s%s</guid></item>',
-					$maptitle, $maptitle, $linkurl, $thumburl, $bigurl, $config['url_path'], $guid);
-				print "\n";
+				print '<item>';
+
+				printf('<title>%s</title>', $maptitle);
+
+				printf('<description>' . __('Network Weathermap named "%s"', $maptitle) . '</description>
+					<link>%s</link>
+					<media:thumbnail url="%s"/>
+					<media:content url="%s"/>
+					<guid isPermaLink="false">%s%s</guid>
+					</item>',
+					$linkurl, $thumburl, $bigurl, $config['url_path'], $guid);
+
+				print PHP_EOL;
 			}
 		}
 
@@ -404,7 +414,7 @@ function weathermap_singleview($mapid) {
 			}
 
 			print '<div class="cactiTable">';
-			print '<div class="cactiTableTitleRow">' . html_escape($maptitle) . '</div>';
+			print '<div class="cactiTableTitleRow">' . $maptitle . '</div>';
 			print '</div>';
 
 			print '<table class="cactiTable">';
@@ -764,15 +774,6 @@ function readfile_chunked($filename) {
 	return $status;
 }
 
-function weathermap_footer_links() {
-	$weathermap_version = plugin_weathermap_numeric_version();
-
-	print '<br />';
-
-	html_start_box("<center><a target=\"_blank\" class=\"linkOverDark\" href=\"docs/\">Local Documentation</a> -- <a target=\"_blank\" class=\"linkOverDark\" href=\"http://www.network-weathermap.com/\">Weathermap Website</a> -- <a target=\"_target\" class=\"linkOverDark\" href=\"weathermap-cacti-plugin-editor.php?plug=1\">Weathermap Editor</a> -- This is version $weathermap_version</center>", '100%', false, 3, 'center', '');
-	html_end_box();
-}
-
 function weathermap_mapselector($current_id = 0) {
 	$show_selector = intval(read_config_option('weathermap_map_selector'));
 
@@ -812,39 +813,40 @@ function weathermap_mapselector($current_id = 0) {
 									<?php
 
 									$ngroups   = 0;
-		$lastgroup        = '------lasdjflkjsdlfkjlksdjflksjdflkjsldjlkjsd';
+									$nullhash  = '';
+									$lastgroup = '------lasdjflkjsdlfkjlksdjflksjdflkjsldjlkjsd';
 
-		foreach ($maps as $map) {
-			if ($current_id == $map['id']) {
-				$nullhash = $map['filehash'];
-			}
+									foreach ($maps as $map) {
+										if ($current_id == $map['id']) {
+											$nullhash = $map['filehash'];
+										}
 
-			if ($map['name'] != $lastgroup) {
-				$ngroups++;
+										if ($map['name'] != $lastgroup) {
+											$ngroups++;
 
-				$lastgroup = $map['name'];
-			}
-		}
+											$lastgroup = $map['name'];
+										}
+									}
 
-		$lastgroup = '------lasdjflkjsdlfkjlksdjflksjdflkjsldjlkjsd';
+									$lastgroup = '------lasdjflkjsdlfkjlksdjflksjdflkjsldjlkjsd';
 
-		foreach ($maps as $map) {
-			if ($ngroups > 1 && $map['name'] != $lastgroup) {
-				print "<option disabled style='font-weight: bold; font-style: italic' value='$nullhash'>" . html_escape($map['name']) . '</option>';
-				$lastgroup = $map['name'];
-			}
+									foreach ($maps as $map) {
+										if ($ngroups > 1 && $map['name'] != $lastgroup) {
+											print "<option disabled style='font-weight: bold; font-style: italic' value='$nullhash'>" . html_escape($map['name']) . '</option>';
+											$lastgroup = $map['name'];
+										}
 
-			print '<option ';
+										print '<option ';
 
-			if ($current_id == $map['id']) {
-				print 'selected ';
-			}
+										if ($current_id == $map['id']) {
+											print 'selected ';
+										}
 
-			print 'value="' . $map['filehash'] . '">';
+										print 'value="' . $map['filehash'] . '">';
 
-			print html_escape($map['titlecache']) . '</option>';
-		}
-		?>
+										print html_escape($map['titlecache']) . '</option>';
+									}
+									?>
 								</select>
 							</td>
 						</tr>

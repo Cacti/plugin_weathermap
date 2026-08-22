@@ -690,12 +690,38 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		if (strpos($input, 'graph_image.php') !== false) {
-			if (strpos($input, 'graph_height') === false) {
-				$input .= '&graph_height=' . read_config_option('weathermap_height');
-			}
+			if ($context->my_type() == 'LINK') {
+				if (strpos($input, 'graph_height') === false) {
+					if (isset($this->links['DEFAULT']->overlibheight) && $this->links['DEFAULT']->overlibheight > 0) {
+						$input .= '&graph_height=' . $this->links['DEFAULT']->overlibheight;
+					} else {
+						$input .= '&graph_height=' . read_config_option('weathermap_height');
+					}
+				}
 
-			if (strpos($input, 'graph_width') === false) {
-				$input .= '&graph_width=' . read_config_option('weathermap_width');
+				if (strpos($input, 'graph_width') === false) {
+					if (isset($this->links['DEFAULT']->overlibwidth) && $this->links['DEFAULT']->overlibwidth > 0) {
+						$input .= '&graph_width=' . $this->links['DEFAULT']->overlibwidth;
+					} else {
+						$input .= '&graph_width=' . read_config_option('weathermap_width');
+					}
+				}
+			} elseif ($context->my_type() == 'NODE') {
+				if (strpos($input, 'graph_height') === false) {
+					if (isset($this->nodes['DEFAULT']->overlibheight) && $this->nodes['DEFAULT']->overlibheight > 0) {
+						$input .= '&graph_height=' . $this->nodes['DEFAULT']->overlibheight;
+					} else {
+						$input .= '&graph_height=' . read_config_option('weathermap_height');
+					}
+				}
+
+				if (strpos($input, 'graph_width') === false) {
+					if (isset($this->nodes['DEFAULT']->overlibwidth) && $this->nodes['DEFAULT']->overlibwidth > 0) {
+						$input .= '&graph_width=' . $this->nodes['DEFAULT']->overlibwidth;
+					} else {
+						$input .= '&graph_width=' . read_config_option('weathermap_width');
+					}
+				}
 			}
 
 			if (strpos($input, 'graph_nolegend') === false) {
