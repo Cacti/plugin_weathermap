@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 class WeatherMapDataSource_cacti extends WeatherMapDataSource {
 	function Init(&$map) {
 		if ($map->context === 'cacti') {

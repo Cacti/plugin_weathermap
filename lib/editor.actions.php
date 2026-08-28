@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
@@ -380,7 +382,7 @@ function setLinkProperties($mapfile) {
 
 		$viastyle = get_nfilter_request_var('viastyle');
 
-		if (!wm_editor_validate_one_of($viastyle, array('curved', 'angled'))) {
+		if (!wm_editor_validate_one_of($viastyle, ['curved', 'angled'])) {
 			$viastyle = $map->links[$link_name]->viastyle;
 		}
 
