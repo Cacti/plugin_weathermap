@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
@@ -96,7 +98,7 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 				 * hostnames (underscore-containing per RFC 2181), and bracketed IPv6 literals.
 				 * Shell metacharacters in $target would otherwise reach popen() directly. */
 				if (!preg_match('/^[a-zA-Z0-9._\-:%\[\]]+$/', $target)) {
-					wm_warn("FPing ReadData: rejected target with illegal characters (" . json_encode($target) . ") [WMFPING04]");
+					wm_warn('FPing ReadData: rejected target with illegal characters (' . json_encode($target) . ') [WMFPING04]');
 
 					return ([-1, -1, 0]);
 				}

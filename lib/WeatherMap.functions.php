@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
@@ -242,7 +244,7 @@ function mysprintf($format, $value, $kilo = 1000) {
 		wm_debug("KMGT formatting $value with $spec.");
 
 		$result = nice_scalar($value, $kilo, $places);
-		$output = preg_replace_callback('/%' . preg_quote($spec, '/') . 'k/', function() use ($result) { return $result; }, $format);
+		$output = preg_replace_callback('/%' . preg_quote($spec, '/') . 'k/', function () use ($result) { return $result; }, $format);
 	} elseif (preg_match('/%(-*)(\d*)([Tt])/', $format, $matches)) {
 		$spec      = $matches[3];
 		$precision = ($matches[2] == '' ? 10 : intval($matches[2]));
@@ -1640,11 +1642,12 @@ function format_number($number, $precision = 2, $trailing_zeroes = 0) {
 		$sign   = -1;
 	}
 
-	$number  = round($number, $precision);
+	$number  = (string) round($number, $precision);
 	$integer = intval($number);
+	$integer_string = (string) $integer;
 
-	if (strlen($integer) < strlen($number)) {
-		$decimal = substr($number, strlen($integer) + 1);
+	if (strlen($integer_string) < strlen($number)) {
+		$decimal = substr($number, strlen($integer_string) + 1);
 	}
 
 	$decimal ??= '';

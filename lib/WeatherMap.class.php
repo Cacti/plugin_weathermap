@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types = 1);
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
@@ -2364,88 +2366,88 @@ class WeatherMap extends WeatherMapBase {
 				// follow on from that
 				$config_keywords = [
 					['LINK', '/^\s*(MAXVALUE|BANDWIDTH)\s+(\d+\.?\d*[KMGT]?)\s+(\d+\.?\d*[KMGT]?)\s*$/i', ['max_bandwidth_in_cfg'=>2, 'max_bandwidth_out_cfg'=>3]],
-					['LINK', '/^\s*(MAXVALUE|BANDWIDTH)\s+(\d+\.?\d*[KMGT]?)\s*$/i', ['max_bandwidth_in_cfg'=>2, 'max_bandwidth_out_cfg'=>2]],
-					['NODE', '/^\s*(MAXVALUE)\s+(\d+\.?\d*[KMGT]?)\s+(\d+\.?\d*[KMGT]?)\s*$/i', ['max_bandwidth_in_cfg'=>2, 'max_bandwidth_out_cfg'=>3]],
-					['NODE', '/^\s*(MAXVALUE)\s+(\d+\.?\d*[KMGT]?)\s*$/i', ['max_bandwidth_in_cfg'=>2, 'max_bandwidth_out_cfg'=>2]],
-					['GLOBAL', '/^\s*BACKGROUND\s+(.*)\s*$/i', ['background'=>1]],
-					['GLOBAL', '/^\s*HTMLOUTPUTFILE\s+(.*)\s*$/i', ['htmloutputfile'=>1]],
-					['GLOBAL', '/^\s*HTMLSTYLESHEET\s+(.*)\s*$/i', ['htmlstylesheet'=>1]],
-					['GLOBAL', '/^\s*IMAGEOUTPUTFILE\s+(.*)\s*$/i', ['imageoutputfile'=>1]],
-					['GLOBAL', '/^\s*DATAOUTPUTFILE\s+(.*)\s*$/i', ['dataoutputfile'=>1]],
-					['GLOBAL', '/^\s*IMAGEURI\s+(.*)\s*$/i', ['imageuri'=>1]],
-					['GLOBAL', '/^\s*TITLE\s+(.*)\s*$/i', ['title'=>1]],
-					['GLOBAL', '/^\s*HTMLSTYLE\s+(static|overlib)\s*$/i', ['htmlstyle'=>1]],
-					['GLOBAL', '/^\s*KEYFONT\s+(\d+)\s*$/i', ['keyfont'=>1]],
-					['GLOBAL', '/^\s*TITLEFONT\s+(\d+)\s*$/i', ['titlefont'=>1]],
-					['GLOBAL', '/^\s*TIMEFONT\s+(\d+)\s*$/i', ['timefont'=>1]],
-					['GLOBAL', '/^\s*TITLEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i', ['titlex'=>1, 'titley'=>2]],
-					['GLOBAL', '/^\s*TITLEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i', ['titlex'=>1, 'titley'=>2, 'title'=>3]],
-					['GLOBAL', '/^\s*TIMEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i', ['timex'=>1, 'timey'=>2]],
-					['GLOBAL', '/^\s*TIMEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i', ['timex'=>1, 'timey'=>2, 'stamptext'=>3]],
-					['GLOBAL', '/^\s*MINTIMEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i', ['mintimex'=>1, 'mintimey'=>2]],
-					['GLOBAL', '/^\s*MINTIMEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i', ['mintimex'=>1, 'mintimey'=>2, 'minstamptext'=>3]],
-					['GLOBAL', '/^\s*MAXTIMEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i', ['maxtimex'=>1, 'maxtimey'=>2]],
-					['GLOBAL', '/^\s*MAXTIMEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i', ['maxtimex'=>1, 'maxtimey'=>2, 'maxstamptext'=>3]],
-					['NODE', "/^\s*LABEL\s*$/i", ['label'=>'']],	// special case for blank labels
-					['NODE', "/^\s*LABEL\s+(.*)\s*$/i", ['label'=>1]],
-					['(LINK|GLOBAL)', "/^\s*WIDTH\s+(\d+)\s*$/i", ['width'=>1]],
-					['(LINK|GLOBAL)', "/^\s*HEIGHT\s+(\d+)\s*$/i", ['height'=>1]],
-					['LINK', "/^\s*WIDTH\s+(\d+\.\d+)\s*$/i", ['width'=>1]],
-					['LINK', '/^\s*ARROWSTYLE\s+(classic|compact)\s*$/i', ['arrowstyle'=>1]],
-					['LINK', '/^\s*VIASTYLE\s+(curved|angled)\s*$/i', ['viastyle'=>1]],
-					['LINK', '/^\s*INCOMMENT\s+(.*)\s*$/i', ['comments[IN]'=>1]],
-					['LINK', '/^\s*OUTCOMMENT\s+(.*)\s*$/i', ['comments[OUT]'=>1]],
-					['LINK', '/^\s*BWFONT\s+(\d+)\s*$/i', ['bwfont'=>1]],
-					['LINK', '/^\s*COMMENTFONT\s+(\d+)\s*$/i', ['commentfont'=>1]],
-					['LINK', '/^\s*COMMENTSTYLE\s+(edge|center)\s*$/i', ['commentstyle'=>1]],
-					['LINK', '/^\s*DUPLEX\s+(full|half)\s*$/i', ['duplex'=>1]],
-					['LINK', '/^\s*BWSTYLE\s+(classic|angled)\s*$/i', ['labelboxstyle'=>1]],
-					['LINK', '/^\s*LINKSTYLE\s+(twoway|oneway)\s*$/i', ['linkstyle'=>1]],
-					['LINK', '/^\s*BWLABELPOS\s+(\d+)\s(\d+)\s*$/i', ['labeloffset_in'=>1, 'labeloffset_out'=>2]],
-					['LINK', '/^\s*COMMENTPOS\s+(\d+)\s(\d+)\s*$/i', ['commentoffset_in'=>1, 'commentoffset_out'=>2]],
-					['LINK', '/^\s*USESCALE\s+([A-Za-z][A-Za-z0-9_]*)\s*$/i', ['usescale'=>1]],
-					['LINK', '/^\s*USESCALE\s+([A-Za-z][A-Za-z0-9_]*)\s+(absolute|percent)\s*$/i', ['usescale'=>1, 'scaletype'=>2]],
+					['LINK', '/^\s*(MAXVALUE|BANDWIDTH)\s+(\d+\.?\d*[KMGT]?)\s*$/i', ['max_bandwidth_in_cfg'           => 2, 'max_bandwidth_out_cfg'=>2]],
+					['NODE', '/^\s*(MAXVALUE)\s+(\d+\.?\d*[KMGT]?)\s+(\d+\.?\d*[KMGT]?)\s*$/i', ['max_bandwidth_in_cfg'=> 2, 'max_bandwidth_out_cfg'=>3]],
+					['NODE', '/^\s*(MAXVALUE)\s+(\d+\.?\d*[KMGT]?)\s*$/i', ['max_bandwidth_in_cfg'                     => 2, 'max_bandwidth_out_cfg'=>2]],
+					['GLOBAL', '/^\s*BACKGROUND\s+(.*)\s*$/i', ['background'                                           => 1]],
+					['GLOBAL', '/^\s*HTMLOUTPUTFILE\s+(.*)\s*$/i', ['htmloutputfile'                                   => 1]],
+					['GLOBAL', '/^\s*HTMLSTYLESHEET\s+(.*)\s*$/i', ['htmlstylesheet'                                   => 1]],
+					['GLOBAL', '/^\s*IMAGEOUTPUTFILE\s+(.*)\s*$/i', ['imageoutputfile'                                 => 1]],
+					['GLOBAL', '/^\s*DATAOUTPUTFILE\s+(.*)\s*$/i', ['dataoutputfile'                                   => 1]],
+					['GLOBAL', '/^\s*IMAGEURI\s+(.*)\s*$/i', ['imageuri'                                               => 1]],
+					['GLOBAL', '/^\s*TITLE\s+(.*)\s*$/i', ['title'                                                     => 1]],
+					['GLOBAL', '/^\s*HTMLSTYLE\s+(static|overlib)\s*$/i', ['htmlstyle'                                 => 1]],
+					['GLOBAL', '/^\s*KEYFONT\s+(\d+)\s*$/i', ['keyfont'                                                => 1]],
+					['GLOBAL', '/^\s*TITLEFONT\s+(\d+)\s*$/i', ['titlefont'                                            => 1]],
+					['GLOBAL', '/^\s*TIMEFONT\s+(\d+)\s*$/i', ['timefont'                                              => 1]],
+					['GLOBAL', '/^\s*TITLEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i', ['titlex'                                    => 1, 'titley'=>2]],
+					['GLOBAL', '/^\s*TITLEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i', ['titlex'                             => 1, 'titley'=>2, 'title'=>3]],
+					['GLOBAL', '/^\s*TIMEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i', ['timex'                                      => 1, 'timey'=>2]],
+					['GLOBAL', '/^\s*TIMEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i', ['timex'                               => 1, 'timey'=>2, 'stamptext'=>3]],
+					['GLOBAL', '/^\s*MINTIMEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i', ['mintimex'                                => 1, 'mintimey'=>2]],
+					['GLOBAL', '/^\s*MINTIMEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i', ['mintimex'                         => 1, 'mintimey'=>2, 'minstamptext'=>3]],
+					['GLOBAL', '/^\s*MAXTIMEPOS\s+(-?\d+)\s+(-?\d+)\s*$/i', ['maxtimex'                                => 1, 'maxtimey'=>2]],
+					['GLOBAL', '/^\s*MAXTIMEPOS\s+(-?\d+)\s+(-?\d+)\s+(.*)\s*$/i', ['maxtimex'                         => 1, 'maxtimey'=>2, 'maxstamptext'=>3]],
+					['NODE', "/^\s*LABEL\s*$/i", ['label'                                                              => '']],	// special case for blank labels
+					['NODE', "/^\s*LABEL\s+(.*)\s*$/i", ['label'                                                       => 1]],
+					['(LINK|GLOBAL)', "/^\s*WIDTH\s+(\d+)\s*$/i", ['width'                                             => 1]],
+					['(LINK|GLOBAL)', "/^\s*HEIGHT\s+(\d+)\s*$/i", ['height'                                           => 1]],
+					['LINK', "/^\s*WIDTH\s+(\d+\.\d+)\s*$/i", ['width'                                                 => 1]],
+					['LINK', '/^\s*ARROWSTYLE\s+(classic|compact)\s*$/i', ['arrowstyle'                                => 1]],
+					['LINK', '/^\s*VIASTYLE\s+(curved|angled)\s*$/i', ['viastyle'                                      => 1]],
+					['LINK', '/^\s*INCOMMENT\s+(.*)\s*$/i', ['comments[IN]'                                            => 1]],
+					['LINK', '/^\s*OUTCOMMENT\s+(.*)\s*$/i', ['comments[OUT]'                                          => 1]],
+					['LINK', '/^\s*BWFONT\s+(\d+)\s*$/i', ['bwfont'                                                    => 1]],
+					['LINK', '/^\s*COMMENTFONT\s+(\d+)\s*$/i', ['commentfont'                                          => 1]],
+					['LINK', '/^\s*COMMENTSTYLE\s+(edge|center)\s*$/i', ['commentstyle'                                => 1]],
+					['LINK', '/^\s*DUPLEX\s+(full|half)\s*$/i', ['duplex'                                              => 1]],
+					['LINK', '/^\s*BWSTYLE\s+(classic|angled)\s*$/i', ['labelboxstyle'                                 => 1]],
+					['LINK', '/^\s*LINKSTYLE\s+(twoway|oneway)\s*$/i', ['linkstyle'                                    => 1]],
+					['LINK', '/^\s*BWLABELPOS\s+(\d+)\s(\d+)\s*$/i', ['labeloffset_in'                                 => 1, 'labeloffset_out'=>2]],
+					['LINK', '/^\s*COMMENTPOS\s+(\d+)\s(\d+)\s*$/i', ['commentoffset_in'                               => 1, 'commentoffset_out'=>2]],
+					['LINK', '/^\s*USESCALE\s+([A-Za-z][A-Za-z0-9_]*)\s*$/i', ['usescale'                              => 1]],
+					['LINK', '/^\s*USESCALE\s+([A-Za-z][A-Za-z0-9_]*)\s+(absolute|percent)\s*$/i', ['usescale'         => 1, 'scaletype'=>2]],
 
-					['LINK', '/^\s*SPLITPOS\s+(\d+)\s*$/i', ['splitpos'=>1]],
+					['LINK', '/^\s*SPLITPOS\s+(\d+)\s*$/i', ['splitpos'=> 1]],
 
-					['NODE', '/^\s*LABELOFFSET\s+([-+]?\d+)\s+([-+]?\d+)\s*$/i', ['labeloffsetx'=>1, 'labeloffsety'=>2]],
-					['NODE', '/^\s*LABELOFFSET\s+(C|NE|SE|NW|SW|N|S|E|W)\s*$/i', ['labeloffset'=>1]],
-					['NODE', '/^\s*LABELOFFSET\s+((C|NE|SE|NW|SW|N|S|E|W)\d+)\s*$/i', ['labeloffset'=>1]],
-					['NODE', '/^\s*LABELOFFSET\s+(-?\d+r\d+)\s*$/i', ['labeloffset'=>1]],
+					['NODE', '/^\s*LABELOFFSET\s+([-+]?\d+)\s+([-+]?\d+)\s*$/i', ['labeloffsetx'    => 1, 'labeloffsety'=>2]],
+					['NODE', '/^\s*LABELOFFSET\s+(C|NE|SE|NW|SW|N|S|E|W)\s*$/i', ['labeloffset'     => 1]],
+					['NODE', '/^\s*LABELOFFSET\s+((C|NE|SE|NW|SW|N|S|E|W)\d+)\s*$/i', ['labeloffset'=> 1]],
+					['NODE', '/^\s*LABELOFFSET\s+(-?\d+r\d+)\s*$/i', ['labeloffset'                 => 1]],
 
-					['NODE', '/^\s*LABELFONT\s+(\d+)\s*$/i', ['labelfont'=>1]],
-					['NODE', '/^\s*LABELANGLE\s+(0|90|180|270)\s*$/i', ['labelangle'=>1]],
+					['NODE', '/^\s*LABELFONT\s+(\d+)\s*$/i', ['labelfont'           => 1]],
+					['NODE', '/^\s*LABELANGLE\s+(0|90|180|270)\s*$/i', ['labelangle'=> 1]],
 					// array('(NODE|LINK)', '/^\s*TEMPLATE\s+(\S+)\s*$/i', ['template'=>1]),
 
 					['LINK', '/^\s*OUTBWFORMAT\s+(.*)\s*$/i', ['bwlabelformats[OUT]'=>1, 'labelstyle'=>'--']],
-					['LINK', '/^\s*INBWFORMAT\s+(.*)\s*$/i', ['bwlabelformats[IN]'=>1, 'labelstyle'=>'--']],
+					['LINK', '/^\s*INBWFORMAT\s+(.*)\s*$/i', ['bwlabelformats[IN]'=> 1, 'labelstyle'=>'--']],
 					// array('NODE','/^\s*ICON\s+none\s*$/i',['iconfile'=>'']),
 					['NODE', '/^\s*ICON\s+(\S+)\s*$/i', ['iconfile'=>1, 'iconscalew'=>'#0', 'iconscaleh'=>'#0']],
-					['NODE', '/^\s*ICON\s+(\S+)\s*$/i', ['iconfile'=>1]],
-					['NODE', '/^\s*ICON\s+(\d+)\s+(\d+)\s+(inpie|outpie|box|rbox|round|gauge|nink)\s*$/i', ['iconfile'=>3, 'iconscalew'=>1, 'iconscaleh'=>2]],
-					['NODE', '/^\s*ICON\s+(\d+)\s+(\d+)\s+(\S+)\s*$/i', ['iconfile'=>3, 'iconscalew'=>1, 'iconscaleh'=>2]],
+					['NODE', '/^\s*ICON\s+(\S+)\s*$/i', ['iconfile'                                                   => 1]],
+					['NODE', '/^\s*ICON\s+(\d+)\s+(\d+)\s+(inpie|outpie|box|rbox|round|gauge|nink)\s*$/i', ['iconfile'=> 3, 'iconscalew'=>1, 'iconscaleh'=>2]],
+					['NODE', '/^\s*ICON\s+(\d+)\s+(\d+)\s+(\S+)\s*$/i', ['iconfile'                                   => 3, 'iconscalew'=>1, 'iconscaleh'=>2]],
 
-					['NODE', '/^\s*NOTES\s+(.*)\s*$/i', ['notestext[IN]'=>1, 'notestext[OUT]'=>1]],
-					['LINK', '/^\s*NOTES\s+(.*)\s*$/i', ['notestext[IN]'=>1, 'notestext[OUT]'=>1]],
-					['LINK', '/^\s*INNOTES\s+(.*)\s*$/i', ['notestext[IN]'=>1]],
-					['LINK', '/^\s*OUTNOTES\s+(.*)\s*$/i', ['notestext[OUT]'=>1]],
+					['NODE', '/^\s*NOTES\s+(.*)\s*$/i', ['notestext[IN]'    => 1, 'notestext[OUT]'=>1]],
+					['LINK', '/^\s*NOTES\s+(.*)\s*$/i', ['notestext[IN]'    => 1, 'notestext[OUT]'=>1]],
+					['LINK', '/^\s*INNOTES\s+(.*)\s*$/i', ['notestext[IN]'  => 1]],
+					['LINK', '/^\s*OUTNOTES\s+(.*)\s*$/i', ['notestext[OUT]'=> 1]],
 
-					['NODE', '/^\s*INFOURL\s+(.*)\s*$/i', ['infourl[IN]'=>1, 'infourl[OUT]'=>1]],
-					['LINK', '/^\s*INFOURL\s+(.*)\s*$/i', ['infourl[IN]'=>1, 'infourl[OUT]'=>1]],
-					['LINK', '/^\s*ININFOURL\s+(.*)\s*$/i', ['infourl[IN]'=>1]],
-					['LINK', '/^\s*OUTINFOURL\s+(.*)\s*$/i', ['infourl[OUT]'=>1]],
+					['NODE', '/^\s*INFOURL\s+(.*)\s*$/i', ['infourl[IN]'    => 1, 'infourl[OUT]'=>1]],
+					['LINK', '/^\s*INFOURL\s+(.*)\s*$/i', ['infourl[IN]'    => 1, 'infourl[OUT]'=>1]],
+					['LINK', '/^\s*ININFOURL\s+(.*)\s*$/i', ['infourl[IN]'  => 1]],
+					['LINK', '/^\s*OUTINFOURL\s+(.*)\s*$/i', ['infourl[OUT]'=> 1]],
 
-					['NODE', '/^\s*OVERLIBCAPTION\s+(.*)\s*$/i', ['overlibcaption[IN]'=>1, 'overlibcaption[OUT]'=>1]],
-					['LINK', '/^\s*OVERLIBCAPTION\s+(.*)\s*$/i', ['overlibcaption[IN]'=>1, 'overlibcaption[OUT]'=>1]],
-					['LINK', '/^\s*INOVERLIBCAPTION\s+(.*)\s*$/i', ['overlibcaption[IN]'=>1]],
-					['LINK', '/^\s*OUTOVERLIBCAPTION\s+(.*)\s*$/i', ['overlibcaption[OUT]'=>1]],
+					['NODE', '/^\s*OVERLIBCAPTION\s+(.*)\s*$/i', ['overlibcaption[IN]'    => 1, 'overlibcaption[OUT]'=>1]],
+					['LINK', '/^\s*OVERLIBCAPTION\s+(.*)\s*$/i', ['overlibcaption[IN]'    => 1, 'overlibcaption[OUT]'=>1]],
+					['LINK', '/^\s*INOVERLIBCAPTION\s+(.*)\s*$/i', ['overlibcaption[IN]'  => 1]],
+					['LINK', '/^\s*OUTOVERLIBCAPTION\s+(.*)\s*$/i', ['overlibcaption[OUT]'=> 1]],
 
-					['(NODE|LINK)', "/^\s*ZORDER\s+([-+]?\d+)\s*$/i", ['zorder'=>1]],
-					['(NODE|LINK)', "/^\s*OVERLIBWIDTH\s+(\d+)\s*$/i", ['overlibwidth'=>1]],
-					['(NODE|LINK)', "/^\s*OVERLIBHEIGHT\s+(\d+)\s*$/i", ['overlibheight'=>1]],
-					['NODE', "/^\s*POSITION\s+([-+]?\d+)\s+([-+]?\d+)\s*$/i", ['x'=>1, 'y'=>2]],
-					['NODE', "/^\s*POSITION\s+(\S+)\s+([-+]?\d+)\s+([-+]?\d+)\s*$/i", ['x'=>2, 'y'=>3, 'original_x'=>2, 'original_y'=>3, 'relative_to'=>1, 'relative_resolved'=>false]],
-					['NODE', "/^\s*POSITION\s+(\S+)\s+([-+]?\d+)r(\d+)\s*$/i", ['x'=>2, 'y'=>3, 'original_x'=>2, 'original_y'=>3, 'relative_to'=>1, 'polar'=>true, 'relative_resolved'=>false]]
+					['(NODE|LINK)', "/^\s*ZORDER\s+([-+]?\d+)\s*$/i", ['zorder'           => 1]],
+					['(NODE|LINK)', "/^\s*OVERLIBWIDTH\s+(\d+)\s*$/i", ['overlibwidth'    => 1]],
+					['(NODE|LINK)', "/^\s*OVERLIBHEIGHT\s+(\d+)\s*$/i", ['overlibheight'  => 1]],
+					['NODE', "/^\s*POSITION\s+([-+]?\d+)\s+([-+]?\d+)\s*$/i", ['x'        => 1, 'y'=>2]],
+					['NODE', "/^\s*POSITION\s+(\S+)\s+([-+]?\d+)\s+([-+]?\d+)\s*$/i", ['x'=> 2, 'y'=>3, 'original_x'=>2, 'original_y'=>3, 'relative_to'=>1, 'relative_resolved'=>false]],
+					['NODE', "/^\s*POSITION\s+(\S+)\s+([-+]?\d+)r(\d+)\s*$/i", ['x'       => 2, 'y'=>3, 'original_x'=>2, 'original_y'=>3, 'relative_to'=>1, 'polar'=>true, 'relative_resolved'=>false]]
 				];
 
 				// alternative for use later where quoted strings are more useful
@@ -4521,7 +4523,7 @@ class WeatherMap extends WeatherMapBase {
 		$i = 0;
 
 		$real = realpath($file);
-		$base = defined('CACTI_PATH_BASE') ? realpath(CACTI_PATH_BASE) : realpath(dirname(dirname(__FILE__)));
+		$base = defined('CACTI_PATH_BASE') ? realpath(CACTI_PATH_BASE) : realpath(dirname(__DIR__));
 
 		if ($real === false || $base === false || strpos($real, $base . DIRECTORY_SEPARATOR) !== 0) {
 			return;
@@ -4559,7 +4561,7 @@ class WeatherMap extends WeatherMapBase {
 		$i = 0;
 
 		$dir  = realpath(dirname($file));
-		$base = defined('CACTI_PATH_BASE') ? realpath(CACTI_PATH_BASE) : realpath(dirname(dirname(__FILE__)));
+		$base = defined('CACTI_PATH_BASE') ? realpath(CACTI_PATH_BASE) : realpath(dirname(__DIR__));
 
 		if ($dir === false || $base === false || strpos($dir . DIRECTORY_SEPARATOR, $base . DIRECTORY_SEPARATOR) !== 0) {
 			return;
