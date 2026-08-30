@@ -1816,7 +1816,7 @@ function perms_filter($id) {
 						<?php print __('Search', 'weathermap'); ?>
 					</td>
 					<td>
-						<input type='text' class='ui-state-default ui-corner-all' id='filter' size='25' value='<?php print html_escape_request_var('filter', 'weathermap'); ?>'>
+						<input type='text' class='ui-state-default ui-corner-all' id='filter' size='25' value='<?php print html_escape_request_var('filter'); ?>'>
 					</td>
 					<td>
 						<?php print __('Type', 'weathermap'); ?>

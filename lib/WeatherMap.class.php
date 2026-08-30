@@ -152,6 +152,9 @@ class WeatherMapPostProcessor {
 // Links, Nodes and the Map object inherit from this class ultimately.
 // Just to make some common code common.
 class WeatherMapBase {
+	// Set by every subclass; add_note() and add_hint() below read it.
+	var $name;
+
 	var $notes = [];
 	var $hints = [];
 	var $inherit_fieldlist;
@@ -179,13 +182,13 @@ class WeatherMapBase {
 		// warn("Adding hint $name to ".$this->my_type()."/".$this->name."\n");
 	}
 
-	function get_hint($name) {
+	function get_hint($name, $default = null) {
 		if (isset($this->hints[$name])) {
 			//	debug("Found hint $name in ".$this->name." with value of ".$this->hints[$name].".\n");
 			return ($this->hints[$name]);
 		} else {
 			//	debug("Looked for hint $name in ".$this->name." which doesn't exist.\n");
-			return (null);
+			return ($default);
 		}
 	}
 }
@@ -254,6 +257,9 @@ class WeatherMap extends WeatherMapBase {
 	var $keyx;
 	var $keyy;
 	var $keyimage;
+
+	// Filenames of the cached scale images, keyed the same way as $keyimage.
+	var $keycache = [];
 	var $titlex;
 	var $titley;
 	var $keytext;
@@ -1265,7 +1271,7 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		$textcol = myimagecolorallocate($image, $textcolour[0], $textcolour[1], $textcolour[2]);
-		$this->myimagestring($image, $font, $apoints[8], $apoints[9], $text, $textcol, $angle, $strheight);
+		$this->myimagestring($image, $font, $apoints[8], $apoints[9], $text, $textcol, $angle);
 
 		$areaname = 'LINK:L' . $map->links[$linkname]->id . ':' . ($direction + 2);
 

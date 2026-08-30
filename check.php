@@ -419,7 +419,12 @@ function return_bytes($val) {
 	if ($val != '') {
 		$last = strtolower($val[strlen($val) - 1]);
 
-		switch($last) {
+		/* Drop the unit suffix before the arithmetic.  An ini value such as
+		 * "256M" is a leading-numeric string, so multiplying it directly raises
+		 * "A non-numeric value encountered" on every call under PHP 8. */
+		$val = (int) $val;
+
+		switch ($last) {
 			// The 'G' modifier is available since PHP 5.1.0
 			case 'g':
 				$val *= 1024;

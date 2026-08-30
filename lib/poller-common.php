@@ -371,7 +371,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 					$tempfile       = $outdir . '/' . $map['filehash'] . '.tmp.png';
 
 					if (file_exists($mapfile)) {
-						wm_debug("Map: $mapfile -> $htmlfile & $imagefile", true);
+						wm_debug("Map: $mapfile -> $htmlfile & $imagefile");
 
 						if (!$force && !cacti_sizeof($maps)) {
 							set_config_option('weathermap_last_started_file', $weathermap_map);
@@ -381,7 +381,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 
 						weathermap_memory_check("MEM starting $mapcount");
 
-						$wmap          = new Weathermap;
+						$wmap          = new WeatherMap();
 						$wmap->context = 'cacti';
 
 						// we can grab the rrdtool path from Cacti's config, in this case
@@ -453,7 +453,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 							rename($tempfile, $imagefile);
 						}
 
-						wm_debug("Wrote map to $imagefile and $thumbimagefile", true);
+						wm_debug("Wrote map to $imagefile and $thumbimagefile");
 
 						if ((is_dir(dirname($htmlfile)) && is_writable(dirname($htmlfile))) || is_writable($htmlfile)) {
 							$fd = fopen($htmlfile, 'w');
