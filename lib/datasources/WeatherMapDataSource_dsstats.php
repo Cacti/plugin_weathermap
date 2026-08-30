@@ -45,6 +45,12 @@ declare(strict_types = 1);
 include_once(__DIR__ . '/../ds-common.php');
 
 class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
+	/**
+	 * Needs DSStats enabled in Cacti, since it reads the aggregate tables.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool       false to take this datasource out of use for this run
+	 */
 	function Init(&$map) {
 		global $config;
 
@@ -92,6 +98,12 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 	}
 
 	// dsstats:<datatype>:<local_data_id>:<rrd_name_in>:<rrd_name_out>
+	/**
+	 * Claim a TARGET of the form dsstats:[period:]local_data_id:ds_in:ds_out.
+	 *
+	 * @param  string $targetstring the TARGET as written in the map config
+	 * @return bool   true when this datasource will handle it
+	 */
 	function Recognise($targetstring) {
 		if (preg_match('/^dsstats:([a-z]+):(\d+):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/',$targetstring,$matches)) {
 			return true;
@@ -112,6 +124,15 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 	 * @param mixed $targetstring
 	 * @param mixed $map
 	 * @param mixed $item
+	 */
+	/**
+	 * Read the current values for one TARGET.
+	 *
+	 * @param  string          $targetstring the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapItem  $item         node or link the TARGET belongs to
+	 * @return array           [in, out, data_time]; the values are null when
+	 *                         nothing could be read
 	 */
 	function ReadData($targetstring, &$map, &$item) {
 		global $config;

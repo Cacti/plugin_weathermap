@@ -50,20 +50,44 @@ class WMVector {
 	public $dx;
 	public $dy;
 
+	/**
+	 * @param float $dx horizontal component
+	 * @param float $dy vertical component, positive downwards in image space
+	 */
 	public function __construct($dx = 0, $dy = 0) {
 		$this->dx = $dx;
 		$this->dy = $dy;
 	}
 
+	/**
+	 * Reverse the vector in place, so it points the opposite way.
+	 */
 	public function flip() {
 		$this->dx = - $this->dx;
 		$this->dy = - $this->dy;
 	}
 
+	/**
+	 * Angle of the vector in degrees, measured anticlockwise from east.
+	 *
+	 * dy is negated first because image coordinates grow downwards while the
+	 * map's angles are quoted in the usual mathematical sense.
+	 *
+	 * @return float degrees in the range -180 to 180
+	 */
 	public function getAngle() {
 		return rad2deg(atan2((-$this->dy), ($this->dx)));
 	}
 
+	/**
+	 * Gradient dy/dx.
+	 *
+	 * A vertical vector has no finite slope, so 1e10 is returned instead.  The
+	 * callers only compare slopes and divide by their difference, and a value
+	 * that large keeps both of those well behaved.
+	 *
+	 * @return float
+	 */
 	public function getSlope() {
 		if ($this->dx == 0) {
 			// special case - if slope is infinite, fudge it to be REALLY BIG instead. Close enough for TV.
@@ -141,6 +165,9 @@ class WMVector {
 		return (sqrt($this->squaredLength()));
 	}
 
+	/**
+	 * @return string the same text as __toString()
+	 */
 	public function asString() {
 		return $this->__toString();
 	}

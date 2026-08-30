@@ -53,6 +53,12 @@ declare(strict_types = 1);
 include_once(__DIR__ . '/../ds-common.php');
 
 class WeatherMapDataSource_rrd extends WeatherMapDataSource {
+	/**
+	 * Needs a readable rrdtool binary, or Cacti poller output to read instead.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool       false to take this datasource out of use for this run
+	 */
 	function Init(&$map) {
 		global $config;
 
@@ -111,6 +117,12 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		return strpbrk((string) $options, "\"'\\") === false;
 	}
 
+	/**
+	 * Claim a TARGET of the form file.rrd, or file.rrd:ds_in:ds_out.
+	 *
+	 * @param  string $targetstring the TARGET as written in the map config
+	 * @return bool   true when this datasource will handle it
+	 */
 	function Recognise($targetstring) {
 		if (preg_match('/^(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/', $targetstring, $matches)) {
 			return true;
@@ -123,6 +135,23 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * Read the values out of Cacti's poller_output tables instead of the RRD file.
+	 *
+	 * This is the cheapest path: the poller has already collected the numbers, so
+	 * no rrdtool process is started.
+	 *
+	 * @param string         $rrdfile   path to the RRD file
+	 * @param string         $cf        RRD consolidation function, such as AVERAGE
+	 * @param int            $start     window start as a UNIX timestamp
+	 * @param int            $end       window end as a UNIX timestamp
+	 * @param array          $dsnames   data source names keyed by IN and OUT; '-' skips one
+	 * @param array          $data      filled in with the IN and OUT values, by reference
+	 * @param WeatherMap     $map       map being drawn, by reference
+	 * @param int            $data_time timestamp of the values read, by reference
+	 * @param WeatherMapItem $item      node or link the TARGET belongs to
+	 * @return void
+	 */
 	function wmrrd_read_from_poller_output($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
 		global $config;
 
@@ -262,6 +291,23 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		wm_debug('RRD ReadData: poller_output - ended');
 	}
 
+	/**
+	 * Read the values through the php-rrd extension.
+	 *
+	 * Not in use.  The body is held behind a constant false condition and the
+	 * results are not yet mapped onto $data.
+	 *
+	 * @param string         $rrdfile   path to the RRD file
+	 * @param string         $cf        RRD consolidation function, such as AVERAGE
+	 * @param int            $start     window start as a UNIX timestamp
+	 * @param int            $end       window end as a UNIX timestamp
+	 * @param array          $dsnames   data source names keyed by IN and OUT; '-' skips one
+	 * @param array          $data      filled in with the IN and OUT values, by reference
+	 * @param WeatherMap     $map       map being drawn, by reference
+	 * @param int            $data_time timestamp of the values read, by reference
+	 * @param WeatherMapItem $item      node or link the TARGET belongs to
+	 * @return void
+	 */
 	function wmrrd_read_from_php_rrd($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
 		// not yet implemented - use php-rrdtool to read rrd data. Should be quicker
 		if ((1 == 0) && extension_loaded('RRDTool')) {
@@ -290,6 +336,24 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 
 	// rrdtool graph /dev/null -f "" -s now-30d -e now DEF:in=../rra/atm-sl_traffic_in_5498.rrd:traffic_in:AVERAGE DEF:out=../rra/atm-sl_traffic_in_5498.rrd:traffic_out:AVERAGE VDEF:avg_in=in,AVERAGE VDEF:avg_out=out,AVERAGE PRINT:avg_in:%lf PRINT:avg_out:%lf
 
+	/**
+	 * Read the values by running rrdtool graph with a VDEF aggregate.
+	 *
+	 * Used when the TARGET asks for a summary across the window rather than the
+	 * most recent row.
+	 *
+	 * @param string         $rrdfile     path to the RRD file
+	 * @param string         $cf          RRD consolidation function, such as AVERAGE
+	 * @param string         $aggregatefn VDEF aggregate to apply, such as MAXIMUM
+	 * @param int            $start       window start as a UNIX timestamp
+	 * @param int            $end         window end as a UNIX timestamp
+	 * @param array          $dsnames     data source names keyed by IN and OUT; '-' skips one
+	 * @param array          $data        filled in with the IN and OUT values, by reference
+	 * @param WeatherMap     $map         map being drawn, by reference
+	 * @param int            $data_time   timestamp of the values read, by reference
+	 * @param WeatherMapItem $item        node or link the TARGET belongs to
+	 * @return void
+	 */
 	function wmrrd_read_from_real_rrdtool_aggregate($rrdfile,$cf,$aggregatefn,$start,$end,$dsnames, &$data, &$map, &$data_time,&$item) {
 		wm_debug('RRD ReadData: VDEF style, for ' . $item->my_type() . ' ' . $item->name);
 
@@ -415,6 +479,23 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		wm_debug('RRD ReadDataFromRealRRDAggregate: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)");
 	}
 
+	/**
+	 * Read the values by running rrdtool fetch and taking the last complete row.
+	 *
+	 * The window deliberately covers several steps: depending on where in the
+	 * poller cycle this runs, the newest row can still be empty.
+	 *
+	 * @param string         $rrdfile   path to the RRD file
+	 * @param string         $cf        RRD consolidation function, such as AVERAGE
+	 * @param int            $start     window start as a UNIX timestamp
+	 * @param int            $end       window end as a UNIX timestamp
+	 * @param array          $dsnames   data source names keyed by IN and OUT; '-' skips one
+	 * @param array          $data      filled in with the IN and OUT values, by reference
+	 * @param WeatherMap     $map       map being drawn, by reference
+	 * @param int            $data_time timestamp of the values read, by reference
+	 * @param WeatherMapItem $item      node or link the TARGET belongs to
+	 * @return void
+	 */
 	function wmrrd_read_from_real_rrdtool($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
 		wm_debug('RRD ReadData: traditional style');
 

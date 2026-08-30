@@ -48,6 +48,13 @@ declare(strict_types = 1);
 // TARGET dbplug:databasename:username:pass:hostkey
 
 class WeatherMapDataSource_tabfile extends WeatherMapDataSource {
+	/**
+	 * Claim a TARGET of the form a .tsv or .txt file.
+	 *
+	 * The row whose first column matches the item name supplies the values.	 *
+	 * @param  string $targetstring the TARGET as written in the map config
+	 * @return bool   true when this datasource will handle it
+	 */
 	function Recognise($targetstring) {
 		if (preg_match("/\.(tsv|txt)$/",$targetstring,$matches)) {
 			return true;
@@ -57,6 +64,15 @@ class WeatherMapDataSource_tabfile extends WeatherMapDataSource {
 	}
 
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map)
+	/**
+	 * Read the current values for one TARGET.
+	 *
+	 * @param  string          $targetstring the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapItem  $item         node or link the TARGET belongs to
+	 * @return array           [in, out, data_time]; the values are null when
+	 *                         nothing could be read
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;

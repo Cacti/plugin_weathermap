@@ -40,6 +40,9 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 	private $timeout;
 	private $retryCount;
 
+	/**
+	 * Set the TARGET pattern this datasource claims and clear the reading state.
+	 */
 	public function __construct() {
 		$this->recognised = 0;
 
@@ -54,6 +57,12 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		$this->name = 'SNMP3';
 	}
 
+	/**
+	 * Reset the per-run cache of unresponsive hosts.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool       false to take this datasource out of use for this run
+	 */
 	function Init(&$map) {
 		// We can keep a list of unresponsive nodes, so we can give up earlier
 		$this->downCache = [];
@@ -61,6 +70,12 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		return true;
 	}
 
+	/**
+	 * Claim a TARGET of the form snmp3:profile:host:oid_in:oid_out.
+	 *
+	 * @param  string $targetString the TARGET as written in the map config
+	 * @return bool   true when this datasource will handle it
+	 */
 	public function Recognise($targetString) {
 		foreach ($this->regexpsHandled as $regexp) {
 			if (preg_match($regexp, $targetString)) {
@@ -73,6 +88,15 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		return false;
 	}
 
+	/**
+	 * Note a TARGET before any reading starts, so its SNMPv3 profile can be
+	 * resolved once rather than per item.
+	 *
+	 * @param  string          $targetstring the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapItem  $item         node or link the TARGET belongs to
+	 * @return void
+	 */
 	public function Register($targetstring, &$map, &$item) {
 		parent::Register($targetstring, $map, $item);
 
@@ -102,6 +126,18 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		return true;
 	}
 
+	/**
+	 * Walk the two OIDs for one TARGET.
+	 *
+	 * A host that has already failed abortCount times this run is skipped
+	 * without another timeout.
+	 *
+	 * @param  string          $targetString the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapItem  $mapItem      node or link the TARGET belongs to
+	 * @return array           [in, out, data_time]; the values are null when
+	 *                         nothing could be read
+	 */
 	public function ReadData($targetString, &$map, &$mapItem) {
 		$this->data[IN]  = null;
 		$this->data[OUT] = null;
@@ -127,6 +163,9 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		return $this->returnData();
 	}
 
+	/**
+	 * @return array [in, out, data_time] as collected for the current TARGET
+	 */
 	protected function returnData() {
 		wm_debug(
 			sprintf(
@@ -300,6 +339,12 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 	}
 }
 
+/**
+ * Render a reading for the debug log, so an absent value is visible.
+ *
+ * @param  mixed  $value
+ * @return mixed  the value, or the string {null} when it is null
+ */
 function valueOrNull($value) {
 	return $value === null ? '{null}' : $value;
 }

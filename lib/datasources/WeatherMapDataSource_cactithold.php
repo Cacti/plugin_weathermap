@@ -65,6 +65,12 @@ declare(strict_types = 1);
  */
 
 class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
+	/**
+	 * Needs the thold or monitor plugin installed alongside Cacti.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool       false to take this datasource out of use for this run
+	 */
 	function Init(&$map) {
 		global $plugins;
 
@@ -115,6 +121,12 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 		return (false);
 	}
 
+	/**
+	 * Claim a TARGET of the form cactithold:host_id:threshold_id, or cactithold:/cactimonitor:host_id.
+	 *
+	 * @param  string $targetstring the TARGET as written in the map config
+	 * @return bool   true when this datasource will handle it
+	 */
 	function Recognise($targetstring) {
 		if (preg_match("/^cacti(thold|monitor):(\d+)$/",$targetstring,$matches)) {
 			return true;
@@ -127,6 +139,15 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * Read the current values for one TARGET.
+	 *
+	 * @param  string          $targetstring the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapItem  $item         node or link the TARGET belongs to
+	 * @return array           [in, out, data_time]; the values are null when
+	 *                         nothing could be read
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;

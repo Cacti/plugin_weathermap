@@ -16,6 +16,12 @@ declare(strict_types = 1);
 // (that is, TARGET snmp:community:host:in_oid:out_oid
 
 class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
+	/**
+	 * Needs the PHP SNMP extension built with SNMPv2c support.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool       false to take this datasource out of use for this run
+	 */
 	function Init(&$map) {
 		// We can keep a list of unresponsive nodes, so we can give up earlier
 		$this->down_cache = [];
@@ -23,6 +29,12 @@ class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
 		return true;
 	}
 
+	/**
+	 * Claim a TARGET of the form snmp2c:community:host:oid_in:oid_out.
+	 *
+	 * @param  string $targetstring the TARGET as written in the map config
+	 * @return bool   true when this datasource will handle it
+	 */
 	function Recognise($targetstring) {
 		if (preg_match('/^snmp2c:([^:]+):([^:]+):([^:]+):([^:]+)$/', $targetstring, $matches)) {
 			return true;
@@ -31,6 +43,15 @@ class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * Read the current values for one TARGET.
+	 *
+	 * @param  string          $targetstring the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapItem  $item         node or link the TARGET belongs to
+	 * @return array           [in, out, data_time]; the values are null when
+	 *                         nothing could be read
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;

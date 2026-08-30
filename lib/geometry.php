@@ -42,6 +42,14 @@ declare(strict_types = 1);
  +-------------------------------------------------------------------------+
 */
 
+/**
+ * Area of the triangle described by three points, by the shoelace formula.
+ *
+ * @param  WMPoint $point1
+ * @param  WMPoint $point2
+ * @param  WMPoint $point3
+ * @return float   always positive, whichever way round the points are given
+ */
 function getTriangleArea($point1, $point2, $point3) {
 	$area = abs($point1->x * ($point2->y - $point3->y)
 		+ $point2->x * ($point3->y - $point1->y)
@@ -55,6 +63,10 @@ class WMLineSegment {
 	public $point2;
 	public $vector;
 
+	/**
+	 * @param WMPoint $p1 one end of the segment
+	 * @param WMPoint $p2 the other end
+	 */
 	public function __construct($p1, $p2) {
 		$this->point1 = $p1;
 		$this->point2 = $p2;
@@ -62,6 +74,9 @@ class WMLineSegment {
 		$this->vector = $p1->vectorToPoint($p2);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function __toString() {
 		return sprintf('{%s--%s}', $this->point1, $this->point2);
 	}

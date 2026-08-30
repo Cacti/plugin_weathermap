@@ -55,6 +55,12 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 	var $results      = [];
 	var $fping_cmd;
 
+	/**
+	 * Needs the fping binary configured and executable.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool       false to take this datasource out of use for this run
+	 */
 	function Init(&$map) {
 		//
 		// You may need to change the line below to have something like "/usr/local/bin/fping" or "/usr/bin/fping" instead.
@@ -67,6 +73,12 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 	// this function will get called for every datasource, even if we replied false to Init.
 	// (so that we can warn the user that it *would* have worked, if only the plugin could run)
 	// SO... don't do anything in here that relies on the things that Init looked for, because they might not exist!
+	/**
+	 * Claim a TARGET of the form fping:hostname.
+	 *
+	 * @param  string $targetstring the TARGET as written in the map config
+	 * @return bool   true when this datasource will handle it
+	 */
 	function Recognise($targetstring) {
 		if (preg_match("/^fping:(\S+)$/",$targetstring,$matches)) {
 			// save the address. This way, we can do ONE fping call for all the pings in the map.
@@ -79,6 +91,15 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * Read the current values for one TARGET.
+	 *
+	 * @param  string          $targetstring the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapItem  $item         node or link the TARGET belongs to
+	 * @return array           [in, out, data_time]; the values are null when
+	 *                         nothing could be read
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;

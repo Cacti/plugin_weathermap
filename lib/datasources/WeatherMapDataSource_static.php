@@ -50,6 +50,13 @@ declare(strict_types = 1);
  * TARGET static:2M:256K
  */
 class WeatherMapDataSource_static extends WeatherMapDataSource {
+	/**
+	 * Claim a TARGET of the form static:value or static:in:out.
+	 *
+	 * Values may carry a K, M, G or T multiplier.	 *
+	 * @param  string $targetstring the TARGET as written in the map config
+	 * @return bool   true when this datasource will handle it
+	 */
 	function Recognise($targetstring) {
 		if (preg_match("/^static:(\-?\d+\.?\d*[KMGT]?):(\-?\d+\.?\d*[KMGT]?)$/", $targetstring,$matches) ||
 			preg_match("/^static:(\-?\d+\.?\d*[KMGT]?)$/",$targetstring,$matches)) {
@@ -59,6 +66,15 @@ class WeatherMapDataSource_static extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * Read the current values for one TARGET.
+	 *
+	 * @param  string          $targetstring the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapItem  $item         node or link the TARGET belongs to
+	 * @return array           [in, out, data_time]; the values are null when
+	 *                         nothing could be read
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$inbw      = null;
 		$outbw     = null;

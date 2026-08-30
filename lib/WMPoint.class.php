@@ -53,11 +53,22 @@ class WMPoint {
 	public $x;
 	public $y;
 
+	/**
+	 * @param float $x horizontal position
+	 * @param float $y vertical position, growing downwards in image space
+	 */
 	public function __construct($x = 0, $y = 0) {
 		$this->x = $x;
 		$this->y = $y;
 	}
 
+	/**
+	 * Exact coordinate comparison.  Use closeEnough() for anything that has been
+	 * through trigonometry, where rounding leaves the last places differing.
+	 *
+	 * @param  WMPoint $point2 point to compare against
+	 * @return bool
+	 */
 	public function identical($point2) {
 		if (($this->x == $point2->x) && ($this->y == $point2->y)) {
 			return true;
@@ -66,6 +77,12 @@ class WMPoint {
 		return false;
 	}
 
+	/**
+	 * Move the point to an absolute position.
+	 *
+	 * @param float $newX
+	 * @param float $newY
+	 */
 	public function set($newX, $newY) {
 		$this->x = $newX;
 		$this->y = $newY;
@@ -93,32 +110,64 @@ class WMPoint {
 		return false;
 	}
 
+	/**
+	 * @param  WMPoint  $p2 point to aim at
+	 * @return WMVector displacement from this point to $p2
+	 */
 	public function vectorToPoint($p2) {
 		$v = new WMVector($p2->x - $this->x, $p2->y - $this->y);
 
 		return $v;
 	}
 
+	/**
+	 * @param  WMPoint $p2 second point on the line
+	 * @return WMLine  the infinite line through both points
+	 */
 	public function lineToPoint($p2) {
 		$vec = $this->vectorToPoint($p2);
 
 		return new WMLine($this, $vec);
 	}
 
+	/**
+	 * Shortest distance from this point to an infinite line.
+	 *
+	 * Not implemented.  Nothing in the plugin calls it yet.
+	 *
+	 * @param  WMLine $l
+	 * @return null
+	 */
 	public function distanceToLine($l) {
 		// TODO: Implement this
 	}
 
-	function distanceToLineSegment($l) {
+	/**
+	 * Shortest distance from this point to a bounded line segment.
+	 *
+	 * Not implemented.  It needs to return the smallest of the distances to
+	 * each endpoint and to the line itself.
+	 *
+	 * @param  WMLine $l
+	 * @return null
+	 */
+	public function distanceToLineSegment($l) {
 		// TODO: Implement this
 		// Return whichever is the shortest out of:
 		// Distance to point1, distance to point2, distance to line
 	}
 
+	/**
+	 * @param  WMPoint $p2
+	 * @return float   straight line distance between the two points
+	 */
 	public function distanceToPoint($p2) {
 		return $this->vectorToPoint($p2)->length();
 	}
 
+	/**
+	 * @return WMPoint an independent copy, so callers can translate it freely
+	 */
 	public function copy() {
 		return new WMPoint($this->x, $this->y);
 	}
@@ -156,18 +205,34 @@ class WMPoint {
 		return $newPoint;
 	}
 
+	/**
+	 * @return string the same text as __toString()
+	 */
 	public function asString() {
 		return $this->__toString();
 	}
 
+	/**
+	 * @return string the point as a map config file writes it, "x y"
+	 */
 	public function asConfig() {
 		return sprintf('%d %d', $this->x, $this->y);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function __toString() {
 		return sprintf('(%s,%s)', floatval($this->x), floatval($this->y));
 	}
 
+	/**
+	 * Shift the point in place.
+	 *
+	 * @param  float $deltaX
+	 * @param  float $deltaY
+	 * @return $this to allow chaining
+	 */
 	public function translate($deltaX, $deltaY) {
 		$this->x += $deltaX;
 		$this->y += $deltaY;
@@ -175,6 +240,16 @@ class WMPoint {
 		return $this;
 	}
 
+	/**
+	 * Shift the point in place by an angle and a distance.
+	 *
+	 * Zero degrees is north and angles increase clockwise, which is why sin()
+	 * drives x and cos() drives a negated y.
+	 *
+	 * @param  float $angle    degrees clockwise from north
+	 * @param  float $distance how far to move
+	 * @return $this to allow chaining
+	 */
 	public function translatePolar($angle, $distance) {
 		$radiansAngle = deg2rad($angle);
 
