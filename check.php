@@ -44,9 +44,20 @@ declare(strict_types = 1);
 
 /* This report names the host, the kernel, the PHP build and the ini paths, so over
  * the web it is gated behind the Manage Weathermap realm.  The CLI run is left open:
- * the point of running it both ways is to compare the two PHP configurations. */
+ * the point of running it both ways is to compare the two PHP configurations.
+ *
+ * The realm is checked here rather than left to the plugin_realms row alone.  That
+ * row is written by the installer and by the upgrade step, and the upgrade step only
+ * runs when the recorded version differs from INFO, so an install already sitting on
+ * this version would otherwise get authentication without authorisation. */
 if (PHP_SAPI !== 'cli') {
 	include_once(__DIR__ . '/../../include/auth.php');
+
+	if (!api_plugin_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
+		header('Location: ' . $config['url_path'] . 'permission_denied.php');
+
+		exit;
+	}
 }
 
 // get some basics...
