@@ -771,7 +771,7 @@ function wm_filter() {
 
 	$last_stats = read_config_option('weathermap_last_stats', true);
 
-	html_start_box(__('Weather Maps [ Run Details: %s ]', $last_stats, 'weathermap'), '100%', false, 3, 'center', 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+	html_start_box(__esc('Weather Maps [ Run Details: %s ]', $last_stats, 'weathermap'), '100%', false, 3, 'center', 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
 	?>
 	<tr class='even'>
 		<td>
@@ -1711,7 +1711,7 @@ function preview_config($file) {
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
 		exit;
 	} else {
-		html_start_box(__('Preview of %s', $file, 'weathermap'), '100%', false, 3, 'center', '');
+		html_start_box(__esc('Preview of %s', $file, 'weathermap'), '100%', false, 3, 'center', '');
 
 		print '<tr><td class="textArea">';
 		print '<pre>';
@@ -1958,6 +1958,13 @@ function map_get_next_name($basename, $pattern = 'copy') {
 	return $file . '.conf';
 }
 
+/* Map configs are line oriented, and a duplicated map has its title substituted into
+ * the copied config file.  A title carrying a newline would append arbitrary directives
+ * such as NODE or INFOURL to that config, so flatten anything that could end a line. */
+function map_clean_title(string $title): string {
+	return trim(preg_replace('/[\x00-\x1f\x7f]+/', ' ', $title) ?? $title);
+}
+
 /**
  * Duplicates an existing map as a new map: copies its database row
  * (with a fresh sort order and cleared runtime fields), its
@@ -2001,7 +2008,7 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		$save['group_id']     = $map['group_id'];
 		$save['active']       = $map['active'];
 		$save['configfile']   = $configfile;
-		$save['titlecache']   = str_replace('<map_title>', $map['titlecache'], $titlecache);
+		$save['titlecache']   = map_clean_title(str_replace('<map_title>', $map['titlecache'], $titlecache));
 		$save['imagefile']    = '';
 		$save['htmlfile']     = '';
 		$save['filehash']     = '';
@@ -2209,7 +2216,7 @@ function perms_filter($id) {
 		WHERE id = ?',
 		[$id]);
 
-	html_start_box(__('Weathermap Permissions for Map [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
+	html_start_box(__esc('Weathermap Permissions for Map [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
 	?>
 	<tr class='even'>
 		<td>
@@ -2694,7 +2701,7 @@ function weathermap_map_settings($id) {
 			WHERE id = ?',
 			[$group_id]);
 
-		$title = __('Edit Group Settings [ Group: %s ]', $groupname, 'weathermap');
+		$title = __esc('Edit Group Settings [ Group: %s ]', $groupname, 'weathermap');
 
 		$nonemsg = __('There are no per Group Settings for this Group yet. You can add some by pressing the plus sign \'+\' in the top-right.', 'weathermap');
 
@@ -2715,7 +2722,7 @@ function weathermap_map_settings($id) {
 			WHERE id = ?',
 			[$map['group_id']]);
 
-		$title = __('Edit Map Settings [ Weathermap: %s ]', $map['titlecache'], 'weathermap');
+		$title = __esc('Edit Map Settings [ Weathermap: %s ]', $map['titlecache'], 'weathermap');
 
 		$nonemsg = __('There are no per Map settings for this Map yet. You can add some by pressing the plus sign \'+\' in the top-right.', 'weathermap');
 
@@ -2972,9 +2979,9 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 	if ($mapid == 0) {
 		$title = __('Global Setting for all Maps', 'weathermap');
 	} elseif ($mapid < 0) {
-		$title = __('Group Settings [ Group: %s ]', $name, 'weathermap');
+		$title = __esc('Group Settings [ Group: %s ]', $name, 'weathermap');
 	} else {
-		$title = __('Map Setting [ Weathermap: %s ]', $name, 'weathermap');
+		$title = __esc('Map Setting [ Weathermap: %s ]', $name, 'weathermap');
 	}
 
 	form_start('weathermap-cacti-plugin-mgmt.php');
@@ -3121,7 +3128,7 @@ function weathermap_chgroup($id) {
 	print "<input type=hidden name='map_id' value='" . $id . "'>";
 	print "<input type=hidden name='action' value='chgroup_update'>";
 
-	html_start_box(__('Edit Map Group for Weathermap [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
+	html_start_box(__esc('Edit Map Group for Weathermap [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
 
 	// html_header(["Group Name", ""]);
 	form_alternate_row();
