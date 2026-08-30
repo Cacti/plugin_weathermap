@@ -61,13 +61,13 @@ jobs:
     
     steps:
     - name: Checkout Cacti
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: Cacti/cacti
         path: cacti
     
     - name: Checkout Weathermap Plugin
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         path: cacti/plugins/weathermap
     
