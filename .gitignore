@@ -1,8 +1,10 @@
 configs/**
 output/**
 
-# Composer pulls these in; they are never committed.
+# The plugin has no Composer manifest of its own; it uses the toolchain the
+# base Cacti install already carries in include/vendor.
 /vendor/
+composer.lock
 
 # Tooling caches and generated reports
 .phpunit.cache/

@@ -43,28 +43,37 @@ jobs:
     name: PHP ${{ matrix.php }} Unit Tests
 
     steps:
+    - name: Checkout Cacti
+      uses: actions/checkout@v7
+      with:
+        repository: Cacti/cacti
+        path: cacti
+
     - name: Checkout Weathermap Plugin
       uses: actions/checkout@v7
+      with:
+        path: cacti/plugins/weathermap
 
     - name: Install PHP ${{ matrix.php }}
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
         extensions: gd, json, mbstring
-        coverage: xdebug
         ini-values: "date.timezone=America/New_York"
 
-    - name: Install Composer Dependencies
+    # The plugin carries no Composer manifest of its own; the test, lint and
+    # analysis tools come from the base Cacti install.
+    - name: Install Cacti Composer Dependencies
       run: composer install --prefer-dist --no-progress --no-interaction
+      working-directory: cacti
 
-    - name: Validate composer.json
-      run: composer validate --strict --no-check-publish
+    - name: Lint the plugin
+      run: composer run-script lint plugins/weathermap
+      working-directory: cacti
 
-    - name: Lint
-      run: composer run-script lint
-
-    - name: Run Unit Tests
-      run: composer run-script test
+    - name: Run the plugin unit tests
+      run: include/vendor/bin/pest -c plugins/weathermap/phpunit.xml --display-warnings
+      working-directory: cacti
 
   integration-test:
     runs-on: ${{ matrix.os }}
