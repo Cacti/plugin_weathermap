@@ -834,7 +834,9 @@ function weathermap_tree_item_edit($tree_item) {
 }
 
 /**
- * @return bool true when the current user may see the plugin's tab
+ * Print the plugin's tab, when the current user may see it.
+ *
+ * @return void
  */
 function weathermap_show_tab() {
 	global $config;

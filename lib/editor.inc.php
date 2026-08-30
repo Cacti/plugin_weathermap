@@ -995,7 +995,9 @@ function editor_log($str) {
 }
 
 /**
- * @return string the editor's inline JavaScript
+ * Print the editor's inline JavaScript.
+ *
+ * @return void
  */
 function getEditorJs() {
 	?>

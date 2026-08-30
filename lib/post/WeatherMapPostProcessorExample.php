@@ -54,7 +54,7 @@ class WeatherMapPostProcessorExample extends WeatherMapPostProcessor {
 	 * Called after the map is drawn.
 	 *
 	 * @param  WeatherMap $map map being drawn, by reference
-	 * @return bool       true when the processor did its work
+	 * @return void
 	 */
 	function run(&$map) {
 		$enable = $map->get_hint('post_test_enable');

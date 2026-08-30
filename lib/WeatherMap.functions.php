@@ -42,6 +42,13 @@ declare(strict_types = 1);
  +-------------------------------------------------------------------------+
 */
 
+/**
+ * List the maps a user is allowed to see.
+ *
+ * @param  int      $userid   Cacti user id
+ * @param  int|null $group_id restrict to one group, or null for all
+ * @return array    the map rows the user may view
+ */
 function get_allowed_weathermaps($userid, $group_id = null) {
 	// Special Group Limiter
 	$sql_where = '';
@@ -80,6 +87,11 @@ function get_allowed_weathermaps($userid, $group_id = null) {
 	return $maps;
 }
 
+/**
+ * @param  int  $mapid  map to test
+ * @param  int  $userid Cacti user id
+ * @return bool true when this user may view the map
+ */
 function is_weathermap_allowed($mapid, $userid) {
 	// Special Group Limiter
 	$sql_where = '';
@@ -130,6 +142,12 @@ function is_weathermap_allowed($mapid, $userid) {
 	return false;
 }
 
+/**
+ * Write a line to the debug log, when debugging is switched on.
+ *
+ * @param  string $string message to log
+ * @return void
+ */
 function wm_debug($string) {
 	global $weathermap_debugging;
 	global $weathermap_map;
@@ -176,6 +194,16 @@ function wm_debug($string) {
 	}
 }
 
+/**
+ * Record a warning against the current map.
+ *
+ * A [WMxxx] code in the message can be suppressed through the map config, which
+ * is how sites turn off warnings they have decided to live with.
+ *
+ * @param  string $string      message, usually carrying a [WMxxx] code
+ * @param  bool   $notice_only true to log it without counting it as a warning
+ * @return void
+ */
 function wm_warn($string, $notice_only = false) {
 	global $weathermap_map;
 	global $weathermap_warncount;
@@ -211,6 +239,13 @@ function wm_warn($string, $notice_only = false) {
 	}
 }
 
+/**
+ * Escape a string for use inside generated JavaScript.
+ *
+ * @param  string $str  text to escape
+ * @param  bool   $wrap add the surrounding quotes as well
+ * @return string
+ */
 function js_escape($str, $wrap = true) {
 	$str = str_replace('\\', '\\\\', $str);
 	$str = str_replace('"', '\\"', $str);
@@ -222,6 +257,15 @@ function js_escape($str, $wrap = true) {
 	return ($str);
 }
 
+/**
+ * sprintf() with the map config extras, notably %k for a value with a
+ * K, M, G or T multiplier.
+ *
+ * @param  string $format format string
+ * @param  float  $value  value to format
+ * @param  int    $kilo   1000 for decimal multipliers, 1024 for binary
+ * @return string
+ */
 function mysprintf($format, $value, $kilo = 1000) {
 	$output = '';
 
@@ -293,6 +337,12 @@ function mysprintf($format, $value, $kilo = 1000) {
 
 // ParseString is based on code from:
 // http://www.webscriptexpert.com/Php/Space-Separated%20Tag%20Parser/
+/**
+ * Split a config line into words, honouring single and double quotes.
+ *
+ * @param  string   $input line to split
+ * @return string[] the words on the line
+ */
 function wm_parse_string($input) {
 	$output       = [];     // Array of Output
 	$cPhraseQuote = null;   // Record of the quote that opened the current phrase
@@ -355,6 +405,15 @@ function wm_parse_string($input) {
 }
 
 // wrapper around imagecolorallocate to try and re-use palette slots where possible
+/**
+ * Allocate a colour, reusing an identical one already in the palette.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  int              $red
+ * @param  int              $green
+ * @param  int              $blue
+ * @return int              the palette index
+ */
 function myimagecolorallocate($image, $red, $green, $blue) {
 	// it's possible that we're being called early - just return straight away, in that case
 	if (!isset($image)) {
@@ -379,10 +438,22 @@ function myimagecolorallocate($image, $red, $green, $blue) {
 }
 
 // PHP < 5.3 doesn't support anonymous functions, so here's a little function for screenshotify
+/**
+ * Replacement callback used by screenshotify().
+ *
+ * @param  array  $matches preg_replace_callback match
+ * @return string
+ */
 function screenshotify_xxx($matches) {
 	return str_repeat('x',strlen($matches[1]));
 }
 
+/**
+ * Blank out hostnames and addresses, so a map can be shown in a screenshot.
+ *
+ * @param  string $input text to scrub
+ * @return string
+ */
 function screenshotify($input) {
 	$output = $input;
 	$output = preg_replace('/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/', '127.0.0.1', $output);
@@ -391,6 +462,10 @@ function screenshotify($input) {
 	return ($output);
 }
 
+/**
+ * @param  array $arr RGB triple
+ * @return bool  true when it is the "copy the other end's colour" sentinel
+ */
 function is_copy($arr) {
 	if ($arr['red1'] == -2 && $arr['green1'] == -2 && $arr['blue1'] == -2) {
 		return true;
@@ -399,6 +474,10 @@ function is_copy($arr) {
 	return false;
 }
 
+/**
+ * @param  array $arr RGB triple
+ * @return bool  true when it is the "contrast with the background" sentinel
+ */
 function is_contrast($arr) {
 	if ($arr['red1'] == -3 && $arr['green1'] == -3 && $arr['blue1'] == -3) {
 		return true;
@@ -407,6 +486,10 @@ function is_contrast($arr) {
 	return false;
 }
 
+/**
+ * @param  array $arr RGB triple
+ * @return bool  true when it is the "draw nothing" sentinel
+ */
 function is_none($arr) {
 	if ($arr['red1'] == -1 && $arr['green1'] == -1 && $arr['blue1'] == -1) {
 		return true;
@@ -415,6 +498,10 @@ function is_none($arr) {
 	return false;
 }
 
+/**
+ * @param  array  $col RGB triple, or one of the sentinels
+ * @return string the colour as a map config writes it
+ */
 function render_colour($col) {
 	if (($col[0] == -1) && ($col[1] == -1) && ($col[2] == -1)) {
 		return 'none';
@@ -432,6 +519,15 @@ function render_colour($col) {
 }
 
 // take the same set of points that imagepolygon does, but don't close the shape
+/**
+ * Draw a series of connected line segments.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  array            $points  flat list of ordinates, x, y, x, y
+ * @param  int              $npoints number of points in the list
+ * @param  int              $color   palette index
+ * @return void
+ */
 function imagepolyline($image, $points, $npoints, $color) {
 	for ($i = 0; $i < ($npoints - 1); $i++) {
 		imageline($image, $points[$i * 2], $points[$i * 2 + 1], $points[$i * 2 + 2], $points[$i * 2 + 3], $color);
@@ -439,6 +535,18 @@ function imagepolyline($image, $points, $npoints, $color) {
 }
 
 // draw a filled round-cornered rectangle
+/**
+ * Draw a filled rectangle with rounded corners.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  int              $x1
+ * @param  int              $y1
+ * @param  int              $x2
+ * @param  int              $y2
+ * @param  int              $radius corner radius
+ * @param  int              $color  palette index
+ * @return void
+ */
 function imagefilledroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color) {
 	imagefilledrectangle($image, $x1, $y1 + $radius, $x2, $y2 - $radius, $color);
 	imagefilledrectangle($image, $x1 + $radius, $y1, $x2 - $radius, $y2, $color);
@@ -451,6 +559,18 @@ function imagefilledroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color
 }
 
 // draw a round-cornered rectangle
+/**
+ * Draw the outline of a rectangle with rounded corners.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  int              $x1
+ * @param  int              $y1
+ * @param  int              $x2
+ * @param  int              $y2
+ * @param  int              $radius corner radius
+ * @param  int              $color  palette index
+ * @return void
+ */
 function imageroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color) {
 	imageline($image, $x1 + $radius, $y1, $x2 - $radius, $y1, $color);
 	imageline($image, $x1 + $radius, $y2, $x2 - $radius, $y2, $color);
@@ -463,6 +583,12 @@ function imageroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color) {
 	imagearc($image, $x2 - $radius, $y2 - $radius, $radius * 2, $radius * 2, 0, 90, $color);
 }
 
+/**
+ * Load an image, picking the reader from the file itself rather than its name.
+ *
+ * @param  string $filename image to load
+ * @return resource|GdImage|false the image, or false when it could not be read
+ */
 function imagecreatefromfile($filename) {
 	$bgimage = null;
 	$formats = imagetypes();
@@ -716,6 +842,13 @@ function calculate_catmull_rom_span($startn, $startdistance, $numsteps, $x0, $y0
 	return [$allpoints, $distance, $n];
 }
 
+/**
+ * Find the point a given distance along a series of points.
+ *
+ * @param  array $pointarray flat list of ordinates, x, y, x, y, by reference
+ * @param  float $distance   distance along the line
+ * @return array [x, y] at that distance
+ */
 function find_distance_coords(&$pointarray,$distance) {
 	// We find the nearest lower point for each distance,
 	// then linearly interpolate to get a more accurate point
@@ -731,6 +864,13 @@ function find_distance_coords(&$pointarray,$distance) {
 	return ([$x, $y, $index]);
 }
 
+/**
+ * Find the point and heading a given distance along a series of points.
+ *
+ * @param  array $pointarray flat list of ordinates, x, y, x, y, by reference
+ * @param  float $distance   distance along the line
+ * @return array [x, y, angle] at that distance
+ */
 function find_distance_coords_angle(&$pointarray,$distance) {
 	// This is the point we need
 	[$x,$y,$index] = find_distance_coords($pointarray,$distance);
@@ -955,6 +1095,14 @@ function calc_straight(&$in_xarray, &$in_yarray, $pointsperspan = 12) {
 	return $curvepoints;
 }
 
+/**
+ * Work out how big a link arrowhead should be for a given line width.
+ *
+ * @param  int        $width    link width in pixels
+ * @param  WeatherMap $map      map being drawn, by reference
+ * @param  string     $linkname link the arrow belongs to
+ * @return array      [arrow length, arrow width]
+ */
 function calc_arrowsize($width,&$map,$linkname) {
 	$arrowlengthfactor = 4;
 	$arrowwidthfactor  = 2;
@@ -978,6 +1126,20 @@ function calc_arrowsize($width,&$map,$linkname) {
 	return ([$arrowsize, $arrowwidth]);
 }
 
+/**
+ * Draw a link as a straight line, with its arrowheads and fills.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  array            $curvepoints    the link spine, by reference
+ * @param  array            $widths         line width for each direction
+ * @param  array            $outlinecolour  RGB triple for the outline
+ * @param  array            $fillcolours    RGB triple per direction
+ * @param  string           $linkname       link being drawn
+ * @param  WeatherMap       $map            map being drawn, by reference
+ * @param  int              $q2_percent     where along the link the two halves meet
+ * @param  bool             $unidirectional draw only the outward half
+ * @return void
+ */
 function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolours, $linkname, &$map, $q2_percent = 50, $unidirectional = false) {
 	$totaldistance = $curvepoints[count($curvepoints) - 1][DISTANCE];
 
@@ -1469,6 +1631,13 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 }
 
 // Take a spine, and strip out all the points that are co-linear with the points either side of them
+/**
+ * Drop points that sit close enough to the line between their neighbours.
+ *
+ * @param  array $input   the spine, by reference
+ * @param  float $epsilon how far off the line a point may sit and still go
+ * @return void
+ */
 function simplify_spine(&$input, $epsilon = 1e-8) {
 	$output = [];
 
@@ -1510,6 +1679,13 @@ function simplify_spine(&$input, $epsilon = 1e-8) {
 	return $output;
 }
 
+/**
+ * Turn a number carrying a K, M, G, T, m or u multiplier back into a plain one.
+ *
+ * @param  string $instring value as written in the config
+ * @param  int    $kilo   1000 for decimal multipliers, 1024 for binary
+ * @return float
+ */
 function unformat_number($instring, $kilo = 1000) {
 	$matches = 0;
 	$number  = 0;
@@ -1661,6 +1837,15 @@ function format_number($number, $precision = 2, $trailing_zeroes = 0) {
 	}
 }
 
+/**
+ * Format a bandwidth figure with a multiplier, for display.
+ *
+ * @param  float  $number    value in bits or bytes per second
+ * @param  int    $kilo   1000 for decimal multipliers, 1024 for binary
+ * @param  int    $decimals  digits after the point
+ * @param  bool   $below_one use m and u for values below one
+ * @return string
+ */
 function nice_bandwidth($number, $kilo = 1000, $decimals = 1, $below_one = true) {
 	$suffix = '';
 
@@ -1707,6 +1892,14 @@ function nice_bandwidth($number, $kilo = 1000, $decimals = 1, $below_one = true)
 	return ($result);
 }
 
+/**
+ * Format a plain number with a multiplier, for display.
+ *
+ * @param  float  $number   value to format
+ * @param  int    $kilo   1000 for decimal multipliers, 1024 for binary
+ * @param  int    $decimals digits after the point
+ * @return string
+ */
 function nice_scalar($number, $kilo = 1000, $decimals = 1) {
 	$suffix = '';
 	$prefix = '';
@@ -1768,6 +1961,10 @@ class WMFont {
 class Point {
 	var $x, $y;
 
+	/**
+	 * @param float $x
+	 * @param float $y
+	 */
 	function __construct($x = 0, $y = 0) {
 		$this->x = $x;
 		$this->y = $y;
@@ -1778,11 +1975,18 @@ class Point {
 class Vector {
 	var $dx, $dy;
 
+	/**
+	 * @param float $dx
+	 * @param float $dy
+	 */
 	function __construct($dx = 0, $dy = 0) {
 		$this->dx = $dx;
 		$this->dy = $dy;
 	}
 
+	/**
+	 * @return Vector a unit vector at right angles to this one
+	 */
 	function get_normal() {
 		$len = $this->length();
 
@@ -1792,6 +1996,11 @@ class Vector {
 		return (new Vector($nx1, $ny1));
 	}
 
+	/**
+	 * Scale the vector to unit length, in place.
+	 *
+	 * @return void
+	 */
 	function normalise() {
 		$len = $this->length();
 
@@ -1799,6 +2008,9 @@ class Vector {
 		$this->dy = $this->dy / $len;
 	}
 
+	/**
+	 * @return float length of the vector
+	 */
 	function length() {
 		return (sqrt(($this->dx * $this->dx) + ($this->dy * $this->dy)));
 	}
@@ -1808,6 +2020,9 @@ class Colour {
 	var $r, $g, $b, $alpha;
 
 	// take in an existing value and create a Colour object for it
+	/**
+	 * Start a colour, from nothing, an RGB triple, or three components.
+	 */
 	function __construct() {
 		if (func_num_args() == 3) {
 			// a set of 3 colours
@@ -1829,6 +2044,9 @@ class Colour {
 	}
 
 	// Is this a transparent/none colour?
+	/**
+	 * @return bool true when this is a real colour rather than a sentinel
+	 */
 	function is_real() {
 		if ($this->r >= 0 && $this->g >= 0 && $this->b >= 0) {
 			return true;
@@ -1838,6 +2056,9 @@ class Colour {
 	}
 
 	// Is this a transparent/none colour?
+	/**
+	 * @return bool true when this is the "draw nothing" sentinel
+	 */
 	function is_none() {
 		if ($this->r == -1 && $this->g == -1 && $this->b == -1) {
 			return true;
@@ -1847,6 +2068,9 @@ class Colour {
 	}
 
 	// Is this a contrast colour?
+	/**
+	 * @return bool true when this is the "contrast with the background" sentinel
+	 */
 	function is_contrast() {
 		if ($this->r == -3 && $this->g == -3 && $this->b == -3) {
 			return true;
@@ -1856,6 +2080,9 @@ class Colour {
 	}
 
 	// Is this a copy colour?
+	/**
+	 * @return bool true when this is the "copy the other end's colour" sentinel
+	 */
 	function is_copy() {
 		if ($this->r == -2 && $this->g == -2 && $this->b == -2) {
 			return true;
@@ -1866,6 +2093,12 @@ class Colour {
 
 	// allocate a colour in the appropriate image context
 	// - things like scale colours are used in multiple images now (the scale, several nodes, the main map...)
+	/**
+	 * Allocate this colour against an image palette and remember the handle.
+	 *
+	 * @param  resource|GdImage $image_ref image to allocate against
+	 * @return int              the palette index
+	 */
 	function gdallocate($image_ref) {
 		if ($this->is_none()) {
 			return null;
@@ -1875,6 +2108,9 @@ class Colour {
 	}
 
 	// based on an idea from: http://www.bennadel.com/index.cfm?dax=blog:902.view
+	/**
+	 * @return array RGB triple that contrasts with this colour
+	 */
 	function contrast_ary() {
 		if ((($this->r + $this->g + $this->b) > 500) || ($this->g > 140)) {
 			return ([0, 0, 0]);
@@ -1883,24 +2119,40 @@ class Colour {
 		}
 	}
 
+	/**
+	 * @return Colour a colour that contrasts with this one
+	 */
 	function contrast() {
 		return (new Colour($this->contrast_ary()));
 	}
 
 	// make a printable version, for debugging
 	// - optionally take a format string, so we can use it for other things (like WriteConfig, or hex in stylesheets)
+	/**
+	 * @param  string $format sprintf format taking red, green and blue
+	 * @return string
+	 */
 	function as_string($format = 'RGB(%d,%d,%d)') {
 		return (sprintf($format, $this->r, $this->g, $this->b));
 	}
 
+	/**
+	 * @return string
+	 */
 	function __toString() {
 		return $this->as_string();
 	}
 
+	/**
+	 * @return string the colour as a map config writes it
+	 */
 	function as_config() {
 		return $this->as_string('%d %d %d');
 	}
 
+	/**
+	 * @return string the colour as a #rrggbb HTML value
+	 */
 	function as_html() {
 		if ($this->is_real()) {
 			return $this->as_string('#%02x%02x%02x');
@@ -1915,6 +2167,13 @@ class Colour {
 //   drawing commands for a map. I have a basic Perl-Cairo script that makes
 //   anti-aliased maps from these, using Cairo instead of GD.
 
+/**
+ * Log a string with its non-printing characters made visible.
+ *
+ * @param  string $string    text to log
+ * @param  bool   $truncate  shorten a long string
+ * @return string
+ */
 function metadump($string, $truncate = false) {
 	// comment this line to get a metafile for this map
 	return;
@@ -1930,16 +2189,36 @@ function metadump($string, $truncate = false) {
 	fclose($fd);
 }
 
+/**
+ * @param  Colour $col colour to describe, by reference
+ * @return string a short description for the debug log
+ */
 function metacolour(&$col) {
 	return ($col['red1'] . ' ' . $col['green1'] . ' ' . $col['blue1']);
 }
 
+/**
+ * @param  int $width
+ * @param  int $height
+ * @return resource|GdImage a palette image, with the map defaults applied
+ */
 function wimagecreate($width,$height) {
 	metadump("NEWIMAGE $width $height");
 
 	return (imagecreate($width,$height));
 }
 
+/**
+ * Filled rectangle that tolerates the sentinel colours.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  int              $x1
+ * @param  int              $y1
+ * @param  int              $x2
+ * @param  int              $y2
+ * @param  int              $color palette index, or a sentinel
+ * @return void
+ */
 function wimagefilledrectangle($image ,$x1, $y1, $x2, $y2, $color) {
 	if ($color === null) {
 		return;
@@ -1961,6 +2240,17 @@ function wimagefilledrectangle($image ,$x1, $y1, $x2, $y2, $color) {
 	return (imagefilledrectangle($image, (int) $x1, (int) $y1, (int) $x2, (int) $y2, $color));
 }
 
+/**
+ * Rectangle outline that tolerates the sentinel colours.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  int              $x1
+ * @param  int              $y1
+ * @param  int              $x2
+ * @param  int              $y2
+ * @param  int              $color palette index, or a sentinel
+ * @return void
+ */
 function wimagerectangle($image ,$x1, $y1, $x2, $y2, $color) {
 	if ($color === null) {
 		return;
@@ -1982,6 +2272,15 @@ function wimagerectangle($image ,$x1, $y1, $x2, $y2, $color) {
 	return (imagerectangle($image, (int) $x1, (int) $y1, (int) $x2, (int) $y2, $color));
 }
 
+/**
+ * Polygon outline that tolerates the sentinel colours.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  array            $points     flat list of ordinates, x, y, x, y
+ * @param  int              $num_points number of points in the list
+ * @param  int              $color      palette index, or a sentinel
+ * @return void
+ */
 function wimagepolygon($image, $points, $num_points, $color) {
 	if ($color === null) {
 		return;
@@ -2014,6 +2313,15 @@ function wimagepolygon($image, $points, $num_points, $color) {
 	}
 }
 
+/**
+ * Filled polygon that tolerates the sentinel colours.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  array            $points     flat list of ordinates, x, y, x, y
+ * @param  int              $num_points number of points in the list
+ * @param  int              $color      palette index, or a sentinel
+ * @return void
+ */
 function wimagefilledpolygon($image, $points, $num_points, $color) {
 	if ($color === null) {
 		return;
@@ -2047,6 +2355,11 @@ function wimagefilledpolygon($image, $points, $num_points, $color) {
 	}
 }
 
+/**
+ * @param  int $width
+ * @param  int $height
+ * @return resource|GdImage a truecolour image, with the map defaults applied
+ */
 function wimagecreatetruecolor($width, $height) {
 	$width  = round($width);
 	$height = round($height);
@@ -2056,6 +2369,19 @@ function wimagecreatetruecolor($width, $height) {
 	return imagecreatetruecolor($width, $height);
 }
 
+/**
+ * TrueType text that tolerates the sentinel colours.
+ *
+ * @param  resource|GdImage $image image being drawn on
+ * @param  float            $size   point size
+ * @param  float            $angle  rotation in degrees
+ * @param  int              $x
+ * @param  int              $y
+ * @param  int              $color  palette index, or a sentinel
+ * @param  string           $file   font file
+ * @param  string           $string text to draw
+ * @return array|false      the bounding box, as imagettftext() returns it
+ */
 function wimagettftext($image, $size, $angle, $x, $y, $color, $file, $string) {
 	if ($color === null) {
 		return;
@@ -2082,6 +2408,16 @@ function wimagettftext($image, $size, $angle, $x, $y, $color, $file, $string) {
 	return (imagettftext($image, $size, $angle, $x, $y, $color, $file, $string));
 }
 
+/**
+ * Draw a diamond, used by the editor to mark a point.
+ *
+ * @param  resource|GdImage $im    image being drawn on
+ * @param  int              $col  palette index
+ * @param  int              $x
+ * @param  int              $y
+ * @param  int              $size across the diagonal
+ * @return void
+ */
 function wm_draw_marker_diamond($im, $col, $x, $y, $size = 10) {
 	$points = [];
 
@@ -2106,6 +2442,16 @@ function wm_draw_marker_diamond($im, $col, $x, $y, $size = 10) {
 	}
 }
 
+/**
+ * Draw a box, used by the editor to mark a point.
+ *
+ * @param  resource|GdImage $im    image being drawn on
+ * @param  int              $col  palette index
+ * @param  int              $x
+ * @param  int              $y
+ * @param  int              $size across the box
+ * @return void
+ */
 function wm_draw_marker_box($im, $col, $x, $y, $size = 10) {
 	$points = [];
 
@@ -2130,10 +2476,29 @@ function wm_draw_marker_box($im, $col, $x, $y, $size = 10) {
 	}
 }
 
+/**
+ * Draw a circle, used by the editor to mark a point.
+ *
+ * @param  resource|GdImage $im    image being drawn on
+ * @param  int              $col  palette index
+ * @param  int              $x
+ * @param  int              $y
+ * @param  int              $size diameter
+ * @return void
+ */
 function wm_draw_marker_circle($im, $col, $x, $y, $size = 10) {
 	imagearc($im, $x, $y, $size, $size, 0, 360, $col);
 }
 
+/**
+ * Mark every point of a link spine, for debugging the geometry.
+ *
+ * @param  resource|GdImage $im    image being drawn on
+ * @param  array            $spine the link spine
+ * @param  int              $col   palette index
+ * @param  int              $size  marker size
+ * @return void
+ */
 function draw_spine_chain($im, $spine, $col, $size = 10) {
 	$newn = count($spine);
 
@@ -2142,6 +2507,12 @@ function draw_spine_chain($im, $spine, $col, $size = 10) {
 	}
 }
 
+/**
+ * Write a link spine to the debug log.
+ *
+ * @param  array $spine the link spine
+ * @return void
+ */
 function dump_spine($spine) {
 	print "===============\n";
 
@@ -2152,6 +2523,14 @@ function dump_spine($spine) {
 	print "===============\n";
 }
 
+/**
+ * Draw a link spine as a plain line, for debugging the geometry.
+ *
+ * @param  resource|GdImage $im    image being drawn on
+ * @param  array            $spine the link spine
+ * @param  int              $col   palette index
+ * @return void
+ */
 function draw_spine($im, $spine, $col) {
 	$max_i = count($spine) - 1;
 

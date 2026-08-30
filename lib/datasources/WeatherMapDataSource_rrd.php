@@ -149,7 +149,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	 * @param array          $data      filled in with the IN and OUT values, by reference
 	 * @param WeatherMap     $map       map being drawn, by reference
 	 * @param int            $data_time timestamp of the values read, by reference
-	 * @param WeatherMapItem $item      node or link the TARGET belongs to
+	 * @param WeatherMapNode|WeatherMapLink $item node or link the TARGET belongs to
 	 * @return void
 	 */
 	function wmrrd_read_from_poller_output($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
@@ -305,7 +305,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	 * @param array          $data      filled in with the IN and OUT values, by reference
 	 * @param WeatherMap     $map       map being drawn, by reference
 	 * @param int            $data_time timestamp of the values read, by reference
-	 * @param WeatherMapItem $item      node or link the TARGET belongs to
+	 * @param WeatherMapNode|WeatherMapLink $item node or link the TARGET belongs to
 	 * @return void
 	 */
 	function wmrrd_read_from_php_rrd($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
@@ -351,7 +351,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	 * @param array          $data        filled in with the IN and OUT values, by reference
 	 * @param WeatherMap     $map         map being drawn, by reference
 	 * @param int            $data_time   timestamp of the values read, by reference
-	 * @param WeatherMapItem $item        node or link the TARGET belongs to
+	 * @param WeatherMapNode|WeatherMapLink $item node or link the TARGET belongs to
 	 * @return void
 	 */
 	function wmrrd_read_from_real_rrdtool_aggregate($rrdfile,$cf,$aggregatefn,$start,$end,$dsnames, &$data, &$map, &$data_time,&$item) {
@@ -493,7 +493,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	 * @param array          $data      filled in with the IN and OUT values, by reference
 	 * @param WeatherMap     $map       map being drawn, by reference
 	 * @param int            $data_time timestamp of the values read, by reference
-	 * @param WeatherMapItem $item      node or link the TARGET belongs to
+	 * @param WeatherMapNode|WeatherMapLink $item node or link the TARGET belongs to
 	 * @return void
 	 */
 	function wmrrd_read_from_real_rrdtool($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {

@@ -106,12 +106,23 @@ class WeatherMapDataSource {
 	// but just before ReadData. Used to allow plugins to verify their dependencies
 	// (if any) and bow out gracefully. Return false to signal that the plugin is not
 	// in a fit state to run at the moment.
+	/**
+	 * Called after the config is read but before ReadData, so a plugin can check
+	 * its dependencies and bow out.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool       false to take this datasource out of use for this run
+	 */
 	function Init(&$map) {
 		return true;
 	}
 
 	// called with the TARGET string. Returns true or false, depending on whether it wants to handle this TARGET
 	// called by map->ReadData()
+	/**
+	 * @param  string $targetstring the TARGET as written in the map config
+	 * @return bool   true when this datasource will handle it
+	 */
 	function Recognise($targetstring) {
 		return false;
 	}
@@ -121,27 +132,58 @@ class WeatherMapDataSource {
 	//   configline is passed in, to allow for better error messages
 	//   itemtype and itemname may be used as part of the target (e.g. for TSV source line)
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map) { return ([-1,-1]); }
+	/**
+	 * @param  string          $targetstring the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapNode|WeatherMapLink $item node or link the TARGET belongs to
+	 * @return array           [in, out, data_time]
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		return ([-1, -1, 0]);
 	}
 
 	// pre-register a target + context, to allow a plugin to batch up queries to a slow database, or snmp for example
+	/**
+	 * Note a TARGET ahead of time, so a slow backend can batch its queries.
+	 *
+	 * @param  string          $targetstring the TARGET as written in the map config
+	 * @param  WeatherMap      $map          map being drawn, by reference
+	 * @param  WeatherMapNode|WeatherMapLink $item node or link the TARGET belongs to
+	 * @return void
+	 */
 	function Register($targetstring, &$map, &$item) {
 	}
 
 	// called before ReadData, to allow plugins to DO the prefetch of targets known from Register
+	/**
+	 * Run whatever Register() queued, before any ReadData call.
+	 *
+	 * @return void
+	 */
 	function Prefetch() {
 	}
 }
 
 // template classes for the pre- and post-processor plugins
 class WeatherMapPreProcessor {
+	/**
+	 * Called before the map is drawn.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool
+	 */
 	function run(&$map) {
 		return false;
 	}
 }
 
 class WeatherMapPostProcessor {
+	/**
+	 * Called after the map is drawn.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool
+	 */
 	function run(&$map) {
 		return false;
 	}
@@ -159,12 +201,21 @@ class WeatherMapBase {
 	var $hints = [];
 	var $inherit_fieldlist;
 
+	/**
+	 * @param  string $name  note name
+	 * @param  string $value note value
+	 * @return void
+	 */
 	function add_note($name,$value) {
 		wm_debug("Adding note $name='$value' to " . $this->name);
 
 		$this->notes[$name] = $value;
 	}
 
+	/**
+	 * @param  string     $name note name
+	 * @return string|null the note, or null when it is not set
+	 */
 	function get_note($name) {
 		if (isset($this->notes[$name])) {
 			//	debug("Found note $name in ".$this->name." with value of ".$this->notes[$name].".\n");
@@ -175,6 +226,11 @@ class WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param  string $name  hint name
+	 * @param  string $value hint value
+	 * @return void
+	 */
 	function add_hint($name,$value) {
 		wm_debug("Adding hint $name='$value' to " . $this->name);
 
@@ -182,6 +238,11 @@ class WeatherMapBase {
 		// warn("Adding hint $name to ".$this->my_type()."/".$this->name."\n");
 	}
 
+	/**
+	 * @param  string $name    hint name
+	 * @param  mixed  $default returned when the hint is not set
+	 * @return mixed  the hint value, or $default
+	 */
 	function get_hint($name, $default = null) {
 		if (isset($this->hints[$name])) {
 			//	debug("Found hint $name in ".$this->name." with value of ".$this->hints[$name].".\n");
@@ -213,6 +274,9 @@ class WeatherMapItem extends WeatherMapBase {
 	var $defined_in;
 	var $config_override;	// used by the editor to allow text-editing
 
+	/**
+	 * @return string the item type as map configs and image map areas name it
+	 */
 	function my_type() {
 		return 'ITEM';
 	}
@@ -321,6 +385,9 @@ class WeatherMap extends WeatherMapBase {
 	var $scales;
 	var $image;
 
+	/**
+	 * Start a map with the defaults a config file can then override.
+	 */
 	function __construct() {
 		$this->inherit_fieldlist =  [
 			'width'              => 800,
@@ -380,10 +447,18 @@ class WeatherMap extends WeatherMapBase {
 		$this->Reset();
 	}
 
+	/**
+	 * @return string the item type as map configs and image map areas name it
+	 */
 	function my_type() {
 		return 'MAP';
 	}
 
+	/**
+	 * Return the map to the state it has before any config is read.
+	 *
+	 * @return void
+	 */
 	function Reset() {
 		$this->next_id = 100;
 
@@ -546,7 +621,7 @@ class WeatherMap extends WeatherMapBase {
 	 * Create an array of all the nodes and links, mixed together.
 	 * readData() makes several passes through this list.
 	 *
-	 * @return MapDataItem[]
+	 * @return array<WeatherMapNode|WeatherMapLink>
 	 */
 	public function buildAllItemsList() {
 		// TODO - this should probably be a static, or otherwise cached
@@ -562,22 +637,16 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	/**
-	 * myimagestring - Function to draw a string on an image
+	 * Draw a string on an image, using either a GD font or a TrueType one.
 	 *
-	 * @param  object - An image object
-	 * @param  int      The font number
-	 * @param  int      The lower left corner of where the text will start
-	 * @param  int      The lower left corner of where the text will start
-	 * @param  string   The string to paint
-	 * @param  hex      The colour to draw the test with
-	 * @param  double   The angle to rotate the text on the image
-	 * @param mixed $image
-	 * @param mixed $fontnumber
-	 * @param mixed $x
-	 * @param mixed $y
-	 * @param mixed $string
-	 * @param mixed $colour
-	 * @param mixed $angle
+	 * @param  resource|GdImage $image      image being drawn on
+	 * @param  int              $fontnumber font as numbered by the map config
+	 * @param  int              $x          left edge of the text
+	 * @param  int              $y          baseline of the text
+	 * @param  string           $string     text to draw
+	 * @param  int              $colour     palette index to draw it in
+	 * @param  float            $angle      rotation in degrees
+	 * @return void
 	 */
 	function myimagestring($image, $fontnumber, $x, $y, $string, $colour, $angle = 0) {
 		// if it's supposed to be a special font, and it hasn't been defined, then fall through
@@ -628,6 +697,14 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Measure a string in one of the map fonts.
+	 *
+	 * @param  int    $fontnumber font as numbered by the map config
+	 * @param  string $string      text to measure
+	 * @return array|null [width, height] in pixels, or null when the font slot
+	 *                     holds neither a GD nor a TrueType font
+	 */
 	function myimagestringsize($fontnumber, $string) {
 		$linecount = 1;
 
@@ -683,6 +760,16 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Substitute the {node:...} and {link:...} style tokens a map config can use.
+	 *
+	 * @param  string          $input         text holding tokens
+	 * @param  WeatherMap|WeatherMapNode|WeatherMapLink $context object the tokens are
+	 *                     resolved against, by reference; the map itself for map level text
+	 * @param  bool            $include_notes allow notes as well as the built-in fields
+	 * @param  bool            $multiline     keep newlines in the result
+	 * @return string          the text with its tokens replaced
+	 */
 	function ProcessString($input, &$context, $include_notes = true, $multiline = false) {
 		global $config;
 
@@ -848,6 +935,11 @@ class WeatherMap extends WeatherMapBase {
 		return ($output);
 	}
 
+	/**
+	 * Fill every TARGET with random values, for previewing a map with no data.
+	 *
+	 * @return void
+	 */
 	function RandomData() {
 		foreach ($this->links as $link) {
 			$this->links[$link->name]->bandwidth_in  = rand(0, $link->max_bandwidth_in);
@@ -855,6 +947,13 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Load the pluggable datasource, pre- and post-processor classes.
+	 *
+	 * @param  string $type data, pre or post
+	 * @param  string $dir  directory below the plugin to load them from
+	 * @return void
+	 */
 	function LoadPlugins($type = 'data', $dir = 'datasources') {
 		wm_debug("Beginning to load $type plugins from $dir");
 
@@ -934,6 +1033,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Give every loaded datasource its chance to bow out.
+	 *
+	 * @return void
+	 */
 	function DatasourceInit() {
 		wm_debug('Running Init() for Data Source Plugins...');
 
@@ -959,6 +1063,11 @@ class WeatherMap extends WeatherMapBase {
 		wm_debug('Finished Initialising Plugins...');
 	}
 
+	/**
+	 * Hand each item TARGET to the first datasource that claims it.
+	 *
+	 * @return void
+	 */
 	function ProcessTargets() {
 		wm_debug('Preprocessing targets');
 
@@ -1040,6 +1149,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Read the current values for every TARGET on the map.
+	 *
+	 * @return void
+	 */
 	function ReadData() {
 		$this->DatasourceInit();
 
@@ -1223,6 +1337,24 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	// nodename is a vestigal parameter, from the days when nodes were just big labels
+	/**
+	 * Draw a label rotated to follow the link it belongs to.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  int              $x            centre of the label
+	 * @param  int              $y            centre of the label
+	 * @param  float            $angle        rotation in degrees
+	 * @param  string           $text         label text
+	 * @param  int              $font         font as numbered by the map config
+	 * @param  int              $padding      space around the text
+	 * @param  string           $linkname     link the label belongs to
+	 * @param  array            $textcolour   RGB triple for the text
+	 * @param  array            $bgcolour     RGB triple for the background
+	 * @param  array            $outlinecolour RGB triple for the outline
+	 * @param  WeatherMap       $map          map being drawn, by reference
+	 * @param  int              $direction    IN or OUT
+	 * @return void
+	 */
 	function DrawLabelRotated($image, $x, $y, $angle, $text, $font, $padding, $linkname, $textcolour, $bgcolour, $outlinecolour, &$map, $direction) {
 		[$strwidth, $strheight] = $this->myimagestringsize($font, $text);
 
@@ -1285,6 +1417,15 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Pick the colour for a percentage from a named scale.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  float            $percent   value to colour, as a percentage
+	 * @param  string           $scalename scale to read
+	 * @param  string           $name      item name, used in warnings
+	 * @return array            [colour, tag, scale key]
+	 */
 	function ColourFromPercent($image, $percent, $scalename = 'DEFAULT', $name = '') {
 		$col = null;
 		$tag = '';
@@ -1364,6 +1505,18 @@ class WeatherMap extends WeatherMapBase {
 		return [$this->white, '', ''];
 	}
 
+	/**
+	 * Pick the colour for a value from a named scale.
+	 *
+	 * Where several scale ranges match, the narrowest one wins.
+	 *
+	 * @param  float  $value         value to colour
+	 * @param  string $scalename     scale to read
+	 * @param  string $name          item name, used in warnings
+	 * @param  bool   $is_percent    treat the value as a percentage
+	 * @param  bool   $scale_warning warn when nothing in the scale matches
+	 * @return array  [Colour, tag, scale key]
+	 */
 	function NewColourFromPercent($value, $scalename = 'DEFAULT', $name = '', $is_percent = true, $scale_warning = true) {
 		$col = new Colour(0, 0, 0);
 		$tag = '';
@@ -1454,6 +1607,13 @@ class WeatherMap extends WeatherMapBase {
 		return [new Colour(255, 255, 255), '', ''];
 	}
 
+	/**
+	 * Order two scale entries by their lower bound, for usort().
+	 *
+	 * @param  array $a
+	 * @param  array $b
+	 * @return int   negative, zero or positive
+	 */
 	function coloursort($a, $b) {
 		if ($a['bottom'] == $b['bottom']) {
 			if ($a['top'] < $b['top']) {
@@ -1474,6 +1634,10 @@ class WeatherMap extends WeatherMapBase {
 		return 1;
 	}
 
+	/**
+	 * @param  string $scalename scale to measure
+	 * @return array  [min, max] the scale covers
+	 */
 	function FindScaleExtent($scalename = 'DEFAULT') {
 		$max = -999999999999999999999;
 		$min = - $max;
@@ -1494,6 +1658,14 @@ class WeatherMap extends WeatherMapBase {
 		return [$min, $max];
 	}
 
+	/**
+	 * Draw a horizontal scale key.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  string           $scalename scale to draw
+	 * @param  int              $width     width of the key in pixels
+	 * @return void
+	 */
 	function DrawLegend_Horizontal($image, $scalename = 'DEFAULT', $width = 400) {
 		$title = $this->keytext[$scalename];
 
@@ -1591,6 +1763,15 @@ class WeatherMap extends WeatherMapBase {
 		);
 	}
 
+	/**
+	 * Draw a vertical scale key.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  string           $scalename scale to draw
+	 * @param  int              $height    height of the key in pixels
+	 * @param  bool             $inverted  put the largest value at the bottom
+	 * @return void
+	 */
 	function DrawLegend_Vertical($image, $scalename = 'DEFAULT', $height = 400, $inverted = false) {
 		$title   = $this->keytext[$scalename];
 
@@ -1710,6 +1891,14 @@ class WeatherMap extends WeatherMapBase {
 		);
 	}
 
+	/**
+	 * Draw the original stepped scale key.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  string           $scalename scale to draw
+	 * @param  bool             $use_tags  label each step with its scale tag
+	 * @return void
+	 */
 	function DrawLegend_Classic($image, $scalename = 'DEFAULT', $use_tags = false) {
 		$title = $this->keytext[$scalename];
 
@@ -2099,6 +2288,15 @@ class WeatherMap extends WeatherMapBase {
 		return $out;
 	}
 
+	/**
+	 * Draw the timestamp onto the map.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  int              $font   font as numbered by the map config
+	 * @param  array            $colour RGB triple
+	 * @param  string           $which  empty for the map time, min or max for the data times
+	 * @return void
+	 */
 	function DrawTimestamp($image, $font, $colour, $which = '') {
 		$this->datestamp = $this->strftime($this->stamptext, time());
 
@@ -2137,6 +2335,14 @@ class WeatherMap extends WeatherMapBase {
 		$this->imap->addArea('Rectangle', $which . 'TIMESTAMP', '', [$x, $y, $x + $boxwidth, $y - $boxheight]);
 	}
 
+	/**
+	 * Draw the map title.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  int              $font   font as numbered by the map config
+	 * @param  array            $colour RGB triple
+	 * @return void
+	 */
 	function DrawTitle($image, $font, $colour) {
 		$string = $this->ProcessString($this->title, $this);
 
@@ -2159,6 +2365,14 @@ class WeatherMap extends WeatherMapBase {
 		$this->imap->addArea('Rectangle', 'TITLE', '', [$x, $y, $x + $boxwidth, $y - $boxheight]);
 	}
 
+	/**
+	 * Read a map config file, or a block of config text, into this map.
+	 *
+	 * @param  string $input      config filename, or the config itself
+	 * @param  bool   $is_include true when called for an INCLUDE line, which stops
+	 *                             the map level settings being reset
+	 * @return bool   true when the config was read
+	 */
 	function ReadConfig($input, $is_include = false) {
 		global $config, $weathermap_error_suppress;
 
@@ -3236,6 +3450,12 @@ class WeatherMap extends WeatherMapBase {
 		return (true);
 	}
 
+	/**
+	 * Finish the object the config reader was filling in and add it to the map.
+	 *
+	 * @param  WeatherMapNode|WeatherMapLink $curobj item being completed, by reference
+	 * @return void
+	 */
 	function ReadConfig_Commit(&$curobj) {
 		if (is_null($curobj)) {
 			return;
@@ -3271,6 +3491,12 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Write the current values out as a tab separated data file.
+	 *
+	 * @param  string $filename file to write
+	 * @return void
+	 */
 	function WriteDataFile($filename) {
 		if ($filename != '') {
 			$fd = fopen($filename, 'w');
@@ -3294,6 +3520,12 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Write this map back out as a config file.
+	 *
+	 * @param  string $filename file to write
+	 * @return void
+	 */
 	function WriteConfig($filename) {
 		$fd = false;
 
@@ -3541,6 +3773,13 @@ class WeatherMap extends WeatherMapBase {
 	// this way, it's the pretty icons that suffer if there aren't enough colours, and
 	// not the actual useful data
 	// we skip any gradient scales
+	/**
+	 * Allocate every scale colour against an image palette.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  string           $refname property the allocated handle is stored in
+	 * @return void
+	 */
 	function AllocateScaleColours($image, $refname = 'gdref1') {
 		foreach ($this->colours as $scalename => $colours) {
 			foreach ($colours as $key => $colour) {
@@ -3557,6 +3796,17 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Draw the map, and optionally a thumbnail of it.
+	 *
+	 * @param  string $filename        file to write the image to
+	 * @param  string $thumbnailfile   file to write a thumbnail to, if any
+	 * @param  int    $thumbnailmax    longest side of the thumbnail in pixels
+	 * @param  bool   $withnodes       draw the nodes as well as the links
+	 * @param  bool   $use_via_overlay draw the VIA guides the editor shows
+	 * @param  bool   $use_rel_overlay draw the relative positioning guides
+	 * @return void
+	 */
 	function DrawMap($filename = '', $thumbnailfile = '', $thumbnailmax = 250, $withnodes = true, $use_via_overlay = false, $use_rel_overlay = false) {
 		wm_debug('Trace: DrawMap()');
 
@@ -3887,6 +4137,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Release the images and handles the draw allocated.
+	 *
+	 * @return void
+	 */
 	function CleanUp() {
 		$all_layers = array_keys($this->seen_zlayers);
 
@@ -3921,6 +4176,11 @@ class WeatherMap extends WeatherMapBase {
 		$this->scales      = null;
 	}
 
+	/**
+	 * Build the image map areas for every node and link.
+	 *
+	 * @return void
+	 */
 	function PreloadMapHTML() {
 		wm_debug('Trace: PreloadMapHTML()');
 
@@ -4074,6 +4334,9 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @return string JavaScript the editor loads to describe this map
+	 */
 	function asJS() {
 		$js = '';
 
@@ -4096,6 +4359,9 @@ class WeatherMap extends WeatherMapBase {
 		return $js;
 	}
 
+	/**
+	 * @return string JSON describing this map
+	 */
 	function asJSON() {
 		$json  = '';
 		$json .= "{ \n";
@@ -4148,6 +4414,13 @@ class WeatherMap extends WeatherMapBase {
 	// which will populate the ImageMap with regions.
 	//
 	// imagemapname is a parameter, so we can stack up several maps in the Cacti plugin with their own imagemaps
+	/**
+	 * Build the HTML wrapper around the map image and its image map.
+	 *
+	 * @param  string $imagemapname name for the generated <map> element
+	 * @param  bool   $standalone   emit a complete page rather than a fragment
+	 * @return string
+	 */
 	function MakeHTML($imagemapname = 'weathermap_imap', $standalone = false) {
 		global $config;
 
@@ -4213,6 +4486,10 @@ class WeatherMap extends WeatherMapBase {
 		return ($html);
 	}
 
+	/**
+	 * @param  string $imagemapname name for the generated <map> element
+	 * @return string the image map areas in draw order
+	 */
 	function SortedImagemap($imagemapname) {
 		$html = "\t\t" . '<map name="' . $imagemapname . '" id="' . $imagemapname . '">' . PHP_EOL;
 
@@ -4274,6 +4551,12 @@ class WeatherMap extends WeatherMapBase {
 	// if the config file is newer than the cache files, or $agelimit seconds have passed,
 	// then write new stuff, otherwise just return.
 	// ALWAYS deletes files in the cache folder older than $agelimit, also!
+	/**
+	 * Drop cached node and scale images that nothing has used recently.
+	 *
+	 * @param  int  $agelimit seconds an unused cache file is kept for
+	 * @return void
+	 */
 	function CacheUpdate($agelimit = 600) {
 		global $weathermap_lazycounter;
 
@@ -4477,6 +4760,13 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Build the tree of TEMPLATE relationships, for the editor.
+	 *
+	 * @param  array  $tree_list  the tree of TEMPLATE relationships, by reference
+	 * @param  string $startpoint template to start from
+	 * @return string JSON fragment describing that part of the tree
+	 */
 	function MakeTemplateTree(&$tree_list, $startpoint = 'DEFAULT') {
 		global $weathermap_lazycounter;
 
@@ -4500,6 +4790,12 @@ class WeatherMap extends WeatherMapBase {
 		return ($output);
 	}
 
+	/**
+	 * Write the run statistics out.
+	 *
+	 * @param  string $filename file to write, empty for standard output
+	 * @return void
+	 */
 	function DumpStats($filename = '') {
 		$report = "Feature Statistics:\n\n";
 
@@ -4512,6 +4808,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * Start recording which config keywords this run used.
+	 *
+	 * @return void
+	 */
 	function SeedCoverage() {
 		global $WM_config_keywords2;
 
@@ -4525,6 +4826,10 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param  string $file coverage file to read
+	 * @return void
+	 */
 	function LoadCoverage($file) {
 		$i = 0;
 
@@ -4563,6 +4868,10 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param  string $file coverage file to write
+	 * @return void
+	 */
 	function SaveCoverage($file) {
 		$i = 0;
 

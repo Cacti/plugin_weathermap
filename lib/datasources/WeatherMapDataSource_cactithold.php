@@ -144,7 +144,7 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 	 *
 	 * @param  string          $targetstring the TARGET as written in the map config
 	 * @param  WeatherMap      $map          map being drawn, by reference
-	 * @param  WeatherMapItem  $item         node or link the TARGET belongs to
+	 * @param  WeatherMapNode|WeatherMapLink $item node or link the TARGET belongs to
 	 * @return array           [in, out, data_time]; the values are null when
 	 *                         nothing could be read
 	 */

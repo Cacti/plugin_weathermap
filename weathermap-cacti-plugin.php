@@ -467,7 +467,9 @@ function weathermap_singleview($mapid) {
 }
 
 /**
- * @return bool true when the current user may see the management tab
+ * Print the management tab link.
+ *
+ * @return void
  */
 function weathermap_show_manage_tab() {
 	global $config;

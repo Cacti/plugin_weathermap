@@ -136,7 +136,7 @@ class WMPoint {
 	 * Not implemented.  Nothing in the plugin calls it yet.
 	 *
 	 * @param  WMLine $l
-	 * @return null
+	 * @return void
 	 */
 	public function distanceToLine($l) {
 		// TODO: Implement this
@@ -149,7 +149,7 @@ class WMPoint {
 	 * each endpoint and to the line itself.
 	 *
 	 * @param  WMLine $l
-	 * @return null
+	 * @return void
 	 */
 	public function distanceToLineSegment($l) {
 		// TODO: Implement this
