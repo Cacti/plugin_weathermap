@@ -93,4 +93,14 @@ describe('map_clean_title()', function () {
 	it('yields an empty title for a value that is only control characters', function () {
 		expect(map_clean_title("\n\t\r"))->toBe('');
 	});
+
+	/* A percent sign is left alone here.  It is ordinary in a map title, and
+	 * the feed and the messages that render the title now pass it as a printf
+	 * argument rather than building it into a format, so it needs no escaping
+	 * at this end.  Pinned so the two decisions cannot drift apart. */
+	it('passes a percent sign through untouched', function () {
+		expect(map_clean_title('Core 100% Uptime'))->toBe('Core 100% Uptime');
+		expect(map_clean_title('Link %s Status'))->toBe('Link %s Status');
+		expect(map_clean_title('Fifty %% Load'))->toBe('Fifty %% Load');
+	});
 });
