@@ -73,7 +73,10 @@ class HTML_ImageMap_Area {
 		}
 
 		if ($this->href != '') {
-			$h .= 'href="' . $this->href . '" ';
+			/* href carries INFOURL straight from the map config.  The poller writes this
+			 * markup to output/<hash>.html, which the plugin pages later include() as PHP,
+			 * so an unescaped value is executable and not merely injectable. */
+			$h .= 'href="' . html_escape($this->href) . '" ';
 		} else {
 			$h .= 'nohref ';
 		}

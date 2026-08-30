@@ -698,7 +698,7 @@ function weathermap_tree_item_render($leaf) {
 			<td>
 				<table width='100%' cellpadding='0' cellspacing='0'>
 					<tr>
-						<td class='textHeader' nowrap><?php print $maptitle; ?></td>
+						<td class='textHeader' nowrap><?php print html_escape($maptitle); ?></td>
 					</tr>
 				</table>
 			</td>
