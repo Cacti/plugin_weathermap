@@ -244,8 +244,12 @@ switch (get_request_var('action')) {
 				$guid     = $map['filehash'];
 
 				if ($maptitle == '') {
-					$maptitle = __esc('Map for config file: %s', $map['configfile']);
+					$maptitle = __('Map for config file: %s', $map['configfile']);
 				}
+
+				/* The title comes from the map config and is written into the feed's
+				 * XML twice below, so escape it once here rather than at each use. */
+				$maptitle = html_escape($maptitle);
 
 				print '<item>';
 

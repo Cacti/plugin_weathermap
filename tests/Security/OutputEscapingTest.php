@@ -92,3 +92,35 @@ describe('output escaping in weathermap', function () {
 		);
 	});
 });
+
+describe('titles interpolated into messages', function () {
+	/* map_clean_title() only strips control characters, so an HTML payload in a
+	 * map title survives into weathermap_maps.titlecache and is then reflected
+	 * by the duplicate-map messages.  Those use __esc() rather than __(). */
+	it('escapes the duplicate map messages', function () {
+		$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin-mgmt.php');
+
+		expect(substr_count($source, "__esc('The new Map with the name %s"))->toBe(3);
+		expect($source)->not->toContain("__('The new Map with the name %s");
+	});
+
+	it('escapes the map title before it reaches the RSS feed', function () {
+		$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin.php');
+
+		expect($source)->toContain('$maptitle = html_escape($maptitle);');
+	});
+
+	it('leaves no unescaped title interpolation in the duplicate path', function () {
+		$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin-mgmt.php');
+		$lines  = explode("\n", $source);
+		$bare   = [];
+
+		foreach ($lines as $num => $line) {
+			if (preg_match("/__\\('[^']*%s[^']*',\\s*\\\$save\\[/", $line)) {
+				$bare[] = 'line ' . ($num + 1) . ': ' . trim($line);
+			}
+		}
+
+		expect($bare)->toBe([]);
+	});
+});

@@ -1728,7 +1728,7 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 				WHERE mapid = ?",
 				[$id]);
 
-			raise_message('new_map_' . $newid, __('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
+			raise_message('new_map_' . $newid, __esc('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
 
 			$confdir = __DIR__ . '/configs';
 
@@ -1743,10 +1743,10 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 
 					file_put_contents($newfile, $contents);
 				} else {
-					raise_message('copy_fail_' . $newid, __('The new Map with the name %s was unable to create the config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
+					raise_message('copy_fail_' . $newid, __esc('The new Map with the name %s was unable to create the config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
 				}
 			} else {
-				raise_message('missing_fail_' . $newid, __('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
+				raise_message('missing_fail_' . $newid, __esc('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
 			}
 
 			weathermap_run_maps(__DIR__, true, [$newid]);
