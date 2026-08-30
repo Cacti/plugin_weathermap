@@ -180,7 +180,8 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 	/**
 	 * @param string $name   area name, such as NODE:mynode or LINK:mylink:0
 	 * @param string $href   link target for the area; empty renders nohref
-	 * @param array  $coords one entry per point, each [x, y]
+	 * @param array  $coords single element holding a flat ordinate list,
+	 *                       [[x, y, x, y, ...]]
 	 */
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
@@ -223,7 +224,8 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	/**
 	 * @param string $name   area name, such as NODE:mynode or LINK:mylink:0
 	 * @param string $href   link target for the area; empty renders nohref
-	 * @param array  $coords one entry per point, each [x, y]
+	 * @param array  $coords single element holding a flat ordinate list,
+	 *                       [[x, y, x, y, ...]]
 	 */
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
@@ -318,7 +320,8 @@ class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 	/**
 	 * @param string $name   area name, such as NODE:mynode or LINK:mylink:0
 	 * @param string $href   link target for the area; empty renders nohref
-	 * @param array  $coords one entry per point, each [x, y]
+	 * @param array  $coords single element holding a flat ordinate list,
+	 *                       [[x, y, x, y, ...]]
 	 */
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
@@ -380,15 +383,16 @@ class HTML_ImageMap {
 	// - can be limited to only match elements whose names match the filter
 	//   (e.g. pick a building, in a campus map)
 	/**
-	 * Find the topmost area covering a point.
+	 * Find the area covering a point.
 	 *
-	 * Areas are tested in reverse z order, so the one drawn last wins, which is
-	 * what the editor needs when nodes overlap.
+	 * The shapes are held in the order they were added and the first one that
+	 * covers the point wins, so where areas overlap the earliest added is
+	 * returned.
 	 *
 	 * @param  float  $x          horizontal position in image coordinates
 	 * @param  float  $y          vertical position in image coordinates
 	 * @param  string $namefilter only consider areas whose name matches this
-	 * @return string name of the area hit, or an empty string
+	 * @return string|false name of the area hit, or false when nothing is hit
 	 */
 	function hitTest($x, $y, $namefilter = '') {
 		$preg = '/' . $namefilter . '/';
@@ -413,7 +417,7 @@ class HTML_ImageMap {
 	 * @param  string $which property to set, such as href or extrahtml
 	 * @param  string $what  value to set it to
 	 * @param  string $where area name to match
-	 * @return void
+	 * @return int    how many areas were changed
 	 */
 	function setProp($which, $what, $where) {
 		$count = 0;
@@ -450,7 +454,7 @@ class HTML_ImageMap {
 	 * @param  string $which property to set, such as href or extrahtml
 	 * @param  string $what  value to set it to
 	 * @param  string $where name prefix to match
-	 * @return void
+	 * @return int    how many areas were changed
 	 */
 	function setPropSub($which, $what, $where) {
 		$count = 0;

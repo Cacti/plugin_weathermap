@@ -463,8 +463,8 @@ function screenshotify($input) {
 }
 
 /**
- * @param  array $arr RGB triple
- * @return bool  true when it is the "copy the other end's colour" sentinel
+ * @param  array $arr colour scale entry, keyed red1, green1 and blue1
+ * @return bool  true when it holds the "copy the other end's colour" sentinel
  */
 function is_copy($arr) {
 	if ($arr['red1'] == -2 && $arr['green1'] == -2 && $arr['blue1'] == -2) {
@@ -475,8 +475,8 @@ function is_copy($arr) {
 }
 
 /**
- * @param  array $arr RGB triple
- * @return bool  true when it is the "contrast with the background" sentinel
+ * @param  array $arr colour scale entry, keyed red1, green1 and blue1
+ * @return bool  true when it holds the "contrast with the background" sentinel
  */
 function is_contrast($arr) {
 	if ($arr['red1'] == -3 && $arr['green1'] == -3 && $arr['blue1'] == -3) {
@@ -487,8 +487,8 @@ function is_contrast($arr) {
 }
 
 /**
- * @param  array $arr RGB triple
- * @return bool  true when it is the "draw nothing" sentinel
+ * @param  array $arr colour scale entry, keyed red1, green1 and blue1
+ * @return bool  true when it holds the "draw nothing" sentinel
  */
 function is_none($arr) {
 	if ($arr['red1'] == -1 && $arr['green1'] == -1 && $arr['blue1'] == -1) {
@@ -843,11 +843,12 @@ function calculate_catmull_rom_span($startn, $startdistance, $numsteps, $x0, $y0
 }
 
 /**
- * Find the point a given distance along a series of points.
+ * Find the point a given distance along a link spine.
  *
- * @param  array $pointarray flat list of ordinates, x, y, x, y, by reference
- * @param  float $distance   distance along the line
- * @return array [x, y] at that distance
+ * @param  array $pointarray spine, one [x, y, cumulative distance] per point,
+ *                           by reference
+ * @param  float $distance   distance along the spine
+ * @return array [x, y, index of the spine point just before it]
  */
 function find_distance_coords(&$pointarray,$distance) {
 	// We find the nearest lower point for each distance,
@@ -865,11 +866,13 @@ function find_distance_coords(&$pointarray,$distance) {
 }
 
 /**
- * Find the point and heading a given distance along a series of points.
+ * Find the point and heading a given distance along a link spine.
  *
- * @param  array $pointarray flat list of ordinates, x, y, x, y, by reference
- * @param  float $distance   distance along the line
- * @return array [x, y, angle] at that distance
+ * @param  array $pointarray spine, one [x, y, cumulative distance] per point,
+ *                           by reference
+ * @param  float $distance   distance along the spine
+ * @return array [x, y, index of the spine point just before it, angle in
+ *               degrees anticlockwise from east]
  */
 function find_distance_coords_angle(&$pointarray,$distance) {
 	// This is the point we need
@@ -1634,9 +1637,12 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 /**
  * Drop points that sit close enough to the line between their neighbours.
  *
- * @param  array $input   the spine, by reference
+ * The spine is passed by reference but left alone; the shortened spine comes
+ * back as the return value.
+ *
+ * @param  array $input   spine, one [x, y, cumulative distance] per point
  * @param  float $epsilon how far off the line a point may sit and still go
- * @return void
+ * @return array the shortened spine
  */
 function simplify_spine(&$input, $epsilon = 1e-8) {
 	$output = [];
@@ -2168,11 +2174,14 @@ class Colour {
 //   anti-aliased maps from these, using Cairo instead of GD.
 
 /**
- * Log a string with its non-printing characters made visible.
+ * Append a line to metadump.txt, for tracing what a map drew.
  *
- * @param  string $string    text to log
- * @param  bool   $truncate  shorten a long string
- * @return string
+ * Disabled: the body sits behind an unconditional return, so nothing is
+ * written and null always comes back.  Remove that return to switch it on.
+ *
+ * @param  string $string   line to write
+ * @param  bool   $truncate start a new file rather than appending
+ * @return null
  */
 function metadump($string, $truncate = false) {
 	// comment this line to get a metafile for this map
@@ -2190,8 +2199,9 @@ function metadump($string, $truncate = false) {
 }
 
 /**
- * @param  Colour $col colour to describe, by reference
- * @return string a short description for the debug log
+ * @param  array  $col colour scale entry, keyed red1, green1 and blue1,
+ *                     by reference
+ * @return string the three components separated by spaces
  */
 function metacolour(&$col) {
 	return ($col['red1'] . ' ' . $col['green1'] . ' ' . $col['blue1']);
