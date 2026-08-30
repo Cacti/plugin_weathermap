@@ -255,12 +255,17 @@ switch (get_request_var('action')) {
 
 				printf('<title>%s</title>', $maptitle);
 
-				printf('<description>' . __('Network Weathermap named "%s"', $maptitle) . '</description>
+				/* The description is passed as an argument rather than built into the
+				 * format.  __() substitutes the title itself, so concatenating the result
+				 * into the format left printf() reading a percent sign in a map title as
+				 * a specifier: "Core 100% Uptime" aborted the feed with a ValueError. */
+				printf('<description>%s</description>
 					<link>%s</link>
 					<media:thumbnail url="%s"/>
 					<media:content url="%s"/>
 					<guid isPermaLink="false">%s%s</guid>
 					</item>',
+					__('Network Weathermap named "%s"', $maptitle, 'weathermap'),
 					$linkurl, $thumburl, $bigurl, $config['url_path'], $guid);
 
 				print PHP_EOL;

@@ -103,14 +103,26 @@ if (!function_exists('html_escape')) {
 }
 
 if (!function_exists('__')) {
-	function __($t, $d = '') {
+	/* Cacti's __() runs sprintf() whenever the text carries a format specifier,
+	 * and treats a trailing text domain as a surplus argument that sprintf
+	 * ignores.  The stub has to do the same, or a test cannot tell a working
+	 * format string from a broken one. */
+	function __($t, ...$args) {
+		if (!count($args)) {
+			return $t;
+		}
+
+		if (preg_match('/%%|%c|%[-0-9.]*[bdeEfFgGhHosuxX]/', $t)) {
+			return vsprintf($t, $args);
+		}
+
 		return $t;
 	}
 }
 
 if (!function_exists('__esc')) {
-	function __esc($t, $d = '') {
-		return htmlspecialchars($t, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+	function __esc($t, ...$args) {
+		return htmlspecialchars(__($t, ...$args), ENT_QUOTES);
 	}
 }
 
