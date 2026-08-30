@@ -24,6 +24,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * security: escape map titles and INFOURL values before they reach the page and the poller output
 * security: require the Manage Weathermap realm for check.php over the web; the CLI run is unchanged
 * A percent sign in a map title aborted the RSS feed, since the title was spliced into a printf format
+* Document every PHP function with parameter and return types
 
 --- 1.7 ---
 * issue#233: Rendering issues when the page includes several maps with dropdown
