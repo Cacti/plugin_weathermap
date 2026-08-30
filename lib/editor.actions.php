@@ -58,6 +58,12 @@ function newMap($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Start a new map, optionally copying an existing one as its base.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function newMapCopy($mapfile) {
 	$map = new WeatherMap;
 
@@ -79,6 +85,12 @@ function newMapCopy($mapfile) {
 	}
 }
 
+/**
+ * Emit the map as JavaScript for the editor to load.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function getMapJavaScript($mapfile) {
 	$map = new WeatherMap;
 
@@ -89,6 +101,12 @@ function getMapJavaScript($mapfile) {
 	print $map->asJS();
 }
 
+/**
+ * Emit the image map areas as JSON, so the editor knows what is clickable.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function getMapAreaData($mapfile) {
 	$map = new WeatherMap;
 
@@ -107,6 +125,15 @@ function getMapAreaData($mapfile) {
 	print $map->SortedImagemap('weathermap_imap');
 }
 
+/**
+ * Draw the map and send it back as a PNG for the editor canvas.
+ *
+ * @param  string $mapfile              config file the editor is working on
+ * @param  string $selected             item to highlight
+ * @param  bool   $use_overlay          draw the node bounding boxes
+ * @param  bool   $use_relative_overlay draw the relative positioning guides
+ * @return void
+ */
 function drawMap($mapfile, $selected, $use_overlay, $use_relative_overlay) {
 	header('Content-type: image/png');
 
@@ -132,6 +159,12 @@ function drawMap($mapfile, $selected, $use_overlay, $use_relative_overlay) {
 	$map->DrawMap('', '', 250, true, $use_overlay, $use_relative_overlay);
 }
 
+/**
+ * Show the raw config file in the editor.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function showConfig($mapfile) {
 	header('Content-type: text/plain');
 
@@ -145,6 +178,12 @@ function showConfig($mapfile) {
 	fclose($fd);
 }
 
+/**
+ * Send the raw config file back for download.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function fetchConfig($mapfile) {
 	$map = new WeatherMap;
 
@@ -178,6 +217,12 @@ function fetchConfig($mapfile) {
 	}
 }
 
+/**
+ * Save the TARGET lines typed for a node.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function setNodeConfig($mapfile) {
 	$map = new WeatherMap;
 
@@ -205,6 +250,12 @@ function setNodeConfig($mapfile) {
 	}
 }
 
+/**
+ * Save the TARGET lines typed for a link.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function setLinkConfig($mapfile) {
 	$map = new WeatherMap;
 
@@ -232,6 +283,12 @@ function setLinkConfig($mapfile) {
 	}
 }
 
+/**
+ * Save the node properties form.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function setNodeProperties($mapfile) {
 	$map = new WeatherMap;
 
@@ -317,6 +374,12 @@ function setNodeProperties($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Save the link properties form.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function setLinkProperties($mapfile) {
 	$map = new WeatherMap;
 
@@ -394,6 +457,12 @@ function setLinkProperties($mapfile) {
 	}
 }
 
+/**
+ * Save the map properties form.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function setMapProperties($mapfile) {
 	$map = new WeatherMap;
 
@@ -470,6 +539,12 @@ function setMapProperties($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Save the map style form.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function setMapStyle($mapfile) {
 	$map = new WeatherMap;
 
@@ -501,6 +576,12 @@ function setMapStyle($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Add a link between the two selected nodes.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function addLink($mapfile) {
 	$map = new WeatherMap;
 
@@ -542,6 +623,13 @@ function addLink($mapfile) {
 	}
 }
 
+/**
+ * Move the legend to the position just clicked.
+ *
+ * @param  string $mapfile         config file the editor is working on
+ * @param  int    $grid_snap_value grid size to round the position to; 0 for none
+ * @return void
+ */
 function placeLegend($mapfile, $grid_snap_value) {
 	$map = new WeatherMap;
 
@@ -560,6 +648,13 @@ function placeLegend($mapfile, $grid_snap_value) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Move the timestamp to the position just clicked.
+ *
+ * @param  string $mapfile         config file the editor is working on
+ * @param  int    $grid_snap_value grid size to round the position to; 0 for none
+ * @return void
+ */
 function placeStamp($mapfile, $grid_snap_value) {
 	$map = new WeatherMap;
 
@@ -576,6 +671,12 @@ function placeStamp($mapfile, $grid_snap_value) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Add or move a VIA point, bending the selected link.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function viaLink($mapfile) {
 	$map = new WeatherMap;
 
@@ -594,6 +695,13 @@ function viaLink($mapfile) {
 	}
 }
 
+/**
+ * Move a node to the position just clicked.
+ *
+ * @param  string $mapfile         config file the editor is working on
+ * @param  int    $grid_snap_value grid size to round the position to; 0 for none
+ * @return void
+ */
 function moveNode($mapfile, $grid_snap_value) {
 	$map = new WeatherMap;
 
@@ -700,6 +808,12 @@ function moveNode($mapfile, $grid_snap_value) {
 	}
 }
 
+/**
+ * Space out the links that share the selected link's endpoints.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function linkTidy($mapfile) {
 	$map = new WeatherMap;
 
@@ -719,6 +833,12 @@ function linkTidy($mapfile) {
 	}
 }
 
+/**
+ * Tidy the selected link again, keeping its existing offsets in mind.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function reTidy($mapfile) {
 	$map = new WeatherMap;
 
@@ -733,6 +853,12 @@ function reTidy($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Tidy every link on the map.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function reTidyAll($mapfile) {
 	$map = new WeatherMap;
 
@@ -747,6 +873,12 @@ function reTidyAll($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Drop the offsets tidying added to the selected link.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function unTidy($mapfile) {
 	$map = new WeatherMap;
 
@@ -761,6 +893,12 @@ function unTidy($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Delete the selected link.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function deleteLink($mapfile) {
 	$map = new WeatherMap;
 
@@ -778,6 +916,13 @@ function deleteLink($mapfile) {
 	}
 }
 
+/**
+ * Add a node at the position just clicked.
+ *
+ * @param  string $mapfile         config file the editor is working on
+ * @param  int    $grid_snap_value grid size to round the position to; 0 for none
+ * @return void
+ */
 function addNode($mapfile, $grid_snap_value) {
 	$map = new WeatherMap;
 
@@ -818,6 +963,12 @@ function addNode($mapfile, $grid_snap_value) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * Save the editor settings form.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function editorSettings($mapfile) {
 	global $use_overlay, $use_relative_overlay, $grid_snap_value;
 
@@ -833,6 +984,12 @@ function editorSettings($mapfile) {
 	$grid_snap_value      = (isset_request_var('editorsettings_gridsnap') ? intval(get_nfilter_request_var('editorsettings_gridsnap')) : 0);
 }
 
+/**
+ * Delete the selected node, along with any links that used it.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function deleteNode($mapfile) {
 	$map = new WeatherMap;
 
@@ -859,6 +1016,12 @@ function deleteNode($mapfile) {
 	}
 }
 
+/**
+ * Copy the selected node, offset slightly so both are visible.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function cloneNode($mapfile) {
 	$map = new WeatherMap;
 
@@ -899,6 +1062,12 @@ function cloneNode($mapfile) {
 	}
 }
 
+/**
+ * Render the font preview shown by the map style dialog.
+ *
+ * @param  string $mapfile config file the editor is working on
+ * @return void
+ */
 function displayFontSamples($mapfile) {
 	$map = new WeatherMap;
 
@@ -955,6 +1124,13 @@ function displayFontSamples($mapfile) {
 	imagedestroy($im2);
 }
 
+/**
+ * Point the map at its background and node images again after a copy, so a
+ * duplicated map does not keep referring to the original's files.
+ *
+ * @param  WeatherMap $map map being edited, by reference
+ * @return void
+ */
 function fixMapBackgroundAndImages(&$map) {
 	global $config;
 
@@ -982,6 +1158,16 @@ function fixMapBackgroundAndImages(&$map) {
 	}
 }
 
+/**
+ * Build the URL the editor uses to fetch a freshly drawn map image.
+ *
+ * The unique timestamp is what stops the browser serving the previous draw
+ * from cache after an edit.
+ *
+ * @param  string $mapname  config file the editor is working on
+ * @param  string $selected item to highlight, if any
+ * @return string
+ */
 function getImageURL($mapname, $selected) {
 	// now we'll just draw the full editor page, with our new knowledge
 	$imageurl = 'weathermap-cacti-plugin-editor.php?mapname=' . $mapname . '&action=draw';

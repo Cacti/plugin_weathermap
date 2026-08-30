@@ -911,12 +911,7 @@ function weathermap_mapselector($current_id = 0) {
 						</tr>
 					</table>
 					<script type='text/javascript'>
-					/**
- * Print the JavaScript that reloads the page when a filter changes.
- *
- * @return void
- */
-function applyFilter() {
+					function applyFilter() {
 						var strURL = urlPath + 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmap&header=false';
 						strURL += '&id=' + $('#id').val();
 
