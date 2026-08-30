@@ -58,33 +58,38 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 		$data_time = 0;
 		$itemname  = $item->name;
 
-		$matches = 0;
+		$matches  = [];
+		$datafile = '';
+		$dataname = '';
 
-		if (preg_match('/^wmdata:([^:]*):(.*)', trim($targetstring), $matches)) {
+		if (preg_match('/^wmdata:([^:]*):(.*)$/', trim($targetstring), $matches)) {
 			$datafile = trim($matches[1]);
 			$dataname = trim($matches[2]);
+		} else {
+			wm_warn("WMData ReadData: Couldn't parse target ($targetstring). [WMWMDATA04]");
 		}
 
-		if (file_exists($datafile)) {
-			$fd = fopen($targetstring, 'r');
+		if ($datafile !== '' && file_exists($datafile)) {
+			$fd = fopen($datafile, 'r');
 
-			if ($fd) {
+			if ($fd !== false) {
 				$found = false;
 
-				while (!feof($fd)) {
-					$buffer = fgets($fd, 4096);
+				while (($buffer = fgets($fd, 4096)) !== false) {
 					// strip out any Windows line-endings that have gotten in here
 					$buffer = str_replace("\r", '', $buffer);
 
-					$fields = explode("\t",$buffer);
+					$fields = explode("\t", rtrim($buffer, "\n"));
 
-					if ($fields[0] == $dataname) {
+					if (isset($fields[2]) && $fields[0] == $dataname) {
 						$data[IN]  = $fields[1];
 						$data[OUT] = $fields[2];
 
 						$found = true;
 					}
 				}
+
+				fclose($fd);
 
 				if ($found === true) {
 					$stats     = stat($datafile);
@@ -99,13 +104,7 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 			wm_warn("WMData ReadData: $datafile doesn't exist [WMWMDATA01]");
 		}
 
-		wm_debug(
-			sprintf('WMData ReadData: Returning (%s, %s, %s)',
-				string_or_null($data[IN]),
-				string_or_null($data[OUT]),
-				$data_time
-			)
-		);
+		wm_debug('WMData ReadData: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)");
 
 		return (
 			[
