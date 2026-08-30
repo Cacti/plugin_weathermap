@@ -16,7 +16,10 @@ if (!function_exists('return_bytes')) {
 		throw new RuntimeException('return_bytes() could not be located in check.php');
 	}
 
-	$extracted = tempnam(sys_get_temp_dir(), 'wmcheck') . '.php';
+	/* Write to the exact path tempnam() created and reserved.  Appending an
+	 * extension would point at a path nothing holds, and would leak the file
+	 * tempnam() did create. */
+	$extracted = tempnam(sys_get_temp_dir(), 'wmcheck');
 	file_put_contents($extracted, "<?php\n" . $fn[0] . "\n");
 	require_once $extracted;
 	unlink($extracted);
