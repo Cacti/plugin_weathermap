@@ -2110,7 +2110,7 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		} finally {
 			\WeathermapConfig\release($lock);
 		}
-		raise_message('new_map_' . $newid, __('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
+		raise_message('new_map_' . $newid, __esc('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
 		weathermap_run_maps(__DIR__, true, [$newid]);
 	}
 }
