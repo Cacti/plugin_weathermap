@@ -17,6 +17,10 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 --- develop ---
 
 * Run the plugin unit test suite in CI, using the toolchain from the base Cacti install
+* get_hint() discarded the default it was given, so unset SNMPv3 profile fields resolved to null
+* WMLine threw WeathermapInternalFail, a class defined nowhere, making the parallel-line guard an uncatchable fatal
+* WeatherMap wrote $keycache without declaring it, which PHP 8.2 deprecates and PHP 9 rejects
+* return_bytes() raised a warning on every suffixed ini value and returned a string for unsuffixed input
 
 --- 1.7 ---
 * issue#233: Rendering issues when the page includes several maps with dropdown
