@@ -42,6 +42,13 @@ declare(strict_types = 1);
  +-------------------------------------------------------------------------+
 */
 
+/* This report names the host, the kernel, the PHP build and the ini paths, so over
+ * the web it is gated behind the Manage Weathermap realm.  The CLI run is left open:
+ * the point of running it both ways is to compare the two PHP configurations. */
+if (PHP_SAPI !== 'cli') {
+	include_once(__DIR__ . '/../../include/auth.php');
+}
+
 // get some basics...
 $php_version = phpversion();
 $mem_allowed = ini_get('memory_limit');
