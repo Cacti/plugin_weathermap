@@ -81,4 +81,16 @@ describe('map_clean_title()', function () {
 	it('leaves an ordinary title alone', function () {
 		expect(map_clean_title('Core Network - Site A'))->toBe('Core Network - Site A');
 	});
+
+	/* The title reaches this through str_replace() on a request variable, so a
+	 * parameter sent as title[]= arrives as an array rather than a string. */
+	it('yields an empty title for non-string input', function () {
+		expect(map_clean_title(['a', 'b']))->toBe('');
+		expect(map_clean_title(null))->toBe('');
+		expect(map_clean_title(42))->toBe('');
+	});
+
+	it('yields an empty title for a value that is only control characters', function () {
+		expect(map_clean_title("\n\t\r"))->toBe('');
+	});
 });

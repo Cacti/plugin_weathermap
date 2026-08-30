@@ -1665,7 +1665,14 @@ function map_get_next_name($basename, $pattern = 'copy') {
 /* Map configs are line oriented, and a duplicated map has its title substituted into
  * the copied config file.  A title carrying a newline would append arbitrary directives
  * such as NODE or INFOURL to that config, so flatten anything that could end a line. */
-function map_clean_title(string $title) : string {
+function map_clean_title($title) : string {
+	/* The title arrives from a request variable by way of str_replace(), so an
+	 * array valued parameter such as title[]= would otherwise reach the string
+	 * type declaration here and raise a TypeError. */
+	if (!is_string($title)) {
+		return '';
+	}
+
 	return trim(preg_replace('/[\x00-\x1f\x7f]+/', ' ', $title) ?? $title);
 }
 
