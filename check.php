@@ -431,6 +431,12 @@ if ($environment == 'web') {
 	print '</body></html>';
 }
 
+/**
+ * Turn a php.ini size string such as "256M" into a byte count.
+ *
+ * @param  string $val ini value, optionally suffixed with K, M or G
+ * @return int    size in bytes; 0 for an empty value
+ */
 function return_bytes($val) {
 	$val = trim($val);
 

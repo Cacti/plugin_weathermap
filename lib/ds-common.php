@@ -44,6 +44,13 @@ declare(strict_types = 1);
 
 // Shared code for DSStats and RRD DS plugins
 //
+/**
+ * Record the values just read against the Cacti data source they came from.
+ *
+ * @param  WeatherMapItem $item          node or link that was read, by reference
+ * @param  int            $local_data_id Cacti local_data_id the values belong to
+ * @return void
+ */
 function UpdateCactiData(&$item, $local_data_id) {
 	$map = $item->owner;
 

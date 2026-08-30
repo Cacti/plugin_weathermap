@@ -312,6 +312,11 @@ print "Wrote new config to $outputfile" . PHP_EOL;
 
 print "$totaltargets targets, $candidates rrd-based targets, $converted were actually converted." . PHP_EOL;
 
+/**
+ * Print the script name and the plugin version.
+ *
+ * @return void
+ */
 function display_version() {
 	global $config;
 
@@ -324,6 +329,11 @@ function display_version() {
 	print 'Weathermap Cacti DSStats Conversion Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . WM_COPYRIGHT_YEARS . PHP_EOL;
 }
 
+/**
+ * Print the command line options this script accepts.
+ *
+ * @return void
+ */
 function display_help() {
 	display_version();
 

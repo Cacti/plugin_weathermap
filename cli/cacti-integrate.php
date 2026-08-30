@@ -433,6 +433,11 @@ $map->WriteConfig($outputmapfile);
 
 print 'Wrote config to ' . $outputmapfile . PHP_EOL;
 
+/**
+ * Print the script name and the plugin version.
+ *
+ * @return void
+ */
 function display_version() {
 	global $config;
 
@@ -445,6 +450,11 @@ function display_version() {
 	print 'Weathermap Cacti Integrate Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . WM_COPYRIGHT_YEARS . PHP_EOL;
 }
 
+/**
+ * Print the command line options this script accepts.
+ *
+ * @return void
+ */
 function display_help() {
 	display_version();
 

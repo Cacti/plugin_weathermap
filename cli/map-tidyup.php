@@ -139,6 +139,11 @@ $map->WriteConfig($outputfile);
 
 print 'Wrote new config to ' . $outputfile . PHP_EOL;
 
+/**
+ * Print the command line options this script accepts.
+ *
+ * @return void
+ */
 function display_help() {
 	display_version();
 
@@ -149,6 +154,11 @@ function display_help() {
 	print ' --help                     - Show this message' . PHP_EOL;
 }
 
+/**
+ * Print the script name and the plugin version.
+ *
+ * @return void
+ */
 function display_version() {
 	global $config;
 

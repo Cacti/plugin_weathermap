@@ -374,6 +374,12 @@ switch (get_request_var('action')) {
 		break;
 }
 
+/**
+ * Render the page showing one map on its own.
+ *
+ * @param  int  $mapid map to show
+ * @return void
+ */
 function weathermap_singleview($mapid) {
 	global $config;
 
@@ -460,6 +466,9 @@ function weathermap_singleview($mapid) {
 	}
 }
 
+/**
+ * @return bool true when the current user may see the management tab
+ */
 function weathermap_show_manage_tab() {
 	global $config;
 
@@ -468,6 +477,12 @@ function weathermap_show_manage_tab() {
 	}
 }
 
+/**
+ * Render the page of map thumbnails.
+ *
+ * @param  int  $limit_to_group group to restrict the list to; -1 for all
+ * @return void
+ */
 function weathermap_thumbview($limit_to_group = -1) {
 	global $config;
 
@@ -571,6 +586,15 @@ function weathermap_thumbview($limit_to_group = -1) {
 	}
 }
 
+/**
+ * Render the full size map page.
+ *
+ * @param  int  $cycle          non-zero to rotate through the maps
+ * @param  bool $firstonly      show only the first map the user may see
+ * @param  int  $limit_to_group group to restrict the list to; -1 for all
+ * @param  int  $fullscreen     non-zero to drop the surrounding Cacti chrome
+ * @return void
+ */
 function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group = -1, $fullscreen = 0) {
 	global $config;
 
@@ -719,6 +743,12 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 	}
 }
 
+/**
+ * Resolve a map's config file name or hash to its numeric id.
+ *
+ * @param  string $idname name, hash or id as it arrived in the request
+ * @return int     the map id, or 0 when nothing matched
+ */
 function weathermap_translate_id($idname) {
 	$map = db_fetch_cell_prepared('SELECT id
 		FROM weathermap_maps
@@ -730,6 +760,11 @@ function weathermap_translate_id($idname) {
 	return $map;
 }
 
+/**
+ * Print the plugin version footer.
+ *
+ * @return void
+ */
 function weathermap_versionbox() {
 	global $config, $showversionbox;
 
@@ -761,6 +796,15 @@ function weathermap_versionbox() {
 	}
 }
 
+/**
+ * Send a file to the browser a block at a time.
+ *
+ * Reading a large map image in one go would need the whole file in memory at
+ * once, which is what the plugin's memory_limit warnings are usually about.
+ *
+ * @param  string   $filename file to send
+ * @return int|bool bytes sent, or false when the file could not be opened
+ */
 function readfile_chunked($filename) {
 	$chunksize = 1 * (1024 * 1024); // how many bytes per chunk
 	$buffer    = '';
@@ -783,6 +827,12 @@ function readfile_chunked($filename) {
 	return $status;
 }
 
+/**
+ * Print the pull down listing the maps this user may see.
+ *
+ * @param  int  $current_id map to preselect
+ * @return void
+ */
 function weathermap_mapselector($current_id = 0) {
 	$show_selector = intval(read_config_option('weathermap_map_selector'));
 
@@ -861,7 +911,12 @@ function weathermap_mapselector($current_id = 0) {
 						</tr>
 					</table>
 					<script type='text/javascript'>
-					function applyFilter() {
+					/**
+ * Print the JavaScript that reloads the page when a filter changes.
+ *
+ * @return void
+ */
+function applyFilter() {
 						var strURL = urlPath + 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmap&header=false';
 						strURL += '&id=' + $('#id').val();
 
@@ -883,6 +938,9 @@ function weathermap_mapselector($current_id = 0) {
 	}
 }
 
+/**
+ * @return array tab name keyed to its label, for the tabs this user may see
+ */
 function weathermap_get_valid_tabs() {
 	$tabs = [];
 
@@ -906,6 +964,12 @@ function weathermap_get_valid_tabs() {
 	return $tabs;
 }
 
+/**
+ * Print the plugin's tab bar.
+ *
+ * @param  string $current_tab tab to mark as selected
+ * @return void
+ */
 function weathermap_tabs($current_tab) {
 	global $config;
 

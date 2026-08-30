@@ -48,6 +48,12 @@ declare(strict_types = 1);
  * but before any rendering or data reading is done.
  */
 class WeatherMapPreProcessorExample extends WeatherMapPreProcessor {
+	/**
+	 * Called before the map is drawn.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool       true when the processor did its work
+	 */
 	function run(&$map) {
 		$map->add_note('test','TEST!');
 

@@ -98,6 +98,9 @@ class WeatherMapNode extends WeatherMapItem {
 	var $aiconfillcolour;
 	var $aiconoutlinecolour;
 
+	/**
+	 * Start a node with the defaults a map config can then override.
+	 */
 	function __construct() {
 		$this->inherit_fieldlist = [
 			'boundingboxes'         => [],
@@ -161,12 +164,22 @@ class WeatherMapNode extends WeatherMapItem {
 		$this->image    = null;
 	}
 
+	/**
+	 * @return string the item type as map configs and image map areas name it
+	 */
 	function my_type() {
 		return 'NODE';
 	}
 
 	// make a mini-image, containing this node and nothing else
 	// figure out where the real NODE centre is, relative to the top-left corner.
+	/**
+	 * Build the node's own image, so its size is known before links are routed.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  WeatherMap       $map   map being drawn, by reference
+	 * @return void
+	 */
 	function pre_render($image, &$map) {
 		// don't bother drawing if there's no position - it's a template
 		if (is_null($this->x)) {
@@ -705,6 +718,11 @@ class WeatherMapNode extends WeatherMapItem {
 		$map->nodes[$this->name]->image = $node_im;
 	}
 
+	/**
+	 * @param  string $cachedir directory the rendered node images are kept in
+	 * @param  string $mapname  map the cache entry belongs to
+	 * @return void
+	 */
 	function update_cache($cachedir,$mapname) {
 		$cachename = $cachedir . '/node_' . md5($mapname . '/' . $this->name) . '.png';
 
@@ -713,6 +731,13 @@ class WeatherMapNode extends WeatherMapItem {
 	}
 
 	// draw the node, using the pre_render() output
+	/**
+	 * Stamp the node's pre-rendered image onto the map.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  WeatherMap       $map   map being drawn, by reference
+	 * @return void
+	 */
 	function NewDraw($image, &$map) {
 		// take the offset we figured out earlier, and just blit
 		// the image on. Who says "blit" anymore?
@@ -732,9 +757,18 @@ class WeatherMapNode extends WeatherMapItem {
 
 	// take the pre-rendered node and write it to a file so that
 	// the editor can get at it.
+	/**
+	 * @return void
+	 */
 	function WriteToCache() {
 	}
 
+	/**
+	 * Return the node to its default state and attach it to a map.
+	 *
+	 * @param  WeatherMap $newowner map this node now belongs to, by reference
+	 * @return void
+	 */
 	function Reset(&$newowner) {
 		$this->owner = $newowner;
 		$template    = $this->template;
@@ -764,6 +798,12 @@ class WeatherMapNode extends WeatherMapItem {
 		$this->id = $newowner->next_id++;
 	}
 
+	/**
+	 * Copy the settings of another node, as TEMPLATE does.
+	 *
+	 * @param  WeatherMapNode $source node to copy from, by reference
+	 * @return void
+	 */
 	function CopyFrom(&$source) {
 		wm_debug("Initialising NODE $this->name from $source->name");
 		// assert('is_object($source)');
@@ -775,6 +815,9 @@ class WeatherMapNode extends WeatherMapItem {
 		}
 	}
 
+	/**
+	 * @return string the node as a map config file writes it
+	 */
 	function WriteConfig() {
 		$output = '';
 
@@ -964,6 +1007,9 @@ class WeatherMapNode extends WeatherMapItem {
 		return ($output);
 	}
 
+	/**
+	 * @return string JavaScript the editor loads to describe this node
+	 */
 	function asJS() {
 		$js  = "\t\t\t";
 		$js .= 'Nodes[' . js_escape($this->name) . '] = {';
@@ -994,6 +1040,11 @@ class WeatherMapNode extends WeatherMapItem {
 		return $js;
 	}
 
+	/**
+	 * @param  bool   $complete false to leave out the fields the editor does
+	 *                          not need for a redraw
+	 * @return string JSON describing this node
+	 */
 	function asJSON($complete = true) {
 		$js  = "\t\t\t";
 		$js .= js_escape($this->name) . ': {';

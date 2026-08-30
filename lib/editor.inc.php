@@ -99,6 +99,11 @@ function display_graphs() {
 	print json_encode($return);
 }
 
+/**
+ * Print the data source picker used by the TARGET field.
+ *
+ * @return void
+ */
 function display_datasources() {
 	$sql_where  = '';
 	$sql_params = [];
@@ -159,6 +164,12 @@ function wm_editor_sanitize_uri($str) {
 }
 
 // much looser sanitise for general strings that shouldn't have HTML in them
+/**
+ * Strip control characters from a value headed for a map config file.
+ *
+ * @param  string $str
+ * @return string
+ */
 function wm_editor_sanitize_string($str) {
 	static $drop_char_match   = ['<', '>' ];
 	static $drop_char_replace = ['', ''];
@@ -166,6 +177,10 @@ function wm_editor_sanitize_string($str) {
 	return str_replace($drop_char_match, $drop_char_replace, html_escape($str));
 }
 
+/**
+ * @param  string $bw bandwidth as typed, optionally with a K, M, G or T suffix
+ * @return bool   true when the value is well formed
+ */
 function wm_editor_validate_bandwidth($bw) {
 	if (preg_match('/^(\d+\.?\d*[KMGT]?)$/', $bw)) {
 		return true;
@@ -174,6 +189,12 @@ function wm_editor_validate_bandwidth($bw) {
 	return false;
 }
 
+/**
+ * @param  string $input          value to check
+ * @param  array  $valid          the values that are allowed
+ * @param  bool   $case_sensitive compare exactly rather than case insensitively
+ * @return bool
+ */
 function wm_editor_validate_one_of($input,$valid = [],$case_sensitive = false) {
 	if (!$case_sensitive) {
 		$input = strtolower($input);
@@ -192,6 +213,13 @@ function wm_editor_validate_one_of($input,$valid = [],$case_sensitive = false) {
 	return false;
 }
 
+/**
+ * Reduce a requested editor action to one of the known ones.
+ *
+ * @param  string $action action as it arrived in the request
+ * @param  array  $valid  actions the editor accepts
+ * @return string the action, or an empty string when it is not recognised
+ */
 function wm_editor_sanitize_action($action, $valid = []) {
 	if ($action === '') {
 		return '';
@@ -205,10 +233,18 @@ function wm_editor_sanitize_action($action, $valid = []) {
 }
 
 // Labels for Nodes, Links and Scales shouldn't have spaces in
+/**
+ * @param  string $str proposed node or link name
+ * @return string the name with anything a config file could not hold removed
+ */
 function wm_editor_sanitize_name($str) {
 	return str_replace([' '], '', $str);
 }
 
+/**
+ * @param  string $str the editor's current selection
+ * @return string the selection, or an empty string when it is malformed
+ */
 function wm_editor_sanitize_selected($str) {
 	$res = urldecode($str);
 
@@ -219,6 +255,14 @@ function wm_editor_sanitize_selected($str) {
 	return wm_editor_sanitize_name($res);
 }
 
+/**
+ * Accept a filename only when it survives URI sanitising and carries one of
+ * the permitted extensions.
+ *
+ * @param  string $filename      filename as it arrived in the request
+ * @param  array  $allowed_exts  extensions to accept, without the dot
+ * @return string the filename, or an empty string when it is not acceptable
+ */
 function wm_editor_sanitize_file($filename,$allowed_exts = []) {
 	$filename = wm_editor_sanitize_uri($filename);
 
@@ -243,6 +287,15 @@ function wm_editor_sanitize_file($filename,$allowed_exts = []) {
 	return $filename;
 }
 
+/**
+ * Accept a map config filename only when it is a bare .conf name.
+ *
+ * Directory separators are rejected in both forms: a forward slash was
+ * CVE-2013-3739, and a backslash traverses on Windows hosts.
+ *
+ * @param  string $filename filename as it arrived in the request
+ * @return string the filename, or an empty string when it is not acceptable
+ */
 function wm_editor_sanitize_conffile($filename) {
 	$filename = wm_editor_sanitize_uri($filename);
 
@@ -264,6 +317,11 @@ function wm_editor_sanitize_conffile($filename) {
 	return $filename;
 }
 
+/**
+ * Print the editor's front page, listing the config files it can open.
+ *
+ * @return void
+ */
 function show_editor_startpage() {
 	global $mapdir, $config_loaded, $configerror;
 
@@ -403,6 +461,11 @@ function show_editor_startpage() {
 	print '</body></html>';
 }
 
+/**
+ * @param  int $coord    coordinate to round
+ * @param  int $gridsnap  grid size; 0 leaves the coordinate alone
+ * @return int the coordinate moved to the nearest grid line
+ */
 function snap($coord, $gridsnap = 0) {
 	if ($gridsnap == 0) {
 		return ($coord);
@@ -413,6 +476,15 @@ function snap($coord, $gridsnap = 0) {
 	}
 }
 
+/**
+ * Pull named values out of a request array, checking each against a declared
+ * type before it is used.
+ *
+ * @param  array  $array      the request values
+ * @param  array  $paramarray one [name, type, req|opt] entry per value wanted
+ * @param  string $prefix     prefix to strip from the names
+ * @return array  the accepted values, empty when a required one failed
+ */
 function extract_with_validation($array, $paramarray, $prefix = '') {
 	$all_present = true;
 	$candidates  = [];
@@ -506,6 +578,10 @@ function extract_with_validation($array, $paramarray, $prefix = '') {
 	return [$all_present, $candidates];
 }
 
+/**
+ * @param  string $imagedir directory to list
+ * @return array  the image files in it, for the node icon picker
+ */
 function get_imagelist($imagedir) {
 	global $config;
 
@@ -535,6 +611,13 @@ function get_imagelist($imagedir) {
 	return ($imagelist);
 }
 
+/**
+ * Push values from a template onto the items that inherit from it.
+ *
+ * @param  WeatherMap $map          map being edited, by reference
+ * @param  array      $inheritables fields to carry down, by reference
+ * @return void
+ */
 function handle_inheritance(&$map, &$inheritables) {
 	foreach ($inheritables as $inheritable) {
 		$fieldname  = $inheritable[1];
@@ -580,6 +663,12 @@ function handle_inheritance(&$map, &$inheritables) {
 	}
 }
 
+/**
+ * @param  WeatherMap $map     map being edited, by reference
+ * @param  string     $name    form field name
+ * @param  string     $current font to preselect
+ * @return string     the font pull down
+ */
 function get_fontlist(&$map,$name,$current) {
 	$output = '<select class="fontcombo" name="' . html_escape($name) . '">';
 
@@ -600,6 +689,13 @@ function get_fontlist(&$map,$name,$current) {
 	return ($output);
 }
 
+/**
+ * @param  float $a_min
+ * @param  float $a_max
+ * @param  float $b_min
+ * @param  float $b_max
+ * @return bool  true when the two ranges share any span
+ */
 function range_overlaps($a_min, $a_max, $b_min, $b_max) {
 	if ($a_min > $b_max) {
 		return false;
@@ -612,6 +708,13 @@ function range_overlaps($a_min, $a_max, $b_min, $b_max) {
 	return true;
 }
 
+/**
+ * @param  float $a_min
+ * @param  float $a_max
+ * @param  float $b_min
+ * @param  float $b_max
+ * @return array the [min, max] the two ranges have in common
+ */
 function common_range($a_min,$a_max, $b_min, $b_max) {
 	$min_overlap = max($a_min, $b_min);
 	$max_overlap = min($a_max, $b_max);
@@ -634,6 +737,14 @@ function distance($ax, $ay, $bx, $by) {
 	return sqrt($dx * $dx + $dy * $dy);
 }
 
+/**
+ * Space out the links between the same pair of nodes so they stop overlapping.
+ *
+ * @param  WeatherMap $map           map being edited, by reference
+ * @param  array      $targets       link names to tidy
+ * @param  bool       $ignore_tidied tidy links that were already tidied once
+ * @return void
+ */
 function tidy_links(&$map, $targets, $ignore_tidied = false) {
 	// not very efficient, but it saves looking for special cases (a->b & b->a together)
 	$ntargets = count($targets);
@@ -812,6 +923,12 @@ function tidy_link(&$map,$target, $linknumber = 1, $linktotal = 1, $ignore_tidie
 	}
 }
 
+/**
+ * Drop the offsets tidy_links() added.
+ *
+ * @param  WeatherMap $map map being edited, by reference
+ * @return void
+ */
 function untidy_links(&$map) {
 	foreach ($map->links as $link) {
 		$link->a_offset = 'C';
@@ -819,6 +936,13 @@ function untidy_links(&$map) {
 	}
 }
 
+/**
+ * Tidy every link on the map at once.
+ *
+ * @param  WeatherMap $map           map being edited, by reference
+ * @param  bool       $ignore_tidied tidy links that were already tidied once
+ * @return void
+ */
 function retidy_links(&$map, $ignore_tidied = false) {
 	$routes = [];
 	$done   = [];
@@ -860,12 +984,19 @@ function retidy_links(&$map, $ignore_tidied = false) {
 	}
 }
 
+/**
+ * @param  string $str line to append to the editor's debug log
+ * @return void
+ */
 function editor_log($str) {
 	// $f = fopen('editor.log','a');
 	// fputs($f, $str);
 	// fclose($f);
 }
 
+/**
+ * @return string the editor's inline JavaScript
+ */
 function getEditorJs() {
 	?>
 	<script type='text/javascript'>

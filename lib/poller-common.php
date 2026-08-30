@@ -45,6 +45,12 @@ declare(strict_types = 1);
 // common code used by the poller, the manual-run from the Cacti UI, and from the command-line manual-run.
 // this is the easiest way to keep it all consistent!
 
+/**
+ * Write current memory use to the debug log.
+ *
+ * @param  string $note label identifying where in the run this was taken
+ * @return void
+ */
 function weathermap_memory_check($note = 'MEM') {
 	if (function_exists('memory_get_usage')) {
 		$mem_used    = nice_bandwidth(memory_get_usage());
@@ -54,6 +60,16 @@ function weathermap_memory_check($note = 'MEM') {
 	}
 }
 
+/**
+ * Match one field of a crontab expression.
+ *
+ * Only *, an exact value and the * / n step form are understood; lists and
+ * ranges such as 3,5-9 are not.
+ *
+ * @param  int    $value       the current value for this field
+ * @param  string $checkstring the field as written in the schedule
+ * @return bool
+ */
 function weathermap_cron_part($value, $checkstring) {
 	// XXX - this should really handle a few more crontab niceties like */5 or 3,5-9 but this will do for now
 	if ($checkstring == '*') {
@@ -75,6 +91,14 @@ function weathermap_cron_part($value, $checkstring) {
 	return (false);
 }
 
+/**
+ * Decide whether a map's schedule fires at a given moment.
+ *
+ * @param  int    $time   moment to test, as a UNIX timestamp
+ * @param  string $string schedule in crontab field order, minute hour day
+ *                        month weekday; an empty string or * always fires
+ * @return bool
+ */
 function weathermap_check_cron($time, $string) {
 	if ($string == '') {
 		return (true);
@@ -99,6 +123,11 @@ function weathermap_check_cron($time, $string) {
 	return ($matched);
 }
 
+/**
+ * Drop weathermap_maps rows whose config file has gone away.
+ *
+ * @return void
+ */
 function weathermap_repair_maps() {
 	global $config;
 
@@ -264,6 +293,15 @@ function weathermap_repair_maps() {
 	}
 }
 
+/**
+ * Draw every map that is due, writing its image and HTML into the output
+ * directory.
+ *
+ * @param  string $mydir plugin directory the map configs are read from
+ * @param  bool   $force draw maps even when their schedule says otherwise
+ * @param  array  $maps  map ids to limit the run to; empty means all of them
+ * @return void
+ */
 function weathermap_run_maps($mydir, $force = false, $maps = []) {
 	global $config;
 	global $weathermap_debugging;

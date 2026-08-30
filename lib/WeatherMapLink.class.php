@@ -130,6 +130,9 @@ class WeatherMapLink extends WeatherMapItem {
 
 	var $template;
 
+	/**
+	 * Start a link with the defaults a map config can then override.
+	 */
 	function __construct() {
 		$this->inherit_fieldlist =  [
 			'my_default'            => null,
@@ -189,6 +192,12 @@ class WeatherMapLink extends WeatherMapItem {
 		//  $this->targets = [];
 	}
 
+	/**
+	 * Return the link to its default state and attach it to a map.
+	 *
+	 * @param  WeatherMap $newowner map this link now belongs to, by reference
+	 * @return void
+	 */
 	function Reset(&$newowner) {
 		$this->owner = $newowner;
 
@@ -219,10 +228,19 @@ class WeatherMapLink extends WeatherMapItem {
 		$this->id = $newowner->next_id++;
 	}
 
+	/**
+	 * @return string the item type as map configs and image map areas name it
+	 */
 	function my_type() {
 		return 'LINK';
 	}
 
+	/**
+	 * Copy the settings of another link, as TEMPLATE does.
+	 *
+	 * @param  WeatherMapLink $source link to copy from, by reference
+	 * @return void
+	 */
 	function CopyFrom(&$source) {
 		wm_debug("Initialising LINK $this->name from $source->name");
 
@@ -376,6 +394,13 @@ class WeatherMapLink extends WeatherMapItem {
 		}
 	}
 
+	/**
+	 * Draw the link onto the map image.
+	 *
+	 * @param  resource|GdImage $image image being drawn on
+	 * @param  WeatherMap       $map   map being drawn, by reference
+	 * @return void
+	 */
 	function Draw($image, &$map) {
 		// Get the positions of the end-points
 		$x1 = $map->nodes[$this->a->name]->x;
@@ -602,6 +627,9 @@ class WeatherMapLink extends WeatherMapItem {
 		}
 	}
 
+	/**
+	 * @return string the link as a map config file writes it
+	 */
 	function WriteConfig() {
 		$output = '';
 
@@ -840,6 +868,9 @@ class WeatherMapLink extends WeatherMapItem {
 		return ($output);
 	}
 
+	/**
+	 * @return string JavaScript the editor loads to describe this link
+	 */
 	function asJS() {
 		$js  = "\t\t\t";
 		$js .= 'Links[' . js_escape($this->name) . '] = {';
@@ -891,6 +922,11 @@ class WeatherMapLink extends WeatherMapItem {
 		return $js;
 	}
 
+	/**
+	 * @param  bool   $complete false to leave out the fields the editor does
+	 *                          not need for a redraw
+	 * @return string JSON describing this link
+	 */
 	function asJSON($complete = true) {
 		$js  = '';
 		$js .= '' . js_escape($this->name) . ': {';

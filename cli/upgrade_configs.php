@@ -101,6 +101,11 @@ print 'About to repair maps' . PHP_EOL;
 weathermap_repair_maps();
 print 'Done repairing maps' . PHP_EOL;
 
+/**
+ * Print the command line options this script accepts.
+ *
+ * @return void
+ */
 function display_help() {
 	display_version();
 
@@ -108,6 +113,11 @@ function display_help() {
 	print ' --debug - Enable debugging output' . PHP_EOL;
 }
 
+/**
+ * Print the script name and the plugin version.
+ *
+ * @return void
+ */
 function display_version() {
 	global $config;
 

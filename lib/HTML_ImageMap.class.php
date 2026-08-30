@@ -58,6 +58,14 @@ class HTML_ImageMap_Area {
 	var $z;
 	var $extrahtml;
 
+	/**
+	 * Build the attributes every area tag carries.
+	 *
+	 * The result is written to the poller's HTML output, which the plugin pages
+	 * later include(), so the href is escaped here rather than at the far end.
+	 *
+	 * @return string id, class, href and any extra attributes
+	 */
 	function common_html() {
 		$h = '';
 
@@ -97,6 +105,9 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 	var $maxy;
 	var $npoints;
 
+	/**
+	 * @return string an <area> tag for this polygon
+	 */
 	function asHTML() {
 		foreach ($this->points as $point) {
 			$flatpoints[] = $point[0];
@@ -108,6 +119,9 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		return "\t\t\t<area " . $this->common_html() . "shape='poly' coords='" . $coordstring . "' />";
 	}
 
+	/**
+	 * @return string JSON describing this polygon for the editor
+	 */
 	function asJSON() {
 		$json = "{ 'shape':'poly', 'npoints':" .
 			$this->npoints . ", \"name\":'" .
@@ -131,6 +145,11 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		return ($json);
 	}
 
+	/**
+	 * @param  float $x horizontal position in image coordinates
+	 * @param  float $y vertical position in image coordinates
+	 * @return bool  true when the point falls inside this polygon
+	 */
 	function hitTest($x,$y) {
 		$c = 0;
 
@@ -158,6 +177,11 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		return ($c);
 	}
 
+	/**
+	 * @param string $name   area name, such as NODE:mynode or LINK:mylink:0
+	 * @param string $href   link target for the area; empty renders nohref
+	 * @param array  $coords one entry per point, each [x, y]
+	 */
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
 
@@ -196,6 +220,11 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	var $y1;
 	var $y2;
 
+	/**
+	 * @param string $name   area name, such as NODE:mynode or LINK:mylink:0
+	 * @param string $href   link target for the area; empty renders nohref
+	 * @param array  $coords one entry per point, each [x, y]
+	 */
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
 
@@ -225,16 +254,27 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 		$this->href = $href;
 	}
 
+	/**
+	 * @param  float $x horizontal position in image coordinates
+	 * @param  float $y vertical position in image coordinates
+	 * @return bool  true when the point falls inside this rectangle
+	 */
 	function hitTest($x, $y) {
 		return ($x > $this->x1 && $x < $this->x2 && $y > $this->y1 && $y < $this->y2);
 	}
 
+	/**
+	 * @return string an <area> tag for this rectangle
+	 */
 	function asHTML() {
 		$coordstring = join(',', [$this->x1, $this->y1, $this->x2, $this->y2]);
 
 		return "\t\t\t<area " . $this->common_html() . 'shape="rect" coords="' . $coordstring . '" />';
 	}
 
+	/**
+	 * @return string JSON describing this rectangle for the editor
+	 */
 	function asJSON() {
 		$json = "{ 'shape':'rect', ";
 
@@ -251,12 +291,20 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 	var $centx,$centy, $edgex, $edgey;
 
+	/**
+	 * @return string an <area> tag for this circle
+	 */
 	function asHTML() {
 		$coordstring = join(',', [$this->centx, $this->centy, $this->edgex, $this->edgey]);
 
 		return "\t\t\t<area " . $this->common_html() . " shape='circle' coords='" . $coordstring . "' />";
 	}
 
+	/**
+	 * @param  float $x horizontal position in image coordinates
+	 * @param  float $y vertical position in image coordinates
+	 * @return bool  true when the point falls inside this circle
+	 */
 	function hitTest($x,$y) {
 		$radius1 = ($this->edgey - $this->centy) * ($this->edgey - $this->centy)
 			+ ($this->edgex - $this->centx) * ($this->edgex - $this->centx);
@@ -267,6 +315,11 @@ class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 		return ($radius2 <= $radius1);
 	}
 
+	/**
+	 * @param string $name   area name, such as NODE:mynode or LINK:mylink:0
+	 * @param string $href   link target for the area; empty renders nohref
+	 * @param array  $coords one entry per point, each [x, y]
+	 */
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
 
@@ -285,11 +338,19 @@ class HTML_ImageMap {
 	var $nshapes;
 	var $name;
 
+	/**
+	 * @param string $name name of the map this image map belongs to
+	 */
 	function __construct($name = '') {
 		$this->Reset();
 		$this->name = $name;
 	}
 
+	/**
+	 * Drop every area, so the map can be built again from scratch.
+	 *
+	 * @return void
+	 */
 	function Reset() {
 		$this->shapes  = [];
 		$this->nshapes = 0;
@@ -297,6 +358,10 @@ class HTML_ImageMap {
 	}
 
 	// add an element to the map - takes an array with the info, in a similar way to HTML_QuickForm
+	/**
+	 * @param  HTML_ImageMap_Area $element area to add
+	 * @return void
+	 */
 	function addArea($element) {
 		if (is_object($element) && is_subclass_of($element, 'html_imagemap_area')) {
 			$elementObject = &$element;
@@ -314,6 +379,17 @@ class HTML_ImageMap {
 	// do a hit-test based on the current map
 	// - can be limited to only match elements whose names match the filter
 	//   (e.g. pick a building, in a campus map)
+	/**
+	 * Find the topmost area covering a point.
+	 *
+	 * Areas are tested in reverse z order, so the one drawn last wins, which is
+	 * what the editor needs when nodes overlap.
+	 *
+	 * @param  float  $x          horizontal position in image coordinates
+	 * @param  float  $y          vertical position in image coordinates
+	 * @param  string $namefilter only consider areas whose name matches this
+	 * @return string name of the area hit, or an empty string
+	 */
 	function hitTest($x, $y, $namefilter = '') {
 		$preg = '/' . $namefilter . '/';
 
@@ -331,6 +407,14 @@ class HTML_ImageMap {
 	// update a property on all elements in the map that match a name
 	// (use it for retro-actively adding in link information to a pre-built geometry before generating HTML)
 	// returns the number of elements that were matched/changed
+	/**
+	 * Set a property on every area with a given name.
+	 *
+	 * @param  string $which property to set, such as href or extrahtml
+	 * @param  string $what  value to set it to
+	 * @param  string $where area name to match
+	 * @return void
+	 */
 	function setProp($which, $what, $where) {
 		$count = 0;
 
@@ -360,6 +444,14 @@ class HTML_ImageMap {
 	// update a property on all elements in the map that match a name as a substring
 	// (use it for retro-actively adding in link information to a pre-built geometry before generating HTML)
 	// returns the number of elements that were matched/changed
+	/**
+	 * Set a property on every area whose name starts with a given prefix.
+	 *
+	 * @param  string $which property to set, such as href or extrahtml
+	 * @param  string $what  value to set it to
+	 * @param  string $where name prefix to match
+	 * @return void
+	 */
 	function setPropSub($which, $what, $where) {
 		$count = 0;
 
@@ -384,6 +476,9 @@ class HTML_ImageMap {
 	}
 
 	// Return the imagemap as an HTML client-side imagemap for inclusion in a page
+	/**
+	 * @return string the whole <map> element
+	 */
 	function asHTML() {
 		$html = '<map';
 
@@ -403,6 +498,11 @@ class HTML_ImageMap {
 		return $html;
 	}
 
+	/**
+	 * @param  string $namefilter    only include areas whose name matches this
+	 * @param  bool   $reverseorder  emit the areas back to front
+	 * @return string JSON describing the selected areas
+	 */
 	function subJSON($namefilter = '',$reverseorder = false) {
 		$json = '';
 
@@ -428,6 +528,12 @@ class HTML_ImageMap {
 	// (suppose you want some partof your UI to have precedence over another part
 	//  - the imagemap is checked from top-to-bottom in the HTML)
 	// - skipnolinks -> in normal HTML output, we don't need areas for things with no href
+	/**
+	 * @param  string $namefilter    only include areas whose name matches this
+	 * @param  bool   $reverseorder  emit the areas back to front
+	 * @param  bool   $skipnolinks   leave out areas that have no href
+	 * @return string <area> tags for the selected areas
+	 */
 	function subHTML($namefilter = '',$reverseorder = false, $skipnolinks = false) {
 		$html = '';
 		$preg = '/' . $namefilter . '/';

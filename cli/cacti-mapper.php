@@ -370,6 +370,10 @@ fclose($fd);
 
 // /////////////////////////////////////////////////////////////
 
+/**
+ * @param  string $_ip dotted quad IPv4 address
+ * @return int     the address as a 32 bit integer
+ */
 function ip_to_int($_ip) {
 	if (preg_match('/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/', $_ip, $matches)) {
 		$_output = 0;
@@ -387,6 +391,10 @@ function ip_to_int($_ip) {
 	}
 }
 
+/**
+ * @param  int    $_int 32 bit integer form of an IPv4 address
+ * @return string the address as a dotted quad
+ */
 function int_to_ip($_int) {
 	$tmp = $_int;
 
@@ -400,6 +408,11 @@ function int_to_ip($_int) {
 	return ($_output);
 }
 
+/**
+ * @param  string $_ip   dotted quad IPv4 address
+ * @param  string $_mask dotted quad netmask
+ * @return string network address the two describe, as a dotted quad
+ */
 function get_network($_ip, $_mask) {
 	$_int1    = ip_to_int($_ip);
 	$_mask1   = ip_to_int($_mask);
@@ -408,6 +421,10 @@ function get_network($_ip, $_mask) {
 	return (int_to_ip($_network));
 }
 
+/**
+ * @param  string $mask dotted quad netmask
+ * @return int    the equivalent CIDR prefix length
+ */
 function get_cidr($mask) {
 	$lookup = [
 		'255.255.255.255' => '32',

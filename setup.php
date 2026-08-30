@@ -46,6 +46,11 @@ if (!defined('WM_COPYRIGHT_YEARS')) {
 	define('WM_COPYRIGHT_YEARS', '2008-2026');
 }
 
+/**
+ * Register the plugin's hooks and create its tables.
+ *
+ * @return void
+ */
 function plugin_weathermap_install() {
 	api_plugin_register_hook('weathermap', 'config_arrays',   'weathermap_config_arrays',   'setup.php');
 	api_plugin_register_hook('weathermap', 'config_settings', 'weathermap_config_settings', 'setup.php');
@@ -68,6 +73,11 @@ function plugin_weathermap_install() {
 	weathermap_setup_table();
 }
 
+/**
+ * Remove what install() created.
+ *
+ * @return void
+ */
 function plugin_weathermap_uninstall() {
 	set_config_option('weathermap_version', '');
 
@@ -78,6 +88,9 @@ function plugin_weathermap_uninstall() {
 	db_execute('DROP TABLE IF EXISTS weathermap_settings');
 }
 
+/**
+ * @return array the plugin metadata Cacti reads out of INFO
+ */
 function plugin_weathermap_version() {
 	global $config;
 
@@ -86,6 +99,9 @@ function plugin_weathermap_version() {
 	return $info['info'];
 }
 
+/**
+ * @return string the version alone, for comparisons
+ */
 function plugin_weathermap_numeric_version() {
 	static $current;
 
@@ -96,12 +112,20 @@ function plugin_weathermap_numeric_version() {
 	return $current['version'];
 }
 
+/**
+ * @return bool true when the plugin's configuration is usable
+ */
 function plugin_weathermap_check_config() {
 	plugin_weathermap_upgrade();
 
 	return true;
 }
 
+/**
+ * Bring an older install's tables and settings up to this version.
+ *
+ * @return bool
+ */
 function plugin_weathermap_upgrade() {
 	global $config;
 
@@ -158,6 +182,11 @@ function plugin_weathermap_upgrade() {
 	return false;
 }
 
+/**
+ * Hook run as the poller starts, used to time the run.
+ *
+ * @return void
+ */
 function weathermap_poller_top() {
 	global $weathermap_poller_start_time;
 
@@ -167,6 +196,10 @@ function weathermap_poller_top() {
 	$weathermap_poller_start_time = $n - ($n % 60);
 }
 
+/**
+ * @param  string $t title Cacti proposes
+ * @return string the title to use instead on the plugin's pages
+ */
 function weathermap_page_title($t) {
 	if (preg_match('/plugins\/weathermap\//', $_SERVER['REQUEST_URI'], $matches)) {
 		if (preg_match('/plugins\/weathermap\/weathermap-cacti-plugin.php\?action=viewmap&id=([^&]+)/', $_SERVER['REQUEST_URI'], $matches)) {
@@ -189,6 +222,10 @@ function weathermap_page_title($t) {
 	return ($t);
 }
 
+/**
+ * @param  int|array $refresh refresh interval Cacti proposes
+ * @return int|array the interval to use on the plugin's pages
+ */
 function weathermap_top_graph_refresh($refresh) {
 	if (basename($_SERVER['PHP_SELF']) != 'weathermap-cacti-plugin.php') {
 		return $refresh;
@@ -206,6 +243,11 @@ function weathermap_top_graph_refresh($refresh) {
 	return ($refresh);
 }
 
+/**
+ * Add the plugin's section to Cacti's settings page.
+ *
+ * @return void
+ */
 function weathermap_config_settings() {
 	global $tabs, $settings;
 
@@ -372,6 +414,11 @@ function weathermap_config_settings() {
 	}
 }
 
+/**
+ * Create or update the plugin's database tables.
+ *
+ * @return void
+ */
 function weathermap_setup_table() {
 	global $config, $database_default;
 
@@ -611,6 +658,11 @@ function weathermap_setup_table() {
 	}
 }
 
+/**
+ * Note whether Boost is on, since it changes where poller values are read from.
+ *
+ * @return void
+ */
 function weathermap_check_set_boost() {
 	$boost = read_config_option('boost_rrd_update_enable') == 'on' ? true : false;
 
@@ -633,6 +685,11 @@ function weathermap_check_set_boost() {
 	}
 }
 
+/**
+ * Register the plugin's realms, menu entries and settings arrays.
+ *
+ * @return void
+ */
 function weathermap_config_arrays() {
 	global $menu;
 	global $tree_item_types, $tree_item_handlers;
@@ -671,6 +728,12 @@ function weathermap_config_arrays() {
 	}
 }
 
+/**
+ * Draw a map that has been placed on a Cacti tree.
+ *
+ * @param  array $leaf tree leaf being rendered
+ * @return void
+ */
 function weathermap_tree_item_render($leaf) {
 	$outdir  = __DIR__ . '/output/';
 	$confdir = __DIR__ . '/configs/';
@@ -716,6 +779,10 @@ function weathermap_tree_item_render($leaf) {
 }
 
 // calculate the name that cacti will use for this item in the tree views
+/**
+ * @param  int    $item_id tree item id
+ * @return string label shown for the item on the tree
+ */
 function weathermap_tree_item_name($item_id) {
 	$description = db_fetch_cell_prepared('SELECT titlecache
 		FROM weathermap_maps
@@ -735,6 +802,12 @@ function weathermap_tree_item_name($item_id) {
 }
 
 // the edit form, for when you add or edit a map in a graph tree
+/**
+ * Add the map picker to the tree item edit form.
+ *
+ * @param  array $tree_item tree item being edited
+ * @return void
+ */
 function weathermap_tree_item_edit($tree_item) {
 	form_alternate_row();
 
@@ -760,6 +833,9 @@ function weathermap_tree_item_edit($tree_item) {
 	print '</td></tr>';
 }
 
+/**
+ * @return bool true when the current user may see the plugin's tab
+ */
 function weathermap_show_tab() {
 	global $config;
 
@@ -784,6 +860,10 @@ function weathermap_show_tab() {
 	weathermap_setup_table();
 }
 
+/**
+ * @param  array $nav Cacti's breadcrumb map
+ * @return array the map with the plugin's own pages added
+ */
 function weathermap_draw_navigation_text($nav) {
 	$nav['weathermap-cacti-plugin.php:'] = [
 		'title'   => __('Weathermap', 'weathermap'),
@@ -1047,6 +1127,13 @@ function weathermap_draw_navigation_text($nav) {
 	return $nav;
 }
 
+/**
+ * Capture the values the poller just collected, so maps can be drawn from
+ * them without going back to the RRD files.
+ *
+ * @param  array $rrd_update_array poller results, by reference
+ * @return array the array unchanged
+ */
 function weathermap_poller_output(&$rrd_update_array) {
 	global $config;
 
@@ -1188,6 +1275,11 @@ function weathermap_poller_output(&$rrd_update_array) {
 	return $rrd_update_array;
 }
 
+/**
+ * Hook run as the poller finishes; draws every map that is due.
+ *
+ * @return void
+ */
 function weathermap_poller_bottom() {
 	global $config;
 	global $weathermap_debugging;
@@ -1245,6 +1337,9 @@ function weathermap_poller_bottom() {
 	}
 }
 
+/**
+ * @return void
+ */
 function weathermap_footer_links() {
 	$weathermap_version = plugin_weathermap_numeric_version();
 

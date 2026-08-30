@@ -50,6 +50,12 @@ declare(strict_types = 1);
  *    SET post_test_enable 1
  */
 class WeatherMapPostProcessorExample extends WeatherMapPostProcessor {
+	/**
+	 * Called after the map is drawn.
+	 *
+	 * @param  WeatherMap $map map being drawn, by reference
+	 * @return bool       true when the processor did its work
+	 */
 	function run(&$map) {
 		$enable = $map->get_hint('post_test_enable');
 
