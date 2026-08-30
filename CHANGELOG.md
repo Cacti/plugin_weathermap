@@ -21,6 +21,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * WMLine threw WeathermapInternalFail, a class defined nowhere, making the parallel-line guard an uncatchable fatal
 * WeatherMap wrote $keycache without declaring it, which PHP 8.2 deprecates and PHP 9 rejects
 * return_bytes() raised a warning on every suffixed ini value and returned a string for unsuffixed input
+* security: escape map titles and INFOURL values before they reach the page and the poller output
+* security: require the Manage Weathermap realm for check.php over the web; the CLI run is unchanged
+* A percent sign in a map title aborted the RSS feed, since the title was spliced into a printf format
 
 --- 1.7 ---
 * issue#233: Rendering issues when the page includes several maps with dropdown
