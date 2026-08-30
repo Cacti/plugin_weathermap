@@ -62,7 +62,7 @@ function plugin_weathermap_install() {
 	api_plugin_register_hook('weathermap', 'poller_bottom', 'weathermap_poller_bottom', 'setup.php');
 
 	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin.php', 'View Weathermaps', 1);
-	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php,check.php', 'Manage Weathermap', 1);
+	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php', 'Manage Weathermap', 1);
 	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-editor.php', 'Edit Weathermaps', 1);
 
 	weathermap_setup_table();
@@ -133,13 +133,6 @@ function plugin_weathermap_upgrade() {
 		db_execute_prepared('UPDATE plugin_realms
 			SET file = ? WHERE file = ?',
 			['weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php', 'weathermap-cacti-plugin-mgmt.php']);
-
-		/* check.php reports host and PHP build details, so it moves behind the same
-		 * realm.  Runs after the line above, so a realm still holding the single-file
-		 * value is widened in two steps. */
-		db_execute_prepared('UPDATE plugin_realms
-			SET file = ? WHERE file = ?',
-			['weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php,check.php', 'weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php']);
 
 		// update the plugin information
 		$info = plugin_weathermap_version();
