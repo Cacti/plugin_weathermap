@@ -32,6 +32,40 @@ on:
       - develop
 
 jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.2', '8.3', '8.4']
+
+    name: PHP ${{ matrix.php }} Unit Tests
+
+    steps:
+    - name: Checkout Weathermap Plugin
+      uses: actions/checkout@v7
+
+    - name: Install PHP ${{ matrix.php }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: gd, json, mbstring
+        coverage: xdebug
+        ini-values: "date.timezone=America/New_York"
+
+    - name: Install Composer Dependencies
+      run: composer install --prefer-dist --no-progress --no-interaction
+
+    - name: Validate composer.json
+      run: composer validate --strict --no-check-publish
+
+    - name: Lint
+      run: composer run-script lint
+
+    - name: Run Unit Tests
+      run: composer run-script test
+
   integration-test:
     runs-on: ${{ matrix.os }}
     

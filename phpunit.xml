@@ -2,14 +2,26 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
-         colors="true">
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         beStrictAboutOutputDuringTests="true"
+         failOnRisky="true"
+         failOnWarning="true">
     <testsuites>
         <testsuite name="Tests">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
-    <php>
-        <!-- Pest v1 / Collision are not PHP 8.4-clean; suppress E_DEPRECATED to allow test run -->
-        <ini name="error_reporting" value="24575"/>
-    </php>
+    <source>
+        <include>
+            <directory suffix=".php">lib</directory>
+            <file>setup.php</file>
+        </include>
+        <exclude>
+            <directory>lib/pre</directory>
+            <directory>lib/post</directory>
+            <file>lib/index.php</file>
+            <file>lib/datasources/index.php</file>
+        </exclude>
+    </source>
 </phpunit>

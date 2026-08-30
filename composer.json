@@ -2,17 +2,35 @@
     "name": "cacti/plugin_weathermap",
     "description": "plugin_weathermap plugin for Cacti",
     "license": "GPL-2.0-or-later",
+    "require": {
+        "php": "^8.1",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-pcre": "*"
+    },
     "require-dev": {
-        "pestphp/pest": "^1.23"
+        "friendsofphp/php-cs-fixer": "^3.86",
+        "overtrue/phplint": "^9.6",
+        "pestphp/pest": "^2",
+        "phpstan/phpstan": "2.2.8",
+        "rector/rector": "^2.1.2"
     },
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true
-        }
+        },
+        "sort-packages": true
     },
     "autoload-dev": {
         "files": [
             "tests/bootstrap.php"
         ]
+    },
+    "scripts": {
+        "lint": "phplint --no-cache --exclude=vendor",
+        "phpstan": "phpstan analyse",
+        "php-cs-fixer": "php-cs-fixer fix --dry-run --diff",
+        "test": "pest --display-warnings",
+        "coverage": "pest --coverage"
     }
 }

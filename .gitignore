@@ -1,3 +1,11 @@
 configs/**
 output/**
-.omc/
+
+# Composer pulls these in; they are never committed.
+/vendor/
+
+# Tooling caches and generated reports
+.phpunit.cache/
+.phpunit.result.cache
+.php-cs-fixer.cache
+/coverage/
