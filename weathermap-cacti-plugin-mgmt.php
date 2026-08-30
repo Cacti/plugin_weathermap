@@ -1958,10 +1958,27 @@ function map_get_next_name($basename, $pattern = 'copy') {
 	return $file . '.conf';
 }
 
-/* Map configs are line oriented, and a duplicated map has its title substituted into
- * the copied config file.  A title carrying a newline would append arbitrary directives
- * such as NODE or INFOURL to that config, so flatten anything that could end a line. */
-function map_clean_title(string $title): string {
+/**
+ * Flattens a map title so it cannot inject map-config directives.
+ *
+ * Map configs are line oriented, and a duplicated map has its title substituted
+ * into the copied config file's TITLE line.  A title carrying a newline would
+ * otherwise append arbitrary directives (such as NODE or INFOURL) to that
+ * config, so every control character is collapsed to a space and the result is
+ * trimmed.  A non-string value (for example an array from a `title[]=` request
+ * variable) yields an empty string rather than a TypeError.
+ *
+ * @param mixed $title The raw title, from a request variable or the stored map.
+ * @return string      The single-line title, safe to write into a config file.
+ */
+function map_clean_title($title): string {
+	/* The title arrives from a request variable by way of str_replace(), so an
+	 * array valued parameter such as title[]= would otherwise reach the string
+	 * type declaration here and raise a TypeError. */
+	if (!is_string($title)) {
+		return '';
+	}
+
 	return trim(preg_replace('/[\x00-\x1f\x7f]+/', ' ', $title) ?? $title);
 }
 
