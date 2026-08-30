@@ -76,14 +76,62 @@ function wm_unstage_check_page($page) {
 }
 
 /**
- * Locate a CGI binary, so the guard's non-CLI branch can be exercised.
+ * Serve a staged tree with PHP's built-in server and fetch one path from it.
  *
- * @return string|null
+ * The guard only runs when PHP_SAPI is not cli.  The built-in server reports
+ * cli-server, so it exercises the guard using the PHP already under test, with
+ * nothing to install and no dependence on a distribution shipping a CGI binary
+ * for the version in the matrix.
+ *
+ * @param  string $page path returned by wm_stage_check_page()
+ * @param  string $realm value for the WM_TEST_REALM the stub reads
+ * @return array  [body, response header lines]
  */
-function wm_php_cgi() {
-	$found = trim((string) @shell_exec('command -v php-cgi 2>/dev/null'));
+function wm_fetch_staged_page($page, $realm) {
+	$root = dirname($page, 3);
 
-	return $found !== '' ? $found : null;
+	$socket = stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
+	$port   = (int) explode(':', stream_socket_get_name($socket, false))[1];
+	fclose($socket);
+
+	$descriptors = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+
+	$server = proc_open(
+		[PHP_BINARY, '-S', '127.0.0.1:' . $port, '-t', $root],
+		$descriptors,
+		$pipes,
+		null,
+		['WM_TEST_REALM' => $realm] + $_ENV
+	);
+
+	if (!is_resource($server)) {
+		throw new RuntimeException('could not start the built-in server');
+	}
+
+	$url  = 'http://127.0.0.1:' . $port . '/plugins/weathermap/check.php';
+	$body = false;
+
+	for ($attempt = 0; $attempt < 50; $attempt++) {
+		usleep(100000);
+		$body = @file_get_contents($url, false, stream_context_create([
+			'http' => ['ignore_errors' => true, 'follow_location' => 0, 'timeout' => 5],
+		]));
+
+		if ($body !== false) {
+			break;
+		}
+	}
+
+	$headers = $http_response_header ?? [];
+
+	foreach ($pipes as $pipe) {
+		fclose($pipe);
+	}
+
+	proc_terminate($server);
+	proc_close($server);
+
+	return [(string) $body, $headers];
 }
 
 describe('check.php web access', function () {
@@ -94,35 +142,24 @@ describe('check.php web access', function () {
 	 * install already on this version would get authentication with no
 	 * authorisation at all. */
 	it('refuses the report to a user without the Manage Weathermap realm', function () {
-		$cgi = wm_php_cgi();
-
-		if ($cgi === null) {
-			test()->markTestSkipped('php-cgi is needed to drive the non-cli guard');
-		}
-
-		$page   = wm_stage_check_page();
-		$output = (string) shell_exec('WM_TEST_REALM=0 ' . escapeshellarg($cgi) . ' ' . escapeshellarg($page) . ' 2>/dev/null');
+		$page              = wm_stage_check_page();
+		[$body, $headers]  = wm_fetch_staged_page($page, '0');
 
 		wm_unstage_check_page($page);
 
-		expect($output)->toContain('Location: /cacti/permission_denied.php');
+		expect(implode("\n", $headers))->toContain('Location: /cacti/permission_denied.php');
+		$output = $body;
 		expect($output)->not->toContain('Weathermap Pre-Install Checker');
 		expect($output)->not->toContain(php_uname());
 	});
 
 	it('serves the report to a user who holds the realm', function () {
-		$cgi = wm_php_cgi();
-
-		if ($cgi === null) {
-			test()->markTestSkipped('php-cgi is needed to drive the non-cli guard');
-		}
-
-		$page   = wm_stage_check_page();
-		$output = (string) shell_exec('WM_TEST_REALM=1 ' . escapeshellarg($cgi) . ' ' . escapeshellarg($page) . ' 2>/dev/null');
+		$page          = wm_stage_check_page();
+		[$output, $hdr] = wm_fetch_staged_page($page, '1');
 
 		wm_unstage_check_page($page);
 
-		expect($output)->not->toContain('permission_denied.php');
+		expect(implode("\n", $hdr))->not->toContain('permission_denied.php');
 		expect($output)->toContain('Weathermap Pre-Install Checker');
 	});
 
@@ -161,12 +198,6 @@ describe('check.php web access', function () {
 	});
 
 	it('survives an auth include that declares a name check.php also defines', function () {
-		$cgi = wm_php_cgi();
-
-		if ($cgi === null) {
-			test()->markTestSkipped('php-cgi is needed to drive the non-cli guard');
-		}
-
 		// check.php declares return_bytes() at global scope; Cacti's include
 		// chain is large enough that a collision is worth pinning.
 		$page = wm_stage_check_page(<<<'STUB'
@@ -186,7 +217,7 @@ if (!function_exists('return_bytes')) {
 }
 STUB);
 
-		$output = (string) shell_exec(escapeshellarg($cgi) . ' ' . escapeshellarg($page) . ' 2>&1');
+		[$output, $headers] = wm_fetch_staged_page($page, '0');
 
 		wm_unstage_check_page($page);
 
@@ -195,12 +226,6 @@ STUB);
 	});
 
 	it('emits no report even when the auth include has already sent output', function () {
-		$cgi = wm_php_cgi();
-
-		if ($cgi === null) {
-			test()->markTestSkipped('php-cgi is needed to drive the non-cli guard');
-		}
-
 		$page = wm_stage_check_page(<<<'STUB'
 <?php
 print 'noise from the auth chain';
@@ -213,7 +238,7 @@ if (!function_exists('api_plugin_user_realm_auth')) {
 }
 STUB);
 
-		$output = (string) shell_exec(escapeshellarg($cgi) . ' ' . escapeshellarg($page) . ' 2>&1');
+		[$output, $headers] = wm_fetch_staged_page($page, '0');
 
 		wm_unstage_check_page($page);
 
