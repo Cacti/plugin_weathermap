@@ -64,7 +64,10 @@ jobs:
     # The check.php guard only runs when PHP_SAPI is not cli, so the test that
     # proves it denies an unprivileged user needs a non-cli binary to drive.
     - name: Install the CGI SAPI
-      run: sudo apt-get install -y --no-install-recommends php${{ matrix.php }}-cgi
+      run: |
+        sudo add-apt-repository -y ppa:ondrej/php
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends php${{ matrix.php }}-cgi
 
     # The plugin carries no Composer manifest of its own; the test, lint and
     # analysis tools come from the base Cacti install.
