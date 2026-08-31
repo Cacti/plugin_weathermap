@@ -32,13 +32,64 @@ on:
       - develop
 
 jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+
+    name: PHP ${{ matrix.php }} Unit Tests
+
+    steps:
+    - name: Checkout Cacti
+      uses: actions/checkout@v7
+      with:
+        repository: Cacti/cacti
+        path: cacti
+
+    - name: Checkout Weathermap Plugin
+      uses: actions/checkout@v7
+      with:
+        path: cacti/plugins/weathermap
+
+    - name: Install PHP ${{ matrix.php }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: gd, json, mbstring
+        ini-values: "date.timezone=America/New_York"
+
+    # The check.php guard only runs when PHP_SAPI is not cli, so the test that
+    # proves it denies an unprivileged user needs a non-cli binary to drive.
+    - name: Install the CGI SAPI
+      run: |
+        sudo add-apt-repository -y ppa:ondrej/php
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends php${{ matrix.php }}-cgi
+
+    # The plugin carries no Composer manifest of its own; the test, lint and
+    # analysis tools come from the base Cacti install.
+    - name: Install Cacti Composer Dependencies
+      run: composer install --prefer-dist --no-progress --no-interaction
+      working-directory: cacti
+
+    - name: Lint the plugin
+      run: composer run-script lint plugins/weathermap
+      working-directory: cacti
+
+    - name: Run the plugin unit tests
+      run: include/vendor/bin/pest -c plugins/weathermap/phpunit.xml --display-warnings
+      working-directory: cacti
+
   integration-test:
     runs-on: ${{ matrix.os }}
     
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.1', '8.2', '8.3', '8.4']
+        php: ['8.2', '8.3', '8.4']
         os: [ubuntu-latest]
     
     services:
@@ -82,7 +133,9 @@ jobs:
       run: php -v
     
     - name: Run apt-get update
-      run: sudo apt-get update
+      run: |
+        sudo add-apt-repository -y ppa:ondrej/php
+        sudo apt-get update
     
     - name: Install System Dependencies
       run: sudo apt-get install -y apache2 snmp snmpd rrdtool fping
