@@ -196,10 +196,10 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
 
-		$x1 = intval(round($c[0]));
-		$y1 = intval(round($c[1]));
-		$x2 = intval(round($c[2]));
-		$y2 = intval(round($c[3]));
+		$x1 = (int) round((float) $c[0]);
+		$y1 = (int) round((float) $c[1]);
+		$x2 = (int) round((float) $c[2]);
+		$y2 = (int) round((float) $c[3]);
 
 		// sort the points, so that the first is the top-left
 		if ($x1 > $x2) {
