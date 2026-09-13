@@ -638,7 +638,7 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		if ($fontnumber > 0 && $fontnumber < 6) {
-			return [imagefontwidth($fontnumber) * $maxlinelength, $linecount * imagefontheight($fontnumber)];
+			return [imagefontwidth((int) $fontnumber) * $maxlinelength, $linecount * imagefontheight((int) $fontnumber)];
 		} else {
 			// look up what font is defined for this slot number
 			if (!isset($this->fonts[$fontnumber])) {
