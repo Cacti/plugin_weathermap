@@ -2048,8 +2048,8 @@ function wimagefilledpolygon($image, $points, $num_points, $color) {
 }
 
 function wimagecreatetruecolor($width, $height) {
-	$width  = (int) round($width);
-	$height = (int) round($height);
+	$width  = (int) round((float) $width);
+	$height = (int) round((float) $height);
 
 	metadump("BLANKIMAGE $width $height");
 
