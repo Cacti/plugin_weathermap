@@ -7,6 +7,28 @@
  +-------------------------------------------------------------------------+
 */
 
+require_once __DIR__ . '/TestCase.php';
+
+/*
+ * When this plugin is checked out alongside a real Cacti tree (as the CI
+ * workflow does, under cacti/plugins/weathermap), tests/.cacti-version
+ * records which Cacti ref the workflow's CACTI environment variable pointed
+ * at. Confirm the two agree so a stale checkout doesn't pass silently; skip
+ * the check when no Cacti tree is present, since these tests also run
+ * standalone against the stub functions below.
+ */
+$cacti_version_file    = dirname(__DIR__, 3) . '/include/cacti_version';
+$expected_version_file = __DIR__ . '/.cacti-version';
+
+if (is_readable($cacti_version_file) && is_readable($expected_version_file)) {
+	$actual_version   = trim((string) file_get_contents($cacti_version_file));
+	$expected_version = trim((string) file_get_contents($expected_version_file));
+
+	if (!in_array($expected_version, ['1.2.x', 'develop'], true) && $actual_version !== $expected_version) {
+		throw new RuntimeException("Expected Cacti $expected_version, found $actual_version in $cacti_version_file");
+	}
+}
+
 $GLOBALS['__test_db_calls'] = [];
 
 if (!function_exists('db_execute')) {

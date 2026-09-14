@@ -18,7 +18,7 @@
  * other test that loads it.
  */
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap-unit.php';
 require_once dirname(__DIR__, 2) . '/lib/WeatherMap.functions.php';
 
 if (!defined('IN')) {
