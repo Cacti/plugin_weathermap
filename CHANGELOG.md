@@ -14,6 +14,10 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
+--- develop ---
+
+* Run the plugin unit test suite in CI, using the toolchain from the base Cacti install
+
 --- 1.7 ---
 * issue#233: Rendering issues when the page includes several maps with dropdown
 

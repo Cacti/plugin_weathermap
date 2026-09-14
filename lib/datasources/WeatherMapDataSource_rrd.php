@@ -90,6 +90,27 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		return (false);
 	}
 
+	/**
+	 * Decide whether an rrd_options string is safe to append to the RRDTool
+	 * command line.
+	 *
+	 * Each option token is passed through cacti_escapeshellarg() before it
+	 * reaches the shell, so this is a second line of defence rather than the
+	 * only one.  A quote or backslash is rejected because it turns one intended
+	 * flag into several arguments.
+	 *
+	 * strpbrk() replaces the character class this guard used to carry.  Written
+	 * as '/["\'\\]/' in single quotes, that pattern reached PCRE as an
+	 * unterminated class, so preg_match() returned false and the guard never
+	 * fired for the whole life of the check.
+	 *
+	 * @param  string|null $options rrd_options as given in the map config
+	 * @return bool        true when the value holds no quote and no backslash
+	 */
+	function wmrrd_options_are_safe($options) {
+		return strpbrk((string) $options, "\"'\\") === false;
+	}
+
 	function Recognise($targetstring) {
 		if (preg_match('/^(.*\.rrd):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/', $targetstring, $matches)) {
 			return true;
@@ -317,7 +338,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		}
 
 		if ($extra_options !== '' && $extra_options !== null) {
-			if (preg_match('/["\'\\]/', (string) $extra_options)) {
+			if (!$this->wmrrd_options_are_safe($extra_options)) {
 				$msg = 'RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]';
 				wm_warn($msg);
 				cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
@@ -427,7 +448,7 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		}
 
 		if ($extra_options !== '' && $extra_options !== null) {
-			if (preg_match('/["\'\\]/', (string) $extra_options)) {
+			if (!$this->wmrrd_options_are_safe($extra_options)) {
 				$msg = 'RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]';
 				wm_warn($msg);
 				cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
