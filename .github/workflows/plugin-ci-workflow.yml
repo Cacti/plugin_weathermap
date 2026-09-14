@@ -136,14 +136,16 @@ jobs:
     
     # 1.2.x declares no dev dependencies of its own, so require Pest
     # explicitly rather than assuming Cacti's composer.json provides it.
+    # Not run with sudo so the vendor tree stays owned by the runner user,
+    # which Pest itself needs later to write its result cache.
     - name: Install Composer Dependencies
       run: |
         cd ${{ github.workspace }}/cacti
         if [ -f composer.json ]; then
-          sudo composer config --no-plugins allow-plugins.pestphp/pest-plugin true
-          sudo composer require --dev --no-progress --no-interaction "pestphp/pest:^3" "pestphp/pest-plugin-drift:^3.0"
-          sudo rm -f composer.lock
-          sudo composer install --dev --no-progress
+          composer config --no-plugins allow-plugins.pestphp/pest-plugin true
+          composer require --dev --no-progress --no-interaction "pestphp/pest:^3" "pestphp/pest-plugin-drift:^3.0"
+          rm -f composer.lock
+          composer install --dev --no-progress
         fi
     
     - name: Create Cacti config.php
