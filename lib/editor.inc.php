@@ -325,9 +325,7 @@ function show_editor_startpage() {
 					$fd    = fopen($realfile, 'r');
 
 					if ($fd) {
-						while (!feof($fd)) {
-							$buffer = fgets($fd, 4096);
-
+						while (($buffer = fgets($fd, 4096)) !== false) {
 							if (preg_match('/^\s*TITLE\s+(.*)/i', $buffer, $matches)) {
 								$title = wm_editor_sanitize_string($matches[1]);
 							}
