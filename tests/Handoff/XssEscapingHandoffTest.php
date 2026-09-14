@@ -25,9 +25,10 @@ describe('XSS escaping handoff at output boundaries', function (): void {
 		it('does not print $maptitle without escaping', function (): void {
 			$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin.php');
 
-			$lines = explode("\n", $source);
+			$lines     = explode("\n", $source);
+			$unescaped = [];
 
-			foreach ($lines as $line) {
+			foreach ($lines as $num => $line) {
 				$trimmed = ltrim($line);
 
 				if (str_starts_with($trimmed, '//') || str_starts_with($trimmed, '*')) {
@@ -35,10 +36,14 @@ describe('XSS escaping handoff at output boundaries', function (): void {
 				}
 
 				// A bare print/echo of $maptitle without html_escape is an XSS vector.
-				if (preg_match('/(?:print|echo)\s+\$maptitle\s*;/', $line)) {
-					expect($line)->toContain('html_escape', 'Bare $maptitle output found without html_escape');
+				if (preg_match('/(?:print|echo)\s+\$maptitle\s*;/', $line) && !str_contains($line, 'html_escape')) {
+					$unescaped[] = 'line ' . ($num + 1) . ': ' . trim($line);
 				}
 			}
+
+			/* Asserted on the collected list rather than inside the loop so the
+			 * expectation still runs when the file holds no matching line. */
+			expect($unescaped)->toBe([], 'Bare $maptitle output found without html_escape');
 		});
 
 		it('uses a static mime map for Content-Type (not raw user input)', function (): void {
@@ -61,9 +66,10 @@ describe('XSS escaping handoff at output boundaries', function (): void {
 		it('does not print $buffer directly without escaping', function (): void {
 			$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin-mgmt.php');
 
-			$lines = explode("\n", $source);
+			$lines     = explode("\n", $source);
+			$unescaped = [];
 
-			foreach ($lines as $line) {
+			foreach ($lines as $num => $line) {
 				$trimmed = ltrim($line);
 
 				if (str_starts_with($trimmed, '//') || str_starts_with($trimmed, '*')) {
@@ -71,10 +77,12 @@ describe('XSS escaping handoff at output boundaries', function (): void {
 				}
 
 				// A standalone print $buffer; without html_escape is an XSS vector.
-				if (preg_match('/^\s*(?:print|echo)\s+\$buffer\s*;/', $line)) {
-					expect($line)->toContain('html_escape', 'Bare $buffer output found without html_escape');
+				if (preg_match('/^\s*(?:print|echo)\s+\$buffer\s*;/', $line) && !str_contains($line, 'html_escape')) {
+					$unescaped[] = 'line ' . ($num + 1) . ': ' . trim($line);
 				}
 			}
+
+			expect($unescaped)->toBe([], 'Bare $buffer output found without html_escape');
 		});
 	});
 });

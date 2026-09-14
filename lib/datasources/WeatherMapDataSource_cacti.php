@@ -44,11 +44,7 @@ class WeatherMapDataSource_cacti extends WeatherMapDataSource {
 			$data_time = $result['last_time'];
 		}
 
-		wm_debug(sprintf("cacti ReadData: Returning (%s, %s, %s)\n",
-			string_or_null($data[IN]),
-			string_or_null($data[OUT]),
-			$data_time
-		));
+		wm_debug('cacti ReadData: Returning (' . ($data[IN] === null ? 'NULL' : $data[IN]) . ',' . ($data[OUT] === null ? 'NULL' : $data[OUT]) . ",$data_time)");
 
 		return ([
 			$data[IN],
