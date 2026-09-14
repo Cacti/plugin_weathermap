@@ -81,7 +81,7 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 
 					$fields = explode("\t", rtrim($buffer, "\n"));
 
-					if (isset($fields[2]) && $fields[0] == $dataname) {
+					if (isset($fields[1], $fields[2]) && $fields[0] == $dataname) {
 						$data[IN]  = $fields[1];
 						$data[OUT] = $fields[2];
 
@@ -100,7 +100,7 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 			} else {
 				wm_warn("WMData ReadData: Couldn't open ($datafile). [WMWMDATA02]");
 			}
-		} else {
+		} elseif ($datafile !== '') {
 			wm_warn("WMData ReadData: $datafile doesn't exist [WMWMDATA01]");
 		}
 
