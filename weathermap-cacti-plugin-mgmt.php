@@ -1592,8 +1592,7 @@ function wmap_get_title($filename) {
 		$fd = fopen($filename, 'r');
 
 		if (is_resource($fd)) {
-			while (!feof($fd)) {
-				$buffer = fgets($fd, 4096);
+			while (($buffer = fgets($fd, 4096)) !== false) {
 
 				if (preg_match('/^\s*TITLE\s+(.*)/i', $buffer, $matches)) {
 					$title = $matches[1];

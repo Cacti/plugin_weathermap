@@ -2204,9 +2204,7 @@ class WeatherMap extends WeatherMapBase {
 				$fd = fopen($filename, 'r');
 
 				if ($fd) {
-					while (!feof($fd)) {
-						$buffer = fgets($fd, 4096);
-
+					while (($buffer = fgets($fd, 4096)) !== false) {
 						// strip out any Windows line-endings that have gotten in here
 						$buffer  = str_replace("\r", '', $buffer);
 						$lines[] = $buffer;
