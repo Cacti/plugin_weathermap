@@ -527,7 +527,6 @@ class WeatherMapNode extends WeatherMapItem {
 
 							imagealphablending($scaled, false);
 							imagecopyresampled($scaled, $icon_im, 0, 0, 0, 0, $new_width, $new_height, intval(round($icon_w)), intval(round($icon_h)));
-							imagedestroy($icon_im);
 
 							$icon_im = $scaled;
 						}
@@ -626,7 +625,6 @@ class WeatherMapNode extends WeatherMapItem {
 		// Draw the icon, if any
 		if (isset($icon_im)) {
 			imagecopy($node_im, $icon_im, $icon_x1, $icon_y1, 0, 0, imagesx($icon_im), imagesy($icon_im));
-			imagedestroy($icon_im);
 		}
 
 		// Draw the label, if any
@@ -638,10 +636,10 @@ class WeatherMapNode extends WeatherMapItem {
 
 			//       print "FINAL TEXT at $txt_x , $txt_y\n";
 
-			$label_x1 = ceil($label_x1);
-			$label_y1 = ceil($label_y1);
-			$label_x2 = ceil($label_x2);
-			$label_y2 = ceil($label_y2);
+			$label_x1 = (int) ceil($label_x1);
+			$label_y1 = (int) ceil($label_y1);
+			$label_x2 = (int) ceil($label_x2);
+			$label_y2 = (int) ceil($label_y2);
 
 			// if there's an icon, then you can choose to have no background
 			if (!$col->is_none()) {
