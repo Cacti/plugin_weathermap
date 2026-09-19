@@ -148,6 +148,12 @@ jobs:
           sudo composer install --dev --no-progress
         fi
     
+    - name: Restore vendor ownership for Pest
+      run: |
+        if [ -d ${{ github.workspace }}/cacti/include/vendor ]; then
+          sudo chown -R runner:runner ${{ github.workspace }}/cacti/include/vendor ${{ github.workspace }}/cacti/composer.lock
+        fi
+    
     - name: Create Cacti config.php
       run: |
         cat ${{ github.workspace }}/cacti/include/config.php.dist | \
@@ -227,10 +233,27 @@ jobs:
       run: ./include/vendor/bin/phpstan analyze --level 6 ${{ github.workspace }}/cacti/plugins/weathermap
       working-directory: ${{ github.workspace }}/cacti
     
+    - name: Re-apply web user ownership before polling
+      run: |
+        # Ancestor directories above the checkout (e.g. /home/runner, .../work)
+        # are typically 750 owned by the runner user, which blocks a non-root
+        # www-data process from traversing down to the checkout at all.
+        p="${{ github.workspace }}"
+        while [ "$p" != "/" ]; do
+          sudo chmod o+x "$p" || true
+          p=$(dirname "$p")
+        done
+
+        sudo chown -R www-data:runner ${{ github.workspace }}/cacti
+        sudo find ${{ github.workspace }}/cacti -type d -exec chmod 775 {} \;
+        sudo find ${{ github.workspace }}/cacti -type f -exec chmod 664 {} \;
+        sudo chmod +x ${{ github.workspace }}/cacti/cmd.php
+        sudo chmod +x ${{ github.workspace }}/cacti/poller.php
+
     - name: Run Cacti Poller
       run: |
         cd ${{ github.workspace }}/cacti
-        sudo php poller.php --poller=1 --force --debug
+        sudo -u www-data php poller.php --poller=1 --force --debug
         if ! grep -q "SYSTEM STATS" log/cacti.log; then
           echo "Cacti poller did not finish successfully"
           cat log/cacti.log
