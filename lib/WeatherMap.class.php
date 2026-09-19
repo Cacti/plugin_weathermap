@@ -3647,6 +3647,7 @@ class WeatherMap extends WeatherMapBase {
 
 			if ($bgimage) {
 				imagecopy($image, $bgimage, 0, 0, 0, 0, $this->width, $this->height);
+				unset($bgimage);
 			}
 
 			// Now it's time to draw a map
@@ -3859,6 +3860,7 @@ class WeatherMap extends WeatherMapBase {
 					);
 
 					$result = imagepng($imagethumb, $thumbnailfile);
+					unset($imagethumb);
 
 					if (($result == false)) {
 						if (file_exists($filename)) {
@@ -3872,6 +3874,8 @@ class WeatherMap extends WeatherMapBase {
 				wm_warn("Skipping thumbnail creation, since we don't have the necessary function. [WMWARN17]");
 			}
 		}
+
+		unset($image);
 	}
 
 	function CleanUp() {
@@ -3891,6 +3895,10 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		foreach ($this->nodes as $node) {
+			if (isset($node->image)) {
+				unset($node->image);
+			}
+
 			$node->owner = null;
 			unset($node);
 		}

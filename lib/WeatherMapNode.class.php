@@ -527,6 +527,7 @@ class WeatherMapNode extends WeatherMapItem {
 
 							imagealphablending($scaled, false);
 							imagecopyresampled($scaled, $icon_im, 0, 0, 0, 0, $new_width, $new_height, intval(round($icon_w)), intval(round($icon_h)));
+							unset($icon_im);
 
 							$icon_im = $scaled;
 						}
@@ -625,6 +626,7 @@ class WeatherMapNode extends WeatherMapItem {
 		// Draw the icon, if any
 		if (isset($icon_im)) {
 			imagecopy($node_im, $icon_im, $icon_x1, $icon_y1, 0, 0, imagesx($icon_im), imagesy($icon_im));
+			unset($icon_im);
 		}
 
 		// Draw the label, if any
