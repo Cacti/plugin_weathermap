@@ -144,7 +144,7 @@ function display_datasources() {
 		}
 	}
 
-	print json_encode($return, true);
+	print json_encode($return);
 }
 
 /**

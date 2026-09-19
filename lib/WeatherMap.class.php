@@ -590,15 +590,15 @@ class WeatherMap extends WeatherMapBase {
 		 * corner of the text, where imagestring uses the upper left corner.
 		 * Big difference.
 		 */
-		$x = intval(round($x));
-		$y = intval(round($y));
+		$x = (int) round((float) $x);
+		$y = (int) round((float) $y);
 
 		if ($fontnumber > 0 && $fontnumber < 6 && $angle == 0) {
 			/**
 			 * The x and y coordinates will be different due to the change between
 			 * imagestring and imagettftext as noted above
 			 */
-			imagestring($image, $fontnumber, $x, intval(round($y - imagefontheight($fontnumber))), $string, $colour);
+			imagestring($image, $fontnumber, $x, (int) round((float) ($y - imagefontheight($fontnumber))), $string, $colour);
 
 			if ($angle != 0) {
 				wm_warn("Angled text doesn't work with non-FreeType fonts [WMWARN02]");
@@ -638,7 +638,7 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		if ($fontnumber > 0 && $fontnumber < 6) {
-			return [imagefontwidth($fontnumber) * $maxlinelength, $linecount * imagefontheight($fontnumber)];
+			return [imagefontwidth((int) $fontnumber) * $maxlinelength, $linecount * imagefontheight((int) $fontnumber)];
 		} else {
 			// look up what font is defined for this slot number
 			if (!isset($this->fonts[$fontnumber])) {
@@ -1882,7 +1882,7 @@ class WeatherMap extends WeatherMapBase {
 						$i++;
 					}
 
-					imagecopy($image, $scale_im, $this->keyx[$scalename], $this->keyy[$scalename], 0, 0, imagesx($scale_im), imagesy($scale_im));
+					imagecopy($image, $scale_im, (int) $this->keyx[$scalename], (int) $this->keyy[$scalename], 0, 0, imagesx($scale_im), imagesy($scale_im));
 
 					$this->keyimage[$scalename] = $scale_im;
 				}
@@ -2469,7 +2469,7 @@ class WeatherMap extends WeatherMapBase {
 							foreach ($keyword[2] as $key=>$val) {
 								// so we can poke in numbers too, if the value starts with #
 								// then take the # off, and treat the rest as a number literal
-								if (preg_match('/^#(.*)/', $val, $m)) {
+								if (is_string($val) && preg_match('/^#(.*)/', $val, $m)) {
 									$val = $m[1];
 								} elseif (is_numeric($val)) {
 									// if it's a number, then it;s a match number,
@@ -2864,14 +2864,14 @@ class WeatherMap extends WeatherMapBase {
 				if (preg_match('/^\s*FONTDEFINE\s+(\d+)\s+(\S+)\s+(\d+)\s*$/i', $buffer, $matches)) {
 					if (function_exists('imagettfbbox')) {
 						// test if this font is valid, before adding it to the font table...
-						$bounds = imagettfbbox($matches[3], 0, $matches[2], 'Ignore me');
+						$bounds = imagettfbbox((float)$matches[3], 0, $matches[2], 'Ignore me');
 
 						if (isset($bounds[0])) {
 							$this->fonts[$matches[1]] = new WMFont();
 
 							$this->fonts[$matches[1]]->type = 'truetype';
 							$this->fonts[$matches[1]]->file = $matches[2];
-							$this->fonts[$matches[1]]->size = $matches[3];
+							$this->fonts[$matches[1]]->size = (float)$matches[3];
 						} else {
 							wm_warn('Failed to load ttf font ' . $matches[2] . " - at config line $linecount [WMWARN30]");
 						}
@@ -3647,7 +3647,7 @@ class WeatherMap extends WeatherMapBase {
 
 			if ($bgimage) {
 				imagecopy($image, $bgimage, 0, 0, 0, 0, $this->width, $this->height);
-				imagedestroy($bgimage);
+				unset($bgimage);
 			}
 
 			// Now it's time to draw a map
@@ -3850,18 +3850,17 @@ class WeatherMap extends WeatherMapBase {
 						$factor = ($thumbnailmax / $this->height);
 					}
 
-					$this->thumb_width  = ceil($this->width * $factor);
-					$this->thumb_height = ceil($this->height * $factor);
+					$this->thumb_width  = (int) ceil($this->width * $factor);
+					$this->thumb_height = (int) ceil($this->height * $factor);
 
 					$imagethumb = imagecreatetruecolor($this->thumb_width, $this->thumb_height);
 
 					imagecopyresampled($imagethumb, $image, 0, 0, 0, 0, $this->thumb_width, $this->thumb_height,
-						intval(round($this->width)), intval(round($this->height))
+						(int) round((float) $this->width), (int) round((float) $this->height)
 					);
 
 					$result = imagepng($imagethumb, $thumbnailfile);
-
-					imagedestroy($imagethumb);
+					unset($imagethumb);
 
 					if (($result == false)) {
 						if (file_exists($filename)) {
@@ -3874,9 +3873,9 @@ class WeatherMap extends WeatherMapBase {
 			} else {
 				wm_warn("Skipping thumbnail creation, since we don't have the necessary function. [WMWARN17]");
 			}
-
-			imagedestroy($image);
 		}
+
+		unset($image);
 	}
 
 	function CleanUp() {
@@ -3896,13 +3895,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		foreach ($this->nodes as $node) {
-			// destroy all the images we created, to prevent memory leaks
 			if (isset($node->image)) {
-				imagedestroy($node->image);
+				unset($node->image);
 			}
 
 			$node->owner = null;
-
 			unset($node);
 		}
 
