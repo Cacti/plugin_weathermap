@@ -365,9 +365,9 @@ function myimagecolorallocate($image, $red, $green, $blue) {
 		return imagecolorallocatealpha($image, 0, 0, 0, 127);
 	}
 
-	$red   = intval(round($red));
-	$green = intval(round($green));
-	$blue  = intval(round($blue));
+	$red   = (int) round((float) $red);
+	$green = (int) round((float) $green);
+	$blue  = (int) round((float) $blue);
 
 	$existing = imagecolorexact($image, $red, $green, $blue);
 
@@ -795,7 +795,7 @@ function find_distance(&$pointarray, $distance) {
 	}
 
 	while ($left <= $right) {
-		$mid = floor(($left + $right) / 2);
+		$mid = (int) floor(($left + $right) / 2);
 
 		if (($pointarray[$mid][2] < $distance) && ($pointarray[$mid + 1][2] >= $distance)) {
 			return $mid;
@@ -2048,8 +2048,8 @@ function wimagefilledpolygon($image, $points, $num_points, $color) {
 }
 
 function wimagecreatetruecolor($width, $height) {
-	$width  = round($width);
-	$height = round($height);
+	$width  = (int) round((float) $width);
+	$height = (int) round((float) $height);
 
 	metadump("BLANKIMAGE $width $height");
 
@@ -2072,10 +2072,10 @@ function wimagettftext($image, $size, $angle, $x, $y, $color, $file, $string) {
 	$b    = round($b / 255, 0);
 	$a    = round((127 - $a) / 127, 0);
 
-	$x    = round($x, 0);
-	$y    = round($y, 0);
+	$x    = (int) round($x, 0);
+	$y    = (int) round($y, 0);
 
-	$size = round($size, 0);
+	$size = (float) round($size, 0);
 
 	metadump("TEXT $x $y $angle $size $file $r $g $b $a $string");
 
