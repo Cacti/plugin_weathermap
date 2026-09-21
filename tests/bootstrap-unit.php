@@ -7,8 +7,6 @@
  +-------------------------------------------------------------------------+
 */
 
-require_once __DIR__ . '/TestCase.php';
-
 /*
  * When this plugin is checked out alongside a real Cacti tree (as the CI
  * workflow does, under cacti/plugins/weathermap), tests/.cacti-version
