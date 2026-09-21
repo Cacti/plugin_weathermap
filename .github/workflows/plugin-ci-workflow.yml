@@ -60,7 +60,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="mariadb-admin ping"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
@@ -183,8 +183,8 @@ jobs:
     - name: Verify translation template is up to date
       run: |
         cd ${{ github.workspace }}/cacti/plugins/weathermap
-        chmod +x locales/build_gettext.sh
-        ./locales/build_gettext.sh
+        sudo chmod +x locales/build_gettext.sh
+        sudo ./locales/build_gettext.sh
         grep -v '^"POT-Creation-Date:' locales/po/cacti.pot > /tmp/cacti.pot.new
         git checkout -- locales/
         grep -v '^"POT-Creation-Date:' locales/po/cacti.pot > /tmp/cacti.pot.old
