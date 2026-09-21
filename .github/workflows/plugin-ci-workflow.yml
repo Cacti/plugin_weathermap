@@ -51,7 +51,7 @@ jobs:
     
     services:
       mariadb:
-        image: mariadb:10.6
+        image: mariadb:11.8
         env:
           MYSQL_ROOT_PASSWORD: cactiroot
           MYSQL_DATABASE: cacti
@@ -95,7 +95,7 @@ jobs:
         sudo apt-get update
     
     - name: Install System Dependencies
-      run: sudo apt-get install -y snmp snmpd rrdtool fping
+      run: sudo apt-get install -y snmp snmpd rrdtool fping gettext
     
     - name: Start SNMPD Agent and Test
       run: |
@@ -179,6 +179,20 @@ jobs:
       run: |
         cd ${{ github.workspace }}/cacti/plugins/weathermap
         find . -path './vendor' -prune -o -type f -name '*.php' -print0 | xargs -0 -r -n1 php -l
+
+    - name: Verify translation template is up to date
+      run: |
+        cd ${{ github.workspace }}/cacti/plugins/weathermap
+        chmod +x locales/build_gettext.sh
+        ./locales/build_gettext.sh
+        grep -v '^"POT-Creation-Date:' locales/po/cacti.pot > /tmp/cacti.pot.new
+        git checkout -- locales/
+        grep -v '^"POT-Creation-Date:' locales/po/cacti.pot > /tmp/cacti.pot.old
+        if ! cmp -s /tmp/cacti.pot.old /tmp/cacti.pot.new; then
+          echo "locales/po/cacti.pot is out of date. Run locales/build_gettext.sh and commit the updated locales/po/cacti.pot."
+          diff -u /tmp/cacti.pot.old /tmp/cacti.pot.new || true
+          exit 1
+        fi
 
     - name: Set expected Cacti version for unit tests
       run: echo -n "${{ env.CACTI }}" | sudo tee ${{ github.workspace }}/cacti/plugins/weathermap/tests/.cacti-version > /dev/null
