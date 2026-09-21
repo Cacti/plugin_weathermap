@@ -15,7 +15,7 @@
 
 // Discovered recursively so new production PHP files are covered automatically.
 $pluginRoot = realpath(__DIR__ . '/../..');
-$files      = array();
+$files      = [];
 
 $iterator = new RecursiveIteratorIterator(
 	new RecursiveDirectoryIterator($pluginRoot, FilesystemIterator::SKIP_DOTS)
@@ -42,13 +42,13 @@ function plugin_test_read_source_file($relativeFile) {
 	$path = realpath(__DIR__ . '/../../' . $relativeFile);
 
 	if ($path === false) {
-		throw new RuntimeException("Unable to resolve required plugin source");
+		throw new RuntimeException('Unable to resolve required plugin source');
 	}
 
 	$contents = file_get_contents($path);
 
 	if ($contents === false) {
-		throw new RuntimeException("Unable to read required plugin source");
+		throw new RuntimeException('Unable to read required plugin source');
 	}
 
 	return $contents;
