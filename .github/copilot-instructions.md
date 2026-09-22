@@ -164,3 +164,28 @@ Document all changes in `CHANGELOG.md`/`BACKLOG.md`; use descriptive commit mess
 - [Cacti Documentation](https://www.github.com/Cacti/documentation)
 - `README.md`, `SECURITY.md`, `SECURITY-AUDIT.md` for feature and security details
 - `CHANGELOG.md` for version history
+
+## Security & Quality Conventions
+
+These conventions apply across the Cacti plugin fleet and should be followed whenever touching
+existing code or adding new code, not just in dedicated cleanup passes:
+
+- **No hardcoded third-party hosts.** Never hardcode a third-party IP address, hostname, or URL
+  in plugin code (even for tooling/download helpers). Expose it as a plugin setting instead, with
+  secure-by-default values (e.g. an SSL-verification setting that defaults to verify-on).
+- **Prepared statements over `db_qstr()`.** Build dynamic `WHERE` clauses using the
+  `$sql_where`/`$sql_params` prepared-statement pattern, not string concatenation via `db_qstr()`.
+- **Use `html_escape_request_var()`.** Prefer it over the `html_escape(get_request_var(...))` call
+  chain.
+- **Harden `unserialize()`.** Always pass `['allow_classes' => false]` as the second argument.
+- **i18n text domain.** Every `__()`/`__esc()` call must include this plugin's text domain as the
+  final argument, except when deliberately comparing against a literal, untranslated Cacti-core
+  label.
+- **Plugin table-creation API.** Use `api_plugin_db_table_create()`/`api_plugin_db_add_column()`
+  (from Cacti core's `lib/plugins.php`) instead of raw `CREATE TABLE`/`ALTER TABLE ... ADD COLUMN`.
+  Both are idempotent (safe no-ops when already applied), so the same call can run unconditionally
+  from both the install AND upgrade paths.
+- **PHPDoc shape.** Every function gets a PHPDoc block: a one-line description, a blank comment
+  line, `@param` lines, a blank comment line, then `@return`. Infer parameter/return types from
+  actual usage; don't change the function's real type-hints in the same pass (let static analysis
+  flag mismatches separately). Skip vendored third-party library files.
