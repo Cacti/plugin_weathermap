@@ -369,7 +369,11 @@ function initJS() {
 		form_submit();
 	});
 
-	$('#node_template').selectmenu().selectmenu('menuWidget').addClass('overflow');
+	/* Cacti core may have already converted this select to select2; don't
+	 * also layer a jQuery UI selectmenu widget on top of it */
+	if (!$('#node_template').hasClass('select2-hidden-accessible')) {
+		$('#node_template').selectmenu().selectmenu('menuWidget').addClass('overflow');
+	}
 
 	initContextMenu();
 
@@ -1112,7 +1116,7 @@ function show_dialog(dlg) {
 		resizable: false,
 		draggable: true,
 		open: function() {
-			$('select').not('#node_iconfilename, #map_bgfile').selectmenu({
+			$('select').not('#node_iconfilename, #map_bgfile').not('.select2-hidden-accessible').selectmenu({
 				open: function() {
 					$('.ui-dialog').css('z-index', '20');
 				}
