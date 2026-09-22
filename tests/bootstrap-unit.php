@@ -64,6 +64,10 @@ if (!function_exists('db_fetch_assoc_prepared')) {
 
 if (!function_exists('db_fetch_row')) {
 	function db_fetch_row($sql) {
+		if (isset($GLOBALS['__test_db_fetch_row']) && is_callable($GLOBALS['__test_db_fetch_row'])) {
+			return call_user_func($GLOBALS['__test_db_fetch_row'], $sql);
+		}
+
 		return [];
 	}
 }
@@ -185,12 +189,17 @@ if (!function_exists('html_end_box')) {
 
 if (!function_exists('read_config_option')) {
 	function read_config_option($n, $f = false) {
+		if (isset($GLOBALS['__test_config_options'][$n])) {
+			return $GLOBALS['__test_config_options'][$n];
+		}
+
 		return '';
 	}
 }
 
 if (!function_exists('set_config_option')) {
 	function set_config_option($n, $v) {
+		$GLOBALS['__test_set_config_option_calls'][] = ['name' => $n, 'value' => $v];
 	}
 }
 

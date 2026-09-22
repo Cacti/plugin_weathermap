@@ -16,8 +16,9 @@ beforeAll(function () {
 });
 
 beforeEach(function () {
-	$GLOBALS['__test_db_calls']     = [];
-	$GLOBALS['__test_current_page'] = 'graphs.php';
+	$GLOBALS['__test_db_calls']                = [];
+	$GLOBALS['__test_current_page']            = 'graphs.php';
+	$GLOBALS['__test_set_config_option_calls'] = [];
 });
 
 it('parses the plugin INFO file into an info array', function () {
@@ -38,11 +39,23 @@ it('caches and returns the numeric version string', function () {
 it('clears the stored version option and drops every table on uninstall', function () {
 	plugin_weathermap_uninstall();
 
-	$drops = array_filter($GLOBALS['__test_db_calls'], function ($call) {
-		return $call['fn'] === 'db_execute' && stripos($call['sql'], 'DROP TABLE') !== false;
-	});
+	expect($GLOBALS['__test_set_config_option_calls'])->toHaveCount(1);
+	expect($GLOBALS['__test_set_config_option_calls'][0])->toBe(['name' => 'weathermap_version', 'value' => '']);
 
-	expect($drops)->toHaveCount(5);
+	$drops = array_values(array_map(function ($call) {
+		preg_match('/DROP TABLE IF EXISTS (\S+)/i', $call['sql'], $matches);
+		return $matches[1] ?? null;
+	}, array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_execute' && stripos($call['sql'], 'DROP TABLE') !== false;
+	})));
+
+	expect($drops)->toEqualCanonicalizing([
+		'weathermap_auth',
+		'weathermap_data',
+		'weathermap_maps',
+		'weathermap_groups',
+		'weathermap_settings',
+	]);
 });
 
 it('always reports the config as valid', function () {

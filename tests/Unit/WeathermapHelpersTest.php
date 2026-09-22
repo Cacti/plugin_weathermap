@@ -15,8 +15,10 @@ beforeAll(function () {
 });
 
 beforeEach(function () {
-	$GLOBALS['__test_db_calls'] = [];
-	$GLOBALS['__test_request']  = [];
+	$GLOBALS['__test_db_calls']       = [];
+	$GLOBALS['__test_request']        = [];
+	$GLOBALS['__test_config_options'] = [];
+	$GLOBALS['__test_db_fetch_row']   = fn ($sql) => [];
 	unset($_SERVER['PHP_SELF'], $_SERVER['REQUEST_URI']);
 });
 
@@ -24,6 +26,33 @@ it('does nothing when boost_rrd_update_enable is not on', function () {
 	weathermap_check_set_boost();
 
 	expect($GLOBALS['__test_db_calls'])->toBeEmpty();
+});
+
+it('inserts the poller-output setting when boost is on and no row exists yet', function () {
+	$GLOBALS['__test_config_options']['boost_rrd_update_enable'] = 'on';
+	$GLOBALS['__test_db_fetch_row'] = fn ($sql) => [];
+
+	weathermap_check_set_boost();
+
+	$inserts = array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_execute' && stripos($call['sql'], 'INSERT INTO weathermap_settings') !== false;
+	});
+
+	expect($inserts)->toHaveCount(1);
+});
+
+it('updates the existing poller-output setting when boost is on and the row is disabled', function () {
+	$GLOBALS['__test_config_options']['boost_rrd_update_enable'] = 'on';
+	$GLOBALS['__test_db_fetch_row'] = fn ($sql) => ['id' => 5, 'optvalue' => 0];
+
+	weathermap_check_set_boost();
+
+	$updates = array_filter($GLOBALS['__test_db_calls'], function ($call) {
+		return $call['fn'] === 'db_execute_prepared' && stripos($call['sql'], 'UPDATE weathermap_settings') !== false;
+	});
+
+	expect($updates)->toHaveCount(1);
+	expect(array_values($updates)[0]['params'])->toBe([5]);
 });
 
 it('leaves other pages alone regardless of refresh handling', function () {

@@ -30,20 +30,23 @@ it('registers every hook weathermap depends on, its realms, and provisions its t
 		$hooks[$registered['hook']] = $registered;
 	}
 
-	foreach ([
-		'config_arrays',
-		'config_settings',
-		'top_header_tabs',
-		'top_graph_header_tabs',
-		'draw_navigation_text',
-		'top_graph_refresh',
-		'page_title',
-		'poller_top',
-		'poller_output',
-		'poller_bottom',
-	] as $expected) {
+	$expectedHooks = [
+		'config_arrays'         => 'weathermap_config_arrays',
+		'config_settings'       => 'weathermap_config_settings',
+		'top_header_tabs'       => 'weathermap_show_tab',
+		'top_graph_header_tabs' => 'weathermap_show_tab',
+		'draw_navigation_text'  => 'weathermap_draw_navigation_text',
+		'top_graph_refresh'     => 'weathermap_top_graph_refresh',
+		'page_title'            => 'weathermap_page_title',
+		'poller_top'            => 'weathermap_poller_top',
+		'poller_output'         => 'weathermap_poller_output',
+		'poller_bottom'         => 'weathermap_poller_bottom',
+	];
+
+	foreach ($expectedHooks as $expected => $expectedFunction) {
 		expect($hooks)->toHaveKey($expected);
 		expect($hooks[$expected]['plugin'])->toBe('weathermap');
+		expect($hooks[$expected]['function'])->toBe($expectedFunction);
 		expect($hooks[$expected]['file'])->toBe('setup.php');
 	}
 
