@@ -29,6 +29,11 @@ if (is_readable($cacti_version_file) && is_readable($expected_version_file)) {
 
 $GLOBALS['__test_db_calls'] = [];
 
+$GLOBALS['config'] = [
+	'base_path' => dirname(__DIR__, 3),
+	'url_path'  => '/cacti/',
+];
+
 if (!function_exists('db_execute')) {
 	function db_execute($sql) {
 		$GLOBALS['__test_db_calls'][] = ['fn' => 'db_execute', 'sql' => $sql, 'params' => []];
@@ -59,6 +64,10 @@ if (!function_exists('db_fetch_assoc_prepared')) {
 
 if (!function_exists('db_fetch_row')) {
 	function db_fetch_row($sql) {
+		if (isset($GLOBALS['__test_db_fetch_row']) && is_callable($GLOBALS['__test_db_fetch_row'])) {
+			return call_user_func($GLOBALS['__test_db_fetch_row'], $sql);
+		}
+
 		return [];
 	}
 }
@@ -101,18 +110,96 @@ if (!function_exists('api_plugin_db_add_column')) {
 
 if (!function_exists('api_plugin_db_table_create')) {
 	function api_plugin_db_table_create($p, $t, $d) {
+		$GLOBALS['__test_db_calls'][] = ['fn' => 'api_plugin_db_table_create', 'plugin' => $p, 'table' => $t, 'data' => $d];
 		return true;
+	}
+}
+
+$GLOBALS['__test_registered_hooks']  = [];
+$GLOBALS['__test_registered_realms'] = [];
+
+if (!function_exists('api_plugin_register_hook')) {
+	function api_plugin_register_hook($plugin, $hook, $function, $file, $enabled = 1) {
+		$GLOBALS['__test_registered_hooks'][] = [
+			'plugin'   => $plugin,
+			'hook'     => $hook,
+			'function' => $function,
+			'file'     => $file,
+			'enabled'  => $enabled,
+		];
+		return true;
+	}
+}
+
+if (!function_exists('api_plugin_register_realm')) {
+	function api_plugin_register_realm($plugin, $file, $description, $enabled = 1) {
+		$GLOBALS['__test_registered_realms'][] = [
+			'plugin'      => $plugin,
+			'file'        => $file,
+			'description' => $description,
+			'enabled'     => $enabled,
+		];
+		return true;
+	}
+}
+
+$GLOBALS['__test_current_page'] = '';
+
+if (!function_exists('get_current_page')) {
+	function get_current_page() {
+		return $GLOBALS['__test_current_page'];
+	}
+}
+
+if (!function_exists('test_set_current_page')) {
+	function test_set_current_page($page) {
+		$GLOBALS['__test_current_page'] = $page;
+	}
+}
+
+if (!function_exists('isset_request_var')) {
+	function isset_request_var($n) {
+		return isset($GLOBALS['__test_request'][$n]);
+	}
+}
+
+if (!function_exists('read_user_setting')) {
+	function read_user_setting($n, $d = false) {
+		return $d;
+	}
+}
+
+if (!function_exists('db_table_exists')) {
+	function db_table_exists($t) {
+		return false;
+	}
+}
+
+if (!function_exists('html_start_box')) {
+	function html_start_box($title, $width = '100%', $div = false, $colspan = 3, $align = 'center', $link = '') {
+		print $title;
+	}
+}
+
+if (!function_exists('html_end_box')) {
+	function html_end_box() {
+		print '<!-- html_end_box -->';
 	}
 }
 
 if (!function_exists('read_config_option')) {
 	function read_config_option($n, $f = false) {
+		if (isset($GLOBALS['__test_config_options'][$n])) {
+			return $GLOBALS['__test_config_options'][$n];
+		}
+
 		return '';
 	}
 }
 
 if (!function_exists('set_config_option')) {
 	function set_config_option($n, $v) {
+		$GLOBALS['__test_set_config_option_calls'][] = ['name' => $n, 'value' => $v];
 	}
 }
 
@@ -123,8 +210,15 @@ if (!function_exists('html_escape')) {
 }
 
 if (!function_exists('__')) {
-	function __($t, $d = '') {
-		return $t;
+	function __(...$args) {
+		if (count($args) <= 1) {
+			return (string) $args[0];
+		}
+
+		$text = array_shift($args);
+		array_pop($args); // trailing text-domain argument
+
+		return count($args) ? vsprintf((string) $text, $args) : (string) $text;
 	}
 }
 
@@ -156,9 +250,11 @@ if (!function_exists('raise_message')) {
 	}
 }
 
+$GLOBALS['__test_request'] = [];
+
 if (!function_exists('get_request_var')) {
 	function get_request_var($n) {
-		return '';
+		return isset($GLOBALS['__test_request'][$n]) ? $GLOBALS['__test_request'][$n] : '';
 	}
 }
 
