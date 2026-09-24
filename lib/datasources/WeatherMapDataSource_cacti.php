@@ -59,9 +59,8 @@ class WeatherMapDataSource_cacti extends WeatherMapDataSource {
 	 * @param object $item         Reference, the link/node item this
 	 *                            data is being read for.
 	 *
-	 * @return array A two-element array: [0] the IN/OUT data values
-	 *              (array with IN/OUT keys) and [1] the data's
-	 *              timestamp.
+	 * @return array A 3-element array: [0] the IN value, [1] the OUT
+	 *              value, and [2] the data's timestamp.
 	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;

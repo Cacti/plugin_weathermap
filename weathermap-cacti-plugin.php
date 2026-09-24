@@ -881,7 +881,9 @@ function readfile_chunked($filename) {
  * @param int $current_id The currently displayed map's id, to
  *                        pre-select in the dropdown.
  *
- * @return void
+ * @return bool|null False if the map selector setting is disabled (an
+ *                    early return); otherwise no explicit value is
+ *                    returned after rendering the selector.
  */
 function weathermap_mapselector($current_id = 0) {
 	$show_selector = intval(read_config_option('weathermap_map_selector'));
@@ -1022,7 +1024,8 @@ function weathermap_get_valid_tabs() {
  *
  * @param int $current_tab The currently selected group_id tab.
  *
- * @return void
+ * @return bool True if more than one group tab was rendered, false
+ *              otherwise (nothing rendered).
  *
  * @global array $config Cacti global configuration array; used to
  *                       build tab URLs.

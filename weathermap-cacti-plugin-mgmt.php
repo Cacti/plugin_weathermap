@@ -347,10 +347,10 @@ switch (get_request_var('action')) {
  * Handles all bulk-action form submissions for the map/permissions
  * lists: applying per-map user/group permission checkbox changes
  * ('associate_perms'), and (via the shared 'selected_items' bulk-action
- * flow) delete/activate/deactivate/duplicate/move actions on selected
- * maps or groups, rendering a confirmation page on first display and
- * performing the action on confirmed submission. Called from this
- * script's main request-dispatch switch when action=actions.
+ * flow) delete/duplicate/disable/enable/rebuild-now actions on selected
+ * maps, rendering a confirmation page on first display and performing
+ * the action on confirmed submission. Called from this script's main
+ * request-dispatch switch when action=actions.
  *
  * @return void
  *
@@ -577,9 +577,13 @@ function weathermap_form_actions() {
 }
 
 /**
- * Repair the sort order column (for when something is deleted or inserted,
- * or moved between groups) our primary concern is to make the sort order
- * consistent, rather than any special 'correctness'
+ * Renumbers the sortorder column of all maps, per group, to a
+ * consistent 1-based sequence (after a map is deleted, inserted, or
+ * moved between groups). Only sequential consistency is guaranteed,
+ * not any particular ordering beyond the existing group_id/sortorder.
+ * Called after map list/group membership changes.
+ *
+ * @return void
  */
 function map_resort() {
 	$list = db_fetch_assoc('SELECT *
@@ -607,7 +611,11 @@ function map_resort() {
 }
 
 /**
- * Repair the sort order column (for when something is deleted or inserted)
+ * Renumbers the sortorder column of all map groups to a consistent
+ * 1-based sequence (after a group is deleted or inserted). Called
+ * after group list changes.
+ *
+ * @return void
  */
 function weathermap_group_resort() {
 	$list = db_fetch_assoc('SELECT *
@@ -1822,10 +1830,12 @@ function map_delete($id) {
 }
 
 /**
- * Generates a unique, not-yet-existing config filename for a map
- * duplicate, appending an incrementing '_copy'-style suffix (up to 5
- * attempts) if the base name is already taken. Called from
- * map_duplicate() to choose the new map's config filename.
+ * Generates a config filename for a map duplicate, appending an
+ * incrementing '_copy'-style suffix if the base name is already taken.
+ * Tries up to 5 suffixed candidates; if all 5 are already taken, the
+ * final (5th) candidate is returned without a further existence check,
+ * so uniqueness is not strictly guaranteed in that edge case. Called
+ * from map_duplicate() to choose the new map's config filename.
  *
  * @param string $basename The source map's config filename to base the
  *                        new name on.
@@ -2387,9 +2397,9 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
  *
  * @return void
  *
- * @global array $perm_actions Reserved/declared for parity with other
- *                             functions in this file; not used directly
- *                             here.
+ * @global array $perm_actions The permission-action map (grant/revoke),
+ *                             used to render the bulk-actions dropdown
+ *                             via draw_actions_dropdown().
  */
 function perms_list($id) {
 	global $perm_actions;
@@ -3253,8 +3263,10 @@ function weathermap_group_update($id, $newname) {
 
 /**
  * Deletes a map group, first reassigning any maps still in it to
- * another existing group so no maps are left orphaned. Called from the
- * group editor's 'delete' action.
+ * another existing group so no maps are left orphaned. Refuses to
+ * delete the last remaining group, since there would be no valid
+ * fallback group to reassign its maps to. Called from the group
+ * editor's 'delete' action.
  *
  * @param int $id The weathermap_groups id to delete.
  *
@@ -3265,6 +3277,12 @@ function weathermap_group_delete($id) {
 		FROM weathermap_groups
 		WHERE id != ?',
 		[$id]);
+
+	if (empty($newid)) {
+		raise_message('group_delete', __('Unable to delete the last remaining Map Group.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+
+		return;
+	}
 
 	// move any maps out of this group into a still-existing one
 	db_execute_prepared('UPDATE weathermap_maps

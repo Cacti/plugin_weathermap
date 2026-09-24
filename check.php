@@ -420,7 +420,10 @@ if ($environment == 'web') {
  *
  * @param string $val The size string to convert.
  *
- * @return int The equivalent number of bytes (0 if $val is empty).
+ * @return int|string The equivalent number of bytes as an int, 0 if
+ *                    $val is empty, or the original string unchanged
+ *                    if it has no K/M/G suffix (e.g. memory_limit's
+ *                    '-1' for unlimited).
  */
 function return_bytes($val) {
 	$val = trim($val);

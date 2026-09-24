@@ -101,6 +101,13 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 	var $maxy;
 	var $npoints;
 
+	/**
+	 * Renders this polygon area as an HTML &lt;area shape='poly'&gt;
+	 * element. Called from HTML_ImageMap::asHTML() for each polygonal
+	 * area.
+	 *
+	 * @return string The rendered &lt;area&gt; HTML tag.
+	 */
 	function asHTML() {
 		foreach ($this->points as $point) {
 			$flatpoints[] = $point[0];
@@ -112,6 +119,13 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		return "\t\t\t<area " . $this->common_html() . "shape='poly' coords='" . $coordstring . "' />";
 	}
 
+	/**
+	 * Renders this polygon area as a JSON object (shape, point count,
+	 * name, X/Y coordinate lists, and bounding box). Called from
+	 * HTML_ImageMap::asJSON() for each polygonal area.
+	 *
+	 * @return string The rendered JSON object text.
+	 */
 	function asJSON() {
 		$json = "{ 'shape':'poly', 'npoints':" .
 			$this->npoints . ", \"name\":'" .
@@ -135,6 +149,18 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		return ($json);
 	}
 
+	/**
+	 * Tests whether a point falls inside this polygon's bounds, using a
+	 * fast bounding-box rejection followed by a point-in-polygon ray-
+	 * casting test. Called from HTML_ImageMap::hitTest() when checking
+	 * click coordinates against each defined area.
+	 *
+	 * @param int $x The X coordinate to test.
+	 * @param int $y The Y coordinate to test.
+	 *
+	 * @return bool True if the point falls inside the polygon, false
+	 *             otherwise.
+	 */
 	function hitTest($x,$y) {
 		$c = 0;
 
@@ -413,18 +439,19 @@ class HTML_ImageMap {
 	// - can be limited to only match elements whose names match the filter
 	//   (e.g. pick a building, in a campus map)
 	/**
-	 * Finds the first area shape (in reverse/top-most order) whose
+	 * Finds the first area shape (in the order shapes were added) whose
 	 * hitTest() matches the given point, optionally restricted to areas
-	 * whose name matches a filter substring. Called from map click-
-	 * handling code to resolve which area a user clicked.
+	 * whose name matches a filter regular expression. Called from map
+	 * click-handling code to resolve which area a user clicked.
 	 *
 	 * @param int    $x          The X coordinate to test.
 	 * @param int    $y          The Y coordinate to test.
-	 * @param string $namefilter Optional substring the matched area's
-	 *                          name must contain.
+	 * @param string $namefilter Optional regular expression (without
+	 *                          delimiters) the matched area's name must
+	 *                          match.
 	 *
-	 * @return HTML_ImageMap_Area|false The matching area object, or false
-	 *                                 if none matched.
+	 * @return string|false The matching area's name, or false if none
+	 *                      matched.
 	 */
 	function hitTest($x, $y, $namefilter = '') {
 		$preg = '/' . $namefilter . '/';

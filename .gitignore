@@ -1,6 +1,11 @@
 configs/**
 output/**
 
+# Compiled gettext translation files are generated from locales/po/*.po by
+# Weblate after merge; only locales/po/cacti.pot should be committed in PRs.
+locales/po/*.mo
+locales/LC_MESSAGES/*.mo
+
 # The plugin has no Composer manifest of its own; it uses the toolchain the
 # base Cacti install already carries in include/vendor.
 /vendor/

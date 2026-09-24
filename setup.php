@@ -79,8 +79,10 @@ function plugin_weathermap_install() {
 
 /**
  * Plugin uninstall hook: clears the recorded plugin version and drops
- * all of this plugin's database tables. Called by Cacti's plugin
- * architecture when the plugin is uninstalled.
+ * this plugin's core database tables (auth, data, maps, groups,
+ * settings); the weathermap_config_cache table created by
+ * create_prime_mapcache() is not dropped here. Called by Cacti's
+ * plugin architecture when the plugin is uninstalled.
  *
  * @return void
  */
@@ -153,8 +155,9 @@ function plugin_weathermap_check_config() {
  * from plugin_weathermap_check_config() and directly by Cacti's plugin
  * architecture on upgrade.
  *
- * @return bool|void False if this isn't a relevant page (skipped
- *                   early); otherwise no explicit return.
+ * @return bool|null Null if this isn't a relevant page (skipped early
+ *                   via a bare return); otherwise false after
+ *                   completing the upgrade checks.
  *
  * @global array $config Cacti global configuration array; used to
  *                       include the poller-common library.
