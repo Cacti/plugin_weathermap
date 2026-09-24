@@ -343,6 +343,20 @@ switch (get_request_var('action')) {
 		break;
 }
 
+/**
+ * Handles all bulk-action form submissions for the map/permissions
+ * lists: applying per-map user/group permission checkbox changes
+ * ('associate_perms'), and (via the shared 'selected_items' bulk-action
+ * flow) delete/duplicate/disable/enable/rebuild-now actions on selected
+ * maps, rendering a confirmation page on first display and performing
+ * the action on confirmed submission. Called from this script's main
+ * request-dispatch switch when action=actions.
+ *
+ * @return void
+ *
+ * @global array $actions Map of drp_action value => action label, used
+ *                        for the bulk-actions confirmation display.
+ */
 function weathermap_form_actions() {
 	global $actions;
 
@@ -563,9 +577,13 @@ function weathermap_form_actions() {
 }
 
 /**
- * Repair the sort order column (for when something is deleted or inserted,
- * or moved between groups) our primary concern is to make the sort order
- * consistent, rather than any special 'correctness'
+ * Renumbers the sortorder column of all maps, per group, to a
+ * consistent 1-based sequence (after a map is deleted, inserted, or
+ * moved between groups). Only sequential consistency is guaranteed,
+ * not any particular ordering beyond the existing group_id/sortorder.
+ * Called after map list/group membership changes.
+ *
+ * @return void
  */
 function map_resort() {
 	$list = db_fetch_assoc('SELECT *
@@ -593,7 +611,11 @@ function map_resort() {
 }
 
 /**
- * Repair the sort order column (for when something is deleted or inserted)
+ * Renumbers the sortorder column of all map groups to a consistent
+ * 1-based sequence (after a group is deleted or inserted). Called
+ * after group list changes.
+ *
+ * @return void
  */
 function weathermap_group_resort() {
 	$list = db_fetch_assoc('SELECT *
@@ -612,6 +634,16 @@ function weathermap_group_resort() {
 	}
 }
 
+/**
+ * Swaps a map's sort order with its neighbor in the given direction
+ * within its group, effectively moving it up or down one position in
+ * the map list. Called from the map list's up/down reorder actions.
+ *
+ * @param int $mapid     The weathermap_maps id to move.
+ * @param int $direction The direction to move: -1 (up) or +1 (down).
+ *
+ * @return void
+ */
 function map_move($mapid, $direction) {
 	$source = db_fetch_row_prepared('SELECT *
 		FROM weathermap_maps
@@ -648,6 +680,16 @@ function map_move($mapid, $direction) {
 	}
 }
 
+/**
+ * Swaps a group's sort order with its neighbor in the given direction,
+ * effectively moving it up or down one position in the group list.
+ * Called from the group list's up/down reorder actions.
+ *
+ * @param int $id        The weathermap_groups id to move.
+ * @param int $direction The direction to move: -1 (up) or +1 (down).
+ *
+ * @return void
+ */
 function weathermap_group_move($id, $direction) {
 	$source = db_fetch_row_prepared('SELECT *
 		FROM weathermap_groups
@@ -676,6 +718,16 @@ function weathermap_group_move($id, $direction) {
 	}
 }
 
+/**
+ * Renders the main map list's filter box (row-count selector and text
+ * filter input), showing the last poller run's stats in the box title.
+ * Called from maplist() before rendering the map table.
+ *
+ * @return void
+ *
+ * @global array $item_rows Cacti's standard row-count option list, used
+ *                         to populate the rows-per-page dropdown.
+ */
 function wm_filter() {
 	global $item_rows;
 
@@ -775,6 +827,18 @@ function wm_filter() {
 	html_end_box();
 }
 
+/**
+ * Fetches the paginated/filtered list of maps (with their group names)
+ * matching the current text filter, and the total matching count for
+ * pagination. Called from maplist() to populate the map list table.
+ *
+ * @param int $total_rows Reference, populated with the total number of
+ *                        matching maps (ignoring pagination).
+ * @param int $rows       The number of rows per page to return.
+ *
+ * @return array The matching weathermap_maps rows (with 'groupname')
+ *              for the current page.
+ */
 function get_map_records(&$total_rows, &$rows) {
 	// form the 'where' clause for our main sql query
 	if (get_request_var('filter') != '') {
@@ -802,6 +866,18 @@ function get_map_records(&$total_rows, &$rows) {
 		$sql_limit");
 }
 
+/**
+ * Renders the main map management list page: last poller run stats, the
+ * filter box, a sortable/paginated table of maps grouped by group with
+ * reorder/activate/deactivate/duplicate/permissions/edit links, and the
+ * bulk-actions dropdown. Called from this script's main
+ * request-dispatch switch as the default view.
+ *
+ * @return void
+ *
+ * @global array $actions Map of drp_action value => action label, used
+ *                        for the bulk-actions dropdown.
+ */
 function maplist() {
 	global $actions;
 
@@ -1102,6 +1178,20 @@ function maplist() {
 	<?php
 }
 
+/**
+ * Rebuilds the weathermap_config_cache table (creating it if needed)
+ * from scratch by scanning the configs directory for '.conf' files,
+ * recording each file's size/timestamps/title and matching it to an
+ * existing weathermap_maps row where possible. Called from
+ * addmap_picker() before listing available config files to add as new
+ * maps.
+ *
+ * @return void This function redirects and calls exit() if the configs
+ *             directory is missing.
+ *
+ * @global string $weathermap_confdir The configured path to the
+ *                                    weathermap configs directory.
+ */
 function create_prime_mapcache() {
 	global $weathermap_confdir;
 
@@ -1169,6 +1259,17 @@ function create_prime_mapcache() {
 	}
 }
 
+/**
+ * Renders the 'add map' picker's filter box (row-count selector and
+ * text filter input) for browsing existing config files not yet added
+ * as maps. Called from addmap_picker() before rendering the config
+ * file list table.
+ *
+ * @return void
+ *
+ * @global array $item_rows Cacti's standard row-count option list, used
+ *                         to populate the rows-per-page dropdown.
+ */
 function addmap_filter() {
 	global $item_rows;
 
@@ -1315,6 +1416,25 @@ function addmap_filter() {
 	html_end_box();
 }
 
+/**
+ * Renders the 'Add Map' picker page: rebuilds the config file cache,
+ * validates/stores this view's filter request variables, renders the
+ * filter box, then displays a sortable/paginated table of discovered
+ * config files (optionally including ones already added as maps) with
+ * a preview/add action for each. Called from this script's main
+ * request-dispatch switch when action=addmap_picker.
+ *
+ * @param bool $show_all Whether to include config files already
+ *                       associated with an existing map.
+ *
+ * @return void
+ *
+ * @global string $weathermap_confdir The configured path to the
+ *                                    weathermap configs directory.
+ * @global array  $item_rows          Cacti's standard row-count option
+ *                                    list, used to populate the rows
+ *                                    dropdown.
+ */
 function addmap_picker($show_all = false) {
 	global $weathermap_confdir, $item_rows;
 
@@ -1498,6 +1618,21 @@ function addmap_picker($show_all = false) {
 	}
 }
 
+/**
+ * Renders a raw text preview of a discovered config file's contents,
+ * after verifying it actually resolves inside the configs directory
+ * (guarding against path traversal). Called from this script's main
+ * request-dispatch switch when action=preview_config.
+ *
+ * @param string $file The config filename (relative to the configs
+ *                     directory) to preview.
+ *
+ * @return void This function redirects and calls exit() if the path is
+ *             invalid/missing.
+ *
+ * @global string $weathermap_confdir The configured path to the
+ *                                    weathermap configs directory.
+ */
 function preview_config($file) {
 	global $weathermap_confdir;
 
@@ -1541,6 +1676,22 @@ function preview_config($file) {
 	}
 }
 
+/**
+ * Registers a discovered config file as a new weathermap_maps entry
+ * (extracting its title, granting the current user access, generating
+ * a unique file hash, and re-sorting the map list), after verifying it
+ * actually resolves inside the configs directory (guarding against
+ * path traversal). Called from this script's main request-dispatch
+ * switch when action=add_config.
+ *
+ * @param string $file The config filename (relative to the configs
+ *                     directory) to add as a new map.
+ *
+ * @return void
+ *
+ * @global string $weathermap_confdir The configured path to the
+ *                                    weathermap configs directory.
+ */
 function add_config($file) {
 	global $weathermap_confdir;
 
@@ -1579,6 +1730,23 @@ function add_config($file) {
 	}
 }
 
+/**
+ * Extracts a map's display title by scanning its config file's TITLE/
+ * TITLEPOS directives, falling back to a '(No Title)' placeholder if
+ * none is found or the file doesn't exist. Called from
+ * create_prime_mapcache() and add_config() when cataloging/adding
+ * config files.
+ *
+ * @param string $filename The config file path (or bare filename,
+ *                        resolved relative to the configs directory)
+ *                        to read.
+ *
+ * @return string The extracted title, or a localized '(No Title)'
+ *              placeholder.
+ *
+ * @global string $weathermap_confdir The configured path to the
+ *                                    weathermap configs directory.
+ */
 function wmap_get_title($filename) {
 	global $weathermap_confdir;
 
@@ -1614,6 +1782,14 @@ function wmap_get_title($filename) {
 	return ($title);
 }
 
+/**
+ * Marks a map inactive (hidden from viewers). Called from the map
+ * list's bulk/inline 'deactivate' action.
+ *
+ * @param int $id The weathermap_maps id to deactivate.
+ *
+ * @return void
+ */
 function map_deactivate($id) {
 	db_execute_prepared('UPDATE weathermap_maps
 		SET active = "off"
@@ -1621,6 +1797,14 @@ function map_deactivate($id) {
 		[$id]);
 }
 
+/**
+ * Marks a map active (visible to viewers). Called from the map list's
+ * bulk/inline 'activate' action.
+ *
+ * @param int $id The weathermap_maps id to activate.
+ *
+ * @return void
+ */
 function map_activate($id) {
 	db_execute_prepared('UPDATE weathermap_maps
 		SET active = "on"
@@ -1628,6 +1812,15 @@ function map_activate($id) {
 		[$id]);
 }
 
+/**
+ * Deletes a map along with its authorization and settings rows, then
+ * re-sorts the remaining maps. Called from the map list's bulk/inline
+ * 'delete' action.
+ *
+ * @param int $id The weathermap_maps id to delete.
+ *
+ * @return void
+ */
 function map_delete($id) {
 	db_execute_prepared('DELETE FROM weathermap_maps WHERE id = ?', [$id]);
 	db_execute_prepared('DELETE FROM weathermap_auth WHERE mapid = ?', [$id]);
@@ -1636,6 +1829,22 @@ function map_delete($id) {
 	map_resort();
 }
 
+/**
+ * Generates a config filename for a map duplicate, appending an
+ * incrementing '_copy'-style suffix if the base name is already taken.
+ * Tries up to 5 suffixed candidates; if all 5 are already taken, the
+ * final (5th) candidate is returned without a further existence check,
+ * so uniqueness is not strictly guaranteed in that edge case. Called
+ * from map_duplicate() to choose the new map's config filename.
+ *
+ * @param string $basename The source map's config filename to base the
+ *                        new name on.
+ * @param string $pattern  The suffix pattern to append when the base
+ *                        name is taken.
+ *
+ * @return string The generated unique config filename (with '.conf'
+ *               extension).
+ */
 function map_get_next_name($basename, $pattern = 'copy') {
 	global $weathermap_confdir;
 
@@ -1661,6 +1870,28 @@ function map_get_next_name($basename, $pattern = 'copy') {
 	return $file . '.conf';
 }
 
+/**
+ * Duplicates an existing map as a new map: copies its database row
+ * (with a fresh sort order and cleared runtime fields), its
+ * authorization and settings rows, and its config file on disk
+ * (substituting the new title into the copied file's TITLE line), then
+ * immediately runs the new map. Called from the map list's 'duplicate'
+ * action.
+ *
+ * @param int         $id          The source weathermap_maps id to
+ *                                 duplicate.
+ * @param string      $titlecache  The title format for the new map,
+ *                                 optionally containing a
+ *                                 '<map_title>' placeholder for the
+ *                                 original title.
+ * @param string|null $configfile  Optional title format (with
+ *                                 '<map_config>' placeholder) for the
+ *                                 new config filename; null generates
+ *                                 one automatically via
+ *                                 map_get_next_name().
+ *
+ * @return void
+ */
 function map_duplicate($id, $titlecache, $configfile = null) {
 	$map = db_fetch_row_prepared('SELECT * FROM weathermap_maps WHERE id = ?', [$id]);
 
@@ -1739,6 +1970,16 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 	}
 }
 
+/**
+ * Moves a map to a different group and re-sorts the map list. Called
+ * from the map settings form when the user changes a map's group
+ * assignment.
+ *
+ * @param int $mapid   The weathermap_maps id to move.
+ * @param int $groupid The target weathermap_groups id.
+ *
+ * @return void
+ */
 function weathermap_set_group($mapid, $groupid) {
 	db_execute_prepared('UPDATE weathermap_maps
 		SET group_id = ?
@@ -1748,6 +1989,17 @@ function weathermap_set_group($mapid, $groupid) {
 	map_resort();
 }
 
+/**
+ * Grants a user (or user group, via a negative id convention elsewhere
+ * in this file) access to view a map. Called from the map permissions
+ * editor when adding an authorized user/group.
+ *
+ * @param int $mapid  The weathermap_maps id to grant access to.
+ * @param int $userid The user (or negative group) id to grant access
+ *                    for.
+ *
+ * @return void
+ */
 function perms_add_user($mapid, $userid) {
 	db_execute_prepared('INSERT INTO weathermap_auth
 		(mapid, userid)
@@ -1755,6 +2007,16 @@ function perms_add_user($mapid, $userid) {
 		[$mapid, $userid]);
 }
 
+/**
+ * Revokes a user's (or user group's) access to view a map. Called from
+ * the map permissions editor when removing an authorized user/group.
+ *
+ * @param int $mapid  The weathermap_maps id to revoke access from.
+ * @param int $userid The user (or negative group) id to revoke access
+ *                    for.
+ *
+ * @return void
+ */
 function perms_delete_user($mapid, $userid) {
 	db_execute_prepared('DELETE FROM weathermap_auth
 		WHERE mapid = ?
@@ -1762,6 +2024,14 @@ function perms_delete_user($mapid, $userid) {
 		[$mapid, $userid]);
 }
 
+/**
+ * Validates and stores the map permissions list's filter request
+ * variables (rows, page, user type, text filter, has-perms toggle)
+ * into the session. Called from perms_list() before rendering the
+ * permissions table.
+ *
+ * @return void
+ */
 function perms_request_validation() {
 	// ================= input validation and session storage =================
 	$filters = [
@@ -1796,6 +2066,20 @@ function perms_request_validation() {
 	// ================= input validation =================
 }
 
+/**
+ * Renders the map permissions list's filter box (row-count selector,
+ * user-type filter, text filter, has-perms toggle), titled with the
+ * target map's name. Called from perms_list() before rendering the
+ * permissions table.
+ *
+ * @param int $id The weathermap_maps id whose permissions are being
+ *                edited.
+ *
+ * @return void
+ *
+ * @global array $item_rows Cacti's standard row-count option list, used
+ *                         to populate the rows-per-page dropdown.
+ */
 function perms_filter($id) {
 	global $item_rows;
 
@@ -1908,6 +2192,22 @@ function perms_filter($id) {
 	html_end_box();
 }
 
+/**
+ * Fetches the paginated/filtered list of users (and/or groups)
+ * available for a map's permissions editor, indicating which already
+ * have access, matching the current text/type/has-perms filters
+ * (excluding the guest and template users). Called from perms_list()
+ * to populate the permissions table.
+ *
+ * @param int  $total_rows   Reference, populated with the total number
+ *                          of matching users (ignoring pagination).
+ * @param int  $rows         The number of rows per page to return.
+ * @param bool $apply_limits Whether to apply pagination (LIMIT); pass
+ *                          false to fetch all matching rows.
+ *
+ * @return array The matching user/group rows for the current page,
+ *              annotated with their current permission state.
+ */
 function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 	$sql_where1 = '';
 	$sql_where2 = '';
@@ -2085,6 +2385,22 @@ function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 	return $records;
 }
 
+/**
+ * Renders the map permissions editor page: validates/stores the
+ * filter request variables, renders the filter box, then displays a
+ * paginated table of users/groups with checkboxes for granting/
+ * revoking access to the given map. Called from this script's main
+ * request-dispatch switch when action=perms_edit.
+ *
+ * @param int $id The weathermap_maps id whose permissions are being
+ *                edited.
+ *
+ * @return void
+ *
+ * @global array $perm_actions The permission-action map (grant/revoke),
+ *                             used to render the bulk-actions dropdown
+ *                             via draw_actions_dropdown().
+ */
 function perms_list($id) {
 	global $perm_actions;
 
@@ -2205,6 +2521,23 @@ function perms_list($id) {
 	weathermap_back_to();
 }
 
+/**
+ * Renders the Settings ('SET' override) list for a global/group/map
+ * scope (determined by the sign/value of $id), showing any inherited
+ * higher-scope settings read-only above the editable list for this
+ * scope. Called from this script's main request-dispatch switch when
+ * action=map_settings.
+ *
+ * @param int $id 0 for global settings, a negative group id for group
+ *               settings, or a positive map id for map-specific
+ *               settings.
+ *
+ * @return void
+ *
+ * @global array $config Reserved/declared for parity with other
+ *                       functions in this file; not used directly
+ *                       here.
+ */
 function weathermap_map_settings($id) {
 	global $config;
 
@@ -2336,6 +2669,15 @@ function weathermap_map_settings($id) {
 	weathermap_back_to($type);
 }
 
+/**
+ * Renders a 'back to' navigation link appropriate to the current
+ * settings scope (group admin or map admin). Called from
+ * weathermap_map_settings() at the bottom of the settings list.
+ *
+ * @param string $type The current scope: 'global', 'group', or 'map'.
+ *
+ * @return void
+ */
 function weathermap_back_to($type = 'global') {
 	print '<div align=center>';
 
@@ -2350,6 +2692,23 @@ function weathermap_back_to($type = 'global') {
 	print '</div>';
 }
 
+/**
+ * Renders a read-only settings table for a higher scope (global or
+ * group) so the user can see which inherited settings affect the
+ * current group/map they're editing. Called from
+ * weathermap_map_settings() to display inherited global/group settings
+ * above the editable list.
+ *
+ * @param int    $id    0 for global settings, or a group id for group
+ *                      settings.
+ * @param string $title The box title to display.
+ *
+ * @return void
+ *
+ * @global array $config Reserved/declared for parity with other
+ *                       functions in this file; not used directly
+ *                       here.
+ */
 function weathermap_readonly_settings($id, $title = 'Settings') {
 	global $config;
 
@@ -2394,6 +2753,24 @@ function weathermap_readonly_settings($id, $title = 'Settings') {
 	html_end_box();
 }
 
+/**
+ * Renders the add/edit form for a single global/group/map setting (a
+ * name/value 'SET' override pair), pre-populated when editing an
+ * existing setting. Called from this script's main request-dispatch
+ * switch when action=map_settings_form.
+ *
+ * @param int $mapid     0 for a global setting, a negative group id for
+ *                       a group setting, or a positive map id for a
+ *                       map-specific setting.
+ * @param int $settingid The weathermap_settings id being edited, or 0
+ *                       for a new setting.
+ *
+ * @return void
+ *
+ * @global array $config Reserved/declared for parity with other
+ *                       functions in this file; not used directly
+ *                       here.
+ */
 function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 	global $config;
 
@@ -2477,6 +2854,18 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 	form_save_button('weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $mapid);
 }
 
+/**
+ * Creates (or replaces, on a duplicate key) a global/group/map setting
+ * row. Called when saving a newly created setting.
+ *
+ * @param int    $mapid 0 for a global setting, a negative group id for
+ *                      a group setting, or a positive map id for a
+ *                      map-specific setting.
+ * @param string $name  The setting's option name.
+ * @param string $value The setting's option value.
+ *
+ * @return void
+ */
 function weathermap_setting_save($mapid, $name, $value) {
 	if ($mapid > 0) {
 		db_execute_prepared('REPLACE INTO weathermap_settings
@@ -2496,6 +2885,20 @@ function weathermap_setting_save($mapid, $name, $value) {
 	}
 }
 
+/**
+ * Updates an existing global/group/map setting's name/value if it
+ * still exists, otherwise inserts it as new. Called when saving an
+ * edited setting via weathermap_map_settings_form().
+ *
+ * @param int    $mapid     0 for a global setting, a negative group id
+ *                          for a group setting, or a positive map id
+ *                          for a map-specific setting.
+ * @param int    $settingid The weathermap_settings id to update.
+ * @param string $name      The setting's option name.
+ * @param string $value     The setting's option value.
+ *
+ * @return void
+ */
 function weathermap_setting_update($mapid, $settingid, $name, $value) {
 	if ($mapid > 0) {
 		$exists = db_fetch_cell_prepared('SELECT id
@@ -2531,6 +2934,17 @@ function weathermap_setting_update($mapid, $settingid, $name, $value) {
 	}
 }
 
+/**
+ * Deletes a global/group/map setting row. Called from the settings
+ * list's delete action.
+ *
+ * @param int $mapid     0 for a global setting, a negative group id for
+ *                       a group setting, or a positive map id for a
+ *                       map-specific setting.
+ * @param int $settingid The weathermap_settings id to delete.
+ *
+ * @return void
+ */
 function weathermap_setting_delete($mapid, $settingid) {
 	if ($mapid > 0) {
 		db_execute_prepared('DELETE FROM weathermap_settings
@@ -2545,6 +2959,16 @@ function weathermap_setting_delete($mapid, $settingid) {
 	}
 }
 
+/**
+ * Renders the 'change group' form for a map: a dropdown of existing
+ * groups (pre-selecting the map's current group) plus a link to the
+ * group management page. Called from this script's main
+ * request-dispatch switch when action=chgroup.
+ *
+ * @param int $id The weathermap_maps id whose group is being changed.
+ *
+ * @return void
+ */
 function weathermap_chgroup($id) {
 	$title = db_fetch_cell_prepared('SELECT titlecache
 		FROM weathermap_maps
@@ -2599,6 +3023,20 @@ function weathermap_chgroup($id) {
 	form_end();
 }
 
+/**
+ * Renders the add/edit form for a single map group (just a name
+ * field). Called from this script's main request-dispatch switch when
+ * action=group_form.
+ *
+ * @param int $id The weathermap_groups id to edit, or 0 to add a new
+ *                group.
+ *
+ * @return void
+ *
+ * @global array $config Reserved/declared for parity with other
+ *                       functions in this file; not used directly
+ *                       here.
+ */
 function weathermap_group_form($id = 0) {
 	global $config;
 
@@ -2640,6 +3078,17 @@ function weathermap_group_form($id = 0) {
 	html_end_box();
 }
 
+/**
+ * Renders the map group management list page: a table of groups with
+ * reorder/edit/delete actions. Called from this script's main
+ * request-dispatch switch when action=groupadmin.
+ *
+ * @return void
+ *
+ * @global array $config Reserved/declared for parity with other
+ *                       functions in this file; not used directly
+ *                       here.
+ */
 function weathermap_group_editor() {
 	global $config;
 
@@ -2778,6 +3227,14 @@ function weathermap_group_editor() {
 	<?php
 }
 
+/**
+ * Creates a new map group, appended to the end of the sort order.
+ * Called from the group editor's 'add' form submission.
+ *
+ * @param string $newname The new group's name.
+ *
+ * @return void
+ */
 function weathermap_group_create($newname) {
 	$sortorder = db_fetch_cell_prepared('SELECT MAX(sortorder)+1
 		FROM weathermap_groups');
@@ -2788,6 +3245,15 @@ function weathermap_group_create($newname) {
 		[$newname, $sortorder]);
 }
 
+/**
+ * Renames an existing map group. Called from the group editor's 'edit'
+ * form submission.
+ *
+ * @param int    $id      The weathermap_groups id to rename.
+ * @param string $newname The group's new name.
+ *
+ * @return void
+ */
 function weathermap_group_update($id, $newname) {
 	db_execute_prepared('UPDATE weathermap_groups
 		SET name = ?
@@ -2795,11 +3261,28 @@ function weathermap_group_update($id, $newname) {
 		[$newname, $id]);
 }
 
+/**
+ * Deletes a map group, first reassigning any maps still in it to
+ * another existing group so no maps are left orphaned. Refuses to
+ * delete the last remaining group, since there would be no valid
+ * fallback group to reassign its maps to. Called from the group
+ * editor's 'delete' action.
+ *
+ * @param int $id The weathermap_groups id to delete.
+ *
+ * @return void
+ */
 function weathermap_group_delete($id) {
 	$newid = db_fetch_cell_prepared('SELECT MIN(id)
 		FROM weathermap_groups
 		WHERE id != ?',
 		[$id]);
+
+	if (empty($newid)) {
+		raise_message('group_delete', __('Unable to delete the last remaining Map Group.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+
+		return;
+	}
 
 	// move any maps out of this group into a still-existing one
 	db_execute_prepared('UPDATE weathermap_maps
@@ -2813,6 +3296,23 @@ function weathermap_group_delete($id) {
 		[$id]);
 }
 
+/**
+ * Creates a new blank (or copied-from-source) map config file on disk
+ * using the WeatherMap engine's own config writer, guarding against
+ * overwriting an existing file. Called from the map editor's 'new map'
+ * action.
+ *
+ * @param string $mapfile       The new map's config filename (bare or
+ *                             full path) to create.
+ * @param string $sourcemapfile Optional existing config file to copy
+ *                             settings from instead of creating a blank
+ *                             map.
+ *
+ * @return void
+ *
+ * @global string $weathermap_confdir The configured path to the
+ *                                    weathermap configs directory.
+ */
 function newMap($mapfile, $sourcemapfile = '') {
 	global $weathermap_confdir;
 

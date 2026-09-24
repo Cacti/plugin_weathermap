@@ -413,6 +413,18 @@ if ($environment == 'web') {
 	print '</body></html>';
 }
 
+/**
+ * Converts a PHP ini-style size string (e.g. '128M', '1G') into a plain
+ * byte count. Called from this script's dependency/environment checks
+ * to parse PHP's configured memory_limit.
+ *
+ * @param string $val The size string to convert.
+ *
+ * @return int|string The equivalent number of bytes as an int, 0 if
+ *                    $val is empty, or the original string unchanged
+ *                    if it has no K/M/G suffix (e.g. memory_limit's
+ *                    '-1' for unlimited).
+ */
 function return_bytes($val) {
 	$val = trim($val);
 

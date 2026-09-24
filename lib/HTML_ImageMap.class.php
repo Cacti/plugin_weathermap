@@ -58,6 +58,13 @@ class HTML_ImageMap_Area {
 	var $z;
 	var $extrahtml;
 
+	/**
+	 * Builds the shared HTML attribute fragment (id/class/href/nohref and
+	 * any extra HTML) common to every &lt;area&gt; shape type. Called from each
+	 * subclass's asHTML() method.
+	 *
+	 * @return string The shared HTML attribute fragment.
+	 */
 	function common_html() {
 		$h = '';
 
@@ -94,6 +101,13 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 	var $maxy;
 	var $npoints;
 
+	/**
+	 * Renders this polygon area as an HTML &lt;area shape='poly'&gt;
+	 * element. Called from HTML_ImageMap::asHTML() for each polygonal
+	 * area.
+	 *
+	 * @return string The rendered &lt;area&gt; HTML tag.
+	 */
 	function asHTML() {
 		foreach ($this->points as $point) {
 			$flatpoints[] = $point[0];
@@ -105,6 +119,13 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		return "\t\t\t<area " . $this->common_html() . "shape='poly' coords='" . $coordstring . "' />";
 	}
 
+	/**
+	 * Renders this polygon area as a JSON object (shape, point count,
+	 * name, X/Y coordinate lists, and bounding box). Called from
+	 * HTML_ImageMap::asJSON() for each polygonal area.
+	 *
+	 * @return string The rendered JSON object text.
+	 */
 	function asJSON() {
 		$json = "{ 'shape':'poly', 'npoints':" .
 			$this->npoints . ", \"name\":'" .
@@ -128,6 +149,18 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		return ($json);
 	}
 
+	/**
+	 * Tests whether a point falls inside this polygon's bounds, using a
+	 * fast bounding-box rejection followed by a point-in-polygon ray-
+	 * casting test. Called from HTML_ImageMap::hitTest() when checking
+	 * click coordinates against each defined area.
+	 *
+	 * @param int $x The X coordinate to test.
+	 * @param int $y The Y coordinate to test.
+	 *
+	 * @return bool True if the point falls inside the polygon, false
+	 *             otherwise.
+	 */
 	function hitTest($x,$y) {
 		$c = 0;
 
@@ -155,6 +188,15 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		return ($c);
 	}
 
+	/**
+	 * Constructs a polygon area from a flat list of X/Y coordinate pairs,
+	 * computing its point list and bounding box.
+	 *
+	 * @param string $name   The area's name/id.
+	 * @param string $href   The area's link URL.
+	 * @param array  $coords A one-element array whose first element is a
+	 *                       flat [x1, y1, x2, y2, ...] coordinate list.
+	 */
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
 
@@ -193,6 +235,15 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	var $y1;
 	var $y2;
 
+	/**
+	 * Constructs a rectangular area from a two-corner coordinate list,
+	 * normalizing the corners so (x1,y1) is always top-left.
+	 *
+	 * @param string $name   The area's name/id.
+	 * @param string $href   The area's link URL.
+	 * @param array  $coords A one-element array whose first element is
+	 *                       [x1, y1, x2, y2].
+	 */
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
 
@@ -222,16 +273,41 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 		$this->href = $href;
 	}
 
+	/**
+	 * Tests whether a point falls inside this rectangle's bounds. Called
+	 * from HTML_ImageMap::hitTest() when checking click coordinates
+	 * against each defined area.
+	 *
+	 * @param int $x The X coordinate to test.
+	 * @param int $y The Y coordinate to test.
+	 *
+	 * @return bool True if the point falls inside the rectangle, false
+	 *             otherwise.
+	 */
 	function hitTest($x, $y) {
 		return ($x > $this->x1 && $x < $this->x2 && $y > $this->y1 && $y < $this->y2);
 	}
 
+	/**
+	 * Renders this rectangle area as an HTML &lt;area shape='rect'&gt;
+	 * element. Called from HTML_ImageMap::asHTML() for each rectangular
+	 * area.
+	 *
+	 * @return string The rendered &lt;area&gt; HTML tag.
+	 */
 	function asHTML() {
 		$coordstring = join(',', [$this->x1, $this->y1, $this->x2, $this->y2]);
 
 		return "\t\t\t<area " . $this->common_html() . 'shape="rect" coords="' . $coordstring . '" />';
 	}
 
+	/**
+	 * Renders this rectangle area as a JSON object (shape, corners, and
+	 * name). Called from HTML_ImageMap::asJSON() for each rectangular
+	 * area.
+	 *
+	 * @return string The rendered JSON object text.
+	 */
 	function asJSON() {
 		$json = "{ 'shape':'rect', ";
 
@@ -248,12 +324,31 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 	var $centx,$centy, $edgex, $edgey;
 
+	/**
+	 * Renders this circular area as an HTML &lt;area shape='circle'&gt;
+	 * element. Called from HTML_ImageMap::asHTML() for each circular
+	 * area.
+	 *
+	 * @return string The rendered &lt;area&gt; HTML tag.
+	 */
 	function asHTML() {
 		$coordstring = join(',', [$this->centx, $this->centy, $this->edgex, $this->edgey]);
 
 		return "\t\t\t<area " . $this->common_html() . " shape='circle' coords='" . $coordstring . "' />";
 	}
 
+	/**
+	 * Tests whether a point falls inside this circle, by comparing
+	 * squared distances to avoid a sqrt() call. Called from
+	 * HTML_ImageMap::hitTest() when checking click coordinates against
+	 * each defined area.
+	 *
+	 * @param int $x The X coordinate to test.
+	 * @param int $y The Y coordinate to test.
+	 *
+	 * @return bool True if the point falls inside the circle, false
+	 *             otherwise.
+	 */
 	function hitTest($x,$y) {
 		$radius1 = ($this->edgey - $this->centy) * ($this->edgey - $this->centy)
 			+ ($this->edgex - $this->centx) * ($this->edgex - $this->centx);
@@ -264,6 +359,15 @@ class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 		return ($radius2 <= $radius1);
 	}
 
+	/**
+	 * Constructs a circular area from a center point and edge point
+	 * coordinate list.
+	 *
+	 * @param string $name   The area's name/id.
+	 * @param string $href   The area's link URL.
+	 * @param array  $coords A one-element array whose first element is
+	 *                       [centerX, centerY, edgeX, edgeY].
+	 */
 	function __construct($name = '', $href = '', $coords = '') {
 		$c = $coords[0];
 
@@ -282,11 +386,21 @@ class HTML_ImageMap {
 	var $nshapes;
 	var $name;
 
+	/**
+	 * Constructs an empty image map with the given name.
+	 *
+	 * @param string $name The image map's name/id.
+	 */
 	function __construct($name = '') {
 		$this->Reset();
 		$this->name = $name;
 	}
 
+	/**
+	 * Clears all shapes and resets the map's name.
+	 *
+	 * @return void
+	 */
 	function Reset() {
 		$this->shapes  = [];
 		$this->nshapes = 0;
@@ -294,6 +408,19 @@ class HTML_ImageMap {
 	}
 
 	// add an element to the map - takes an array with the info, in a similar way to HTML_QuickForm
+	/**
+	 * Adds an area shape to the map, either an already-constructed
+	 * HTML_ImageMap_Area subclass instance, or a shape type name plus
+	 * constructor arguments (name, href, coords) to build one.
+	 *
+	 * @param object|string $element Either an HTML_ImageMap_Area
+	 *                               subclass instance, or a shape suffix
+	 *                               ('Polygon'/'Rectangle'/'Circle') when
+	 *                               constructing a new shape from the
+	 *                               remaining variadic arguments.
+	 *
+	 * @return void
+	 */
 	function addArea($element) {
 		if (is_object($element) && is_subclass_of($element, 'html_imagemap_area')) {
 			$elementObject = &$element;
@@ -311,6 +438,21 @@ class HTML_ImageMap {
 	// do a hit-test based on the current map
 	// - can be limited to only match elements whose names match the filter
 	//   (e.g. pick a building, in a campus map)
+	/**
+	 * Finds the first area shape (in the order shapes were added) whose
+	 * hitTest() matches the given point, optionally restricted to areas
+	 * whose name matches a filter regular expression. Called from map
+	 * click-handling code to resolve which area a user clicked.
+	 *
+	 * @param int    $x          The X coordinate to test.
+	 * @param int    $y          The Y coordinate to test.
+	 * @param string $namefilter Optional regular expression (without
+	 *                          delimiters) the matched area's name must
+	 *                          match.
+	 *
+	 * @return string|false The matching area's name, or false if none
+	 *                      matched.
+	 */
 	function hitTest($x, $y, $namefilter = '') {
 		$preg = '/' . $namefilter . '/';
 
@@ -328,6 +470,20 @@ class HTML_ImageMap {
 	// update a property on all elements in the map that match a name
 	// (use it for retro-actively adding in link information to a pre-built geometry before generating HTML)
 	// returns the number of elements that were matched/changed
+	/**
+	 * Updates a property ('href' or 'extrahtml') on every shape whose
+	 * name exactly matches (or, if $where is empty, on every shape).
+	 * Called to retro-actively add link/HTML info to a pre-built
+	 * geometry before generating output.
+	 *
+	 * @param string $which The property to update: 'href' or
+	 *                      'extrahtml'.
+	 * @param string $what  The new value to set.
+	 * @param string $where The exact shape name to match, or '' to match
+	 *                      all shapes.
+	 *
+	 * @return int The number of shapes updated.
+	 */
 	function setProp($which, $what, $where) {
 		$count = 0;
 
@@ -357,6 +513,20 @@ class HTML_ImageMap {
 	// update a property on all elements in the map that match a name as a substring
 	// (use it for retro-actively adding in link information to a pre-built geometry before generating HTML)
 	// returns the number of elements that were matched/changed
+	/**
+	 * Updates a property ('href' or 'extrahtml') on every shape whose
+	 * name contains a given substring (or, if $where is empty, on every
+	 * shape). Called to retro-actively add link/HTML info to a
+	 * pre-built geometry before generating output.
+	 *
+	 * @param string $which The property to update: 'href' or
+	 *                      'extrahtml'.
+	 * @param string $what  The new value to set.
+	 * @param string $where A substring to match against each shape's
+	 *                      name, or '' to match all shapes.
+	 *
+	 * @return int The number of shapes updated.
+	 */
 	function setPropSub($which, $what, $where) {
 		$count = 0;
 
@@ -381,6 +551,13 @@ class HTML_ImageMap {
 	}
 
 	// Return the imagemap as an HTML client-side imagemap for inclusion in a page
+	/**
+	 * Renders the full image map as an HTML client-side &lt;map&gt; element
+	 * containing every shape's &lt;area&gt; tag. Called wherever the complete
+	 * map's HTML output is needed.
+	 *
+	 * @return string The rendered &lt;map&gt; HTML block.
+	 */
 	function asHTML() {
 		$html = '<map';
 
@@ -400,6 +577,19 @@ class HTML_ImageMap {
 		return $html;
 	}
 
+	/**
+	 * Renders a filtered subset of the map's shapes as a comma-separated
+	 * list of JSON objects, optionally in reverse order. Called when
+	 * generating client-side JSON hit-test data for a subset of shapes
+	 * (e.g. just links, or just nodes).
+	 *
+	 * @param string $namefilter   A regex pattern to match against each
+	 *                            shape's name; '' matches all shapes.
+	 * @param bool   $reverseorder Whether to prepend (true) or append
+	 *                            (false) each matching shape's JSON.
+	 *
+	 * @return string The concatenated JSON objects, comma-separated.
+	 */
 	function subJSON($namefilter = '',$reverseorder = false) {
 		$json = '';
 
@@ -425,6 +615,26 @@ class HTML_ImageMap {
 	// (suppose you want some partof your UI to have precedence over another part
 	//  - the imagemap is checked from top-to-bottom in the HTML)
 	// - skipnolinks -> in normal HTML output, we don't need areas for things with no href
+	// return HTML for a subset of the map, specified by the filter string
+	// (suppose you want some partof your UI to have precedence over another part
+	//  - the imagemap is checked from top-to-bottom in the HTML)
+	// - skipnolinks -> in normal HTML output, we don't need areas for things with no href
+	/**
+	 * Renders a filtered subset of the map's shapes as HTML &lt;area&gt; tags,
+	 * optionally in reverse order (to control z-order/precedence in the
+	 * generated HTML) and optionally skipping shapes with no link/extra
+	 * HTML. Called when generating HTML output for a subset of shapes
+	 * (e.g. just links, or just nodes).
+	 *
+	 * @param string $namefilter   A substring to match against each
+	 *                            shape's name; '' matches all shapes.
+	 * @param bool   $reverseorder Whether to prepend (true) or append
+	 *                            (false) each matching shape's HTML.
+	 * @param bool   $skipnolinks  Whether to omit shapes with no href and
+	 *                            no extra HTML.
+	 *
+	 * @return string The concatenated &lt;area&gt; HTML tags.
+	 */
 	function subHTML($namefilter = '',$reverseorder = false, $skipnolinks = false) {
 		$html = '';
 		$preg = '/' . $namefilter . '/';

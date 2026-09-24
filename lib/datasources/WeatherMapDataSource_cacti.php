@@ -2,6 +2,18 @@
 
 declare(strict_types = 1);
 class WeatherMapDataSource_cacti extends WeatherMapDataSource {
+	/**
+	 * Verifies this data source can run: requires the map to be
+	 * operating in the 'cacti' context with Cacti's database library
+	 * available. Called by the WeatherMap engine before using this data
+	 * source.
+	 *
+	 * @param object $map Reference, the WeatherMap object being
+	 *                    initialized.
+	 *
+	 * @return bool True if this data source can be used, false
+	 *             otherwise.
+	 */
 	function Init(&$map) {
 		if ($map->context === 'cacti') {
 			if (function_exists('db_fetch_row') === true) {
@@ -16,6 +28,16 @@ class WeatherMapDataSource_cacti extends WeatherMapDataSource {
 		return (false);
 	}
 
+	/**
+	 * Determines whether a target string uses this data source's
+	 * 'cacti:N' syntax. Called by the WeatherMap engine to select which
+	 * data source handles a given link/node target.
+	 *
+	 * @param string $targetstring The target string to check.
+	 *
+	 * @return bool True if the target string matches the 'cacti:N'
+	 *             pattern, false otherwise.
+	 */
 	function Recognise($targetstring) {
 		if (preg_match('/^cacti:(\d+)$/', $targetstring, $matches) === 1) {
 			return true;
@@ -24,6 +46,22 @@ class WeatherMapDataSource_cacti extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * Reads the pre-computed IN/OUT values for a 'cacti:N' target from
+	 * this plugin's weathermap_data cache table (populated by the
+	 * poller_output hook), which holds already-rate-converted values for
+	 * the given local data id. Called by the WeatherMap engine to
+	 * collect data for a link/node using this data source.
+	 *
+	 * @param string $targetstring The 'cacti:N' target string to read.
+	 * @param object $map          Reference, the WeatherMap object
+	 *                            being updated.
+	 * @param object $item         Reference, the link/node item this
+	 *                            data is being read for.
+	 *
+	 * @return array A 3-element array: [0] the IN value, [1] the OUT
+	 *              value, and [2] the data's timestamp.
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;
