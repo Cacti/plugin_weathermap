@@ -433,6 +433,16 @@ $map->WriteConfig($outputmapfile);
 
 print 'Wrote config to ' . $outputmapfile . PHP_EOL;
 
+/**
+ * Prints this script's version and copyright banner, loading the
+ * plugin's version info from setup.php if not already available.
+ * Called from display_help() and when invoked with '--version'.
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to
+ *                       locate and include setup.php.
+ */
 function display_version() {
 	global $config;
 
@@ -445,6 +455,13 @@ function display_version() {
 	print 'Weathermap Cacti Integrate Tool, Copyright Howard Jones, Version ' . $info['version'] . ', ' . WM_COPYRIGHT_YEARS . PHP_EOL;
 }
 
+/**
+ * Prints the version banner followed by this script's command-line
+ * usage summary. Called when invoked with '--help' or with invalid/
+ * missing arguments.
+ *
+ * @return void
+ */
 function display_help() {
 	display_version();
 

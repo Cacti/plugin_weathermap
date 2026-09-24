@@ -365,6 +365,21 @@ switch (get_request_var('action')) {
 		break;
 }
 
+/**
+ * Renders the single-map view: the map selector, a titled box with
+ * quick links (settings/permissions/edit for admins, or just a return
+ * link for regular users), and the map's pre-generated HTML output (or
+ * a 'not created yet' notice), for a user authorized to view it.
+ * Called from this script's main request-dispatch switch when
+ * action=viewmap.
+ *
+ * @param int $mapid The weathermap_maps id to display.
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to
+ *                       build links and check permissions.
+ */
 function weathermap_singleview($mapid) {
 	global $config;
 
@@ -451,6 +466,17 @@ function weathermap_singleview($mapid) {
 	}
 }
 
+/**
+ * Prints a 'Manage Maps' link for users who are NOT already authorized
+ * for the management page (used as a secondary/limited-access
+ * shortcut). Called from view rendering to surface a link to the
+ * management tool for non-admin contexts.
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to
+ *                       build the link URL.
+ */
 function weathermap_show_manage_tab() {
 	global $config;
 
@@ -459,6 +485,23 @@ function weathermap_show_manage_tab() {
 	}
 }
 
+/**
+ * Renders the main Weathermap gallery view: a grid of thumbnails for
+ * every map the current user is permitted to see (optionally restricted
+ * to a single group), each linking to its full-size/live view, falling
+ * back to displaying the single map in full size when the user only
+ * has access to exactly one. Called from this script's main
+ * request-dispatch switch as the default view.
+ *
+ * @param int $limit_to_group Optional weathermap_groups id to restrict
+ *                           the displayed maps to; -1 shows all
+ *                           allowed maps.
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to
+ *                       build links and image paths.
+ */
 function weathermap_thumbview($limit_to_group = -1) {
 	global $config;
 
@@ -562,6 +605,29 @@ function weathermap_thumbview($limit_to_group = -1) {
 	}
 }
 
+/**
+ * Renders a single map (or the first of a cycling set) at full size,
+ * optionally auto-cycling through every map the user is permitted to
+ * view and/or in fullscreen mode. Called from this script's main
+ * request-dispatch switch when action=viewmap/viewmapcycle, and
+ * internally from weathermap_thumbview() when the user has access to
+ * exactly one map.
+ *
+ * @param bool|int $cycle          Whether to auto-cycle through all
+ *                                allowed maps.
+ * @param bool     $firstonly      Whether to display only the first map
+ *                                in the allowed list (used for the
+ *                                initial cycle frame).
+ * @param int      $limit_to_group Optional weathermap_groups id to
+ *                                restrict the displayed maps to.
+ * @param int      $fullscreen     Whether to render in fullscreen mode
+ *                                (chromeless).
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to
+ *                       build links and image paths.
+ */
 function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group = -1, $fullscreen = 0) {
 	global $config;
 
@@ -710,6 +776,16 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 	}
 }
 
+/**
+ * Resolves a map identifier (either its config filename or file hash)
+ * to its weathermap_maps id. Called throughout this script wherever a
+ * map needs to be looked up by either identifier form.
+ *
+ * @param string $idname The map's config filename or file hash.
+ *
+ * @return int|null The matching weathermap_maps id, or null if not
+ *                  found.
+ */
 function weathermap_translate_id($idname) {
 	$map = db_fetch_cell_prepared('SELECT id
 		FROM weathermap_maps
@@ -721,6 +797,19 @@ function weathermap_translate_id($idname) {
 	return $map;
 }
 
+/**
+ * Renders the page footer's version/attribution box (with quick links
+ * to Management/documentation/new-map for admins), when the version box
+ * is enabled. Called from view-rendering code at the bottom of the
+ * Weathermap viewer pages.
+ *
+ * @return void
+ *
+ * @global array $config          Cacti global configuration array;
+ *                                used to build links.
+ * @global bool  $showversionbox  Whether the version box should be
+ *                                rendered at all.
+ */
 function weathermap_versionbox() {
 	global $config, $showversionbox;
 
@@ -752,6 +841,15 @@ function weathermap_versionbox() {
 	}
 }
 
+/**
+ * Streams a file's contents to output in 1MB chunks, avoiding loading
+ * the entire file into memory at once. Called when serving a large map
+ * image/output file for direct download/display.
+ *
+ * @param string $filename The path to the file to stream.
+ *
+ * @return bool True on success, false if the file couldn't be opened.
+ */
 function readfile_chunked($filename) {
 	$chunksize = 1 * (1024 * 1024); // how many bytes per chunk
 	$buffer    = '';
@@ -774,6 +872,17 @@ function readfile_chunked($filename) {
 	return $status;
 }
 
+/**
+ * Renders a map-selection dropdown (when enabled via the
+ * 'weathermap_map_selector' setting) letting the user quickly jump
+ * between maps they're permitted to view. Called from
+ * weathermap_singleview() before rendering the selected map.
+ *
+ * @param int $current_id The currently displayed map's id, to
+ *                        pre-select in the dropdown.
+ *
+ * @return void
+ */
 function weathermap_mapselector($current_id = 0) {
 	$show_selector = intval(read_config_option('weathermap_map_selector'));
 
@@ -874,6 +983,14 @@ function weathermap_mapselector($current_id = 0) {
 	}
 }
 
+/**
+ * Builds the map group => group name list to render as tabs, based on
+ * which groups contain maps the current session user is authorized to
+ * view. Called from weathermap_tabs() to determine which group tabs to
+ * display.
+ *
+ * @return array Map of group_id => group name, in display order.
+ */
 function weathermap_get_valid_tabs() {
 	$tabs = [];
 
@@ -897,6 +1014,19 @@ function weathermap_get_valid_tabs() {
 	return $tabs;
 }
 
+/**
+ * Renders the map-group tabbed navigation bar (when the user has access
+ * to more than one group), highlighting the currently selected group
+ * tab. Called from weathermap_thumbview() before rendering the map
+ * gallery.
+ *
+ * @param int $current_tab The currently selected group_id tab.
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to
+ *                       build tab URLs.
+ */
 function weathermap_tabs($current_tab) {
 	global $config;
 

@@ -49,15 +49,33 @@ class WMLine {
 	private $point;
 	private $vector;
 
+	/**
+	 * Constructs a line passing through a given point in a given
+	 * direction.
+	 *
+	 * @param WMPoint  $p A point the line passes through.
+	 * @param WMVector $v The line's direction vector.
+	 */
 	public function __construct($p, $v) {
 		$this->point  = $p;
 		$this->vector = $v;
 	}
 
+	/**
+	 * Returns the line's slope, derived from its direction vector.
+	 *
+	 * @return float The line's slope.
+	 */
 	public function getSlope() {
 		return $this->vector->getSlope();
 	}
 
+	/**
+	 * Computes the line's Y-intercept (where it crosses x=0), derived
+	 * from its slope and a known point on the line.
+	 *
+	 * @return float The line's Y-intercept.
+	 */
 	public function getYIntercept() {
 		$slope     = $this->getSlope();
 		$intercept = $this->point->y - $this->point->x * $slope;
@@ -65,6 +83,12 @@ class WMLine {
 		return $intercept;
 	}
 
+	/**
+	 * Returns a debug string representation of the line (its point and
+	 * direction vector).
+	 *
+	 * @return string The formatted debug string.
+	 */
 	public function __toString() {
 		return sprintf('/%s-%s/', $this->point, $this->vector);
 	}
