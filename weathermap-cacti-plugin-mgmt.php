@@ -774,7 +774,7 @@ function wm_filter() {
 				</tr>
 			</table>
 			</form>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 
 			function applyFilter() {
 				strURL  = 'weathermap-cacti-plugin-mgmt.php?header=false';
@@ -1166,7 +1166,7 @@ function maplist() {
 	}
 
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 	$(function() {
 		$('.mapLink').off('click').on('click', function(event) {
 			event.preventDefault();
@@ -1362,7 +1362,7 @@ function addmap_filter() {
 					</tr>
 				</table>
 			</form>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 			function applyFilter() {
 				var strURL  = 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker&header=false';
 
@@ -2146,7 +2146,7 @@ function perms_filter($id) {
 				</tr>
 			</table>
 			</form>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 
 			function applyFilter() {
 				strURL  = 'weathermap-cacti-plugin-mgmt.php?';
@@ -3185,7 +3185,7 @@ function weathermap_group_editor() {
 	</div>";
 
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 	$(function() {
 		$('.fa-wrench').on('click', function(event) {
 			event.preventDefault();

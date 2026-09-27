@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-24 10:16-0400\n"
+"POT-Creation-Date: 2026-09-27 11:51-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -248,413 +248,413 @@ msgstr ""
 msgid "or click a Node or Link to edit it's properties"
 msgstr ""
 
-#: setup.php:317 setup.php:787 setup.php:988 setup.php:995 setup.php:1002
-#: setup.php:1009 setup.php:1016
+#: setup.php:333 setup.php:803 setup.php:1004 setup.php:1011 setup.php:1018
+#: setup.php:1025 setup.php:1032
 msgid "Weathermap"
 msgstr ""
 
-#: setup.php:321 weathermap-cacti-plugin.php:531
+#: setup.php:337 weathermap-cacti-plugin.php:531
 #: weathermap-cacti-plugin.php:649
 msgid "Network Weathermap"
 msgstr ""
 
-#: setup.php:325
+#: setup.php:341
 msgid "Debug Mode"
 msgstr ""
 
-#: setup.php:326
+#: setup.php:342
 msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
 msgstr ""
 
-#: setup.php:331
+#: setup.php:347
 msgid "Info URL Style"
 msgstr ""
 
-#: setup.php:332
+#: setup.php:348
 msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
 msgstr ""
 
-#: setup.php:336
+#: setup.php:352
 msgid "Standard Graph View"
 msgstr ""
 
-#: setup.php:337
+#: setup.php:353
 msgid "Time Graph View"
 msgstr ""
 
-#: setup.php:341
+#: setup.php:357
 msgid "Page style"
 msgstr ""
 
-#: setup.php:342
+#: setup.php:358
 msgid "How to display multiple maps."
 msgstr ""
 
-#: setup.php:345
+#: setup.php:361
 msgid "Thumbnail Overview"
 msgstr ""
 
-#: setup.php:346
+#: setup.php:362
 msgid "Full Images"
 msgstr ""
 
-#: setup.php:347
+#: setup.php:363
 msgid "Show Only First"
 msgstr ""
 
-#: setup.php:351
+#: setup.php:367
 msgid "Thumbnail Maximum Size"
 msgstr ""
 
-#: setup.php:352
+#: setup.php:368
 msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
 msgstr ""
 
-#: setup.php:358
+#: setup.php:374
 msgid "Hover Graph Default Width"
 msgstr ""
 
-#: setup.php:359
+#: setup.php:375
 msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
 msgstr ""
 
-#: setup.php:366
+#: setup.php:382
 msgid "Hover Graph Default Height"
 msgstr ""
 
-#: setup.php:367
+#: setup.php:383
 msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
 msgstr ""
 
-#: setup.php:374
+#: setup.php:390
 msgid "Hover Graph Style"
 msgstr ""
 
-#: setup.php:375
+#: setup.php:391
 msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
 msgstr ""
 
-#: setup.php:378
+#: setup.php:394
 msgid "Thumbnail Graphs"
 msgstr ""
 
-#: setup.php:379
+#: setup.php:395
 msgid "Full Graphs"
 msgstr ""
 
-#: setup.php:383
+#: setup.php:399
 msgid "Map Processing Timeout"
 msgstr ""
 
-#: setup.php:384
+#: setup.php:400
 msgid "How much time should be allowed before timing out the periodic map generation process."
 msgstr ""
 
-#: setup.php:388 setup.php:389 setup.php:390 setup.php:391 setup.php:404
-#: setup.php:405
+#: setup.php:404 setup.php:405 setup.php:406 setup.php:407 setup.php:420
+#: setup.php:421
 #, php-format
 msgid "%d Minutes"
 msgstr ""
 
-#: setup.php:395
+#: setup.php:411
 msgid "Refresh Time"
 msgstr ""
 
-#: setup.php:396
+#: setup.php:412
 msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
 msgstr ""
 
-#: setup.php:399
+#: setup.php:415
 msgid "Automatic"
 msgstr ""
 
-#: setup.php:400 setup.php:401 setup.php:402
+#: setup.php:416 setup.php:417 setup.php:418
 #, php-format
 msgid "%d Seconds"
 msgstr ""
 
-#: setup.php:403
+#: setup.php:419
 #, php-format
 msgid "%d Minute"
 msgstr ""
 
-#: setup.php:409
+#: setup.php:425
 msgid "Output Format"
 msgstr ""
 
-#: setup.php:410
+#: setup.php:426
 msgid "What format do you prefer for the generated map images and thumbnails?"
 msgstr ""
 
-#: setup.php:413
+#: setup.php:429
 msgid "PNG (default)"
 msgstr ""
 
-#: setup.php:414
+#: setup.php:430
 msgid "JPEG"
 msgstr ""
 
-#: setup.php:415
+#: setup.php:431
 msgid "GIF"
 msgstr ""
 
-#: setup.php:419
+#: setup.php:435
 msgid "Map Rendering Interval"
 msgstr ""
 
-#: setup.php:420
+#: setup.php:436
 msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
 msgstr ""
 
-#: setup.php:423
+#: setup.php:439
 msgid "Never (manual updates)"
 msgstr ""
 
-#: setup.php:424
+#: setup.php:440
 msgid "Every Poller Cycle (default)"
 msgstr ""
 
-#: setup.php:425 setup.php:426 setup.php:427 setup.php:428 setup.php:429
-#: setup.php:430 setup.php:431 setup.php:432 setup.php:433 setup.php:434
-#: setup.php:435
+#: setup.php:441 setup.php:442 setup.php:443 setup.php:444 setup.php:445
+#: setup.php:446 setup.php:447 setup.php:448 setup.php:449 setup.php:450
+#: setup.php:451
 #, php-format
 msgid "Every %d Poller Cycles"
 msgstr ""
 
-#: setup.php:439
+#: setup.php:455
 msgid "Show Weathermap Help Links"
 msgstr ""
 
-#: setup.php:440
+#: setup.php:456
 msgid "If checked, all Weathermap pages will include a link to documentation."
 msgstr ""
 
-#: setup.php:445
+#: setup.php:461
 msgid "Show 'All' Tab"
 msgstr ""
 
-#: setup.php:446
+#: setup.php:462
 msgid "When using groups, add an 'All Maps' tab to the tab bar."
 msgstr ""
 
-#: setup.php:449
+#: setup.php:465
 msgid "No (default)"
 msgstr ""
 
-#: setup.php:450 weathermap-cacti-plugin-mgmt.php:1064
+#: setup.php:466 weathermap-cacti-plugin-mgmt.php:1064
 msgid "Yes"
 msgstr ""
 
-#: setup.php:454
+#: setup.php:470
 msgid "Show Map Selector"
 msgstr ""
 
-#: setup.php:455
+#: setup.php:471
 msgid "Show a combo-box map selector on the full-screen map view."
 msgstr ""
 
-#: setup.php:458 weathermap-cacti-plugin-mgmt.php:1071
+#: setup.php:474 weathermap-cacti-plugin-mgmt.php:1071
 msgid "No"
 msgstr ""
 
-#: setup.php:459
+#: setup.php:475
 msgid "Yes (default)"
 msgstr ""
 
-#: setup.php:463
+#: setup.php:479
 msgid "Quiet Logging"
 msgstr ""
 
-#: setup.php:464
+#: setup.php:480
 msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
 msgstr ""
 
-#: setup.php:467
+#: setup.php:483
 msgid "Chatty (default)"
 msgstr ""
 
-#: setup.php:468
+#: setup.php:484
 msgid "Quiet"
 msgstr ""
 
-#: setup.php:797 setup.php:1023 setup.php:1044
+#: setup.php:813 setup.php:1039 setup.php:1060
 msgid "Weathermaps"
 msgstr ""
 
-#: setup.php:798
+#: setup.php:814
 msgid "Weathermap Groups"
 msgstr ""
 
-#: setup.php:801
+#: setup.php:817
 msgid "Management"
 msgstr ""
 
-#: setup.php:805
+#: setup.php:821
 msgid "View Weathermaps"
 msgstr ""
 
-#: setup.php:806
+#: setup.php:822
 msgid "Edit Weathermaps"
 msgstr ""
 
-#: setup.php:807
+#: setup.php:823
 msgid "Manage Weathermap"
 msgstr ""
 
-#: setup.php:811 setup.php:812
+#: setup.php:827 setup.php:828
 msgid "General Administration"
 msgstr ""
 
-#: setup.php:813
+#: setup.php:829
 msgid "Normal User"
 msgstr ""
 
-#: setup.php:846 setup.php:896 weathermap-cacti-plugin.php:247
+#: setup.php:862 setup.php:912 weathermap-cacti-plugin.php:247
 #: weathermap-cacti-plugin.php:413 weathermap-cacti-plugin.php:576
 #: weathermap-cacti-plugin.php:722
 #, php-format
 msgid "Map for config file: %s"
 msgstr ""
 
-#: setup.php:922
+#: setup.php:938
 msgid "Choose which weathermap to add to the tree."
 msgstr ""
 
-#: setup.php:922
+#: setup.php:938
 msgid "Map"
 msgstr ""
 
-#: setup.php:930
+#: setup.php:946
 msgid "How should the map be displayed?"
 msgstr ""
 
-#: setup.php:930
+#: setup.php:946
 msgid "Style"
 msgstr ""
 
-#: setup.php:933
+#: setup.php:949
 msgid "Thumbnail"
 msgstr ""
 
-#: setup.php:934
+#: setup.php:950
 msgid "Full Size"
 msgstr ""
 
-#: setup.php:1030
+#: setup.php:1046
 msgid "View Map Image"
 msgstr ""
 
-#: setup.php:1037
+#: setup.php:1053
 msgid "View Map Thumbnail"
 msgstr ""
 
-#: setup.php:1051 setup.php:1065
+#: setup.php:1067 setup.php:1081
 msgid "Add Map"
 msgstr ""
 
-#: setup.php:1058
+#: setup.php:1074
 msgid "View Configuration"
 msgstr ""
 
-#: setup.php:1072 weathermap-cacti-plugin.php:423
+#: setup.php:1088 weathermap-cacti-plugin.php:423
 msgid "Edit Map"
 msgstr ""
 
-#: setup.php:1079 setup.php:1497
+#: setup.php:1095 setup.php:1513
 msgid "Weathermap Editor"
 msgstr ""
 
-#: setup.php:1086
+#: setup.php:1102
 msgid "Edit Permissions"
 msgstr ""
 
-#: setup.php:1093 setup.php:1100 weathermap-cacti-plugin-mgmt.php:769
+#: setup.php:1109 setup.php:1116 weathermap-cacti-plugin-mgmt.php:769
 #: weathermap-cacti-plugin.php:421
 msgid "Map Settings"
 msgstr ""
 
-#: setup.php:1107
+#: setup.php:1123
 msgid "Map Settings Delete"
 msgstr ""
 
-#: setup.php:1114
+#: setup.php:1130
 msgid "Map Settings Update"
 msgstr ""
 
-#: setup.php:1121
+#: setup.php:1137
 msgid "Map Settings Add"
 msgstr ""
 
-#: setup.php:1128
+#: setup.php:1144
 msgid "Permissions Edit"
 msgstr ""
 
-#: setup.php:1135
+#: setup.php:1151
 msgid "Add User"
 msgstr ""
 
-#: setup.php:1142
+#: setup.php:1158
 msgid "Delete User"
 msgstr ""
 
-#: setup.php:1149
+#: setup.php:1165
 msgid "Delete Map"
 msgstr ""
 
-#: setup.php:1156 setup.php:1163 weathermap-cacti-plugin-mgmt.php:1094
+#: setup.php:1172 setup.php:1179 weathermap-cacti-plugin-mgmt.php:1094
 msgid "Move Map Up"
 msgstr ""
 
-#: setup.php:1170 weathermap-cacti-plugin-mgmt.php:3141
+#: setup.php:1186 weathermap-cacti-plugin-mgmt.php:3141
 msgid "Move Group Down"
 msgstr ""
 
-#: setup.php:1177 weathermap-cacti-plugin-mgmt.php:3135
+#: setup.php:1193 weathermap-cacti-plugin-mgmt.php:3135
 msgid "Move Group Up"
 msgstr ""
 
-#: setup.php:1184
+#: setup.php:1200
 msgid "Group Edit"
 msgstr ""
 
-#: setup.php:1191 setup.php:1226
+#: setup.php:1207 setup.php:1242
 msgid "Group Update"
 msgstr ""
 
-#: setup.php:1198
+#: setup.php:1214
 msgid "Activate Map"
 msgstr ""
 
-#: setup.php:1205
+#: setup.php:1221
 msgid "Deactivate Map"
 msgstr ""
 
-#: setup.php:1212 weathermap-cacti-plugin-mgmt.php:59
+#: setup.php:1228 weathermap-cacti-plugin-mgmt.php:59
 msgid "Rebuild Now"
 msgstr ""
 
-#: setup.php:1219 weathermap-cacti-plugin-mgmt.php:3012
+#: setup.php:1235 weathermap-cacti-plugin-mgmt.php:3012
 msgid "Change Group"
 msgstr ""
 
-#: setup.php:1233
+#: setup.php:1249
 msgid "Group Admin"
 msgstr ""
 
-#: setup.php:1240
+#: setup.php:1256
 msgid "Group Admin Delete"
 msgstr ""
 
-#: setup.php:1497 weathermap-cacti-plugin.php:823
+#: setup.php:1513 weathermap-cacti-plugin.php:823
 msgid "Local Documentation"
 msgstr ""
 
-#: setup.php:1497
+#: setup.php:1513
 #, php-format
 msgid "This is version %s"
 msgstr ""
 
-#: setup.php:1497
+#: setup.php:1513
 msgid "Weathermap Website"
 msgstr ""
 

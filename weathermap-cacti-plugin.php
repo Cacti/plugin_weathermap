@@ -140,7 +140,7 @@ switch (get_request_var('action')) {
 		top_graph_header();
 
 		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
-		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
+		print get_md5_include_js('plugins/weathermap/js/weathermap.js');
 
 		$id = -1;
 
@@ -278,14 +278,14 @@ switch (get_request_var('action')) {
 			print '<html><head>';
 			print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
 			print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'include/fa/css/all.css' . '"/>';
-			print '<script type="text/javascript" src="' . $config['url_path'] . 'include/js/jquery.js"></script>';
+			print get_md5_include_js('include/js/jquery.js');
 			print '</head><body id="wm_fullscreen">';
 		} else {
 			top_graph_header();
 		}
 
 		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
-		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
+		print get_md5_include_js('plugins/weathermap/js/weathermap.js');
 
 		$groupid = -1;
 
@@ -308,7 +308,7 @@ switch (get_request_var('action')) {
 		top_graph_header();
 
 		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
-		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
+		print get_md5_include_js('plugins/weathermap/js/weathermap.js');
 
 		$id = -1;
 
@@ -329,7 +329,7 @@ switch (get_request_var('action')) {
 		top_graph_header();
 
 		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
-		print '<script type="text/javascript" src="' . $config['url_path'] . 'plugins/weathermap/js/weathermap.js"></script> ';
+		print get_md5_include_js('plugins/weathermap/js/weathermap.js');
 
 		$group_id = -1;
 
@@ -453,7 +453,7 @@ function weathermap_singleview($mapid) {
 			print '</table>';
 
 			?>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 			$(function() {
 				$('.editMap').on('click', function(event) {
 					event.preventDefault();
@@ -663,10 +663,10 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 
 	if ($cycle) {
 		if ($fullscreen) {
-			print '<script src="' . $config['url_path'] . 'include/js/jquery.js"></script>';
+			print get_md5_include_js('include/js/jquery.js');
 		}
 
-		print '<script src="' . $config['url_path'] . 'plugins/weathermap/js/idle-timer.min.js"></script>';
+		print get_md5_include_js('plugins/weathermap/js/idle-timer.min.js');
 
 		if ($limit_to_group > 0) {
 			$html = __('Showing %s %s of %s %s. Cycling all available maps in this group.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');
@@ -760,8 +760,8 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 			$poller_cycle = read_config_option('poller_interval');
 
 			?>
-			<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/weathermap/js/map-cycle.js'></script>
-			<script type='text/javascript'>
+			<?php print get_md5_include_js('plugins/weathermap/js/map-cycle.js'); ?>
+			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 			$(function() {
 				WMcycler.start({
 					fullscreen: <?php print($fullscreen ? '1' : '0'); ?>,
@@ -962,7 +962,7 @@ function weathermap_mapselector($current_id = 0) {
 							</td>
 						</tr>
 					</table>
-					<script type='text/javascript'>
+					<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 					function applyFilter() {
 						var strURL = urlPath + 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmap&header=false';
 						strURL += '&id=' + $('#id').val();

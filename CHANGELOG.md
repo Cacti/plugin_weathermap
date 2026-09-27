@@ -16,6 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* security: Add a version-safe CSP nonce (`plugin_weathermap_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class
 * Run the plugin unit test suite in CI, using the toolchain from the base Cacti install
 
 --- 1.7 ---
