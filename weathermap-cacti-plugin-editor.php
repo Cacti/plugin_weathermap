@@ -324,16 +324,16 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<link href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/images/cacti_logo.gif'?>' rel='icon' sizes='96x96'>
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/jquery-ui.css'; ?>'>
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/main.css'; ?>'>
-	<link rel='stylesheet' type='text/css' media='screen' href='css/editor.css' />
+	<?php print get_md5_include_css('plugins/weathermap/css/editor.css'); ?>
 	<?php getEditorJs(); ?>
-	<script src='<?php print $config['url_path'] . 'include/js/jquery.js'; ?>' type='text/javascript'></script>
-	<script src='<?php print $config['url_path'] . 'include/js/jquery-ui.js'; ?>' type='text/javascript'></script>
-	<script src='<?php print $config['url_path'] . 'include/js/jquery.tablesorter.js'; ?>' type='text/javascript'></script>
-	<script src='<?php print $config['url_path'] . 'include/js/jquery.colorpicker.js'; ?>' type='text/javascript'></script>
-	<script src='<?php print $config['url_path'] . 'include/js/js.storage.js'; ?>' type='text/javascript'></script>
-	<script src='js/editor.js' type='text/javascript'></script>
-	<script src='js/jquery.ddslick.js' type='text/javascript'></script>
-	<script src='js/jquery.ui-contextmenu.js' type='text/javascript'></script>
+	<?php print get_md5_include_js('include/js/jquery.js'); ?>
+	<?php print get_md5_include_js('include/js/jquery-ui.js'); ?>
+	<?php print get_md5_include_js('include/js/jquery.tablesorter.js'); ?>
+	<?php print get_md5_include_js('include/js/jquery.colorpicker.js'); ?>
+	<?php print get_md5_include_js('include/js/js.storage.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ddslick.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ui-contextmenu.js'); ?>
 
 	<title><?php print __('PHP Weathermap Editor %s', $weathermap_version, 'flowview'); ?></title>
 </head>
@@ -394,7 +394,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 
 		<!-- Data for overlay and selection -->
 		<div class='scriptData'>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 			<?php getMapJavaScript($mapfile); ?>
 			<?php print 'var infoUrlStyle=' . intval(read_config_option('weathermap_infourl_style')) . ';'; ?>
 			</script>

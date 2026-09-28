@@ -505,7 +505,7 @@ function weathermap_form_actions() {
 					</td>
 				</tr>\n";
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Delete Weather Map', 'Delete Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Delete Weather Map', 'Delete Weather Maps', cacti_sizeof($array)) . "'>";
 		} elseif (get_nfilter_request_var('drp_action') === '2') { // duplicate
 			print "<tr>
 				<td class='topBoxAlt'>
@@ -525,7 +525,7 @@ function weathermap_form_actions() {
 				</td>
 			</tr>';
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Duplicate Weather Map', 'Duplicate Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Duplicate Weather Map', 'Duplicate Weather Maps', cacti_sizeof($array)) . "'>";
 		} elseif (get_nfilter_request_var('drp_action') === '3') { // disable
 			print "<tr>
 				<td class='topBoxAlt'>
@@ -534,7 +534,7 @@ function weathermap_form_actions() {
 				</td>
 			</tr>";
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Disable Weather Map', 'Disable Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Disable Weather Map', 'Disable Weather Maps', cacti_sizeof($array)) . "'>";
 		} elseif (get_nfilter_request_var('drp_action') === '4') { // enable
 			print "<tr>
 				<td class='topBoxAlt'>
@@ -543,7 +543,7 @@ function weathermap_form_actions() {
 				</td>
 			</tr>";
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Enable Weather Map', 'Enable Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Enable Weather Map', 'Enable Weather Maps', cacti_sizeof($array)) . "'>";
 		} elseif (get_nfilter_request_var('drp_action') === '7') { // run now
 			print "<tr>
 				<td class='topBoxAlt'>
@@ -552,7 +552,7 @@ function weathermap_form_actions() {
 				</td>
 			</tr>";
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Rebuild Weather Map', 'Rebuild Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Rebuild Weather Map', 'Rebuild Weather Maps', cacti_sizeof($array)) . "'>";
 		}
 	} else {
 		raise_message(40);
@@ -572,6 +572,14 @@ function weathermap_form_actions() {
 	html_end_box();
 
 	form_end();
+
+	print "	<script type='text/javascript' " . plugin_weathermap_csp_nonce() . ">\n" .
+		"		$(function() {\n" .
+		"			$('#wm_cancel').on('click', function() {\n" .
+		"				cactiReturnTo();\n" .
+		"			});\n" .
+		"		});\n" .
+		"	</script>\n";
 
 	bottom_footer();
 }
@@ -750,7 +758,7 @@ function wm_filter() {
 						<?php print __('Maps', 'weathermap'); ?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilter()'>
+						<select id='rows'>
 							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>' : '>') . __('Default', 'weathermap'); ?></option>
 							<?php
 							if (cacti_sizeof($item_rows)) {
@@ -774,7 +782,7 @@ function wm_filter() {
 				</tr>
 			</table>
 			</form>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 
 			function applyFilter() {
 				strURL  = 'weathermap-cacti-plugin-mgmt.php?header=false';
@@ -795,6 +803,10 @@ function wm_filter() {
 
 				$('#clear').on('click', function() {
 					clearFilter();
+				});
+
+				$('#rows').on('change', function() {
+					applyFilter();
 				});
 
 				$('#form_wm').on('submit', function(event) {
@@ -1166,7 +1178,7 @@ function maplist() {
 	}
 
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 	$(function() {
 		$('.mapLink').off('click').on('click', function(event) {
 			event.preventDefault();
@@ -1291,7 +1303,7 @@ function addmap_filter() {
 						<?php print __('Num Files', 'weathermap'); ?>
 					</td>
 					<td>
-						<select id='rows' name='rows' onChange='applyFilter()'>
+						<select id='rows' name='rows'>
 							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>' : '>') . __('Default', 'weathermap'); ?></option>
 							<?php
 							if (cacti_sizeof($item_rows)) {
@@ -1362,7 +1374,7 @@ function addmap_filter() {
 					</tr>
 				</table>
 			</form>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 			function applyFilter() {
 				var strURL  = 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker&header=false';
 
@@ -1388,6 +1400,10 @@ function addmap_filter() {
 
 				$('#clear').on('click', function() {
 					clearFilter();
+				});
+
+				$('#rows').on('change', function() {
+					applyFilter();
 				});
 
 				$('#form_maps').on('submit', function(event) {
@@ -2105,7 +2121,7 @@ function perms_filter($id) {
 						<?php print __('Type', 'weathermap'); ?>
 					</td>
 					<td>
-						<select id='type' onChange='applyFilter()'>
+						<select id='type'>
 							<option value='-1'<?php print (get_request_var('type') == '-1' ? ' selected>' : '>') . __('All', 'weathermap'); ?></option>
 							<option value='0'<?php print (get_request_var('type') == '0' ? ' selected>' : '>') . __('Users', 'weathermap'); ?></option>
 							<option value='1'<?php print (get_request_var('type') == '1' ? ' selected>' : '>') . __('User Groups', 'weathermap'); ?></option>
@@ -2115,7 +2131,7 @@ function perms_filter($id) {
 						<?php print __('Rows', 'weathermap'); ?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilter()'>
+						<select id='rows'>
 							<option value='-1'<?php print (get_request_var('rows') == '-1' ? ' selected>' : '>') . __('Default', 'weathermap'); ?></option>
 							<?php
 							if (cacti_sizeof($item_rows)) {
@@ -2146,7 +2162,7 @@ function perms_filter($id) {
 				</tr>
 			</table>
 			</form>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 
 			function applyFilter() {
 				strURL  = 'weathermap-cacti-plugin-mgmt.php?';
@@ -2175,6 +2191,14 @@ function perms_filter($id) {
 				});
 
 				$('#has_perms').on('change', function() {
+					applyFilter();
+				});
+
+				$('#type').on('change', function() {
+					applyFilter();
+				});
+
+				$('#rows').on('change', function() {
 					applyFilter();
 				});
 
@@ -3185,7 +3209,7 @@ function weathermap_group_editor() {
 	</div>";
 
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 	$(function() {
 		$('.fa-wrench').on('click', function(event) {
 			event.preventDefault();

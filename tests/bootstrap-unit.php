@@ -34,6 +34,18 @@ $GLOBALS['config'] = [
 	'url_path'  => '/cacti/',
 ];
 
+if (!function_exists('get_md5_include_js')) {
+	function get_md5_include_js($path, $async = false) {
+		return "<script type='text/javascript' src='" . $path . "'></script>";
+	}
+}
+
+if (!function_exists('get_md5_include_css')) {
+	function get_md5_include_css($path) {
+		return "<link href='" . $path . "' type='text/css' rel='stylesheet'>";
+	}
+}
+
 if (!function_exists('db_execute')) {
 	function db_execute($sql) {
 		$GLOBALS['__test_db_calls'][] = ['fn' => 'db_execute', 'sql' => $sql, 'params' => []];

@@ -271,7 +271,7 @@ function show_editor_startpage() {
 
 	getEditorJs();
 
-	print '<script src="js/editor.js" type="text/javascript"></script>';
+	print get_md5_include_js('plugins/weathermap/js/editor.js');
 
 	$errormessage = '';
 
@@ -866,7 +866,7 @@ function editor_log($str) {
 
 function getEditorJs() {
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
 	var sessionMessageOk    = '<?php print __esc('Ok', 'weathermap'); ?>';
 	var sessionMessageTitle = '<?php print __esc('Operation successful', 'weathermap'); ?>';
 	var sessionMessageSave  = '<?php print __esc('The Operation was successful.  Details are below.', 'weathermap'); ?>';
