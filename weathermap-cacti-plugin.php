@@ -139,7 +139,7 @@ switch (get_request_var('action')) {
 	case 'liveview':
 		top_graph_header();
 
-		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
+		print get_md5_include_css('plugins/weathermap/css/weathermap.css');
 		print get_md5_include_js('plugins/weathermap/js/weathermap.js');
 
 		$id = -1;
@@ -276,7 +276,7 @@ switch (get_request_var('action')) {
 		if ($fullscreen == 1) {
 			print '<!DOCTYPE html>' . PHP_EOL;
 			print '<html><head>';
-			print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
+			print get_md5_include_css('plugins/weathermap/css/weathermap.css');
 			print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'include/fa/css/all.css' . '"/>';
 			print get_md5_include_js('include/js/jquery.js');
 			print '</head><body id="wm_fullscreen">';
@@ -284,7 +284,7 @@ switch (get_request_var('action')) {
 			top_graph_header();
 		}
 
-		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
+		print get_md5_include_css('plugins/weathermap/css/weathermap.css');
 		print get_md5_include_js('plugins/weathermap/js/weathermap.js');
 
 		$groupid = -1;
@@ -307,7 +307,7 @@ switch (get_request_var('action')) {
 	case 'viewmap':
 		top_graph_header();
 
-		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
+		print get_md5_include_css('plugins/weathermap/css/weathermap.css');
 		print get_md5_include_js('plugins/weathermap/js/weathermap.js');
 
 		$id = -1;
@@ -328,7 +328,7 @@ switch (get_request_var('action')) {
 	default:
 		top_graph_header();
 
-		print '<link rel="stylesheet" type="text/css" media="screen" href="' . $config['url_path'] . 'plugins/weathermap/css/weathermap.css"/>';
+		print get_md5_include_css('plugins/weathermap/css/weathermap.css');
 		print get_md5_include_js('plugins/weathermap/js/weathermap.js');
 
 		$group_id = -1;

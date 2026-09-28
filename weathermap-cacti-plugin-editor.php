@@ -324,7 +324,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<link href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/images/cacti_logo.gif'?>' rel='icon' sizes='96x96'>
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/jquery-ui.css'; ?>'>
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/main.css'; ?>'>
-	<link rel='stylesheet' type='text/css' media='screen' href='css/editor.css' />
+	<?php print get_md5_include_css('plugins/weathermap/css/editor.css'); ?>
 	<?php getEditorJs(); ?>
 	<?php print get_md5_include_js('include/js/jquery.js'); ?>
 	<?php print get_md5_include_js('include/js/jquery-ui.js'); ?>
