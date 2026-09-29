@@ -16,6 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* dev: Add xdebug coverage reporting to CI and enforce patch coverage of changed lines
 * types: Bring every PHP file to PHPStan level 8 with zero errors, documenting parameter, return and property types throughout the legacy rendering engine without changing runtime behaviour (docblock typing only, so no new TypeErrors on the 1.2.x-era code base)
 * bug: `upgrade_mapfiles()` reported the wrong filename (swapped `$objfile`/`$bgfile`) in the BACKGROUND/ICON "file not found on disk" warnings, and the ICON branch reused the BACKGROUND message text and log code
 * bug: `viewthumb` requests served the full-size image because the handler compared an undefined `$action` instead of `get_request_var('action')`
