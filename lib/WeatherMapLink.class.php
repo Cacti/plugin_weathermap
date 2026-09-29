@@ -45,89 +45,150 @@ declare(strict_types = 1);
 require_once('HTML_ImageMap.class.php');
 
 class WeatherMapLink extends WeatherMapItem {
+	/** @var mixed */
 	var $owner;
+	/** @var mixed */
 	var $name;
+	/** @var mixed */
 	var $id;
+	/** @var mixed */
 	var $maphtml;
 
+	/** @var mixed */
 	var $a; // the ends - references to nodes
+	/** @var mixed */
 	var $b;
 
+	/** @var mixed */
 	var $width;
+	/** @var mixed */
 	var $arrowstyle;
+	/** @var mixed */
 	var $linkstyle;
+	/** @var mixed */
 	var $bwfont;
+	/** @var mixed */
 	var $labelstyle;
+	/** @var mixed */
 	var $labelboxstyle;
+	/** @var mixed */
 	var $zorder;
+	/** @var array */
 	var $overliburl = [];
+	/** @var array */
 	var $infourl    = [];
+	/** @var array */
 	var $notes;
+	/** @var array */
 	var $overlibcaption = [];
 
+	/** @var mixed */
 	var $overlibwidth;
+	/** @var mixed */
 	var $overlibheight;
 
+	/** @var mixed */
 	var $bandwidth_in;
+	/** @var mixed */
 	var $bandwidth_out;
 
+	/** @var mixed */
 	var $max_bandwidth_in;
+	/** @var mixed */
 	var $max_bandwidth_out;
 
+	/** @var mixed */
 	var $max_bandwidth_in_cfg;
+	/** @var mixed */
 	var $max_bandwidth_out_cfg;
 
+	/** @var array */
 	var $targets = [];
 
+	/** @var mixed */
 	var $a_offset;
+	/** @var mixed */
 	var $b_offset;
 
+	/** @var mixed */
 	var $in_ds;
+	/** @var mixed */
 	var $out_ds;
 
+	/** @var array */
 	var $colours = [];
+	/** @var mixed */
 	var $selected;
 
+	/** @var mixed */
 	var $inpercent;
+	/** @var mixed */
 	var $outpercent;
 
+	/** @var mixed */
 	var $inherit_fieldlist;
+	/** @var array */
 	var $vialist = [];
+	/** @var mixed */
 	var $viastyle;
+	/** @var mixed */
 	var $usescale;
+	/** @var mixed */
 	var $duplex;
+	/** @var mixed */
 	var $scaletype;
+	/** @var mixed */
 	var $outlinecolour;
+	/** @var mixed */
 	var $bwoutlinecolour;
+	/** @var mixed */
 	var $bwboxcolour;
+	/** @var mixed */
 	var $splitpos;
+	/** @var mixed */
 	var $commentfont;
+	/** @var array */
 	var $notestext = [];
 
+	/** @var mixed */
 	var $inscalekey;
+	/** @var mixed */
 	var $outscalekey;
 
+	/** @var mixed */
 	var $inscaletag;
+	/** @var mixed */
 	var $outscaletag;
 
 	// var $incolour,$outcolour;
 
+	/** @var mixed */
 	var $commentfontcolour;
+	/** @var mixed */
 	var $commentstyle;
+	/** @var mixed */
 	var $bwfontcolour;
 
 	// var $incomment, $outcomment;
 
+	/** @var array */
 	var $comments       = [];
+	/** @var array */
 	var $bwlabelformats = [];
+	/** @var array */
 	var $curvepoints    = [];
 
+	/** @var mixed */
 	var $labeloffset_in;
+	/** @var mixed */
 	var $labeloffset_out;
 
+	/** @var mixed */
 	var $commentoffset_in;
+	/** @var mixed */
 	var $commentoffset_out;
 
+	/** @var mixed */
 	var $template;
 
 	function __construct() {
@@ -189,6 +250,10 @@ class WeatherMapLink extends WeatherMapItem {
 		//  $this->targets = [];
 	}
 
+	/**
+	 * @param mixed $newowner
+	 * @return void
+	 */
 	function Reset(&$newowner) {
 		$this->owner = $newowner;
 
@@ -219,10 +284,17 @@ class WeatherMapLink extends WeatherMapItem {
 		$this->id = $newowner->next_id++;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function my_type() {
 		return 'LINK';
 	}
 
+	/**
+	 * @param mixed $source
+	 * @return void
+	 */
 	function CopyFrom(&$source) {
 		wm_debug("Initialising LINK $this->name from $source->name");
 
@@ -242,6 +314,7 @@ class WeatherMapLink extends WeatherMapItem {
 	 * @param mixed $image
 	 * @param mixed $col
 	 * @param mixed $widths
+	 * @return void
 	 */
 	function DrawComments($image, $col, $widths) {
 		$curvepoints = $this->curvepoints;
@@ -376,6 +449,11 @@ class WeatherMapLink extends WeatherMapItem {
 		}
 	}
 
+	/**
+	 * @param mixed $image
+	 * @param WeatherMap $map
+	 * @return void
+	 */
 	function Draw($image, &$map) {
 		// Get the positions of the end-points
 		$x1 = $map->nodes[$this->a->name]->x;
@@ -602,6 +680,9 @@ class WeatherMapLink extends WeatherMapItem {
 		}
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function WriteConfig() {
 		$output = '';
 
@@ -840,6 +921,9 @@ class WeatherMapLink extends WeatherMapItem {
 		return ($output);
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function asJS() {
 		$js  = "\t\t\t";
 		$js .= 'Links[' . js_escape($this->name) . '] = {';
@@ -891,6 +975,10 @@ class WeatherMapLink extends WeatherMapItem {
 		return $js;
 	}
 
+	/**
+	 * @param bool $complete
+	 * @return mixed
+	 */
 	function asJSON($complete = true) {
 		$js  = '';
 		$js .= '' . js_escape($this->name) . ': {';
@@ -902,8 +990,8 @@ class WeatherMapLink extends WeatherMapItem {
 		}
 
 		if ($complete) {
-			$js .= '"infourl":' . js_escape($this->infourl) . ', ';
-			$js .= '"overliburl":' . js_escape($this->overliburl) . ', ';
+			$js .= '"infourl":' . js_escape($this->infourl[IN]) . ', ';
+			$js .= '"overliburl":' . js_escape(join(' ', $this->overliburl[IN])) . ', ';
 			$js .= '"width":"' . $this->width . '", ';
 			$js .= '"target":';
 
@@ -922,7 +1010,7 @@ class WeatherMapLink extends WeatherMapItem {
 			$js .= '"name":' . js_escape($this->name) . ', ';
 			$js .= '"overlibwidth":"' . $this->overlibwidth . '", ';
 			$js .= '"overlibheight":"' . $this->overlibheight . '", ';
-			$js .= '"overlibcaption":' . js_escape($this->overlibcaption) . ', ';
+			$js .= '"overlibcaption":' . js_escape($this->overlibcaption[IN]) . ', ';
 		}
 
 		$vias = '"via": [';

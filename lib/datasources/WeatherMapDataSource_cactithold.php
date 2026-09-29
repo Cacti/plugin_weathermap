@@ -65,6 +65,10 @@ declare(strict_types = 1);
  */
 
 class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function Init(&$map) {
 		global $plugins;
 
@@ -115,6 +119,10 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 		return (false);
 	}
 
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		if (preg_match("/^cacti(thold|monitor):(\d+)$/",$targetstring,$matches)) {
 			return true;
@@ -127,6 +135,12 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return mixed
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;
@@ -147,7 +161,7 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 				AND thold_enabled='on'",
 				[$local_data_id, $data_template_rrd_id]);
 
-			if (isset($result)) {
+			if (cacti_sizeof($result)) {
 				if ($result['thold_alert'] > 0) {
 					$data[IN] = 1;
 				} else {
@@ -169,7 +183,7 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 					AND thold_enabled = 'on'",
 					[$id]);
 
-				if (isset($result)) {
+				if (cacti_sizeof($result)) {
 					if ($result['thold_alert'] > 0) {
 						$data[IN] = 1;
 					} else {
@@ -196,7 +210,7 @@ class WeatherMapDataSource_cactithold extends WeatherMapDataSource {
 					WHERE id = ?',
 					[$id]);
 
-				if (isset($result)) {
+				if (cacti_sizeof($result)) {
 					// create a note, which can be used in icon filenames or labels more nicely
 					if ($result['status'] == 1) {
 						$state     = 1;

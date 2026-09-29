@@ -115,3 +115,18 @@ Issues derived from SECURITY-AUDIT.md. Do not push to GitHub until contrib-ledge
 - [ ] Any state-changing actions that lack CSRF or auth checks identified and filed as separate issues
 
 **Dependencies**: none
+
+---
+
+## Issue #9: feature: restore the legend "hide zero scale" option
+**Priority**: low
+**Labels**: bug, tech-debt
+**Branch**: `feature/9-legend-hide-zero`
+**Evidence**: lib/WeatherMap.class.php DrawLegend_Classic() — the `key_hidezero_*` check tested `isset($colours['0_0'])`, but `$colours` is reindexed to a plain list by `usort()` just above, so the string key never existed and the option had silently stopped working. The dead branch was removed during the PHPStan level 8 pass.
+**Acceptance criteria**:
+- [ ] Detect the zero/zero scale entry against the post-sort list (e.g. match `bottom == 0 && top == 0`)
+- [ ] `key_hidezero_<scale>` again drops that entry from the rendered legend
+- [ ] Unit test covers both the hidden and shown cases
+
+**Dependencies**: none
+

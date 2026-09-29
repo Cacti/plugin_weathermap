@@ -16,15 +16,23 @@ declare(strict_types = 1);
 // (that is, TARGET snmp:community:host:in_oid:out_oid
 
 class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
+	/** @var mixed */
 	protected $owner;
+	/** @var mixed */
 	protected $regexpsHandled;
+	/** @var mixed */
 	protected $recognised;
+	/** @var mixed */
 	protected $name;
+	/** @var mixed */
 	protected $data;
+	/** @var mixed */
 	protected $dataTime;
 
+	/** @var mixed */
 	protected $downCache;
 
+	/** @var array<string, string> */
 	private $snmpParamDefaults = [
 		'username'  => '',
 		'seclevel'  => 'noAuthNoPriv',
@@ -34,10 +42,11 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		'privproto' => ''
 	];
 
-	private $originalQuickPrint;
-	private $originalValueRetrieval;
+	/** @var mixed */
 	private $abortCount;
+	/** @var mixed */
 	private $timeout;
+	/** @var mixed */
 	private $retryCount;
 
 	public function __construct() {
@@ -54,6 +63,10 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		$this->name = 'SNMP3';
 	}
 
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function Init(&$map) {
 		// We can keep a list of unresponsive nodes, so we can give up earlier
 		$this->downCache = [];
@@ -61,6 +74,10 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		return true;
 	}
 
+	/**
+	 * @param string $targetString
+	 * @return bool
+	 */
 	public function Recognise($targetString) {
 		foreach ($this->regexpsHandled as $regexp) {
 			if (preg_match($regexp, $targetString)) {
@@ -73,6 +90,12 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		return false;
 	}
 
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return void
+	 */
 	public function Register($targetstring, &$map, &$item) {
 		parent::Register($targetstring, $map, $item);
 
@@ -102,9 +125,19 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		return true;
 	}
 
+	/**
+	 * @param string $targetString
+	 * @param WeatherMap $map
+	 * @param mixed $mapItem
+	 * @return mixed
+	 */
 	public function ReadData($targetString, &$map, &$mapItem) {
 		$this->data[IN]  = null;
 		$this->data[OUT] = null;
+
+		$this->timeout    = intval($map->get_hint('snmp_timeout', 1000000));
+		$this->abortCount = intval($map->get_hint('snmp_abort_count', 0));
+		$this->retryCount = intval($map->get_hint('snmp_retries', 2));
 
 		if (preg_match($this->regexpsHandled[0], $targetString, $matches)) {
 			$profileName = $matches[1];
@@ -127,6 +160,9 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 		return $this->returnData();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	protected function returnData() {
 		wm_debug(
 			sprintf(
@@ -247,6 +283,13 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 	 * @param $item
 	 * @param $timeout
 	 * @param $retries
+	 * @param mixed $host
+	 * @param mixed $params
+	 * @param mixed $oids
+	 * @param WeatherMapItem $item
+	 * @param mixed $timeout
+	 * @param mixed $retries
+	 * @return void
 	 */
 	private function getSNMPData($host, $params, $oids, &$item, $timeout, $retries) {
 		$channels = [
@@ -285,21 +328,12 @@ class WeatherMapDataSource_snmp3 extends WeatherMapDataSource {
 
 		$this->dataTime = time();
 	}
-
-	/**
-	 * Get the map-global SNMP settings
-	 */
-	private function getMapGlobals() {
-		$this->timeout    = intval($this->owner->get_hint('snmp_timeout', 1000000));
-		$this->abortCount = intval($this->owner->get_hint('snmp_abort_count', 0));
-		$this->retryCount = intval($this->owner->get_hint('snmp_retries', 2));
-
-		wm_debug('Timeout changed to ' . $this->timeout . " microseconds.\n");
-		wm_debug("Will abort after $this->abortCount failures for a given host.\n");
-		wm_debug('Number of retries changed to ' . $this->retryCount . ".\n");
-	}
 }
 
+/**
+ * @param string $value
+ * @return mixed
+ */
 function valueOrNull($value) {
 	return $value === null ? '{null}' : $value;
 }

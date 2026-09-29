@@ -44,6 +44,11 @@ declare(strict_types = 1);
 
 // Shared code for DSStats and RRD DS plugins
 //
+/**
+ * @param WeatherMapItem $item
+ * @param mixed $local_data_id
+ * @return void
+ */
 function UpdateCactiData(&$item, $local_data_id) {
 	$map = $item->owner;
 

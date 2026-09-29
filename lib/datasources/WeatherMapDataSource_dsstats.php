@@ -45,8 +45,12 @@ declare(strict_types = 1);
 include_once(__DIR__ . '/../ds-common.php');
 
 class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function Init(&$map) {
-		global $config;
+		global $config, $plugins;
 
 		if ($map->context == 'cacti') {
 			if (!function_exists('db_fetch_row')) {
@@ -92,6 +96,10 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 	}
 
 	// dsstats:<datatype>:<local_data_id>:<rrd_name_in>:<rrd_name_out>
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		if (preg_match('/^dsstats:([a-z]+):(\d+):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/',$targetstring,$matches)) {
 			return true;
@@ -112,6 +120,7 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 	 * @param mixed $targetstring
 	 * @param mixed $map
 	 * @param mixed $item
+	 * @return mixed
 	 */
 	function ReadData($targetstring, &$map, &$item) {
 		global $config;
@@ -129,6 +138,8 @@ class WeatherMapDataSource_dsstats extends WeatherMapDataSource {
 		$keyfield = 'rrd_name';
 		$datatype = '';
 		$field    = '';
+
+		$local_data_id = 0;
 
 		if (preg_match('/^dsstats:(\d+):([\-a-zA-Z0-9_]+):([\-a-zA-Z0-9_]+)$/',$targetstring,$matches)) {
 			$local_data_id = $matches[1];

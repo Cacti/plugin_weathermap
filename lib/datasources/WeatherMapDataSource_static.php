@@ -50,6 +50,10 @@ declare(strict_types = 1);
  * TARGET static:2M:256K
  */
 class WeatherMapDataSource_static extends WeatherMapDataSource {
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		if (preg_match("/^static:(\-?\d+\.?\d*[KMGT]?):(\-?\d+\.?\d*[KMGT]?)$/", $targetstring,$matches) ||
 			preg_match("/^static:(\-?\d+\.?\d*[KMGT]?)$/",$targetstring,$matches)) {
@@ -59,6 +63,12 @@ class WeatherMapDataSource_static extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return mixed
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$inbw      = null;
 		$outbw     = null;

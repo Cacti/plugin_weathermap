@@ -44,6 +44,9 @@ declare(strict_types = 1);
 
 chdir('../../../');
 include('./include/cli_check.php');
+
+global $config;
+
 include_once($config['lib_path'] . '/snmp.php');
 
 $cacti_base = $config['base_path'];
@@ -51,6 +54,9 @@ $cacti_url  = $config['url_path'];
 
 $width  = 4000;
 $height = 3000;
+
+$hosts      = [];
+$interfaces = [];
 
 // figure out which template has interface traffic. This might be wrong for you.
 $data_template_hash = 'fd841e8bb822927289b7acbc031f3d7e';
@@ -119,12 +125,13 @@ if (file_exists('../output/mapper-cache.txt')) {
 	print 'Reading Netmask cache...' . PHP_EOL;
 
 	$fd = fopen('../output/mapper-cache.txt', 'r');
+	assert($fd !== false);
 
 	while (!feof($fd)) {
-		$str = fgets($fd,4096);
+		$str = (string) fgets($fd,4096);
 		$str = str_replace("\r", '', $str);
 
-		trim($str);
+		$str = trim($str);
 
 		[$key, $mask] = explode("\t", $str);
 
@@ -161,12 +168,12 @@ $count = 0;
 if (cacti_sizeof($interfaces)) {
 	foreach ($interfaces as $key=>$int) {
 		if (!isset($int['netmask'])) {
-			$oid = '.1.3.6.1.2.1.4.20.1.3.' . $int['ip'];
+			$oid = '.1.3.6.1.2.1.4.20.1.3.' . ($int['ip'] ?? '');
 
 			$hostid = $int['host'];
 
 			if ($count < 100) {
-				print 'Fetching Netmask via SNMP for Host ' . $int['host'] . '//' . $int['ip'] . ' from ' . $oid . PHP_EOL;
+				print 'Fetching Netmask via SNMP for Host ' . $int['host'] . '//' . ($int['ip'] ?? '') . ' from ' . $oid . PHP_EOL;
 
 				$result = cacti_snmp_get(
 					$hosts[$hostid]['hostname'],
@@ -203,6 +210,7 @@ $count = 0;
 print 'Writing Netmask cache...' . PHP_EOL;
 
 $fd = fopen('../output/mapper-cache.txt', 'w');
+assert($fd !== false);
 
 if (cacti_sizeof($interfaces)) {
 	foreach ($interfaces as $key=>$int) {
@@ -221,19 +229,20 @@ print "Wrote $count cache entries.\n";
 // SNMP netmask => .1.3.6.1.2.1.4.20.1.3.10.1.1.254
 // SNMP interface index => .1.3.6.1.2.1.4.20.1.2.10.1.1.254
 
-$count = 0;
+$count    = 0;
+$networks = [];
 
 if (cacti_sizeof($interfaces)) {
 	foreach ($interfaces as $key=>$int) {
 		if (isset($int['netmask'])) {
-			$network = get_network($int['ip'], $int['netmask']) . '/' . get_cidr($int['netmask']);
+			$network = get_network($int['ip'] ?? '', $int['netmask']) . '/' . get_cidr($int['netmask']);
 
 			$interfaces[$key]['network'] = $network;
 
 			$networks[$network][] = $key;
 			$count++;
 		} else {
-			print $int['ip'] . PHP_EOL;
+			print ($int['ip'] ?? '') . PHP_EOL;
 		}
 	}
 }
@@ -258,9 +267,9 @@ if (cacti_sizeof($interfaces)) {
 			print 'Create LINK between' . PHP_EOL;
 
 			foreach ($members as $int) {
-				$h = $interfaces[$int]['host'];
+				$h = ($interfaces[$int]['host'] ?? '');
 
-				print '  ' . $interfaces[$int]['nicename'];
+				print '  ' . ($interfaces[$int]['nicename'] ?? '');
 				print ' on ' . $hosts[$h]['description'];
 				print ' (' . $hosts[$h]['hostname'] . ')' . PHP_EOL;
 
@@ -270,9 +279,9 @@ if (cacti_sizeof($interfaces)) {
 			$linkid++;
 			$link_config .= "LINK link_$linkid" . PHP_EOL;
 			$link_config .= 'WIDTH 4' . PHP_EOL;
-			$link_config .= "\tNODES node_" . $interfaces[$members[0]]['host'] . ' node_' . $interfaces[$members[1]]['host'] . PHP_EOL;
-			$link_config .= "\tSET in_interface " . $interfaces[$members[1]]['nicename'] . PHP_EOL;
-			$link_config .= "\tSET out_interface " . $interfaces[$members[0]]['nicename'] . PHP_EOL;
+			$link_config .= "\tNODES node_" . ($interfaces[$members[0]]['host'] ?? '') . ' node_' . ($interfaces[$members[1]]['host'] ?? '') . PHP_EOL;
+			$link_config .= "\tSET in_interface " . ($interfaces[$members[1]]['nicename'] ?? '') . PHP_EOL;
+			$link_config .= "\tSET out_interface " . ($interfaces[$members[0]]['nicename'] ?? '') . PHP_EOL;
 			$link_config .= PHP_EOL;
 		}
 
@@ -294,16 +303,16 @@ if (cacti_sizeof($interfaces)) {
 			$node_config .= 'USESCALE none in' . PHP_EOL . PHP_EOL;
 
 			foreach ($members as $int) {
-				$h = $interfaces[$int]['host'];
+				$h = ($interfaces[$int]['host'] ?? '');
 
-				print "  $int:: " . $interfaces[$int]['nicename'];
+				print "  $int:: " . ($interfaces[$int]['nicename'] ?? '');
 				print ' on ' . $hosts[$h]['description'];
 				print ' (' . $hosts[$h]['hostname'] . ')' . PHP_EOL;
 
 				$nodes_seen[$h] = 1;
 				$linkid++;
 				$link_config .= "LINK link_$linkid" . PHP_EOL;
-				$link_config .= 'SET out_interface ' . $interfaces[$int]['nicename'] . PHP_EOL;
+				$link_config .= 'SET out_interface ' . ($interfaces[$int]['nicename'] ?? '') . PHP_EOL;
 				$link_config .= "\tNODES node_$h LAN_$lan_key" . PHP_EOL;
 				$link_config .= "\tWIDTH 2" . PHP_EOL;
 				$link_config .= "\tOUTCOMMENT {link:this:out_interface}" . PHP_EOL;
@@ -332,6 +341,11 @@ if (cacti_sizeof($nodes_seen)) {
 }
 
 $fd = fopen('automap.cfg', 'w');
+
+if ($fd === false) {
+	print "FATAL: Could not open automap.cfg for writing\n";
+	exit(1);
+}
 
 $base_config  = 'HTMLSTYLE overlib' . PHP_EOL;
 $base_config .= 'BGCOLOR 92 92 92' . PHP_EOL;
@@ -370,6 +384,10 @@ fclose($fd);
 
 // /////////////////////////////////////////////////////////////
 
+/**
+ * @param mixed $_ip
+ * @return mixed
+ */
 function ip_to_int($_ip) {
 	if (preg_match('/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/', $_ip, $matches)) {
 		$_output = 0;
@@ -387,6 +405,10 @@ function ip_to_int($_ip) {
 	}
 }
 
+/**
+ * @param mixed $_int
+ * @return mixed
+ */
 function int_to_ip($_int) {
 	$tmp = $_int;
 
@@ -400,6 +422,11 @@ function int_to_ip($_int) {
 	return ($_output);
 }
 
+/**
+ * @param mixed $_ip
+ * @param mixed $_mask
+ * @return mixed
+ */
 function get_network($_ip, $_mask) {
 	$_int1    = ip_to_int($_ip);
 	$_mask1   = ip_to_int($_mask);
@@ -408,6 +435,10 @@ function get_network($_ip, $_mask) {
 	return (int_to_ip($_network));
 }
 
+/**
+ * @param mixed $mask
+ * @return mixed
+ */
 function get_cidr($mask) {
 	$lookup = [
 		'255.255.255.255' => '32',

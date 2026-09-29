@@ -8,7 +8,7 @@ class WeatherMapDataSource_cacti extends WeatherMapDataSource {
 	 * available. Called by the WeatherMap engine before using this data
 	 * source.
 	 *
-	 * @param object $map Reference, the WeatherMap object being
+	 * @param WeatherMap $map Reference, the WeatherMap object being
 	 *                    initialized.
 	 *
 	 * @return bool True if this data source can be used, false

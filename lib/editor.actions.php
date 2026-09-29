@@ -50,6 +50,10 @@ declare(strict_types = 1);
  * @param mixed $mapfile
  */
 
+/**
+ * @return void
+ * @param mixed $mapfile
+ */
 function newMap($mapfile) {
 	$map = new WeatherMap;
 
@@ -58,10 +62,18 @@ function newMap($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function newMapCopy($mapfile) {
+	global $mapdir;
+
 	$map = new WeatherMap;
 
 	$map->context = 'editor';
+
+	$sourcemapname = '';
 
 	if (isset_request_var('sourcemap')) {
 		$sourcemapname = get_nfilter_request_var('sourcemap');
@@ -79,6 +91,10 @@ function newMapCopy($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function getMapJavaScript($mapfile) {
 	$map = new WeatherMap;
 
@@ -89,6 +105,10 @@ function getMapJavaScript($mapfile) {
 	print $map->asJS();
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function getMapAreaData($mapfile) {
 	$map = new WeatherMap;
 
@@ -107,6 +127,13 @@ function getMapAreaData($mapfile) {
 	print $map->SortedImagemap('weathermap_imap');
 }
 
+/**
+ * @param mixed $mapfile
+ * @param mixed $selected
+ * @param mixed $use_overlay
+ * @param mixed $use_relative_overlay
+ * @return void
+ */
 function drawMap($mapfile, $selected, $use_overlay, $use_relative_overlay) {
 	header('Content-type: image/png');
 
@@ -132,10 +159,15 @@ function drawMap($mapfile, $selected, $use_overlay, $use_relative_overlay) {
 	$map->DrawMap('', '', 250, true, $use_overlay, $use_relative_overlay);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function showConfig($mapfile) {
 	header('Content-type: text/plain');
 
 	$fd = fopen($mapfile,'r');
+	assert($fd !== false);
 
 	while (!feof($fd)) {
 		$buffer = fgets($fd, 4096);
@@ -145,6 +177,10 @@ function showConfig($mapfile) {
 	fclose($fd);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function fetchConfig($mapfile) {
 	$map = new WeatherMap;
 
@@ -178,6 +214,10 @@ function fetchConfig($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function setNodeConfig($mapfile) {
 	$map = new WeatherMap;
 
@@ -205,6 +245,10 @@ function setNodeConfig($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function setLinkConfig($mapfile) {
 	$map = new WeatherMap;
 
@@ -232,6 +276,10 @@ function setLinkConfig($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function setNodeProperties($mapfile) {
 	$map = new WeatherMap;
 
@@ -317,6 +365,10 @@ function setNodeProperties($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function setLinkProperties($mapfile) {
 	$map = new WeatherMap;
 
@@ -341,7 +393,7 @@ function setLinkProperties($mapfile) {
 		$map->links[$link_name]->commentoffset_in  = intval(get_nfilter_request_var('link_commentposin'));
 		$map->links[$link_name]->commentoffset_out = intval(get_nfilter_request_var('link_commentposout'));
 
-		$targets         = preg_split('/\s+/', trim(get_nfilter_request_var('link_target')), -1, PREG_SPLIT_NO_EMPTY);
+		$targets         = preg_split('/\s+/', trim(get_nfilter_request_var('link_target')), -1, PREG_SPLIT_NO_EMPTY) ?: [];
 		$new_target_list = [];
 
 		foreach ($targets as $target) {
@@ -394,6 +446,10 @@ function setLinkProperties($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function setMapProperties($mapfile) {
 	$map = new WeatherMap;
 
@@ -470,6 +526,10 @@ function setMapProperties($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function setMapStyle($mapfile) {
 	$map = new WeatherMap;
 
@@ -501,6 +561,10 @@ function setMapStyle($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function addLink($mapfile) {
 	$map = new WeatherMap;
 
@@ -542,6 +606,11 @@ function addLink($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @param mixed $grid_snap_value
+ * @return void
+ */
 function placeLegend($mapfile, $grid_snap_value) {
 	$map = new WeatherMap;
 
@@ -560,6 +629,11 @@ function placeLegend($mapfile, $grid_snap_value) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @param mixed $grid_snap_value
+ * @return void
+ */
 function placeStamp($mapfile, $grid_snap_value) {
 	$map = new WeatherMap;
 
@@ -576,6 +650,10 @@ function placeStamp($mapfile, $grid_snap_value) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function viaLink($mapfile) {
 	$map = new WeatherMap;
 
@@ -594,6 +672,11 @@ function viaLink($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @param mixed $grid_snap_value
+ * @return void
+ */
 function moveNode($mapfile, $grid_snap_value) {
 	$map = new WeatherMap;
 
@@ -613,6 +696,8 @@ function moveNode($mapfile, $grid_snap_value) {
 		foreach ($map->links as $link) {
 			if ((count($link->vialist) > 0) && (($link->a->name == $node_name) || ($link->b->name == $node_name))) {
 				// get the other node from us
+				$pivot = $link->a;
+
 				if ($link->a->name == $node_name) {
 					$pivot = $link->b;
 				}
@@ -700,6 +785,10 @@ function moveNode($mapfile, $grid_snap_value) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function linkTidy($mapfile) {
 	$map = new WeatherMap;
 
@@ -719,6 +808,10 @@ function linkTidy($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function reTidy($mapfile) {
 	$map = new WeatherMap;
 
@@ -733,6 +826,10 @@ function reTidy($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function reTidyAll($mapfile) {
 	$map = new WeatherMap;
 
@@ -747,6 +844,10 @@ function reTidyAll($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function unTidy($mapfile) {
 	$map = new WeatherMap;
 
@@ -761,6 +862,10 @@ function unTidy($mapfile) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function deleteLink($mapfile) {
 	$map = new WeatherMap;
 
@@ -778,6 +883,11 @@ function deleteLink($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @param mixed $grid_snap_value
+ * @return void
+ */
 function addNode($mapfile, $grid_snap_value) {
 	$map = new WeatherMap;
 
@@ -818,6 +928,10 @@ function addNode($mapfile, $grid_snap_value) {
 	$map->WriteConfig($mapfile);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function editorSettings($mapfile) {
 	global $use_overlay, $use_relative_overlay, $grid_snap_value;
 
@@ -833,6 +947,10 @@ function editorSettings($mapfile) {
 	$grid_snap_value      = (isset_request_var('editorsettings_gridsnap') ? intval(get_nfilter_request_var('editorsettings_gridsnap')) : 0);
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function deleteNode($mapfile) {
 	$map = new WeatherMap;
 
@@ -859,6 +977,10 @@ function deleteNode($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function cloneNode($mapfile) {
 	$map = new WeatherMap;
 
@@ -899,6 +1021,10 @@ function cloneNode($mapfile) {
 	}
 }
 
+/**
+ * @param mixed $mapfile
+ * @return void
+ */
 function displayFontSamples($mapfile) {
 	$map = new WeatherMap;
 
@@ -915,7 +1041,7 @@ function displayFontSamples($mapfile) {
 	$sampleheight = 32;
 	// $im = imagecreate(250,imagefontheight(5)+5);
 	$im    = imagecreate(2000,$sampleheight);
-	$imkey = imagecreate(2000,$keyheight);
+	$imkey = imagecreate(2000, max(1, $keyheight));
 
 	$white    = imagecolorallocate($im,255,255,255);
 	$black    = imagecolorallocate($im,0,0,0);
@@ -943,7 +1069,7 @@ function displayFontSamples($mapfile) {
 		$x = $x + $width + 6;
 	}
 
-	$im2 = imagecreate($x,$sampleheight + $keyheight);
+	$im2 = imagecreate(max(1, (int) $x), max(1, $sampleheight + $keyheight));
 
 	imagecopy($im2, $im, 0, 0, 0, 0, $x, $sampleheight);
 	imagecopy($im2,$imkey, 0, $sampleheight, 0, 0, $x, $keyheight);
@@ -954,6 +1080,10 @@ function displayFontSamples($mapfile) {
 	unset($im2);
 }
 
+/**
+ * @param WeatherMap $map
+ * @return void
+ */
 function fixMapBackgroundAndImages(&$map) {
 	global $config;
 
@@ -981,6 +1111,11 @@ function fixMapBackgroundAndImages(&$map) {
 	}
 }
 
+/**
+ * @param mixed $mapname
+ * @param mixed $selected
+ * @return mixed
+ */
 function getImageURL($mapname, $selected) {
 	// now we'll just draw the full editor page, with our new knowledge
 	$imageurl = 'weathermap-cacti-plugin-editor.php?mapname=' . $mapname . '&action=draw';

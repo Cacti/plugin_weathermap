@@ -98,20 +98,30 @@ define('DISTANCE', 2);
 // I really wish PHP4 would just die overnight
 class WeatherMapDataSource {
 	// Cacti Integration
+	/** @var mixed */
 	var $local_data_id;
 
+	/** @var array */
 	var $down_cache = [];
 
 	// Initialize - called after config has been read (so SETs are processed)
 	// but just before ReadData. Used to allow plugins to verify their dependencies
 	// (if any) and bow out gracefully. Return false to signal that the plugin is not
 	// in a fit state to run at the moment.
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function Init(&$map) {
 		return true;
 	}
 
 	// called with the TARGET string. Returns true or false, depending on whether it wants to handle this TARGET
 	// called by map->ReadData()
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		return false;
 	}
@@ -121,27 +131,50 @@ class WeatherMapDataSource {
 	//   configline is passed in, to allow for better error messages
 	//   itemtype and itemname may be used as part of the target (e.g. for TSV source line)
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map) { return ([-1,-1]); }
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return mixed
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		return ([-1, -1, 0]);
 	}
 
 	// pre-register a target + context, to allow a plugin to batch up queries to a slow database, or snmp for example
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return void
+	 */
 	function Register($targetstring, &$map, &$item) {
 	}
 
 	// called before ReadData, to allow plugins to DO the prefetch of targets known from Register
+	/**
+	 * @return void
+	 */
 	function Prefetch() {
 	}
 }
 
 // template classes for the pre- and post-processor plugins
 class WeatherMapPreProcessor {
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function run(&$map) {
 		return false;
 	}
 }
 
 class WeatherMapPostProcessor {
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function run(&$map) {
 		return false;
 	}
@@ -152,16 +185,32 @@ class WeatherMapPostProcessor {
 // Links, Nodes and the Map object inherit from this class ultimately.
 // Just to make some common code common.
 class WeatherMapBase {
+	// Declared for static analysis (dynamically populated at runtime)
+	/** @var mixed */
+	var $name;
+
+	/** @var array */
 	var $notes = [];
+	/** @var array */
 	var $hints = [];
+	/** @var mixed */
 	var $inherit_fieldlist;
 
+	/**
+	 * @param string $name
+	 * @param mixed $value
+	 * @return void
+	 */
 	function add_note($name,$value) {
 		wm_debug("Adding note $name='$value' to " . $this->name);
 
 		$this->notes[$name] = $value;
 	}
 
+	/**
+	 * @param string $name
+	 * @return mixed
+	 */
 	function get_note($name) {
 		if (isset($this->notes[$name])) {
 			//	debug("Found note $name in ".$this->name." with value of ".$this->notes[$name].".\n");
@@ -172,6 +221,11 @@ class WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param string $name
+	 * @param string $value
+	 * @return void
+	 */
 	function add_hint($name,$value) {
 		wm_debug("Adding hint $name='$value' to " . $this->name);
 
@@ -179,140 +233,273 @@ class WeatherMapBase {
 		// warn("Adding hint $name to ".$this->my_type()."/".$this->name."\n");
 	}
 
-	function get_hint($name) {
+	/**
+	 * @param string $name
+	 * @param mixed $default Value returned when the hint is not set.
+	 * @return mixed
+	 */
+	function get_hint($name, $default = null) {
 		if (isset($this->hints[$name])) {
 			//	debug("Found hint $name in ".$this->name." with value of ".$this->hints[$name].".\n");
 			return ($this->hints[$name]);
 		} else {
 			//	debug("Looked for hint $name in ".$this->name." which doesn't exist.\n");
-			return (null);
+			return ($default);
 		}
 	}
 }
 
 class WeatherMapConfigItem {
+	/** @var mixed */
 	var $defined_in;
+	/** @var mixed */
 	var $name;
+	/** @var mixed */
 	var $value;
+	/** @var mixed */
 	var $type;
 }
 
 // The 'things on the map' class. More common code (mainly variables, actually)
 class WeatherMapItem extends WeatherMapBase {
+	// Declared for static analysis (dynamically populated at runtime)
+	/** @var mixed */
+	var $a;
+	/** @var mixed */
+	var $b;
+	/** @var mixed */
+	var $name;
+	/** @var mixed */
+	var $notestext;
+	/** @var mixed */
+	var $targets;
+	/** @var mixed */
+	var $x;
+	/** @var mixed */
+	var $y;
+
+	/** @var mixed */
 	var $owner;
 
+	/** @var mixed */
 	var $configline;
+	/** @var mixed */
 	var $infourl;
+	/** @var mixed */
 	var $overliburl;
-	var $overlibwidth, $overlibheight;
+	/** @var mixed */
+	var $overlibwidth;
+	/** @var mixed */
+	var $overlibheight;
+	/** @var mixed */
 	var $overlibcaption;
+	/** @var mixed */
 	var $my_default;
+	/** @var mixed */
 	var $defined_in;
-	var $config_override;	// used by the editor to allow text-editing
+	/** @var mixed */
+	var $config_override; // used by the editor to allow text-editing
 
+	/**
+	 * @return mixed
+	 */
 	function my_type() {
 		return 'ITEM';
 	}
 }
 
 class WeatherMap extends WeatherMapBase {
+	// Declared for static analysis (dynamically populated at runtime)
+	/** @var mixed */
+	var $keycache;
+
+	/** @var array<int|string, WeatherMapNode> */
 	var $nodes = []; // an array of WeatherMapNodes
+	/** @var array<int|string, WeatherMapLink> */
 	var $links = []; // an array of WeatherMapLinks
+	/** @var array */
 	var $texts = []; // an array containing all the extraneous text bits
 
+	/** @var array */
 	var $used_images  = []; // an array of image filenames referred to (used by editor)
+	/** @var array */
 	var $seen_zlayers = [0 => [], 1000 => []]; // 0 is the background, 1000 is the legends, title, etc
 
+	/** @var mixed */
 	var $config;
+	/** @var mixed */
 	var $next_id;
+	/** @var mixed */
 	var $min_ds_time;
+	/** @var mixed */
 	var $max_ds_time;
+	/** @var mixed */
 	var $background;
+	/** @var mixed */
 	var $htmlstyle;
+	/** @var mixed */
 	var $imap;
+	/** @var mixed */
 	var $colours;
+	/** @var mixed */
 	var $configfile;
+	/** @var mixed */
 	var $imagefile;
+	/** @var mixed */
 	var $imageuri;
+	/** @var mixed */
 	var $rrdtool;
+	/** @var mixed */
 	var $title;
+	/** @var mixed */
 	var $titlefont;
+	/** @var mixed */
 	var $kilo;
+	/** @var mixed */
 	var $sizedebug;
+	/** @var mixed */
 	var $widthmod;
+	/** @var mixed */
 	var $debugging;
+	/** @var mixed */
 	var $linkfont;
+	/** @var mixed */
 	var $nodefont;
+	/** @var mixed */
 	var $keyfont;
+	/** @var mixed */
 	var $timefont;
 
 	// var $bg_r, $bg_g, $bg_b;
+	/** @var mixed */
 	var $timex;
+	/** @var mixed */
 	var $timey;
+	/** @var mixed */
 	var $width;
+	/** @var mixed */
 	var $height;
+	/** @var mixed */
 	var $keyx;
+	/** @var mixed */
 	var $keyy;
+	/** @var mixed */
 	var $keyimage;
+	/** @var mixed */
 	var $titlex;
+	/** @var mixed */
 	var $titley;
+	/** @var mixed */
 	var $keytext;
+	/** @var mixed */
 	var $stamptext;
+	/** @var mixed */
 	var $datestamp;
+	/** @var mixed */
 	var $min_data_time;
+	/** @var mixed */
 	var $max_data_time;
+	/** @var mixed */
 	var $htmloutputfile;
+	/** @var mixed */
 	var $imageoutputfile;
+	/** @var mixed */
 	var $dataoutputfile;
+	/** @var mixed */
 	var $htmlstylesheet;
+	/** @var mixed */
 	var $defaultlink;
+	/** @var mixed */
 	var $defaultnode;
+	/** @var mixed */
 	var $need_size_precalc;
+	/** @var mixed */
 	var $keystyle;
+	/** @var mixed */
 	var $keysize;
+	/** @var mixed */
 	var $rrdtool_check;
+	/** @var mixed */
 	var $inherit_fieldlist;
+	/** @var mixed */
 	var $mintimex;
+	/** @var mixed */
 	var $maxtimex;
+	/** @var mixed */
 	var $mintimey;
+	/** @var mixed */
 	var $maxtimey;
+	/** @var mixed */
 	var $minstamptext;
+	/** @var mixed */
 	var $maxstamptext;
+	/** @var mixed */
 	var $context;
+	/** @var mixed */
 	var $cachefolder;
+	/** @var mixed */
 	var $mapcache;
+	/** @var mixed */
 	var $cachefile_version;
+	/** @var mixed */
 	var $name;
+	/** @var mixed */
 	var $black;
+	/** @var mixed */
 	var $white;
+	/** @var mixed */
 	var $grey;
+	/** @var mixed */
 	var $selected;
 
+	/** @var mixed */
 	var $datasourceclasses;
+	/** @var mixed */
 	var $preprocessclasses;
+	/** @var mixed */
 	var $postprocessclasses;
+	/** @var mixed */
 	var $activedatasourceclasses;
+	/** @var mixed */
 	var $thumb_width;
+	/** @var mixed */
 	var $thumb_height;
+	/** @var mixed */
 	var $has_includes;
+	/** @var mixed */
 	var $has_overlibs;
+	/** @var mixed */
 	var $node_template_tree;
+	/** @var mixed */
 	var $link_template_tree;
+	/** @var ?array */
 	var $dsinfocache = [];
 
+	/** @var array */
 	var $plugins        = [];
+	/** @var array */
 	var $included_files = [];
+	/** @var ?array */
 	var $usage_stats    = [];
+	/** @var array */
 	var $coverage       = [];
+	/** @var ?array */
 	var $colourtable    = [];
+	/** @var int */
 	var $warncount      = 0;
 
 	// PHP 8.1 QA
+	/** @var mixed */
 	var $numscales;
+	/** @var mixed */
 	var $dumpconfig;
+	/** @var mixed */
 	var $labelstyle;
+	/** @var mixed */
 	var $fonts;
+	/** @var mixed */
 	var $scales;
+	/** @var mixed */
 	var $image;
 
 	function __construct() {
@@ -374,10 +561,16 @@ class WeatherMap extends WeatherMapBase {
 		$this->Reset();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function my_type() {
 		return 'MAP';
 	}
 
+	/**
+	 * @return void
+	 */
 	function Reset() {
 		$this->next_id = 100;
 
@@ -540,7 +733,7 @@ class WeatherMap extends WeatherMapBase {
 	 * Create an array of all the nodes and links, mixed together.
 	 * readData() makes several passes through this list.
 	 *
-	 * @return MapDataItem[]
+	 * @return WeatherMapItem[]
 	 */
 	public function buildAllItemsList() {
 		// TODO - this should probably be a static, or otherwise cached
@@ -558,13 +751,6 @@ class WeatherMap extends WeatherMapBase {
 	/**
 	 * myimagestring - Function to draw a string on an image
 	 *
-	 * @param  object - An image object
-	 * @param  int      The font number
-	 * @param  int      The lower left corner of where the text will start
-	 * @param  int      The lower left corner of where the text will start
-	 * @param  string   The string to paint
-	 * @param  hex      The colour to draw the test with
-	 * @param  double   The angle to rotate the text on the image
 	 * @param mixed $image
 	 * @param mixed $fontnumber
 	 * @param mixed $x
@@ -572,6 +758,7 @@ class WeatherMap extends WeatherMapBase {
 	 * @param mixed $string
 	 * @param mixed $colour
 	 * @param mixed $angle
+	 * @return void
 	 */
 	function myimagestring($image, $fontnumber, $x, $y, $string, $colour, $angle = 0) {
 		// if it's supposed to be a special font, and it hasn't been defined, then fall through
@@ -622,6 +809,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param mixed $fontnumber
+	 * @param string $string
+	 * @return mixed
+	 */
 	function myimagestringsize($fontnumber, $string) {
 		$linecount = 1;
 
@@ -654,6 +846,7 @@ class WeatherMap extends WeatherMapBase {
 
 					foreach ($lines as $line) {
 						$bounds = imagettfbbox($this->fonts[$fontnumber]->size, 0, $this->fonts[$fontnumber]->file, $line);
+						assert($bounds !== false);
 
 						$cx = $bounds[4] - $bounds[0];
 						$cy = $bounds[1] - $bounds[5];
@@ -677,6 +870,13 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param mixed $input
+	 * @param mixed $context
+	 * @param bool $include_notes
+	 * @param bool $multiline
+	 * @return string
+	 */
 	function ProcessString($input, &$context, $include_notes = true, $multiline = false) {
 		global $config;
 
@@ -758,6 +958,7 @@ class WeatherMap extends WeatherMapBase {
 			if (preg_match('/\{(node|map|link):([^}]+)\}/', $key, $matches)) {
 				$type = $matches[1];
 				$args = $matches[2];
+				$the_item = null;
 
 				if ($type == 'map') {
 					$the_item = $this;
@@ -842,6 +1043,9 @@ class WeatherMap extends WeatherMapBase {
 		return ($output);
 	}
 
+	/**
+	 * @return void
+	 */
 	function RandomData() {
 		foreach ($this->links as $link) {
 			$this->links[$link->name]->bandwidth_in  = rand(0, $link->max_bandwidth_in);
@@ -849,6 +1053,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param string $type
+	 * @param string $dir
+	 * @return void
+	 */
 	function LoadPlugins($type = 'data', $dir = 'datasources') {
 		wm_debug("Beginning to load $type plugins from $dir");
 
@@ -864,7 +1073,7 @@ class WeatherMap extends WeatherMapBase {
 		if (!$dh) {
 			if (isset($_SERVER['argv'][0])) {
 				// try to find it with the script, if the relative path fails
-				$srcdir = substr($_SERVER['argv'][0], 0, strrpos($_SERVER['argv'][0], '/'));
+				$srcdir = substr($_SERVER['argv'][0], 0, (int) strrpos($_SERVER['argv'][0], '/'));
 
 				// nosemgrep: php.lang.security.injection.tainted-filename.tainted-filename
 				if (file_exists($srcdir)) {
@@ -928,6 +1137,9 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	function DatasourceInit() {
 		wm_debug('Running Init() for Data Source Plugins...');
 
@@ -953,6 +1165,9 @@ class WeatherMap extends WeatherMapBase {
 		wm_debug('Finished Initialising Plugins...');
 	}
 
+	/**
+	 * @return void
+	 */
 	function ProcessTargets() {
 		wm_debug('Preprocessing targets');
 
@@ -1034,6 +1249,9 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	function ReadData() {
 		$this->DatasourceInit();
 
@@ -1079,6 +1297,7 @@ class WeatherMap extends WeatherMapBase {
 							$in       = 0;
 							$out      = 0;
 							$datatime = 0;
+							$matched_by = '';
 
 							if ($target[4] != '') {
 								// processstring won't use notes (only hints) for this string
@@ -1217,6 +1436,22 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	// nodename is a vestigal parameter, from the days when nodes were just big labels
+	/**
+	 * @param mixed $image
+	 * @param mixed $x
+	 * @param mixed $y
+	 * @param mixed $angle
+	 * @param string $text
+	 * @param mixed $font
+	 * @param mixed $padding
+	 * @param mixed $linkname
+	 * @param mixed $textcolour
+	 * @param mixed $bgcolour
+	 * @param mixed $outlinecolour
+	 * @param WeatherMap $map
+	 * @param mixed $direction
+	 * @return void
+	 */
 	function DrawLabelRotated($image, $x, $y, $angle, $text, $font, $padding, $linkname, $textcolour, $bgcolour, $outlinecolour, &$map, $direction) {
 		[$strwidth, $strheight] = $this->myimagestringsize($font, $text);
 
@@ -1265,7 +1500,7 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		$textcol = myimagecolorallocate($image, $textcolour[0], $textcolour[1], $textcolour[2]);
-		$this->myimagestring($image, $font, $apoints[8], $apoints[9], $text, $textcol, $angle, $strheight);
+		$this->myimagestring($image, $font, $apoints[8], $apoints[9], $text, $textcol, $angle);
 
 		$areaname = 'LINK:L' . $map->links[$linkname]->id . ':' . ($direction + 2);
 
@@ -1279,6 +1514,13 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param mixed $image
+	 * @param mixed $percent
+	 * @param string $scalename
+	 * @param string $name
+	 * @return mixed
+	 */
 	function ColourFromPercent($image, $percent, $scalename = 'DEFAULT', $name = '') {
 		$col = null;
 		$tag = '';
@@ -1358,10 +1600,19 @@ class WeatherMap extends WeatherMapBase {
 		return [$this->white, '', ''];
 	}
 
+	/**
+	 * @param float|int $value
+	 * @param string $scalename
+	 * @param string $name
+	 * @param bool $is_percent
+	 * @param bool $scale_warning
+	 * @return mixed
+	 */
 	function NewColourFromPercent($value, $scalename = 'DEFAULT', $name = '', $is_percent = true, $scale_warning = true) {
 		$col = new Colour(0, 0, 0);
 		$tag = '';
 
+		/** @var float|int|null $matchsize */
 		$matchsize = null;
 
 		$nowarn_clipping    = intval($this->get_hint('nowarn_clipping'));
@@ -1448,6 +1699,11 @@ class WeatherMap extends WeatherMapBase {
 		return [new Colour(255, 255, 255), '', ''];
 	}
 
+	/**
+	 * @param mixed $a
+	 * @param mixed $b
+	 * @return mixed
+	 */
 	function coloursort($a, $b) {
 		if ($a['bottom'] == $b['bottom']) {
 			if ($a['top'] < $b['top']) {
@@ -1468,6 +1724,10 @@ class WeatherMap extends WeatherMapBase {
 		return 1;
 	}
 
+	/**
+	 * @param string $scalename
+	 * @return mixed
+	 */
 	function FindScaleExtent($scalename = 'DEFAULT') {
 		$max = -999999999999999999999;
 		$min = - $max;
@@ -1488,6 +1748,12 @@ class WeatherMap extends WeatherMapBase {
 		return [$min, $max];
 	}
 
+	/**
+	 * @param mixed $image
+	 * @param string $scalename
+	 * @param int $width
+	 * @return void
+	 */
 	function DrawLegend_Horizontal($image, $scalename = 'DEFAULT', $width = 400) {
 		$title = $this->keytext[$scalename];
 
@@ -1519,13 +1785,13 @@ class WeatherMap extends WeatherMapBase {
 		$scale_bottom = $scale_top + $tileheight * 1.5;
 		$box_bottom   = $scale_bottom + $tileheight * 2 + 6;
 
-		$scale_im  = imagecreatetruecolor(intval(round($box_right + 1)), intval(round($box_bottom + 1)));
+		$scale_im  = imagecreatetruecolor(max(1, intval(round($box_right + 1))), max(1, intval(round($box_bottom + 1))));
 		$scale_ref = 'gdref_legend_' . $scalename;
 
 		// Start with a transparent box, in case the fill or outline colour is 'none'
 		imagesavealpha($scale_im, true);
 		$nothing = imagecolorallocatealpha($scale_im, 128, 0, 0, 127);
-		imagefill($scale_im, 0, 0, $nothing);
+		imagefill($scale_im, 0, 0, (int) $nothing);
 
 		$this->AllocateScaleColours($scale_im,$scale_ref);
 
@@ -1585,6 +1851,13 @@ class WeatherMap extends WeatherMapBase {
 		);
 	}
 
+	/**
+	 * @param mixed $image
+	 * @param string $scalename
+	 * @param int $height
+	 * @param bool $inverted
+	 * @return void
+	 */
 	function DrawLegend_Vertical($image, $scalename = 'DEFAULT', $height = 400, $inverted = false) {
 		$title   = $this->keytext[$scalename];
 
@@ -1622,7 +1895,7 @@ class WeatherMap extends WeatherMapBase {
 		$scale_bottom = $scale_top + $height;
 		$box_bottom   = $scale_bottom + $scalefactor + $tileheight / 2 + 4;
 
-		$scale_im  = imagecreatetruecolor(intval(round($box_right + 1)), intval(round($box_bottom + 1)));
+		$scale_im  = imagecreatetruecolor(max(1, intval(round($box_right + 1))), max(1, intval(round($box_bottom + 1))));
 		$scale_ref = 'gdref_legend_' . $scalename;
 
 		// Start with a transparent box, in case the fill or outline colour is 'none'
@@ -1630,7 +1903,7 @@ class WeatherMap extends WeatherMapBase {
 
 		$nothing = imagecolorallocatealpha($scale_im, 128, 0, 0, 127);
 
-		imagefill($scale_im, 0, 0, $nothing);
+		imagefill($scale_im, 0, 0, (int) $nothing);
 
 		$this->AllocateScaleColours($scale_im,$scale_ref);
 
@@ -1704,11 +1977,17 @@ class WeatherMap extends WeatherMapBase {
 		);
 	}
 
+	/**
+	 * @param mixed $image
+	 * @param string $scalename
+	 * @param bool $use_tags
+	 * @return void
+	 */
 	function DrawLegend_Classic($image, $scalename = 'DEFAULT', $use_tags = false) {
 		$title = $this->keytext[$scalename];
 
 		$colours = $this->colours[$scalename];
-		usort($colours, ['Weathermap', 'coloursort']);
+		usort($colours, [$this, 'coloursort']);
 
 		$nscales = $this->numscales[$scalename];
 
@@ -1719,11 +1998,6 @@ class WeatherMap extends WeatherMapBase {
 
 		// did we actually hide anything?
 		$hid_zero = false;
-
-		if (($hide_zero == 1) && isset($colours['0_0'])) {
-			$nscales--;
-			$hid_zero = true;
-		}
 
 		$font = $this->keyfont;
 
@@ -1787,7 +2061,7 @@ class WeatherMap extends WeatherMapBase {
 				$boxy += $this->height;
 			}
 
-			$scale_im  = imagecreatetruecolor(intval(round($boxwidth + 1)), intval(round($boxheight + 1)));
+			$scale_im  = imagecreatetruecolor(max(1, intval(round($boxwidth + 1))), max(1, intval(round($boxheight + 1))));
 			$scale_ref = 'gdref_legend_' . $scalename;
 
 			// Start with a transparent box, in case the fill or outline colour is 'none'
@@ -1795,7 +2069,7 @@ class WeatherMap extends WeatherMapBase {
 
 			$nothing = imagecolorallocatealpha($scale_im, 128, 0, 0, 127);
 
-			imagefill($scale_im, 0, 0, $nothing);
+			imagefill($scale_im, 0, 0, (int) $nothing);
 
 			$this->AllocateScaleColours($scale_im,$scale_ref);
 
@@ -1934,7 +2208,7 @@ class WeatherMap extends WeatherMapBase {
 			throw new InvalidArgumentException('$timestamp argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.');
 		}
 
-		$locale = Locale::canonicalize($locale ?? (Locale::getDefault() ?? setlocale(LC_TIME, '0')));
+		$locale = Locale::canonicalize($locale ?? Locale::getDefault());
 
 		$intl_formats = [
 			'%a' => 'ccc',	// An abbreviated textual representation of the day	Sun through Sat
@@ -2084,15 +2358,22 @@ class WeatherMap extends WeatherMapBase {
 			if (is_string($replace)) {
 				return $timestamp->format($replace);
 			} else {
-				return $replace($timestamp, $match[1]);
+				return (string) $replace($timestamp, $match[1]);
 			}
 		}, $format);
 
-		$out = str_replace('%%', '%', $out);
+		$out = str_replace('%%', '%', (string) $out);
 
 		return $out;
 	}
 
+	/**
+	 * @param mixed $image
+	 * @param mixed $font
+	 * @param mixed $colour
+	 * @param string $which
+	 * @return void
+	 */
 	function DrawTimestamp($image, $font, $colour, $which = '') {
 		$this->datestamp = $this->strftime($this->stamptext, time());
 
@@ -2131,6 +2412,12 @@ class WeatherMap extends WeatherMapBase {
 		$this->imap->addArea('Rectangle', $which . 'TIMESTAMP', '', [$x, $y, $x + $boxwidth, $y - $boxheight]);
 	}
 
+	/**
+	 * @param mixed $image
+	 * @param mixed $font
+	 * @param mixed $colour
+	 * @return void
+	 */
 	function DrawTitle($image, $font, $colour) {
 		$string = $this->ProcessString($this->title, $this);
 
@@ -2153,6 +2440,11 @@ class WeatherMap extends WeatherMapBase {
 		$this->imap->addArea('Rectangle', 'TITLE', '', [$x, $y, $x + $boxwidth, $y - $boxheight]);
 	}
 
+	/**
+	 * @param mixed $input
+	 * @param bool $is_include
+	 * @return bool
+	 */
 	function ReadConfig($input, $is_include = false) {
 		global $config, $weathermap_error_suppress;
 
@@ -2217,6 +2509,7 @@ class WeatherMap extends WeatherMapBase {
 
 		$linecount       = 0;
 		$objectlinecount = 0;
+		$curobj          = null;
 
 		foreach ($lines as $buffer) {
 			$linematched = 0;
@@ -2266,6 +2559,8 @@ class WeatherMap extends WeatherMapBase {
 						}
 
 						if ($last_seen == 'LINK') {
+							assert($curlink instanceof WeatherMapLink);
+
 							if (isset($curlink->a) && isset($curlink->b)) {
 								$this->links[$curlink->name] = $curlink;
 
@@ -2474,7 +2769,7 @@ class WeatherMap extends WeatherMapBase {
 								} elseif (is_numeric($val)) {
 									// if it's a number, then it;s a match number,
 									// otherwise it's a literal to be put into a variable
-									$val = $matches[$val];
+									$val = $matches[$val] ?? '';
 								}
 
 								// assert('is_object($curobj)');
@@ -2536,7 +2831,7 @@ class WeatherMap extends WeatherMapBase {
 								$this->need_size_precalc = true;
 							}
 
-							if (!array_key_exists($nodenames[$i], $this->nodes)) {
+							if (!array_key_exists((string) $nodenames[$i], $this->nodes)) {
 								wm_warn("Unknown node '" . $nodenames[$i] . "' on line $linecount of config");
 
 								$valid_nodes--;
@@ -2660,6 +2955,7 @@ class WeatherMap extends WeatherMapBase {
 						wm_warn('IN/OUTOVERLIBGRAPH make no sense for a NODE! [WMWARN42]');
 					} elseif ($last_seen == 'LINK' || $last_seen == 'NODE') {
 						$urls = preg_split('/\s+/', $matches[2], -1, PREG_SPLIT_NO_EMPTY);
+						$index = IN;
 
 						if ($matches[1] == 'IN') {
 							$index = IN;
@@ -2699,11 +2995,19 @@ class WeatherMap extends WeatherMapBase {
 						// build up a list of templates - this will be useful later for the tree view
 
 						if ($last_seen == 'NODE') {
-							$this->node_template_tree[$tname][] = $curobj->name;
+							assert($curobj instanceof WeatherMapNode);
+
+							/** @var WeatherMap $self */
+							$self = $this;
+							$self->node_template_tree[$tname][] = $curobj->name;
 						}
 
 						if ($last_seen == 'LINK') {
-							$this->link_template_tree[$tname][] = $curobj->name;
+							assert($curobj instanceof WeatherMapLink);
+
+							/** @var WeatherMap $self */
+							$self = $this;
+							$self->link_template_tree[$tname][] = $curobj->name;
 						}
 					} else {
 						wm_warn("line $linecount: $last_seen TEMPLATE '$tname' doesn't exist! (if it does exist, check it's defined first) [WMWARN40]");
@@ -2801,7 +3105,7 @@ class WeatherMap extends WeatherMapBase {
 					$this->colours[$matches[1]][$key]['top']     = unformat_number($matches[3], $this->kilo);
 					$this->colours[$matches[1]][$key]['special'] = 0;
 
-					if (isset($matches[10]) && $matches[10] == 'none') {
+					if ($matches[10] == 'none') {
 						$this->colours[$matches[1]][$key]['red1']   = -1;
 						$this->colours[$matches[1]][$key]['green1'] = -1;
 						$this->colours[$matches[1]][$key]['blue1']  = -1;
@@ -2812,7 +3116,7 @@ class WeatherMap extends WeatherMapBase {
 					}
 
 					// this is the second colour, if there is one
-					if (isset($matches[7]) && $matches[7] != '') {
+					if ($matches[7] != '') {
 						$this->colours[$matches[1]][$key]['red2']   = (int) ($matches[7]);
 						$this->colours[$matches[1]][$key]['green2'] = (int) ($matches[8]);
 						$this->colours[$matches[1]][$key]['blue2']  = (int) ($matches[9]);
@@ -2930,7 +3234,7 @@ class WeatherMap extends WeatherMapBase {
 					$val = strtolower($matches[2]);
 
 					// "Found colour line for $key\n";
-					if (isset($matches[3])) {
+					if (isset($matches[3], $matches[4], $matches[5])) {
 						// this is a regular colour setting thing
 						$this->colours['DEFAULT'][$key]['red1']    = $matches[3];
 						$this->colours['DEFAULT'][$key]['green1']  = $matches[4];
@@ -2959,7 +3263,7 @@ class WeatherMap extends WeatherMapBase {
 					$field = strtolower($matches[1]) . 'colour';
 					$val   = strtolower($matches[2]);
 
-					if (isset($matches[3])) {
+					if (isset($matches[3], $matches[4], $matches[5])) {
 						// this is a regular colour setting thing
 						$curnode->$field = [$matches[3], $matches[4], $matches[5]];
 
@@ -2990,7 +3294,7 @@ class WeatherMap extends WeatherMapBase {
 					$field = strtolower($matches[1]) . 'colour';
 					$val   = strtolower($matches[2]);
 
-					if (isset($matches[3])) {
+					if (isset($matches[3], $matches[4], $matches[5])) {
 						$curlink->$field = [$matches[3], $matches[4], $matches[5]];
 
 						$linematched++;
@@ -3040,6 +3344,8 @@ class WeatherMap extends WeatherMapBase {
 			}
 
 			if ($last_seen == 'LINK') {
+				assert($curlink instanceof WeatherMapLink);
+
 				if (isset($curlink->a) && isset($curlink->b)) {
 					$this->links[$curlink->name] = $curlink;
 
@@ -3228,6 +3534,10 @@ class WeatherMap extends WeatherMapBase {
 		return (true);
 	}
 
+	/**
+	 * @param mixed $curobj
+	 * @return void
+	 */
 	function ReadConfig_Commit(&$curobj) {
 		if (is_null($curobj)) {
 			return;
@@ -3237,6 +3547,8 @@ class WeatherMap extends WeatherMapBase {
 
 		// first, save the previous item, before starting work on the new one
 		if ($last_seen == 'NODE') {
+			assert($curobj instanceof WeatherMapNode);
+
 			$this->nodes[$curobj->name] = $curobj;
 
 			wm_debug('Saving Node: ' . $curobj->name);
@@ -3247,6 +3559,8 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		if ($last_seen == 'LINK') {
+			assert($curobj instanceof WeatherMapLink);
+
 			if (isset($curobj->a) && isset($curobj->b)) {
 				$this->links[$curobj->name] = $curobj;
 
@@ -3263,6 +3577,10 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param string $filename
+	 * @return void
+	 */
 	function WriteDataFile($filename) {
 		if ($filename != '') {
 			$fd = fopen($filename, 'w');
@@ -3286,11 +3604,16 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param string $filename
+	 * @return bool
+	 */
 	function WriteConfig($filename) {
 		$fd = false;
 
 		if (is_writable(dirname($filename)) || (file_exists($filename) && is_writable($filename))) {
 			$fd = fopen($filename, 'w');
+			assert($fd !== false);
 		}
 
 		$output = '';
@@ -3336,10 +3659,6 @@ class WeatherMap extends WeatherMapBase {
 				$keyword = $param[1];
 
 				if ($this->inherit_fieldlist[$field] != $this->$field) {
-					if ($param[2] == CONFIG_TYPE_COLOR) {
-						$output .= "$keyword " . render_colour($this->$field) . PHP_EOL;
-					}
-
 					if ($param[2] == CONFIG_TYPE_LITERAL) {
 						$output .= "$keyword " . $this->$field . PHP_EOL;
 					}
@@ -3533,6 +3852,11 @@ class WeatherMap extends WeatherMapBase {
 	// this way, it's the pretty icons that suffer if there aren't enough colours, and
 	// not the actual useful data
 	// we skip any gradient scales
+	/**
+	 * @param mixed $image
+	 * @param string $refname
+	 * @return void
+	 */
 	function AllocateScaleColours($image, $refname = 'gdref1') {
 		foreach ($this->colours as $scalename => $colours) {
 			foreach ($colours as $key => $colour) {
@@ -3549,10 +3873,17 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param string $filename
+	 * @param string $thumbnailfile
+	 * @param int $thumbnailmax
+	 * @param bool $withnodes
+	 * @param bool $use_via_overlay
+	 * @param bool $use_rel_overlay
+	 * @return void
+	 */
 	function DrawMap($filename = '', $thumbnailfile = '', $thumbnailmax = 250, $withnodes = true, $use_via_overlay = false, $use_rel_overlay = false) {
 		wm_debug('Trace: DrawMap()');
-
-		metadump('# start',true);
 
 		$bgimage = null;
 
@@ -3560,7 +3891,7 @@ class WeatherMap extends WeatherMapBase {
 
 		if ($this->configfile != '') {
 			if (file_exists($this->configfile)) {
-				$this->cachefile_version = crc32(file_get_contents($this->configfile));
+				$this->cachefile_version = crc32((string) file_get_contents($this->configfile));
 			} else {
 				wm_warn('Failed to find configuration file: ' . $this->configfile);
 			}
@@ -3597,7 +3928,7 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		// $this->datestamp = strftime($this->stamptext, $maptime);
-		$this->datestamp = date_format(date_create(date('Y-m-d H:i:s', $maptime)), $this->stamptext);
+		$this->datestamp = date_format(new DateTime(date('Y-m-d H:i:s', $maptime)), $this->stamptext);
 
 		// do the basic prep work
 		if ($this->background != '') {
@@ -3711,7 +4042,7 @@ class WeatherMap extends WeatherMapBase {
 
 				if (is_array($z_items)) {
 					foreach ($z_items as $it) {
-						if (strtolower(get_class($it)) == 'weathermaplink') {
+						if (strtolower((string) get_class($it)) == 'weathermaplink') {
 							// only draw LINKs if they have NODES defined (not templates)
 							// (also, check if the link still exists - if this is in the editor, it may have been deleted by now)
 							if (isset($this->links[$it->name]) && isset($it->a) && isset($it->b)) {
@@ -3721,7 +4052,7 @@ class WeatherMap extends WeatherMapBase {
 							}
 						}
 
-						if (strtolower(get_class($it)) == 'weathermapnode') {
+						if (strtolower((string) get_class($it)) == 'weathermapnode') {
 							// if (!is_null($it->x)) $it->pre_render($image, $this);
 							if ($withnodes) {
 								// don't try and draw template nodes
@@ -3853,7 +4184,7 @@ class WeatherMap extends WeatherMapBase {
 					$this->thumb_width  = (int) ceil($this->width * $factor);
 					$this->thumb_height = (int) ceil($this->height * $factor);
 
-					$imagethumb = imagecreatetruecolor($this->thumb_width, $this->thumb_height);
+					$imagethumb = imagecreatetruecolor(max(1, $this->thumb_width), max(1, $this->thumb_height));
 
 					imagecopyresampled($imagethumb, $image, 0, 0, 0, 0, $this->thumb_width, $this->thumb_height,
 						(int) round((float) $this->width), (int) round((float) $this->height)
@@ -3878,6 +4209,9 @@ class WeatherMap extends WeatherMapBase {
 		unset($image);
 	}
 
+	/**
+	 * @return void
+	 */
 	function CleanUp() {
 		$all_layers = array_keys($this->seen_zlayers);
 
@@ -3910,6 +4244,9 @@ class WeatherMap extends WeatherMapBase {
 		$this->scales      = null;
 	}
 
+	/**
+	 * @return void
+	 */
 	function PreloadMapHTML() {
 		wm_debug('Trace: PreloadMapHTML()');
 
@@ -3958,6 +4295,9 @@ class WeatherMap extends WeatherMapBase {
 
 				if ($change != '') {
 					// print "Something to be done.\n";
+					$mid_x = 0;
+					$mid_y = 0;
+
 					if ($type == 'NODE') {
 						$mid_x = $myobj->x;
 						$mid_y = $myobj->y;
@@ -4063,6 +4403,9 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function asJS() {
 		$js = '';
 
@@ -4085,6 +4428,9 @@ class WeatherMap extends WeatherMapBase {
 		return $js;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function asJSON() {
 		$json  = '';
 		$json .= "{ \n";
@@ -4137,6 +4483,11 @@ class WeatherMap extends WeatherMapBase {
 	// which will populate the ImageMap with regions.
 	//
 	// imagemapname is a parameter, so we can stack up several maps in the Cacti plugin with their own imagemaps
+	/**
+	 * @param string $imagemapname
+	 * @param bool $standalone
+	 * @return mixed
+	 */
 	function MakeHTML($imagemapname = 'weathermap_imap', $standalone = false) {
 		global $config;
 
@@ -4202,6 +4553,10 @@ class WeatherMap extends WeatherMapBase {
 		return ($html);
 	}
 
+	/**
+	 * @param mixed $imagemapname
+	 * @return mixed
+	 */
 	function SortedImagemap($imagemapname) {
 		$html = "\t\t" . '<map name="' . $imagemapname . '" id="' . $imagemapname . '">' . PHP_EOL;
 
@@ -4236,11 +4591,11 @@ class WeatherMap extends WeatherMapBase {
 					if ($it->name != 'DEFAULT' && $it->name != ':: DEFAULT ::') {
 						$name = '';
 
-						if (strtolower(get_class($it)) == 'weathermaplink') {
+						if (strtolower((string) get_class($it)) == 'weathermaplink') {
 							$name = 'LINK:L';
 						}
 
-						if (strtolower(get_class($it)) == 'weathermapnode') {
+						if (strtolower((string) get_class($it)) == 'weathermapnode') {
 							$name = 'NODE:N';
 						}
 
@@ -4263,6 +4618,10 @@ class WeatherMap extends WeatherMapBase {
 	// if the config file is newer than the cache files, or $agelimit seconds have passed,
 	// then write new stuff, otherwise just return.
 	// ALWAYS deletes files in the cache folder older than $agelimit, also!
+	/**
+	 * @param int $agelimit
+	 * @return void
+	 */
 	function CacheUpdate($agelimit = 600) {
 		global $weathermap_lazycounter;
 
@@ -4310,6 +4669,7 @@ class WeatherMap extends WeatherMapBase {
 
 			$json = '';
 			$fd   = fopen($cachefolder . '/' . $cacheprefix . '_map.json', 'w');
+			assert($fd !== false);
 
 			foreach (array_keys($this->inherit_fieldlist) as $fld) {
 				$json .= js_escape($fld) . ': ';
@@ -4323,6 +4683,7 @@ class WeatherMap extends WeatherMapBase {
 
 			$json = '';
 			$fd   = fopen($cachefolder . '/' . $cacheprefix . '_tree.json', 'w');
+			assert($fd !== false);
 			$id   = 10;	// first ID for user-supplied thing
 
 			$json .= "{ id: 1, text: 'SCALEs'\n, children: [\n";
@@ -4378,6 +4739,7 @@ class WeatherMap extends WeatherMapBase {
 			fclose($fd);
 
 			$fd = fopen($cachefolder . '/' . $cacheprefix . '_nodes.json', 'w');
+			assert($fd !== false);
 
 			$json = '';
 
@@ -4393,6 +4755,7 @@ class WeatherMap extends WeatherMapBase {
 			fclose($fd);
 
 			$fd = fopen($cachefolder . '/' . $cacheprefix . '_nodes_lite.json', 'w');
+			assert($fd !== false);
 
 			$json = '';
 
@@ -4408,6 +4771,7 @@ class WeatherMap extends WeatherMapBase {
 			fclose($fd);
 
 			$fd = fopen($cachefolder . '/' . $cacheprefix . '_links.json', 'w');
+			assert($fd !== false);
 
 			$json = '';
 
@@ -4423,6 +4787,7 @@ class WeatherMap extends WeatherMapBase {
 			fclose($fd);
 
 			$fd = fopen($cachefolder . '/' . $cacheprefix . '_links_lite.json', 'w');
+			assert($fd !== false);
 
 			$json = '';
 
@@ -4438,6 +4803,7 @@ class WeatherMap extends WeatherMapBase {
 			fclose($fd);
 
 			$fd = fopen($cachefolder . '/' . $cacheprefix . '_imaphtml.json', 'w');
+			assert($fd !== false);
 
 			$json = $this->imap->subHTML('LINK:');
 
@@ -4445,6 +4811,7 @@ class WeatherMap extends WeatherMapBase {
 			fclose($fd);
 
 			$fd = fopen($cachefolder . '/' . $cacheprefix . '_imap.json', 'w');
+			assert($fd !== false);
 
 			$json = '';
 
@@ -4466,6 +4833,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param mixed $tree_list
+	 * @param string $startpoint
+	 * @return mixed
+	 */
 	function MakeTemplateTree(&$tree_list, $startpoint = 'DEFAULT') {
 		global $weathermap_lazycounter;
 
@@ -4489,10 +4861,14 @@ class WeatherMap extends WeatherMapBase {
 		return ($output);
 	}
 
+	/**
+	 * @param string $filename
+	 * @return void
+	 */
 	function DumpStats($filename = '') {
 		$report = "Feature Statistics:\n\n";
 
-		foreach ($this->usage_stats as $key=>$val) {
+		foreach (($this->usage_stats ?? []) as $key=>$val) {
 			$report .= sprintf("%70s => %d\n",$key,$val);
 		}
 
@@ -4501,6 +4877,9 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	function SeedCoverage() {
 		global $WM_config_keywords2;
 
@@ -4514,6 +4893,10 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param mixed $file
+	 * @return void
+	 */
 	function LoadCoverage($file) {
 		$i = 0;
 
@@ -4525,10 +4908,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		$fd = fopen($real, 'r');
+		assert($fd !== false);
 
 		if (is_resource($fd)) {
 			while (!feof($fd)) {
-				$line = fgets($fd, 1024);
+				$line = (string) fgets($fd, 1024);
 				$line = trim($line);
 
 				$parts = explode("\t", $line);
@@ -4552,6 +4936,10 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
+	/**
+	 * @param mixed $file
+	 * @return void
+	 */
 	function SaveCoverage($file) {
 		$i = 0;
 
@@ -4564,6 +4952,7 @@ class WeatherMap extends WeatherMapBase {
 
 		$safe = $dir . DIRECTORY_SEPARATOR . basename($file);
 		$fd   = fopen($safe, 'w+');
+		assert($fd !== false);
 
 		foreach ($this->coverage as $key=>$val) {
 			fputs($fd, "$val\t$key\n");

@@ -59,8 +59,13 @@ declare(strict_types = 1);
  * (that is, TARGET snmp:community:host:in_oid:out_oid
  */
 class WeatherMapDataSource_snmp extends WeatherMapDataSource {
+	/** @var array */
 	var $down_cache;
 
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function Init(&$map) {
 		// We can keep a list of unresponsive nodes, so we can give up earlier
 		$this->down_cache = [];
@@ -74,6 +79,10 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 		return (false);
 	}
 
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		if (preg_match('/^snmp:([^:]+):([^:]+):([^:]+):([^:]+)$/',$targetstring,$matches)) {
 			return true;
@@ -82,6 +91,12 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return mixed
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;
@@ -118,9 +133,11 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 
 			if ($abort_count == 0 ||
 				($abort_count > 0 && (!isset($this->down_cache[$host]) || intval($this->down_cache[$host]) < $abort_count))) {
+				$was = false;
+
 				if (function_exists('snmp_get_quick_print')) {
 					$was = snmp_get_quick_print();
-					snmp_set_quick_print(1);
+					snmp_set_quick_print(true);
 				}
 
 				if (function_exists('snmp_get_valueretrieval')) {
@@ -136,7 +153,7 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 				}
 
 				if ($in_oid != '-') {
-					$in_result = snmpget($host,$community,$in_oid,$timeout,$retries);
+					$in_result = snmpget($host,$community,$in_oid,max(-1, $timeout),max(-1, $retries));
 
 					if ($in_result !== false) {
 						$data[IN] = floatval($in_result);
@@ -147,7 +164,7 @@ class WeatherMapDataSource_snmp extends WeatherMapDataSource {
 				}
 
 				if ($out_oid != '-') {
-					$out_result = snmpget($host,$community,$out_oid,$timeout,$retries);
+					$out_result = snmpget($host,$community,$out_oid,max(-1, $timeout),max(-1, $retries));
 
 					if ($out_result !== false) {
 						// use floatval() here to force the output to be *some* kind of number

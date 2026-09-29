@@ -45,6 +45,8 @@ declare(strict_types = 1);
 $guest_account  = true;
 
 include_once('../../include/auth.php');
+
+global $config;
 include_once($config['base_path'] . '/plugins/weathermap/lib/WeatherMap.class.php');
 
 $showversionbox = read_config_option('weathermap_showversion');
@@ -75,11 +77,11 @@ switch (get_request_var('action')) {
 				if (cacti_sizeof($map)) {
 					$imagefile = __DIR__ . '/output/' . $map['filehash'] . '.' . $imageformat;
 
-					if ($action == 'viewthumb') {
+					if (get_request_var('action') == 'viewthumb') {
 						$imagefile = __DIR__ . '/output/' . $map['filehash'] . '.thumb.' . $imageformat;
 					}
 
-					$orig_cwd = getcwd();
+					$orig_cwd = (string) getcwd();
 					chdir(__DIR__);
 
 					$mime_map = ['png' => 'image/png', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'gif' => 'image/gif'];
@@ -115,7 +117,7 @@ switch (get_request_var('action')) {
 
 				if (cacti_sizeof($map)) {
 					$mapfile  = __DIR__ . '/configs/' . $map['configfile'];
-					$orig_cwd = getcwd();
+					$orig_cwd = (string) getcwd();
 
 					chdir(__DIR__);
 
@@ -184,7 +186,7 @@ switch (get_request_var('action')) {
 					$mapname = $map['configfile'];
 					$mapfile = $confdir . '/' . $mapname;
 
-					$orig_cwd = getcwd();
+					$orig_cwd = (string) getcwd();
 					chdir(__DIR__);
 
 					$map = new WeatherMap;
@@ -317,7 +319,7 @@ switch (get_request_var('action')) {
 		}
 
 		if ($id >= 0) {
-			weathermap_singleview($id);
+			weathermap_singleview((int) $id);
 		}
 
 		weathermap_versionbox();
@@ -881,15 +883,13 @@ function readfile_chunked($filename) {
  * @param int $current_id The currently displayed map's id, to
  *                        pre-select in the dropdown.
  *
- * @return bool|null False if the map selector setting is disabled (an
- *                    early return); otherwise no explicit value is
- *                    returned after rendering the selector.
+ * @return void
  */
 function weathermap_mapselector($current_id = 0) {
 	$show_selector = intval(read_config_option('weathermap_map_selector'));
 
 	if ($show_selector == 0) {
-		return false;
+		return;
 	}
 
 	$userid = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
@@ -1042,16 +1042,14 @@ function weathermap_tabs($current_tab) {
 		print '<div>' . PHP_EOL;
 		print "<div class='tabs' style='float:left;'><nav><ul role='tablist'>" . PHP_EOL;
 
-		if (cacti_sizeof($tabs) > 0) {
-			$show_all = intval(read_config_option('weathermap_all_tab'));
+		$show_all = intval(read_config_option('weathermap_all_tab'));
 
-			if ($show_all == 1) {
-				$tabs['-2'] = __('All Maps', 'weathermaps');
-			}
+		if ($show_all == 1) {
+			$tabs['-2'] = __('All Maps', 'weathermaps');
+		}
 
-			foreach (array_keys($tabs) as $tab_short_name) {
-				print "<li class='subTab'><a " . (($tab_short_name == $current_tab) ? "class='selected pic'" : "class='pic'") . " href='" . html_escape($config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?group_id=' . $tab_short_name) . "'>" . $tabs[$tab_short_name] . '</a></li>' . PHP_EOL;
-			}
+		foreach (array_keys($tabs) as $tab_short_name) {
+			print "<li class='subTab'><a " . (($tab_short_name == $current_tab) ? "class='selected pic'" : "class='pic'") . " href='" . html_escape($config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?group_id=' . $tab_short_name) . "'>" . $tabs[$tab_short_name] . '</a></li>' . PHP_EOL;
 		}
 
 		print '</ul></nav></div>' . PHP_EOL;

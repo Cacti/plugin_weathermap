@@ -126,9 +126,9 @@ function plugin_weathermap_uninstall() {
 function plugin_weathermap_version() {
 	global $config;
 
-	$info = parse_ini_file($config['base_path'] . '/plugins/weathermap/INFO', true);
+	$info = parse_ini_file($config['base_path'] . '/plugins/weathermap/INFO', true) ?: [];
 
-	return $info['info'];
+	return $info['info'] ?? '';
 }
 
 /**
@@ -184,7 +184,7 @@ function plugin_weathermap_upgrade() {
 	$files = ['index.php', 'plugins.php'];
 
 	if (!in_array(get_current_page(), $files, true) && strpos(get_current_page(), 'weathermap-cacti') === false) {
-		return;
+		return null;
 	}
 
 	include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
