@@ -355,4 +355,23 @@ describe('WM-BUG-DIR-CHDIR: working directory must be restored with chdir(), not
 
 		expect($source)->toContain('chdir($orig_cwd)');
 	});
+
+	it('source: weathermap-cacti-plugin.php routes viewthumb via get_request_var(action), not a bare $action', function (): void {
+		$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin.php');
+
+		// The thumbnail branch must key off the request variable. The original bug
+		// compared an undefined $action, so the .thumb. path was never selected and
+		// viewthumb silently served the full-size image.
+		expect($source)->toContain("get_request_var('action') == 'viewthumb'");
+		expect($source)->not->toContain("\$action == 'viewthumb'");
+	});
+
+	it('source: weathermap-cacti-plugin.php selects the .thumb. file for viewthumb and the full-size file otherwise', function (): void {
+		$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin.php');
+
+		// Both the full-size default and the thumbnail override must be present, so
+		// viewimage keeps serving <hash>.<format> while viewthumb serves <hash>.thumb.<format>.
+		expect($source)->toContain("'/output/' . \$map['filehash'] . '.' . \$imageformat");
+		expect($source)->toContain("'/output/' . \$map['filehash'] . '.thumb.' . \$imageformat");
+	});
 });

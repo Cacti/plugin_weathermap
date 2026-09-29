@@ -128,7 +128,7 @@ function plugin_weathermap_version() {
 
 	$info = parse_ini_file($config['base_path'] . '/plugins/weathermap/INFO', true) ?: [];
 
-	return $info['info'] ?? '';
+	return $info['info'] ?? [];
 }
 
 /**

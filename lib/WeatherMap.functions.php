@@ -1079,14 +1079,17 @@ function calc_arrowsize($width,&$map,$linkname) {
 	$arrowlengthfactor = 4;
 	$arrowwidthfactor  = 2;
 
-	if ($map->links[$linkname]->arrowstyle == 'compact') {
-		$arrowlengthfactor = 1;
-		$arrowwidthfactor  = 1;
-	}
+	// $map may be null (used by test code); the 4x/2x defaults above apply then
+	if ($map !== null) {
+		if ($map->links[$linkname]->arrowstyle == 'compact') {
+			$arrowlengthfactor = 1;
+			$arrowwidthfactor  = 1;
+		}
 
-	if (preg_match('/(\d+) (\d+)/', $map->links[$linkname]->arrowstyle, $matches)) {
-		$arrowlengthfactor = $matches[1];
-		$arrowwidthfactor  = $matches[2];
+		if (preg_match('/(\d+) (\d+)/', $map->links[$linkname]->arrowstyle, $matches)) {
+			$arrowlengthfactor = $matches[1];
+			$arrowwidthfactor  = $matches[2];
+		}
 	}
 
 	$arrowsize  = $width * $arrowlengthfactor;
