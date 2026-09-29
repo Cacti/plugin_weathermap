@@ -50,6 +50,10 @@ declare(strict_types = 1);
  *    SET post_test_enable 1
  */
 class WeatherMapPostProcessorExample extends WeatherMapPostProcessor {
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function run(&$map) {
 		$enable = $map->get_hint('post_test_enable');
 
@@ -65,5 +69,7 @@ class WeatherMapPostProcessorExample extends WeatherMapPostProcessor {
 		} else {
 			wm_debug(__CLASS__ . ' Not Enabled');
 		}
+
+		return true;
 	}
 }

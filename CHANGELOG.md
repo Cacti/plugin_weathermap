@@ -16,6 +16,15 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* types: Bring every PHP file to PHPStan level 8 with zero errors, documenting parameter, return and property types throughout the legacy rendering engine without changing runtime behaviour (docblock typing only, so no new TypeErrors on the 1.2.x-era code base)
+* bug: `upgrade_mapfiles()` reported the wrong filename (swapped `$objfile`/`$bgfile`) in the BACKGROUND/ICON "file not found on disk" warnings, and the ICON branch reused the BACKGROUND message text and log code
+* bug: `viewthumb` requests served the full-size image because the handler compared an undefined `$action` instead of `get_request_var('action')`
+* bug: the editor "Make a Copy" action (`newMapCopy()`) silently did nothing because it was missing `global $mapdir`
+* bug: `WeatherMapLink::asJSON()` and `WeatherMapNode::asJSON()` emitted the literal text `Array` for `infourl`/`overliburl`/`overlibcaption` instead of indexing the per-direction arrays the way `asJS()` does
+* bug: the poller's boost detection passed `'off'` as `read_config_option()`'s `$force` flag (a boolean), forcing an uncached database read every poll cycle
+* bug: the SNMPv3 datasource never initialised its timeout/retry/abort-count settings (its `getMapGlobals()` helper was never called); these are now read from the map hints in `ReadData()`
+* `WeatherMapBase::get_hint()` now accepts an optional default value, which the SNMPv3 datasource already expected to be honoured
+* cleanup: remove permanently-disabled and never-implemented dead code (the php-rrdtool reader stub, the dsstats reverse-conversion block, several `if (1 == 0)` debug toggles, and the no-op metafile dumper)
 * security: Add a version-safe CSP nonce (`plugin_weathermap_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class
 * Run the plugin unit test suite in CI, using the toolchain from the base Cacti install
 

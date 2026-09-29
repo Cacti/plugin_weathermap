@@ -42,6 +42,12 @@ declare(strict_types = 1);
  +-------------------------------------------------------------------------+
 */
 
+/**
+ * @param mixed $point1
+ * @param WMPoint $point2
+ * @param mixed $point3
+ * @return mixed
+ */
 function getTriangleArea($point1, $point2, $point3) {
 	$area = abs($point1->x * ($point2->y - $point3->y)
 		+ $point2->x * ($point3->y - $point1->y)
@@ -51,10 +57,17 @@ function getTriangleArea($point1, $point2, $point3) {
 }
 
 class WMLineSegment {
+	/** @var mixed */
 	public $point1;
+	/** @var mixed */
 	public $point2;
+	/** @var mixed */
 	public $vector;
 
+	/**
+	 * @param WMPoint $p1
+	 * @param WMPoint $p2
+	 */
 	public function __construct($p1, $p2) {
 		$this->point1 = $p1;
 		$this->point2 = $p2;
@@ -75,7 +88,11 @@ class WMLineSegment {
  * @param     $points   array of ordinates (x,y,x,y,x,y...)
  * @param     $centre_x centre of rotation, X coordinate
  * @param     $centre_y centre of rotation, Y coordinate
- * @param int $angle    angle in radians
+ * @param int|float $angle    angle in radians
+ * @param mixed $points
+ * @param mixed $centre_x
+ * @param mixed $centre_y
+ * @return void
  */
 function rotateAboutPoint(&$points, $centre_x, $centre_y, $angle = 0) {
 	$nPoints = count($points) / 2;

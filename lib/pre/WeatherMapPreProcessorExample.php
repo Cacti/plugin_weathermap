@@ -48,9 +48,15 @@ declare(strict_types = 1);
  * but before any rendering or data reading is done.
  */
 class WeatherMapPreProcessorExample extends WeatherMapPreProcessor {
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function run(&$map) {
 		$map->add_note('test','TEST!');
 
 		wm_debug('Example Preprocessor in the hizouse');
+
+		return true;
 	}
 }

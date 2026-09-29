@@ -45,57 +45,142 @@ declare(strict_types = 1);
 require_once('HTML_ImageMap.class.php');
 
 class WeatherMapNode extends WeatherMapItem {
+	/** @var mixed */
 	var $owner;
+	/** @var mixed */
 	var $id;
-	var $x,	$y;
-	var $original_x, $original_y,$relative_resolved;
-	var $width, $height;
-	var $label, $proclabel, $labelfont;
+	/** @var mixed */
+	var $x;
+	/** @var mixed */
+	var $y;
+	/** @var mixed */
+	var $original_x;
+	/** @var mixed */
+	var $original_y;
+	/** @var mixed */
+	var $relative_resolved;
+	/** @var mixed */
+	var $width;
+	/** @var mixed */
+	var $height;
+	/** @var mixed */
+	var $label;
+	/** @var mixed */
+	var $proclabel;
+	/** @var mixed */
+	var $labelfont;
+	/** @var mixed */
 	var $labelangle;
+	/** @var mixed */
 	var $name;
+	/** @var array */
 	var $infourl = [];
+	/** @var array */
 	var $notes;
+	/** @var array */
 	var $colours = [];
+	/** @var mixed */
 	var $overliburl;
-	var $overlibwidth, $overlibheight;
+	/** @var mixed */
+	var $overlibwidth;
+	/** @var mixed */
+	var $overlibheight;
+	/** @var array */
 	var $overlibcaption = [];
+	/** @var mixed */
 	var $maphtml;
+	/** @var int */
 	var $selected = 0;
-	var $iconfile, $iconscalew, $iconscaleh;
+	/** @var mixed */
+	var $iconfile;
+	/** @var mixed */
+	var $iconscalew;
+	/** @var mixed */
+	var $iconscaleh;
+	/** @var array */
 	var $targets = [];
-	var $bandwidth_in, $bandwidth_out;
-	var $inpercent, $outpercent;
-	var $max_bandwidth_in, $max_bandwidth_out;
-	var $max_bandwidth_in_cfg, $max_bandwidth_out_cfg;
-	var $labeloffset, $labeloffsetx, $labeloffsety;
+	/** @var mixed */
+	var $bandwidth_in;
+	/** @var mixed */
+	var $bandwidth_out;
+	/** @var mixed */
+	var $inpercent;
+	/** @var mixed */
+	var $outpercent;
+	/** @var mixed */
+	var $max_bandwidth_in;
+	/** @var mixed */
+	var $max_bandwidth_out;
+	/** @var mixed */
+	var $max_bandwidth_in_cfg;
+	/** @var mixed */
+	var $max_bandwidth_out_cfg;
+	/** @var mixed */
+	var $labeloffset;
+	/** @var mixed */
+	var $labeloffsetx;
+	/** @var mixed */
+	var $labeloffsety;
 
+	/** @var mixed */
 	var $inherit_fieldlist;
 
+	/** @var mixed */
 	var $labelbgcolour;
+	/** @var mixed */
 	var $labeloutlinecolour;
+	/** @var mixed */
 	var $labelfontcolour;
+	/** @var mixed */
 	var $labelfontshadowcolour;
 
+	/** @var mixed */
 	var $cachefile;
+	/** @var mixed */
 	var $usescale;
+	/** @var mixed */
 	var $useiconscale;
-	var $scaletype, $iconscaletype;
-	var $inscalekey,$outscalekey;
-	var $inscaletag, $outscaletag;
+	/** @var mixed */
+	var $scaletype;
+	/** @var mixed */
+	var $iconscaletype;
+	/** @var mixed */
+	var $inscalekey;
+	/** @var mixed */
+	var $outscalekey;
+	/** @var mixed */
+	var $inscaletag;
+	/** @var mixed */
+	var $outscaletag;
 
 	// var $incolour,$outcolour;
-	var $scalevar, $iconscalevar;
+	/** @var mixed */
+	var $scalevar;
+	/** @var mixed */
+	var $iconscalevar;
+	/** @var array */
 	var $notestext = [];
+	/** @var mixed */
 	var $image;
-	var $centre_x, $centre_y;
+	/** @var mixed */
+	var $centre_x;
+	/** @var mixed */
+	var $centre_y;
+	/** @var mixed */
 	var $relative_to;
+	/** @var mixed */
 	var $zorder;
+	/** @var mixed */
 	var $template;
+	/** @var mixed */
 	var $polar;
+	/** @var array */
 	var $boundingboxes = [];
 
 	// PHP 8.1. QA
+	/** @var mixed */
 	var $aiconfillcolour;
+	/** @var mixed */
 	var $aiconoutlinecolour;
 
 	function __construct() {
@@ -161,12 +246,20 @@ class WeatherMapNode extends WeatherMapItem {
 		$this->image    = null;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function my_type() {
 		return 'NODE';
 	}
 
 	// make a mini-image, containing this node and nothing else
 	// figure out where the real NODE centre is, relative to the top-left corner.
+	/**
+	 * @param mixed $image
+	 * @param WeatherMap $map
+	 * @return void
+	 */
 	function pre_render($image, &$map) {
 		// don't bother drawing if there's no position - it's a template
 		if (is_null($this->x)) {
@@ -254,6 +347,8 @@ class WeatherMapNode extends WeatherMapItem {
 		if ($this->label != '') {
 			$padding   = 4.0;
 			$padfactor = 1.0;
+			$txt_x     = 0;
+			$txt_y     = 0;
 
 			$this->proclabel = $map->ProcessString($this->label, $this, true, true);
 
@@ -335,13 +430,13 @@ class WeatherMapNode extends WeatherMapItem {
 
 				// this is an artificial icon - we don't load a file for it
 
-				$icon_im = imagecreatetruecolor(intval(round($this->iconscalew)), intval(round($this->iconscaleh)));
+				$icon_im = imagecreatetruecolor(max(1, intval(round($this->iconscalew))), max(1, intval(round($this->iconscaleh))));
 
 				imagesavealpha($icon_im, true);
 
 				$nothing = imagecolorallocatealpha($icon_im, 128, 0, 0, 127);
 
-				imagefill($icon_im, 0, 0, $nothing);
+				imagefill($icon_im, 0, 0, (int) $nothing);
 
 				$fill = null;
 				$ink  = null;
@@ -457,6 +552,7 @@ class WeatherMapNode extends WeatherMapItem {
 				} elseif ($this->iconfile == 'inpie' || $this->iconfile == 'outpie') {
 					// XXX - needs proper colours
 					// list($colpie,$node_iconscalekey,$icontag) = $map->NewColourFromPercent($pc, $this->useiconscale,$this->name);
+					$segment_angle = 0;
 
 					if ($this->iconfile == 'inpie') {
 						$segment_angle = (($this->inpercent) / 100) * 360;
@@ -523,10 +619,10 @@ class WeatherMapNode extends WeatherMapItem {
 
 							$new_width  = ceil($icon_w / $scalefactor);
 							$new_height = ceil($icon_h / $scalefactor);
-							$scaled     = imagecreatetruecolor($new_width, $new_height);
+							$scaled     = imagecreatetruecolor(max(1, (int) $new_width), max(1, (int) $new_height));
 
 							imagealphablending($scaled, false);
-							imagecopyresampled($scaled, $icon_im, 0, 0, 0, 0, $new_width, $new_height, intval(round($icon_w)), intval(round($icon_h)));
+							imagecopyresampled($scaled, $icon_im, 0, 0, 0, 0, (int) $new_width, (int) $new_height, intval(round($icon_w)), intval(round($icon_h)));
 							unset($icon_im);
 
 							$icon_im = $scaled;
@@ -595,13 +691,13 @@ class WeatherMapNode extends WeatherMapItem {
 		$temp_height = intval(round($bbox_y2 - $bbox_y1));
 
 		// create an image of that size and draw into it
-		$node_im = imagecreatetruecolor($temp_width, $temp_height);
+		$node_im = imagecreatetruecolor(max(1, $temp_width), max(1, $temp_height));
 
 		// ImageAlphaBlending($node_im, false);
 		imagesavealpha($node_im, true);
 
 		$nothing = imagecolorallocatealpha($node_im, 128, 0, 0, 127);
-		imagefill($node_im, 0, 0, $nothing);
+		imagefill($node_im, 0, 0, (int) $nothing);
 
 		$label_x1 -= $bbox_x1;
 		$label_x2 -= $bbox_x1;
@@ -691,20 +787,15 @@ class WeatherMapNode extends WeatherMapItem {
 		$map->nodes[$this->name]->centre_x = $this->x - $bbox_x1;
 		$map->nodes[$this->name]->centre_y = $this->y - $bbox_y1;
 
-		if (1 == 0) {
-			imageellipse($node_im, $this->centre_x, $this->centre_y, 8, 8, $map->selected);
-
-			foreach (['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'] as $corner) {
-				[$dx, $dy] = calc_offset($corner, $this->width, $this->height);
-
-				imageellipse($node_im, $this->centre_x + $dx, $this->centre_y + $dy, 5, 5, $map->selected);
-			}
-		}
-
 		// $this->image = $node_im;
 		$map->nodes[$this->name]->image = $node_im;
 	}
 
+	/**
+	 * @param mixed $cachedir
+	 * @param mixed $mapname
+	 * @return void
+	 */
 	function update_cache($cachedir,$mapname) {
 		$cachename = $cachedir . '/node_' . md5($mapname . '/' . $this->name) . '.png';
 
@@ -713,6 +804,11 @@ class WeatherMapNode extends WeatherMapItem {
 	}
 
 	// draw the node, using the pre_render() output
+	/**
+	 * @param mixed $image
+	 * @param WeatherMap $map
+	 * @return void
+	 */
 	function NewDraw($image, &$map) {
 		// take the offset we figured out earlier, and just blit
 		// the image on. Who says "blit" anymore?
@@ -732,9 +828,16 @@ class WeatherMapNode extends WeatherMapItem {
 
 	// take the pre-rendered node and write it to a file so that
 	// the editor can get at it.
+	/**
+	 * @return void
+	 */
 	function WriteToCache() {
 	}
 
+	/**
+	 * @param mixed $newowner
+	 * @return void
+	 */
 	function Reset(&$newowner) {
 		$this->owner = $newowner;
 		$template    = $this->template;
@@ -764,6 +867,10 @@ class WeatherMapNode extends WeatherMapItem {
 		$this->id = $newowner->next_id++;
 	}
 
+	/**
+	 * @param mixed $source
+	 * @return void
+	 */
 	function CopyFrom(&$source) {
 		wm_debug("Initialising NODE $this->name from $source->name");
 		// assert('is_object($source)');
@@ -775,6 +882,9 @@ class WeatherMapNode extends WeatherMapItem {
 		}
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function WriteConfig() {
 		$output = '';
 
@@ -964,6 +1074,9 @@ class WeatherMapNode extends WeatherMapItem {
 		return ($output);
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function asJS() {
 		$js  = "\t\t\t";
 		$js .= 'Nodes[' . js_escape($this->name) . '] = {';
@@ -994,6 +1107,10 @@ class WeatherMapNode extends WeatherMapItem {
 		return $js;
 	}
 
+	/**
+	 * @param bool $complete
+	 * @return mixed
+	 */
 	function asJSON($complete = true) {
 		$js  = "\t\t\t";
 		$js .= js_escape($this->name) . ': {';
@@ -1009,9 +1126,9 @@ class WeatherMapNode extends WeatherMapItem {
 
 		if ($complete) {
 			$js .= '"label":' . js_escape($this->label) . ', ';
-			$js .= '"infourl":' . js_escape($this->infourl) . ', ';
-			$js .= '"overliburl":' . js_escape($this->overliburl) . ', ';
-			$js .= '"overlibcaption":' . js_escape($this->overlibcaption) . ', ';
+			$js .= '"infourl":' . js_escape($this->infourl[IN]) . ', ';
+			$js .= '"overliburl":' . js_escape(join(' ', $this->overliburl[IN])) . ', ';
+			$js .= '"overlibcaption":' . js_escape($this->overlibcaption[IN]) . ', ';
 
 			$js .= '"overlibwidth":' . $this->overlibwidth . ', ';
 			$js .= '"overlibheight":' . $this->overlibheight . ', ';

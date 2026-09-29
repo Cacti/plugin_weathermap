@@ -47,6 +47,8 @@ declare(strict_types = 1);
 //
 chdir('../../../');
 include('./include/cli_check.php');
+
+global $config;
 include_once('./plugins/weathermap/lib/WeatherMap.class.php');
 
 $cacti_base = $config['base_path'];
@@ -77,11 +79,11 @@ if (cacti_sizeof($options) > 0) {
 
 				break;
 			case 'input':
-				$inputfile = $value;
+				$inputfile = (string) (is_array($value) ? end($value) : $value);
 
 				break;
 			case 'output':
-				$outputfile = $value;
+				$outputfile = (string) (is_array($value) ? end($value) : $value);
 
 				break;
 			case 'help':
@@ -90,16 +92,12 @@ if (cacti_sizeof($options) > 0) {
 				display_help();
 
 				exit();
-
-				break;
 			case 'version':
 			case 'V':
 			case 'v':
 				display_version();
 
 				exit();
-
-				break;
 			default:
 				print 'ERROR: Invalid Parameter ' . $arg . PHP_EOL . PHP_EOL;
 
@@ -129,9 +127,7 @@ $map->ReadConfig($inputfile);
 
 // 'Draw' the map, so that we get dimensions for all the nodes
 // and offsets for links are calculated.
-$map->DrawMap(null);
-
-// loop through all links
+	$map->DrawMap('');
 // adjust node offsets so that links come from correct side of nodes, and ideally still
 // from underneath them (e.g. NE80 not NE)
 
@@ -139,6 +135,9 @@ $map->WriteConfig($outputfile);
 
 print 'Wrote new config to ' . $outputfile . PHP_EOL;
 
+/**
+ * @return void
+ */
 function display_help() {
 	display_version();
 
@@ -149,6 +148,9 @@ function display_help() {
 	print ' --help                     - Show this message' . PHP_EOL;
 }
 
+/**
+ * @return void
+ */
 function display_version() {
 	global $config;
 

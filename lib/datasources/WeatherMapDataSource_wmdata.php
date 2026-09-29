@@ -43,6 +43,10 @@ declare(strict_types = 1);
 */
 
 class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		if (preg_match('/^wmdata:.*$/', $targetstring, $matches)) {
 			return true;
@@ -52,6 +56,12 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 	}
 
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map)
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return mixed
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;
@@ -93,6 +103,7 @@ class WeatherMapDataSource_wmdata extends WeatherMapDataSource {
 
 				if ($found === true) {
 					$stats     = stat($datafile);
+					assert($stats !== false);
 					$data_time = $stats['mtime'];
 				} else {
 					wm_warn("WMData ReadData: Data name ($dataname) didn't exist in ($datafile). [WMWMDATA03]");

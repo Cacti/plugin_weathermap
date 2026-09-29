@@ -50,14 +50,24 @@ declare(strict_types = 1);
  *
  */
 class WMPoint {
+	/** @var mixed */
 	public $x;
+	/** @var mixed */
 	public $y;
 
+	/**
+	 * @param float|int $x
+	 * @param float|int $y
+	 */
 	public function __construct($x = 0, $y = 0) {
 		$this->x = $x;
 		$this->y = $y;
 	}
 
+	/**
+	 * @param WMPoint $point2
+	 * @return bool
+	 */
 	public function identical($point2) {
 		if (($this->x == $point2->x) && ($this->y == $point2->y)) {
 			return true;
@@ -66,6 +76,11 @@ class WMPoint {
 		return false;
 	}
 
+	/**
+	 * @param mixed $newX
+	 * @param mixed $newY
+	 * @return void
+	 */
 	public function set($newX, $newY) {
 		$this->x = $newX;
 		$this->y = $newY;
@@ -73,6 +88,7 @@ class WMPoint {
 
 	/**
 	 * round() - round the coordinates to their nearest integers, in place.
+	 * @return void
 	 */
 	public function round() {
 		$this->x = intval(round($this->x));
@@ -84,6 +100,7 @@ class WMPoint {
 	 *
 	 * @param       $point2
 	 * @return bool
+	 * @param WMPoint $point2
 	 */
 	public function closeEnough($point2) {
 		if ((round($this->x, 2) == round($point2->x, 2)) && (round($this->y, 2) == round($point2->y, 2))) {
@@ -93,32 +110,55 @@ class WMPoint {
 		return false;
 	}
 
+	/**
+	 * @param WMPoint $p2
+	 * @return mixed
+	 */
 	public function vectorToPoint($p2) {
 		$v = new WMVector($p2->x - $this->x, $p2->y - $this->y);
 
 		return $v;
 	}
 
+	/**
+	 * @param WMPoint $p2
+	 * @return mixed
+	 */
 	public function lineToPoint($p2) {
 		$vec = $this->vectorToPoint($p2);
 
 		return new WMLine($this, $vec);
 	}
 
+	/**
+	 * @param mixed $l
+	 * @return void
+	 */
 	public function distanceToLine($l) {
 		// TODO: Implement this
 	}
 
+	/**
+	 * @param mixed $l
+	 * @return void
+	 */
 	function distanceToLineSegment($l) {
 		// TODO: Implement this
 		// Return whichever is the shortest out of:
 		// Distance to point1, distance to point2, distance to line
 	}
 
+	/**
+	 * @param WMPoint $p2
+	 * @return mixed
+	 */
 	public function distanceToPoint($p2) {
 		return $this->vectorToPoint($p2)->length();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function copy() {
 		return new WMPoint($this->x, $this->y);
 	}
@@ -146,6 +186,8 @@ class WMPoint {
 	 * @param          $point2 - other point we're interpolating to
 	 * @param          $ratio  - how far (0-1) between the two
 	 * @return WMPoint - a new WMPoint
+	 * @param WMPoint $point2
+	 * @param mixed $ratio
 	 */
 	public function LERPWith($point2, $ratio) {
 		$x = $this->x + $ratio * ($point2->x - $this->x);
@@ -156,10 +198,16 @@ class WMPoint {
 		return $newPoint;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function asString() {
 		return $this->__toString();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function asConfig() {
 		return sprintf('%d %d', $this->x, $this->y);
 	}
@@ -168,6 +216,11 @@ class WMPoint {
 		return sprintf('(%s,%s)', floatval($this->x), floatval($this->y));
 	}
 
+	/**
+	 * @param mixed $deltaX
+	 * @param mixed $deltaY
+	 * @return mixed
+	 */
 	public function translate($deltaX, $deltaY) {
 		$this->x += $deltaX;
 		$this->y += $deltaY;
@@ -175,6 +228,11 @@ class WMPoint {
 		return $this;
 	}
 
+	/**
+	 * @param mixed $angle
+	 * @param mixed $distance
+	 * @return mixed
+	 */
 	public function translatePolar($angle, $distance) {
 		$radiansAngle = deg2rad($angle);
 

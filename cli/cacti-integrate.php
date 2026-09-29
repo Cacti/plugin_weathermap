@@ -54,6 +54,8 @@ declare(strict_types = 1);
 chdir('../../../');
 
 include('./include/cli_check.php');
+
+global $config;
 include_once('./plugins/weathermap/lib/WeatherMap.class.php');
 
 $cacti_root = $config['base_path'];
@@ -124,11 +126,11 @@ if (cacti_sizeof($options)) {
 
 				break;
 			case 'output':
-				$outputmapfile = $value;
+				$outputmapfile = (string) (is_array($value) ? end($value) : $value);
 
 				break;
 			case 'input':
-				$inputmapfile = $value;
+				$inputmapfile = (string) (is_array($value) ? end($value) : $value);
 
 				break;
 			case 'help':
@@ -137,16 +139,12 @@ if (cacti_sizeof($options)) {
 				display_help();
 
 				exit();
-
-				break;
 			case 'version':
 			case 'V':
 			case 'v':
 				display_version();
 
 				exit();
-
-				break;
 			default:
 				print 'ERROR: Invalid Parameter ' . $arg . PHP_EOL . PHP_EOL;
 

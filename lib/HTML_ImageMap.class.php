@@ -51,11 +51,17 @@ declare(strict_types = 1);
  *   an image with an IMAGE control.
  */
 class HTML_ImageMap_Area {
+	/** @var mixed */
 	var $href;
+	/** @var mixed */
 	var $name;
+	/** @var mixed */
 	var $id;
+	/** @var mixed */
 	var $alt;
+	/** @var mixed */
 	var $z;
+	/** @var mixed */
 	var $extrahtml;
 
 	/**
@@ -94,11 +100,17 @@ class HTML_ImageMap_Area {
 }
 
 class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
+	/** @var array */
 	var $points = [];
+	/** @var mixed */
 	var $minx;
+	/** @var mixed */
 	var $maxx;
+	/** @var mixed */
 	var $miny;
+	/** @var mixed */
 	var $maxy;
+	/** @var mixed */
 	var $npoints;
 
 	/**
@@ -109,6 +121,8 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 	 * @return string The rendered &lt;area&gt; HTML tag.
 	 */
 	function asHTML() {
+		$flatpoints = [];
+
 		foreach ($this->points as $point) {
 			$flatpoints[] = $point[0];
 			$flatpoints[] = $point[1];
@@ -185,7 +199,7 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 			}
 		}
 
-		return ($c);
+		return (bool) $c;
 	}
 
 	/**
@@ -197,7 +211,7 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 	 * @param array  $coords A one-element array whose first element is a
 	 *                       flat [x1, y1, x2, y2, ...] coordinate list.
 	 */
-	function __construct($name = '', $href = '', $coords = '') {
+	function __construct($name = '', $href = '', $coords = []) {
 		$c = $coords[0];
 
 		$this->name    = $name;
@@ -207,6 +221,9 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 		if (intval($this->npoints) != ($this->npoints)) {
 			die('Odd number of points!');
 		}
+
+		$xlist = [];
+		$ylist = [];
 
 		for ($i = 0; $i < count($c); $i += 2) {
 			$x = intval(round($c[$i]));
@@ -220,19 +237,23 @@ class HTML_ImageMap_Area_Polygon extends HTML_ImageMap_Area {
 			$this->points[] = $point;
 		}
 
-		$this->minx = min($xlist);
-		$this->maxx = max($xlist);
-		$this->miny = min($ylist);
-		$this->maxy = max($ylist);
+		$this->minx = $xlist ? min($xlist) : 0;
+		$this->maxx = $xlist ? max($xlist) : 0;
+		$this->miny = $ylist ? min($ylist) : 0;
+		$this->maxy = $ylist ? max($ylist) : 0;
 
 		//        print $this->asHTML()."\n";
 	}
 }
 
 class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
+	/** @var mixed */
 	var $x1;
+	/** @var mixed */
 	var $x2;
+	/** @var mixed */
 	var $y1;
+	/** @var mixed */
 	var $y2;
 
 	/**
@@ -244,7 +265,7 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 	 * @param array  $coords A one-element array whose first element is
 	 *                       [x1, y1, x2, y2].
 	 */
-	function __construct($name = '', $href = '', $coords = '') {
+	function __construct($name = '', $href = '', $coords = []) {
 		$c = $coords[0];
 
 		$x1 = (int) round((float) $c[0]);
@@ -322,7 +343,14 @@ class HTML_ImageMap_Area_Rectangle extends HTML_ImageMap_Area {
 }
 
 class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
-	var $centx,$centy, $edgex, $edgey;
+	/** @var mixed */
+	var $centx;
+	/** @var mixed */
+	var $centy;
+	/** @var mixed */
+	var $edgex;
+	/** @var mixed */
+	var $edgey;
 
 	/**
 	 * Renders this circular area as an HTML &lt;area shape='circle'&gt;
@@ -368,7 +396,7 @@ class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 	 * @param array  $coords A one-element array whose first element is
 	 *                       [centerX, centerY, edgeX, edgeY].
 	 */
-	function __construct($name = '', $href = '', $coords = '') {
+	function __construct($name = '', $href = '', $coords = []) {
 		$c = $coords[0];
 
 		$this->name  = $name;
@@ -382,8 +410,11 @@ class HTML_ImageMap_Area_Circle extends HTML_ImageMap_Area {
 }
 
 class HTML_ImageMap {
+	/** @var mixed */
 	var $shapes;
+	/** @var mixed */
 	var $nshapes;
+	/** @var mixed */
 	var $name;
 
 	/**
@@ -426,7 +457,7 @@ class HTML_ImageMap {
 			$elementObject = &$element;
 		} else {
 			$args          = func_get_args();
-			$className     = 'HTML_ImageMap_Area_' . $element;
+			$className     = 'HTML_ImageMap_Area_' . (is_string($element) ? $element : '');
 			$elementObject = new $className($args[1], $args[2], array_slice($args, 3));
 		}
 

@@ -43,10 +43,19 @@ declare(strict_types = 1);
 */
 
 /**
+ * Internal failure raised when a geometric invariant that should never occur
+ * (e.g. asking two parallel lines for their crossing point) is violated.
+ */
+class WeathermapInternalFail extends Exception {
+}
+
+/**
  * A Line is simply a Vector that passes through a Point
  */
 class WMLine {
+	/** @var mixed */
 	private $point;
+	/** @var mixed */
 	private $vector;
 
 	/**
@@ -99,6 +108,7 @@ class WMLine {
 	 * @param                         $line2 the other line
 	 * @return WMPoint                the crossing point
 	 * @throws WeathermapInternalFail
+	 * @param mixed $line2
 	 */
 	public function findCrossingPoint($line2) {
 		$slope1 = $this->vector->getSlope();

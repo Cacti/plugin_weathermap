@@ -47,6 +47,8 @@ declare(strict_types = 1);
 //
 chdir('../../../');
 include('./include/cli_check.php');
+
+global $config;
 include_once('./plugins/weathermap/lib/WeatherMap.class.php');
 
 $cacti_base = $config['base_path'];
@@ -77,16 +79,12 @@ if (cacti_sizeof($options) > 0) {
 				display_help();
 
 				exit();
-
-				break;
 			case 'version':
 			case 'V':
 			case 'v':
 				display_version();
 
 				exit();
-
-				break;
 			default:
 				print 'ERROR: Invalid Parameter ' . $arg . PHP_EOL . PHP_EOL;
 
@@ -101,6 +99,9 @@ print 'About to repair maps' . PHP_EOL;
 weathermap_repair_maps();
 print 'Done repairing maps' . PHP_EOL;
 
+/**
+ * @return void
+ */
 function display_help() {
 	display_version();
 
@@ -108,6 +109,9 @@ function display_help() {
 	print ' --debug - Enable debugging output' . PHP_EOL;
 }
 
+/**
+ * @return void
+ */
 function display_version() {
 	global $config;
 

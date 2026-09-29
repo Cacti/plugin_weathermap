@@ -16,6 +16,10 @@ declare(strict_types = 1);
 // (that is, TARGET snmp:community:host:in_oid:out_oid
 
 class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function Init(&$map) {
 		// We can keep a list of unresponsive nodes, so we can give up earlier
 		$this->down_cache = [];
@@ -23,6 +27,10 @@ class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
 		return true;
 	}
 
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		if (preg_match('/^snmp2c:([^:]+):([^:]+):([^:]+):([^:]+)$/', $targetstring, $matches)) {
 			return true;
@@ -31,6 +39,12 @@ class WeatherMapDataSource_snmp2c extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return mixed
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;

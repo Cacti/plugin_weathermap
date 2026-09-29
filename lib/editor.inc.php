@@ -47,6 +47,9 @@ declare(strict_types = 1);
  * All the functions used by the editor.
  */
 
+/**
+ * @return mixed
+ */
 function display_graphs() {
 	$sql_where  = '';
 	$sql_params = [];
@@ -99,6 +102,9 @@ function display_graphs() {
 	print json_encode($return);
 }
 
+/**
+ * @return mixed
+ */
 function display_datasources() {
 	$sql_where  = '';
 	$sql_params = [];
@@ -150,6 +156,7 @@ function display_datasources() {
 /**
  * Clean up URI (function taken from Cacti) to protect against XSS
  * @param mixed $str
+ * @return mixed
  */
 function wm_editor_sanitize_uri($str) {
 	static $drop_char_match   =   [' ', '^', '$', '<', '>', '`', '\'', '"', '|', '+', '[', ']', '{', '}', ';', '!', '%'];
@@ -159,13 +166,21 @@ function wm_editor_sanitize_uri($str) {
 }
 
 // much looser sanitise for general strings that shouldn't have HTML in them
+/**
+ * @param string $str
+ * @return mixed
+ */
 function wm_editor_sanitize_string($str) {
-	static $drop_char_match   = ['<', '>' ];
+	static $drop_char_match   = ['<', '>'];
 	static $drop_char_replace = ['', ''];
 
 	return str_replace($drop_char_match, $drop_char_replace, html_escape($str));
 }
 
+/**
+ * @param mixed $bw
+ * @return bool
+ */
 function wm_editor_validate_bandwidth($bw) {
 	if (preg_match('/^(\d+\.?\d*[KMGT]?)$/', $bw)) {
 		return true;
@@ -174,6 +189,12 @@ function wm_editor_validate_bandwidth($bw) {
 	return false;
 }
 
+/**
+ * @param mixed $input
+ * @param array $valid
+ * @param bool $case_sensitive
+ * @return bool
+ */
 function wm_editor_validate_one_of($input,$valid = [],$case_sensitive = false) {
 	if (!$case_sensitive) {
 		$input = strtolower($input);
@@ -192,6 +213,11 @@ function wm_editor_validate_one_of($input,$valid = [],$case_sensitive = false) {
 	return false;
 }
 
+/**
+ * @param mixed $action
+ * @param array $valid
+ * @return mixed
+ */
 function wm_editor_sanitize_action($action, $valid = []) {
 	if ($action === '') {
 		return '';
@@ -205,10 +231,18 @@ function wm_editor_sanitize_action($action, $valid = []) {
 }
 
 // Labels for Nodes, Links and Scales shouldn't have spaces in
+/**
+ * @param string $str
+ * @return mixed
+ */
 function wm_editor_sanitize_name($str) {
 	return str_replace([' '], '', $str);
 }
 
+/**
+ * @param string $str
+ * @return mixed
+ */
 function wm_editor_sanitize_selected($str) {
 	$res = urldecode($str);
 
@@ -219,6 +253,11 @@ function wm_editor_sanitize_selected($str) {
 	return wm_editor_sanitize_name($res);
 }
 
+/**
+ * @param string $filename
+ * @param array $allowed_exts
+ * @return mixed
+ */
 function wm_editor_sanitize_file($filename,$allowed_exts = []) {
 	$filename = wm_editor_sanitize_uri($filename);
 
@@ -243,6 +282,10 @@ function wm_editor_sanitize_file($filename,$allowed_exts = []) {
 	return $filename;
 }
 
+/**
+ * @param string $filename
+ * @return mixed
+ */
 function wm_editor_sanitize_conffile($filename) {
 	$filename = wm_editor_sanitize_uri($filename);
 
@@ -264,6 +307,9 @@ function wm_editor_sanitize_conffile($filename) {
 	return $filename;
 }
 
+/**
+ * @return void
+ */
 function show_editor_startpage() {
 	global $mapdir, $config_loaded, $configerror;
 
@@ -303,6 +349,7 @@ function show_editor_startpage() {
 	print '</form>';
 
 	$titles = [];
+	$notes  = [];
 
 	$errorstring = '';
 
@@ -401,6 +448,11 @@ function show_editor_startpage() {
 	print '</body></html>';
 }
 
+/**
+ * @param mixed $coord
+ * @param int $gridsnap
+ * @return mixed
+ */
 function snap($coord, $gridsnap = 0) {
 	if ($gridsnap == 0) {
 		return ($coord);
@@ -411,6 +463,12 @@ function snap($coord, $gridsnap = 0) {
 	}
 }
 
+/**
+ * @param mixed $array
+ * @param mixed $paramarray
+ * @param string $prefix
+ * @return mixed
+ */
 function extract_with_validation($array, $paramarray, $prefix = '') {
 	$all_present = true;
 	$candidates  = [];
@@ -504,6 +562,10 @@ function extract_with_validation($array, $paramarray, $prefix = '') {
 	return [$all_present, $candidates];
 }
 
+/**
+ * @param mixed $imagedir
+ * @return mixed
+ */
 function get_imagelist($imagedir) {
 	global $config;
 
@@ -533,6 +595,11 @@ function get_imagelist($imagedir) {
 	return ($imagelist);
 }
 
+/**
+ * @param WeatherMap $map
+ * @param mixed $inheritables
+ * @return void
+ */
 function handle_inheritance(&$map, &$inheritables) {
 	foreach ($inheritables as $inheritable) {
 		$fieldname  = $inheritable[1];
@@ -578,6 +645,12 @@ function handle_inheritance(&$map, &$inheritables) {
 	}
 }
 
+/**
+ * @param WeatherMap $map
+ * @param string $name
+ * @param mixed $current
+ * @return mixed
+ */
 function get_fontlist(&$map,$name,$current) {
 	$output = '<select class="fontcombo" name="' . html_escape($name) . '">';
 
@@ -598,6 +671,13 @@ function get_fontlist(&$map,$name,$current) {
 	return ($output);
 }
 
+/**
+ * @param mixed $a_min
+ * @param mixed $a_max
+ * @param mixed $b_min
+ * @param mixed $b_max
+ * @return bool
+ */
 function range_overlaps($a_min, $a_max, $b_min, $b_max) {
 	if ($a_min > $b_max) {
 		return false;
@@ -610,6 +690,13 @@ function range_overlaps($a_min, $a_max, $b_min, $b_max) {
 	return true;
 }
 
+/**
+ * @param mixed $a_min
+ * @param mixed $a_max
+ * @param mixed $b_min
+ * @param mixed $b_max
+ * @return mixed
+ */
 function common_range($a_min,$a_max, $b_min, $b_max) {
 	$min_overlap = max($a_min, $b_min);
 	$max_overlap = min($a_max, $b_max);
@@ -624,6 +711,7 @@ function common_range($a_min,$a_max, $b_min, $b_max) {
  * @param mixed $ay
  * @param mixed $bx
  * @param mixed $by
+ * @return mixed
  */
 function distance($ax, $ay, $bx, $by) {
 	$dx = $bx - $ax;
@@ -632,6 +720,12 @@ function distance($ax, $ay, $bx, $by) {
 	return sqrt($dx * $dx + $dy * $dy);
 }
 
+/**
+ * @param WeatherMap $map
+ * @param mixed $targets
+ * @param bool $ignore_tidied
+ * @return void
+ */
 function tidy_links(&$map, $targets, $ignore_tidied = false) {
 	// not very efficient, but it saves looking for special cases (a->b & b->a together)
 	$ntargets = count($targets);
@@ -646,11 +740,12 @@ function tidy_links(&$map, $targets, $ignore_tidied = false) {
 /**
  * tidy_link - change link offsets so that link is horizontal or vertical, if possible.
  *             if not possible, change offsets to the closest facing compass points
- * @param mixed $map
+ * @param WeatherMap $map
  * @param mixed $target
  * @param mixed $linknumber
  * @param mixed $linktotal
  * @param mixed $ignore_tidied
+ * @return void
  */
 function tidy_link(&$map,$target, $linknumber = 1, $linktotal = 1, $ignore_tidied = false) {
 	// print "\n-----------------------------------\nTidying $target...\n";
@@ -758,58 +853,20 @@ function tidy_link(&$map,$target, $linknumber = 1, $linktotal = 1, $ignore_tidie
 			$new_b_offset = sprintf('%d:%d', $b_x_offset,$b_y_offset);
 		}
 
-		// if no common coordinates, figure out the best diagonal...
-		// currently - brute force search the compass points for the shortest distance
-		// potentially - intersect link line with rectangles to get exact crossing point
-		if (1 == 0 && !$y_overlap && !$x_overlap) {
-			// print "DIAGONAL\n";
-
-			$corners = ['NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'];
-
-			// start with what we have now
-			$best_distance = distance($node_a->x, $node_a->y, $node_b->x, $node_b->y);
-			$best_offset_a = 'C';
-			$best_offset_b = 'C';
-
-			foreach ($corners as $corner1) {
-				[$ax,$ay] = calc_offset($corner1, $bb_a[2] - $bb_a[0], $bb_a[3] - $bb_a[1]);
-
-				$axx = $node_a->x + $ax;
-				$ayy = $node_a->y + $ay;
-
-				foreach ($corners as $corner2) {
-					[$bx,$by] = calc_offset($corner2, $bb_b[2] - $bb_b[0], $bb_b[3] - $bb_b[1]);
-
-					$bxx = $node_b->x + $bx;
-					$byy = $node_b->y + $by;
-
-					$d = distance($axx,$ayy, $bxx, $byy);
-
-					if ($d < $best_distance) {
-						// print "from $corner1 ($axx, $ayy) to $corner2 ($bxx, $byy): ";
-						// print "NEW BEST $d\n";
-						$best_distance = $d;
-						$best_offset_a = $corner1;
-						$best_offset_b = $corner2;
-					}
-				}
-			}
-
-			// Step back a bit from the edge, to hide the corners of the link
-			$new_a_offset = $best_offset_a . '85';
-			$new_b_offset = $best_offset_b . '85';
-		}
-
 		// unwritten/implied - if both overlap, you're doing something weird and you're on your own
 		// finally, update the offsets
 		$map->links[$target]->a_offset = $new_a_offset;
 		$map->links[$target]->b_offset = $new_b_offset;
 
 		// and also add a note that this link was tidied, and is eligible for automatic tidying
-		$map->links[$target]->add_hint('_tidied', 1);
+		$map->links[$target]->add_hint('_tidied', '1');
 	}
 }
 
+/**
+ * @param WeatherMap $map
+ * @return void
+ */
 function untidy_links(&$map) {
 	foreach ($map->links as $link) {
 		$link->a_offset = 'C';
@@ -817,6 +874,11 @@ function untidy_links(&$map) {
 	}
 }
 
+/**
+ * @param WeatherMap $map
+ * @param bool $ignore_tidied
+ * @return void
+ */
 function retidy_links(&$map, $ignore_tidied = false) {
 	$routes = [];
 	$done   = [];
@@ -858,12 +920,19 @@ function retidy_links(&$map, $ignore_tidied = false) {
 	}
 }
 
+/**
+ * @param string $str
+ * @return void
+ */
 function editor_log($str) {
 	// $f = fopen('editor.log','a');
 	// fputs($f, $str);
 	// fclose($f);
 }
 
+/**
+ * @return void
+ */
 function getEditorJs() {
 	?>
 	<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>

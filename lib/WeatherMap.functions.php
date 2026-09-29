@@ -42,6 +42,11 @@ declare(strict_types = 1);
  +-------------------------------------------------------------------------+
 */
 
+/**
+ * @param mixed $userid
+ * @param mixed $group_id
+ * @return mixed
+ */
 function get_allowed_weathermaps($userid, $group_id = null) {
 	// Special Group Limiter
 	$sql_where = '';
@@ -80,6 +85,11 @@ function get_allowed_weathermaps($userid, $group_id = null) {
 	return $maps;
 }
 
+/**
+ * @param mixed $mapid
+ * @param mixed $userid
+ * @return bool
+ */
 function is_weathermap_allowed($mapid, $userid) {
 	// Special Group Limiter
 	$sql_where = '';
@@ -130,6 +140,10 @@ function is_weathermap_allowed($mapid, $userid) {
 	return false;
 }
 
+/**
+ * @param string $string
+ * @return void
+ */
 function wm_debug($string) {
 	global $weathermap_debugging;
 	global $weathermap_map;
@@ -161,21 +175,19 @@ function wm_debug($string) {
 			cacti_log("DEBUG:$calling_fn " . ($weathermap_map == '' ? '' : $weathermap_map . ': ') . rtrim($string), true, 'WEATHERMAP');
 		} else {
 			$stderr = fopen('php://stderr', 'w');
+			assert($stderr !== false);
 
 			fwrite($stderr, "DEBUG:$calling_fn " . ($weathermap_map == '' ? '' : $weathermap_map . ': ') . $string . PHP_EOL);
 			fclose($stderr);
-
-			// mostly this is overkill, but it's sometimes useful (mainly in the editor)
-			if (1 == 0) {
-				$log = fopen('debug.log', 'a');
-
-				fwrite($log, "DEBUG:$calling_fn " . ($weathermap_map == '' ? '' : $weathermap_map . ': ') . $string . PHP_EOL);
-				fclose($log);
-			}
 		}
 	}
 }
 
+/**
+ * @param string $string
+ * @param bool $notice_only
+ * @return void
+ */
 function wm_warn($string, $notice_only = false) {
 	global $weathermap_map;
 	global $weathermap_warncount;
@@ -205,14 +217,20 @@ function wm_warn($string, $notice_only = false) {
 		cacti_log($message, true, 'WEATHERMAP');
 	} else {
 		$stderr = fopen('php://stderr', 'w');
+		assert($stderr !== false);
 
 		fwrite($stderr, $message . "\n");
 		fclose($stderr);
 	}
 }
 
+/**
+ * @param int|string $str
+ * @param bool $wrap
+ * @return mixed
+ */
 function js_escape($str, $wrap = true) {
-	$str = str_replace('\\', '\\\\', $str);
+	$str = str_replace('\\', '\\\\', (string) $str);
 	$str = str_replace('"', '\\"', $str);
 
 	if ($wrap) {
@@ -222,6 +240,12 @@ function js_escape($str, $wrap = true) {
 	return ($str);
 }
 
+/**
+ * @param mixed $format
+ * @param string $value
+ * @param int $kilo
+ * @return mixed
+ */
 function mysprintf($format, $value, $kilo = 1000) {
 	$output = '';
 
@@ -234,7 +258,7 @@ function mysprintf($format, $value, $kilo = 1000) {
 		if ($spec != '') {
 			preg_match('/(\d*)\.?(\d*)/', $spec, $matches);
 
-			if ($matches[2] != '') {
+			if (($matches[2] ?? '') != '') {
 				$places = $matches[2];
 			}
 
@@ -243,7 +267,7 @@ function mysprintf($format, $value, $kilo = 1000) {
 
 		wm_debug("KMGT formatting $value with $spec.");
 
-		$result = nice_scalar($value, $kilo, $places);
+		$result = nice_scalar($value, $kilo, (int) $places);
 		$output = preg_replace_callback('/%' . preg_quote($spec, '/') . 'k/', function () use ($result) { return $result; }, $format);
 	} elseif (preg_match('/%(-*)(\d*)([Tt])/', $format, $matches)) {
 		$spec      = $matches[3];
@@ -256,7 +280,7 @@ function mysprintf($format, $value, $kilo = 1000) {
 
 		// special formatting for time_t (t) and SNMP TimeTicks (T)
 		if ($spec == 'T') {
-			$value = $value / 100;
+			$value = (float) $value / 100;
 		}
 
 		$results = [];
@@ -293,6 +317,10 @@ function mysprintf($format, $value, $kilo = 1000) {
 
 // ParseString is based on code from:
 // http://www.webscriptexpert.com/Php/Space-Separated%20Tag%20Parser/
+/**
+ * @param mixed $input
+ * @return mixed
+ */
 function wm_parse_string($input) {
 	$output       = [];     // Array of Output
 	$cPhraseQuote = null;   // Record of the quote that opened the current phrase
@@ -318,13 +346,13 @@ function wm_parse_string($input) {
 				if (substr($sToken, -1, 1) === $cPhraseQuote) {
 					// Trim the last character and add to the current phrase, with a single leading space if necessary
 					if (strlen($sToken) > 1) {
-						$sPhrase .= ((strlen($sPhrase) > 0) ? ' ' : null) . substr($sToken, 0, -1);
+						$sPhrase .= ((strlen((string) $sPhrase) > 0) ? ' ' : null) . substr($sToken, 0, -1);
 					}
 
 					$cPhraseQuote = null;
 				} else {
 					// If not, add the token to the phrase, with a single leading space if necessary
-					$sPhrase .= ((strlen($sPhrase) > 0) ? ' ' : null) . $sToken;
+					$sPhrase .= ((strlen((string) $sPhrase) > 0) ? ' ' : null) . $sToken;
 				}
 			} else {
 				// Will the current token start a phrase?
@@ -355,6 +383,13 @@ function wm_parse_string($input) {
 }
 
 // wrapper around imagecolorallocate to try and re-use palette slots where possible
+/**
+ * @param mixed $image
+ * @param mixed $red
+ * @param mixed $green
+ * @param mixed $blue
+ * @return mixed
+ */
 function myimagecolorallocate($image, $red, $green, $blue) {
 	// it's possible that we're being called early - just return straight away, in that case
 	if (!isset($image)) {
@@ -365,9 +400,9 @@ function myimagecolorallocate($image, $red, $green, $blue) {
 		return imagecolorallocatealpha($image, 0, 0, 0, 127);
 	}
 
-	$red   = (int) round((float) $red);
-	$green = (int) round((float) $green);
-	$blue  = (int) round((float) $blue);
+	$red   = max(0, min(255, (int) round((float) $red)));
+	$green = max(0, min(255, (int) round((float) $green)));
+	$blue  = max(0, min(255, (int) round((float) $blue)));
 
 	$existing = imagecolorexact($image, $red, $green, $blue);
 
@@ -379,10 +414,18 @@ function myimagecolorallocate($image, $red, $green, $blue) {
 }
 
 // PHP < 5.3 doesn't support anonymous functions, so here's a little function for screenshotify
+/**
+ * @param mixed $matches
+ * @return mixed
+ */
 function screenshotify_xxx($matches) {
 	return str_repeat('x',strlen($matches[1]));
 }
 
+/**
+ * @param mixed $input
+ * @return mixed
+ */
 function screenshotify($input) {
 	$output = $input;
 	$output = preg_replace('/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/', '127.0.0.1', $output);
@@ -391,6 +434,10 @@ function screenshotify($input) {
 	return ($output);
 }
 
+/**
+ * @param mixed $arr
+ * @return bool
+ */
 function is_copy($arr) {
 	if ($arr['red1'] == -2 && $arr['green1'] == -2 && $arr['blue1'] == -2) {
 		return true;
@@ -399,6 +446,10 @@ function is_copy($arr) {
 	return false;
 }
 
+/**
+ * @param mixed $arr
+ * @return bool
+ */
 function is_contrast($arr) {
 	if ($arr['red1'] == -3 && $arr['green1'] == -3 && $arr['blue1'] == -3) {
 		return true;
@@ -407,6 +458,10 @@ function is_contrast($arr) {
 	return false;
 }
 
+/**
+ * @param mixed $arr
+ * @return bool
+ */
 function is_none($arr) {
 	if ($arr['red1'] == -1 && $arr['green1'] == -1 && $arr['blue1'] == -1) {
 		return true;
@@ -415,6 +470,10 @@ function is_none($arr) {
 	return false;
 }
 
+/**
+ * @param mixed $col
+ * @return mixed
+ */
 function render_colour($col) {
 	if (($col[0] == -1) && ($col[1] == -1) && ($col[2] == -1)) {
 		return 'none';
@@ -432,6 +491,13 @@ function render_colour($col) {
 }
 
 // take the same set of points that imagepolygon does, but don't close the shape
+/**
+ * @param mixed $image
+ * @param mixed $points
+ * @param mixed $npoints
+ * @param mixed $color
+ * @return void
+ */
 function imagepolyline($image, $points, $npoints, $color) {
 	for ($i = 0; $i < ($npoints - 1); $i++) {
 		imageline($image, $points[$i * 2], $points[$i * 2 + 1], $points[$i * 2 + 2], $points[$i * 2 + 3], $color);
@@ -439,6 +505,16 @@ function imagepolyline($image, $points, $npoints, $color) {
 }
 
 // draw a filled round-cornered rectangle
+/**
+ * @param mixed $image
+ * @param mixed $x1
+ * @param mixed $y1
+ * @param mixed $x2
+ * @param mixed $y2
+ * @param mixed $radius
+ * @param mixed $color
+ * @return void
+ */
 function imagefilledroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color) {
 	imagefilledrectangle($image, $x1, $y1 + $radius, $x2, $y2 - $radius, $color);
 	imagefilledrectangle($image, $x1 + $radius, $y1, $x2 - $radius, $y2, $color);
@@ -451,6 +527,16 @@ function imagefilledroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color
 }
 
 // draw a round-cornered rectangle
+/**
+ * @param mixed $image
+ * @param mixed $x1
+ * @param mixed $y1
+ * @param mixed $x2
+ * @param mixed $y2
+ * @param mixed $radius
+ * @param mixed $color
+ * @return void
+ */
 function imageroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color) {
 	imageline($image, $x1 + $radius, $y1, $x2 - $radius, $y1, $color);
 	imageline($image, $x1 + $radius, $y2, $x2 - $radius, $y2, $color);
@@ -463,12 +549,16 @@ function imageroundedrectangle($image, $x1, $y1, $x2, $y2, $radius, $color) {
 	imagearc($image, $x2 - $radius, $y2 - $radius, $radius * 2, $radius * 2, 0, 90, $color);
 }
 
+/**
+ * @param string $filename
+ * @return mixed
+ */
 function imagecreatefromfile($filename) {
 	$bgimage = null;
 	$formats = imagetypes();
 
 	if (is_readable($filename)) {
-		[$width, $height, $type, $attr] = getimagesize($filename);
+		[$width, $height, $type, $attr] = getimagesize($filename) ?: [0, 0, 0, ''];
 
 		switch($type) {
 			case IMAGETYPE_GIF:
@@ -518,6 +608,7 @@ function imagecreatefromfile($filename) {
  * @param mixed $red
  * @param mixed $green
  * @param mixed $blue
+ * @return mixed
  */
 function imagecolorize($image, $red, $green, $blue) {
 	// We will create a monochromatic palette based on
@@ -544,6 +635,8 @@ function imagecolorize($image, $red, $green, $blue) {
 	$steps_to_black = $lum_inp;
 
 	// The step size for each component
+	$step_size_red = $step_size_green = $step_size_blue = 0;
+
 	if ($steps_to_black) {
 		$step_size_red   = $red / $steps_to_black;
 		$step_size_green = $green / $steps_to_black;
@@ -591,7 +684,7 @@ function imagecolorize($image, $red, $green, $blue) {
 		//                $col_out['r'], $col_out['g'], $col_out['b']
 		//             );
 
-		imagecolorset($image, $c, $col_out['r'], $col_out['g'], $col_out['b']);
+		imagecolorset($image, $c, max(0, min(255, (int) $col_out['r'])), max(0, min(255, (int) $col_out['g'])), max(0, min(255, (int) $col_out['b'])));
 	}
 
 	return ($image);
@@ -610,6 +703,7 @@ function imagecolorize($image, $red, $green, $blue) {
  * @param mixed $y3
  * @param mixed $x4
  * @param mixed $y4
+ * @return mixed
  */
 function line_crossing($x1, $y1, $x2, $y2, $x3, $y3, $x4, $y4) {
 	// First, check that the slope isn't infinite.
@@ -663,6 +757,7 @@ function line_crossing($x1, $y1, $x2, $y2, $x3, $y3, $x4, $y4) {
  * @param mixed $y2
  * @param mixed $x3
  * @param mixed $y3
+ * @return mixed
  */
 function calculate_catmull_rom_span($startn, $startdistance, $numsteps, $x0, $y0, $x1, $y1, $x2, $y2, $x3, $y3) {
 	$Ap_x = -$x0 + 3 * $x1 - 3 * $x2 + $x3;
@@ -716,6 +811,11 @@ function calculate_catmull_rom_span($startn, $startdistance, $numsteps, $x0, $y0
 	return [$allpoints, $distance, $n];
 }
 
+/**
+ * @param mixed $pointarray
+ * @param mixed $distance
+ * @return mixed
+ */
 function find_distance_coords(&$pointarray,$distance) {
 	// We find the nearest lower point for each distance,
 	// then linearly interpolate to get a more accurate point
@@ -731,6 +831,11 @@ function find_distance_coords(&$pointarray,$distance) {
 	return ([$x, $y, $index]);
 }
 
+/**
+ * @param mixed $pointarray
+ * @param mixed $distance
+ * @return mixed
+ */
 function find_distance_coords_angle(&$pointarray,$distance) {
 	// This is the point we need
 	[$x,$y,$index] = find_distance_coords($pointarray,$distance);
@@ -768,6 +873,7 @@ function find_distance_coords_angle(&$pointarray,$distance) {
  * array of 3-tuples produced by the function above
  * @param mixed $pointarray
  * @param mixed $distance
+ * @return mixed
  */
 function find_distance(&$pointarray, $distance) {
 	$left  = 0;
@@ -820,11 +926,15 @@ function find_distance(&$pointarray, $distance) {
  * @param mixed $in_xarray
  * @param mixed $in_yarray
  * @param mixed $pointsperspan
+ * @return mixed
  */
 function calc_curve(&$in_xarray, &$in_yarray, $pointsperspan = 32) {
 	// search through the point list, for consecutive duplicate points
 	// (most common case will be a straight link with both NODEs at the same place, I think)
 	// strip those out, because they'll break the binary search/centre-point stuff
+
+	$xarray = [];
+	$yarray = [];
 
 	$last_x = null;
 	$last_y = null;
@@ -895,11 +1005,15 @@ function calc_curve(&$in_xarray, &$in_yarray, $pointsperspan = 32) {
  * @param mixed $in_xarray
  * @param mixed $in_yarray
  * @param mixed $pointsperspan
+ * @return mixed
  */
 function calc_straight(&$in_xarray, &$in_yarray, $pointsperspan = 12) {
 	// search through the point list, for consecutive duplicate points
 	// (most common case will be a straight link with both NODEs at the same place, I think)
 	// strip those out, because they'll break the binary search/centre-point stuff
+	$xarray = [];
+	$yarray = [];
+
 	$last_x = null;
 	$last_y = null;
 
@@ -955,11 +1069,17 @@ function calc_straight(&$in_xarray, &$in_yarray, $pointsperspan = 12) {
 	return $curvepoints;
 }
 
+/**
+ * @param mixed $width
+ * @param WeatherMap $map
+ * @param mixed $linkname
+ * @return mixed
+ */
 function calc_arrowsize($width,&$map,$linkname) {
 	$arrowlengthfactor = 4;
 	$arrowwidthfactor  = 2;
 
-	// this is so I can use it in some test code - sorry!
+	// $map may be null (used by test code); the 4x/2x defaults above apply then
 	if ($map !== null) {
 		if ($map->links[$linkname]->arrowstyle == 'compact') {
 			$arrowlengthfactor = 1;
@@ -978,6 +1098,18 @@ function calc_arrowsize($width,&$map,$linkname) {
 	return ([$arrowsize, $arrowwidth]);
 }
 
+/**
+ * @param mixed $image
+ * @param mixed $curvepoints
+ * @param mixed $widths
+ * @param mixed $outlinecolour
+ * @param mixed $fillcolours
+ * @param mixed $linkname
+ * @param WeatherMap $map
+ * @param int $q2_percent
+ * @param bool $unidirectional
+ * @return void
+ */
 function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolours, $linkname, &$map, $q2_percent = 50, $unidirectional = false) {
 	$totaldistance = $curvepoints[count($curvepoints) - 1][DISTANCE];
 
@@ -1041,6 +1173,10 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 	$minimumlength = 1.2 * ($arrowsize[IN] + $arrowsize[OUT]);
 
 	foreach ($dirs as $dir) {
+		if (!isset($spine[$dir])) {
+			continue;
+		}
+
 		// draw_spine($image, $spine[$dir],$map->selected);
 		// draw_spine_chain($image, $spine[$dir],$map->selected,3);
 		// print "=================\n$linkname/$dir\n";
@@ -1325,6 +1461,7 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
  * @param mixed $map
  * @param mixed $q2_percent
  * @param mixed $unidirectional
+ * @return void
  */
 function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours, $linkname, &$map, $q2_percent = 50, $unidirectional = false) {
 	// now we have a 'spine' - all the central points for this curve.
@@ -1469,6 +1606,11 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 }
 
 // Take a spine, and strip out all the points that are co-linear with the points either side of them
+/**
+ * @param mixed $input
+ * @param mixed $epsilon
+ * @return mixed
+ */
 function simplify_spine(&$input, $epsilon = 1e-8) {
 	$output = [];
 
@@ -1510,6 +1652,11 @@ function simplify_spine(&$input, $epsilon = 1e-8) {
 	return $output;
 }
 
+/**
+ * @param mixed $instring
+ * @param int $kilo
+ * @return mixed
+ */
 function unformat_number($instring, $kilo = 1000) {
 	$matches = 0;
 	$number  = 0;
@@ -1553,6 +1700,7 @@ function unformat_number($instring, $kilo = 1000) {
  * @param mixed $offsetstring
  * @param mixed $width
  * @param mixed $height
+ * @return mixed
  */
 function calc_offset($offsetstring, $width, $height) {
 	if (preg_match("/^([-+]?\d+):([-+]?\d+)$/",$offsetstring,$matches)) {
@@ -1576,41 +1724,23 @@ function calc_offset($offsetstring, $width, $height) {
 		switch (strtoupper($matches[1])) {
 			case 'N':
 				return ([0, -$height / 2]);
-
-				break;
 			case 'S':
 				return ([0, $height / 2]);
-
-				break;
 			case 'E':
 				return ([+$width / 2, 0]);
-
-				break;
 			case 'W':
 				return ([-$width / 2, 0]);
-
-				break;
 			case 'NW':
 				return ([-$width / 2, -$height / 2]);
-
-				break;
 			case 'NE':
 				return ([$width / 2, -$height / 2]);
-
-				break;
 			case 'SW':
 				return ([-$width / 2, $height / 2]);
-
-				break;
 			case 'SE':
 				return ([$width / 2, $height / 2]);
-
-				break;
 			case 'C':
 			default:
 				return ([0, 0]);
-
-				break;
 		}
 	} elseif (preg_match("/(-?\d+)r(\d+)$/i",$offsetstring,$matches)) {
 		$angle    = intval($matches[1]);
@@ -1633,6 +1763,7 @@ function calc_offset($offsetstring, $width, $height) {
  * @param mixed $number
  * @param mixed $precision
  * @param mixed $trailing_zeroes
+ * @return mixed
  */
 function format_number($number, $precision = 2, $trailing_zeroes = 0) {
 	$sign = 1;
@@ -1661,6 +1792,13 @@ function format_number($number, $precision = 2, $trailing_zeroes = 0) {
 	}
 }
 
+/**
+ * @param mixed $number
+ * @param int $kilo
+ * @param int $decimals
+ * @param bool $below_one
+ * @return mixed
+ */
 function nice_bandwidth($number, $kilo = 1000, $decimals = 1, $below_one = true) {
 	$suffix = '';
 
@@ -1707,6 +1845,12 @@ function nice_bandwidth($number, $kilo = 1000, $decimals = 1, $below_one = true)
 	return ($result);
 }
 
+/**
+ * @param mixed $number
+ * @param int $kilo
+ * @param int $decimals
+ * @return mixed
+ */
 function nice_scalar($number, $kilo = 1000, $decimals = 1) {
 	$suffix = '';
 	$prefix = '';
@@ -1758,16 +1902,27 @@ function nice_scalar($number, $kilo = 1000, $decimals = 1) {
 
 // Skeleton class just to keep strict mode quiet.
 class WMFont {
+	/** @var mixed */
 	var $type;
+	/** @var mixed */
 	var $file;
+	/** @var mixed */
 	var $gdnumber;
+	/** @var mixed */
 	var $size;
 }
 
 // we use enough points in various places to make it worth a small class to save some variable-pairs.
 class Point {
-	var $x, $y;
+	/** @var mixed */
+	var $x;
+	/** @var mixed */
+	var $y;
 
+	/**
+	 * @param int $x
+	 * @param int $y
+	 */
 	function __construct($x = 0, $y = 0) {
 		$this->x = $x;
 		$this->y = $y;
@@ -1776,13 +1931,23 @@ class Point {
 
 // similarly for 2D vectors
 class Vector {
-	var $dx, $dy;
+	/** @var mixed */
+	var $dx;
+	/** @var mixed */
+	var $dy;
 
+	/**
+	 * @param int $dx
+	 * @param int $dy
+	 */
 	function __construct($dx = 0, $dy = 0) {
 		$this->dx = $dx;
 		$this->dy = $dy;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function get_normal() {
 		$len = $this->length();
 
@@ -1792,6 +1957,9 @@ class Vector {
 		return (new Vector($nx1, $ny1));
 	}
 
+	/**
+	 * @return void
+	 */
 	function normalise() {
 		$len = $this->length();
 
@@ -1799,13 +1967,23 @@ class Vector {
 		$this->dy = $this->dy / $len;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function length() {
 		return (sqrt(($this->dx * $this->dx) + ($this->dy * $this->dy)));
 	}
 }
 
 class Colour {
-	var $r, $g, $b, $alpha;
+	/** @var mixed */
+	var $r;
+	/** @var mixed */
+	var $g;
+	/** @var mixed */
+	var $b;
+	/** @var mixed */
+	var $alpha;
 
 	// take in an existing value and create a Colour object for it
 	function __construct() {
@@ -1829,6 +2007,9 @@ class Colour {
 	}
 
 	// Is this a transparent/none colour?
+	/**
+	 * @return bool
+	 */
 	function is_real() {
 		if ($this->r >= 0 && $this->g >= 0 && $this->b >= 0) {
 			return true;
@@ -1838,6 +2019,9 @@ class Colour {
 	}
 
 	// Is this a transparent/none colour?
+	/**
+	 * @return bool
+	 */
 	function is_none() {
 		if ($this->r == -1 && $this->g == -1 && $this->b == -1) {
 			return true;
@@ -1847,6 +2031,9 @@ class Colour {
 	}
 
 	// Is this a contrast colour?
+	/**
+	 * @return bool
+	 */
 	function is_contrast() {
 		if ($this->r == -3 && $this->g == -3 && $this->b == -3) {
 			return true;
@@ -1856,6 +2043,9 @@ class Colour {
 	}
 
 	// Is this a copy colour?
+	/**
+	 * @return bool
+	 */
 	function is_copy() {
 		if ($this->r == -2 && $this->g == -2 && $this->b == -2) {
 			return true;
@@ -1866,6 +2056,10 @@ class Colour {
 
 	// allocate a colour in the appropriate image context
 	// - things like scale colours are used in multiple images now (the scale, several nodes, the main map...)
+	/**
+	 * @param mixed $image_ref
+	 * @return mixed
+	 */
 	function gdallocate($image_ref) {
 		if ($this->is_none()) {
 			return null;
@@ -1875,6 +2069,9 @@ class Colour {
 	}
 
 	// based on an idea from: http://www.bennadel.com/index.cfm?dax=blog:902.view
+	/**
+	 * @return mixed
+	 */
 	function contrast_ary() {
 		if ((($this->r + $this->g + $this->b) > 500) || ($this->g > 140)) {
 			return ([0, 0, 0]);
@@ -1883,12 +2080,19 @@ class Colour {
 		}
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function contrast() {
 		return (new Colour($this->contrast_ary()));
 	}
 
 	// make a printable version, for debugging
 	// - optionally take a format string, so we can use it for other things (like WriteConfig, or hex in stylesheets)
+	/**
+	 * @param string $format
+	 * @return mixed
+	 */
 	function as_string($format = 'RGB(%d,%d,%d)') {
 		return (sprintf($format, $this->r, $this->g, $this->b));
 	}
@@ -1897,10 +2101,16 @@ class Colour {
 		return $this->as_string();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function as_config() {
 		return $this->as_string('%d %d %d');
 	}
 
+	/**
+	 * @return mixed
+	 */
 	function as_html() {
 		if ($this->is_real()) {
 			return $this->as_string('#%02x%02x%02x');
@@ -1915,31 +2125,33 @@ class Colour {
 //   drawing commands for a map. I have a basic Perl-Cairo script that makes
 //   anti-aliased maps from these, using Cairo instead of GD.
 
-function metadump($string, $truncate = false) {
-	// comment this line to get a metafile for this map
-	return;
-
-	if ($truncate) {
-		$fd = fopen('metadump.txt', 'w+');
-	} else {
-		$fd = fopen('metadump.txt', 'a');
-	}
-
-	fputs($fd, $string . PHP_EOL);
-
-	fclose($fd);
-}
-
+/**
+ * @param mixed $col
+ * @return mixed
+ */
 function metacolour(&$col) {
 	return ($col['red1'] . ' ' . $col['green1'] . ' ' . $col['blue1']);
 }
 
+/**
+ * @param mixed $width
+ * @param mixed $height
+ * @return mixed
+ */
 function wimagecreate($width,$height) {
-	metadump("NEWIMAGE $width $height");
 
 	return (imagecreate($width,$height));
 }
 
+/**
+ * @param mixed $image
+ * @param mixed $x1
+ * @param mixed $y1
+ * @param mixed $x2
+ * @param mixed $y2
+ * @param mixed $color
+ * @return mixed
+ */
 function wimagefilledrectangle($image ,$x1, $y1, $x2, $y2, $color) {
 	if ($color === null) {
 		return;
@@ -1956,11 +2168,18 @@ function wimagefilledrectangle($image ,$x1, $y1, $x2, $y2, $color) {
 	$b   = $b / 255;
 	$a   = (127 - $a) / 127;
 
-	metadump("FRECT $x1 $y1 $x2 $y2 $r $g $b $a");
-
 	return (imagefilledrectangle($image, (int) $x1, (int) $y1, (int) $x2, (int) $y2, $color));
 }
 
+/**
+ * @param mixed $image
+ * @param mixed $x1
+ * @param mixed $y1
+ * @param mixed $x2
+ * @param mixed $y2
+ * @param mixed $color
+ * @return mixed
+ */
 function wimagerectangle($image ,$x1, $y1, $x2, $y2, $color) {
 	if ($color === null) {
 		return;
@@ -1977,11 +2196,16 @@ function wimagerectangle($image ,$x1, $y1, $x2, $y2, $color) {
 	$b   = $b / 255;
 	$a   = (127 - $a) / 127;
 
-	metadump("RECT $x1 $y1 $x2 $y2 $r $g $b $a");
-
 	return (imagerectangle($image, (int) $x1, (int) $y1, (int) $x2, (int) $y2, $color));
 }
 
+/**
+ * @param mixed $image
+ * @param mixed $points
+ * @param mixed $num_points
+ * @param mixed $color
+ * @return mixed
+ */
 function wimagepolygon($image, $points, $num_points, $color) {
 	if ($color === null) {
 		return;
@@ -2005,8 +2229,6 @@ function wimagepolygon($image, $points, $num_points, $color) {
 		$pts .= $points[$i * 2 + 1] . ' ';
 	}
 
-	metadump("POLY $num_points " . $pts . " $r $g $b $a");
-
 	if (version_compare(PHP_VERSION, '8.0', '>')) {
 		return (imagepolygon($image, $points, $color));
 	} else {
@@ -2014,6 +2236,13 @@ function wimagepolygon($image, $points, $num_points, $color) {
 	}
 }
 
+/**
+ * @param mixed $image
+ * @param mixed $points
+ * @param mixed $num_points
+ * @param mixed $color
+ * @return mixed
+ */
 function wimagefilledpolygon($image, $points, $num_points, $color) {
 	if ($color === null) {
 		return;
@@ -2038,8 +2267,6 @@ function wimagefilledpolygon($image, $points, $num_points, $color) {
 		$pts .= $points[$i * 2 + 1] . ' ';
 	}
 
-	metadump("FPOLY $num_points " . $pts . " $r $g $b $a");
-
 	if (version_compare(PHP_VERSION, '8.0', '>')) {
 		return (imagefilledpolygon($image, $points, $color));
 	} else {
@@ -2047,15 +2274,29 @@ function wimagefilledpolygon($image, $points, $num_points, $color) {
 	}
 }
 
+/**
+ * @param mixed $width
+ * @param mixed $height
+ * @return mixed
+ */
 function wimagecreatetruecolor($width, $height) {
 	$width  = (int) round((float) $width);
 	$height = (int) round((float) $height);
 
-	metadump("BLANKIMAGE $width $height");
-
-	return imagecreatetruecolor($width, $height);
+	return imagecreatetruecolor(max(1, $width), max(1, $height));
 }
 
+/**
+ * @param mixed $image
+ * @param mixed $size
+ * @param mixed $angle
+ * @param mixed $x
+ * @param mixed $y
+ * @param mixed $color
+ * @param mixed $file
+ * @param string $string
+ * @return mixed
+ */
 function wimagettftext($image, $size, $angle, $x, $y, $color, $file, $string) {
 	if ($color === null) {
 		return;
@@ -2077,11 +2318,17 @@ function wimagettftext($image, $size, $angle, $x, $y, $color, $file, $string) {
 
 	$size = (float) round($size, 0);
 
-	metadump("TEXT $x $y $angle $size $file $r $g $b $a $string");
-
 	return (imagettftext($image, $size, $angle, $x, $y, $color, $file, $string));
 }
 
+/**
+ * @param mixed $im
+ * @param mixed $col
+ * @param mixed $x
+ * @param mixed $y
+ * @param int $size
+ * @return void
+ */
 function wm_draw_marker_diamond($im, $col, $x, $y, $size = 10) {
 	$points = [];
 
@@ -2106,6 +2353,14 @@ function wm_draw_marker_diamond($im, $col, $x, $y, $size = 10) {
 	}
 }
 
+/**
+ * @param mixed $im
+ * @param mixed $col
+ * @param mixed $x
+ * @param mixed $y
+ * @param int $size
+ * @return void
+ */
 function wm_draw_marker_box($im, $col, $x, $y, $size = 10) {
 	$points = [];
 
@@ -2130,10 +2385,25 @@ function wm_draw_marker_box($im, $col, $x, $y, $size = 10) {
 	}
 }
 
+/**
+ * @param mixed $im
+ * @param mixed $col
+ * @param mixed $x
+ * @param mixed $y
+ * @param int $size
+ * @return void
+ */
 function wm_draw_marker_circle($im, $col, $x, $y, $size = 10) {
 	imagearc($im, $x, $y, $size, $size, 0, 360, $col);
 }
 
+/**
+ * @param mixed $im
+ * @param mixed $spine
+ * @param mixed $col
+ * @param int $size
+ * @return void
+ */
 function draw_spine_chain($im, $spine, $col, $size = 10) {
 	$newn = count($spine);
 
@@ -2142,6 +2412,10 @@ function draw_spine_chain($im, $spine, $col, $size = 10) {
 	}
 }
 
+/**
+ * @param mixed $spine
+ * @return void
+ */
 function dump_spine($spine) {
 	print "===============\n";
 
@@ -2152,6 +2426,12 @@ function dump_spine($spine) {
 	print "===============\n";
 }
 
+/**
+ * @param mixed $im
+ * @param mixed $spine
+ * @param mixed $col
+ * @return void
+ */
 function draw_spine($im, $spine, $col) {
 	$max_i = count($spine) - 1;
 
@@ -2166,11 +2446,13 @@ function draw_spine($im, $spine, $col) {
  *
  * @param string     $htmlfile
  * @param WeatherMap $map
+ * @return void
  */
 function TestOutput_HTML($htmlfile, &$map) {
 	$weathermap_version = plugin_weathermap_numeric_version();
 
 	$fd = fopen($htmlfile, 'w');
+	assert($fd !== false);
 	fwrite($fd, '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>');
 
 	if ($map->htmlstylesheet != '') {
@@ -2201,6 +2483,14 @@ function TestOutput_HTML($htmlfile, &$map) {
  * @param string $coveragefile
  */
 
+/**
+ * @return mixed
+ * @param mixed $conffile
+ * @param mixed $imagefile
+ * @param mixed $htmlfile
+ * @param mixed $newconffile
+ * @param mixed $coveragefile
+ */
 function TestOutput_RunTest($conffile, $imagefile, $htmlfile, $newconffile, $coveragefile) {
 	global $weathermap_map;
 

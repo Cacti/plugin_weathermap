@@ -43,6 +43,8 @@ declare(strict_types = 1);
 */
 
 include_once('../../include/auth.php');
+
+global $config;
 include_once($config['library_path'] . '/rrd.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/WeatherMap.class.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
@@ -321,8 +323,6 @@ switch (get_request_var('action')) {
 
 		header('Location: ' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?header=false');
 		exit;
-
-		break;
 	default:
 		// by default, just list the map setup
 		top_header();
@@ -360,6 +360,8 @@ switch (get_request_var('action')) {
 function weathermap_form_actions() {
 	global $actions;
 
+	$save_html = '';
+
 	// if we are to save this form, instead of display it
 	if (isset_request_var('associate_perms')) {
 		$removed = $added = 0;
@@ -381,7 +383,7 @@ function weathermap_form_actions() {
 						db_execute_prepared('REPLACE INTO weathermap_auth
 							(userid, mapid)
 							VALUES (?, ?)',
-							[-$parts[0], $mapid]);
+							[-(int) $parts[0], $mapid]);
 					} else {
 						db_execute_prepared('REPLACE INTO weathermap_auth
 							(userid, mapid)
@@ -394,7 +396,7 @@ function weathermap_form_actions() {
 					if ($parts[1] == 'group') {
 						db_execute_prepared('DELETE FROM weathermap_auth
 							WHERE userid = ? AND mapid = ?',
-							[-$parts[0], $mapid]);
+							[-(int) $parts[0], $mapid]);
 					} else {
 						db_execute_prepared('DELETE FROM weathermap_auth
 							WHERE userid = ? AND mapid = ?',
@@ -563,7 +565,7 @@ function weathermap_form_actions() {
 	print "<tr>
         <td class='saveRow'>
             <input type='hidden' name='action' value='actions'>
-            <input type='hidden' name='selected_items' value='" . (isset($array) ? serialize($array) : '') . "'>
+            <input type='hidden' name='selected_items' value='" . (cacti_sizeof($array) ? serialize($array) : '') . "'>
             <input type='hidden' name='drp_action' value='" . html_escape(get_nfilter_request_var('drp_action')) . "'>
             $save_html
         </td>
@@ -898,7 +900,7 @@ function maplist() {
 	$last_start_time  = intval(read_config_option('weathermap_last_start_time', true));
 	$last_finish_time = intval(read_config_option('weathermap_last_finish_time', true));
 	$poller_interval  = intval(read_config_option('poller_interval'));
-	$boost_enabled    = read_config_option('boost_rrd_update_enable', 'off');
+	$boost_enabled    = read_config_option('boost_rrd_update_enable');
 
 	$has_global_poller_output = false;
 
@@ -1237,7 +1239,7 @@ function create_prime_mapcache() {
 	}
 
 	if (is_dir($weathermap_confdir)) {
-		foreach (glob("$weathermap_confdir/*.conf") as $file) {
+		foreach (glob("$weathermap_confdir/*.conf") ?: [] as $file) {
 			$save = [];
 
 			$file             = basename($file);
@@ -1249,7 +1251,7 @@ function create_prime_mapcache() {
 
 			$stats = stat($save['realfile']);
 
-			if (cacti_sizeof($stats)) {
+			if (is_array($stats) && cacti_sizeof($stats)) {
 				$save['create_time'] = date('Y-m-d H:i:s', $stats['ctime']);
 				$save['modify_time'] = date('Y-m-d H:i:s', $stats['mtime']);
 				$save['filesize']    = $stats['size'];
@@ -1566,7 +1568,7 @@ function addmap_picker($show_all = false) {
 
 	html_start_box('', '100%', false, 3, 'center', '');
 
-	html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'), false);
+	html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'), 1);
 
 	if (cacti_sizeof($maps)) {
 		$i = 0;
@@ -1655,7 +1657,7 @@ function preview_config($file) {
 	chdir($weathermap_confdir);
 
 	$path_parts = pathinfo($file);
-	$file_dir   = realpath($path_parts['dirname']);
+	$file_dir   = realpath($path_parts['dirname'] ?? '');
 
 	if ($file_dir != $weathermap_confdir) {
 		raise_message('path_mismatch', __esc('The path %s is not in the config directory.', $file, 'weathermap'), MESSAGE_LEVEL_ERROR);
@@ -1672,6 +1674,7 @@ function preview_config($file) {
 
 		if (is_file($realfile)) {
 			$fd = fopen($realfile, 'r');
+			assert($fd !== false);
 
 			while (!feof($fd)) {
 				$buffer = fgets($fd, 4096);
@@ -1714,7 +1717,7 @@ function add_config($file) {
 	chdir($weathermap_confdir);
 
 	$path_parts = pathinfo($file);
-	$file_dir   = realpath($path_parts['dirname']);
+	$file_dir   = realpath($path_parts['dirname'] ?? '');
 
 	if ($file_dir != $weathermap_confdir) {
 		// someone is trying to read arbitrary files?
@@ -1774,6 +1777,7 @@ function wmap_get_title($filename) {
 
 	if (file_exists($filename)) {
 		$fd = fopen($filename, 'r');
+		assert($fd !== false);
 
 		if (is_resource($fd)) {
 			while (($buffer = fgets($fd, 4096)) !== false) {
@@ -1971,9 +1975,13 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 				if (copy($oldfile, $newfile)) {
 					$contents = file_get_contents($newfile);
 
-					$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
+					if ($contents !== false) {
+						$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
 
-					file_put_contents($newfile, $contents);
+						file_put_contents($newfile, $contents);
+					} else {
+						raise_message('title_fail_' . $newid, __('The new Map %s was copied, but its title could not be updated in the config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_WARN);
+					}
 				} else {
 					raise_message('copy_fail_' . $newid, __('The new Map with the name %s was unable to create the config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
 				}
@@ -2115,7 +2123,7 @@ function perms_filter($id) {
 						<?php print __('Search', 'weathermap'); ?>
 					</td>
 					<td>
-						<input type='text' class='ui-state-default ui-corner-all' id='filter' size='25' value='<?php print html_escape_request_var('filter', 'weathermap'); ?>'>
+						<input type='text' class='ui-state-default ui-corner-all' id='filter' size='25' value='<?php print html_escape_request_var('filter'); ?>'>
 					</td>
 					<td>
 						<?php print __('Type', 'weathermap'); ?>
@@ -2235,6 +2243,8 @@ function perms_filter($id) {
 function perms_get_records(&$total_rows, $rows = 30, $apply_limits = true) {
 	$sql_where1 = '';
 	$sql_where2 = '';
+	$sql_limit  = '';
+	$sql_params = [];
 
 	$guest_user    = read_config_option('guest_user');
 	$template_user = read_config_option('user_template');
@@ -2498,6 +2508,8 @@ function perms_list($id) {
 			}
 
 			form_selectable_cell(filter_value($perm['name'], get_request_var('filter')), $rid);
+
+			$realm = '';
 
 			if ($perm['realm'] == 'N/A') {
 				$realm = __('N/A', 'weathermap');
@@ -2886,7 +2898,7 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
  *                      a group setting, or a positive map id for a
  *                      map-specific setting.
  * @param string $name  The setting's option name.
- * @param string $value The setting's option value.
+ * @param int|string $value The setting's option value.
  *
  * @return void
  */

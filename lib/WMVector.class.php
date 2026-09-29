@@ -47,23 +47,38 @@ declare(strict_types = 1);
  * Mostly used in the VIA calculations
  */
 class WMVector {
+	/** @var mixed */
 	public $dx;
+	/** @var mixed */
 	public $dy;
 
+	/**
+	 * @param float|int $dx
+	 * @param float|int $dy
+	 */
 	public function __construct($dx = 0, $dy = 0) {
 		$this->dx = $dx;
 		$this->dy = $dy;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function flip() {
 		$this->dx = - $this->dx;
 		$this->dy = - $this->dy;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getAngle() {
 		return rad2deg(atan2((-$this->dy), ($this->dx)));
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getSlope() {
 		if ($this->dx == 0) {
 			// special case - if slope is infinite, fudge it to be REALLY BIG instead. Close enough for TV.
@@ -77,6 +92,7 @@ class WMVector {
 
 	/**
 	 * @param float $angle
+	 * @return void
 	 */
 	public function rotate($angle) {
 		$points    = [];
@@ -104,6 +120,7 @@ class WMVector {
 
 	/**
 	 * Turn vector into unit-vector
+	 * @return void
 	 */
 	public function normalise() {
 		$len = $this->length();
@@ -141,6 +158,9 @@ class WMVector {
 		return (sqrt($this->squaredLength()));
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function asString() {
 		return $this->__toString();
 	}

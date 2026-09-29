@@ -43,6 +43,8 @@ declare(strict_types = 1);
 */
 
 include_once('../../include/auth.php');
+
+global $config;
 include_once($config['base_path'] . '/plugins/weathermap/setup.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/editor.inc.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/editor.actions.php');
@@ -69,7 +71,7 @@ $grid_snap_value      = 0; // set non-zero to snap to a grid of that spacing
 if (isset($_COOKIE['wmeditor'])) {
 	$parts = explode(':', $_COOKIE['wmeditor']);
 
-	if ((isset($parts[0])) && (intval($parts[0]) == 1)) {
+	if (intval($parts[0]) == 1) {
 		$use_overlay = true;
 	}
 
@@ -131,13 +133,9 @@ switch($action) {
 	case 'graphs':
 		display_graphs();
 		exit;
-
-		break;
 	case 'datasources':
 		display_datasources();
 		exit;
-
-		break;
 	case 'newmap':
 		newMap($mapfile);
 
@@ -150,26 +148,18 @@ switch($action) {
 		displayFontSamples($mapfile);
 
 		exit();
-
-		break;
 	case 'draw':
 		drawMap($mapfile, $selected, $use_overlay, $use_relative_overlay);
 
 		exit();
-
-		break;
 	case 'show_config':
 		showConfig($mapfile);
 
 		exit();
-
-		break;
 	case 'fetch_config':
 		fetchConfig($mapfile);
 
 		exit();
-
-		break;
 	case 'set_link_config':
 		setLinkConfig($mapfile);
 
@@ -181,103 +171,63 @@ switch($action) {
 	case 'set_node_properties':
 		setNodeProperties($mapfile);
 		exit;
-
-		break;
 	case 'set_link_properties':
 		setLinkProperties($mapfile);
 		exit;
-
-		break;
 	case 'set_map_properties':
 		setMapProperties($mapfile);
 		exit;
-
-		break;
 	case 'set_map_style':
 		setMapStyle($mapfile);
 		exit;
-
-		break;
 	case 'add_link2':
 		addLink($mapfile);
 		exit;
-
-		break;
 	case 'place_legend':
 		placeLegend($mapfile, $grid_snap_value);
 		exit;
-
-		break;
 	case 'place_stamp':
 		placeStamp($mapfile, $grid_snap_value);
 		exit;
-
-		break;
 	case 'via_link':
 		viaLink($mapfile);
 		exit;
-
-		break;
 	case 'move_node':
 		moveNode($mapfile, $grid_snap_value);
 		exit;
-
-		break;
 	case 'link_tidy':
 		linkTidy($mapfile);
 		exit;
-
-		break;
 	case 'retidy':
 		reTidy($mapfile);
 		exit;
-
-		break;
 	case 'retidy_all':
 		reTidyAll($mapfile);
 		exit;
-
-		break;
 	case 'untidy':
 		unTidy($mapfile);
 		exit;
-
-		break;
 	case 'delete_link':
 		deleteLink($mapfile);
 		exit;
-
-		break;
 	case 'add_node':
 		addNode($mapfile, $grid_snap_value);
 		exit;
-
-		break;
 	case 'editor_settings':
 		editorSettings($mapfile);
 		exit;
-
-		break;
 	case 'delete_node':
 		deleteNode($mapfile);
 		exit;
-
-		break;
 	case 'clone_node':
 		cloneNode($mapfile);
 		exit;
-
-		break;
 	case 'load_area_data':
 		getMapAreaData($mapfile);
 		exit;
-
-		break;
 	case 'load_map_javascript':
 		getMapJavaScript($mapfile);
 		exit;
-
-		break;
 	case 'nothing':
 		break;
 	default:

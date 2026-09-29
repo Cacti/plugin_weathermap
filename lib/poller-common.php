@@ -45,6 +45,10 @@ declare(strict_types = 1);
 // common code used by the poller, the manual-run from the Cacti UI, and from the command-line manual-run.
 // this is the easiest way to keep it all consistent!
 
+/**
+ * @param string $note
+ * @return void
+ */
 function weathermap_memory_check($note = 'MEM') {
 	if (function_exists('memory_get_usage')) {
 		$mem_used    = nice_bandwidth(memory_get_usage());
@@ -54,6 +58,11 @@ function weathermap_memory_check($note = 'MEM') {
 	}
 }
 
+/**
+ * @param int|string $value
+ * @param mixed $checkstring
+ * @return bool
+ */
 function weathermap_cron_part($value, $checkstring) {
 	// XXX - this should really handle a few more crontab niceties like */5 or 3,5-9 but this will do for now
 	if ($checkstring == '*') {
@@ -67,7 +76,7 @@ function weathermap_cron_part($value, $checkstring) {
 	if (preg_match('/\*\/(\d+)/', $checkstring, $matches)) {
 		$mod = $matches[1];
 
-		if (($value % $mod) == 0) {
+		if (((int) $value % (int) $mod) == 0) {
 			return true;
 		}
 	}
@@ -75,6 +84,11 @@ function weathermap_cron_part($value, $checkstring) {
 	return (false);
 }
 
+/**
+ * @param mixed $time
+ * @param string $string
+ * @return mixed
+ */
 function weathermap_check_cron($time, $string) {
 	if ($string == '') {
 		return (true);
@@ -86,7 +100,7 @@ function weathermap_check_cron($time, $string) {
 
 	$lt = localtime($time, true);
 
-	[$minute, $hour, $day, $month, $wday] = preg_split('/\s+/', $string);
+	[$minute, $hour, $day, $month, $wday] = preg_split('/\s+/', $string) ?: [];
 
 	$matched = true;
 
@@ -99,6 +113,9 @@ function weathermap_check_cron($time, $string) {
 	return ($matched);
 }
 
+/**
+ * @return void
+ */
 function weathermap_repair_maps() {
 	global $config;
 
@@ -119,7 +136,8 @@ function weathermap_repair_maps() {
 
 	if (cacti_sizeof($maps)) {
 		foreach ($maps as $map) {
-			$changes = 0;
+			$changes     = 0;
+			$outcontents = [];
 
 			$configfile = $confdir . '/' . $map['configfile'];
 
@@ -127,8 +145,7 @@ function weathermap_repair_maps() {
 			wm_debug("Processing Map File $configfile");
 
 			if (file_exists($configfile) && is_writable($configfile)) {
-				$contents    = file($configfile);
-				$outcontents = [];
+				$contents    = file($configfile) ?: [];
 
 				foreach ($contents as $line) {
 					if (strpos($line, 'BACKGROUND') !== false) {
@@ -175,7 +192,7 @@ function weathermap_repair_maps() {
 										wm_warn(sprintf('Unable to move BACKGROUND %s to %s, Permission error [WMPOLL09]', $old, $new));
 									}
 								} else {
-									wm_warn(sprintf('BACKGROUND file not found on disk: %s skipping! [WMPOLL10]', $mydir . $objfile));
+									wm_warn(sprintf('BACKGROUND file not found on disk: %s skipping! [WMPOLL10]', $mydir . $bgfile));
 								}
 							}
 						} elseif (strpos($bgfile, 'images/backgrounds/') !== false) {
@@ -264,6 +281,12 @@ function weathermap_repair_maps() {
 	}
 }
 
+/**
+ * @param mixed $mydir
+ * @param bool $force
+ * @param array $maps
+ * @return void
+ */
 function weathermap_run_maps($mydir, $force = false, $maps = []) {
 	global $config;
 	global $weathermap_debugging;
@@ -310,7 +333,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 	weathermap_memory_check('MEM Initial');
 
 	// move to the weathermap folder so all those relatives paths don't *have* to be absolute
-	$orig_cwd = getcwd();
+	$orig_cwd = (string) getcwd();
 
 	chdir($mydir);
 
@@ -371,7 +394,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 					$tempfile       = $outdir . '/' . $map['filehash'] . '.tmp.png';
 
 					if (file_exists($mapfile)) {
-						wm_debug("Map: $mapfile -> $htmlfile & $imagefile", true);
+						wm_debug("Map: $mapfile -> $htmlfile & $imagefile");
 
 						if (!$force && !cacti_sizeof($maps)) {
 							set_config_option('weathermap_last_started_file', $weathermap_map);
@@ -381,7 +404,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 
 						weathermap_memory_check("MEM starting $mapcount");
 
-						$wmap          = new Weathermap;
+						$wmap          = new WeatherMap;
 						$wmap->context = 'cacti';
 
 						// we can grab the rrdtool path from Cacti's config, in this case
@@ -453,7 +476,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 							rename($tempfile, $imagefile);
 						}
 
-						wm_debug("Wrote map to $imagefile and $thumbimagefile", true);
+						wm_debug("Wrote map to $imagefile and $thumbimagefile");
 
 						if ((is_dir(dirname($htmlfile)) && is_writable(dirname($htmlfile))) || is_writable($htmlfile)) {
 							$fd = fopen($htmlfile, 'w');

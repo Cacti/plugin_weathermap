@@ -60,6 +60,8 @@ phpinfo(INFO_GENERAL);
 $s = ob_get_contents();
 ob_end_clean();
 
+$php_general = [];
+
 // <tr><td class='e'>System </td><td class='v'>Windows NT BLINKYZERO 6.0 build 6000 </td></tr>
 // since preg_* are potentially missing, we'll have to do this without regexps.
 foreach (explode("\n",$s) as $line) {
@@ -420,16 +422,14 @@ if ($environment == 'web') {
  *
  * @param string $val The size string to convert.
  *
- * @return int|string The equivalent number of bytes as an int, 0 if
- *                    $val is empty, or the original string unchanged
- *                    if it has no K/M/G suffix (e.g. memory_limit's
- *                    '-1' for unlimited).
+ * @return int The equivalent number of bytes, or 0 if $val is empty.
  */
 function return_bytes($val) {
 	$val = trim($val);
 
 	if ($val != '') {
 		$last = strtolower($val[strlen($val) - 1]);
+		$val  = (int) $val;
 
 		switch($last) {
 			// The 'G' modifier is available since PHP 5.1.0

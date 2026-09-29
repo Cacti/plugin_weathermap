@@ -1409,6 +1409,11 @@ msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 #, php-format
+msgid "The new Map %s was copied, but its title could not be updated in the config file %s"
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
 msgid "The new Map with the name %s was unable to create the config file %s"
 msgstr ""
 

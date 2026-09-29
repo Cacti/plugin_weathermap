@@ -43,6 +43,10 @@ declare(strict_types = 1);
 */
 
 class WeatherMapDataSource_time extends WeatherMapDataSource {
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		if (preg_match('/^time:(.*)$/',$targetstring,$matches)) {
 			if (preg_match("/^[234]\./",phpversion())) {
@@ -58,6 +62,12 @@ class WeatherMapDataSource_time extends WeatherMapDataSource {
 	}
 
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map)
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return mixed
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;

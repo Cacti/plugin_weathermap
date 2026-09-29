@@ -48,6 +48,10 @@ declare(strict_types = 1);
 // TARGET dbplug:databasename:username:pass:hostkey
 
 class WeatherMapDataSource_tabfile extends WeatherMapDataSource {
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		if (preg_match("/\.(tsv|txt)$/",$targetstring,$matches)) {
 			return true;
@@ -57,6 +61,12 @@ class WeatherMapDataSource_tabfile extends WeatherMapDataSource {
 	}
 
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map)
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return mixed
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;
@@ -69,7 +79,7 @@ class WeatherMapDataSource_tabfile extends WeatherMapDataSource {
 
 		if ($fd) {
 			while (!feof($fd)) {
-				$buffer = fgets($fd, 4096);
+				$buffer = (string) fgets($fd, 4096);
 
 				// strip out any Windows line-endings that have gotten in here
 				$buffer = str_replace("\r", '', $buffer);
@@ -81,6 +91,7 @@ class WeatherMapDataSource_tabfile extends WeatherMapDataSource {
 			}
 
 			$stats     = stat($targetstring);
+			assert($stats !== false);
 			$data_time = $stats['mtime'];
 		} else {
 			// some error code to go in here

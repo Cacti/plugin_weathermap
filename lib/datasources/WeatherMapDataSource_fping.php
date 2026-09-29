@@ -50,11 +50,19 @@ declare(strict_types = 1);
  * TARGET fping:hostname
  */
 class WeatherMapDataSource_fping extends WeatherMapDataSource {
+	/** @var array */
 	var $addresscache = [];
+	/** @var bool */
 	var $donepings    = false;
+	/** @var array */
 	var $results      = [];
+	/** @var mixed */
 	var $fping_cmd;
 
+	/**
+	 * @param WeatherMap $map
+	 * @return bool
+	 */
 	function Init(&$map) {
 		//
 		// You may need to change the line below to have something like "/usr/local/bin/fping" or "/usr/bin/fping" instead.
@@ -67,6 +75,10 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 	// this function will get called for every datasource, even if we replied false to Init.
 	// (so that we can warn the user that it *would* have worked, if only the plugin could run)
 	// SO... don't do anything in here that relies on the things that Init looked for, because they might not exist!
+	/**
+	 * @param string $targetstring
+	 * @return bool
+	 */
 	function Recognise($targetstring) {
 		if (preg_match("/^fping:(\S+)$/",$targetstring,$matches)) {
 			// save the address. This way, we can do ONE fping call for all the pings in the map.
@@ -79,6 +91,12 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 		}
 	}
 
+	/**
+	 * @param string $targetstring
+	 * @param WeatherMap $map
+	 * @param WeatherMapItem $item
+	 * @return mixed
+	 */
 	function ReadData($targetstring, &$map, &$item) {
 		$data[IN]  = null;
 		$data[OUT] = null;
@@ -112,10 +130,14 @@ class WeatherMapDataSource_fping extends WeatherMapDataSource {
 
 				$count    = 0;
 				$hitcount = 0;
+				$loss     = 0;
+				$ave      = 0;
+				$min      = 0;
+				$max      = 0;
 
-				if (isset($pipe)) {
+				if ($pipe !== false) {
 					while (!feof($pipe)) {
-						$line = fgets($pipe, 4096);
+						$line = (string) fgets($pipe, 4096);
 						$count++;
 
 						wm_debug("Output: $line");
