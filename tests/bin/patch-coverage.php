@@ -97,7 +97,10 @@ function changed_lines($base_ref) {
 		}
 	}
 
-	return $changed;
+	// Drop files whose only diff is deleted lines: a pure deletion adds no
+	// lines to exercise, so it has nothing to measure and must not trip the
+	// "changed production file absent from Clover" gate.
+	return array_filter($changed, static fn ($lines) => $lines !== []);
 }
 
 $changed = changed_lines($base_ref);
