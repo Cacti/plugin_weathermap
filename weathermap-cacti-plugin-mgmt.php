@@ -982,7 +982,7 @@ function maplist() {
 
 	$maps = get_map_records($total_rows, $rows);
 
-	$nav = html_nav_bar('weathermap-cacti-plugin-mgmt.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 5, __('Maps'), 'page', 'main');
+	$nav = html_nav_bar('weathermap-cacti-plugin-mgmt.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, (int) get_request_var('page'), (int) $rows, (int) $total_rows, 5, __('Maps'), 'page', 'main');
 
 	form_start('weathermap-cacti-plugin-mgmt.php', 'chk');
 
@@ -1562,7 +1562,7 @@ function addmap_picker($show_all = false) {
 		]
 	];
 
-	$nav = html_nav_bar('weathermap-cacti-plugin-mgmt.php?action=addmap_picker&filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 5, __('Config Files'), 'page', 'main');
+	$nav = html_nav_bar('weathermap-cacti-plugin-mgmt.php?action=addmap_picker&filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, (int) get_request_var('page'), (int) $rows, (int) $total_rows, 5, __('Config Files'), 'page', 'main');
 
 	print $nav;
 
@@ -2453,7 +2453,7 @@ function perms_list($id) {
 
 	$perm_records = perms_get_records($total_rows, $rows);
 
-	$nav = html_nav_bar('weathermap-cacti-plugin-mgmt.php?action=perms_edit&filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 5, __('Users or Groups', 'weathermap'), 'page', 'main');
+	$nav = html_nav_bar('weathermap-cacti-plugin-mgmt.php?action=perms_edit&filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, (int) get_request_var('page'), (int) $rows, (int) $total_rows, 5, __('Users or Groups', 'weathermap'), 'page', 'main');
 
 	form_start('weathermap-cacti-plugin-mgmt.php?action=perms_edit', 'chk');
 
