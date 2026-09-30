@@ -21,7 +21,6 @@
         "lib/",
         "locales/",
         "manifest.json",
-        "phpunit.xml",
         "setup.php",
         "weathermap",
         "weathermap-cacti-plugin-editor.php",

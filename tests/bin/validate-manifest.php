@@ -5,8 +5,8 @@
  +-------------------------------------------------------------------------+
  | Validates that manifest.json's "expected" array matches the plugin's    |
  | actual top-level tree, so the manifest that drives upgrade-time pruning  |
- | cannot silently drift. tests/, .git* and whitelisted (user-data) paths  |
- | are intentionally excluded. Exits non-zero on any drift.                |
+ | cannot silently drift. tests/, phpunit.xml, .git* and .md* are          |
+ | excluded, as are whitelisted (user-data) paths. Non-zero exit on drift. |
  +-------------------------------------------------------------------------+
 */
 
@@ -39,11 +39,11 @@ foreach ($whitelist as $entry) {
 $actual = [];
 
 foreach (scandir($root) as $entry) {
-	if ($entry === '.' || $entry === '..' || $entry === 'tests') {
+	if ($entry === '.' || $entry === '..' || $entry === 'tests' || $entry === 'phpunit.xml') {
 		continue;
 	}
 
-	if (strncmp($entry, '.git', 4) === 0 || isset($whitelistTop[$entry])) {
+	if (strncmp($entry, '.git', 4) === 0 || strncmp($entry, '.md', 3) === 0 || isset($whitelistTop[$entry])) {
 		continue;
 	}
 

@@ -27,6 +27,9 @@ function weathermap_prune_fixture(array $manifest): string {
 	file_put_contents($plugin . '/setup.php', "<?php\n");
 	file_put_contents($plugin . '/oldfile.php', "<?php\n");
 	file_put_contents($plugin . '/stray.php', "<?php\n");
+	file_put_contents($plugin . '/phpunit.xml', '');
+	file_put_contents($plugin . '/.mdlrc', '');
+	file_put_contents($plugin . '/.md_style.rb', '');
 	mkdir($plugin . '/.git', 0777, true);
 	file_put_contents($plugin . '/.git/config', '');
 	file_put_contents($plugin . '/manifest.json', json_encode($manifest));
@@ -61,6 +64,7 @@ it('removes tombstoned paths and the tests/ tree, keeps whitelist/.git/expected,
 	expect(is_dir($plugin . '/include'))->toBeFalse();
 	expect(is_dir($plugin . '/tests'))->toBeFalse();
 	expect(is_file($plugin . '/oldfile.php'))->toBeFalse();
+	expect(is_file($plugin . '/phpunit.xml'))->toBeFalse();
 
 	// Whitelisted user data, VCS metadata, and expected files are untouched.
 	// (userdata/ is even listed as a tombstone, but the whitelist wins.)
@@ -68,6 +72,8 @@ it('removes tombstoned paths and the tests/ tree, keeps whitelist/.git/expected,
 	expect(is_dir($plugin . '/.git'))->toBeTrue();
 	expect(is_file($plugin . '/INFO'))->toBeTrue();
 	expect(is_dir($plugin . '/includes'))->toBeTrue();
+	expect(is_file($plugin . '/.mdlrc'))->toBeTrue();
+	expect(is_file($plugin . '/.md_style.rb'))->toBeTrue();
 
 	// An unexpected, non-whitelisted stray is left in place but logged.
 	expect(is_file($plugin . '/stray.php'))->toBeTrue();
@@ -76,6 +82,8 @@ it('removes tombstoned paths and the tests/ tree, keeps whitelist/.git/expected,
 	expect($logged)->toContain('stray.php');
 	expect($logged)->not->toContain('userdata');
 	expect($logged)->not->toContain('.git');
+	expect($logged)->not->toContain('.mdlrc');
+	expect($logged)->not->toContain('.md_style.rb');
 });
 
 it('is a safe no-op when the manifest is missing', function () {
