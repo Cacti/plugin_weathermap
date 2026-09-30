@@ -169,6 +169,14 @@ if (!function_exists('test_set_current_page')) {
 	}
 }
 
+// Real implementation lives in lib/poller-common.php, which is never included
+// at runtime by the test suites (it pulls in WeatherMap.class.php); stub it so
+// the upgrade-path test can drive plugin_weathermap_upgrade() safely.
+if (!function_exists('weathermap_repair_maps')) {
+	function weathermap_repair_maps() {
+	}
+}
+
 if (!function_exists('isset_request_var')) {
 	function isset_request_var($n) {
 		return isset($GLOBALS['__test_request'][$n]);
@@ -242,6 +250,8 @@ if (!function_exists('__esc')) {
 
 if (!function_exists('cacti_log')) {
 	function cacti_log($m, $p = false, $t = '', $l = 0) {
+		$args = func_get_args();
+		$GLOBALS["__test_cacti_log"][] = isset($args[0]) ? (string) $args[0] : "";
 	}
 }
 
