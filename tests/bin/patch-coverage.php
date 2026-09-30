@@ -1,4 +1,4 @@
-<?php
+&lt;?php
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group                                 |
@@ -22,13 +22,13 @@
  * how well a change is tested.  What a reviewer wants to know is whether the
  * lines this branch adds are exercised, which is what this measures.
  *
- * Usage: php tests/bin/patch-coverage.php <clover.xml> <base-ref> [min-percent]
+ * Usage: php tests/bin/patch-coverage.php &lt;clover.xml&gt; &lt;base-ref&gt; [min-percent]
  *
  * Exits 1 if coverage is below the threshold, 2 on bad input.
  */
 
-if ($argc < 3) {
-	fwrite(STDERR, "usage: patch-coverage.php <clover.xml> <base-ref> [min-percent]\n");
+if ($argc &lt; 3) {
+	fwrite(STDERR, "usage: patch-coverage.php &lt;clover.xml&gt; &lt;base-ref&gt; [min-percent]\n");
 
 	exit(2);
 }
@@ -54,7 +54,7 @@ if (!is_readable($clover_path)) {
  *
  * @param string $base_ref Git ref to diff against.
  *
- * @return array<string, array<int, bool>>
+ * @return array&lt;string, array&lt;int, bool&gt;&gt;
  */
 function changed_lines($base_ref) {
 	$command = 'git diff --no-ext-diff --unified=0 --no-color --diff-filter=AM ' . escapeshellarg($base_ref) . '...HEAD -- "*.php"';
@@ -85,12 +85,12 @@ function changed_lines($base_ref) {
 			}
 
 			$changed[$file] = [];
-		} elseif (strncmp($line, '@@', 2) === 0 && $file !== null) {
+		} elseif (strncmp($line, '@@', 2) === 0 &amp;&amp; $file !== null) {
 			if (preg_match('/\+(\d+)(?:,(\d+))?/', $line, $match)) {
 				$start = (int) $match[1];
 				$count = isset($match[2]) ? (int) $match[2] : 1;
 
-				for ($i = 0; $i < $count; $i++) {
+				for ($i = 0; $i &lt; $count; $i++) {
 					$changed[$file][$start + $i] = true;
 				}
 			}
@@ -114,7 +114,7 @@ $total    = 0;
 $missing  = [];
 $measured = [];
 
-foreach ($clover->xpath('//file') as $file) {
+foreach ($clover-&gt;xpath('//file') as $file) {
 	$path     = (string) $file['name'];
 	$relative = null;
 
@@ -132,7 +132,7 @@ foreach ($clover->xpath('//file') as $file) {
 
 	$measured[$relative] = true;
 
-	foreach ($file->line as $line) {
+	foreach ($file-&gt;line as $line) {
 		$number = (int) $line['num'];
 
 		// Only statement lines are measurable; method markers double-count.
@@ -142,7 +142,7 @@ foreach ($clover->xpath('//file') as $file) {
 
 		$total++;
 
-		if ((int) $line['count'] > 0) {
+		if ((int) $line['count'] &gt; 0) {
 			$covered++;
 		} else {
 			$missing[] = $relative . ':' . $number;
@@ -160,6 +160,9 @@ foreach ($clover->xpath('//file') as $file) {
  * Empty by default; add entries per repository as the need arises.
  */
 $unmeasured_allowlist = [
+	// Web UI entry point: top-level include of ../../include/auth.php plus
+	// request-var dispatch, so it cannot load in the isolated unit process.
+	'weathermap-cacti-plugin-mgmt.php',
 ];
 $unmeasured            = array_values(array_diff(array_keys($changed), array_keys($measured)));
 $unexpected_unmeasured = array_values(array_diff($unmeasured, $unmeasured_allowlist));
@@ -189,7 +192,7 @@ if ($missing !== []) {
 	print "Uncovered changed lines:\n  " . implode("\n  ", $missing) . "\n";
 }
 
-if ($percent + 0.005 < $minimum) {
+if ($percent + 0.005 &lt; $minimum) {
 	printf("FAIL: below the %.2f%% minimum.\n", $minimum);
 
 	exit(1);
