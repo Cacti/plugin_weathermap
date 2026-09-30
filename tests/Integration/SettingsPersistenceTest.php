@@ -7,8 +7,6 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types = 1);
-
 describe('weathermap settings persistence', function (): void {
 	it('does not contain the REPLACE INFO typo', function (): void {
 		$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin-mgmt.php');

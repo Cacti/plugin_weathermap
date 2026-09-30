@@ -7,8 +7,6 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types = 1);
-
 describe('data source ReadData return contract', function (): void {
 	it('base WeatherMapDataSource::ReadData() returns a 3-element [-1,-1,0] array', function (): void {
 		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/WeatherMap.class.php');

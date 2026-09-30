@@ -7,8 +7,6 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types = 1);
-
 /**
  * Parse-check a PHP file entirely in-process using token_get_all().
  *

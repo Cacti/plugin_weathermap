@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * Path traversal surface tests for plugin_weathermap.
  *

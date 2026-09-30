@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * Command injection surface tests for plugin_weathermap.
  *
