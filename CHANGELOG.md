@@ -17,7 +17,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 --- develop ---
 
 * refactor: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
-* feature: Add a root `manifest.json` file manifest plus an upgrade-time `plugin_weathermap_prune_files()` that removes tombstoned and dev-only paths while protecting whitelisted user data (`configs/`, `output/`) and `.git*`, backed by a `tests/bin/validate-manifest.php` CI gate that fails on manifest drift
+* feature: Add a root `manifest.json` file manifest plus an upgrade-time `weathermap_prune_files()` that removes tombstoned and dev-only paths while protecting whitelisted user data (`configs/`, `output/`) and `.git*`, backed by a `tests/bin/validate-manifest.php` CI gate that fails on manifest drift
 * dev: Add xdebug coverage reporting to CI and enforce patch coverage of changed lines
 * types: Bring every PHP file to PHPStan level 8 with zero errors, documenting parameter, return and property types throughout the legacy rendering engine without changing runtime behaviour (docblock typing only, so no new TypeErrors on the 1.2.x-era code base)
 * bug: `upgrade_mapfiles()` reported the wrong filename (swapped `$objfile`/`$bgfile`) in the BACKGROUND/ICON "file not found on disk" warnings, and the ICON branch reused the BACKGROUND message text and log code

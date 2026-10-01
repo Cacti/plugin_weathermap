@@ -229,7 +229,7 @@ function plugin_weathermap_upgrade() {
 		db_execute('DELETE FROM plugin_hooks WHERE name = "weathermap" AND hook = "page_head"');
 
 		// Remove files tombstoned in manifest.json plus the dev-only tests/ tree.
-		plugin_weathermap_prune_files();
+		weathermap_prune_files();
 
 		weathermap_repair_maps();
 	}
@@ -1288,7 +1288,7 @@ function weathermap_footer_links() {
  * @global array $config Cacti global configuration array; used to resolve
  *                       the plugin directory.
  */
-function plugin_weathermap_prune_files(): void {
+function weathermap_prune_files(): void {
 	global $config;
 
 	$plugin_dir    = $config['base_path'] . '/plugins/weathermap';
@@ -1374,7 +1374,7 @@ function plugin_weathermap_prune_files(): void {
 		}
 
 		if (is_dir($path) && !is_link($path)) {
-			$removed = plugin_weathermap_rmtree($path);
+			$removed = weathermap_rmtree($path);
 		} else {
 			$removed = @unlink($path);
 		}
@@ -1408,14 +1408,14 @@ function plugin_weathermap_prune_files(): void {
 
 /**
  * Recursively deletes a directory and its contents. Symlinks are removed
- * without being followed. Helper for plugin_weathermap_prune_files().
+ * without being followed. Helper for weathermap_prune_files().
  *
  * @param string $dir Absolute path to the directory to remove.
  *
  * @return bool True if the directory and everything under it was removed;
  *              false if any entry could not be deleted.
  */
-function plugin_weathermap_rmtree(string $dir): bool {
+function weathermap_rmtree(string $dir): bool {
 	$entries = scandir($dir);
 	$ok      = true;
 
@@ -1427,7 +1427,7 @@ function plugin_weathermap_rmtree(string $dir): bool {
 		$path = $dir . '/' . $entry;
 
 		if (is_dir($path) && !is_link($path)) {
-			if (!plugin_weathermap_rmtree($path)) {
+			if (!weathermap_rmtree($path)) {
 				$ok = false;
 			}
 		} elseif (!@unlink($path)) {
