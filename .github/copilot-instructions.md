@@ -26,21 +26,21 @@ When generating code for this repository:
 ## Project Structure
 
 ```
-weathermap/                        # Repository root (install to plugins/weathermap/ in Cacti)
-├── cli/                             # CLI utilities
+weathermap/                            # Repository root (install to plugins/weathermap/ in Cacti)
+├── cli/                               # CLI utilities
 ├── configs/                           # Map configuration files
-├── docs/                                # Documentation
-├── lib/                                   # WeatherMap.class.php engine, rrd.php, poller-common.php
-├── output/                                  # Generated map output
-├── tests/                                     # Test suite (phpunit.xml, infection.json)
-├── weathermap-cacti-plugin.php                  # Main map viewer page
-├── weathermap-cacti-plugin-mgmt.php               # Map management/editor entry
-├── weathermap-cacti-plugin-editor.php               # Visual map editor
-├── weathermap-cacti-rebuild.php                       # Poller-triggered map rebuild
-├── INFO                                                 # Plugin metadata (name, version, compat)
-├── SECURITY.md / SECURITY-AUDIT.md                        # Security posture notes
+├── docs/                              # Documentation
+├── lib/                               # WeatherMap.class.php engine, rrd.php, poller-common.php
+├── output/                            # Generated map output
+├── tests/                             # Test suite (phpunit.xml, infection.json)
+├── weathermap-cacti-plugin.php        # Main map viewer page
+├── weathermap-cacti-plugin-mgmt.php   # Map management/editor entry
+├── weathermap-cacti-plugin-editor.php # Visual map editor
+├── weathermap-cacti-rebuild.php       # Poller-triggered map rebuild
+├── INFO                               # Plugin metadata (name, version, compat)
+├── SECURITY.md / SECURITY-AUDIT.md    # Security posture notes
 ├── README.md
-└── setup.php                                                # Plugin install/uninstall/upgrade hooks
+└── setup.php                          # Plugin install/uninstall/upgrade hooks
 ```
 
 ## Naming Conventions
