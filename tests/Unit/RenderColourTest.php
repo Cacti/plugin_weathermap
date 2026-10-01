@@ -7,8 +7,6 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types = 1);
-
 // Define inline to avoid Cacti DB calls at the top of WeatherMap.functions.php.
 if (!function_exists('render_colour')) {
 	function render_colour($col) {

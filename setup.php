@@ -1,6 +1,4 @@
 <?php
-
-declare(strict_types = 1);
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
@@ -41,6 +39,8 @@ declare(strict_types = 1);
  | http://www.cacti.net/                                                   |
  +-------------------------------------------------------------------------+
 */
+
+require_once(__DIR__ . '/includes/database.php');
 
 /**
  * Return the CSP nonce attribute for inline <script> tags, safely across
@@ -227,6 +227,9 @@ function plugin_weathermap_upgrade() {
 		);
 
 		db_execute('DELETE FROM plugin_hooks WHERE name = "weathermap" AND hook = "page_head"');
+
+		// Remove files tombstoned in manifest.json plus the dev-only tests/ tree.
+		weathermap_prune_files();
 
 		weathermap_repair_maps();
 	}
@@ -493,252 +496,6 @@ function weathermap_config_settings() {
 	}
 }
 
-/**
- * Creates (if not already present) all of this plugin's database
- * tables (maps, data, groups, settings, auth) and applies incremental
- * schema updates for existing installations. Called from
- * plugin_weathermap_install() and during upgrade processing.
- *
- * @return void
- */
-function weathermap_setup_table() {
-	global $config, $database_default;
-
-	$dbversion = read_config_option('weathermap_db_version');
-	$myversion = plugin_weathermap_numeric_version();
-
-	// only bother with all this if it's a new install, a new version, or we're in a development version
-	// - saves a handful of db hits per request!
-	if (($dbversion == '') || (preg_match('/dev$/', $myversion)) || ($dbversion != $myversion) || !db_table_exists('weathermap_maps')) {
-		db_execute('CREATE TABLE IF NOT EXISTS weathermap_maps (
-			`id` int(11) NOT NULL auto_increment,
-			`sortorder` int(11) NOT NULL default 0,
-			`group_id` int(11) NOT NULL default 1,
-			`active` set("on","off") NOT NULL default "on",
-			`configfile` varchar(255) NOT NULL,
-			`imagefile` varchar(255) NOT NULL,
-			`htmlfile` varchar(255) NOT NULL,
-			`titlecache` varchar(60) NOT NULL,
-			`filehash` varchar (40) NOT NULL default "",
-			`warncount` int(11) NOT NULL default 0,
-			`debug` set("on","off","once") NOT NULL DEFAULT "off",
-			`config` text NOT NULL,
-			`thumb_width` int(11) NOT NULL default 0,
-			`thumb_height` int(11) NOT NULL default 0,
-			`schedule` varchar(32) NOT NULL default "*",
-			`archiving` set("on","off") NOT NULL default "off",
-			`duration` double NOT NULL default "0",
-			`last_runtime` int unsigned not null default "0",
-			PRIMARY KEY  (id),
-			UNIQUE KEY configfile(configfile))
-			ENGINE = InnoDB
-			ROW_FORMAT=Dynamic');
-
-		db_execute('CREATE TABLE IF NOT EXISTS weathermap_auth (
-			`userid` mediumint(9) NOT NULL default "0",
-			`mapid` int(11) NOT NULL default "0")
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic');
-
-		db_execute('CREATE TABLE IF NOT EXISTS weathermap_settings (
-			`id` int(11) NOT NULL auto_increment,
-			`mapid` int(11) NOT NULL default "0",
-			`groupid` int(11) NOT NULL default "0",
-			`optname` varchar(128) NOT NULL default "",
-			`optvalue` varchar(128) NOT NULL default "",
-			PRIMARY KEY  (id),
-			UNIQUE INDEX mapid_groupid_optname(mapid, groupid, optname))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic');
-
-		db_execute('CREATE TABLE IF NOT EXISTS weathermap_data (
-			`id` int(11) NOT NULL auto_increment,
-			`rrdfile` varchar(255) NOT NULL,
-			`data_source_name` varchar(19) NOT NULL,
-			`last_time` int(11) NOT NULL DEFAULT -1,
-			`last_value` varchar(255) NOT NULL DEFAULT "",
-			`last_calc` varchar(255) NOT NULL DEFAULT "",
-			`sequence` int(11) NOT NULL DEFAULT 0,
-			`local_data_id` int(11) NOT NULL DEFAULT 0,
-			PRIMARY KEY  (id),
-			KEY rrdfile (rrdfile(250)),
-			KEY local_data_id (local_data_id),
-			KEY data_source_name (data_source_name))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic');
-
-		if (!db_table_exists('weathermap_groups')) {
-			db_execute('CREATE TABLE IF NOT EXISTS weathermap_groups (
-				`id` INT(11) NOT NULL auto_increment,
-				`name` VARCHAR(128) NOT NULL default "",
-				`sortorder` INT(11) NOT NULL default 0,
-				PRIMARY KEY (id))
-				ENGINE=InnoDB
-				ROW_FORMAT=Dynamic');
-
-			db_execute('INSERT INTO weathermap_groups (id, name, sortorder) VALUES (1, "Weathermaps", 1)');
-		}
-
-		db_execute('DELETE FROM weathermap_data WHERE local_data_id = 0');
-
-		if (db_column_exists('weathermap_maps', 'sortorder')) {
-			db_execute('UPDATE weathermap_maps SET sortorder = id WHERE sortorder IS NULL');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'sortorder')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN sortorder int(11) NOT NULL default 0 AFTER id');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'filehash')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN filehash varchar(40) NOT NULL default "" AFTER titlecache');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'warncount')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN warncount int(11) NOT NULL default 0 AFTER filehash');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'debug')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN debug `debug` set("on","off","once") NOT NULL DEFAULT "off" AFTER warncount');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'config')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN config text NOT NULL  default "" AFTER warncount');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'thumb_width')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN thumb_width int(11) NOT NULL default 0 AFTER config');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'thumb_height')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN thumb_height int(11) NOT NULL default 0 AFTER thumb_width');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'schedule')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN schedule varchar(32) NOT NULL default "*" AFTER thumb_height');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'archiving')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN archiving set("on","off") NOT NULL default "off" AFTER schedule');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'group_id')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN group_id int(11) NOT NULL default 1 AFTER sortorder');
-		}
-
-		if (!db_column_exists('weathermap_settings', 'groupid')) {
-			db_execute('ALTER TABLE `weathermap_settings` ADD COLUMN `groupid` INT NOT NULL DEFAULT "0" AFTER `mapid`');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'duration')) {
-			db_execute('ALTER TABLE `weathermap_maps` ADD COLUMN `duration` double NOT NULL DEFAULT "0" AFTER `archiving`');
-		}
-
-		if (!db_column_exists('weathermap_maps', 'last_runtime')) {
-			db_execute('ALTER TABLE `weathermap_maps` ADD COLUMN `last_runtime` INT UNSIGNED NOT NULL DEFAULT "0" AFTER `duration`');
-		}
-
-		if (!db_index_exists('weathermap_maps', 'configfile')) {
-			db_execute('ALTER TABLE `weathermap_maps` ADD UNIQUE INDEX `configfile`(`configfile`)');
-		}
-
-		db_execute('UPDATE weathermap_maps SET `filehash` = LEFT(MD5(concat(id,configfile,rand())),20) WHERE `filehash` = ""');
-
-		if (!db_column_exists('weathermap_data', 'local_data_id')) {
-			db_execute('ALTER TABLE weathermap_data
-				ADD COLUMN local_data_id int(11) NOT NULL default 0 AFTER sequence,
-				ADD INDEX (`local_data_id`)');
-		}
-
-		// create the settings entries, if necessary
-		$pagestyle = read_config_option('weathermap_pagestyle');
-
-		if ($pagestyle == '' || $pagestyle < 0 || $pagestyle > 2) {
-			set_config_option('weathermap_pagestyle', '0');
-		}
-
-		$cycledelay = read_config_option('weathermap_cycle_refresh');
-
-		if ($cycledelay == '' || $cycledelay < 0) {
-			set_config_option('weathermap_cycle_refresh', '0');
-		}
-
-		$renderperiod = read_config_option('weathermap_render_period');
-
-		if ($renderperiod == '' || $renderperiod < -1) {
-			set_config_option('weathermap_render_period', '0');
-		}
-
-		$quietlogging = read_config_option('weathermap_quiet_logging');
-
-		if ($quietlogging == '' || $quietlogging < -1) {
-			set_config_option('weathermap_quiet_logging', '0');
-		}
-
-		$rendercounter = read_config_option('weathermap_render_counter');
-
-		if ($rendercounter == '' || $rendercounter < 0) {
-			set_config_option('weathermap_render_counter', '0');
-		}
-
-		$outputformat = read_config_option('weathermap_output_format');
-
-		if ($outputformat == '') {
-			set_config_option('weathermap_output_format', 'png');
-		}
-
-		$tsize = read_config_option('weathermap_thumbsize');
-
-		if ($tsize == '' || $tsize < 1) {
-			set_config_option('weathermap_thumbsize', '250');
-		}
-
-		$ms = read_config_option('weathermap_map_selector');
-
-		if ($ms == '' || $ms < 0 || $ms > 1) {
-			set_config_option('weathermap_map_selector', '1');
-		}
-
-		$at = read_config_option('weathermap_all_tab');
-
-		if ($at == '' || $at < 0 || $at > 1) {
-			set_config_option('weathermap_all_tab', '0');
-		}
-
-		// update the version, so we can skip this next time
-		set_config_option('weathermap_db_version', $myversion);
-
-		// patch up the sortorder for any maps that don't have one.
-		db_execute('UPDATE weathermap_maps SET sortorder = id WHERE sortorder IS NULL OR sortorder = 0');
-
-		// make sure Weathermaps uses a sane width for columns
-		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `configfile` varchar(255) NOT NULL');
-		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `imagefile` varchar(255) NOT NULL');
-		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `htmlfile` varchar(255) NOT NULL');
-		db_execute('ALTER TABLE weathermap_maps MODIFY COLUMN `titlecache` varchar(60) NOT NULL');
-
-		// Check and enable boost support if it's enabled
-		weathermap_check_set_boost();
-
-		// Correct weathermap settings table of duplicate entries
-		while (true) {
-			$rows = db_fetch_assoc('SELECT mapid, groupid, optname, COUNT(*) AS totals
-				FROM weathermap_settings
-				GROUP BY mapid, groupid, optname
-				HAVING totals > 1');
-
-			if (cacti_sizeof($rows)) {
-				foreach ($rows as $row) {
-					db_execute_prepared('DELETE FROM weathermap_settings
-						WHERE mapid = ? AND groupid = ? AND optname = ?
-						LIMIT 1',
-						[$row['mapid'], $row['groupid'], $row['optname']]);
-				}
-			} else {
-				break;
-			}
-		}
-	}
-}
 
 /**
  * Ensures the global 'rrd_use_poller_output' weathermap setting is
@@ -1513,4 +1270,174 @@ function weathermap_footer_links() {
 	html_start_box('<a target="_blank" class="linkOverDark" href="docs/">' . __('Local Documentation', 'weathermap') . '</a> -- <a target="_blank" class="linkOverDark" href="http://www.network-weathermap.com/">' . __('Weathermap Website', 'weathermap') . '</a> -- <a target="_target" class="linkOverDark" href="weathermap-cacti-plugin-editor.php">' . __('Weathermap Editor', 'weathermap') . '</a> -- ' . __('This is version %s', $weathermap_version, 'weathermap'), '100%', false, 3, 'center', '');
 
 	html_end_box();
+}
+
+/**
+ * Removes files and directories that a previous version of this plugin
+ * shipped but that have since moved or been deleted, using the tombstone
+ * and whitelist lists in manifest.json. Whitelisted (user-data) paths and
+ * any VCS metadata (.git*) are never touched; the dev-only tests/ tree is
+ * removed. Any path that resolves outside the plugin directory (a tampered
+ * manifest.json) is refused, and any file/directory that cannot be removed
+ * (e.g. read-only) is reported to the Cacti log. Any top-level entry that is
+ * neither expected nor a tombstone nor whitelisted is logged to the Cacti
+ * log and left in place. Called on a plugin version change.
+ *
+ * @return void
+ *
+ * @global array $config Cacti global configuration array; used to resolve
+ *                       the plugin directory.
+ */
+function weathermap_prune_files(): void {
+	global $config;
+
+	$plugin_dir    = $config['base_path'] . '/plugins/weathermap';
+	$manifest_path = $plugin_dir . '/manifest.json';
+
+	if (!is_readable($manifest_path)) {
+		return;
+	}
+
+	$manifest = json_decode((string) file_get_contents($manifest_path), true);
+
+	if (!is_array($manifest)) {
+		cacti_log('WARNING: weathermap manifest.json could not be parsed; skipping file prune', false, 'WEATHERMAP');
+
+		return;
+	}
+
+	$tombstones = isset($manifest['tombstones']) && is_array($manifest['tombstones']) ? $manifest['tombstones'] : [];
+	$expected   = isset($manifest['expected'])   && is_array($manifest['expected'])   ? $manifest['expected']   : [];
+	$whitelist  = isset($manifest['whitelist'])  && is_array($manifest['whitelist'])  ? $manifest['whitelist']  : [];
+
+	$protected = function (string $rel) use ($whitelist): bool {
+		if (strncmp($rel, '.git', 4) === 0 || strncmp($rel, '.md', 3) === 0) {
+			return true;
+		}
+
+		foreach ($whitelist as $entry) {
+			$entry = trim((string) $entry, '/');
+
+			if ($entry !== '' && ($rel === $entry
+				|| strncmp($rel, $entry . '/', strlen($entry) + 1) === 0
+				|| strncmp($entry, $rel . '/', strlen($rel) + 1) === 0)) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	// Security: resolve the plugin directory so a tampered manifest.json
+	// cannot steer the prune outside of it.
+	$plugin_real = realpath($plugin_dir);
+
+	// Remove tombstoned (moved/deleted) paths plus the dev-only tests/
+	// tree and the phpunit.xml test configuration.
+	$remove   = $tombstones;
+	$remove[] = 'tests/';
+	$remove[] = 'phpunit.xml';
+
+	foreach ($remove as $rel) {
+		$rel = trim((string) $rel, '/');
+
+		if ($rel === '' || $protected($rel)) {
+			continue;
+		}
+
+		// A tombstone must never contain '.'/'..' segments; a tampered manifest
+		// could use them to escape the plugin directory or target its root.
+		$segments = explode('/', $rel);
+
+		if (in_array('.', $segments, true) || in_array('..', $segments, true)) {
+			cacti_log(sprintf('WARNING: weathermap prune refused to remove %s: path contains a traversal segment (tampered manifest.json?)', $rel), false, 'WEATHERMAP');
+
+			continue;
+		}
+
+		$path = $plugin_dir . '/' . $rel;
+
+		if (!is_link($path) && !file_exists($path)) {
+			continue;
+		}
+
+		// Refuse any path that, after resolving symlinks and ../ segments,
+		// escapes the plugin directory (protects user data from a tampered
+		// manifest.json).
+		$anchor = is_link($path) ? dirname($path) : $path;
+		$real   = realpath($anchor);
+
+		if ($real === false || ($real !== $plugin_real && strncmp($real, $plugin_real . DIRECTORY_SEPARATOR, strlen((string) $plugin_real) + 1) !== 0)) {
+			cacti_log(sprintf('WARNING: weathermap prune refused to remove %s: path resolves outside the plugin directory (tampered manifest.json?)', $rel), false, 'WEATHERMAP');
+
+			continue;
+		}
+
+		if (is_dir($path) && !is_link($path)) {
+			$removed = weathermap_rmtree($path);
+		} else {
+			$removed = @unlink($path);
+		}
+
+		if (!$removed) {
+			cacti_log(sprintf('WARNING: weathermap upgrade could not remove %s (check file/directory permissions)', $rel), false, 'WEATHERMAP');
+		}
+	}
+
+	// Surface any top-level entry the manifest does not account for.
+	$known = [];
+
+	foreach (array_merge($expected, $tombstones) as $entry) {
+		$top = explode('/', trim((string) $entry, '/'))[0];
+
+		if ($top !== '') {
+			$known[$top] = true;
+		}
+	}
+
+	$entries = scandir($plugin_dir);
+
+	foreach (($entries !== false ? $entries : []) as $entry) {
+		if ($entry === '.' || $entry === '..' || $entry === 'tests' || $entry === 'phpunit.xml' || $protected($entry) || isset($known[$entry])) {
+			continue;
+		}
+
+		cacti_log(sprintf('WARNING: weathermap upgrade found a file/directory not described in manifest.json: %s (left in place)', $entry), false, 'WEATHERMAP');
+	}
+}
+
+/**
+ * Recursively deletes a directory and its contents. Symlinks are removed
+ * without being followed. Helper for weathermap_prune_files().
+ *
+ * @param string $dir Absolute path to the directory to remove.
+ *
+ * @return bool True if the directory and everything under it was removed;
+ *              false if any entry could not be deleted.
+ */
+function weathermap_rmtree(string $dir): bool {
+	$entries = scandir($dir);
+	$ok      = true;
+
+	foreach (($entries !== false ? $entries : []) as $entry) {
+		if ($entry === '.' || $entry === '..') {
+			continue;
+		}
+
+		$path = $dir . '/' . $entry;
+
+		if (is_dir($path) && !is_link($path)) {
+			if (!weathermap_rmtree($path)) {
+				$ok = false;
+			}
+		} elseif (!@unlink($path)) {
+			$ok = false;
+		}
+	}
+
+	if (!@rmdir($dir)) {
+		$ok = false;
+	}
+
+	return $ok;
 }

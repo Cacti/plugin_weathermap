@@ -1,6 +1,4 @@
 <?php
-
-declare(strict_types = 1);
 // Pluggable datasource for PHP Weathermap 0.9
 // - return a live SNMP value
 

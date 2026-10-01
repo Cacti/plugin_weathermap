@@ -1,6 +1,4 @@
 <?php
-
-declare(strict_types = 1);
 class WeatherMapDataSource_cacti extends WeatherMapDataSource {
 	/**
 	 * Verifies this data source can run: requires the map to be

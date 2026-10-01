@@ -1,0 +1,35 @@
+{
+    "tombstones": [],
+    "expected": [
+        "BACKLOG.md",
+        "CHANGELOG.md",
+        "COPYING",
+        "INFO",
+        "LICENSE",
+        "README.md",
+        "SECURITY-AUDIT.md",
+        "SECURITY.md",
+        "check.php",
+        "cli/",
+        "css/",
+        "docs/",
+        "images/",
+        "includes/",
+        "index.php",
+        "infection.json",
+        "js/",
+        "lib/",
+        "locales/",
+        "manifest.json",
+        "setup.php",
+        "weathermap",
+        "weathermap-cacti-plugin-editor.php",
+        "weathermap-cacti-plugin-mgmt.php",
+        "weathermap-cacti-plugin.php",
+        "weathermap-cacti-rebuild.php"
+    ],
+    "whitelist": [
+        "configs/",
+        "output/"
+    ]
+}

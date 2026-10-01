@@ -7,8 +7,6 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types = 1);
-
 describe('poller-common cron field destructuring order', function (): void {
 	it('uses the correct minute, hour, day, month, wday order', function (): void {
 		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/poller-common.php');

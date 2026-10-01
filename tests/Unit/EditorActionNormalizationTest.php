@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 describe('Weathermap editor action normalization', function (): void {
 	it('allows valid editor actions', function (): void {
 		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/editor.inc.php');

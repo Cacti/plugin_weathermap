@@ -93,6 +93,9 @@ jobs:
     
     - name: Check PHP version
       run: php -v
+
+    - name: Validate plugin manifest (expected-file drift)
+      run: php cacti/plugins/weathermap/tests/bin/validate-manifest.php
     
     - name: Run apt-get update
       run: |

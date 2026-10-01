@@ -130,3 +130,19 @@ Issues derived from SECURITY-AUDIT.md. Do not push to GitHub until contrib-ledge
 
 **Dependencies**: none
 
+---
+
+## Issue #10: refactor: provision schema through api_plugin_db_table_create()/api_plugin_db_add_column()
+**Priority**: low
+**Labels**: refactor, tech-debt
+**Branch**: `refactor/10-schema-plugin-db-api`
+**Evidence**: includes/database.php — `weathermap_setup_table()` still provisions its tables with raw `CREATE TABLE`/`ALTER TABLE ... ADD COLUMN` statements rather than the idempotent Cacti schema API mandated by `.github/copilot-instructions.md` ("Plugin table-creation API"). The code was relocated verbatim from `setup.php` in the schema-relocation PR; converting it to the API is deliberately deferred to keep that move behaviour-preserving.
+**Acceptance criteria**:
+- [ ] Each `weathermap_*` table is defined through `api_plugin_db_table_create()`
+- [ ] Incremental column additions use `api_plugin_db_add_column()`
+- [ ] Only genuine data migrations (duplicate-row cleanup, sortorder/filehash backfills) remain as prepared `db_execute*()` calls
+- [ ] Install and upgrade paths both run the same idempotent provisioning
+- [ ] Existing install/upgrade unit tests remain green
+
+**Dependencies**: none
+

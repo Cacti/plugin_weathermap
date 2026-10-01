@@ -7,8 +7,6 @@
  +-------------------------------------------------------------------------+
 */
 
-declare(strict_types = 1);
-
 describe('XSS escaping handoff at output boundaries', function (): void {
 	describe('weathermap-cacti-plugin.php', function (): void {
 		it('passes $maptitle through html_escape at both title output locations', function (): void {
