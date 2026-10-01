@@ -146,7 +146,7 @@ it('refuses to remove a tombstone that resolves outside the plugin directory', f
 
 	// The out-of-tree file is untouched and the refusal is logged.
 	expect(is_file($outside))->toBeTrue();
-	expect(implode("\n", $GLOBALS['__test_cacti_log']))->toContain('outside the plugin directory');
+	expect(implode("\n", $GLOBALS['__test_cacti_log']))->toContain('a traversal segment');
 });
 
 it('warns when a tombstoned path cannot be removed', function () {
@@ -179,3 +179,60 @@ it('warns when a tombstoned path cannot be removed', function () {
 })->skip(function () {
 	return function_exists('posix_getuid') && posix_getuid() === 0;
 }, 'permission checks are bypassed for the root user');
+
+it('refuses a tombstone that escapes through a symlinked directory', function () {
+	$manifest = [
+		'tombstones' => ['escdir/secret.txt'],
+		'expected'   => ['manifest.json'],
+		'whitelist'  => [],
+	];
+
+	$base    = weathermap_prune_fixture($manifest);
+	$plugin  = $base . '/plugins/weathermap';
+	$outside = $base . '/outside';
+	mkdir($outside, 0777, true);
+	file_put_contents($outside . '/secret.txt', 'precious user data');
+	@symlink($outside, $plugin . '/escdir');
+	$restore = $GLOBALS['config']['base_path'];
+
+	$GLOBALS['config']['base_path'] = $base;
+
+	try {
+		plugin_weathermap_prune_files();
+	} finally {
+		$GLOBALS['config']['base_path'] = $restore;
+	}
+
+	// The out-of-tree file reached through the symlink is untouched and logged.
+	expect(is_file($outside . '/secret.txt'))->toBeTrue();
+	expect(implode("\n", $GLOBALS['__test_cacti_log']))->toContain('outside the plugin directory');
+})->skip(function () {
+	$probe = sys_get_temp_dir() . '/.prune-symlink-probe-' . uniqid();
+	$ok = @symlink(__FILE__, $probe);
+	@unlink($probe);
+
+	return $ok === false;
+}, 'symlinks are not supported on this filesystem');
+
+it('protects a whitelisted file from a tombstone on its parent directory', function () {
+	$manifest = [
+		'tombstones' => ['userdata/'],
+		'expected'   => ['manifest.json'],
+		'whitelist'  => ['userdata/keep.dat'],
+	];
+
+	$base    = weathermap_prune_fixture($manifest);
+	$plugin  = $base . '/plugins/weathermap';
+	$restore = $GLOBALS['config']['base_path'];
+
+	$GLOBALS['config']['base_path'] = $base;
+
+	try {
+		plugin_weathermap_prune_files();
+	} finally {
+		$GLOBALS['config']['base_path'] = $restore;
+	}
+
+	// A whitelisted file shields its parent directory from a tombstone.
+	expect(is_file($plugin . '/userdata/keep.dat'))->toBeTrue();
+});
