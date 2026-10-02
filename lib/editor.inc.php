@@ -70,19 +70,12 @@ function display_graphs() {
 		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 	}
 
-	$rows = read_config_option('autocomplete_rows');
-
-	if (empty($rows) || $rows > 100 || $rows < 0) {
-		$rows = 100;
-	}
-
 	$graphs = db_fetch_assoc_prepared("SELECT DISTINCT gtg.local_graph_id AS id, gtg.title_cache AS title
 		FROM graph_templates_graph AS gtg
 		INNER JOIN graph_local AS gl
 		ON gtg.local_graph_id = gl.id
 		$sql_where
-		ORDER BY title_cache
-		LIMIT $rows",
+		ORDER BY title_cache",
 		$sql_params);
 
 	$return = [];
@@ -101,14 +94,15 @@ function display_graphs() {
 }
 
 /**
- * @return mixed
+ * @return void
  */
 function display_datasources() {
 	$sql_where  = '';
 	$sql_params = [];
 
 	if (get_nfilter_request_var('term') != '') {
-		$sql_where .= 'WHERE (name_cache LIKE ? OR dl.snmp_index LIKE ?) AND dtd.data_source_path != ""';
+		$sql_where .= 'WHERE (name_cache LIKE ? OR dl.snmp_index LIKE ? OR (SELECT MAX(hsc.field_value) FROM host_snmp_cache AS hsc WHERE hsc.host_id = dl.host_id AND hsc.snmp_query_id = dl.snmp_query_id AND hsc.snmp_index = dl.snmp_index AND hsc.field_name = "ifAlias") LIKE ?) AND dtd.data_source_path != ""';
+		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 	} else {
@@ -117,13 +111,7 @@ function display_datasources() {
 
 	$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'dl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 
-	$rows = read_config_option('autocomplete_rows');
-
-	if (empty($rows) || $rows > 100 || $rows < 0) {
-		$rows = 100;
-	}
-
-	$graphs = db_fetch_assoc_prepared("SELECT gti.local_graph_id AS id, dtd.name_cache AS title, dtd.data_source_path AS path, COUNT(*) AS items
+	$graphs = db_fetch_assoc_prepared("SELECT gti.local_graph_id AS id, dtd.name_cache AS title, (SELECT MAX(hsc.field_value) FROM host_snmp_cache AS hsc WHERE hsc.host_id = dl.host_id AND hsc.snmp_query_id = dl.snmp_query_id AND hsc.snmp_index = dl.snmp_index AND hsc.field_name = 'ifAlias') AS interface_description, dtd.data_source_path AS path, COUNT(*) AS items
 		FROM data_template_data AS dtd
 		INNER JOIN data_local AS dl
 		ON dl.id = dtd.local_data_id
@@ -133,8 +121,7 @@ function display_datasources() {
 		ON gti.task_item_id = dtr.id
 		$sql_where
 		GROUP BY gti.local_graph_id
-		ORDER BY name_cache
-		LIMIT $rows", $sql_params);
+		ORDER BY name_cache", $sql_params);
 
 	$return = [];
 
@@ -143,7 +130,9 @@ function display_datasources() {
 			if (!is_graph_allowed($g['id'])) {
 				unset($graphs[$index]);
 			} else {
-				$return[] = ['label' => $g['title'], 'value' => $g['title'], 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'), 'local_graph_id' => $g['id']];
+				$description = trim($g['interface_description'] ?? '');
+				$label = $g['title'] . ($description !== '' ? ' — ' . $description : '');
+				$return[] = ['label' => $label, 'value' => $label, 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'), 'local_graph_id' => $g['id']];
 			}
 		}
 	}

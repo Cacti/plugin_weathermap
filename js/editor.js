@@ -263,7 +263,7 @@ function graphPicker() {
 				var url = 'weathermap-cacti-plugin-editor.php' +
 					'?mapname=' + $('#mapname').val() +
 					'&action=' + action +
-					'&term=' + request.term +
+					'&term=' + encodeURIComponent(request.term) +
 					'&target=' + id +
 					'&graph_template_id='+template;
 
