@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* bug: Fit hover popups to their graph content and close them immediately when leaving map links, preserving graph proportions and meaningful captions
+
 * refactor: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
 * feature: Add a root `manifest.json` file manifest plus an upgrade-time `weathermap_prune_files()` that removes tombstoned and dev-only paths while protecting whitelisted user data (`configs/`, `output/`) and `.git*`, backed by a `tests/bin/validate-manifest.php` CI gate that fails on manifest drift
 * dev: Add xdebug coverage reporting to CI and enforce patch coverage of changed lines
