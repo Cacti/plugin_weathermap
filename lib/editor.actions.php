@@ -341,7 +341,7 @@ function setNodeProperties($mapfile) {
 
 	// by this point, and renaming has been done, and new_node_name will always be the right name
 	$map->nodes[$new_node_name]->label       = wm_editor_sanitize_string(get_nfilter_request_var('node_label'));
-	$map->nodes[$new_node_name]->infourl[IN] = wm_editor_sanitize_string(get_nfilter_request_var('node_infourl'));
+	$map->nodes[$new_node_name]->infourl[IN] = wm_editor_sanitize_url(get_nfilter_request_var('node_infourl'));
 
 	$urls = preg_split('/\s+/', trim(get_nfilter_request_var('node_hover')), -1, PREG_SPLIT_NO_EMPTY);
 
@@ -378,8 +378,8 @@ function setLinkProperties($mapfile) {
 
 	if (strpos($link_name, ' ') === false) {
 		$map->links[$link_name]->width        = floatval(get_nfilter_request_var('link_width'));
-		$map->links[$link_name]->infourl[IN]  = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
-		$map->links[$link_name]->infourl[OUT] = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
+		$map->links[$link_name]->infourl[IN]  = wm_editor_sanitize_url(get_nfilter_request_var('link_infourl'));
+		$map->links[$link_name]->infourl[OUT] = wm_editor_sanitize_url(get_nfilter_request_var('link_infourl'));
 
 		$urls = preg_split('/\s+/', get_nfilter_request_var('link_hover'), -1, PREG_SPLIT_NO_EMPTY);
 
