@@ -827,7 +827,7 @@ function wm_filter() {
 				});
 
 				$('#wm_settings').on('click', function() {
-					loadPageNoHeader(urlPath + 'settings.php?tab=misc&header=false');
+					window.location.assign(urlPath + 'settings.php?tab=wmap');
 				});
 			});
 
@@ -1048,7 +1048,7 @@ function maplist() {
 			form_alternate_row('line' . $map['id']);
 
 			$output = '<a class="mapLink linkEditMain" title="' . __esc('Click to start editor with this file', 'weathermap') . '"
-				href="' . html_escape('weathermap-cacti-plugin-editor.php?header=false&action=nothing&mapname=' . $map['configfile']) . '">' .
+				href="' . html_escape('weathermap-cacti-plugin-editor.php?header=false&action=nothing&return_to=manage&mapname=' . $map['configfile']) . '">' .
 				html_escape($map['titlecache']) . '
 			</a>';
 

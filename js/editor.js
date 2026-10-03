@@ -510,8 +510,8 @@ function attach_click_events() {
 	$("area[id^='TIMES']").attr('href', '#').off('click').on('click', position_timestamp);
 	$("area[id^='LEGEN']").attr('href', '#').off('click').on('click', position_legend);
 
-	$('#tb_newfile').html('Return to<br>Cacti').on('click', function() {
-		window.location = 'weathermap-cacti-plugin-mgmt.php';
+	$('#tb_newfile').text($('body').attr('data-return-label') || 'Return to Map').off('click').on('click', function() {
+		window.location.assign($('body').attr('data-return-map') || 'weathermap-cacti-plugin.php');
 	});
 
 	$('#tb_addnode').off('click').on('click', add_node);
