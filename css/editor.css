@@ -264,3 +264,58 @@ td {
 	width: 500px;
 	height: 300px;
 }
+
+/* The standalone editor does not run Cacti's theme page loader. */
+body#mainView { opacity: 1; }
+body#mainView .ui-dialog small,
+body#mainView .ui-dialog [id$="purpose"],
+body#mainView .ui-dialog div[style*="color:#555"] {
+ color: var(--text-color-lighter, #333) !important;
+}
+body#mainView .ui-dialog input,
+body#mainView .ui-dialog textarea,
+body#mainView .ui-dialog select,
+body#mainView .ui-dialog button,
+body#mainView .ui-dialog .ui-button {
+ color: var(--text-color-lighter, #333);
+ border-color: var(--border-color, #888);
+}
+body#mainView .ui-dialog input[type="checkbox"] {
+ -webkit-appearance: checkbox; appearance: auto;
+ opacity: 1; display: inline-block; position: static;
+ width: 16px; height: 16px; margin-right: 6px;
+}
+body#mainView .ui-dialog :focus-visible {
+ outline: 2px solid var(--text-color-highlight-a, #2874aa);
+ outline-offset: 2px;
+}
+body#mainView .ui-dialog .dd-select,
+body#mainView .ui-dialog .dd-selected,
+body#mainView .ui-dialog .dd-options,
+body#mainView .ui-dialog .dd-option {
+ background: var(--background, #fff) !important;
+ border-color: var(--border-color, #888) !important;
+}
+body#mainView .ui-dialog .dd-selected,
+body#mainView .ui-dialog .dd-selected label,
+body#mainView .ui-dialog .dd-selected .dd-desc,
+body#mainView .ui-dialog .dd-option,
+body#mainView .ui-dialog .dd-option label,
+body#mainView .ui-dialog .dd-option .dd-desc {
+ color: var(--text-color-lighter, #333) !important;
+}
+body#mainView .ui-dialog .dd-option:hover { background: var(--background-lowlight, #eee) !important; }
+body#mainView .ui-dialog .dd-pointer { border-top-color: var(--text-color-lighter, #333); }
+body#mainView #wm-node-delete-bar,
+body#mainView #wm-link-delete-bar {
+ display: flex; justify-content: flex-end; width: 100%; box-sizing: border-box;
+}
+body#mainView #dlgNodeProperties { position: relative; }
+body#mainView #wm-node-delete-bar { min-height: 32px; }
+body#mainView #node_delete { position: absolute; right: 20px; top: 12px; }
+
+body#mainView #node_delete,
+body#mainView #link_delete {
+ color: var(--text-color-lighter, #9b2525) !important;
+ border-color: var(--border-color, #888);
+}
