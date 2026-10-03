@@ -313,3 +313,9 @@ body#mainView #wm-link-delete-bar {
 body#mainView #dlgNodeProperties { position: relative; }
 body#mainView #wm-node-delete-bar { min-height: 32px; }
 body#mainView #node_delete { position: absolute; right: 20px; top: 12px; }
+
+body#mainView #node_delete,
+body#mainView #link_delete {
+ color: var(--text-color-lighter, #9b2525) !important;
+ border-color: var(--border-color, #888);
+}
