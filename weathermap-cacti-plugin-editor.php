@@ -286,7 +286,19 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<title><?php print __('PHP Weathermap Editor %s', $weathermap_version, 'flowview'); ?></title>
 </head>
 
-<body id='mainView' class='mainView'>
+<?php
+$editor_return_hash = db_fetch_cell_prepared('SELECT filehash FROM weathermap_maps WHERE configfile = ? LIMIT 1', [$mapname]);
+$editor_return_url = 'weathermap-cacti-plugin.php';
+$editor_return_label = __('Return to Map', 'weathermap');
+if (!empty($editor_return_hash)) {
+	$editor_return_url .= '?action=viewmap&id=' . rawurlencode($editor_return_hash);
+}
+if (($_GET['return_to'] ?? '') === 'manage') {
+	$editor_return_url = 'weathermap-cacti-plugin-mgmt.php';
+	$editor_return_label = __('Return to Manage', 'weathermap');
+}
+?>
+<body id='mainView' class='mainView' data-return-label='<?php print html_escape($editor_return_label); ?>' data-return-map='<?php print html_escape($editor_return_url); ?>'>
 	<div id='toolbar'>
 		<ul>
 			<li class='tb_active' id='tb_newfile'><?php print __('Change<br>File', 'weathermap'); ?></li>

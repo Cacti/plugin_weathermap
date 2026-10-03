@@ -95,3 +95,5 @@ body#wm_fullscreen { font-family: sans-serif; margin: 0; border: 0; padding: 0; 
 .inplace .weathermapholder { display: none; }
 
 #wm_cyclecontrols a img { width: 16px; height: 16px; border: 0; }
+
+.wm-map-title { margin: 4px 4px 0; width: calc(100% - 8px); }

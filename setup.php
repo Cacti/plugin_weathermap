@@ -1016,6 +1016,54 @@ function weathermap_draw_navigation_text($nav) {
 		'level'   => '1'
 	];
 
+	global $config;
+	$management = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php';
+	$nav['weathermap-cacti-plugin-mgmt.php:root'] = ['title' => __('Weathermaps', 'weathermap'), 'mapping' => 'index.php:', 'url' => $management, 'level' => '1'];
+	$nav['weathermap-cacti-plugin-mgmt.php:'] = ['title' => __('Manage', 'weathermap'), 'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:root', 'url' => $management, 'level' => '2'];
+	foreach (['map_settings', 'map_settings_form', 'perms_edit'] as $action) {
+		$key = 'weathermap-cacti-plugin-mgmt.php:' . $action;
+		$nav[$key]['mapping'] = 'index.php:,weathermap-cacti-plugin-mgmt.php:root,weathermap-cacti-plugin-mgmt.php:';
+		$nav[$key]['url'] = $management;
+		$nav[$key]['level'] = '3';
+	}
+	if (basename($_SERVER['SCRIPT_NAME'] ?? '') === 'settings.php' && ($_GET['tab'] ?? $_SESSION['sess_config_settings_tab'] ?? '') === 'wmap') {
+		$management = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php';
+		foreach (['settings.php:', 'settings.php:edit'] as $key) {
+			$nav[$key] = ['title' => __('Settings', 'weathermap'), 'mapping' => 'index.php:,weathermap-cacti-plugin-mgmt.php:root', 'url' => $management, 'level' => '2'];
+		}
+	}
+
+	$viewer = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php';
+	$nav['wm-viewer-root:'] = ['title' => __('Weathermap', 'weathermap'), 'mapping' => '', 'url' => $viewer, 'level' => '0'];
+	$nav['weathermap-cacti-plugin.php:viewmapcycle'] = ['title' => __('Automatically cycle', 'weathermap'), 'mapping' => 'wm-viewer-root:', 'url' => $viewer . '?action=viewmapcycle', 'level' => '1'];
+	if (basename($_SERVER['SCRIPT_NAME'] ?? '') === 'weathermap-cacti-plugin.php' && ($_GET['action'] ?? '') === 'viewmap') {
+		$hash = $_GET['id'] ?? '';
+		if (is_string($hash) && preg_match('/^[a-f0-9]{20,64}$/i', $hash)) {
+			$map = db_fetch_row_prepared("SELECT id, titlecache, configfile FROM weathermap_maps WHERE filehash = ? AND active = 'on'", [$hash]);
+			require_once __DIR__ . '/lib/WeatherMap.functions.php';
+			if ($map && is_weathermap_allowed($map['id'], $_SESSION['sess_user_id'] ?? 0)) {
+				$nav['weathermap-cacti-plugin.php:viewmap'] = ['title' => $map['titlecache'] ?: $map['configfile'], 'mapping' => 'wm-viewer-root:', 'url' => $viewer . '?action=viewmap&id=' . rawurlencode($hash), 'level' => '1'];
+			}
+		}
+	}
+	$hash = $_GET['wm_map'] ?? '';
+	if (basename($_SERVER['SCRIPT_NAME'] ?? '') === 'graph.php' && is_string($hash) && preg_match('/^[a-f0-9]{20,64}$/i', $hash)) {
+		$map = db_fetch_row_prepared("SELECT id, filehash, titlecache, configfile FROM weathermap_maps WHERE filehash = ? AND active = 'on'", [$hash]);
+		require_once __DIR__ . '/lib/WeatherMap.functions.php';
+		if ($map && is_weathermap_allowed($map['id'], $_SESSION['sess_user_id'] ?? 0)) {
+			$base = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php';
+			$nav['wm-return-list:'] = ['title' => __('Weathermap', 'weathermap'), 'mapping' => '', 'url' => $base, 'level' => '0'];
+			$nav['wm-return-map:'] = ['title' => $map['titlecache'] ?: $map['configfile'], 'mapping' => 'wm-return-list:', 'url' => $base . '?action=viewmap&id=' . rawurlencode($map['filehash']), 'level' => '1'];
+			foreach (['graph.php:', 'graph.php:view'] as $key) {
+				if (isset($nav[$key])) {
+					$nav[$key]['mapping'] = 'wm-return-list:,wm-return-map:';
+					$nav[$key]['level'] = '2';
+					$nav[$key]['url'] = $base . '?action=viewmap&id=' . rawurlencode($map['filehash']);
+				}
+			}
+		}
+	}
+
 	return $nav;
 }
 
@@ -1440,4 +1488,26 @@ function weathermap_rmtree(string $dir): bool {
 	}
 
 	return $ok;
+}
+
+/** Add the originating map to local graph links without changing graph selection.
+ * @param string $html Generated map HTML.
+ * @param string $maphash Originating map's file hash.
+ * @return string
+ */
+function weathermap_map_graph_links($html, $maphash) {
+	global $config;
+	return preg_replace_callback('/href=([\"\'])(.*?)\1/i', function ($match) use ($config, $maphash) {
+		$url = html_entity_decode($match[2], ENT_QUOTES, 'UTF-8');
+		$parts = parse_url($url);
+		if (!$parts || isset($parts['host']) || isset($parts['scheme']) || ($parts['path'] ?? '') !== $config['url_path'] . 'graph.php') {
+			return $match[0];
+		}
+		$query = array_filter(explode('&', $parts['query'] ?? ''), function ($part) {
+			return $part !== '' && rawurldecode(explode('=', $part, 2)[0]) !== 'wm_map';
+		});
+		$query[] = 'wm_map=' . rawurlencode($maphash);
+		$url = $parts['path'] . '?' . implode('&', $query) . (isset($parts['fragment']) ? '#' . $parts['fragment'] : '');
+		return 'href=' . $match[1] . html_escape($url) . $match[1];
+	}, $html) ?? $html;
 }
