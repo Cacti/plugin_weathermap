@@ -176,6 +176,14 @@ function wm_editor_sanitize_string($str) {
 }
 
 /**
+ * Preserve query separators in stored URLs while retaining the existing
+ * escaping of characters that can break an HTML attribute.
+ */
+function wm_editor_sanitize_url($str) {
+	return str_replace(['&amp;', "\r", "\n"], ['&', '', ''], wm_editor_sanitize_string($str));
+}
+
+/**
  * @param mixed $bw
  * @return bool
  */

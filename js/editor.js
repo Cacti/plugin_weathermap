@@ -714,13 +714,15 @@ function delete_node() {
 		$('body').append('<div class="dlgConfirm"></div>');
 	}
 
-	$('.dlgConfirm').text(delNodeWarning);
+	var name = $('#node_name').val();
+	var connected = Object.keys(Links).filter(function(key) { return Links[key].a === name || Links[key].b === name; }).length;
+	$('.dlgConfirm').text('Remove ' + wmNodeDisplayName(name) + ' from this map?' + (connected ? ' Its ' + connected + ' connected link' + (connected === 1 ? '' : 's') + ' will also be removed.' : '') + ' The Cacti device and graphs will remain.');
 
 	mapmode('xy');
 
 	$('.dlgConfirm').dialog({
 		resizable: false,
-		title: delNodeTitle,
+		title: 'Delete this node?',
 		height: 'auto',
 		width: 400,
 		modal: false,
@@ -793,13 +795,14 @@ function delete_link() {
 		$('body').append('<div class="dlgConfirm"></div>');
 	}
 
-	$('.dlgConfirm').text(delLinkWarning);
+	var link = Links[$('#link_name').val()];
+	$('.dlgConfirm').text('Remove the link between ' + wmNodeDisplayName(link.a) + ' and ' + wmNodeDisplayName(link.b) + '? The nodes and Cacti graphs will remain.');
 
 	mapmode('xy');
 
 	$('.dlgConfirm').dialog({
 		resizable: false,
-		title: delLinkTitle,
+		title: 'Delete this link?',
 		height: 'auto',
 		width: 400,
 		modal: true,
@@ -967,8 +970,8 @@ function prime_node_form(name) {
 		$('#node_name').val(mynode.name);
 		$('#node_new_name').val(mynode.name);
 		$('#node_label').val(mynode.label);
-		$('#node_infourl').val(mynode.infourl);
-		$('#node_hover').val(mynode.overliburl);
+		$('#node_infourl').val(wmDecodeEditorUrl(mynode.infourl));
+		$('#node_hover').val(wmDecodeEditorUrl(mynode.overliburl));
 
 		if (mynode.iconfile != '') {
 			//console.log(mynode.iconfile.substring(0,2));
@@ -1018,7 +1021,10 @@ function show_node(name) {
 			$('.dd-options, .dd-container').css('z-index', '500');
 		});
 
+		compactNodeEditor();
+ refineNodePicker();
 		show_dialog('dlgNodeProperties');
+	$('#dlgNodeProperties').dialog('option', 'title', 'Node: ' + wmNodeDisplayName(name));
 
 		$('#node_new_name').focus();
 	} else {
@@ -1044,8 +1050,8 @@ function prime_link_form(name) {
 			$('#link_bandwidth_out').val(mylink.bw_out);
 		}
 
-		$('#link_infourl').val(mylink.infourl);
-		$('#link_hover').val(mylink.overliburl);
+		$('#link_infourl').val(wmDecodeEditorUrl(mylink.infourl));
+		$('#link_hover').val(wmDecodeEditorUrl(mylink.overliburl));
 		$('#viastyle').val(mylink.viastyle);
 
 		$('#link_commentin').val(mylink.commentin);
@@ -1063,8 +1069,6 @@ function prime_link_form(name) {
 		}
 
 		document.getElementById('link_nodename1').firstChild.nodeValue  = mylink.a;
-		document.getElementById('link_nodename1a').firstChild.nodeValue = mylink.a;
-		document.getElementById('link_nodename1b').firstChild.nodeValue = mylink.a;
 		document.getElementById('link_nodename2').firstChild.nodeValue  = mylink.b;
 
 		$('#param').val(mylink.name);
@@ -1083,7 +1087,9 @@ function show_link(name) {
 	if (prime_link_form(name)) {
 		$('#action').val('set_link_properties');
 
-		show_dialog('dlgLinkProperties');
+		compactLinkEditor();
+wmFriendlyLinkNames();
+show_dialog('dlgLinkProperties');
 
 		$('#link_bandwidth_in').focus();
 	}
@@ -1201,3 +1207,349 @@ function attach_help_events() {
 	$('input').focus(help_handler).blur(help_handler);
 }
 
+
+// Compact link workflow; existing fields remain available under Advanced.
+function compactLinkEditorBase() {
+	var dlg = $('#dlgLinkProperties'),
+		table = $('#link_target').closest('table');
+	var fields = '#viastyle,#link_target,#link_infourl,#link_hover,#link_template,#link_picker';
+	var rows = dlg.find(fields).closest('tr').addClass('wm-link-advanced');
+	if (!$('#wm-link-summary').length) {
+		$(
+			'<tr id="wm-link-summary"><td>Current interface</td><td><div id="wm-link-current"></div><small id="wm-link-graph"></small></td></tr>'
+		).prependTo(table);
+		$('<button type="button" id="wm-link-toggle" class="ui-button ui-corner-all">Advanced settings</button>')
+			.insertBefore(dlg.find('.dlgButtons'))
+			.on('click', function () {
+				var expanded = $(this).attr('aria-expanded') !== 'true';
+				$(this)
+					.attr('aria-expanded', String(expanded))
+					.text(expanded ? 'Hide advanced settings' : 'Advanced settings');
+				rows.toggle(expanded);
+				dlg.find('.dlgHelp,#link_edit').toggle(expanded);
+				$('#link_target_picker_add,#link_target_picker_rep').toggle(expanded);
+			});
+		$(
+			'<button type="button" id="wm-link-use" class="ui-button ui-corner-all" disabled>Use interface</button>'
+		)
+			.appendTo($('#link_target_picker').closest('td'))
+			.on('click', function () {
+				var item = $('#link_target_picker').data('wm-choice');
+				if (!item || !item.id || !(item.local_graph_id > 0)) return;
+				$('#link_target').val(item.id);
+				$('#link_infourl').val(
+					new URL('../../', window.location.href).pathname +
+						'graph.php?rra_id=all&local_graph_id=' +
+						item.local_graph_id
+				);
+				$('#link_hover').val(
+					new URL('../../', window.location.href).pathname +
+						'graph_image.php?local_graph_id=' +
+						item.local_graph_id +
+						'&rra_id=0&graph_nolegend=true&graph_height=100&graph_width=300'
+				);
+				$('#wm-link-current').text(item.label);
+				$('#wm-link-graph').text(
+					'Graph ' +
+						item.local_graph_id +
+						' — data, click destination and hover graph selected. Save to apply.'
+				);
+				$(this).prop('disabled', true);
+			});
+	}
+	rows.hide();
+	dlg.find('.dlgHelp,#link_edit').hide();
+	$('#wm-link-toggle').attr('aria-expanded', 'false').text('Advanced settings');
+	$('#link_target_picker_add,#link_target_picker_rep').hide();
+	$('#link_target_picker').closest('tr').find('td:first').text('Change interface');
+	$('#link_target_picker_input').val('').attr('placeholder', 'Search device or interface');
+	$('#link_target_picker').removeData('wm-choice');
+	$('#wm-link-use').prop('disabled', true);
+	var picker = $('#link_target_picker_input');
+	if (!picker.data('wm-compact-hook')) {
+		var original = picker.autocomplete('option', 'select');
+		picker
+			.autocomplete('option', 'select', function (event, ui) {
+				if (original) original.call(this, event, ui);
+				$('#link_target_picker').data('wm-choice', ui.item);
+				$('#wm-link-use').prop('disabled', !(ui.item.id && ui.item.local_graph_id > 0));
+			})
+			.on('input.wmCompact', function () {
+				$('#link_target_picker').removeData('wm-choice');
+				$('#wm-link-use').prop('disabled', true);
+			});
+		picker.data('wm-compact-hook', true);
+	}
+	var target = String($('#link_target').val() || '').trim();
+	$('#wm-link-current').text(target ? target.split('/').pop() : 'No interface selected');
+	var ids = String($('#link_infourl').val() || '').match(/(?:local_graph_id|graph_list)=([0-9,]+)/);
+	$('#wm-link-graph').text(
+		ids
+			? 'Current graph: ' + ids[1]
+			: target
+				? 'Custom configuration — details under Advanced'
+				: 'Choose an interface below'
+	);
+	$('#link_bandwidth_in')
+		.closest('tr')
+		.find('td:first')
+		.text('Bandwidth into ' + $('#link_nodename1').text());
+	$('#link_bandwidth_out')
+		.closest('tr')
+		.find('td:first')
+		.text('Bandwidth out of ' + $('#link_nodename1').text());
+}
+
+var wmInterfaceCatalog;
+function wmGetInterfaceCatalog() {
+	if (!wmInterfaceCatalog) {
+		wmInterfaceCatalog = $.getJSON(window.location.pathname, {
+			action: 'datasources',
+			term: '',
+			mapname: $('#mapname').val(),
+			target: 'link_target_picker',
+			graph_template_id: -1
+		});
+		wmInterfaceCatalog.fail(function () {
+			wmInterfaceCatalog = null;
+		});
+	}
+	return wmInterfaceCatalog;
+}
+function compactLinkEditor() {
+	compactLinkEditorBase();
+	var dlg = $('#dlgLinkProperties');
+	dlg.find('#link_commentin,#link_commentout').closest('tr').removeClass('wm-link-advanced').show();
+	if (!$('#wm-link-rrd').length)
+		$('<small id="wm-link-rrd" style="display:block;overflow-wrap:anywhere;color:#666"></small>').insertAfter(
+			'#wm-link-current'
+		);
+	if (!$('#wm-link-purpose').length)
+		$(
+			'<div id="wm-link-purpose" style="font-size:11px;margin:6px 0 12px;color:#555">For a standard interface traffic link, the main controls are enough. Use Advanced to combine traffic sources, show multiple hover graphs, choose a different click destination or customise the line. Weathermap also supports other measurements, such as CPU and memory, commonly displayed on nodes.</div>'
+		).insertAfter('#wm-link-toggle');
+	var buttons = dlg.find('.dlgSubButtons');
+	$('#tb_link_submit').prependTo(buttons).css({ 'font-weight': 'bold' });
+	$('#tb_link_cancel').insertAfter('#tb_link_submit');
+	if (!$('#wm-link-delete-bar').length)
+		$('<div id="wm-link-delete-bar" style="text-align:right;margin-bottom:8px"></div>').insertBefore(
+			$('#link_nodename1').parent()
+		);
+	$('#link_delete').appendTo('#wm-link-delete-bar').css({ 'margin-left': '0', color: '#9b2525' });
+	$('#link_tidy').show().insertBefore('#tb_link_submit');
+	$('#link_via').show().insertAfter('#link_tidy').css('margin-right', '24px');
+	var picker = $('#link_target_picker_input');
+	picker.attr('placeholder', 'Type a device or interface, or browse all');
+	picker.autocomplete('option', 'autoFocus', false);
+	picker.autocomplete('option', 'source', function (request, response) {
+		var term = request.term.toLowerCase();
+		wmGetInterfaceCatalog()
+			.done(function (items) {
+				response(
+					items.filter(function (item) {
+						return item.label.toLowerCase().indexOf(term) !== -1;
+					})
+				);
+			})
+			.fail(function () {
+				response([]);
+			});
+	});
+	$('#link_target_picker_wrap').off('click dblclick mouseleave');
+	picker.off('click.wmReopen').on('click.wmReopen', function () {
+		picker.autocomplete('search', picker.val());
+	});
+	$('#link_target_picker_click')
+		.off('click.wmReopen')
+		.on('click.wmReopen', function () {
+			picker.trigger('focus');
+			picker.autocomplete('search', picker.val());
+		});
+	if (!$('#wm-link-browse').length)
+		$('<button type="button" id="wm-link-browse" class="ui-button ui-corner-all">Browse all</button>')
+			.insertAfter('#wm-link-use')
+			.on('click', function () {
+				picker.autocomplete('search', '');
+			});
+	var target = String($('#link_target').val() || '').trim();
+	var file = target.split('/').pop();
+	$('#wm-link-rrd').text(target);
+	$('#wm-link-current').text(target ? 'Looking up device and interface...' : 'No interface selected');
+
+	wmGetInterfaceCatalog()
+		.done(function (items) {
+			if (String($('#link_target').val() || '').trim() !== target) return;
+			var matches = items.filter(function (item) {
+				return item.id === target || item.id.split('/').pop() === file;
+			});
+			$('#wm-link-current').text(
+				matches.length
+					? matches[0].label
+					: target
+						? 'Custom or unavailable interface'
+						: 'No interface selected'
+			);
+			if (matches.length && !picker.val() && !$('#link_target_picker').data('wm-choice'))
+				picker.val(matches[0].label);
+		})
+		.fail(function () {
+			$('#wm-link-current').text('Interface name unavailable');
+		});
+	if (!$('#wm-link-use').data('wm-detail-hook')) {
+		$('#wm-link-use')
+			.on('click.wmDetails', function () {
+				$('#wm-link-rrd').text($('#link_target').val());
+			})
+			.data('wm-detail-hook', true);
+	}
+}
+
+function compactNodeEditor() {
+	var dlg = $('#dlgNodeProperties'),
+		table = $('#node_label').closest('table');
+	var rows = dlg.find('#node_new_name,#node_infourl,#node_hover,#node_template,#node_picker').closest('tr');
+	$('#node_label').closest('tr').find('td:first').text('Display name');
+	$('#node_iconfilename').closest('tr').find('td:first').text('Icon');
+	$('#node_template').closest('tr').find('td:first').text('Graph type');
+	$('#node_picker').closest('tr').find('td:first').text('Hover graphs');
+	$('#node_label').closest('tr').prependTo(table);
+	$('#node_iconfilename').closest('tr').insertAfter($('#node_label').closest('tr'));
+	if (!$('#wm-node-delete-bar').length)
+		$('<div id="wm-node-delete-bar" style="text-align:right;margin-bottom:8px"></div>').insertBefore(table);
+	$('#node_delete').text('Delete Node').appendTo('#wm-node-delete-bar').css('color', '#9b2525');
+	var buttons = dlg.find('.dlgSubButtons');
+	$('#node_move').prependTo(buttons);
+	$('#node_clone').insertAfter('#node_move').css('margin-right', '24px');
+	$('#tb_node_submit').insertAfter('#node_clone').css('font-weight', 'bold');
+	$('#tb_node_cancel').insertAfter('#tb_node_submit');
+	if (!$('#wm-node-toggle').length) {
+		$('<button type="button" id="wm-node-toggle" class="ui-button ui-corner-all">Advanced settings</button>')
+			.insertBefore(dlg.find('.dlgButtons'))
+			.on('click', function () {
+				var open = $(this).attr('aria-expanded') !== 'true';
+				$(this)
+					.attr('aria-expanded', String(open))
+					.text(open ? 'Hide advanced settings' : 'Advanced settings');
+				rows.toggle(open);
+				dlg.find('#node_edit,.dlgHelp').toggle(open);
+			});
+		$(
+			'<div style="font-size:11px;margin:6px 0 12px;color:#555">For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID.</div>'
+		).insertAfter('#wm-node-toggle');
+		dlg
+			.find('.dlgHelp')
+			.html(
+				'<p><strong>Display name and icon:</strong> Choose what appears on the map. Position sets the X and Y coordinates; Move lets you place the node on the map.</p><p><strong>Hover graphs:</strong> Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes.</p><p><strong>Advanced:</strong> The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs.</p>'
+			);
+	}
+	rows.hide();
+	dlg.find('#node_edit,.dlgHelp').hide();
+	$('#wm-node-toggle').attr('aria-expanded', 'false').text('Advanced settings');
+}
+
+function refineNodePicker() {
+	var picker = $('#node_picker_input'),
+		buttons = $('#node_picker_add,#node_picker_rep');
+	picker.val('').attr('placeholder', 'Search device or graph');
+	$('#node_picker').val('');
+	buttons.prop('disabled', true);
+	picker.autocomplete('option', 'autoFocus', false);
+	$('#node_picker_wrap').off('click dblclick mouseleave');
+	picker.off('click.wmNode').on('click.wmNode', function () {
+		picker.autocomplete('search', picker.val());
+	});
+	$('#node_picker_click')
+		.off('click.wmNode')
+		.on('click.wmNode', function () {
+			picker.trigger('focus');
+			picker.autocomplete('search', picker.val());
+		});
+	if (!picker.data('wm-node-hook')) {
+		var original = picker.autocomplete('option', 'select');
+		picker.autocomplete('option', 'select', function (event, ui) {
+			if (original) original.call(this, event, ui);
+			buttons.prop('disabled', !ui.item.id);
+		});
+		picker.on('input.wmNode', function () {
+			buttons.prop('disabled', true);
+		});
+		picker.data('wm-node-hook', true);
+	}
+	if (!$('#wm-node-browse').length)
+		$('<button type="button" id="wm-node-browse" class="ui-button ui-corner-all">Browse all</button>')
+			.appendTo($('#node_picker').closest('td'))
+			.on('click', function () {
+				picker.autocomplete('search', '');
+			});
+	if (!$('#wm-node-graphs').length)
+		$('<div id="wm-node-graphs" style="font-size:11px;margin:6px 0"></div>').insertBefore('#wm-node-toggle');
+	var hover = String($('#node_hover').val() || '');
+	var matches = Array.from(hover.matchAll(/local_graph_id=(\d+)/g)).map(function (m) {
+		return m[1];
+	});
+	$('#wm-node-graphs').text(
+		hover
+			? 'Hover graphs: ' + (matches.length ? matches.join(', ') : 'custom images')
+			: 'No hover graphs configured'
+	);
+	if (matches.length)
+		$.getJSON(window.location.pathname, {
+			action: 'graphs',
+			term: '',
+			mapname: $('#mapname').val(),
+			target: 'node_picker',
+			graph_template_id: -1
+		}).done(function (items) {
+			if (String($('#node_hover').val() || '') !== hover) return;
+			var labels = items.filter(function (i) {
+				return matches.indexOf(String(i.id)) !== -1;
+			});
+			$('#wm-node-graphs').text(
+				'Hover graphs: ' +
+					(labels.length
+						? labels
+								.map(function (i) {
+									return i.label;
+								})
+								.join('; ')
+						: matches.join(', '))
+			);
+			if (labels.length === 1 && !picker.val()) picker.val(labels[0].label);
+		});
+}
+function wmNodeDisplayName(name) {
+	var node = Nodes[name];
+	var label = node ? String(node.label || '').trim() : '';
+	return label && label !== 'Node' ? label.replace(/\\n/g, ' ').replace(/\s+/g, ' ') : name;
+}
+function wmFriendlyLinkNames() {
+	var link = Links[$('#link_name').val()];
+	if (!link) return;
+	$('#link_nodename1').text(wmNodeDisplayName(link.a));
+	$('#link_nodename2').text(wmNodeDisplayName(link.b));
+	$('#link_bandwidth_in')
+		.closest('tr')
+		.find('td:first')
+		.text('Bandwidth into ' + wmNodeDisplayName(link.a));
+	$('#link_bandwidth_out')
+		.closest('tr')
+		.find('td:first')
+		.text('Bandwidth out of ' + wmNodeDisplayName(link.a));
+	if (!$('#wm-link-internal-id').length)
+		$('<p id="wm-link-internal-id" class="wm-link-advanced" style="font-size:0.9em"></p>').insertBefore(
+			$('#link_target').closest('table')
+		);
+	$('#wm-link-internal-id')
+		.text('Internal link ID: ' + link.name)
+		.hide();
+	$('#wm-link-toggle')
+		.off('click.wmNames')
+		.on('click.wmNames', function () {
+			$('#wm-link-internal-id').toggle($(this).attr('aria-expanded') === 'true');
+		});
+}
+
+// Map JavaScript HTML-escapes URL values; undo that when populating text fields.
+function wmDecodeEditorUrl(value) {
+	return String(value || '').replace(/&amp;/g, '&');
+}

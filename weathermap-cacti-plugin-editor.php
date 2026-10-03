@@ -581,7 +581,10 @@ foreach ($graph_templates as $gt) {
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					<?php print __('You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL\'s are Cacti or other Graphs URL\'s that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL\'s. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above.', 'flowview'); ?>
+					<?php print __('<p><strong>Bandwidth:</strong> Set the capacity used to calculate link utilisation, for example 100M or 1G. K, M, G and T are supported. Use the same value for both directions unless their capacities differ.</p>
+<p><strong>Interface:</strong> Search by device, port or description, then select Use interface to fill the traffic source, click destination and hover graph together. Save applies the changes.</p>
+<p><strong>Comments:</strong> Add text to display along each direction of the link. The percentage controls its position along the line.</p>
+<p><strong>Advanced:</strong> Use custom data sources or combine multiple sources, choose different graphs, change the click destination, or adjust line width and shape. Data Source(s) controls the measured traffic; Info URL(s) controls where a click goes; Hover Graph URL(s) controls the images shown on hover.</p>', 'weathermap'); ?>
 				</div>
 			</div>
 		</div>
