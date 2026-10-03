@@ -674,37 +674,13 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 			$html = __('Showing %s %s of %s %s. Cycling all available maps.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');
 		}
 
+		$controls = weathermap_cycle_controls($fullscreen, $limit_to_group);
 		if ($fullscreen == 0) {
-			$pagetitle .= ' <span class="linkOverDark"> [ ' . "
-				<a id='cycle_stop' class='pic fas fa-stop' style='font-size:11px' href='?action='></a>
-				<a id='cycle_prev' class='fas fa-backward' style='font-size:11px' href='#'></a>
-				<a id='cycle_pause' class='fas fa-pause' style='font-size:11px' href='#'></a>
-				<a id='cycle_next' class='fas fa-forward' style='font-size:11px' href='#'></a>
-				<a target='_new' class='fas fa-expand-arrows-alt' style='font-size:11px' id='cycle_fullscreen' href='" . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=1&group=' . $limit_to_group . "'></a> ]
-				[ " . $html . ' ] </span>';
-			?>
-			<div class="cactiTable">
-				<div class="cactiTableTitleRow"><?php print $pagetitle; ?></div>
-			</div>
-			<?php
+			print '<div class="cactiTable"><div class="cactiTableTitleRow wm-cycle-toolbar">' . $pagetitle . ' [ ' . $controls . ' ] [ ' . $html . ' ]</div></div>';
 		} else {
-			?>
-			<div id='wmcyclecontrolbox' class='<?php print $class ?>'>
-				<div id='wm_progress'></div>
-				<div id='wm_cyclecontrols'>
-					<a id='cycle_stop' class='fas fa-stop' href='?action='></a>
-					<a id='cycle_prev' class='fas fa-backward' href='#'></a>
-	                <a id='cycle_pause' class='fas fa-pause' href='#'></a>
-              		 	<a id='cycle_next' class='fas fa-forward' href='#'></a>
-      		         	<a target='_new' class='fas fa-expand-arrows-alt' id='cycle_fullscreen' href='<?php print $config['url_path']; ?>plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=1&group=<?php print $limit_to_group; ?>'></a>
-					<?php print $html; ?>
-				</div>
-			</div>
-			<?php
+			print '<div id="wmcyclecontrolbox" class="fullscreen">' . $controls . '<span class="wm-cycle-status">' . $html . '</span></div>';
 		}
 	}
-
-	$i = 0;
 
 	if (cacti_sizeof($maplist)) {
 		print "<div class='all_map_holder $class'>";
@@ -1057,4 +1033,28 @@ function weathermap_tabs($current_tab) {
 	} else {
 		return false;
 	}
+}
+
+/** Render translated, keyboard-accessible cycle controls.
+ * @param int $fullscreen Whether Cacti chrome is hidden.
+ * @param int $group_id Group filter to retain when toggling full screen.
+ * @return string
+ */
+function weathermap_cycle_controls($fullscreen, $group_id) {
+	global $config;
+	$controls = '';
+	$actions = [
+		'cycle_stop' => ['fa-stop', __('Stop cycling', 'weathermap'), '?action='],
+		'cycle_prev' => ['fa-backward', __('Previous', 'weathermap'), '#'],
+		'cycle_pause' => ['fa-pause', __('Pause / resume', 'weathermap'), '#'],
+		'cycle_next' => ['fa-forward', __('Next', 'weathermap'), '#']
+	];
+	foreach ($actions as $id => $action) {
+		$controls .= '<a id="' . $id . '" class="wm-cycle-control fas ' . $action[0] . '" href="' . html_escape($action[2]) . '" title="' . html_escape($action[1]) . '" aria-label="' . html_escape($action[1]) . '"></a>';
+	}
+	$label = $fullscreen ? __('Exit full screen', 'weathermap') : __('Full screen', 'weathermap');
+	$url = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=' . ($fullscreen ? '0' : '1') . '&group=' . (int) $group_id;
+	$controls .= '<a id="' . ($fullscreen ? 'cycle_exit_fullscreen' : 'cycle_fullscreen') . '" class="wm-cycle-control wm-fullscreen-link fas ' . ($fullscreen ? 'fa-compress-arrows-alt' : 'fa-expand-arrows-alt') . '" href="' . html_escape($url) . '" title="' . html_escape($label) . '" aria-label="' . html_escape($label) . '">' . ($fullscreen ? '<span class="wm-cycle-exit-label">' . html_escape($label) . '</span>' : '') . '</a>';
+	$controls .= '<span id="wm_countdown" data-paused-label="' . __esc('Paused', 'weathermap') . '" data-next-label="' . __esc('Next map in %ss', 'weathermap') . '"></span><span class="wm-progress-track"><span id="wm_progress"></span></span>';
+	return $controls;
 }
