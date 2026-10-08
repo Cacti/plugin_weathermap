@@ -1034,8 +1034,8 @@ function weathermap_tabs($current_tab) {
 /**
  * Render translated, keyboard-accessible cycle controls.
  *
- * @param int $fullscreen Whether Cacti chrome is hidden.
- * @param int $group_id   Group filter to retain when toggling full screen.
+ * @param int|string $fullscreen Whether Cacti chrome is hidden.
+ * @param int|string $group_id   Group filter to retain when toggling full screen.
  *
  * @return string
  */
@@ -1044,13 +1044,19 @@ function weathermap_cycle_controls($fullscreen, $group_id) {
 	$controls = '';
 	$actions  = [
 		'cycle_stop'  => ['fa-stop', __('Stop cycling', 'weathermap'), '?action='],
-		'cycle_prev'  => ['fa-backward', __('Previous', 'weathermap'), '#'],
-		'cycle_pause' => ['fa-pause', __('Pause / resume', 'weathermap'), '#'],
-		'cycle_next'  => ['fa-forward', __('Next', 'weathermap'), '#']
+		'cycle_prev'  => ['fa-backward', __('Previous', 'weathermap')],
+		'cycle_pause' => ['fa-pause', __('Pause / resume', 'weathermap')],
+		'cycle_next'  => ['fa-forward', __('Next', 'weathermap')]
 	];
 
 	foreach ($actions as $id => $action) {
-		$controls .= '<a id="' . $id . '" class="wm-cycle-control fas ' . $action[0] . '" href="' . html_escape($action[2]) . '" title="' . html_escape($action[1]) . '" aria-label="' . html_escape($action[1]) . '"></a>';
+		$attributes = ' id="' . $id . '" class="wm-cycle-control fas ' . $action[0] . '" title="' . html_escape($action[1]) . '" aria-label="' . html_escape($action[1]) . '"';
+
+		if ($id === 'cycle_stop') {
+			$controls .= '<a' . $attributes . ' href="' . html_escape($action[2]) . '"></a>';
+		} else {
+			$controls .= '<button type="button"' . $attributes . ($id === 'cycle_pause' ? ' aria-pressed="false"' : '') . '></button>';
+		}
 	}
 	$label = $fullscreen ? __('Exit full screen', 'weathermap') : __('Full screen', 'weathermap');
 	$url   = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=' . ($fullscreen ? '0' : '1') . '&group=' . $group_id;

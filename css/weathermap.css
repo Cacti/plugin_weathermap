@@ -98,6 +98,7 @@ body#wm_fullscreen { font-family: sans-serif; margin: 0; border: 0; padding: 0; 
 
 /* Readable compact controls in the themed header and standalone cycle view. */
 .wm-cycle-control { display: inline-block; padding: 6px; margin: 0 5px; color: inherit !important; font-size: 14px; text-decoration: none; vertical-align: middle; }
+button.wm-cycle-control { appearance: none; background: transparent; border: 0; box-shadow: none; cursor: pointer; line-height: inherit; }
 .wm-cycle-control:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 .wm-cycle-toolbar { color: var(--text-color-highlight, #fff); }
 #wmcyclecontrolbox.fullscreen { opacity: 1; background: #26351c; color: #fff; width: auto; max-width: calc(100% - 40px); border: 1px solid #829673; border-radius: 4px; }

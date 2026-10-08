@@ -31,6 +31,7 @@ var WMcycler = {
     timer_reloader : null,
 
     updateProgress : function () {
+        $("#cycle_pause").attr("aria-pressed", this.paused ? "true" : "false");
         // Update the countdown as a proportion of the selected cycle period.
         var progress = this.period > 0 ? Math.max(0, Math.min(100, this.countdown / (this.period / 200) * 100)) : 100;
         $("#wm_progress").css("width", progress + "%");
@@ -114,6 +115,7 @@ var WMcycler = {
     start : function (initialData) {
         this.stop();
         this.paused = false;
+        $('#cycle_pause').attr('aria-pressed', 'false');
 
 
 	$('.weathermapholder').hide();
@@ -157,6 +159,10 @@ var WMcycler = {
 
     initKeys: function (that) {
         $(document).on('keyup.wmCycle', function(event) {
+            if ($(event.target).closest('a, button, input, select, textarea, [role="button"], [contenteditable]:not([contenteditable="false"])').length) {
+                return;
+            }
+
             if (event.keyCode === that.KEYCODE_ESCAPE) {
                 window.location.href = $(that.fullscreen ? '#cycle_exit_fullscreen' : '#cycle_stop').attr('href');
                 event.preventDefault();
