@@ -689,8 +689,6 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 		$confdir = __DIR__ . '/configs/';
 
 		foreach ($maplist as $map) {
-			$i++;
-
 			$htmlfile = $outdir . $map['filehash'] . '.html';
 			$maptitle = $map['titlecache'];
 
@@ -1035,26 +1033,31 @@ function weathermap_tabs($current_tab) {
 	}
 }
 
-/** Render translated, keyboard-accessible cycle controls.
+/**
+ * Render translated, keyboard-accessible cycle controls.
+ *
  * @param int $fullscreen Whether Cacti chrome is hidden.
- * @param int $group_id Group filter to retain when toggling full screen.
+ * @param int $group_id   Group filter to retain when toggling full screen.
+ *
  * @return string
  */
 function weathermap_cycle_controls($fullscreen, $group_id) {
 	global $config;
 	$controls = '';
-	$actions = [
-		'cycle_stop' => ['fa-stop', __('Stop cycling', 'weathermap'), '?action='],
-		'cycle_prev' => ['fa-backward', __('Previous', 'weathermap'), '#'],
+	$actions  = [
+		'cycle_stop'  => ['fa-stop', __('Stop cycling', 'weathermap'), '?action='],
+		'cycle_prev'  => ['fa-backward', __('Previous', 'weathermap'), '#'],
 		'cycle_pause' => ['fa-pause', __('Pause / resume', 'weathermap'), '#'],
-		'cycle_next' => ['fa-forward', __('Next', 'weathermap'), '#']
+		'cycle_next'  => ['fa-forward', __('Next', 'weathermap'), '#']
 	];
+
 	foreach ($actions as $id => $action) {
 		$controls .= '<a id="' . $id . '" class="wm-cycle-control fas ' . $action[0] . '" href="' . html_escape($action[2]) . '" title="' . html_escape($action[1]) . '" aria-label="' . html_escape($action[1]) . '"></a>';
 	}
 	$label = $fullscreen ? __('Exit full screen', 'weathermap') : __('Full screen', 'weathermap');
-	$url = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=' . ($fullscreen ? '0' : '1') . '&group=' . (int) $group_id;
+	$url   = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=' . ($fullscreen ? '0' : '1') . '&group=' . (int) $group_id;
 	$controls .= '<a id="' . ($fullscreen ? 'cycle_exit_fullscreen' : 'cycle_fullscreen') . '" class="wm-cycle-control wm-fullscreen-link fas ' . ($fullscreen ? 'fa-compress-arrows-alt' : 'fa-expand-arrows-alt') . '" href="' . html_escape($url) . '" title="' . html_escape($label) . '" aria-label="' . html_escape($label) . '">' . ($fullscreen ? '<span class="wm-cycle-exit-label">' . html_escape($label) . '</span>' : '') . '</a>';
 	$controls .= '<span id="wm_countdown" data-paused-label="' . __esc('Paused', 'weathermap') . '" data-next-label="' . __esc('Next map in %ss', 'weathermap') . '"></span><span class="wm-progress-track"><span id="wm_progress"></span></span>';
+
 	return $controls;
 }
