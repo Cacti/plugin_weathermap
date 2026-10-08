@@ -295,8 +295,16 @@ body#mainView .ui-dialog .dd-option label,
 body#mainView .ui-dialog .dd-option .dd-desc {
  color: var(--text-color-lighter, #333) !important;
 }
-body#mainView .ui-dialog .dd-option:hover { background: var(--background-lowlight, #eee) !important; }
+body#mainView .ui-dialog .dd-option:hover,
+body#mainView .ui-dialog .dd-option:focus,
+body#mainView .ui-dialog .dd-option:active,
+body#mainView .ui-dialog .dd-option-selected {
+ background: var(--background-lowlight, #eee) !important;
+}
 body#mainView .ui-dialog .dd-pointer { border-top-color: var(--text-color-lighter, #333); }
+body#mainView .ui-dialog .dd-pointer-up {
+ border-bottom-color: var(--text-color-lighter, #333) !important;
+}
 body#mainView #wm-node-delete-bar,
 body#mainView #wm-link-delete-bar {
  display: flex; justify-content: flex-end; width: 100%; box-sizing: border-box;
