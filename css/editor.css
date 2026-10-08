@@ -302,4 +302,3 @@ body#mainView #wm-link-delete-bar {
  display: flex; justify-content: flex-end; width: 100%; box-sizing: border-box;
 }
 body#mainView #wm-node-delete-bar { min-height: 32px; }
-
