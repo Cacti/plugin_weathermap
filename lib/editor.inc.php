@@ -1044,6 +1044,7 @@ function getEditorJs() {
 		'nodeAdvancedHelp'     => __('Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs.', 'weathermap'),
 		'searchGraph'          => __('Search device or graph', 'weathermap'),
 		'hoverSummary'         => __('Hover graphs: %s', 'weathermap'),
+		'unavailableGraph'     => __('unavailable graph', 'weathermap'),
 		'customImages'         => __('custom images', 'weathermap'),
 		'noHover'              => __('No hover graphs configured', 'weathermap'),
 		'internalLink'         => __('Internal link ID: %s', 'weathermap'),

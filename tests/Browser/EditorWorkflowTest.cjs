@@ -198,6 +198,17 @@ assert.equal($('#wm-node-toggle').text(), 'Translated advanced');
 assert.equal($('#wm-node-browse').text(), 'Translated browse');
 assert.equal($('#dlgNodeProperties .dlgHelp p:first').text(), '<Translated safe help>');
 assert.equal($('#dlgNodeProperties .dlgHelp p:first').children().length, 0);
+// Summaries retain every configured entry without exposing denied graph names.
+const mixedHover = '/cacti/graph_image.php?local_graph_id=115 https://external.test/image.png /cacti/graph_image.php?local_graph_id=125';
+assert.equal(w.wmNodeHoverSummary(mixedHover, [{id:115, label:'Permitted graph'}]), 'Hover graphs: Permitted graph; custom images; unavailable graph');
+assert.equal(w.wmNodeHoverSummary('   ', []), 'No hover graphs configured');
+assert.equal(w.wmNodeHoverSummary('https://external.test/image.png', []), 'Hover graphs: custom images');
+assert.equal(w.wmNodeHoverSummary('/cacti/graph_image.php?local_graph_id=125', []), 'Hover graphs: unavailable graph');
+$('#node_hover').val(mixedHover);
+graphRequests.length = 0;
+w.refineNodePicker();
+graphRequests[0].deferred.resolve({items: [{id:115, label:'Permitted $& graph'}]});
+assert.equal($('#wm-node-graphs').text(), 'Hover graphs: Permitted $& graph; custom images; unavailable graph');
 console.log(
 	'PASS: current interface, retained selection, explicit apply, advanced fields, action names, URL decoding and failed-request retry'
 );

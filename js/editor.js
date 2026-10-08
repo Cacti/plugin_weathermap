@@ -1536,28 +1536,26 @@ function refineNodePicker() {
 	var matches = Array.from(hover.matchAll(/local_graph_id=(\d+)/g)).map(function (m) {
 		return m[1];
 	});
-	$('#wm-node-graphs').text(
-		hover
-			? wmEditorText.hoverSummary.replace('%s', matches.length ? matches.join(', ') : wmEditorText.customImages)
-			: wmEditorText.noHover
-	);
+	$('#wm-node-graphs').text(wmNodeHoverSummary(hover, []));
 	if (matches.length)
 		wmGetGraphSummaries(matches).done(function (items) {
 			if (String($('#node_hover').val() || '') !== hover) return;
 			var labels = items.filter(function (i) {
 				return matches.indexOf(String(i.id)) !== -1;
 			});
-			$('#wm-node-graphs').text(
-				wmEditorText.hoverSummary.replace('%s', function() { return (labels.length
-						? labels
-								.map(function (i) {
-									return i.label;
-								})
-								.join('; ')
-						: matches.join(', ')); })
-			);
+			$('#wm-node-graphs').text(wmNodeHoverSummary(hover, labels));
 			if (labels.length === 1 && !picker.val()) picker.val(labels[0].label);
 		});
+}
+function wmNodeHoverSummary(hover, items) {
+	var entries = hover.trim().split(/\s+/).filter(Boolean);
+	if (!entries.length) return wmEditorText.noHover;
+	var labels = new Map(items.map(function(item) { return [String(item.id), item.label]; }));
+	var summary = entries.map(function(entry) {
+		var graph = entry.match(/local_graph_id=(\d+)/);
+		return graph ? (labels.get(graph[1]) || wmEditorText.unavailableGraph) : wmEditorText.customImages;
+	});
+	return wmEditorText.hoverSummary.replace('%s', function() { return summary.join('; '); });
 }
 function wmGetGraphSummaries(ids) {
 	var result = $.Deferred();
