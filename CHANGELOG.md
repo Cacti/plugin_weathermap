@@ -18,6 +18,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * issue#276: Preserve query separators when saving node and link click URLs
 * feature#276: Simplify node and link editing with readable names, common controls, searchable interface assignment, advanced controls, and clear deletion warnings
+* issue#151: Keep standalone editor controls visible and use theme-aware dialog contrast
 * issue#275: Load permitted editor picker results in bounded pages, search interface descriptions, and encode graph search terms
 * issue#274: Fit hover popups to their graph content and close them immediately when leaving map links, preserving graph proportions and meaningful captions
 
