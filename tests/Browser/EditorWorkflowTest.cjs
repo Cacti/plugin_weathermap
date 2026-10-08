@@ -261,6 +261,32 @@ graphRequests.length = 0;
 w.compactLinkEditor();
 graphRequests[0].deferred.resolve({items:[{id:'/rrd/other/interface.rrd',label:'Wrong interface'},{id:'/rrd/expected/interface.rrd',label:'Other interface'}]});
 assert.equal($('#wm-link-current').text(), 'Custom or unavailable interface');
+// Same RRD targets still need generation guards when the selected graphs differ.
+for (const failOld of [false, true]) {
+ w.wmInterfaceSummaries = {};
+ $('#link_target').val('/rrd/shared.rrd');
+ $('#link_hover').val('');
+ $('#link_infourl').val('/cacti/graph.php?local_graph_id=10');
+ graphRequests.length = 0;
+ w.compactLinkEditor();
+ $('#link_infourl').val('/cacti/graph.php?local_graph_id=20');
+ w.compactLinkEditor();
+ graphRequests[1].deferred.resolve({items:[{id:'/rrd/shared.rrd',label:'Newer shared interface'}]});
+ if (failOld) graphRequests[0].deferred.reject();
+ else graphRequests[0].deferred.resolve({items:[{id:'/rrd/shared.rrd',label:'Older shared interface'}]});
+ assert.equal($('#wm-link-current').text(), 'Newer shared interface');
+}
+for (const failOld of [false, true]) {
+ w.wmInterfaceSummaries = {};
+ $('#link_infourl').val('/cacti/graph.php?local_graph_id=10');
+ graphRequests.length = 0;
+ w.compactLinkEditor();
+ $('#link_infourl').val('https://external.test/device');
+ w.compactLinkEditor(); // No graph IDs must invalidate the pending lookup too.
+ if (failOld) graphRequests[0].deferred.reject();
+ else graphRequests[0].deferred.resolve({items:[{id:'/rrd/shared.rrd',label:'Older shared interface'}]});
+ assert.equal($('#wm-link-current').text(), 'Custom or unavailable interface');
+}
 console.log(
 	'PASS: current interface, retained selection, explicit apply, advanced fields, action names, URL decoding and failed-request retry'
 );

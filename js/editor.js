@@ -1335,6 +1335,7 @@ function compactLinkEditorBase() {
 }
 
 var wmInterfaceSummaries = {};
+var wmInterfaceLookupGeneration = 0;
 function wmGetInterfaceSummary(graphIds) {
 	var key = $('#mapname').val() + ':' + graphIds.join(',');
 	if (!wmInterfaceSummaries[key]) {
@@ -1373,6 +1374,7 @@ function wmGetInterfaceCandidates(graphIds) {
 	return result.promise();
 }
 function compactLinkEditor() {
+	var generation = ++wmInterfaceLookupGeneration;
 	compactLinkEditorBase();
 	var dlg = $('#dlgLinkProperties');
 	dlg.find('#link_commentin,#link_commentout').closest('tr').removeClass('wm-link-advanced').show();
@@ -1431,7 +1433,7 @@ function compactLinkEditor() {
 	wmGetInterfaceCandidates(graphIds)
 		.done(function (data) {
 			var items = data.items;
-			if (String($('#link_target').val() || '').trim() !== target) return;
+			if (generation !== wmInterfaceLookupGeneration || String($('#link_target').val() || '').trim() !== target) return;
 			var matches = items.filter(function (item) {
 				return item.id === target;
 			});
@@ -1450,7 +1452,7 @@ function compactLinkEditor() {
 				picker.val(matches[0].label);
 		})
 		.fail(function () {
-			if (String($('#link_target').val() || '').trim() !== target) return;
+			if (generation !== wmInterfaceLookupGeneration || String($('#link_target').val() || '').trim() !== target) return;
 			$('#wm-link-current').text(wmEditorText.unavailableInterface);
 		});
 	if (!$('#wm-link-use').data('wm-detail-hook')) {
