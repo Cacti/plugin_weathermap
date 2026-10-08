@@ -46,11 +46,15 @@
  */
 
 /**
- * @return mixed
+ * Return one bounded page of permitted graph picker results.
+ *
+ * @return void Outputs JSON picker results.
  */
 function display_graphs() {
 	$sql_where  = '';
 	$sql_params = [];
+	$offset     = max(0, (int) get_filter_request_var('offset'));
+	$limit      = 100;
 
 	if (get_nfilter_request_var('term') != '') {
 		$sql_where .= 'WHERE title_cache LIKE ?';
@@ -70,22 +74,18 @@ function display_graphs() {
 		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 	}
 
-	$rows = read_config_option('autocomplete_rows');
-
-	if (empty($rows) || $rows > 100 || $rows < 0) {
-		$rows = 100;
-	}
-
 	$graphs = db_fetch_assoc_prepared("SELECT DISTINCT gtg.local_graph_id AS id, gtg.title_cache AS title
 		FROM graph_templates_graph AS gtg
 		INNER JOIN graph_local AS gl
 		ON gtg.local_graph_id = gl.id
 		$sql_where
-		ORDER BY title_cache
-		LIMIT $rows",
+		ORDER BY title_cache, gtg.local_graph_id
+		LIMIT " . ($limit + 1) . " OFFSET $offset",
 		$sql_params);
 
-	$return = [];
+	$has_more = cacti_sizeof($graphs) > $limit;
+	$graphs   = array_slice($graphs, 0, $limit);
+	$return   = [];
 
 	if (cacti_sizeof($graphs)) {
 		foreach ($graphs as $index => $g) {
@@ -97,18 +97,29 @@ function display_graphs() {
 		}
 	}
 
-	print json_encode($return);
+	print json_encode(get_nfilter_request_var('paged') == '1' ? [
+		'items'          => $return,
+		'offset'         => $offset,
+		'next_offset'    => $has_more ? $offset + $limit : null,
+		'next_label'     => __('Next results', 'weathermap'),
+		'previous_label' => __('Previous results', 'weathermap')
+	] : $return);
 }
 
 /**
- * @return mixed
+ * Return one bounded page of permitted interface data sources.
+ *
+ * @return void Outputs JSON picker results.
  */
 function display_datasources() {
 	$sql_where  = '';
 	$sql_params = [];
+	$offset     = max(0, (int) get_filter_request_var('offset'));
+	$limit      = 100;
 
 	if (get_nfilter_request_var('term') != '') {
-		$sql_where .= 'WHERE (name_cache LIKE ? OR dl.snmp_index LIKE ?) AND dtd.data_source_path != ""';
+		$sql_where .= 'WHERE (name_cache LIKE ? OR dl.snmp_index LIKE ? OR hsc.field_value LIKE ?) AND dtd.data_source_path != ""';
+		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 		$sql_params[] = '%' . get_nfilter_request_var('term') . '%';
 	} else {
@@ -117,13 +128,7 @@ function display_datasources() {
 
 	$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'dl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 
-	$rows = read_config_option('autocomplete_rows');
-
-	if (empty($rows) || $rows > 100 || $rows < 0) {
-		$rows = 100;
-	}
-
-	$graphs = db_fetch_assoc_prepared("SELECT gti.local_graph_id AS id, dtd.name_cache AS title, dtd.data_source_path AS path, COUNT(*) AS items
+	$graphs = db_fetch_assoc_prepared("SELECT gti.local_graph_id AS id, dtd.name_cache AS title, MAX(hsc.field_value) AS interface_description, dtd.data_source_path AS path, COUNT(*) AS items
 		FROM data_template_data AS dtd
 		INNER JOIN data_local AS dl
 		ON dl.id = dtd.local_data_id
@@ -131,29 +136,42 @@ function display_datasources() {
 		ON dtd.local_data_id = dtr.local_data_id
 		INNER JOIN graph_templates_item AS gti
 		ON gti.task_item_id = dtr.id
+		LEFT JOIN host_snmp_cache AS hsc
+		ON hsc.host_id = dl.host_id AND hsc.snmp_query_id = dl.snmp_query_id
+		AND hsc.snmp_index = dl.snmp_index AND hsc.field_name = 'ifAlias'
 		$sql_where
 		GROUP BY gti.local_graph_id
-		ORDER BY name_cache
-		LIMIT $rows", $sql_params);
+		ORDER BY name_cache, gti.local_graph_id
+		LIMIT " . ($limit + 1) . " OFFSET $offset", $sql_params);
 
-	$return = [];
+	$has_more = cacti_sizeof($graphs) > $limit;
+	$graphs   = array_slice($graphs, 0, $limit);
+	$return   = [];
 
 	if (cacti_sizeof($graphs)) {
 		foreach ($graphs as $index => $g) {
 			if (!is_graph_allowed($g['id'])) {
 				unset($graphs[$index]);
 			} else {
-				$return[] = ['label' => $g['title'], 'value' => $g['title'], 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'), 'local_graph_id' => $g['id']];
+				$description = trim($g['interface_description'] ?? '');
+				$label       = $g['title'] . ($description !== '' ? ' — ' . $description : '');
+				$return[]    = ['label' => $label, 'value' => $label, 'id' => trim(str_replace('<path_rra>', '', $g['path']), '/'), 'local_graph_id' => $g['id']];
 			}
 		}
 	}
 
-	print json_encode($return);
+	print json_encode(get_nfilter_request_var('paged') == '1' ? [
+		'items'          => $return,
+		'offset'         => $offset,
+		'next_offset'    => $has_more ? $offset + $limit : null,
+		'next_label'     => __('Next results', 'weathermap'),
+		'previous_label' => __('Previous results', 'weathermap')
+	] : $return);
 }
 
 /**
  * Clean up URI (function taken from Cacti) to protect against XSS
- * @param mixed $str
+ * @param  mixed $str
  * @return mixed
  */
 function wm_editor_sanitize_uri($str) {
@@ -165,7 +183,7 @@ function wm_editor_sanitize_uri($str) {
 
 // much looser sanitise for general strings that shouldn't have HTML in them
 /**
- * @param string $str
+ * @param  string $str
  * @return mixed
  */
 function wm_editor_sanitize_string($str) {
@@ -176,7 +194,7 @@ function wm_editor_sanitize_string($str) {
 }
 
 /**
- * @param mixed $bw
+ * @param  mixed $bw
  * @return bool
  */
 function wm_editor_validate_bandwidth($bw) {
@@ -188,9 +206,9 @@ function wm_editor_validate_bandwidth($bw) {
 }
 
 /**
- * @param mixed $input
- * @param array $valid
- * @param bool $case_sensitive
+ * @param  mixed $input
+ * @param  array $valid
+ * @param  bool  $case_sensitive
  * @return bool
  */
 function wm_editor_validate_one_of($input,$valid = [],$case_sensitive = false) {
@@ -212,8 +230,8 @@ function wm_editor_validate_one_of($input,$valid = [],$case_sensitive = false) {
 }
 
 /**
- * @param mixed $action
- * @param array $valid
+ * @param  mixed $action
+ * @param  array $valid
  * @return mixed
  */
 function wm_editor_sanitize_action($action, $valid = []) {
@@ -230,7 +248,7 @@ function wm_editor_sanitize_action($action, $valid = []) {
 
 // Labels for Nodes, Links and Scales shouldn't have spaces in
 /**
- * @param string $str
+ * @param  string $str
  * @return mixed
  */
 function wm_editor_sanitize_name($str) {
@@ -238,7 +256,7 @@ function wm_editor_sanitize_name($str) {
 }
 
 /**
- * @param string $str
+ * @param  string $str
  * @return mixed
  */
 function wm_editor_sanitize_selected($str) {
@@ -252,8 +270,8 @@ function wm_editor_sanitize_selected($str) {
 }
 
 /**
- * @param string $filename
- * @param array $allowed_exts
+ * @param  string $filename
+ * @param  array  $allowed_exts
  * @return mixed
  */
 function wm_editor_sanitize_file($filename,$allowed_exts = []) {
@@ -281,7 +299,7 @@ function wm_editor_sanitize_file($filename,$allowed_exts = []) {
 }
 
 /**
- * @param string $filename
+ * @param  string $filename
  * @return mixed
  */
 function wm_editor_sanitize_conffile($filename) {
@@ -447,8 +465,8 @@ function show_editor_startpage() {
 }
 
 /**
- * @param mixed $coord
- * @param int $gridsnap
+ * @param  mixed $coord
+ * @param  int   $gridsnap
  * @return mixed
  */
 function snap($coord, $gridsnap = 0) {
@@ -462,9 +480,9 @@ function snap($coord, $gridsnap = 0) {
 }
 
 /**
- * @param mixed $array
- * @param mixed $paramarray
- * @param string $prefix
+ * @param  mixed  $array
+ * @param  mixed  $paramarray
+ * @param  string $prefix
  * @return mixed
  */
 function extract_with_validation($array, $paramarray, $prefix = '') {
@@ -561,7 +579,7 @@ function extract_with_validation($array, $paramarray, $prefix = '') {
 }
 
 /**
- * @param mixed $imagedir
+ * @param  mixed $imagedir
  * @return mixed
  */
 function get_imagelist($imagedir) {
@@ -594,8 +612,8 @@ function get_imagelist($imagedir) {
 }
 
 /**
- * @param WeatherMap $map
- * @param mixed $inheritables
+ * @param  WeatherMap $map
+ * @param  mixed      $inheritables
  * @return void
  */
 function handle_inheritance(&$map, &$inheritables) {
@@ -644,9 +662,9 @@ function handle_inheritance(&$map, &$inheritables) {
 }
 
 /**
- * @param WeatherMap $map
- * @param string $name
- * @param mixed $current
+ * @param  WeatherMap $map
+ * @param  string     $name
+ * @param  mixed      $current
  * @return mixed
  */
 function get_fontlist(&$map,$name,$current) {
@@ -670,10 +688,10 @@ function get_fontlist(&$map,$name,$current) {
 }
 
 /**
- * @param mixed $a_min
- * @param mixed $a_max
- * @param mixed $b_min
- * @param mixed $b_max
+ * @param  mixed $a_min
+ * @param  mixed $a_max
+ * @param  mixed $b_min
+ * @param  mixed $b_max
  * @return bool
  */
 function range_overlaps($a_min, $a_max, $b_min, $b_max) {
@@ -689,10 +707,10 @@ function range_overlaps($a_min, $a_max, $b_min, $b_max) {
 }
 
 /**
- * @param mixed $a_min
- * @param mixed $a_max
- * @param mixed $b_min
- * @param mixed $b_max
+ * @param  mixed $a_min
+ * @param  mixed $a_max
+ * @param  mixed $b_min
+ * @param  mixed $b_max
  * @return mixed
  */
 function common_range($a_min,$a_max, $b_min, $b_max) {
@@ -705,10 +723,10 @@ function common_range($a_min,$a_max, $b_min, $b_max) {
 /**
  * distance - find the distance between two points
  *
- * @param mixed $ax
- * @param mixed $ay
- * @param mixed $bx
- * @param mixed $by
+ * @param  mixed $ax
+ * @param  mixed $ay
+ * @param  mixed $bx
+ * @param  mixed $by
  * @return mixed
  */
 function distance($ax, $ay, $bx, $by) {
@@ -719,9 +737,9 @@ function distance($ax, $ay, $bx, $by) {
 }
 
 /**
- * @param WeatherMap $map
- * @param mixed $targets
- * @param bool $ignore_tidied
+ * @param  WeatherMap $map
+ * @param  mixed      $targets
+ * @param  bool       $ignore_tidied
  * @return void
  */
 function tidy_links(&$map, $targets, $ignore_tidied = false) {
@@ -738,11 +756,11 @@ function tidy_links(&$map, $targets, $ignore_tidied = false) {
 /**
  * tidy_link - change link offsets so that link is horizontal or vertical, if possible.
  *             if not possible, change offsets to the closest facing compass points
- * @param WeatherMap $map
- * @param mixed $target
- * @param mixed $linknumber
- * @param mixed $linktotal
- * @param mixed $ignore_tidied
+ * @param  WeatherMap $map
+ * @param  mixed      $target
+ * @param  mixed      $linknumber
+ * @param  mixed      $linktotal
+ * @param  mixed      $ignore_tidied
  * @return void
  */
 function tidy_link(&$map,$target, $linknumber = 1, $linktotal = 1, $ignore_tidied = false) {
@@ -862,7 +880,7 @@ function tidy_link(&$map,$target, $linknumber = 1, $linktotal = 1, $ignore_tidie
 }
 
 /**
- * @param WeatherMap $map
+ * @param  WeatherMap $map
  * @return void
  */
 function untidy_links(&$map) {
@@ -873,8 +891,8 @@ function untidy_links(&$map) {
 }
 
 /**
- * @param WeatherMap $map
- * @param bool $ignore_tidied
+ * @param  WeatherMap $map
+ * @param  bool       $ignore_tidied
  * @return void
  */
 function retidy_links(&$map, $ignore_tidied = false) {
@@ -919,7 +937,7 @@ function retidy_links(&$map, $ignore_tidied = false) {
 }
 
 /**
- * @param string $str
+ * @param  string $str
  * @return void
  */
 function editor_log($str) {
