@@ -161,14 +161,6 @@ input {
 	font-size: 11px !important;
 }
 
-.ui-dialog-buttonset {
-	font-size: 12px !important;
-}
-
-.ui-dialog-title {
-	font-size: 12px !important;
-}
-
 .ui-selectmenu-menu {
 	z-index: 65535 !important;
 }
@@ -310,9 +302,7 @@ body#mainView #wm-node-delete-bar,
 body#mainView #wm-link-delete-bar {
  display: flex; justify-content: flex-end; width: 100%; box-sizing: border-box;
 }
-body#mainView #dlgNodeProperties { position: relative; }
 body#mainView #wm-node-delete-bar { min-height: 32px; }
-body#mainView #node_delete { position: absolute; right: 20px; top: 12px; }
 
 body#mainView #node_delete,
 body#mainView #link_delete {

@@ -189,18 +189,13 @@ jobs:
         find . -path './vendor' -prune -o -type f -name '*.php' -print0 | xargs -0 -r -n1 php -l
 
     - name: Verify translation template is up to date
+      if: github.event_name == 'pull_request'
+      env:
+        BASE_REF: ${{ github.event.pull_request.base.sha }}
       run: |
         cd ${{ github.workspace }}/cacti/plugins/weathermap
-        sudo chmod +x locales/build_gettext.sh
-        sudo ./locales/build_gettext.sh
-        grep -v '^"POT-Creation-Date:' locales/po/cacti.pot > /tmp/cacti.pot.new
-        git checkout -- locales/
-        grep -v '^"POT-Creation-Date:' locales/po/cacti.pot > /tmp/cacti.pot.old
-        if ! cmp -s /tmp/cacti.pot.old /tmp/cacti.pot.new; then
-          echo "locales/po/cacti.pot is out of date. Run locales/build_gettext.sh and commit the updated locales/po/cacti.pot."
-          diff -u /tmp/cacti.pot.old /tmp/cacti.pot.new || true
-          exit 1
-        fi
+        git config --global --add safe.directory ${{ github.workspace }}/cacti/plugins/weathermap
+        php tests/bin/check-i18n-pot.php "$BASE_REF"
 
     - name: Set expected Cacti version for unit tests
       run: echo -n "${{ env.CACTI }}" | sudo tee ${{ github.workspace }}/cacti/plugins/weathermap/tests/.cacti-version > /dev/null
