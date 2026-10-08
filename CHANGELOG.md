@@ -16,7 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
--issue#274: Fit hover popups to their graph content and close them immediately when leaving map links, preserving graph proportions and meaningful captions
+* issue#275: Load permitted editor picker results in bounded pages, search interface descriptions, and encode graph search terms
+* issue#274: Fit hover popups to their graph content and close them immediately when leaving map links, preserving graph proportions and meaningful captions
 
 * refactor: On Cacti 1.2.32 and above, defer the editor's jQuery UI dialog (`ui.dialog`) styling to the core theme CSS; the plugin's `.ui-dialog-title`/`.ui-dialog-buttonset` font overrides have been split out of `css/editor.css` into a separate `css/editor-ui-dialog-legacy.css` that is only loaded on earlier Cacti releases
 * refactor: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
