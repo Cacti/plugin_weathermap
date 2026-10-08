@@ -90,6 +90,37 @@ $('#link_target').val('/rrd/newer.rrd');
 $('#wm-link-current').text('Newer link');
 request.reject();
 assert.equal($('#wm-link-current').text(), 'Newer link');
+// External click destinations still resolve the interface from Cacti hover URLs.
+w.wmInterfaceSummaries = {};
+$('#link_target').val('/rrd/interface.rrd');
+$('#link_infourl').val('https://external.test/device');
+$('#link_hover').val('/cacti/graph_image.php?local_graph_id=10');
+request = $.Deferred();
+w.compactLinkEditor();
+request.resolve({items: [items[0]]});
+assert.equal($('#wm-link-current').text(), items[0].label);
+// A mismatched click graph cannot override the matching hover graph.
+w.wmInterfaceSummaries = {};
+$('#link_infourl').val('/cacti/graph.php?local_graph_id=20');
+$('#link_hover').val('/cacti/graph_image.php?local_graph_id=10 /cacti/graph_image.php?local_graph_id=10');
+const interfaceRequests = [];
+$.getJSON = (url, data) => {
+ const deferred = $.Deferred();
+ interfaceRequests.push({data, deferred});
+ return deferred.promise();
+};
+w.compactLinkEditor();
+assert.equal(interfaceRequests.length, 2);
+interfaceRequests[1].deferred.resolve({items: [items[0]]});
+interfaceRequests[0].deferred.resolve({items: [items[1]]});
+assert.equal($('#wm-link-current').text(), items[0].label);
+// A failed click-graph lookup does not discard the permitted hover result.
+w.wmInterfaceSummaries = {};
+interfaceRequests.length = 0;
+w.compactLinkEditor();
+interfaceRequests[0].deferred.reject();
+interfaceRequests[1].deferred.resolve({items: [items[0]]});
+assert.equal($('#wm-link-current').text(), items[0].label);
 const graphRequests = [];
 $.getJSON = (url, data) => {
  const deferred = $.Deferred();
@@ -107,8 +138,7 @@ assert.equal(graphLabels.some(item => item.id === 115), true);
 $.fn.dialog = function() { return this; };
 w.mapmode = () => {};
 w.delNodePrompt = 'Translated remove %s?';
-w.delNodeConnectedSingle = 'Translated single %d';
-w.delNodeConnectedPlural = 'Translated plural %d';
+w.delNodeConnected = 'Translated connected count: %d';
 w.delNodeKeepDevice = 'Translated keep device';
 w.delNodeTitle = 'Translated title';
 w.txtCancel = 'Cancel';
@@ -119,13 +149,13 @@ vm.runInContext(wholeEditor, dom.getInternalVMContext());
 w.initJS = () => {};
 w.mapmode = () => {};
 w.Nodes = {a: {label: '<Named node>'}};
-for (const count of [0, 1, 2]) {
+for (const count of [0, 1, 2, 5, 11]) {
  w.Links = Object.fromEntries(Array.from({length: count}, (_, i) => [String(i), {a: 'a', b: 'b'}]));
  w.delete_node();
  const message = $('.dlgConfirm').text();
  assert.equal(message.includes('Translated remove <Named node>?'), true);
  assert.equal(message.includes('Translated keep device'), true);
- assert.equal(message.includes(count === 1 ? 'Translated single 1' : 'Translated plural 2'), count > 0);
+ assert.equal(message.includes('Translated connected count: ' + count), count > 0);
  assert.equal($('.dlgConfirm').find('named').length, 0);
 }
 console.log(

@@ -743,7 +743,7 @@ function delete_node() {
 	var connected = Object.keys(Links).filter(function(key) { return Links[key].a === name || Links[key].b === name; }).length;
 	var message = delNodePrompt.replace('%s', function() { return wmNodeDisplayName(name); });
 	if (connected) {
-		message += ' ' + (connected === 1 ? delNodeConnectedSingle : delNodeConnectedPlural).replace('%d', String(connected));
+		message += ' ' + delNodeConnected.replace('%d', String(connected));
 	}
 	$('.dlgConfirm').text(message + ' ' + delNodeKeepDevice);
 
@@ -1345,6 +1345,25 @@ function wmGetInterfaceSummary(graphId) {
 	}
 	return wmInterfaceSummaries[key];
 }
+function wmGetInterfaceCandidates(graphIds) {
+	var result = $.Deferred();
+	var remaining = graphIds.length;
+	var items = [];
+	var successes = 0;
+	graphIds.forEach(function(graphId) {
+		wmGetInterfaceSummary(graphId).done(function(data) {
+			items = items.concat(data.items);
+			successes++;
+		}).always(function() {
+			if (--remaining === 0) {
+				if (successes) result.resolve({items: items});
+				else result.reject();
+			}
+		});
+	});
+	if (!remaining) result.resolve({items: items});
+	return result.promise();
+}
 function compactLinkEditor() {
 	compactLinkEditorBase();
 	var dlg = $('#dlgLinkProperties');
@@ -1391,12 +1410,14 @@ function compactLinkEditor() {
 	$('#wm-link-rrd').text(target);
 	$('#wm-link-current').text(target ? 'Looking up device and interface...' : 'No interface selected');
 
-	var graphIds = String($('#link_infourl').val() || '').match(/(?:local_graph_id|graph_list)=([0-9]+)/);
-	if (!graphIds) {
+	var graphUrls = String($('#link_infourl').val() || '') + ' ' + String($('#link_hover').val() || '');
+	var graphIds = Array.from(graphUrls.matchAll(/(?:local_graph_id|graph_list)=([0-9]+)/g), function(match) { return Number(match[1]); });
+	graphIds = Array.from(new Set(graphIds));
+	if (!graphIds.length) {
 		$('#wm-link-current').text(target ? 'Custom or unavailable interface' : 'No interface selected');
 		return;
 	}
-	wmGetInterfaceSummary(Number(graphIds[1]))
+	wmGetInterfaceCandidates(graphIds)
 		.done(function (data) {
 			var items = data.items;
 			if (String($('#link_target').val() || '').trim() !== target) return;
