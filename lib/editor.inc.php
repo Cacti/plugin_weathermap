@@ -149,6 +149,22 @@ function display_datasources() {
 		$sql_params[] = get_filter_request_var('local_graph_id');
 	}
 
+	$graph_ids = get_nfilter_request_var('graph_ids');
+
+	if ($graph_ids !== '') {
+		$ids = [];
+
+		if (is_string($graph_ids) && strlen($graph_ids) <= 2000 && preg_match('/^[0-9]+(?:,[0-9]+){0,99}$/D', $graph_ids)) {
+			foreach (explode(',', $graph_ids) as $id) {
+				if ((int) $id > 0) {
+					$ids[] = (int) $id;
+				}
+			}
+		}
+		$sql_where .= ' AND ' . ($ids ? 'gti.local_graph_id IN (' . implode(',', array_fill(0, cacti_sizeof($ids), '?')) . ')' : '1 = 0');
+		$sql_params = array_merge($sql_params, $ids);
+	}
+
 	$graphs = db_fetch_assoc_prepared("SELECT gti.local_graph_id AS id, dtd.name_cache AS title, MAX(hsc.field_value) AS interface_description, dtd.data_source_path AS path, COUNT(*) AS items
 		FROM data_template_data AS dtd
 		INNER JOIN data_local AS dl
@@ -997,6 +1013,44 @@ function getEditorJs() {
 	var posLegendHelp = '<?php print __esc('Click on the map where you would like to put the legend.', 'weathermap'); ?>';
 	var addNodeHelp   = '<?php print __esc('Click on the map where you would like to add a new node.', 'weathermap'); ?>';
 
+	var wmEditorText = <?php print json_encode([
+		'currentInterface'     => __('Current interface', 'weathermap'),
+		'advanced'             => __('Advanced settings', 'weathermap'),
+		'hideAdvanced'         => __('Hide advanced settings', 'weathermap'),
+		'useInterface'         => __('Use interface', 'weathermap'),
+		'changeInterface'      => __('Change interface', 'weathermap'),
+		'searchInterface'      => __('Search device or interface', 'weathermap'),
+		'noInterface'          => __('No interface selected', 'weathermap'),
+		'currentGraph'         => __('Current graph: %s', 'weathermap'),
+		'customConfig'         => __('Custom configuration — details under Advanced', 'weathermap'),
+		'chooseInterface'      => __('Choose an interface below', 'weathermap'),
+		'bandwidthIn'          => __('Bandwidth into %s', 'weathermap'),
+		'bandwidthOut'         => __('Bandwidth out of %s', 'weathermap'),
+		'graphSelected'        => __('Graph %s — data, click destination and hover graph selected. Save to apply.', 'weathermap'),
+		'linkPurpose'          => __('For a standard interface traffic link, the main controls are enough. Use Advanced to combine traffic sources, show multiple hover graphs, choose a different click destination or customise the line. Weathermap also supports other measurements, such as CPU and memory, commonly displayed on nodes.', 'weathermap'),
+		'browseInterface'      => __('Type a device or interface, or browse all', 'weathermap'),
+		'browseAll'            => __('Browse all', 'weathermap'),
+		'lookingUp'            => __('Looking up device and interface...', 'weathermap'),
+		'customInterface'      => __('Custom or unavailable interface', 'weathermap'),
+		'unavailableInterface' => __('Interface name unavailable', 'weathermap'),
+		'displayName'          => __('Display name', 'weathermap'),
+		'icon'                 => __('Icon', 'weathermap'),
+		'graphType'            => __('Graph type', 'weathermap'),
+		'hoverGraphs'          => __('Hover graphs', 'weathermap'),
+		'deleteNode'           => __('Delete Node', 'weathermap'),
+		'nodePurpose'          => __('For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID.', 'weathermap'),
+		'nodeDisplayHelp'      => __('Display name and icon: Choose what appears on the map. Position sets the X and Y coordinates; Move lets you place the node on the map.', 'weathermap'),
+		'nodeHoverHelp'        => __('Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes.', 'weathermap'),
+		'nodeAdvancedHelp'     => __('Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs.', 'weathermap'),
+		'searchGraph'          => __('Search device or graph', 'weathermap'),
+		'hoverSummary'         => __('Hover graphs: %s', 'weathermap'),
+		'customImages'         => __('custom images', 'weathermap'),
+		'noHover'              => __('No hover graphs configured', 'weathermap'),
+		'internalLink'         => __('Internal link ID: %s', 'weathermap'),
+		'nodeTitle'            => __('Node: %s', 'weathermap'),
+		'deleteLinkPrompt'     => __('Remove the link between %1$s and %2$s?', 'weathermap'),
+		'keepLinkNodes'        => __('The nodes and Cacti graphs will remain.', 'weathermap'),
+	], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 	var delNodePrompt = <?php print json_encode(__('Remove %s from this map?', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 	var delNodeConnected = <?php print json_encode(__('Connected links to remove: %d.', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 	var delNodeKeepDevice = <?php print json_encode(__('The Cacti device and graphs will remain.', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;

@@ -1,4 +1,10 @@
 <?php
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2022-2026 The Cacti Group, Howard Jones                    |
+ | Licensed under the GNU General Public License, version 2.              |
+ +-------------------------------------------------------------------------+
+*/
 
 beforeAll(function (): void {
 	require_once __DIR__ . '/../../lib/editor.inc.php';

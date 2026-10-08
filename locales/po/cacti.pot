@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 01:24+1030\n"
+"POT-Creation-Date: 2026-10-09 01:39+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -96,6 +96,158 @@ msgid "Click on the map where you would like to add a new node."
 msgstr ""
 
 #: lib/editor.inc.php
+msgid "Current interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Advanced settings"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Change interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Custom configuration — details under Advanced"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "For a standard interface traffic link, the main controls are enough. Use Advanced to combine traffic sources, show multiple hover graphs, choose a different click destination or customise the line. Weathermap also supports other measurements, such as CPU and memory, commonly displayed on nodes."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Position sets the X and Y coordinates; Move lets you place the node on the map."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr ""
+
+#: lib/editor.inc.php
 #, php-format
 msgid "Remove %s from this map?"
 msgstr ""
@@ -132,10 +284,6 @@ msgstr ""
 
 #: lib/editor.inc.php weathermap-cacti-plugin-editor.php
 msgid "Delete Link"
-msgstr ""
-
-#: lib/editor.inc.php
-msgid "Delete Node"
 msgstr ""
 
 #: lib/editor.inc.php weathermap-cacti-plugin-editor.php

@@ -80,3 +80,13 @@ it('FindsSelectedGraphIdsBeyondTheFirstPageWithoutLeakingDeniedGraphs', function
 	$invalid = editorPickerResponse(['paged' => '1', 'graph_ids' => 'bad,-1']);
 	expect($invalid['items'])->toBe([]);
 });
+
+
+it('BoundsSelectedInterfaceBatchesAndRetainsPermissionChecks', function (): void {
+	$result = editorPickerResponse(['endpoint' => 'datasources', 'paged' => '1', 'graph_ids' => '115,125', 'denied' => [125]]);
+	expect(array_column($result['items'], 'local_graph_id'))->toBe([115]);
+	foreach (['bad,-1', implode(',', range(1, 101))] as $invalid) {
+		$result = editorPickerResponse(['endpoint' => 'datasources', 'paged' => '1', 'graph_ids' => $invalid]);
+		expect($result['items'])->toBe([]);
+	}
+});
