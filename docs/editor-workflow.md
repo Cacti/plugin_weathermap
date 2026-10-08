@@ -5,7 +5,9 @@ interface, set its maximum bandwidth, change the line width and add IN/OUT
 comments. The current interface shows its graph title and interface description,
 with the RRD path below it.
 
-Search by device, interface or description, or choose **Browse all**. Selecting
+Search by device, interface or description, or choose **Browse all**. Use
+**Next results** and **Previous results** to browse further pages without
+replacing the current selection. Selecting
 an entry does not overwrite the link until you click **Use interface**. This
 sets its traffic source, click destination and hover graph together. Click
 **Save** to persist the changes or **Cancel** to leave the map unchanged.
