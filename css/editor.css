@@ -161,14 +161,6 @@ input {
 	font-size: 11px !important;
 }
 
-.ui-dialog-buttonset {
-	font-size: 12px !important;
-}
-
-.ui-dialog-title {
-	font-size: 12px !important;
-}
-
 .ui-selectmenu-menu {
 	z-index: 65535 !important;
 }
