@@ -104,14 +104,6 @@ var WMcycler = {
     },
 
 
-    hideControls: function () {
-        $("#wmcyclecontrolbox").fadeOut(500);
-    },
-
-    showControls: function () {
-        $("#wmcyclecontrolbox").fadeIn(100);
-    },
-
     stop : function () {
         clearInterval(this.timer_counter);
         clearTimeout(this.timer_reloader);
@@ -160,8 +152,6 @@ var WMcycler = {
                     window.location.reload();
                 }
             }, this.poller_cycle);
-
-            this.initIdle(that);
         }
     },
 
@@ -208,10 +198,6 @@ var WMcycler = {
             event.preventDefault();
             that.previousAction();
         });
-    },
-
-    initIdle: function () {
-        // Keep the full-screen exit and countdown visible.
     },
 
     nextAction : function () {

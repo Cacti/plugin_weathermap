@@ -666,8 +666,6 @@ function weathermap_fullview($cycle = false, $firstonly = false, $limit_to_group
 			print get_md5_include_js('include/js/jquery.js');
 		}
 
-		print get_md5_include_js('plugins/weathermap/js/idle-timer.min.js');
-
 		if ($limit_to_group > 0) {
 			$html = __('Showing %s %s of %s %s. Cycling all available maps in this group.', '<span id="wm_current_map">', '</span>', '<span id="wm_total_map">', '</span>', 'weathermaps');
 		} else {
@@ -1055,7 +1053,7 @@ function weathermap_cycle_controls($fullscreen, $group_id) {
 		$controls .= '<a id="' . $id . '" class="wm-cycle-control fas ' . $action[0] . '" href="' . html_escape($action[2]) . '" title="' . html_escape($action[1]) . '" aria-label="' . html_escape($action[1]) . '"></a>';
 	}
 	$label = $fullscreen ? __('Exit full screen', 'weathermap') : __('Full screen', 'weathermap');
-	$url   = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=' . ($fullscreen ? '0' : '1') . '&group=' . (int) $group_id;
+	$url   = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=' . ($fullscreen ? '0' : '1') . '&group=' . $group_id;
 	$controls .= '<a id="' . ($fullscreen ? 'cycle_exit_fullscreen' : 'cycle_fullscreen') . '" class="wm-cycle-control wm-fullscreen-link fas ' . ($fullscreen ? 'fa-compress-arrows-alt' : 'fa-expand-arrows-alt') . '" href="' . html_escape($url) . '" title="' . html_escape($label) . '" aria-label="' . html_escape($label) . '">' . ($fullscreen ? '<span class="wm-cycle-exit-label">' . html_escape($label) . '</span>' : '') . '</a>';
 	$controls .= '<span id="wm_countdown" data-paused-label="' . __esc('Paused', 'weathermap') . '" data-next-label="' . __esc('Next map in %ss', 'weathermap') . '"></span><span class="wm-progress-track"><span id="wm_progress"></span></span>';
 
