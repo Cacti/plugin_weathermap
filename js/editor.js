@@ -1293,20 +1293,24 @@ function compactLinkEditorBase() {
 	$('#link_target_picker_add,#link_target_picker_rep').hide();
 	$('#link_target_picker').closest('tr').find('td:first').text(wmEditorText.changeInterface);
 	$('#link_target_picker_input').val('').attr('placeholder', wmEditorText.searchInterface);
-	$('#link_target_picker').removeData('wm-choice');
-	$('#wm-link-use').prop('disabled', true);
+	$('#link_target_picker').val('').removeData('wm-choice');
+	local_graph_id = 0;
+	$('#link_target_picker_add,#link_target_picker_rep,#wm-link-use').prop('disabled', true);
 	var picker = $('#link_target_picker_input');
 	if (!picker.data('wm-compact-hook')) {
 		var original = picker.autocomplete('option', 'select');
 		picker
 			.autocomplete('option', 'select', function (event, ui) {
 				if (original && original.call(this, event, ui) === false) return false;
-				$('#link_target_picker').data('wm-choice', ui.item);
-				$('#wm-link-use').prop('disabled', !(ui.item.id && ui.item.local_graph_id > 0));
+				var valid = !!(ui.item.id && ui.item.local_graph_id > 0);
+				$('#link_target_picker').val(valid ? ui.item.id : '').data('wm-choice', valid ? ui.item : null);
+				local_graph_id = valid ? ui.item.local_graph_id : 0;
+				$('#link_target_picker_add,#link_target_picker_rep,#wm-link-use').prop('disabled', !valid);
 			})
 			.on('input.wmCompact', function () {
-				$('#link_target_picker').removeData('wm-choice');
-				$('#wm-link-use').prop('disabled', true);
+				$('#link_target_picker').val('').removeData('wm-choice');
+				local_graph_id = 0;
+				$('#link_target_picker_add,#link_target_picker_rep,#wm-link-use').prop('disabled', true);
 			});
 		picker.data('wm-compact-hook', true);
 	}
@@ -1429,8 +1433,12 @@ function compactLinkEditor() {
 			var items = data.items;
 			if (String($('#link_target').val() || '').trim() !== target) return;
 			var matches = items.filter(function (item) {
-				return item.id === target || item.id.split('/').pop() === file;
+				return item.id === target;
 			});
+			if (!matches.length) {
+				matches = items.filter(function(item) { return item.id.split('/').pop() === file; });
+				if (matches.length !== 1) matches = [];
+			}
 			$('#wm-link-current').text(
 				matches.length
 					? matches[0].label

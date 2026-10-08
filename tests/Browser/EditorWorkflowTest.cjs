@@ -228,6 +228,39 @@ w.refineNodePicker();
 assert.equal(graphRequests[0].data.graph_ids, '115');
 graphRequests[0].deferred.resolve({items:[{id:115,label:'Local graph'}]});
 assert.equal($('#wm-node-graphs').text(), 'Hover graphs: Local graph; custom images');
+// Reopening the dialog clears both visible and hidden selections and legacy actions.
+$('#link_target_picker').val('/rrd/previous.rrd').data('wm-choice', items[1]);
+w.local_graph_id = 20;
+w.compactLinkEditorBase();
+assert.equal($('#link_target_picker').val(), '');
+assert.equal(w.local_graph_id, 0);
+assert.equal($('#link_target_picker_add').prop('disabled'), true);
+assert.equal($('#link_target_picker_rep').prop('disabled'), true);
+$('#link_target_picker_input').autocomplete('option', 'select').call($('#link_target_picker_input')[0], {}, {item:items[0]});
+assert.equal($('#link_target_picker').val(), items[0].id);
+assert.equal(w.local_graph_id, 10);
+assert.equal($('#link_target_picker_add').prop('disabled'), false);
+assert.equal($('#link_target_picker_rep').prop('disabled'), false);
+$('#link_target_picker_input').trigger('input');
+assert.equal($('#link_target_picker').val(), '');
+assert.equal(w.local_graph_id, 0);
+assert.equal($('#link_target_picker_add').prop('disabled'), true);
+assert.equal($('#link_target_picker_rep').prop('disabled'), true);
+// An exact full path wins even if a same-basename candidate arrives first.
+w.wmInterfaceSummaries = {};
+$('#link_target').val('/rrd/expected/interface.rrd');
+$('#link_infourl').val('/cacti/graph.php?local_graph_id=10');
+$('#link_hover').val('');
+graphRequests.length = 0;
+w.compactLinkEditor();
+graphRequests[0].deferred.resolve({items:[{id:'/rrd/other/interface.rrd',label:'Wrong interface'},{id:'/rrd/expected/interface.rrd',label:'Exact interface'}]});
+assert.equal($('#wm-link-current').text(), 'Exact interface');
+w.wmInterfaceSummaries = {};
+$('#link_target').val('/rrd/unknown/interface.rrd');
+graphRequests.length = 0;
+w.compactLinkEditor();
+graphRequests[0].deferred.resolve({items:[{id:'/rrd/other/interface.rrd',label:'Wrong interface'},{id:'/rrd/expected/interface.rrd',label:'Other interface'}]});
+assert.equal($('#wm-link-current').text(), 'Custom or unavailable interface');
 console.log(
 	'PASS: current interface, retained selection, explicit apply, advanced fields, action names, URL decoding and failed-request retry'
 );
