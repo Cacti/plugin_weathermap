@@ -123,6 +123,11 @@ function display_datasources() {
 		$rows = 100;
 	}
 
+	if (get_filter_request_var('local_graph_id') > 0) {
+		$sql_where .= ' AND gti.local_graph_id = ?';
+		$sql_params[] = get_filter_request_var('local_graph_id');
+	}
+
 	$graphs = db_fetch_assoc_prepared("SELECT gti.local_graph_id AS id, dtd.name_cache AS title, dtd.data_source_path AS path, COUNT(*) AS items
 		FROM data_template_data AS dtd
 		INNER JOIN data_local AS dl
@@ -178,6 +183,10 @@ function wm_editor_sanitize_string($str) {
 /**
  * Preserve query separators in stored URLs while retaining the existing
  * escaping of characters that can break an HTML attribute.
+ *
+ * @param string $str URL to preserve.
+ *
+ * @return string URL with query separators and safe quoting.
  */
 function wm_editor_sanitize_url($str) {
 	return str_replace(['&amp;', "\r", "\n"], ['&', '', ''], wm_editor_sanitize_string($str));

@@ -1270,7 +1270,7 @@ function compactLinkEditorBase() {
 		var original = picker.autocomplete('option', 'select');
 		picker
 			.autocomplete('option', 'select', function (event, ui) {
-				if (original) original.call(this, event, ui);
+				if (original && original.call(this, event, ui) === false) return false;
 				$('#link_target_picker').data('wm-choice', ui.item);
 				$('#wm-link-use').prop('disabled', !(ui.item.id && ui.item.local_graph_id > 0));
 			})
@@ -1300,21 +1300,24 @@ function compactLinkEditorBase() {
 		.text('Bandwidth out of ' + $('#link_nodename1').text());
 }
 
-var wmInterfaceCatalog;
-function wmGetInterfaceCatalog() {
-	if (!wmInterfaceCatalog) {
-		wmInterfaceCatalog = $.getJSON(window.location.pathname, {
+var wmInterfaceSummaries = {};
+function wmGetInterfaceSummary(graphId) {
+	var key = $('#mapname').val() + ':' + graphId;
+	if (!wmInterfaceSummaries[key]) {
+		wmInterfaceSummaries[key] = $.getJSON(window.location.pathname, {
 			action: 'datasources',
 			term: '',
 			mapname: $('#mapname').val(),
 			target: 'link_target_picker',
-			graph_template_id: -1
+			graph_template_id: -1,
+			paged: 1,
+			local_graph_id: graphId
 		});
-		wmInterfaceCatalog.fail(function () {
-			wmInterfaceCatalog = null;
+		wmInterfaceSummaries[key].fail(function () {
+			delete wmInterfaceSummaries[key];
 		});
 	}
-	return wmInterfaceCatalog;
+	return wmInterfaceSummaries[key];
 }
 function compactLinkEditor() {
 	compactLinkEditorBase();
@@ -1341,20 +1344,6 @@ function compactLinkEditor() {
 	var picker = $('#link_target_picker_input');
 	picker.attr('placeholder', 'Type a device or interface, or browse all');
 	picker.autocomplete('option', 'autoFocus', false);
-	picker.autocomplete('option', 'source', function (request, response) {
-		var term = request.term.toLowerCase();
-		wmGetInterfaceCatalog()
-			.done(function (items) {
-				response(
-					items.filter(function (item) {
-						return item.label.toLowerCase().indexOf(term) !== -1;
-					})
-				);
-			})
-			.fail(function () {
-				response([]);
-			});
-	});
 	$('#link_target_picker_wrap').off('click dblclick mouseleave');
 	picker.off('click.wmReopen').on('click.wmReopen', function () {
 		picker.autocomplete('search', picker.val());
@@ -1376,8 +1365,14 @@ function compactLinkEditor() {
 	$('#wm-link-rrd').text(target);
 	$('#wm-link-current').text(target ? 'Looking up device and interface...' : 'No interface selected');
 
-	wmGetInterfaceCatalog()
-		.done(function (items) {
+	var graphIds = String($('#link_infourl').val() || '').match(/(?:local_graph_id|graph_list)=([0-9]+)/);
+	if (!graphIds) {
+		$('#wm-link-current').text(target ? 'Custom or unavailable interface' : 'No interface selected');
+		return;
+	}
+	wmGetInterfaceSummary(Number(graphIds[1]))
+		.done(function (data) {
+			var items = data.items;
 			if (String($('#link_target').val() || '').trim() !== target) return;
 			var matches = items.filter(function (item) {
 				return item.id === target || item.id.split('/').pop() === file;
@@ -1467,7 +1462,7 @@ function refineNodePicker() {
 	if (!picker.data('wm-node-hook')) {
 		var original = picker.autocomplete('option', 'select');
 		picker.autocomplete('option', 'select', function (event, ui) {
-			if (original) original.call(this, event, ui);
+			if (original && original.call(this, event, ui) === false) return false;
 			buttons.prop('disabled', !ui.item.id);
 		});
 		picker.on('input.wmNode', function () {
