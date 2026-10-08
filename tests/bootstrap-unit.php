@@ -272,7 +272,8 @@ if (!function_exists('raise_message')) {
 	}
 }
 
-$GLOBALS['__test_request'] = [];
+$GLOBALS['__test_request']         = [];
+$GLOBALS['__test_nfilter_request'] = [];
 
 if (!function_exists('get_request_var')) {
 	function get_request_var($n) {
@@ -282,13 +283,13 @@ if (!function_exists('get_request_var')) {
 
 if (!function_exists('get_nfilter_request_var')) {
 	function get_nfilter_request_var($n) {
-		return '';
+		return isset($GLOBALS['__test_nfilter_request'][$n]) ? $GLOBALS['__test_nfilter_request'][$n] : '';
 	}
 }
 
 if (!function_exists('get_filter_request_var')) {
 	function get_filter_request_var($n) {
-		return '';
+		return isset($GLOBALS['__test_nfilter_request'][$n]) ? $GLOBALS['__test_nfilter_request'][$n] : '';
 	}
 }
 
