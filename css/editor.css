@@ -262,14 +262,13 @@ body#mainView { opacity: 1; }
 body#mainView .ui-dialog small,
 body#mainView .ui-dialog [id$="purpose"],
 body#mainView .ui-dialog div[style*="color:#555"] {
- color: var(--text-color-lighter, #333) !important;
+ color: var(--text-color-lighter, inherit) !important;
 }
 body#mainView .ui-dialog input,
 body#mainView .ui-dialog textarea,
 body#mainView .ui-dialog select,
 body#mainView .ui-dialog button,
 body#mainView .ui-dialog .ui-button {
- color: var(--text-color-lighter, #333);
  border-color: var(--border-color, #888);
 }
 body#mainView .ui-dialog input[type="checkbox"] {
@@ -304,8 +303,3 @@ body#mainView #wm-link-delete-bar {
 }
 body#mainView #wm-node-delete-bar { min-height: 32px; }
 
-body#mainView #node_delete,
-body#mainView #link_delete {
- color: var(--text-color-lighter, #9b2525) !important;
- border-color: var(--border-color, #888);
-}
