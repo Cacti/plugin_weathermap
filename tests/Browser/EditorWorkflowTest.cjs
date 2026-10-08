@@ -288,6 +288,7 @@ for (const failOld of [false, true]) {
  assert.equal($('#wm-link-current').text(), 'Custom or unavailable interface');
 }
 // Use interface is authoritative even when a pending graph lookup shares its RRD.
+w.infoUrlTarget = 'graph.php?rra_id=all&local_graph_id=';
 for (const failOld of [false, true]) {
  w.wmInterfaceSummaries = {};
  $('#link_target').val('/rrd/shared.rrd');
