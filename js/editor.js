@@ -826,8 +826,9 @@ function delete_link() {
 
 	var link = Links[$('#link_name').val()];
 	var prompt = wmEditorText.deleteLinkPrompt
-		.replace('%1$s', function() { return wmNodeDisplayName(link.a); })
-		.replace('%2$s', function() { return wmNodeDisplayName(link.b); });
+		.replace(/%([12])\$s/g, function(token, index) {
+			return wmNodeDisplayName(index === '1' ? link.a : link.b);
+		});
 	$('.dlgConfirm').text(prompt + ' ' + wmEditorText.keepLinkNodes);
 
 	mapmode('xy');
@@ -1414,8 +1415,10 @@ function compactLinkEditor() {
 	$('#wm-link-rrd').text(target);
 	$('#wm-link-current').text(target ? wmEditorText.lookingUp : wmEditorText.noInterface);
 
-	var graphUrls = String($('#link_infourl').val() || '') + ' ' + String($('#link_hover').val() || '');
-	var graphIds = Array.from(graphUrls.matchAll(/(?:local_graph_id|graph_list)=([0-9]+)/g), function(match) { return Number(match[1]); });
+	var graphIds = wmLocalGraphIds(String($('#link_infourl').val() || ''), ['graph.php', 'graph_view.php']);
+	String($('#link_hover').val() || '').trim().split(/\s+/).forEach(function(entry) {
+		graphIds = graphIds.concat(wmLocalGraphIds(entry, ['graph_image.php']));
+	});
 	graphIds = Array.from(new Set(graphIds));
 	if (!graphIds.length) {
 		$('#wm-link-current').text(target ? wmEditorText.customInterface : wmEditorText.noInterface);
@@ -1533,8 +1536,9 @@ function refineNodePicker() {
 	if (!$('#wm-node-graphs').length)
 		$('<div id="wm-node-graphs" style="font-size:11px;margin:6px 0"></div>').insertBefore('#wm-node-toggle');
 	var hover = String($('#node_hover').val() || '');
-	var matches = Array.from(hover.matchAll(/local_graph_id=(\d+)/g)).map(function (m) {
-		return m[1];
+	var matches = [];
+	hover.trim().split(/\s+/).forEach(function(entry) {
+		matches = matches.concat(wmLocalGraphIds(entry, ['graph_image.php']));
 	});
 	$('#wm-node-graphs').text(wmNodeHoverSummary(hover, []));
 	if (matches.length)
@@ -1547,13 +1551,25 @@ function refineNodePicker() {
 			if (labels.length === 1 && !picker.val()) picker.val(labels[0].label);
 		});
 }
+// Only IDs from this installation's known graph endpoints are local candidates.
+function wmLocalGraphIds(value, endpoints) {
+	try {
+		var root = new URL('../../', window.location.href);
+		var url = new URL(value, /^graph(?:_image|_view)?\.php(?:[?#]|$)/.test(value) ? root : window.location.href);
+		if (url.origin !== root.origin || !endpoints.some(function(endpoint) { return url.pathname === root.pathname + endpoint; })) return [];
+		var ids = url.searchParams.get(url.pathname.endsWith('/graph_view.php') ? 'graph_list' : 'local_graph_id');
+		return ids && /^[0-9]+(?:,[0-9]+)*$/.test(ids) ? ids.split(',') : [];
+	} catch (error) {
+		return [];
+	}
+}
 function wmNodeHoverSummary(hover, items) {
 	var entries = hover.trim().split(/\s+/).filter(Boolean);
 	if (!entries.length) return wmEditorText.noHover;
 	var labels = new Map(items.map(function(item) { return [String(item.id), item.label]; }));
 	var summary = entries.map(function(entry) {
-		var graph = entry.match(/local_graph_id=(\d+)/);
-		return graph ? (labels.get(graph[1]) || wmEditorText.unavailableGraph) : wmEditorText.customImages;
+		var graph = wmLocalGraphIds(entry, ['graph_image.php']);
+		return graph.length ? (labels.get(graph[0]) || wmEditorText.unavailableGraph) : wmEditorText.customImages;
 	});
 	return wmEditorText.hoverSummary.replace('%s', function() { return summary.join('; '); });
 }

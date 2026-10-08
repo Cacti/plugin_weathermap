@@ -209,6 +209,25 @@ graphRequests.length = 0;
 w.refineNodePicker();
 graphRequests[0].deferred.resolve({items: [{id:115, label:'Permitted $& graph'}]});
 assert.equal($('#wm-node-graphs').text(), 'Hover graphs: Permitted $& graph; custom images; unavailable graph');
+// Positional placeholders in names are literal and translations can repeat/reorder tokens.
+w.Nodes.a = {label: '%2$s'};
+w.Nodes.b = {label: '%1$s'};
+w.wmEditorText.deleteLinkPrompt = '%1$s / %2$s / %1$s';
+w.delete_link();
+assert.equal($('.dlgConfirm').text(), '%2$s / %1$s / %2$s Translated keep nodes');
+assert.deepEqual(Array.from(w.wmLocalGraphIds('graph_image.php?local_graph_id=115', ['graph_image.php'])), ['115']);
+assert.deepEqual(Array.from(w.wmLocalGraphIds('../../graph_image.php?local_graph_id=115', ['graph_image.php'])), ['115']);
+assert.deepEqual(Array.from(w.wmLocalGraphIds('/cacti/graph_view.php?graph_list=10,20', ['graph_view.php'])), ['10','20']);
+for (const url of ['https://external.test/cacti/graph_image.php?local_graph_id=115', '/other/graph_image.php?local_graph_id=115', '/cacti/unrelated.php?local_graph_id=115', 'http://[invalid']) {
+ assert.deepEqual(Array.from(w.wmLocalGraphIds(url, ['graph_image.php'])), []);
+ assert.equal(w.wmNodeHoverSummary(url, [{id:115, label:'Local graph'}]), 'Hover graphs: custom images');
+}
+graphRequests.length = 0;
+$('#node_hover').val('/cacti/graph_image.php?local_graph_id=115 https://external.test/cacti/graph_image.php?local_graph_id=125');
+w.refineNodePicker();
+assert.equal(graphRequests[0].data.graph_ids, '115');
+graphRequests[0].deferred.resolve({items:[{id:115,label:'Local graph'}]});
+assert.equal($('#wm-node-graphs').text(), 'Hover graphs: Local graph; custom images');
 console.log(
 	'PASS: current interface, retained selection, explicit apply, advanced fields, action names, URL decoding and failed-request retry'
 );

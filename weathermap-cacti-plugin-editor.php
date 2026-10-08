@@ -587,7 +587,7 @@ foreach ($graph_templates as $gt) {
 					<?php print __('<p><strong>Bandwidth:</strong> Set the capacity used to calculate link utilisation, for example 100M or 1G. K, M, G and T are supported. Use the same value for both directions unless their capacities differ.</p>
 <p><strong>Interface:</strong> Search by device, port or description, then select Use interface to fill the traffic source, click destination and hover graph together. Save applies the changes.</p>
 <p><strong>Comments:</strong> Add text to display along each direction of the link. The percentage controls its position along the line.</p>
-<p><strong>Advanced:</strong> Use custom data sources or combine multiple sources, choose different graphs, change the click destination, or adjust line width and shape. Data Source(s) controls the measured traffic; Info URL(s) controls where a click goes; Hover Graph URL(s) controls the images shown on hover.</p>', 'weathermap'); ?>
+<p><strong>Advanced:</strong> Use custom data sources or combine multiple sources, choose different graphs, change the click destination, or adjust line shape. Data Source(s) controls the measured traffic; Info URL(s) controls where a click goes; Hover Graph URL(s) controls the images shown on hover.</p>', 'weathermap'); ?>
 				</div>
 			</div>
 		</div>
