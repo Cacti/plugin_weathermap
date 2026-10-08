@@ -1271,6 +1271,7 @@ function compactLinkEditorBase() {
 			.on('click', function () {
 				var item = $('#link_target_picker').data('wm-choice');
 				if (!item || !item.id || !(item.local_graph_id > 0)) return;
+				++wmInterfaceLookupGeneration;
 				$('#link_target').val(item.id);
 				var destination = new URL(infoUrlTarget + item.local_graph_id, new URL('../../', window.location.href));
 				$('#link_infourl').val(destination.pathname + destination.search + destination.hash);

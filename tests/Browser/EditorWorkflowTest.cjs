@@ -287,6 +287,23 @@ for (const failOld of [false, true]) {
  else graphRequests[0].deferred.resolve({items:[{id:'/rrd/shared.rrd',label:'Older shared interface'}]});
  assert.equal($('#wm-link-current').text(), 'Custom or unavailable interface');
 }
+// Use interface is authoritative even when a pending graph lookup shares its RRD.
+for (const failOld of [false, true]) {
+ w.wmInterfaceSummaries = {};
+ $('#link_target').val('/rrd/shared.rrd');
+ $('#link_infourl').val('/cacti/graph.php?local_graph_id=10');
+ $('#link_hover').val('');
+ graphRequests.length = 0;
+ w.compactLinkEditor();
+ const selected = {id:'/rrd/shared.rrd',local_graph_id:20,label:'Explicitly chosen interface'};
+ $('#link_target_picker_input').autocomplete('option', 'select').call($('#link_target_picker_input')[0], {}, {item:selected});
+ $('#wm-link-use').trigger('click');
+ if (failOld) graphRequests[0].deferred.reject();
+ else graphRequests[0].deferred.resolve({items:[{id:'/rrd/shared.rrd',label:'Older graph interface'}]});
+ assert.equal($('#wm-link-current').text(), 'Explicitly chosen interface');
+ assert.equal($('#link_target').val(), '/rrd/shared.rrd');
+ assert.equal($('#link_infourl').val().includes('local_graph_id=20'), true);
+}
 console.log(
 	'PASS: current interface, retained selection, explicit apply, advanced fields, action names, URL decoding and failed-request retry'
 );
