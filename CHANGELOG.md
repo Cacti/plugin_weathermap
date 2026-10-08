@@ -16,6 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* refactor: On Cacti 1.2.32 and above, defer the editor's jQuery UI dialog (`ui.dialog`) styling to the core theme CSS; the plugin's `.ui-dialog-title`/`.ui-dialog-buttonset` font overrides have been split out of `css/editor.css` into a separate `css/editor-ui-dialog-legacy.css` that is only loaded on earlier Cacti releases
 * refactor: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
 * feature: Add a root `manifest.json` file manifest plus an upgrade-time `weathermap_prune_files()` that removes tombstoned and dev-only paths while protecting whitelisted user data (`configs/`, `output/`) and `.git*`, backed by a `tests/bin/validate-manifest.php` CI gate that fails on manifest drift
 * dev: Add xdebug coverage reporting to CI and enforce patch coverage of changed lines
