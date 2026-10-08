@@ -11,6 +11,7 @@ const dom = new JSDOM(
 const w = dom.window,
 	$ = jquery(w);
 w.$ = $;
+w.infoUrlTarget = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
 w.Nodes = { a: { label: 'Switch A' }, b: { label: 'Router B' } };
 w.Links = { 'a-b': { a: 'a', b: 'b', name: 'a-b' } };
 $.fn.autocomplete = function (method, key, value) {
@@ -63,6 +64,10 @@ assert.equal($('#link_target_picker_input').data('lastSearch'), items[1].label);
 assert.equal($('#link_target').val(), items[0].id);
 $('#wm-link-use').trigger('click');
 assert.equal($('#link_target').val(), items[1].id);
+assert.equal($('#link_infourl').val(), '/cacti/graph_view.php?action=preview&reset=true&style=selective&graph_list=20');
+w.infoUrlTarget = 'graph.php?rra_id=all&local_graph_id=';
+$('#link_target_picker').data('wm-choice', items[1]);
+$('#wm-link-use').trigger('click');
 assert.equal($('#link_infourl').val(), '/cacti/graph.php?rra_id=all&local_graph_id=20');
 assert.equal(w.wmDecodeEditorUrl('/graph?a=1&amp;b=2'), '/graph?a=1&b=2');
 w.compactLinkEditor();
@@ -78,6 +83,51 @@ request.resolve({items});
 assert.equal($('#link_target_picker_input').autocomplete('option', 'source'), originalSource);
 assert.equal($('#link_target_picker_input').autocomplete('option', 'select').call($('#link_target_picker_input')[0], {}, {item: {wmOffset: 100}}), false);
 assert.equal($('#wm-link-use').prop('disabled'), true);
+w.wmInterfaceSummaries = {};
+request = $.Deferred();
+w.compactLinkEditor();
+$('#link_target').val('/rrd/newer.rrd');
+$('#wm-link-current').text('Newer link');
+request.reject();
+assert.equal($('#wm-link-current').text(), 'Newer link');
+const graphRequests = [];
+$.getJSON = (url, data) => {
+ const deferred = $.Deferred();
+ graphRequests.push({data, deferred});
+ return deferred.promise();
+};
+let graphLabels;
+w.wmGetGraphSummaries(Array.from({length: 125}, (_, i) => String(i + 1))).done(data => { graphLabels = data; });
+assert.equal(graphRequests.length, 2);
+assert.equal(graphRequests[0].data.graph_ids.split(',').length, 100);
+assert.equal(graphRequests[1].data.graph_ids, Array.from({length: 25}, (_, i) => String(i + 101)).join(','));
+graphRequests[1].deferred.resolve({items: [{id: 115, label: 'Later graph'}]});
+graphRequests[0].deferred.resolve({items: [{id: 1, label: 'First graph'}]});
+assert.equal(graphLabels.some(item => item.id === 115), true);
+$.fn.dialog = function() { return this; };
+w.mapmode = () => {};
+w.delNodePrompt = 'Translated remove %s?';
+w.delNodeConnectedSingle = 'Translated single %d';
+w.delNodeConnectedPlural = 'Translated plural %d';
+w.delNodeKeepDevice = 'Translated keep device';
+w.delNodeTitle = 'Translated title';
+w.txtCancel = 'Cancel';
+w.txtDelNode = 'Delete';
+$('body').append('<input id="node_name" value="a">');
+const wholeEditor = editor.slice(0, editor.indexOf('// Compact link workflow;'));
+vm.runInContext(wholeEditor, dom.getInternalVMContext());
+w.initJS = () => {};
+w.mapmode = () => {};
+w.Nodes = {a: {label: '<Named node>'}};
+for (const count of [0, 1, 2]) {
+ w.Links = Object.fromEntries(Array.from({length: count}, (_, i) => [String(i), {a: 'a', b: 'b'}]));
+ w.delete_node();
+ const message = $('.dlgConfirm').text();
+ assert.equal(message.includes('Translated remove <Named node>?'), true);
+ assert.equal(message.includes('Translated keep device'), true);
+ assert.equal(message.includes(count === 1 ? 'Translated single 1' : 'Translated plural 2'), count > 0);
+ assert.equal($('.dlgConfirm').find('named').length, 0);
+}
 console.log(
 	'PASS: current interface, retained selection, explicit apply, advanced fields, action names, URL decoding and failed-request retry'
 );

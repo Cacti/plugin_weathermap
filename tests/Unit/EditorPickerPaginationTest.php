@@ -73,3 +73,10 @@ it('LooksUpOnlyTheSelectedPermittedGraphForTheEditorSummary', function (): void 
 	$denied = editorPickerResponse(['endpoint' => 'datasources', 'paged' => '1', 'local_graph_id' => 115, 'denied' => [115]]);
 	expect($denied['items'])->toBe([]);
 });
+
+it('FindsSelectedGraphIdsBeyondTheFirstPageWithoutLeakingDeniedGraphs', function (): void {
+	$result = editorPickerResponse(['paged' => '1', 'graph_ids' => '115,125', 'denied' => [125]]);
+	expect(array_column($result['items'], 'id'))->toBe([115]);
+	$invalid = editorPickerResponse(['paged' => '1', 'graph_ids' => 'bad,-1']);
+	expect($invalid['items'])->toBe([]);
+});

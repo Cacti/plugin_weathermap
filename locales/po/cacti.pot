@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 00:33+1030\n"
+"POT-Creation-Date: 2026-10-09 01:10+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -93,6 +93,22 @@ msgstr ""
 
 #: lib/editor.inc.php
 msgid "Click on the map where you would like to add a new node."
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove %s from this map?"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Its %d connected link will also be removed."
+msgid_plural "Its %d connected links will also be removed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/editor.inc.php
+msgid "The Cacti device and graphs will remain."
 msgstr ""
 
 #: lib/editor.inc.php

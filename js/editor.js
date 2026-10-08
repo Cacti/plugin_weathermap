@@ -741,13 +741,17 @@ function delete_node() {
 
 	var name = $('#node_name').val();
 	var connected = Object.keys(Links).filter(function(key) { return Links[key].a === name || Links[key].b === name; }).length;
-	$('.dlgConfirm').text('Remove ' + wmNodeDisplayName(name) + ' from this map?' + (connected ? ' Its ' + connected + ' connected link' + (connected === 1 ? '' : 's') + ' will also be removed.' : '') + ' The Cacti device and graphs will remain.');
+	var message = delNodePrompt.replace('%s', function() { return wmNodeDisplayName(name); });
+	if (connected) {
+		message += ' ' + (connected === 1 ? delNodeConnectedSingle : delNodeConnectedPlural).replace('%d', String(connected));
+	}
+	$('.dlgConfirm').text(message + ' ' + delNodeKeepDevice);
 
 	mapmode('xy');
 
 	$('.dlgConfirm').dialog({
 		resizable: false,
-		title: 'Delete this node?',
+		title: delNodeTitle,
 		height: 'auto',
 		width: 400,
 		modal: false,
@@ -1262,11 +1266,8 @@ function compactLinkEditorBase() {
 				var item = $('#link_target_picker').data('wm-choice');
 				if (!item || !item.id || !(item.local_graph_id > 0)) return;
 				$('#link_target').val(item.id);
-				$('#link_infourl').val(
-					new URL('../../', window.location.href).pathname +
-						'graph.php?rra_id=all&local_graph_id=' +
-						item.local_graph_id
-				);
+				var destination = new URL(infoUrlTarget + item.local_graph_id, new URL('../../', window.location.href));
+				$('#link_infourl').val(destination.pathname + destination.search + destination.hash);
 				$('#link_hover').val(
 					new URL('../../', window.location.href).pathname +
 						'graph_image.php?local_graph_id=' +
@@ -1413,6 +1414,7 @@ function compactLinkEditor() {
 				picker.val(matches[0].label);
 		})
 		.fail(function () {
+			if (String($('#link_target').val() || '').trim() !== target) return;
 			$('#wm-link-current').text('Interface name unavailable');
 		});
 	if (!$('#wm-link-use').data('wm-detail-hook')) {
@@ -1513,13 +1515,7 @@ function refineNodePicker() {
 			: 'No hover graphs configured'
 	);
 	if (matches.length)
-		$.getJSON(window.location.pathname, {
-			action: 'graphs',
-			term: '',
-			mapname: $('#mapname').val(),
-			target: 'node_picker',
-			graph_template_id: -1
-		}).done(function (items) {
+		wmGetGraphSummaries(matches).done(function (items) {
 			if (String($('#node_hover').val() || '') !== hover) return;
 			var labels = items.filter(function (i) {
 				return matches.indexOf(String(i.id)) !== -1;
@@ -1536,6 +1532,24 @@ function refineNodePicker() {
 			);
 			if (labels.length === 1 && !picker.val()) picker.val(labels[0].label);
 		});
+}
+function wmGetGraphSummaries(ids) {
+	var result = $.Deferred();
+	var unique = Array.from(new Set(ids));
+	var remaining = Math.ceil(unique.length / 100);
+	var labels = [];
+	for (var offset = 0; offset < unique.length; offset += 100) {
+		$.getJSON(window.location.pathname, {
+			action: 'graphs', term: '', mapname: $('#mapname').val(),
+			target: 'node_picker', graph_template_id: -1, paged: 1,
+			graph_ids: unique.slice(offset, offset + 100).join(',')
+		}).done(function(data) {
+			labels = labels.concat(data.items);
+			if (--remaining === 0) result.resolve(labels);
+		}).fail(function() { result.reject(); });
+	}
+	if (!remaining) result.resolve([]);
+	return result.promise();
 }
 function wmNodeDisplayName(name) {
 	var node = Nodes[name];

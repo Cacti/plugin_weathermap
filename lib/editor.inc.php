@@ -74,6 +74,22 @@ function display_graphs() {
 		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . 'gl.snmp_query_id = (SELECT id FROM snmp_query WHERE hash = "d75e406fdeca4fcef45b8be3a9a63cbc")';
 	}
 
+	$graph_ids = get_nfilter_request_var('graph_ids');
+
+	if ($graph_ids !== '') {
+		$ids = [];
+
+		if (is_string($graph_ids) && strlen($graph_ids) <= 2000 && preg_match('/^[0-9]+(?:,[0-9]+){0,99}$/D', $graph_ids)) {
+			foreach (explode(',', $graph_ids) as $id) {
+				if ((int) $id > 0) {
+					$ids[] = (int) $id;
+				}
+			}
+		}
+		$sql_where .= ($sql_where !== '' ? ' AND ' : 'WHERE ') . ($ids ? 'gl.id IN (' . implode(',', array_fill(0, cacti_sizeof($ids), '?')) . ')' : '1 = 0');
+		$sql_params = array_merge($sql_params, $ids);
+	}
+
 	$graphs = db_fetch_assoc_prepared("SELECT DISTINCT gtg.local_graph_id AS id, gtg.title_cache AS title
 		FROM graph_templates_graph AS gtg
 		INNER JOIN graph_local AS gl
@@ -980,6 +996,11 @@ function getEditorJs() {
 	var timeStHelp    = '<?php print __esc('Click on the map where you would like to put the timestamp.', 'weathermap'); ?>';
 	var posLegendHelp = '<?php print __esc('Click on the map where you would like to put the legend.', 'weathermap'); ?>';
 	var addNodeHelp   = '<?php print __esc('Click on the map where you would like to add a new node.', 'weathermap'); ?>';
+
+	var delNodePrompt = <?php print json_encode(__('Remove %s from this map?', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+	var delNodeConnectedSingle = <?php print json_encode(__n('Its %d connected link will also be removed.', 'Its %d connected links will also be removed.', 1, 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+	var delNodeConnectedPlural = <?php print json_encode(__n('Its %d connected link will also be removed.', 'Its %d connected links will also be removed.', 2, 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+	var delNodeKeepDevice = <?php print json_encode(__('The Cacti device and graphs will remain.', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
 	var delNodeWarning  = '<?php print __esc('WARNING: Pressing \'Delete Node\' will delete this Node.', 'weathermap'); ?>';
 	var delNodeTitle    = '<?php print __esc('Delete Node Confirmation', 'weathermap'); ?>';
