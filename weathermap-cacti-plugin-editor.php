@@ -273,6 +273,9 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/jquery-ui.css'; ?>'>
 	<link rel='stylesheet' type='text/css' media='screen' href='<?php print $config['url_path'] . 'include/themes/' . $selectedTheme . '/main.css'; ?>'>
 	<?php print get_md5_include_css('plugins/weathermap/css/editor.css'); ?>
+	<?php if (cacti_version_compare(CACTI_VERSION, '1.2.32', '<')) { ?>
+	<?php print get_md5_include_css('plugins/weathermap/css/editor-ui-dialog-legacy.css'); ?>
+	<?php } ?>
 	<?php getEditorJs(); ?>
 	<?php print get_md5_include_js('include/js/jquery.js'); ?>
 	<?php print get_md5_include_js('include/js/jquery-ui.js'); ?>

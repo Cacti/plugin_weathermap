@@ -157,6 +157,9 @@ function graphPicker() {
 		var title    = 'Click to Search';
 		var action   = $(this).attr('data-action');
 		var mapname  = 'none';
+		var pickerOffset = 0;
+		var pickerTerm = '';
+		var pickerTemplate = null;
 
 		if ($('#'+id+'_wrap').length) {
 			$('#'+id+'_wrap').remove();
@@ -260,20 +263,41 @@ function graphPicker() {
 					var template = -1;
 				}
 
+				if (request.term !== pickerTerm || template !== pickerTemplate) {
+					pickerOffset = 0;
+				}
+				pickerTerm = request.term;
+				pickerTemplate = template;
+
 				var url = 'weathermap-cacti-plugin-editor.php' +
 					'?mapname=' + $('#mapname').val() +
 					'&action=' + action +
-					'&term=' + request.term +
+					'&term=' + encodeURIComponent(request.term) +
 					'&target=' + id +
-					'&graph_template_id='+template;
+					'&graph_template_id='+template + '&paged=1&offset=' + pickerOffset;
 
 				$.getJSON(url, function(data) {
-					response(data);
-				});
+					var items = data.items;
+					if (data.offset > 0) {
+						items.unshift({label: data.previous_label, value: request.term, wmOffset: Math.max(0, data.offset - 100)});
+					}
+					if (data.next_offset !== null) {
+						items.push({label: data.next_label, value: request.term, wmOffset: data.next_offset});
+					}
+					response(items);
+				}).fail(function() { response([]); });
 			},
-			autoFocus: true,
+			autoFocus: false,
 			minLength: 0,
+			focus: function(event, ui) {
+				if (ui.item.wmOffset !== undefined) { return false; }
+			},
 			select: function(event, ui) {
+				if (ui.item.wmOffset !== undefined) {
+					pickerOffset = ui.item.wmOffset;
+					setTimeout(function() { $('#' + id + '_input').autocomplete('search', pickerTerm); }, 0);
+					return false;
+				}
 				$('#' + id + '_input').val(ui.item.label);
 
 				if (ui.item.id) {
@@ -302,6 +326,7 @@ function graphPicker() {
 				graphOpen = false;
 			} else {
 				graphClickTimer = setTimeout(function() {
+					pickerOffset = 0;
 					$('#' + id + '_input').autocomplete('search', '');
 						clearTimeout(graphTimer);
 						graphOpen = true;
