@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* feature: Expose bundled fonts and link comment colours in Map Style
+* feature#294: Expose bundled fonts and link comment colours in Map Style
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
