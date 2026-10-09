@@ -1349,8 +1349,8 @@ function addmap_filter() {
 						<td>
 							<input id='newfile' class='ui-state-default ui-corner-all' name='newfile' type='text' size='25' value='' placeholder='<?php print __('Name including .conf', 'weathermaps'); ?>'>
 						</td>
-						<td><label for='newtitle'><?php print __('Map Title', 'weathermap'); ?></label></td>
-						<td><input id='newtitle' class='ui-state-default ui-corner-all' name='newtitle' type='text' size='25' value='' placeholder='<?php print __('Optional map title', 'weathermap'); ?>'></td>
+						<td><label for='newtitle'><?php print __esc('Map Title', 'weathermap'); ?></label></td>
+						<td><input id='newtitle' class='ui-state-default ui-corner-all' name='newtitle' type='text' size='25' value='' placeholder='<?php print __esc('Optional map title', 'weathermap'); ?>'></td>
 						<td>
 							<?php print __('Source Map', 'weathermaps'); ?>
 						</td>
