@@ -1617,6 +1617,10 @@ msgid "Path mismatch"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
 msgid "(No Title)"
 msgstr ""
 

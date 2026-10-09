@@ -1744,28 +1744,39 @@ function add_config($file) {
 		// print "$file_dir != $weathermap_confdir";
 		print '<h3>' . __('Path mismatch', 'weathermap') . '</h3>';
 	} else {
+		require_once __DIR__ . '/lib/editor.config-delete.php';
 		$realfile = $weathermap_confdir . '/' . $file;
-		$title    = wmap_get_title($realfile);
+		$lock = wm_config_lock($realfile);
+		if ($lock === false) {
+			raise_message('path_missing', __esc('The configuration file is unavailable. Please retry.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+			return;
+		}
+		try {
+			$title    = wmap_get_title($realfile);
 
-		db_execute_prepared("INSERT INTO weathermap_maps
-			(configfile, titlecache, active, imagefile, htmlfile, filehash, config)
-			VALUES (?, ?, 'on', '', '', '', '')",
-			[$file, $title]);
+			db_execute_prepared("INSERT INTO weathermap_maps
+				(configfile, titlecache, active, imagefile, htmlfile, filehash, config)
+				VALUES (?, ?, 'on', '', '', '', '')",
+				[$file, $title]);
 
-		$last_id = db_fetch_insert_id();
-		$myuid   = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
+			$last_id = db_fetch_insert_id();
+			$myuid   = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
 
-		db_execute_prepared('INSERT INTO weathermap_auth
-			(mapid, userid)
-			VALUES (?, ?)',
-			[$last_id, $myuid]);
+			db_execute_prepared('INSERT INTO weathermap_auth
+				(mapid, userid)
+				VALUES (?, ?)',
+				[$last_id, $myuid]);
 
-		db_execute_prepared('UPDATE weathermap_maps
-			SET filehash = LEFT(MD5(CONCAT(id, configfile, rand())), 20)
-			WHERE id = ?',
-			[$last_id]);
+			db_execute_prepared('UPDATE weathermap_maps
+				SET filehash = LEFT(MD5(CONCAT(id, configfile, rand())), 20)
+				WHERE id = ?',
+				[$last_id]);
 
-		map_resort();
+			map_resort();
+		} finally {
+			flock($lock, LOCK_UN);
+			fclose($lock);
+		}
 	}
 }
 

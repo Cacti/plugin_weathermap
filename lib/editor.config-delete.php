@@ -23,6 +23,38 @@
 */
 
 /**
+ * Lock the config inode shared by registration and deletion.
+ *
+ * @param string $path
+ * @return resource|false
+ */
+function wm_config_lock($path) {
+	$handle = @fopen($path, 'r');
+
+	if ($handle === false) {
+		return false;
+	}
+
+	if (!flock($handle, LOCK_EX | LOCK_NB)) {
+		fclose($handle);
+		return false;
+	}
+
+	clearstatcache(true, $path);
+	$current = @stat($path);
+	$opened = fstat($handle);
+
+	if (is_link($path) || !is_file($path) || $current === false || $opened === false ||
+		$current['dev'] !== $opened['dev'] || $current['ino'] !== $opened['ino']) {
+		flock($handle, LOCK_UN);
+		fclose($handle);
+		return false;
+	}
+
+	return $handle;
+}
+
+/**
  * Delete a regular unused configuration file inside the configuration directory.
  *
  * @param string $directory
@@ -44,17 +76,26 @@ function wm_config_delete($directory, $file) {
 		return 'invalid';
 	}
 
-	$usage = db_fetch_cell_prepared('SELECT COUNT(*) FROM weathermap_maps WHERE configfile IN (?, ?)', [$file, $path]);
-
-	if ($usage === false || $usage === null) {
+	$lock = wm_config_lock($path);
+	if ($lock === false) {
 		return 'failed';
 	}
+	try {
+		$usage = db_fetch_cell_prepared('SELECT COUNT(*) FROM weathermap_maps WHERE configfile IN (?, ?)', [$file, $path]);
 
-	if ($usage) {
-		return 'used';
+		if ($usage === false || $usage === null) {
+			return 'failed';
+		}
+
+		if ($usage) {
+			return 'used';
+		}
+
+		return unlink($path) ? 'deleted' : 'failed';
+	} finally {
+		flock($lock, LOCK_UN);
+		fclose($lock);
 	}
-
-	return unlink($path) ? 'deleted' : 'failed';
 }
 /**
  * Render an escaped delete button and filename confirmation.

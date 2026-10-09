@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* issue#296: Serialize config registration and deletion while retaining in-use checks
+
 * issue#296: Stop config deletion when the usage query fails and escape filename messages
 
 * feature#296: Delete unused configuration files with named confirmation

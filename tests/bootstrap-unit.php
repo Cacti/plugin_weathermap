@@ -56,6 +56,9 @@ if (!function_exists('db_execute')) {
 
 if (!function_exists('db_execute_prepared')) {
 	function db_execute_prepared($sql, $params = []) {
+		if (isset($GLOBALS['__test_db_execute_prepared']) && is_callable($GLOBALS['__test_db_execute_prepared'])) {
+			return ($GLOBALS['__test_db_execute_prepared'])($sql, $params);
+		}
 		$GLOBALS['__test_db_calls'][] = ['fn' => 'db_execute_prepared', 'sql' => $sql, 'params' => $params];
 
 		return true;
