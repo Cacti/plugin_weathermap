@@ -72,7 +72,7 @@ switch (get_request_var('action')) {
 					AND wm.id = ?",
 					[$id]);
 
-				if (cacti_sizeof($map)) {
+				if (is_array($map) && cacti_sizeof($map)) {
 					$imagefile = __DIR__ . '/output/' . $map['filehash'] . '.' . $imageformat;
 
 					if (get_request_var('action') == 'viewthumb') {
@@ -113,7 +113,7 @@ switch (get_request_var('action')) {
 					AND wm.id = ?",
 					[$id]);
 
-				if (cacti_sizeof($map)) {
+				if (is_array($map) && cacti_sizeof($map)) {
 					$mapfile  = __DIR__ . '/configs/' . $map['configfile'];
 					$orig_cwd = (string) getcwd();
 
@@ -158,7 +158,7 @@ switch (get_request_var('action')) {
 					AND wm.id = ?",
 					[$id]);
 
-				if (cacti_sizeof($map)) {
+				if (is_array($map) && cacti_sizeof($map)) {
 					$maptitle = $map['titlecache'];
 
 					print "<br/><table width='100%' style='background-color: #f5f5f5; border: 1px solid #bbbbbb;' align='center' cellpadding='1'>\n";
@@ -401,7 +401,7 @@ function weathermap_singleview($mapid) {
 			AND wm.id = ?",
 			[$mapid]);
 
-		if (cacti_sizeof($map)) {
+		if (is_array($map) && cacti_sizeof($map)) {
 			// print do_hook_function ('weathermap_page_top', [$map[0]['id'], $map[0]['titlecache']]);
 
 			print do_hook_function('weathermap_page_top', '');
@@ -1036,20 +1036,25 @@ function weathermap_tabs($current_tab) {
 		return false;
 	}
 }
-/** Build the same escaped map heading and authorized shortcuts in each view.
+/**
+ * Build the same escaped map heading and authorized shortcuts in each view.
+ *
  * @param string $maptitle HTML-escaped heading.
- * @param array $map Map metadata.
- * @return string
+ * @param array<string, mixed>|bool $map Map metadata, or false when unavailable.
+ *
+ * @return string The map heading with management shortcuts when authorized.
  */
 function weathermap_map_title_controls($maptitle, $map) {
 	$heading = '<strong>' . $maptitle . '</strong>';
-	if (!api_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
+
+	if (!is_array($map) || !isset($map['id'], $map['configfile']) || !is_string($map['configfile']) || !api_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
 		return $heading;
 	}
 	$id = (int) $map['id'];
 	$heading .= ' [ <a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php">' . __esc('Manage Weathermaps', 'weathermap') . '</a> | ';
 	$heading .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $id . '">' . __esc('Map Settings', 'weathermap') . '</a> | ';
 	$heading .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $id . '">' . __esc('Map Permissions', 'weathermap') . '</a> | ';
-	$heading .= '<a class="wm-edit-map linkOverDark" href="' . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . rawurlencode($map['configfile'])) . '">' . __esc('Edit Map', 'weathermap') . '</a> ]';
+	$heading .= '<a class="wm-edit-map" href="' . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . rawurlencode($map['configfile'])) . '">' . __esc('Edit Map', 'weathermap') . '</a> ]';
+
 	return $heading;
 }

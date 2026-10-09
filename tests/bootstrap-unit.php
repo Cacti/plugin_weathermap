@@ -86,6 +86,10 @@ if (!function_exists('db_fetch_row')) {
 
 if (!function_exists('db_fetch_row_prepared')) {
 	function db_fetch_row_prepared($sql, $p = []) {
+		if (isset($GLOBALS['__test_db_fetch_row_prepared']) && is_callable($GLOBALS['__test_db_fetch_row_prepared'])) {
+			return ($GLOBALS['__test_db_fetch_row_prepared'])($sql, $p);
+		}
+
 		return [];
 	}
 }
@@ -98,6 +102,10 @@ if (!function_exists('db_fetch_cell')) {
 
 if (!function_exists('db_fetch_cell_prepared')) {
 	function db_fetch_cell_prepared($sql, $p = []) {
+		if (isset($GLOBALS['__test_db_fetch_cell_prepared']) && is_callable($GLOBALS['__test_db_fetch_cell_prepared'])) {
+			return ($GLOBALS['__test_db_fetch_cell_prepared'])($sql, $p);
+		}
+
 		return '';
 	}
 }
@@ -282,7 +290,7 @@ if (!function_exists('get_request_var')) {
 
 if (!function_exists('get_nfilter_request_var')) {
 	function get_nfilter_request_var($n) {
-		return '';
+		return get_request_var($n);
 	}
 }
 

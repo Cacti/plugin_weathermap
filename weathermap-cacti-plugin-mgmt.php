@@ -1047,8 +1047,8 @@ function maplist() {
 		foreach ($maps as $map) {
 			form_alternate_row('line' . $map['id']);
 
-			$output = '<a class="mapLink linkEditMain" title="' . __esc('Click to start editor with this file', 'weathermap') . '"
-				href="' . html_escape('weathermap-cacti-plugin-editor.php?header=false&action=nothing&return_to=manage&mapname=' . $map['configfile']) . '">' .
+			$output = '<a class="mapLink wm-edit-map" title="' . __esc('Click to start editor with this file', 'weathermap') . '"
+				href="' . html_escape('weathermap-cacti-plugin-editor.php?header=false&action=nothing&return_to=manage&mapname=' . rawurlencode($map['configfile'])) . '">' .
 				html_escape($map['titlecache']) . '
 			</a>';
 

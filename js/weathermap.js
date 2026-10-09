@@ -1,9 +1,4 @@
 $(function() {
-	$('.wm-edit-map').off('click.wmEditMap').on('click.wmEditMap', function(event) {
-		event.preventDefault();
-		event.stopImmediatePropagation();
-		window.location.assign(this.href);
-	});
 	$('map').tooltip({
 		items: 'area',
 		track: false,
