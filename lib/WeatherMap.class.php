@@ -3884,9 +3884,9 @@ class WeatherMap extends WeatherMapBase {
 		wm_debug('Trace: DrawMap()');
 
 		$bgimage = null;
-		$backgroundSizing = $this->get_hint('background_sizing', 'image');
-		if (!in_array($backgroundSizing, ['fit', 'stretch', 'image'], true)) {
-			$backgroundSizing = 'image';
+		$background_sizing = $this->get_hint('background_sizing', 'image');
+		if (!in_array($background_sizing, ['fit', 'stretch', 'image'], true)) {
+			$background_sizing = 'image';
 		}
 
 		$this->cachefile_version = false;
@@ -3940,7 +3940,7 @@ class WeatherMap extends WeatherMapBase {
 				if (!$bgimage) {
 					wm_warn('Failed to open background image.  One possible reason: Is your BACKGROUND really a PNG?');
 				} else {
-					if ($backgroundSizing === 'image') {
+					if ($background_sizing === 'image') {
 						$this->width = imagesx($bgimage);
 						$this->height = imagesy($bgimage);
 					}
@@ -3981,21 +3981,21 @@ class WeatherMap extends WeatherMapBase {
 			wimagefilledrectangle($image, 0, 0, $this->width, $this->height, $this->colours['DEFAULT']['BG']['gdref1']);
 
 			if ($bgimage) {
-				if ($backgroundSizing === 'image') {
+				if ($background_sizing === 'image') {
 					imagecopy($image, $bgimage, 0, 0, 0, 0, $this->width, $this->height);
 				} else {
-					$sourceWidth = imagesx($bgimage);
-					$sourceHeight = imagesy($bgimage);
-					$destWidth = $this->width;
-					$destHeight = $this->height;
-					if ($backgroundSizing === 'fit') {
-						$ratio = min($destWidth / $sourceWidth, $destHeight / $sourceHeight);
-						$destWidth = max(1, (int) round($sourceWidth * $ratio));
-						$destHeight = max(1, (int) round($sourceHeight * $ratio));
+					$source_width = imagesx($bgimage);
+					$source_height = imagesy($bgimage);
+					$dest_width = $this->width;
+					$dest_height = $this->height;
+					if ($background_sizing === 'fit') {
+						$ratio = min($dest_width / $source_width, $dest_height / $source_height);
+						$dest_width = max(1, (int) round($source_width * $ratio));
+						$dest_height = max(1, (int) round($source_height * $ratio));
 					}
-					$destX = (int) floor(($this->width - $destWidth) / 2);
-					$destY = (int) floor(($this->height - $destHeight) / 2);
-					imagecopyresampled($image, $bgimage, $destX, $destY, 0, 0, $destWidth, $destHeight, $sourceWidth, $sourceHeight);
+					$dest_x = (int) floor(($this->width - $dest_width) / 2);
+					$dest_y = (int) floor(($this->height - $dest_height) / 2);
+					imagecopyresampled($image, $bgimage, $dest_x, $dest_y, 0, 0, $dest_width, $dest_height, $source_width, $source_height);
 				}
 				unset($bgimage);
 			}
