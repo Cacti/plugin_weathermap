@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 02:05+1030\n"
+"POT-Creation-Date: 2026-10-09 10:11+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -1971,4 +1971,37 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "All Maps"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
 msgstr ""
