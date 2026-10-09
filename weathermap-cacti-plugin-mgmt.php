@@ -302,9 +302,9 @@ switch (get_request_var('action')) {
 		break;
 	case 'newmap':
 		if (isset_request_var('srcmap') && get_nfilter_request_var('srcmap') != '-1') {
-			newMap(get_nfilter_request_var('newfile'), get_nfilter_request_var('srcmap'));
+			newMap(get_nfilter_request_var('newfile'), get_nfilter_request_var('srcmap'), get_nfilter_request_var('newtitle'));
 		} else {
-			newMap(get_nfilter_request_var('newfile'));
+			newMap(get_nfilter_request_var('newfile'), '', get_nfilter_request_var('newtitle'));
 		}
 
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker&header=false');
@@ -1349,6 +1349,8 @@ function addmap_filter() {
 						<td>
 							<input id='newfile' class='ui-state-default ui-corner-all' name='newfile' type='text' size='25' value='' placeholder='<?php print __('Name including .conf', 'weathermaps'); ?>'>
 						</td>
+                        <td><label for='newtitle'><?php print __('Map Title', 'weathermap'); ?></label></td>
+                        <td><input id='newtitle' class='ui-state-default ui-corner-all' name='newtitle' type='text' size='25' value='' placeholder='<?php print __('Optional map title', 'weathermap'); ?>'></td>
 						<td>
 							<?php print __('Source Map', 'weathermaps'); ?>
 						</td>
@@ -1418,6 +1420,7 @@ function addmap_filter() {
 					var json   = {
 						__csrf_magic: csrfMagicToken,
 						newfile: $('#newfile').val(),
+                        newtitle: $('#newtitle').val(),
 						srcmap: $('#srcmap').val()
 					};
 
@@ -3343,13 +3346,14 @@ function weathermap_group_delete($id) {
  * @param string $sourcemapfile Optional existing config file to copy
  *                             settings from instead of creating a blank
  *                             map.
+ * @param string $title         Optional display title for the new map.
  *
  * @return void
  *
  * @global string $weathermap_confdir The configured path to the
  *                                    weathermap configs directory.
  */
-function newMap($mapfile, $sourcemapfile = '') {
+function newMap($mapfile, $sourcemapfile = '', $title = '') {
 	global $weathermap_confdir;
 
 	if ($mapfile == basename($mapfile)) {
@@ -3358,7 +3362,7 @@ function newMap($mapfile, $sourcemapfile = '') {
 		$mapfile = dirname($mapfile) . '/' . clean_up_name(basename($mapfile, '.conf')) . '.conf';
 	}
 
-	if (!file_exists($sourcemapfile) || $sourcemapfile == basename($sourcemapfile)) {
+	if ($sourcemapfile != '' && (!file_exists($sourcemapfile) || $sourcemapfile == basename($sourcemapfile))) {
 		$sourcemapfile = $weathermap_confdir . '/' . $sourcemapfile;
 	}
 
@@ -3373,13 +3377,19 @@ function newMap($mapfile, $sourcemapfile = '') {
 			if ($sourcemapfile != '') {
 				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
 					$map->ReadConfig($sourcemapfile);
-					$map->WriteConfig($mapfile);
+					if (is_string($title) && trim($title) !== '') {
+                    $map->title = trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title));
+                }
+                $map->WriteConfig($mapfile);
 					raise_message('map_message', __('New Map file %s created from %s', basename($mapfile), basename($sourcemapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 				} else {
 					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
 				}
 			} elseif ($mapfile != '') {
-				$map->WriteConfig($mapfile);
+				if (is_string($title) && trim($title) !== '') {
+                    $map->title = trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title));
+                }
+                $map->WriteConfig($mapfile);
 				raise_message('map_message', __('New Map file %s created.', basename($mapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 			}
 		} else {

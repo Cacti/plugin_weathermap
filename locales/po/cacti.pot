@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti \n"
+"Project-Id-Version: Cacti\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 11:22+1030\n"
+"POT-Creation-Date: 2026-10-10 00:53+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -1039,7 +1039,7 @@ msgstr ""
 msgid "Map Properties"
 msgstr ""
 
-#: weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
 msgid "Map Title"
 msgstr ""
 
@@ -1516,6 +1516,10 @@ msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 msgid "Name including .conf"
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php

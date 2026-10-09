@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* feature: Allow setting a map title when creating configuration files
+
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
 * feature#279: Show larger responsive map preview cards with separated borders and centered titles
