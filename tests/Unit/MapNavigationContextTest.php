@@ -12,12 +12,14 @@ beforeAll(function () {
 
 beforeEach(function () {
 	$GLOBALS['__test_request'] = [];
+	$GLOBALS['__test_nfilter_request'] = [];
 	unset($GLOBALS['__test_db_fetch_row_prepared'], $GLOBALS['__test_db_fetch_cell_prepared']);
 	unset($_SERVER['SCRIPT_NAME'], $_SESSION['sess_config_settings_tab']);
 });
 
 afterEach(function () {
 	$GLOBALS['__test_request'] = [];
+	$GLOBALS['__test_nfilter_request'] = [];
 	unset($GLOBALS['__test_db_fetch_row_prepared'], $GLOBALS['__test_db_fetch_cell_prepared']);
 	unset($_SERVER['SCRIPT_NAME'], $_SESSION['sess_config_settings_tab']);
 });

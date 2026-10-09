@@ -65,3 +65,28 @@ it('KeepsLegacyArrayResponsesBounded', function (): void {
 	expect($result)->toHaveCount(100);
 	expect($result[0]['id'])->toBe(1);
 });
+
+it('LooksUpOnlyTheSelectedPermittedGraphForTheEditorSummary', function (): void {
+	$result = editorPickerResponse(['endpoint' => 'datasources', 'paged' => '1', 'local_graph_id' => 115]);
+	expect($result['items'])->toHaveCount(1);
+	expect($result['items'][0]['local_graph_id'])->toBe(115);
+	$denied = editorPickerResponse(['endpoint' => 'datasources', 'paged' => '1', 'local_graph_id' => 115, 'denied' => [115]]);
+	expect($denied['items'])->toBe([]);
+});
+
+it('FindsSelectedGraphIdsBeyondTheFirstPageWithoutLeakingDeniedGraphs', function (): void {
+	$result = editorPickerResponse(['paged' => '1', 'graph_ids' => '115,125', 'denied' => [125]]);
+	expect(array_column($result['items'], 'id'))->toBe([115]);
+	$invalid = editorPickerResponse(['paged' => '1', 'graph_ids' => 'bad,-1']);
+	expect($invalid['items'])->toBe([]);
+});
+
+
+it('BoundsSelectedInterfaceBatchesAndRetainsPermissionChecks', function (): void {
+	$result = editorPickerResponse(['endpoint' => 'datasources', 'paged' => '1', 'graph_ids' => '115,125', 'denied' => [125]]);
+	expect(array_column($result['items'], 'local_graph_id'))->toBe([115]);
+	foreach (['bad,-1', implode(',', range(1, 101))] as $invalid) {
+		$result = editorPickerResponse(['endpoint' => 'datasources', 'paged' => '1', 'graph_ids' => $invalid]);
+		expect($result['items'])->toBe([]);
+	}
+});
