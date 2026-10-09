@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* feature: Default new graph assignments to Time Graph View
+
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
 * feature#279: Show larger responsive map preview cards with separated borders and centered titles
