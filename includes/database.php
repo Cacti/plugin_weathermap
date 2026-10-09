@@ -236,7 +236,7 @@ function weathermap_setup_table() {
 		$tsize = read_config_option('weathermap_thumbsize');
 
 		if ($tsize == '' || $tsize < 1) {
-			set_config_option('weathermap_thumbsize', '250');
+			set_config_option('weathermap_thumbsize', '1000');
 		}
 
 		$ms = read_config_option('weathermap_map_selector');
