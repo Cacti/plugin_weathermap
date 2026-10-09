@@ -96,6 +96,176 @@ msgid "Click on the map where you would like to add a new node."
 msgstr ""
 
 #: lib/editor.inc.php
+msgid "Current interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Advanced settings"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Change interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Custom configuration — details under Advanced"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "For a standard interface traffic link, the main controls are enough. Use Advanced to combine traffic sources, show multiple hover graphs, choose a different click destination or customise the line. Weathermap also supports other measurements, such as CPU and memory, commonly displayed on nodes."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Position sets the X and Y coordinates; Move lets you place the node on the map."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove %s from this map?"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %d."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "The Cacti device and graphs will remain."
+msgstr ""
+
+#: lib/editor.inc.php
 msgid "WARNING: Pressing 'Delete Node' will delete this Node."
 msgstr ""
 
@@ -118,10 +288,6 @@ msgstr ""
 
 #: lib/editor.inc.php weathermap-cacti-plugin-editor.php
 msgid "Delete Link"
-msgstr ""
-
-#: lib/editor.inc.php
-msgid "Delete Node"
 msgstr ""
 
 #: lib/editor.inc.php weathermap-cacti-plugin-editor.php
@@ -842,7 +1008,11 @@ msgid "OUT Comment"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "You can modify the Weathermap Link from here.  The Maximum Bandwidth refers to the Maximum Bandwidth attainable.  Supported suffixes are K, M, G, and T.  Data Sources is a location where you can add RRDfile locations including some RRDfile math.  See the documentation for that.  The Data Source Selector is a helper for picking Cacti Graphs to represent the target or targets.  Link width is the Width of the link arrow.  The INFO URL is a link that you can provide when clicking on the active Map Link.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Link.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's. The IN and OUT Comments appear on the Links with the Links.  There are several other Link properties possible.  However, today we are only supporting those included above."
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate link utilisation, for example 100M or 1G. K, M, G and T are supported. Use the same value for both directions unless their capacities differ.</p>\n"
+"<p><strong>Interface:</strong> Search by device, port or description, then select Use interface to fill the traffic source, click destination and hover graph together. Save applies the changes.</p>\n"
+"<p><strong>Comments:</strong> Add text to display along each direction of the link. The percentage controls its position along the line.</p>\n"
+"<p><strong>Advanced:</strong> Use custom data sources or combine multiple sources, choose different graphs, change the click destination, or adjust line shape. Data Source(s) controls the measured traffic; Info URL(s) controls where a click goes; Hover Graph URL(s) controls the images shown on hover.</p>"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php

@@ -179,6 +179,12 @@ $unmeasured_allowlist = [
 	// from the isolated unit process, though the table creation is exercised by
 	// WeathermapInstallHooksTest.
 	'includes/database.php',
+	// Editor map-mutation actions: every function instantiates the 4,500-line
+	// WeatherMap engine (new WeatherMap + ReadConfig/WriteConfig), which cannot
+	// load in the isolated unit process - it redefines the IN/OUT constants and
+	// collides with the datasource test harness's WeatherMapDataSource stub. The
+	// editor save/delete workflow is covered by the Browser/E2E suites instead.
+	'lib/editor.actions.php',
 ];
 $unmeasured            = array_values(array_diff(array_keys($changed), array_keys($measured)));
 $unexpected_unmeasured = array_values(array_diff($unmeasured, $unmeasured_allowlist));
