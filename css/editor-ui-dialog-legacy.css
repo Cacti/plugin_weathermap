@@ -1,0 +1,15 @@
+/*
+ * Legacy jQuery UI dialog overrides for the Weathermap editor.
+ *
+ * These rules are only loaded on Cacti releases earlier than 1.2.32.
+ * On Cacti 1.2.32 and above the equivalent ui.dialog styling is provided
+ * by the main theme CSS files, so this file must not be loaded there.
+ */
+
+.ui-dialog-buttonset {
+	font-size: 12px !important;
+}
+
+.ui-dialog-title {
+	font-size: 12px !important;
+}

@@ -166,11 +166,21 @@ $unmeasured_allowlist = [
 	// Web UI entry point: top-level include of ../../include/auth.php plus
 	// request-var dispatch, so it cannot load in the isolated unit process.
 	'weathermap-cacti-plugin-mgmt.php',
+	// Editor web entry point: top-level include of ../../include/auth.php that
+	// emits the editor HTML at the top level, so it cannot load in the isolated
+	// unit process.
+	'weathermap-cacti-plugin-editor.php',
 	// Schema provisioning relocated verbatim from setup.php; its data-migration
 	// branches (column-exists upgrades, duplicate-row cleanup) are not reachable
 	// from the isolated unit process, though the table creation is exercised by
 	// WeathermapInstallHooksTest.
 	'includes/database.php',
+	// Editor map-mutation actions: every function instantiates the 4,500-line
+	// WeatherMap engine (new WeatherMap + ReadConfig/WriteConfig), which cannot
+	// load in the isolated unit process - it redefines the IN/OUT constants and
+	// collides with the datasource test harness's WeatherMapDataSource stub. The
+	// editor save/delete workflow is covered by the Browser/E2E suites instead.
+	'lib/editor.actions.php',
 ];
 $unmeasured            = array_values(array_diff(array_keys($changed), array_keys($measured)));
 $unexpected_unmeasured = array_values(array_diff($unmeasured, $unmeasured_allowlist));
