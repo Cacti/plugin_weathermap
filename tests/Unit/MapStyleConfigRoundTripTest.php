@@ -48,6 +48,17 @@ final class MapStyleConfigRoundTripTest extends TestCase {
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testSavesAndReloadsPortableFontAndCommentDefaults(): void {
+		if (!function_exists('cacti_count')) {
+			/**
+			 * Count values using the standalone fixture's Cacti-compatible helper.
+			 *
+			 * @param mixed $values
+			 * @return int
+			 */
+			function cacti_count($values) {
+				return is_countable($values) ? count($values) : 0;
+			}
+		}
 		$plugin = dirname(__DIR__, 2);
 		chdir($plugin);
 		require_once $plugin . '/setup.php';
