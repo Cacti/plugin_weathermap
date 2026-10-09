@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* issue#293: Normalize graph default regression test formatting
+
 * feature#293: Default new graph assignments to Time Graph View
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
