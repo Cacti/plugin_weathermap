@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* issue: Load viewer helpers explicitly before rendering maps
+* issue#289: Load viewer helpers explicitly before rendering maps
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
