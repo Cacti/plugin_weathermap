@@ -64,7 +64,7 @@ function wm_new_map_preset($map) {
 		}
 		$font                               = new WMFont();
 		$font->type                         = 'truetype';
-		$font->file                         = $file;
+		$font->file                         = 'docs/example/Vera.ttf';
 		$font->size                         = 9;
 		$map->fonts[$number]                = $font;
 		$map->links['DEFAULT']->bwfont      = $number;

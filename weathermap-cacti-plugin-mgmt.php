@@ -3373,15 +3373,15 @@ function newMap($mapfile, $sourcemapfile = '') {
 			if ($sourcemapfile != '') {
 				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
 					$map->ReadConfig($sourcemapfile);
-                $map->WriteConfig($mapfile);
+				$map->WriteConfig($mapfile);
 					raise_message('map_message', __('New Map file %s created from %s', basename($mapfile), basename($sourcemapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 				} else {
 					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
 				}
 			} elseif ($mapfile != '') {
-                require_once __DIR__ . '/lib/editor.new-map-preset.php';
-                wm_new_map_preset($map);
-                $map->WriteConfig($mapfile);
+				require_once __DIR__ . '/lib/editor.new-map-preset.php';
+				wm_new_map_preset($map);
+				$map->WriteConfig($mapfile);
 				raise_message('map_message', __('New Map file %s created.', basename($mapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 			}
 		} else {

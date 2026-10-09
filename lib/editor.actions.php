@@ -58,7 +58,7 @@ function newMap($mapfile) {
 	$map->context = 'editor';
 
 	require_once __DIR__ . '/editor.new-map-preset.php';
-    wm_new_map_preset($map);
+	wm_new_map_preset($map);
 	$map->WriteConfig($mapfile);
 }
 
