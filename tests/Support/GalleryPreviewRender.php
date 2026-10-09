@@ -74,7 +74,7 @@ $_SESSION['sess_user_id']         = 23;
 $GLOBALS['fixture_maps']          = [];
 
 foreach (['thumb-only', 'full-only', 'both', 'missing'] as $index => $kind) {
-	$hash                      = str_repeat((string) ($index + 1), 32);
+	$hash                      = str_repeat((string) ($index + 1), 20);
 	$GLOBALS['fixture_maps'][] = ['id' => $index + 1, 'group_id' => 7, 'filehash' => $hash, 'titlecache' => $kind . ' <map> "quoted" &quot; ` &', 'configfile' => $kind . '.conf'];
 
 	if ($kind === 'thumb-only' || $kind === 'both') {
@@ -93,17 +93,45 @@ try {
 	$end      = strpos($source, "\n/**", $start);
 	$function = str_replace('__DIR__', var_export($directory, true), substr($source, $start, $end - $start));
 	eval($function);
+	$start = strpos($source, 'function weathermap_translate_id(');
+	$end   = strpos($source, "\n/**", $start);
+	eval(substr($source, $start, $end - $start));
+	$start                                    = strpos($source, '$id = -1;');
+	$end                                      = strpos($source, 'if ($id >= 0)', $start);
+	$dispatch                                 = substr($source, $start, $end - $start);
+	$GLOBALS['__test_db_fetch_cell_prepared'] = function ($sql, $params) {
+		foreach ($GLOBALS['fixture_maps'] as $map) {
+			if ($params === [$map['filehash'], $map['filehash']]) {
+				return $map['id'];
+			}
+		}
+
+		return false;
+	};
 	$renders = [];
 
 	foreach ([false, false, true] as $change) {
 		if ($change) {
-			$file = $directory . '/output/' . str_repeat('1', 32) . '.thumb.png';
+			$file = $directory . '/output/' . str_repeat('1', 20) . '.thumb.png';
 			touch($file, 1700000100);
 			clearstatcache(true, $file);
 		}
 		ob_start();
 		weathermap_thumbview(7);
-		$renders[] = ob_get_clean();
+		$html = ob_get_clean();
+		preg_match_all('/<img[^>]+src="([^"]+)"/', $html, $images);
+
+		foreach ($images[1] as $url) {
+			parse_str(parse_url(html_entity_decode($url, ENT_QUOTES | ENT_HTML5, 'UTF-8'), PHP_URL_QUERY), $query);
+			$GLOBALS['__test_request'] = $query;
+			eval($dispatch);
+
+			if (!in_array($id, [1, 3], true)) {
+				throw new RuntimeException('Generated thumbnail URL must resolve through the real dispatcher.');
+			}
+		}
+		$GLOBALS['__test_request'] = [];
+		$renders[]                 = $html;
 	}
 
 	if (($argv[1] ?? '') === 'native' && ($GLOBALS['fixture_attribute_calls'] ?? 0) !== 24) {

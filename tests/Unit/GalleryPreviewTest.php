@@ -53,8 +53,8 @@ it('UsesExistingGeneratedThumbnailsAndVersionsOnlyChangedPreviews', function (st
 		}
 		$urls[] = $parameters;
 	}
-	expect($urls[0])->toBe([str_repeat('1', 32) => '1700000000', str_repeat('3', 32) => '1700000000'])
-		->and($urls[2])->toBe([str_repeat('1', 32) => '1700000100', str_repeat('3', 32) => '1700000000']);
+	expect($urls[0])->toBe([str_repeat('1', 20) => '1700000000', str_repeat('3', 20) => '1700000000'])
+		->and($urls[2])->toBe([str_repeat('1', 20) => '1700000100', str_repeat('3', 20) => '1700000000']);
 })->with(['fallback', 'native']);
 
 it('EscapesGalleryAttributesOnOlderCactiVersions', function () {
