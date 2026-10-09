@@ -647,6 +647,18 @@ if (count($backgd_list) == 0) {
 							</td>
 						</tr>
 						<tr>
+                            <td><label for='map_background_sizing'><?php print __('Background sizing', 'weathermap'); ?></label></td>
+                            <td><select id='map_background_sizing' name='map_background_sizing'>
+                            <?php
+                            $backgroundSizing = $map->get_hint('background_sizing', 'image');
+                            if (!in_array($backgroundSizing, ['fit', 'stretch', 'image'], true)) { $backgroundSizing = 'image'; }
+                            foreach (['fit' => __('Fit to map', 'weathermap'), 'stretch' => __('Stretch to map', 'weathermap'), 'image' => __('Use image size', 'weathermap')] as $value => $label) {
+                                print '<option value="' . $value . '"' . ($backgroundSizing === $value ? ' selected' : '') . '>' . html_escape($label) . '</option>';
+                            }
+                            ?>
+                            </select></td>
+                        </tr>
+                        <tr>
 							<td><?php print __('Timestamp Text', 'weathermap'); ?></td>
 							<td><input id='map_stamp' name='map_stamp' type='text' class='ui-state-default ui-corner-all' size='40' value='<?php print html_escape($map->stamptext) ?>' /></td>
 						</tr>
