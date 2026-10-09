@@ -42,6 +42,6 @@
 
 it('PersistsAndRendersTheNewMapOptionsUsingTheRealEngine',function () {
 	$lines = [];
-	exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg(dirname(__DIR__) . '/Support/NewMapEngineRegression.php') . ' 2>&1',$lines,$status);
+	exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg(dirname(__DIR__) . '/Support/NewMapPresetEngineRegression.php') . ' 2>&1',$lines,$status);
 	expect($status)->toBe(0)->and(implode("\n",$lines))->toBe('PASS');
 });
