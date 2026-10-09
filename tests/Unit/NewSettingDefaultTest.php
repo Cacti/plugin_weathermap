@@ -40,10 +40,13 @@
  +-------------------------------------------------------------------------+
 */
 
-
-beforeAll(function(){require_once dirname(__DIR__,2).'/setup.php';});
-it('RegistersTheNewDefaultWithoutChangingStoredPreferences',function(){
- $GLOBALS['settings']=[];$GLOBALS['tabs']=[];$GLOBALS['__test_config_options']['weathermap_thumbsize']='250';$GLOBALS['__test_set_config_option_calls']=[];
- weathermap_config_settings();expect($GLOBALS['settings']['wmap']['weathermap_thumbsize']['default'])->toBe(1000)->and(read_config_option('weathermap_thumbsize'))->toBe('250')->and($GLOBALS['__test_set_config_option_calls'])->toBeEmpty();
- unset($GLOBALS['__test_config_options']['weathermap_thumbsize']);
+beforeAll(function () {require_once dirname(__DIR__,2) . '/setup.php'; });
+it('RegistersTheNewDefaultWithoutChangingStoredPreferences',function () {
+	$GLOBALS['settings']                                      = [];
+	$GLOBALS['tabs']                                          = [];
+	$GLOBALS['__test_config_options']['weathermap_thumbsize'] = '250';
+	$GLOBALS['__test_set_config_option_calls']                = [];
+	weathermap_config_settings();
+	expect($GLOBALS['settings']['wmap']['weathermap_thumbsize']['default'])->toBe(1000)->and(read_config_option('weathermap_thumbsize'))->toBe('250')->and($GLOBALS['__test_set_config_option_calls'])->toBeEmpty();
+	unset($GLOBALS['__test_config_options']['weathermap_thumbsize']);
 });
