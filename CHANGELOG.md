@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* issue#292: Test missing and non-positive thumbnail initialization while preserving configured sizes
+
 * feature#292: Generate sharper gallery thumbnails by default
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
