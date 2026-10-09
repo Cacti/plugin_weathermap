@@ -51,7 +51,7 @@ final class BackgroundSizingEngineTest extends TestCase {
 		ob_start();
 
 		try {
-			require dirname(__DIR__) . '/Support/NewMapEngineRegression.php';
+			require dirname(__DIR__) . '/Support/BackgroundSizingEngineRegression.php';
 			$result = ob_get_contents();
 		} finally {
 			ob_end_clean();
