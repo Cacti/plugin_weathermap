@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* issue: Improve map selector placement and themed viewer controls
+* issue#291: Improve map selector placement and themed viewer controls
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
