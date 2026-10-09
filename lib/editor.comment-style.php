@@ -225,7 +225,7 @@ function wm_comment_resolve_font($map, $value) {
 	}
 	$font                = new WMFont();
 	$font->type          = 'truetype';
-	$font->file          = $file;
+	$font->file          = 'docs/example/' . $m[1];
 	$font->size          = (int)$m[2];
 	$map->fonts[$number] = $font;
 
