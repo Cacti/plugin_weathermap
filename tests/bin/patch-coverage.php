@@ -174,6 +174,10 @@ $unmeasured_allowlist = [
 	// emits the editor HTML at the top level, so it cannot load in the isolated
 	// unit process.
 	'weathermap-cacti-plugin-editor.php',
+	// Viewer web entry point: top-level include of ../../include/auth.php that
+	// renders the map viewer/breadcrumbs at the top level, so it cannot load in
+	// the isolated unit process.
+	'weathermap-cacti-plugin.php',
 	// Schema provisioning relocated verbatim from setup.php; its data-migration
 	// branches (column-exists upgrades, duplicate-row cleanup) are not reachable
 	// from the isolated unit process, though the table creation is exercised by

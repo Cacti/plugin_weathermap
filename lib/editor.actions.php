@@ -1116,7 +1116,7 @@ function fixMapBackgroundAndImages(&$map) {
  */
 function getImageURL($mapname, $selected) {
 	// now we'll just draw the full editor page, with our new knowledge
-	$imageurl = 'weathermap-cacti-plugin-editor.php?mapname=' . $mapname . '&action=draw';
+	$imageurl = 'weathermap-cacti-plugin-editor.php?mapname=' . rawurlencode($mapname) . '&action=draw';
 
 	if ($selected != '') {
 		$imageurl .= '&selected=' . wm_editor_sanitize_selected($selected);

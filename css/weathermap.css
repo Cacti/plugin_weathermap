@@ -96,6 +96,10 @@ body#wm_fullscreen { font-family: sans-serif; margin: 0; border: 0; padding: 0; 
 
 #wm_cyclecontrols a img { width: 16px; height: 16px; border: 0; }
 
+.wm-map-title { margin: 4px 4px 0; width: calc(100% - 8px); }
+
+.tableHeader .wm-edit-map { color: inherit; }
+
 .wm-gallery-cards { padding: 12px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
 .wm-map-card { margin: 0; width: 480px; max-width: 100%; box-sizing: border-box; border: 1px solid var(--border-color, #999); border-radius: 5px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,.12); }
 

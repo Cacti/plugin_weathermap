@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 10:11+1030\n"
+"POT-Creation-Date: 2026-10-09 11:22+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -52,7 +52,7 @@ msgid "Create"
 msgstr ""
 
 #: lib/editor.inc.php
-msgid "Note: filenames must contain no spaces and end in .conf"
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
 msgstr ""
 
 #: lib/editor.inc.php
@@ -805,6 +805,18 @@ msgstr ""
 msgid "Group Admin Delete"
 msgstr ""
 
+#: setup.php
+msgid "Manage"
+msgstr ""
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr ""
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr ""
+
 #: setup.php weathermap-cacti-plugin.php
 msgid "Local Documentation"
 msgstr ""
@@ -821,6 +833,14 @@ msgstr ""
 #: weathermap-cacti-plugin-editor.php
 #, php-format
 msgid "PHP Weathermap Editor %s"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1314,10 +1334,6 @@ msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 msgid "Cacti Weathermap Settings"
-msgstr ""
-
-#: weathermap-cacti-plugin-mgmt.php
-msgid "Settings"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
@@ -1897,14 +1913,6 @@ msgid "Network Weathermap named \"%s\""
 msgstr ""
 
 #: weathermap-cacti-plugin.php
-msgid "Return to Main Page"
-msgstr ""
-
-#: weathermap-cacti-plugin.php
-msgid "Map Permissions"
-msgstr ""
-
-#: weathermap-cacti-plugin.php
 msgid "This map hasn't been created yet."
 msgstr ""
 
@@ -1971,6 +1979,14 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "All Maps"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Weathermaps"
+msgstr ""
+
+#: weathermap-cacti-plugin.php
+msgid "Map Permissions"
 msgstr ""
 
 #: weathermap-cacti-plugin.php

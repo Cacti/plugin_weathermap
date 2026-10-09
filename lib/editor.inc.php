@@ -348,25 +348,20 @@ function wm_editor_sanitize_file($filename,$allowed_exts = []) {
 }
 
 /**
- * @param  string $filename
- * @return mixed
+ * Validate a config basename that has already been decoded by PHP.
+ *
+ * @param mixed $filename The decoded request value or local basename.
+ *
+ * @return string The unchanged basename, or an empty string when invalid.
  */
 function wm_editor_sanitize_conffile($filename) {
-	$filename = wm_editor_sanitize_uri($filename);
-
-	// If we've been fed something other than a .conf filename, just pretend it didn't happen
-	if (substr($filename,-5,5) != '.conf') {
-		$filename = '';
+	if (!is_string($filename) || strlen($filename) <= 5 || !str_ends_with($filename, '.conf')) {
+		return '';
 	}
 
-	// on top of the url stuff, we don't ever need to see a / in a config filename (CVE-2013-3739)
-	if (strstr($filename,'/') !== false) {
-		$filename = '';
-	}
-
-	// Defense-in-depth: reject Windows path separators to prevent traversal on Windows hosts.
-	if (strstr($filename, '\\') !== false) {
-		$filename = '';
+	// Reject path separators and controls instead of rewriting a different filename.
+	if (strpbrk($filename, '/\\') !== false || preg_match('/[\x00-\x1f\x7f]/', $filename)) {
+		return '';
 	}
 
 	return $filename;
@@ -410,7 +405,7 @@ function show_editor_startpage() {
 
 	print '<input type="submit" value="' . __('Create', 'weathermap') . '">';
 
-	print '<p><small>' . __('Note: filenames must contain no spaces and end in .conf', 'weathermap') . '</small></p>';
+	print '<p><small>' . __('Note: filenames must end in .conf and contain no path separators or control characters', 'weathermap') . '</small></p>';
 	print '</form>';
 
 	$titles = [];
@@ -476,7 +471,7 @@ function show_editor_startpage() {
 
 	if ($errorstring == '') {
 		foreach ($titles as $file=>$title) {
-			$nicefile = html_escape($file);
+			$nicefile = plugin_weathermap_escape_attr($file);
 			print "<option value=\"$nicefile\">$nicefile</option>\n";
 		}
 	} else {
@@ -494,9 +489,10 @@ function show_editor_startpage() {
 			// $title = $titles[$file];
 			$note      = $notes[$file];
 			$nicefile  = html_escape($file);
+			$fileurl   = plugin_weathermap_escape_attr('?mapname=' . rawurlencode($file));
 			$nicetitle = html_escape($title);
 
-			print "<li>$note<a href='?mapname=$nicefile'>$nicefile</a> - <span class='comment'>$nicetitle</span></li>";
+			print "<li>$note<a href='$fileurl'>$nicefile</a> - <span class='comment'>$nicetitle</span></li>";
 		}
 	} else {
 		print '<li>' . html_escape($errorstring) . '</li>';

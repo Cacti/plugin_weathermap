@@ -88,6 +88,8 @@ $selected = '';
 
 set_default_action('');
 
+$editor_return_context = get_nfilter_request_var('return_to') === 'manage' ? 'manage' : 'map';
+
 if (isset_request_var('action')) {
 	$action = wm_editor_sanitize_action(get_nfilter_request_var('action'), [
 		'graphs', 'datasources', 'newmap', 'newmapcopy', 'font_samples', 'draw',
@@ -289,7 +291,21 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<title><?php print __('PHP Weathermap Editor %s', $weathermap_version, 'flowview'); ?></title>
 </head>
 
-<body id='mainView' class='mainView'>
+<?php
+$editor_return_hash  = db_fetch_cell_prepared('SELECT filehash FROM weathermap_maps WHERE configfile = ? LIMIT 1', [$mapname]);
+$editor_return_url   = 'weathermap-cacti-plugin.php';
+$editor_return_label = __('Return to Map', 'weathermap');
+
+if (!empty($editor_return_hash)) {
+	$editor_return_url .= '?action=viewmap&id=' . rawurlencode($editor_return_hash);
+}
+
+if ($editor_return_context === 'manage') {
+	$editor_return_url   = 'weathermap-cacti-plugin-mgmt.php';
+	$editor_return_label = __('Return to Manage', 'weathermap');
+}
+?>
+<body id='mainView' class='mainView' data-return-label='<?php print plugin_weathermap_escape_attr($editor_return_label); ?>' data-return-map='<?php print plugin_weathermap_escape_attr($editor_return_url); ?>'>
 	<div id='toolbar'>
 		<ul>
 			<li class='tb_active' id='tb_newfile'><?php print __('Change<br>File', 'weathermap'); ?></li>
@@ -315,13 +331,14 @@ $weathermap_version = plugin_weathermap_numeric_version();
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
 			<div class='debug' style='display:none'><p><strong><?php print __('Debug', 'weathermap'); ?></strong>
-				<a href='?action=retidy_all&mapname=<?php print html_escape($mapname); ?>'><?php print __('Re-tidy ALL', 'weathermap'); ?></a>
-				<a href='?action=retidy&mapname=<?php print html_escape($mapname); ?>'><?php print __('Re-tidy', 'weathermap'); ?></a>
-				<a href='?action=untidy&mapname=<?php print html_escape($mapname); ?>'><?php print __('Un-tidy', 'weathermap'); ?></a>
-				<a href='?action=nothing&mapname=<?php print html_escape($mapname); ?>'><?php print __('Do Nothing', 'weathermap'); ?></a>
+				<a href='?action=retidy_all&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('Re-tidy ALL', 'weathermap'); ?></a>
+				<a href='?action=retidy&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('Re-tidy', 'weathermap'); ?></a>
+				<a href='?action=untidy&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('Un-tidy', 'weathermap'); ?></a>
+				<a href='?action=nothing&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('Do Nothing', 'weathermap'); ?></a>
 				<span>
 					<label for='mapname'><?php print __('mapfile', 'weathermap'); ?></label>
-					<input id='mapname' name='mapname' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($mapname); ?>'>
+					<input name='return_to' type='hidden' value='<?php print plugin_weathermap_escape_attr($editor_return_context); ?>'>
+					<input id='mapname' name='mapname' type='text' class='ui-state-default ui-corner-all' value='<?php print plugin_weathermap_escape_attr($mapname); ?>'>
 				</span>
 				<span>
 					<label for='action'><?php print __('action', 'weathermap'); ?></label>
@@ -339,7 +356,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 					<label for='debug'><?php print __('debug', 'weathermap'); ?></label>
 					<input id='debug' name='debug' type='text' class='ui-state-default ui-corner-all' value=''>
 				</span>
-				<a target='configwindow' href='?action=show_config&mapname=<?php print urlencode($mapname) ?>'><?php print __('See config', 'weathermap'); ?></a>
+				<a target='configwindow' href='?action=show_config&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('See config', 'weathermap'); ?></a>
 			</div>
 		</div>
 
