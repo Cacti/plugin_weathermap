@@ -99,7 +99,7 @@ function wm_style_font_options($map, $current) {
 	}
 
 	foreach ($map->fonts as $number => $font) {
-		$key = $font->type === 'truetype' && is_readable($font->file) ? sha1_file($font->file) . ':' . $font->size : '';
+		$key = $font->type === 'truetype' && is_readable(wm_font_file($font->file)) ? sha1_file(wm_font_file($font->file)) . ':' . $font->size : '';
 
 		if (isset($bundled[$key])) {
 			if (!isset($matches[$key]) || $current == $number) {
@@ -196,7 +196,7 @@ function wm_comment_resolve_font($map, $value) {
 	}
 
 	foreach ($map->fonts as $number => $font) {
-		if ($font->type === 'truetype' && realpath($font->file) === $file && (int)$font->size === (int)$m[2]) {
+		if ($font->type === 'truetype' && realpath(wm_font_file($font->file)) === $file && (int)$font->size === (int)$m[2]) {
 			return (int)$number;
 		}
 	}

@@ -99,3 +99,20 @@ it('UsesReadableFontNamesInTheExistingFontSelector', function () {
 	$html = get_fontlist($map, 'font"name', 100);
 	expect($html)->toContain('Vera Sans — 9 pt', 'selected', 'font&quot;name');
 });
+
+
+it('DeduplicatesAndReusesPortableFontsFromTheCactiWorkingDirectory', function () {
+	$cwd = getcwd();
+	$map = wm_style_test_map();
+	$map->fonts[100]->file = 'docs/example/Vera.ttf';
+	try {
+		chdir(dirname(__DIR__, 4));
+		$html = wm_style_font_options($map, 100);
+		expect(substr_count($html, 'Vera Sans — 9 pt'))->toBe(1)
+			->and($html)->toContain('value="100" selected');
+		expect(wm_comment_resolve_font($map, 'bundled:Vera.ttf:9'))->toBe(100)
+			->and(count($map->fonts))->toBe(2);
+	} finally {
+		chdir($cwd);
+	}
+});
