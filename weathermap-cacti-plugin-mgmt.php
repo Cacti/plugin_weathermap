@@ -1349,8 +1349,8 @@ function addmap_filter() {
 						<td>
 							<input id='newfile' class='ui-state-default ui-corner-all' name='newfile' type='text' size='25' value='' placeholder='<?php print __('Name including .conf', 'weathermaps'); ?>'>
 						</td>
-                        <td><label for='newtitle'><?php print __('Map Title', 'weathermap'); ?></label></td>
-                        <td><input id='newtitle' class='ui-state-default ui-corner-all' name='newtitle' type='text' size='25' value='' placeholder='<?php print __('Optional map title', 'weathermap'); ?>'></td>
+						<td><label for='newtitle'><?php print __('Map Title', 'weathermap'); ?></label></td>
+						<td><input id='newtitle' class='ui-state-default ui-corner-all' name='newtitle' type='text' size='25' value='' placeholder='<?php print __('Optional map title', 'weathermap'); ?>'></td>
 						<td>
 							<?php print __('Source Map', 'weathermaps'); ?>
 						</td>
@@ -1420,7 +1420,7 @@ function addmap_filter() {
 					var json   = {
 						__csrf_magic: csrfMagicToken,
 						newfile: $('#newfile').val(),
-                        newtitle: $('#newtitle').val(),
+						newtitle: $('#newtitle').val(),
 						srcmap: $('#srcmap').val()
 					};
 
@@ -3378,18 +3378,18 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
 					$map->ReadConfig($sourcemapfile);
 					if (is_string($title) && trim($title) !== '') {
-                    $map->title = trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title));
-                }
-                $map->WriteConfig($mapfile);
+					$map->title = trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title));
+				}
+				$map->WriteConfig($mapfile);
 					raise_message('map_message', __('New Map file %s created from %s', basename($mapfile), basename($sourcemapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 				} else {
 					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
 				}
 			} elseif ($mapfile != '') {
 				if (is_string($title) && trim($title) !== '') {
-                    $map->title = trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title));
-                }
-                $map->WriteConfig($mapfile);
+					$map->title = trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title));
+				}
+				$map->WriteConfig($mapfile);
 				raise_message('map_message', __('New Map file %s created.', basename($mapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 			}
 		} else {
