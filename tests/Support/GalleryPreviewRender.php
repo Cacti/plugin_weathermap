@@ -7,6 +7,15 @@
 */
 
 require dirname(__DIR__) . '/bootstrap-unit.php';
+require dirname(__DIR__, 2) . '/setup.php';
+
+if (($argv[1] ?? '') === 'native') {
+	function html_escape_attr($value) {
+		$GLOBALS['fixture_attribute_calls'] = ($GLOBALS['fixture_attribute_calls'] ?? 0) + 1;
+
+		return htmlspecialchars($value, ENT_QUOTES | ENT_HTML5, 'UTF-8', true);
+	}
+}
 
 set_error_handler(function ($severity, $message) {
 	throw new RuntimeException($message);
@@ -43,7 +52,7 @@ $GLOBALS['fixture_maps']          = [];
 
 foreach (['thumb-only', 'full-only', 'both', 'missing'] as $index => $kind) {
 	$hash                      = str_repeat((string) ($index + 1), 32);
-	$GLOBALS['fixture_maps'][] = ['id' => $index + 1, 'group_id' => 7, 'filehash' => $hash, 'titlecache' => $kind . ' <map>', 'configfile' => $kind . '.conf'];
+	$GLOBALS['fixture_maps'][] = ['id' => $index + 1, 'group_id' => 7, 'filehash' => $hash, 'titlecache' => $kind . ' <map> "quoted" &quot; ` &', 'configfile' => $kind . '.conf'];
 
 	if ($kind === 'thumb-only' || $kind === 'both') {
 		file_put_contents($directory . '/output/' . $hash . '.thumb.png', 'fixture thumbnail');
@@ -72,6 +81,10 @@ try {
 		ob_start();
 		weathermap_thumbview(7);
 		$renders[] = ob_get_clean();
+	}
+
+	if (($argv[1] ?? '') === 'native' && ($GLOBALS['fixture_attribute_calls'] ?? 0) !== 24) {
+		throw new RuntimeException('Gallery attributes must delegate to Cacti when available.');
 	}
 	print json_encode($renders, JSON_THROW_ON_ERROR);
 } finally {

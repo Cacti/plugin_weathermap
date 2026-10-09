@@ -572,7 +572,7 @@ function weathermap_thumbview($limit_to_group = -1) {
 				if (file_exists($thumbfile)) {
 					$thumburl = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewthumb&id=' . rawurlencode($map['filehash']) . '&v=' . filemtime($thumbfile);
 					$mapurl   = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmap&id=' . rawurlencode($map['filehash']);
-					print '<div><a href="' . html_escape($mapurl) . '"><img class="wm_thumb" src="' . html_escape($thumburl) . '" alt="' . html_escape($maptitle) . '" title="' . html_escape($maptitle) . '"/></a></div>';
+					print '<div><a href="' . plugin_weathermap_escape_attr($mapurl) . '"><img class="wm_thumb" src="' . plugin_weathermap_escape_attr($thumburl) . '" alt="' . plugin_weathermap_escape_attr($maptitle) . '" title="' . plugin_weathermap_escape_attr($maptitle) . '"/></a></div>';
 				} else {
 					print __('(thumbnail for map not created yet)', 'weathermap');
 				}

@@ -1441,3 +1441,18 @@ function weathermap_rmtree(string $dir): bool {
 
 	return $ok;
 }
+
+/**
+ * Escape an HTML attribute using Cacti's helper when available.
+ *
+ * @param string $value The attribute value before escaping.
+ *
+ * @return string The attribute value with quotes and entities safely encoded.
+ */
+function plugin_weathermap_escape_attr($value) {
+	if (function_exists('html_escape_attr')) {
+		return html_escape_attr($value);
+	}
+
+	return str_replace('`', '&#96;', htmlspecialchars($value, ENT_QUOTES | ENT_HTML5, 'UTF-8', true));
+}
