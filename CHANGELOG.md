@@ -18,6 +18,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * feature#279: Show larger responsive map preview cards with separated borders and centered titles
 
+* issue#196: Restore cycle countdown, persistent fullscreen exit and reload fallback
+
 * issue#276: Preserve query separators when saving node and link click URLs
 * feature#276: Simplify node and link editing with readable names, common controls, searchable interface assignment, advanced controls, and clear deletion warnings
 * issue#277: Allow map duplication when the debug column is absent while preserving its default when present

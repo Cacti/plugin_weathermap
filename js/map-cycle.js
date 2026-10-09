@@ -11,6 +11,8 @@ jQuery.fn.center = function () {
     return this;
 };
 
+if (typeof WMcycler !== 'undefined' && WMcycler.stop) { WMcycler.stop(); }
+
 var WMcycler = {
 
     KEYCODE_ESCAPE : 27,
@@ -29,14 +31,18 @@ var WMcycler = {
     timer_reloader : null,
 
     updateProgress : function () {
-        // update the countdown bar - 450 is the max width in pixels
-        var progress = this.countdown / (this.period / 200) * 450;
-        $("#wm_progress").css("width", progress);
+        $("#cycle_pause").attr("aria-pressed", this.paused ? "true" : "false");
+        // Update the countdown as a proportion of the selected cycle period.
+        var progress = this.period > 0 ? Math.max(0, Math.min(100, this.countdown / (this.period / 200) * 100)) : 100;
+        $("#wm_progress").css("width", progress + "%");
+        var label = $("#wm_countdown");
+        label.text(this.paused ? (label.attr('data-paused-label') || 'Paused') :
+            (label.attr('data-next-label') || 'Next map in %ss').replace('%s', Math.max(0, Math.ceil(this.countdown / 5))));
     },
 
     counterHandler : function () {
         if (this.paused) {
-            $("#wm_progress").toggleClass("paused");
+            this.updateProgress();
         } else {
             this.updateProgress();
             this.countdown--;
@@ -99,15 +105,17 @@ var WMcycler = {
     },
 
 
-    hideControls: function () {
-        $("#wmcyclecontrolbox").fadeOut(500);
-    },
-
-    showControls: function () {
-        $("#wmcyclecontrolbox").fadeIn(100);
+    stop : function () {
+        clearInterval(this.timer_counter);
+        clearTimeout(this.timer_reloader);
+        $(document).off('.wmCycle');
+        $('#cycle_pause,#cycle_next,#cycle_prev,.wm-fullscreen-link').off('.wmCycle');
     },
 
     start : function (initialData) {
+        this.stop();
+        this.paused = false;
+        $('#cycle_pause').attr('aria-pressed', 'false');
 
 
 	$('.weathermapholder').hide();
@@ -127,16 +135,11 @@ var WMcycler = {
 
         // stop here if there were no maps
         if (this.nmaps > 0) {
+            if (this.period === 0) { this.period = this.poller_cycle / this.nmaps; }
             this.current = 0;
 
             this.switchMap(0);
 
-            // figure out how long the refresh is, so that we get
-            // through all the maps in exactly one poller cycle
-            if (this.period === 0) {
-                this.period = this.poller_cycle / this.nmaps;
-            }
-            this.countdown = this.period / 200;
 
             // a countdown timer in the top corner
             this.timer_counter = setInterval(function () {
@@ -145,17 +148,23 @@ var WMcycler = {
 
             // when to reload the whole page (with new map data)
             this.timer_reloader = setTimeout(function () {
-				loadPage(document.location.href);
+				if (typeof loadPage === 'function' && !that.fullscreen) {
+                    loadPage(document.location.href);
+                } else {
+                    window.location.reload();
+                }
             }, this.poller_cycle);
-
-            this.initIdle(that);
         }
     },
 
     initKeys: function (that) {
-        $(document).on('keyup', function(event) {
+        $(document).on('keyup.wmCycle', function(event) {
+            if ($(event.target).closest('a, button, input, select, textarea, [role="button"], [contenteditable]:not([contenteditable="false"])').length) {
+                return;
+            }
+
             if (event.keyCode === that.KEYCODE_ESCAPE) {
-                window.location.href = $('#cycle_stop').attr('href');
+                window.location.href = $(that.fullscreen ? '#cycle_exit_fullscreen' : '#cycle_stop').attr('href');
                 event.preventDefault();
             }
 
@@ -177,38 +186,24 @@ var WMcycler = {
     },
 
     initEvents: function (that) {
+        $('.wm-fullscreen-link').off('click.wmCycle').on('click.wmCycle', function(event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            window.location.assign(this.href);
+        });
 
-        $("#cycle_pause").on('click', function() {
+        $("#cycle_pause").off('click.wmCycle').on('click.wmCycle', function(event) {
+            event.preventDefault();
             that.pauseAction();
         });
-        $("#cycle_next").on('click', function() {
+        $("#cycle_next").off('click.wmCycle').on('click.wmCycle', function(event) {
+            event.preventDefault();
             that.nextAction();
         });
-        $("#cycle_prev").on('click', function() {
+        $("#cycle_prev").off('click.wmCycle').on('click.wmCycle', function(event) {
+            event.preventDefault();
             that.previousAction();
         });
-    },
-
-    initIdle: function (that) {
-        // aim to get a video-player style OSD for fullscreen mode:
-        // if the pointer is off the controls for more than 5 seconds, fade the
-        // controls away
-        // if the pointer moves after that, bring the controls back
-        // if the pointer is over the controls, don't fade
-        if (this.fullscreen) {
-
-            $(document).idleTimer({
-                timeout: 5000
-            });
-
-            $(document).on("idle.idleTimer", function () {
-                that.hideControls();
-            });
-            $(document).on("active.idleTimer", function () {
-                that.showControls();
-            });
-
-        }
     },
 
     nextAction : function () {
@@ -219,6 +214,7 @@ var WMcycler = {
     },
     pauseAction : function () {
         this.paused = !this.paused;
+        this.updateProgress();
         // remove the paused class on the progress bar, if we're mid-flash and
         // no longer paused
         if (!this.paused) {

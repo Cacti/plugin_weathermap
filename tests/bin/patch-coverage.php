@@ -163,6 +163,10 @@ foreach ($clover->xpath('//file') as $file) {
  * Empty by default; add entries per repository as the need arises.
  */
 $unmeasured_allowlist = [
+	// Web UI entry point: top-level include of ../../include/auth.php plus a
+	// switch (get_request_var('action')) dispatch that runs at load, so it
+	// cannot load in the isolated unit process.
+	'weathermap-cacti-plugin.php',
 	// Web UI entry point: top-level include of ../../include/auth.php plus
 	// request-var dispatch, so it cannot load in the isolated unit process.
 	'weathermap-cacti-plugin-mgmt.php',
