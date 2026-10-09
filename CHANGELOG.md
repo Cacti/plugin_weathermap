@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* feature: Use a readable landscape preset for new blank maps
+* feature#295: Use a readable landscape preset for new blank maps
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
