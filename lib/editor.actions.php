@@ -472,10 +472,10 @@ function setMapProperties($mapfile) {
 		$map->background = wm_editor_sanitize_file(stripslashes(get_nfilter_request_var('map_bgfile')), ['png', 'jpg', 'gif', 'jpeg']);
 	}
 
-    $backgroundSizing = get_nfilter_request_var('map_background_sizing');
-    if (is_string($backgroundSizing) && in_array($backgroundSizing, ['fit', 'stretch', 'image'], true)) {
-        $map->add_hint('background_sizing', $backgroundSizing);
-    }
+	$backgroundSizing = get_nfilter_request_var('map_background_sizing');
+	if (is_string($backgroundSizing) && in_array($backgroundSizing, ['fit', 'stretch', 'image'], true)) {
+		$map->add_hint('background_sizing', $backgroundSizing);
+	}
 
 	db_execute_prepared('UPDATE weathermap_maps
 		SET titlecache = ?
