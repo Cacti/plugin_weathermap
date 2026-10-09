@@ -276,9 +276,9 @@ switch (get_request_var('action')) {
 		$file = get_nfilter_request_var('file');
 		$result = wm_config_delete($weathermap_confdir, $file);
 		if ($result === 'deleted') {
-			raise_message('config_deleted', __('Configuration file %s deleted.', $file, 'weathermap'), MESSAGE_LEVEL_INFO);
+			raise_message('config_deleted', html_escape(__('Configuration file %s deleted.', $file, 'weathermap')), MESSAGE_LEVEL_INFO);
 		} elseif ($result === 'used') {
-			raise_message('config_in_use', __('Configuration file %s is used by a map. Remove that map first.', $file, 'weathermap'), MESSAGE_LEVEL_ERROR);
+			raise_message('config_in_use', html_escape(__('Configuration file %s is used by a map. Remove that map first.', $file, 'weathermap')), MESSAGE_LEVEL_ERROR);
 		} else {
 			raise_message('config_delete_failed', __('Unable to delete the configuration file.', 'weathermap'), MESSAGE_LEVEL_ERROR);
 		}

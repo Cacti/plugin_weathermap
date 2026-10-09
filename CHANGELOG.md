@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* issue#296: Stop config deletion when the usage query fails and escape filename messages
+
 * feature#296: Delete unused configuration files with named confirmation
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages

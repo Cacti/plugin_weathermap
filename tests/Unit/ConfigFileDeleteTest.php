@@ -1,41 +1,23 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2022-2026 The Cacti Group, Inc.                           |
+ | Copyright (C) 2004-2026 The Cacti Group, Howard Jones                   |
  |                                                                         |
- | Based on the Original Plugin developed by Howard Jones                  |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
  |                                                                         |
- | Copyright (C) 2005-2022 Howard Jones and contributors                   |
- |                                                                         |
- | Permission is hereby granted, free of charge, to any person obtaining   |
- | a copy of this software and associated documentation files              |
- | (the "Software"), to deal in the Software without restriction,          |
- | including without limitation the rights to use, copy, modify, merge,    |
- | publish, distribute, sublicense, and/or sell copies of the Software,    |
- | and to permit persons to whom the Software is furnished to do so,       |
- | subject to the following conditions:                                    |
- |                                                                         |
- | The above copyright notice and this permission notice shall be          |
- | included in all copies or substantial portions of the Software.         |
- |                                                                         |
- | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,         |
- | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES         |
- | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND                |
- | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS     |
- | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN      |
- | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN       |
- | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE        |
- | SOFTWARE.                                                               |
+ | This program is distributed in the hope that it will be useful,         |
+ | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
+ | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
+ | GNU General Public License for more details.                            |
  +-------------------------------------------------------------------------+
  | Cacti: The Complete RRDtool-based Graphing Solution                     |
  +-------------------------------------------------------------------------+
- | Extensions to Howard Jones' original work are designed, written, and    |
- | maintained by the Cacti Group.                                          |
- |                                                                         |
- | Howard Jones was the original author of Weathermap.  You can reach      |
- | him at: howie@thingy.com                                                |
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
  +-------------------------------------------------------------------------+
- | http://www.network-weathermap.com/                                      |
  | http://www.cacti.net/                                                   |
  +-------------------------------------------------------------------------+
 */
@@ -44,7 +26,7 @@ beforeAll(function () {
 	require_once dirname(__DIR__,2) . '/setup.php';
 	require_once dirname(__DIR__,2) . '/lib/editor.config-delete.php';
 });
-it('DeletesOnlyUnusedRegularConfigurationFiles',function () {
+it('DeletesOnlyUnusedRegularConfigurationFiles', function () {
 	$dir = sys_get_temp_dir() . '/wm-delete-' . bin2hex(random_bytes(8));
 	mkdir($dir);
 	$file = 'Name & "quoted" + %.conf';
@@ -58,9 +40,14 @@ it('DeletesOnlyUnusedRegularConfigurationFiles',function () {
 		symlink($dir . '/' . $file,$dir . '/symlink.conf');
 		expect(wm_config_delete($dir,'symlink.conf'))->toBe('invalid');
 		unlink($dir . '/symlink.conf');
-		$GLOBALS['__test_db_fetch_cell_prepared'] = fn () =>1;
+		$GLOBALS['__test_db_fetch_cell_prepared'] = fn () => 1;
 		expect(wm_config_delete($dir,$file))->toBe('used')->and(file_get_contents($dir . '/' . $file))->toBe('original');
-		$GLOBALS['__test_db_fetch_cell_prepared'] = fn () =>0;
+
+		foreach ([false, null] as $failure) {
+			$GLOBALS['__test_db_fetch_cell_prepared'] = fn () => $failure;
+			expect(wm_config_delete($dir, $file))->toBe('failed')->and(file_get_contents($dir . '/' . $file))->toBe('original');
+		}
+		$GLOBALS['__test_db_fetch_cell_prepared'] = fn () => 0;
 		expect(wm_config_delete($dir,$file))->toBe('deleted')->and(file_exists($dir . '/' . $file))->toBeFalse();
 	} finally {
 		unset($GLOBALS['__test_db_fetch_cell_prepared']);
@@ -70,13 +57,13 @@ it('DeletesOnlyUnusedRegularConfigurationFiles',function () {
 		}rmdir($dir);
 	}
 });
-it('ReportsADeletionFailureWithoutClaimingSuccess',function () {
+it('ReportsADeletionFailureWithoutClaimingSuccess', function () {
 	$dir = sys_get_temp_dir() . '/wm-delete-denied-' . bin2hex(random_bytes(8));
 	mkdir($dir);
 	file_put_contents($dir . '/test.conf','test');
 	chmod($dir,0500);
-	$GLOBALS['__test_db_fetch_cell_prepared'] = fn () =>0;
-	set_error_handler(fn () =>true);
+	$GLOBALS['__test_db_fetch_cell_prepared'] = fn () => 0;
+	set_error_handler(fn () => true);
 
 	try {
 		expect(wm_config_delete($dir,'test.conf'))->toBe('failed')->and(file_exists($dir . '/test.conf'))->toBeTrue();
@@ -88,11 +75,50 @@ it('ReportsADeletionFailureWithoutClaimingSuccess',function () {
 		unset($GLOBALS['__test_db_fetch_cell_prepared']);
 	}
 });
-it('EscapesNamesAndEmitsTheCactiNonceAndCsrfProtectedPost',function () {
+it('EscapesNamesAndEmitsTheCactiNonceAndCsrfProtectedPost', function () {
 	$button = wm_config_delete_button('Test <map> "quoted".conf');
 	expect($button)->toContain('Test &lt;map&gt; &quot;quoted&quot;.conf','data-confirm=','aria-label=','permanently delete');
 	ob_start();
 	wm_config_delete_script();
 	$script = ob_get_clean();
 	expect($script)->toContain('<script','window.confirm','form.method = \'post\'','__csrf_magic: csrfMagicToken',plugin_weathermap_csp_nonce());
+});
+
+it('EscapesFilenameMessagesFromTheActualDeleteAction', function () {
+	$plugin             = dirname(__DIR__, 2);
+	$source             = file_get_contents($plugin . '/weathermap-cacti-plugin-mgmt.php');
+	$start              = strpos($source, "case 'delete_config':");
+	$end                = strpos($source, "header('Location:", $start);
+	$action             = substr($source, $start + strlen("case 'delete_config':"), $end - $start - strlen("case 'delete_config':"));
+	$action             = str_replace('__DIR__', var_export($plugin, true), $action);
+	$weathermap_confdir = sys_get_temp_dir() . '/wm-delete-message-' . bin2hex(random_bytes(8));
+	mkdir($weathermap_confdir);
+	$file                                      = 'Map <img src=x onerror=alert(1)>.conf';
+	$old_method                                = $_SERVER['REQUEST_METHOD'] ?? null;
+	$_SERVER['REQUEST_METHOD']                 = 'POST';
+	$GLOBALS['__test_nfilter_request']['file'] = $file;
+	$GLOBALS['__test_raise_message']           = function ($id, $text) {
+		$GLOBALS['__test_delete_message'] = $text;
+	};
+
+	try {
+		foreach ([1, 0] as $used) {
+			file_put_contents($weathermap_confdir . '/' . $file, 'test');
+			$GLOBALS['__test_db_fetch_cell_prepared'] = fn () => $used;
+			eval('switch (true) { case true: ' . $action . ' }');
+			expect($GLOBALS['__test_delete_message'])->toContain('&lt;img')->not->toContain('<img');
+		}
+	} finally {
+		foreach (glob($weathermap_confdir . '/*') as $path) {
+			unlink($path);
+		}
+		rmdir($weathermap_confdir);
+		unset($GLOBALS['__test_nfilter_request']['file'], $GLOBALS['__test_raise_message'], $GLOBALS['__test_delete_message'], $GLOBALS['__test_db_fetch_cell_prepared']);
+
+		if ($old_method === null) {
+			unset($_SERVER['REQUEST_METHOD']);
+		} else {
+			$_SERVER['REQUEST_METHOD'] = $old_method;
+		}
+	}
 });

@@ -277,6 +277,9 @@ if (!function_exists('is_realm_allowed')) {
 
 if (!function_exists('raise_message')) {
 	function raise_message($i, $t = '', $l = 0) {
+		if (isset($GLOBALS['__test_raise_message'])) {
+			($GLOBALS['__test_raise_message'])($i, $t, $l);
+		}
 	}
 }
 
@@ -348,4 +351,8 @@ if (!function_exists('describe')) {
 	function describe(string $description, Closure $tests): void {
 		$tests();
 	}
+}
+
+if (!defined('MESSAGE_LEVEL_INFO')) {
+	define('MESSAGE_LEVEL_INFO', 0);
 }
