@@ -556,7 +556,7 @@ function setMapStyle($mapfile) {
 	handle_inheritance($map, $inheritables);
 
 	wm_comment_update_default($map, 'bwfont', wm_comment_resolve_font($map, get_nfilter_request_var('mapstyle_linkfont')));
-    wm_comment_apply_style($map, get_nfilter_request_var('mapstyle_commentfont'), get_nfilter_request_var('mapstyle_commentcolour'));
+	wm_comment_apply_style($map, get_nfilter_request_var('mapstyle_commentfont'), get_nfilter_request_var('mapstyle_commentcolour'));
 
 	$map->WriteConfig($mapfile);
 }
