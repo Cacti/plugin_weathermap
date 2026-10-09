@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* issue: Preserve dynamic editor labels and cycle countdowns
+* issue#288: Preserve dynamic editor labels and cycle countdowns
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
