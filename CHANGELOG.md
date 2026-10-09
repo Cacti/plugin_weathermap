@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* feature: Default new graph assignments to Time Graph View
+* feature#293: Default new graph assignments to Time Graph View
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
