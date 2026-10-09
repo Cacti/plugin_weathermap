@@ -40,6 +40,8 @@
  +-------------------------------------------------------------------------+
 */
 
+require_once __DIR__ . '/editor.comment-style.php';
+
 /** editor.inc.php
  *
  * All the functions used by the editor.
@@ -724,7 +726,7 @@ function get_fontlist(&$map,$name,$current) {
 			$output .= 'selected';
 		}
 
-		$output .= ' value="' . $fontnumber . '">' . $fontnumber . ' (' . $font->type . ')</option>';
+		$output .= ' value="' . $fontnumber . '">' . html_escape(wm_editor_font_label($fontnumber, $font)) . '</option>';
 	}
 
 	$output .= '</select>';
@@ -1026,6 +1028,7 @@ function getEditorJs() {
 		'linkPurpose'          => __('For a standard interface traffic link, the main controls are enough. Use Advanced to combine traffic sources, show multiple hover graphs, choose a different click destination or customise the line. Weathermap also supports other measurements, such as CPU and memory, commonly displayed on nodes.', 'weathermap'),
 		'browseInterface'      => __('Type a device or interface, or browse all', 'weathermap'),
 		'browseAll'            => __('Browse all', 'weathermap'),
+		'applyInterfaceHint'   => __('Select an interface, then click "Use interface" to apply it.', 'weathermap'),
 		'lookingUp'            => __('Looking up device and interface...', 'weathermap'),
 		'customInterface'      => __('Custom or unavailable interface', 'weathermap'),
 		'unavailableInterface' => __('Interface name unavailable', 'weathermap'),

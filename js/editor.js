@@ -1427,6 +1427,9 @@ function compactLinkEditor() {
 			.on('click', function () {
 				picker.autocomplete('search', '');
 			});
+	if (!$('#wm-link-apply-hint').length)
+		$('<p id="wm-link-apply-hint" style="margin: 0 0 6px;">').text(wmEditorText.applyInterfaceHint)
+			.prependTo(picker.closest('td'));
 	var target = String($('#link_target').val() || '').trim();
 	var file = target.split('/').pop();
 	$('#wm-link-rrd').text(target);

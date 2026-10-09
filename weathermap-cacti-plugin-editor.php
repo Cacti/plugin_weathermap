@@ -730,18 +730,8 @@ foreach ($styles as $id => $name) {
 							<td><?php print __('Node Font', 'weathermap'); ?></td>
 							<td><?php print get_fontlist($map, 'mapstyle_nodefont', $map->nodes['DEFAULT']->labelfont); ?></td>
 						</tr>
-						<tr>
-							<td><?php print __('Graph Width', 'weathermap'); ?></td>
-							<td>
-								<input id='mapstyle_nodewidth' name='mapstyle_nodewidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibwidth; ?>'>
-							</td>
-						</tr>
-						<tr>
-							<td><?php print __('Graph Height', 'weathermap'); ?></td>
-							<td>
-								<input id='mapstyle_nodeheight' name='mapstyle_nodeheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibheight; ?>'>
-							</td>
-						</tr>
+
+
 						<tr><td colspan='2'>
 						<div class='cactiTableTitleRow' style='display:table'><?php print __('Link Defaults', 'weathermap'); ?></div>
 						</td></tr>
@@ -765,22 +755,44 @@ foreach ($styles as $id => $name) {
 							</td>
 						</tr>
 						<tr>
-							<td><?php print __('Link Label Font', 'weathermap'); ?></td>
-							<td><?php print get_fontlist($map, 'mapstyle_linkfont', $map->links['DEFAULT']->bwfont); ?></td>
+							<td><?php print __('Traffic Label Font', 'weathermap'); ?></td>
+							<td><?php print wm_style_font_select($map, 'mapstyle_linkfont', $map->links['DEFAULT']->bwfont); ?></td>
 						</tr>
-						<tr>
-							<td><?php print __('Graph Width', 'weathermap'); ?></td>
+						<?php print wm_comment_style_fields($map); ?>
+
+
+					</table>
+<details class='wm-mapstyle-advanced' style='margin-top: 12px;'>
+<summary style='cursor: pointer; padding: 8px 0;'><?php print __('Advanced settings', 'weathermap'); ?></summary>
+<p><?php print __('Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions.', 'weathermap'); ?></p>
+<table style='width: 100%;'>
+<tr>
+							<td><?php print __('Node Hover Width (pixels)', 'weathermap'); ?></td>
+							<td>
+								<input id='mapstyle_nodewidth' name='mapstyle_nodewidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibwidth; ?>'>
+							</td>
+						</tr>
+<tr>
+							<td><?php print __('Node Hover Height (pixels)', 'weathermap'); ?></td>
+							<td>
+								<input id='mapstyle_nodeheight' name='mapstyle_nodeheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibheight; ?>'>
+							</td>
+						</tr>
+<tr>
+							<td><?php print __('Link Hover Width (pixels)', 'weathermap'); ?></td>
 							<td>
 								<input id='mapstyle_linkwidth' name='mapstyle_linkwidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibwidth; ?>'>
 							</td>
 						</tr>
-						<tr>
-							<td><?php print __('Graph Height', 'weathermap'); ?></td>
+<tr>
+							<td><?php print __('Link Hover Height (pixels)', 'weathermap'); ?></td>
 							<td>
 								<input id='mapstyle_linkheight' name='mapstyle_linkheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibheight; ?>'>
 							</td>
 						</tr>
-					</table>
+</table>
+</details>
+
 				</div>
 				<div class='dlgButtons'>
 					<div class='dlgSubButtons'>

@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti \n"
+"Project-Id-Version: Cacti\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 11:22+1030\n"
+"POT-Creation-Date: 2026-10-10 00:53+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -17,6 +17,67 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr ""
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "Current custom colour (%s)"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Colour"
+msgstr ""
 
 #: lib/editor.inc.php
 msgid "Next results"
@@ -99,7 +160,7 @@ msgstr ""
 msgid "Current interface"
 msgstr ""
 
-#: lib/editor.inc.php
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
 msgid "Advanced settings"
 msgstr ""
 
@@ -161,6 +222,10 @@ msgstr ""
 
 #: lib/editor.inc.php
 msgid "Browse all"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Select an interface, then click \"Use interface\" to apply it."
 msgstr ""
 
 #: lib/editor.inc.php
@@ -1140,14 +1205,6 @@ msgid "Node Font"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Graph Width"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Graph Height"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
 msgid "Link Defaults"
 msgstr ""
 
@@ -1176,7 +1233,27 @@ msgid "Compact"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Link Label Font"
+msgid "Traffic Label Font"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
