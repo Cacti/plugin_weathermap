@@ -1,6 +1,3 @@
-var tooltipObject = null;
-var wmHoverTimeout = null;
-
 $(function() {
 	$('.wm-edit-map').off('click.wmEditMap').on('click.wmEditMap', function(event) {
 		event.preventDefault();
@@ -10,6 +7,8 @@ $(function() {
 	$('map').tooltip({
 		items: 'area',
 		track: false,
+		show: false,
+		hide: false,
 		open: function(event, ui) {
 			if (typeof(event.originalEvent) == 'undefined') {
 				return false;
@@ -23,26 +22,16 @@ $(function() {
 			var id = $(ui.tooltip).attr('id');
 			$('div.ui-tooltip').not('#'+ id).remove();
 
+			ui.tooltip.css({width: 'max-content', maxWidth: 'calc(100vw - 48px)', pointerEvents: 'none'});
 			ui.tooltip.position({
 				my: 'left top+5%',
 				at: 'right+15 center',
 				of: event
 			});
 
-			tooltipObject  = ui.tooltip;
-
-			wmHoverTimeout = setTimeout(adjustTooltipWindow, 200);
 		},
 		close: function(event, ui) {
-			ui.tooltip.hover(
-			function () {
-				$(this).stop(true).fadeTo(1000, 1);
-			},
-			function() {
-				$(this).fadeOut(1000, function() {
-					$(this).remove();
-				});
-			});
+			ui.tooltip.stop(true, true).remove();
 		},
 		content: function(callback) {
 			$('.ui-helper-hidden-accessible').empty();
@@ -54,12 +43,19 @@ $(function() {
 			var object = $($.parseHTML(hoverData));
 
 			// Peel the size of the image from the object data
-            var width  = object.find('img:first-child').attr('data-width');
-            var height = object.find('img:first-child').attr('data-height');
+			var width = object.find('img:first-child').attr('data-width');
 
-			// Create the container for the object data
-			var data = '<div id="wm_hover" class="cactiTable"><div id="wm_hover_child" class="cactiTableTitleRow">'+$(this).attr('data-caption') + '</div><div class="cactiTable wmcontent" style="height:'+height+';width:'+width+';display:none">'+hoverData+'</div></div>';
-
+			// Fit the popup to its graphs instead of inheriting full-width table styles.
+			var caption = ($(this).attr('data-caption') || '').trim();
+			var data = $('<div>', {id: 'wm_hover'}).css({display: 'inline-block'});
+			if (caption && !/^node[0-9]+[a-z]*(?:-node[0-9]+[a-z]*)?$/i.test(caption)) {
+				$('<div>').text(caption).css({fontSize: '12px', padding: '0 0 4px'}).appendTo(data);
+			}
+			object.find('img').css({
+				display: 'block', width: 'auto', height: 'auto',
+				maxWidth: Math.min((parseInt(width, 10) || 800) * 1.1, window.innerWidth - 48) + 'px'
+			});
+			$('<div>', {class: 'wmcontent'}).append(object).appendTo(data);
 			callback(data);
 		}
 	});
@@ -68,12 +64,6 @@ $(function() {
 		$('.cactiGraphContentArea').removeClass('cactiGraphContentArea').addClass('wm_scroll');
 	});
 });
-
-function adjustTooltipWindow() {
-    $('.ui-tooltip').find('img').css('max-width', '100%');
-	$('.ui-tooltip').css('transform', 'translateX(+20px)');
-    $('.wmcontent').show();
-}
 
 /**
  * only perform the recalculation of elements at the final end of the windows resize event

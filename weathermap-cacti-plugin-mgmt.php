@@ -1936,7 +1936,9 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		$save['htmlfile']     = '';
 		$save['filehash']     = '';
 		$save['warncount']    = 0;
-		$save['debug']        = 'off';
+		if (db_column_exists('weathermap_maps', 'debug')) {
+			$save['debug'] = 'off';
+		}
 		$save['config']       = '';
 		$save['thumb_height'] = $map['thumb_height'];
 		$save['thumb_width']  = $map['thumb_width'];
