@@ -271,19 +271,19 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'delete_config':
-        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { http_response_code(405); break; }
-        require_once __DIR__ . '/lib/editor.config-delete.php';
-        $file = get_nfilter_request_var('file');
-        $result = wm_config_delete($weathermap_confdir, $file);
-        if ($result === 'deleted') {
-            raise_message('config_deleted', __('Configuration file %s deleted.', $file, 'weathermap'), MESSAGE_LEVEL_INFO);
-        } elseif ($result === 'used') {
-            raise_message('config_in_use', __('Configuration file %s is used by a map. Remove that map first.', $file, 'weathermap'), MESSAGE_LEVEL_ERROR);
-        } else {
-            raise_message('config_delete_failed', __('Unable to delete the configuration file.', 'weathermap'), MESSAGE_LEVEL_ERROR);
-        }
-        header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
-        break;
+		if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { http_response_code(405); break; }
+		require_once __DIR__ . '/lib/editor.config-delete.php';
+		$file = get_nfilter_request_var('file');
+		$result = wm_config_delete($weathermap_confdir, $file);
+		if ($result === 'deleted') {
+			raise_message('config_deleted', __('Configuration file %s deleted.', $file, 'weathermap'), MESSAGE_LEVEL_INFO);
+		} elseif ($result === 'used') {
+			raise_message('config_in_use', __('Configuration file %s is used by a map. Remove that map first.', $file, 'weathermap'), MESSAGE_LEVEL_ERROR);
+		} else {
+			raise_message('config_delete_failed', __('Unable to delete the configuration file.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+		}
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+		break;
 	case 'addmap_picker':
 		top_header();
 
@@ -1618,10 +1618,10 @@ function addmap_picker($show_all = false) {
 			$action .= "<a target='_new' href='$url' title='$tip'>$value</a>";
 
 
-            if ($map['map_id'] == 0) {
-                require_once __DIR__ . '/lib/editor.config-delete.php';
-                $action .= wm_config_delete_button(basename($map['filename']));
-            }
+			if ($map['map_id'] == 0) {
+				require_once __DIR__ . '/lib/editor.config-delete.php';
+				$action .= wm_config_delete_button(basename($map['filename']));
+			}
 
 			form_selectable_cell($action, $i, '1%');
 
@@ -1648,8 +1648,8 @@ function addmap_picker($show_all = false) {
 	}
 
 	html_end_box();
-    require_once __DIR__ . '/lib/editor.config-delete.php';
-    wm_config_delete_script();
+	require_once __DIR__ . '/lib/editor.config-delete.php';
+	wm_config_delete_script();
 
 	if (cacti_sizeof($maps)) {
 		print $nav;

@@ -55,9 +55,10 @@ function wm_config_delete($directory, $file) {
 		strpos($file, chr(92)) !== false || preg_match('/[\x00-\x1f\x7f]/', $file) || substr($file, -5) !== '.conf' || !$directory) {
 		return 'invalid';
 	}
-	$path = $directory . '/' . $file;
+	$path     = $directory . '/' . $file;
+	$resolved = realpath($path);
 
-	if (is_link($path) || !is_file($path) || dirname(realpath($path)) !== $directory) {
+	if (is_link($path) || !is_file($path) || $resolved === false || dirname($resolved) !== $directory) {
 		return 'invalid';
 	}
 
@@ -91,18 +92,18 @@ function wm_config_delete_script() {
 	print '<script' . ($nonce !== '' ? ' ' . $nonce : '') . '>';
 	print <<<'HTML'
 $(function() {
-    $('.wm-config-delete').off('click.wmConfigDelete').on('click.wmConfigDelete', function() {
-        if (!window.confirm(this.getAttribute('data-confirm'))) { return; }
-        var form = document.createElement('form');
-        form.method = 'post'; form.action = 'weathermap-cacti-plugin-mgmt.php';
-        var values = {action: 'delete_config', file: this.getAttribute('data-file'), __csrf_magic: csrfMagicToken};
-        Object.keys(values).forEach(function(name) {
-            var input = document.createElement('input');
-            input.type = 'hidden'; input.name = name; input.value = values[name];
-            form.appendChild(input);
-        });
-        document.body.appendChild(form); form.submit();
-    });
+	$('.wm-config-delete').off('click.wmConfigDelete').on('click.wmConfigDelete', function() {
+		if (!window.confirm(this.getAttribute('data-confirm'))) { return; }
+		var form = document.createElement('form');
+		form.method = 'post'; form.action = 'weathermap-cacti-plugin-mgmt.php';
+		var values = {action: 'delete_config', file: this.getAttribute('data-file'), __csrf_magic: csrfMagicToken};
+		Object.keys(values).forEach(function(name) {
+			var input = document.createElement('input');
+			input.type = 'hidden'; input.name = name; input.value = values[name];
+			form.appendChild(input);
+		});
+		document.body.appendChild(form); form.submit();
+	});
 });
 </script>
 HTML;
