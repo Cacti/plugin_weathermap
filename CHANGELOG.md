@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* issue#278: Preserve map and editor navigation context across graph, viewer and management pages
+
 * issue#196: Restore cycle countdown, persistent fullscreen exit and reload fallback
 
 * issue#276: Preserve query separators when saving node and link click URLs

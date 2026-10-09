@@ -270,7 +270,7 @@ function graphPicker() {
 				pickerTemplate = template;
 
 				var url = 'weathermap-cacti-plugin-editor.php' +
-					'?mapname=' + $('#mapname').val() +
+					'?mapname=' + encodeURIComponent($('#mapname').val()) +
 					'&action=' + action +
 					'&term=' + encodeURIComponent(request.term) +
 					'&target=' + id +
@@ -529,14 +529,24 @@ function cleanupJS() {
     // IE/Win and Safari (at least) over a period of time with memory leaks.
 }
 
+// Rebuild return navigation from the allowed local pages and a validated map hash.
+function wmEditorReturnUrl(target) {
+	if (target === 'weathermap-cacti-plugin-mgmt.php') {
+		return 'weathermap-cacti-plugin-mgmt.php';
+	}
+
+	var match = typeof target === 'string' ? /^weathermap-cacti-plugin\.php\?action=viewmap&id=([a-f0-9]{20,64})$/i.exec(target) : null;
+	return 'weathermap-cacti-plugin.php' + (match ? '?action=viewmap&id=' + encodeURIComponent(match[1]) : '');
+}
+
 function attach_click_events() {
 	$("area[id^='LINK:']").attr('href', '#').off('click').on('click', click_handler);
 	$("area[id^='NODE:']").attr('href', '#').off('click').on('click', click_handler);
 	$("area[id^='TIMES']").attr('href', '#').off('click').on('click', position_timestamp);
 	$("area[id^='LEGEN']").attr('href', '#').off('click').on('click', position_legend);
 
-	$('#tb_newfile').html('Return to<br>Cacti').on('click', function() {
-		window.location = 'weathermap-cacti-plugin-mgmt.php';
+	$('#tb_newfile').text($('body').attr('data-return-label') || 'Return to Map').off('click').on('click', function() {
+		window.location.assign(wmEditorReturnUrl($('body').attr('data-return-map')));
 	});
 
 	$('#tb_addnode').off('click').on('click', add_node);
@@ -870,10 +880,10 @@ function form_submit() {
 		success: function(html) {
 			hide_all_dialogs();
 
-			$.get('?action=load_area_data&mapname=' + $('#mapname').val(), function(data) {
+			$.get('?action=load_area_data&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
 				$('.mapData').empty().html(data);
 
-				$.getScript('?action=load_map_javascript&mapname=' + $('#mapname').val(), function(data) {
+				$.getScript('?action=load_map_javascript&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
 					var date = new Date();
 
 					// Reload the images to update page
