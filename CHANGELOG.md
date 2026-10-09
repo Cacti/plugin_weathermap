@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* feature: Fit or stretch background images within the map canvas
+* feature#298: Fit or stretch background images within the map canvas
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
