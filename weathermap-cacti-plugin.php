@@ -1054,7 +1054,7 @@ function weathermap_cycle_controls($fullscreen, $group_id) {
 	$label = $fullscreen ? __('Exit full screen', 'weathermap') : __('Full screen', 'weathermap');
 	$url   = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmapcycle&fullscreen=' . ($fullscreen ? '0' : '1') . '&group=' . $group_id;
 	$controls .= '<a id="' . ($fullscreen ? 'cycle_exit_fullscreen' : 'cycle_fullscreen') . '" class="wm-cycle-control wm-fullscreen-link fas ' . ($fullscreen ? 'fa-compress-arrows-alt' : 'fa-expand-arrows-alt') . '" href="' . html_escape($url) . '" title="' . html_escape($label) . '" aria-label="' . html_escape($label) . '">' . ($fullscreen ? '<span class="wm-cycle-exit-label">' . html_escape($label) . '</span>' : '') . '</a>';
-	$controls .= '<span id="wm_countdown" data-paused-label="' . __esc('Paused', 'weathermap') . '" data-next-label="' . __esc('Next map in %ss', 'weathermap') . '"></span><span class="wm-progress-track"><span id="wm_progress"></span></span>';
+	$controls .= '<span id="wm_countdown" data-paused-label="' . __esc('Paused', 'weathermap') . '" data-next-label="' . __esc('Next map in %ss', '%s', 'weathermap') . '"></span><span class="wm-progress-track"><span id="wm_progress"></span></span>';
 
 	return $controls;
 }

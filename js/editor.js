@@ -753,7 +753,7 @@ function delete_node() {
 	var connected = Object.keys(Links).filter(function(key) { return Links[key].a === name || Links[key].b === name; }).length;
 	var message = delNodePrompt.replace('%s', function() { return wmNodeDisplayName(name); });
 	if (connected) {
-		message += ' ' + delNodeConnected.replace('%d', String(connected));
+		message += ' ' + delNodeConnected.replace('%s', String(connected));
 	}
 	$('.dlgConfirm').text(message + ' ' + delNodeKeepDevice);
 

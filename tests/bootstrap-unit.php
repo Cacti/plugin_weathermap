@@ -246,7 +246,10 @@ if (!function_exists('__')) {
 		$text = array_shift($args);
 		array_pop($args); // trailing text-domain argument
 
-		return count($args) ? vsprintf((string) $text, $args) : (string) $text;
+		// Match Cacti's formatter: the trailing domain is still a sprintf argument.
+		// Missing runtime values therefore turn %s into the domain and %d into zero.
+		$format = '/%(?:[-]?[0-9]+(?:[.][0-9]+)?)?[bodsuxXeEfFgGhH]/';
+		return preg_match($format, (string) $text) ? vsprintf((string) $text, [...$args, 'weathermap']) : (string) $text;
 	}
 }
 
