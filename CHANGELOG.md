@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* issue#292: Normalize invalid thumbnail sizes on current-version installations
+
 * issue#292: Test missing and non-positive thumbnail initialization while preserving configured sizes
 
 * feature#292: Generate sharper gallery thumbnails by default

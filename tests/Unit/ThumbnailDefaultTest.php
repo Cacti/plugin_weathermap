@@ -39,16 +39,27 @@ it('RegistersTheNewDefaultWithoutChangingStoredPreferences', function () {
 it('InitializesMissingAndNonPositiveThumbnailSizesAndPreservesPositiveValues', function () {
 	$old_options = $GLOBALS['__test_config_options'] ?? [];
 	$old_calls   = $GLOBALS['__test_set_config_option_calls'] ?? [];
+	$old_tables  = $GLOBALS['__test_table_exists'] ?? [];
+	$old_db_calls = $GLOBALS['__test_db_calls'] ?? [];
 
 	try {
-		foreach (['' => '1000', '0' => '1000', '-5' => '1000', '250' => null] as $value => $expected) {
-			$GLOBALS['__test_config_options']          = ['weathermap_db_version' => '', 'weathermap_thumbsize' => (string) $value];
-			$GLOBALS['__test_set_config_option_calls'] = [];
-			weathermap_setup_table();
-			$calls = array_values(array_filter($GLOBALS['__test_set_config_option_calls'], fn ($call) => $call['name'] === 'weathermap_thumbsize'));
-			expect($calls)->toBe($expected === null ? [] : [['name' => 'weathermap_thumbsize', 'value' => $expected]]);
+		foreach (['', plugin_weathermap_numeric_version()] as $version) {
+			$GLOBALS['__test_table_exists']['weathermap_maps'] = true;
+			foreach (['' => '1000', '0' => '1000', '-5' => '1000', '250' => null] as $value => $expected) {
+				$GLOBALS['__test_config_options']          = ['weathermap_db_version' => $version, 'weathermap_thumbsize' => (string) $value];
+				$GLOBALS['__test_set_config_option_calls'] = [];
+				$GLOBALS['__test_db_calls'] = [];
+				weathermap_setup_table();
+				if ($version !== '') {
+					expect($GLOBALS['__test_db_calls'])->toBeEmpty();
+				}
+				$calls = array_values(array_filter($GLOBALS['__test_set_config_option_calls'], fn ($call) => $call['name'] === 'weathermap_thumbsize'));
+				expect($calls)->toBe($expected === null ? [] : [['name' => 'weathermap_thumbsize', 'value' => $expected]]);
+			}
 		}
 	} finally {
+		$GLOBALS['__test_table_exists'] = $old_tables;
+		$GLOBALS['__test_db_calls'] = $old_db_calls;
 		$GLOBALS['__test_config_options']          = $old_options;
 		$GLOBALS['__test_set_config_option_calls'] = $old_calls;
 	}
