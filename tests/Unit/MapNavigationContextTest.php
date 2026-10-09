@@ -121,3 +121,19 @@ it('EscapesAttributeQuotesAndEncodedEntitiesWithoutChangingTheirValue', function
 		->toContain('&amp;quot;')
 		->and(html_entity_decode($escaped, ENT_QUOTES | ENT_HTML5, 'UTF-8'))->toBe($value);
 });
+
+/*
+ * Must run last: once html_escape_attr() exists it stays defined for the rest
+ * of the process, so the fallback case above has to be exercised first.
+ */
+it('DelegatesToCactiHtmlEscapeAttrWhenAvailable', function () {
+	if (!function_exists('html_escape_attr')) {
+		function html_escape_attr($value) {
+			return str_replace('"', '&quot;', (string) $value);
+		}
+	}
+
+	$value = 'tab"quote';
+
+	expect(plugin_weathermap_escape_attr($value))->toBe(html_escape_attr($value));
+});
