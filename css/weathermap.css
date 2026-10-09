@@ -98,3 +98,6 @@ body#wm_fullscreen { font-family: sans-serif; margin: 0; border: 0; padding: 0; 
 
 .wm-gallery-cards { padding: 12px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
 .wm-map-card { margin: 0; width: 480px; max-width: 100%; box-sizing: border-box; border: 1px solid var(--border-color, #999); border-radius: 5px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,.12); }
+
+.wm-map-card-title { padding: 10px 12px; font-size: 14px; font-weight: bold; text-align: center; }
+.wm-map-card .wm_thumb { display: block; width: 100%; height: auto; margin: 0; box-sizing: border-box; padding: 10px; }

@@ -552,19 +552,12 @@ function weathermap_thumbview($limit_to_group = -1) {
 
 			$imageformat = strtolower(read_config_option('weathermap_output_format'));
 
-			print '<table class="cactiTable">';
-			print '<tr><td class="wm_gallery wm-gallery-cards">';
+			print '<div class="wm_gallery wm-gallery-cards">';
 
 			foreach ($maplist as $map) {
 				$i++;
 
-
-				// $thumbfile = $outdir."weathermap_thumb_".$map['id'].".".$imageformat;
-				// $thumburl = "output/weathermap_thumb_".$map['id'].".".$imageformat."?time=".time();
-
 				$thumbfile = $outdir . $map['filehash'] . '.thumb.' . $imageformat;
-				$thumburl  = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewimage&id=' . $map['filehash'] . '&time=' . time();
-
 
 				$maptitle = $map['titlecache'];
 
@@ -574,8 +567,12 @@ function weathermap_thumbview($limit_to_group = -1) {
 
 				print '<div class="cactiTable wm-map-card">';
 
+				print '<div class="tableHeader"><div class="textSubHeaderDark wm-map-card-title">' . html_escape($maptitle) . '</div></div>';
+
 				if (file_exists($thumbfile)) {
-					print '<div class="tableHeader"><div class="textSubHeaderDark" style="padding:10px 12px;font-size:14px;font-weight:bold;text-align:center">' . html_escape($maptitle) . '</div></div><div><a href=' . $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmap&id=' . $map['filehash'] . '><img class="wm_thumb" ' . 'src="' . $thumburl . '" alt="" hspace="5" vspace="5" style="display:block;width:100%;height:auto;margin:0;box-sizing:border-box;padding:10px" title="' . html_escape($maptitle) . '"/></a></div>';
+					$thumburl = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewthumb&id=' . rawurlencode($map['filehash']) . '&v=' . filemtime($thumbfile);
+					$mapurl   = $config['url_path'] . 'plugins/weathermap/weathermap-cacti-plugin.php?action=viewmap&id=' . rawurlencode($map['filehash']);
+					print '<div><a href="' . html_escape($mapurl) . '"><img class="wm_thumb" src="' . html_escape($thumburl) . '" alt="' . html_escape($maptitle) . '" title="' . html_escape($maptitle) . '"/></a></div>';
 				} else {
 					print __('(thumbnail for map not created yet)', 'weathermap');
 				}
@@ -587,8 +584,7 @@ function weathermap_thumbview($limit_to_group = -1) {
 				print '</div> ';
 			}
 
-			print '</td></tr>';
-			print '</table>';
+			print '</div>';
 		} else {
 			print '<div align="center" style="padding:20px"><em>' . __('You Have No Maps', 'weathermap') . '</em>';
 
