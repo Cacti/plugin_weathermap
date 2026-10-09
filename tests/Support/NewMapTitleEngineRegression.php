@@ -72,7 +72,7 @@ mkdir($directory);
 try {
 	$source = file_get_contents($plugin . '/weathermap-cacti-plugin-mgmt.php');
 	$start  = strpos($source,'function newMap(');
-	eval(substr($source,$start));
+	eval(str_replace('__DIR__', var_export($plugin, true), substr($source, $start)));
 	$weathermap_confdir = $directory;
 	newMap('new.conf','',"My <network> & 'title'\nTITLE injected");
 	$saved = new WeatherMap();
