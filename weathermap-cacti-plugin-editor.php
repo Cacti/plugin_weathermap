@@ -306,7 +306,7 @@ if ($editor_return_context === 'manage') {
 }
 ?>
 <body id='mainView' class='mainView' data-return-label='<?php print plugin_weathermap_escape_attr($editor_return_label); ?>' data-return-map='<?php print plugin_weathermap_escape_attr($editor_return_url); ?>'>
-	<div id='toolbar'>
+	<div id='toolbar' class='cactiTableTitleRow'>
 		<ul>
 			<li class='tb_active' id='tb_newfile'><?php print __('Change<br>File', 'weathermap'); ?></li>
 			<li class='tb_active' id='tb_addnode'><?php print __('Add<br>Node', 'weathermap'); ?></li>

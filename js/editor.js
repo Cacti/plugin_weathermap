@@ -1165,6 +1165,9 @@ function show_dialog(dlg) {
 		resizable: false,
 		draggable: true,
 		open: function() {
+			$(this).find('.ui-autocomplete-input').each(function() {
+				$(this).autocomplete('option', 'appendTo', $(this).closest('.ui-dialog'));
+			});
 			$('select').not('#node_iconfilename, #map_bgfile').not('.select2-hidden-accessible').selectmenu({
 				open: function() {
 					$('.ui-dialog').css('z-index', '20');

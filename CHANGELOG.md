@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* issue: Match editor toolbar colours to Cacti themes and keep pickers visible
+
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
 * feature#279: Show larger responsive map preview cards with separated borders and centered titles

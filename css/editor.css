@@ -43,10 +43,13 @@ input {
 	top:0px;
 	left: 0px;
 	width: 100%;
-	color: white; border-bottom: gray solid 1px;
+	border-bottom: var(--border-color, #888) solid 1px;
+	height: auto;
+	line-height: normal;
+	padding: 0;
 	z-index: 10;
-	opacity: 0.9;
-	background: #1958b7;
+	opacity: 1;
+	color: #fff;
 }
 
 #dlgTextEdit textarea {
@@ -70,9 +73,8 @@ input {
 	margin:0;
 	padding:0;
 	font-size:11px;
-	color:#fff;
-	/*background:#ccc;*/
-	background: #1958b7;
+	color: inherit;
+	background: transparent;
 	/* margin-bottom: 10px; */
 	list-style: none;
 }
@@ -93,16 +95,13 @@ input {
 	padding: 5px 10px;
 	text-decoration:none;
 
-	border-left: #508fc4 2px solid;
-	border-right: #1958b7 2px solid;
-	border-top: #508fc4 2px solid;
-	border-bottom: #1958b7 2px solid;
+	border: 1px solid var(--border-color, rgba(255, 255, 255, 0.3));
 
 	cursor: pointer;
 	text-align: center;
 
-	background: #2175bc;
-	color: #fff;
+	background: transparent;
+	color: inherit;
 	max-width: 55px;
 	white-space: pre-line;
 }
@@ -113,13 +112,13 @@ input {
 	text-decoration:none;
 	width: 70px;
 	text-align: center;
-	background: #1958b7;
-	color:#fff;
+	background: transparent;
+	color: inherit;
 }
 
 #toolbar ul li.tb_active:hover {
-	color:#fff;
-	background:#2586d7;
+	color: inherit;
+	background: rgba(255, 255, 255, 0.15);
 }
 
 .dlgBody td {
@@ -310,3 +309,8 @@ body#mainView #wm-link-delete-bar {
  display: flex; justify-content: flex-end; width: 100%; box-sizing: border-box;
 }
 body#mainView #wm-node-delete-bar { min-height: 32px; }
+
+/* Keep enabled workflow buttons readable in dark themes. */
+body#mainView .ui-dialog button.ui-button:enabled {
+ color: var(--text-color-highlight-a, #2874aa);
+}
