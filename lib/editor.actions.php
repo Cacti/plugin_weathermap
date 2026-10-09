@@ -50,7 +50,7 @@
 
 /**
  * @return void
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  */
 function newMap($mapfile) {
 	$map = new WeatherMap;
@@ -61,7 +61,7 @@ function newMap($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function newMapCopy($mapfile) {
@@ -90,7 +90,7 @@ function newMapCopy($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function getMapJavaScript($mapfile) {
@@ -104,7 +104,7 @@ function getMapJavaScript($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function getMapAreaData($mapfile) {
@@ -126,10 +126,10 @@ function getMapAreaData($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
- * @param mixed $selected
- * @param mixed $use_overlay
- * @param mixed $use_relative_overlay
+ * @param  mixed $mapfile
+ * @param  mixed $selected
+ * @param  mixed $use_overlay
+ * @param  mixed $use_relative_overlay
  * @return void
  */
 function drawMap($mapfile, $selected, $use_overlay, $use_relative_overlay) {
@@ -158,7 +158,7 @@ function drawMap($mapfile, $selected, $use_overlay, $use_relative_overlay) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function showConfig($mapfile) {
@@ -176,7 +176,7 @@ function showConfig($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function fetchConfig($mapfile) {
@@ -213,7 +213,7 @@ function fetchConfig($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function setNodeConfig($mapfile) {
@@ -244,7 +244,7 @@ function setNodeConfig($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function setLinkConfig($mapfile) {
@@ -275,7 +275,7 @@ function setLinkConfig($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function setNodeProperties($mapfile) {
@@ -341,7 +341,7 @@ function setNodeProperties($mapfile) {
 
 	// by this point, and renaming has been done, and new_node_name will always be the right name
 	$map->nodes[$new_node_name]->label       = wm_editor_sanitize_string(get_nfilter_request_var('node_label'));
-	$map->nodes[$new_node_name]->infourl[IN] = wm_editor_sanitize_string(get_nfilter_request_var('node_infourl'));
+	$map->nodes[$new_node_name]->infourl[IN] = wm_editor_sanitize_url(get_nfilter_request_var('node_infourl'));
 
 	$urls = preg_split('/\s+/', trim(get_nfilter_request_var('node_hover')), -1, PREG_SPLIT_NO_EMPTY);
 
@@ -364,7 +364,7 @@ function setNodeProperties($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function setLinkProperties($mapfile) {
@@ -378,8 +378,8 @@ function setLinkProperties($mapfile) {
 
 	if (strpos($link_name, ' ') === false) {
 		$map->links[$link_name]->width        = floatval(get_nfilter_request_var('link_width'));
-		$map->links[$link_name]->infourl[IN]  = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
-		$map->links[$link_name]->infourl[OUT] = wm_editor_sanitize_string(get_nfilter_request_var('link_infourl'));
+		$map->links[$link_name]->infourl[IN]  = wm_editor_sanitize_url(get_nfilter_request_var('link_infourl'));
+		$map->links[$link_name]->infourl[OUT] = wm_editor_sanitize_url(get_nfilter_request_var('link_infourl'));
 
 		$urls = preg_split('/\s+/', get_nfilter_request_var('link_hover'), -1, PREG_SPLIT_NO_EMPTY);
 
@@ -445,7 +445,7 @@ function setLinkProperties($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function setMapProperties($mapfile) {
@@ -525,7 +525,7 @@ function setMapProperties($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function setMapStyle($mapfile) {
@@ -560,7 +560,7 @@ function setMapStyle($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function addLink($mapfile) {
@@ -605,8 +605,8 @@ function addLink($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
- * @param mixed $grid_snap_value
+ * @param  mixed $mapfile
+ * @param  mixed $grid_snap_value
  * @return void
  */
 function placeLegend($mapfile, $grid_snap_value) {
@@ -628,8 +628,8 @@ function placeLegend($mapfile, $grid_snap_value) {
 }
 
 /**
- * @param mixed $mapfile
- * @param mixed $grid_snap_value
+ * @param  mixed $mapfile
+ * @param  mixed $grid_snap_value
  * @return void
  */
 function placeStamp($mapfile, $grid_snap_value) {
@@ -649,7 +649,7 @@ function placeStamp($mapfile, $grid_snap_value) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function viaLink($mapfile) {
@@ -671,8 +671,8 @@ function viaLink($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
- * @param mixed $grid_snap_value
+ * @param  mixed $mapfile
+ * @param  mixed $grid_snap_value
  * @return void
  */
 function moveNode($mapfile, $grid_snap_value) {
@@ -784,7 +784,7 @@ function moveNode($mapfile, $grid_snap_value) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function linkTidy($mapfile) {
@@ -807,7 +807,7 @@ function linkTidy($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function reTidy($mapfile) {
@@ -825,7 +825,7 @@ function reTidy($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function reTidyAll($mapfile) {
@@ -843,7 +843,7 @@ function reTidyAll($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function unTidy($mapfile) {
@@ -861,7 +861,7 @@ function unTidy($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function deleteLink($mapfile) {
@@ -882,8 +882,8 @@ function deleteLink($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
- * @param mixed $grid_snap_value
+ * @param  mixed $mapfile
+ * @param  mixed $grid_snap_value
  * @return void
  */
 function addNode($mapfile, $grid_snap_value) {
@@ -927,7 +927,7 @@ function addNode($mapfile, $grid_snap_value) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function editorSettings($mapfile) {
@@ -946,7 +946,7 @@ function editorSettings($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function deleteNode($mapfile) {
@@ -976,7 +976,7 @@ function deleteNode($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function cloneNode($mapfile) {
@@ -1020,7 +1020,7 @@ function cloneNode($mapfile) {
 }
 
 /**
- * @param mixed $mapfile
+ * @param  mixed $mapfile
  * @return void
  */
 function displayFontSamples($mapfile) {
@@ -1079,7 +1079,7 @@ function displayFontSamples($mapfile) {
 }
 
 /**
- * @param WeatherMap $map
+ * @param  WeatherMap $map
  * @return void
  */
 function fixMapBackgroundAndImages(&$map) {
@@ -1110,8 +1110,8 @@ function fixMapBackgroundAndImages(&$map) {
 }
 
 /**
- * @param mixed $mapname
- * @param mixed $selected
+ * @param  mixed $mapname
+ * @param  mixed $selected
  * @return mixed
  */
 function getImageURL($mapname, $selected) {

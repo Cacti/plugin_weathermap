@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* issue#276: Preserve query separators when saving node and link click URLs
+* feature#276: Simplify node and link editing with readable names, common controls, searchable interface assignment, advanced controls, and clear deletion warnings
 * issue#277: Allow map duplication when the debug column is absent while preserving its default when present
 * issue#151: Keep standalone editor controls visible and use theme-aware dialog contrast
 * issue#275: Load permitted editor picker results in bounded pages, search interface descriptions, and encode graph search terms
