@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* feature: Generate sharper gallery thumbnails by default
+* feature#292: Generate sharper gallery thumbnails by default
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
