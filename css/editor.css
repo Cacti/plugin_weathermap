@@ -309,8 +309,3 @@ body#mainView #wm-link-delete-bar {
  display: flex; justify-content: flex-end; width: 100%; box-sizing: border-box;
 }
 body#mainView #wm-node-delete-bar { min-height: 32px; }
-
-/* Keep enabled workflow buttons readable in dark themes. */
-body#mainView .ui-dialog button.ui-button:enabled {
- color: var(--text-color-highlight-a, #2874aa);
-}
