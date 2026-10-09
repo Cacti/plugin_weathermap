@@ -413,9 +413,9 @@ function weathermap_singleview($mapid) {
 				$maptitle = __esc('Map for config file: %s', $map['configfile']);
 			}
 
-			weathermap_mapselector($mapid);
-
 			print '<table class="cactiTable wm-map-title"><tr class="tableHeader"><td class="textHeaderDark">' . weathermap_map_title_controls($maptitle, $map) . '</td></tr></table>';
+
+			weathermap_mapselector($mapid);
 
 			print '<table class="cactiTable">';
 			print '<tr><td>';
@@ -514,7 +514,7 @@ function weathermap_thumbview($limit_to_group = -1) {
 
 		?>
 		<div class="cactiTable">
-			<div class="cactiTableTitleRow"><?php print $pagetitle; ?></div>
+			<div class="cactiTableTitleRow wm-gallery-heading"><?php print $pagetitle; ?></div>
 		</div>
 		<?php
 
@@ -848,7 +848,7 @@ function weathermap_mapselector($current_id = 0) {
 	if (cacti_sizeof($maps) > 1) {
 		// include graph view filter selector
 
-		html_start_box(__('Weathermap Filter', 'weathermap'), '100%', false, 3, 'center', '');
+		html_start_box('', '100%', false, 3, 'center', '');
 		?>
 		<tr class='even noprint'>
 			<td class='noprint'>
