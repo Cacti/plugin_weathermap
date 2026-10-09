@@ -338,7 +338,7 @@ if ($editor_return_context === 'manage') {
 				<span>
 					<label for='mapname'><?php print __('mapfile', 'weathermap'); ?></label>
 					<input name='return_to' type='hidden' value='<?php print plugin_weathermap_escape_attr($editor_return_context); ?>'>
-					<input id='mapname' name='mapname' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($mapname); ?>'>
+					<input id='mapname' name='mapname' type='text' class='ui-state-default ui-corner-all' value='<?php print plugin_weathermap_escape_attr($mapname); ?>'>
 				</span>
 				<span>
 					<label for='action'><?php print __('action', 'weathermap'); ?></label>

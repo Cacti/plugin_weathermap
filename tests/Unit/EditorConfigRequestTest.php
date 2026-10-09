@@ -55,7 +55,7 @@ it('PreservesDecodedBasenamesThroughTheEditorRequestBoundary', function (string 
 		unlink($directory . '/' . $filename);
 		rmdir($directory);
 	}
-})->with(['ordinary.conf', 'A +%.conf', "Name 'quoted' & # ? é.conf", '%2F.conf']);
+})->with(['ordinary.conf', 'A +%.conf', "Name 'quoted' & # ? é.conf", '%2F.conf', 'A&amp;.conf']);
 
 it('RejectsInvalidConfigBasenamesWithoutRewritingThem', function (mixed $filename) {
 	expect(wm_editor_sanitize_conffile($filename))->toBe('');
@@ -135,4 +135,29 @@ it('RendersSupportedConfigFilenamesInTheEditorChooser', function () {
 			}
 		}
 	}
+});
+
+it('PreservesLiteralEntitiesThroughTheEditorFormAndSerializedSave', function () {
+	$mapname = 'A&amp;.conf';
+	$source  = file_get_contents(__DIR__ . '/../../weathermap-cacti-plugin-editor.php');
+	preg_match('/<input id=\'mapname\'.*?>\'>/', $source, $input);
+	ob_start();
+
+	try {
+		eval('?>' . $input[0]);
+	} finally {
+		$html = ob_get_clean();
+	}
+	$document = new DOMDocument;
+	$document->loadHTML('<html><body>' . $html . '</body></html>');
+	$value = $document->getElementsByTagName('input')->item(0)->getAttribute('value');
+	expect($value)->toBe($mapname);
+	parse_str(http_build_query(['mapname' => $value]), $request);
+	$GLOBALS['__test_request']         = $request;
+	$GLOBALS['__test_nfilter_request'] = [];
+	$start                             = strpos($source, "if (isset_request_var('mapname')) {");
+	$end                               = strpos($source, "if (isset_request_var('selected'))", $start);
+	$mapname                           = '';
+	eval(substr($source, $start, $end - $start));
+	expect($mapname)->toBe('A&amp;.conf');
 });
