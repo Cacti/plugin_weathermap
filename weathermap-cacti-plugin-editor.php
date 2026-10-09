@@ -88,6 +88,8 @@ $selected = '';
 
 set_default_action('');
 
+$editor_return_context = get_nfilter_request_var('return_to') === 'manage' ? 'manage' : 'map';
+
 if (isset_request_var('action')) {
 	$action = wm_editor_sanitize_action(get_nfilter_request_var('action'), [
 		'graphs', 'datasources', 'newmap', 'newmapcopy', 'font_samples', 'draw',
@@ -298,7 +300,7 @@ if (!empty($editor_return_hash)) {
 	$editor_return_url .= '?action=viewmap&id=' . rawurlencode($editor_return_hash);
 }
 
-if (get_nfilter_request_var('return_to') === 'manage') {
+if ($editor_return_context === 'manage') {
 	$editor_return_url   = 'weathermap-cacti-plugin-mgmt.php';
 	$editor_return_label = __('Return to Manage', 'weathermap');
 }
@@ -329,12 +331,13 @@ if (get_nfilter_request_var('return_to') === 'manage') {
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
 			<div class='debug' style='display:none'><p><strong><?php print __('Debug', 'weathermap'); ?></strong>
-				<a href='?action=retidy_all&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname)); ?>'><?php print __('Re-tidy ALL', 'weathermap'); ?></a>
-				<a href='?action=retidy&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname)); ?>'><?php print __('Re-tidy', 'weathermap'); ?></a>
-				<a href='?action=untidy&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname)); ?>'><?php print __('Un-tidy', 'weathermap'); ?></a>
-				<a href='?action=nothing&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname)); ?>'><?php print __('Do Nothing', 'weathermap'); ?></a>
+				<a href='?action=retidy_all&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('Re-tidy ALL', 'weathermap'); ?></a>
+				<a href='?action=retidy&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('Re-tidy', 'weathermap'); ?></a>
+				<a href='?action=untidy&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('Un-tidy', 'weathermap'); ?></a>
+				<a href='?action=nothing&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('Do Nothing', 'weathermap'); ?></a>
 				<span>
 					<label for='mapname'><?php print __('mapfile', 'weathermap'); ?></label>
+					<input name='return_to' type='hidden' value='<?php print plugin_weathermap_escape_attr($editor_return_context); ?>'>
 					<input id='mapname' name='mapname' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($mapname); ?>'>
 				</span>
 				<span>
@@ -353,7 +356,7 @@ if (get_nfilter_request_var('return_to') === 'manage') {
 					<label for='debug'><?php print __('debug', 'weathermap'); ?></label>
 					<input id='debug' name='debug' type='text' class='ui-state-default ui-corner-all' value=''>
 				</span>
-				<a target='configwindow' href='?action=show_config&mapname=<?php print urlencode($mapname) ?>'><?php print __('See config', 'weathermap'); ?></a>
+				<a target='configwindow' href='?action=show_config&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname) . '&return_to=' . $editor_return_context); ?>'><?php print __('See config', 'weathermap'); ?></a>
 			</div>
 		</div>
 

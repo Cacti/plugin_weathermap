@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 11:10+1030\n"
+"POT-Creation-Date: 2026-10-09 11:22+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -52,7 +52,7 @@ msgid "Create"
 msgstr ""
 
 #: lib/editor.inc.php
-msgid "Note: filenames must contain no spaces and end in .conf"
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
 msgstr ""
 
 #: lib/editor.inc.php
