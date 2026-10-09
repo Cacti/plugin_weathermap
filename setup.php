@@ -1054,7 +1054,9 @@ function weathermap_draw_navigation_text($nav) {
 	}
 	$hash = get_nfilter_request_var('wm_map');
 
-	if (basename($_SERVER['SCRIPT_NAME'] ?? '') === 'graph.php' && is_string($hash) && preg_match('/^[a-f0-9]{20,64}$/i', $hash)) {
+	$graph_page = basename($_SERVER['SCRIPT_NAME'] ?? '');
+
+	if (in_array($graph_page, ['graph.php', 'graph_view.php'], true) && is_string($hash) && preg_match('/^[a-f0-9]{20,64}$/i', $hash)) {
 		$map = db_fetch_row_prepared("SELECT id, filehash, titlecache, configfile FROM weathermap_maps WHERE filehash = ? AND active = 'on'", [$hash]);
 		require_once __DIR__ . '/lib/WeatherMap.functions.php';
 
@@ -1063,11 +1065,14 @@ function weathermap_draw_navigation_text($nav) {
 			$nav['wm-return-list:'] = ['title' => __('Weathermap', 'weathermap'), 'mapping' => '', 'url' => $base, 'level' => '0'];
 			$nav['wm-return-map:']  = ['title' => $map['titlecache'] ?: $map['configfile'], 'mapping' => 'wm-return-list:', 'url' => $base . '?action=viewmap&id=' . rawurlencode($map['filehash']), 'level' => '1'];
 
-			foreach (['graph.php:', 'graph.php:view'] as $key) {
-				if (isset($nav[$key])) {
+			foreach (array_keys($nav) as $key) {
+				if (str_starts_with($key, $graph_page . ':')) {
 					$nav[$key]['mapping'] = 'wm-return-list:,wm-return-map:';
 					$nav[$key]['level']   = '2';
-					$nav[$key]['url']     = $base . '?action=viewmap&id=' . rawurlencode($map['filehash']);
+
+					if ($graph_page === 'graph.php') {
+						$nav[$key]['url'] = $base . '?action=viewmap&id=' . rawurlencode($map['filehash']);
+					}
 				}
 			}
 		}
@@ -1514,7 +1519,7 @@ function weathermap_map_graph_links($html, $maphash) {
 		$url   = html_entity_decode($match[2], ENT_QUOTES, 'UTF-8');
 		$parts = parse_url($url);
 
-		if (!$parts || isset($parts['host']) || isset($parts['scheme']) || ($parts['path'] ?? '') !== $config['url_path'] . 'graph.php') {
+		if (!$parts || isset($parts['host']) || isset($parts['scheme']) || !in_array($parts['path'] ?? '', [$config['url_path'] . 'graph.php', $config['url_path'] . 'graph_view.php'], true)) {
 			return $match[0];
 		}
 		$query = array_filter(explode('&', $parts['query'] ?? ''), function ($part) {

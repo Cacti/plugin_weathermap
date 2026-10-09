@@ -11,21 +11,21 @@ beforeAll(function () {
 });
 
 beforeEach(function () {
-	$GLOBALS['__test_request'] = [];
+	$GLOBALS['__test_request']         = [];
 	$GLOBALS['__test_nfilter_request'] = [];
 	unset($GLOBALS['__test_db_fetch_row_prepared'], $GLOBALS['__test_db_fetch_cell_prepared']);
 	unset($_SERVER['SCRIPT_NAME'], $_SESSION['sess_config_settings_tab']);
 });
 
 afterEach(function () {
-	$GLOBALS['__test_request'] = [];
+	$GLOBALS['__test_request']         = [];
 	$GLOBALS['__test_nfilter_request'] = [];
 	unset($GLOBALS['__test_db_fetch_row_prepared'], $GLOBALS['__test_db_fetch_cell_prepared']);
 	unset($_SERVER['SCRIPT_NAME'], $_SESSION['sess_config_settings_tab']);
 });
 
-it('DecoratesLocalGraphLinksWithoutChangingGraphSelectionOrFragments', function (string $query) {
-	$html   = '<area href="/cacti/graph.php?' . htmlspecialchars($query, ENT_QUOTES) . '#range">';
+it('DecoratesLocalGraphLinksWithoutChangingGraphSelectionOrFragments', function (string $query, string $page) {
+	$html   = '<area href="/cacti/' . $page . '?' . htmlspecialchars($query, ENT_QUOTES) . '#range">';
 	$output = weathermap_map_graph_links($html, 'new-map');
 	preg_match('/href="([^"]+)"/', $output, $matches);
 	$url = html_entity_decode($matches[1], ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -41,7 +41,7 @@ it('DecoratesLocalGraphLinksWithoutChangingGraphSelectionOrFragments', function 
 	'local_graph_id=7&graph_list=7,9&rra_id=0',
 	'wm_map=old&local_graph_id=7&graph_list=7,9&rra_id=0&wm_map=older',
 	'%77m_map=old&local_graph_id=7&graph_list=7,9&rra_id=0',
-]);
+])->with(['graph.php', 'graph_view.php']);
 
 it('LeavesExternalAndNonGraphLinksUnchanged', function (string $url) {
 	$html = "<area href='" . $url . "'>";
@@ -49,6 +49,8 @@ it('LeavesExternalAndNonGraphLinksUnchanged', function (string $url) {
 })->with([
 	'https://example.test/cacti/graph.php?local_graph_id=7',
 	'//example.test/cacti/graph.php?local_graph_id=7',
+	'https://example.test/cacti/graph_view.php?graph_list=7',
+	'/other/graph_view.php?graph_list=7',
 	'/cacti/graphs.php?graph_list=7',
 	'/other/graph.php?local_graph_id=7',
 	'#graph.php',
@@ -71,23 +73,29 @@ it('ChecksMapPermissionBeforeAddingViewerOrGraphBreadcrumbs', function (string $
 
 		return $allowed && str_contains($sql, 'AND userid = ?') && $params[1] === 23 ? 5 : '';
 	};
-	$original  = ['graph.php:view' => ['title' => 'Graph', 'mapping' => 'graphs.php:', 'url' => 'graph.php', 'level' => '1']];
+	$graph_key = $page === 'graph_view.php' ? 'graph_view.php:preview' : 'graph.php:view';
+	$original  = [$graph_key => ['title' => 'Graph', 'mapping' => 'graphs.php:', 'url' => $page . '?action=preview&graph_list=7,9', 'level' => '1']];
 	$nav       = weathermap_draw_navigation_text($original);
 	$permitted = $allowed && $exists;
 
-	if ($page === 'graph.php') {
+	if (in_array($page, ['graph.php', 'graph_view.php'], true)) {
 		expect(isset($nav['wm-return-map:']))->toBe($permitted);
 
 		if ($permitted) {
 			expect($nav['wm-return-map:']['title'])->toBe('Permitted Map')
-				->and($nav['graph.php:view']['mapping'])->toBe('wm-return-list:,wm-return-map:');
+				->and($nav[$graph_key]['mapping'])->toBe('wm-return-list:,wm-return-map:');
+
+			if ($page === 'graph_view.php') {
+				expect($nav[$graph_key]['url'])->toBe($original[$graph_key]['url']);
+			}
 		} else {
-			expect($nav['graph.php:view'])->toBe($original['graph.php:view']);
+			expect($nav[$graph_key])->toBe($original[$graph_key]);
 		}
 	} else {
 		expect($nav['weathermap-cacti-plugin.php:viewmap']['title'])->toBe($permitted ? 'Permitted Map' : 'Weathermap');
 	}
 })->with([
+	['graph_view.php', true, true], ['graph_view.php', false, true], ['graph_view.php', true, false],
 	['graph.php', true, true], ['graph.php', false, true], ['graph.php', true, false],
 	['weathermap-cacti-plugin.php', true, true], ['weathermap-cacti-plugin.php', false, true], ['weathermap-cacti-plugin.php', true, false],
 ]);
@@ -101,7 +109,7 @@ it('IgnoresInvalidMapContextWithoutQueryingTheDatabase', function (string $page,
 	$nav = weathermap_draw_navigation_text([]);
 	expect($nav)->not->toHaveKey('wm-return-map:')
 		->and($nav['weathermap-cacti-plugin.php:viewmap']['title'])->toBe('Weathermap');
-})->with([['graph.php', 'invalid'], ['graph.php', ['a']], ['weathermap-cacti-plugin.php', 'invalid']]);
+})->with([['graph_view.php', 'invalid'], ['graph_view.php', ['a']], ['graph.php', 'invalid'], ['graph.php', ['a']], ['weathermap-cacti-plugin.php', 'invalid']]);
 
 it('UsesNormalizedSettingsTabAndSessionFallback', function () {
 	$_SERVER['SCRIPT_NAME']               = '/cacti/settings.php';
@@ -137,3 +145,11 @@ it('DelegatesToCactiHtmlEscapeAttrWhenAvailable', function () {
 
 	expect(plugin_weathermap_escape_attr($value))->toBe(html_escape_attr($value));
 });
+
+it('PreservesSpecialFilenamesInEditorImageRequests', function (string $filename) {
+	require_once __DIR__ . '/../../lib/editor.actions.php';
+	parse_str(parse_url(getImageURL($filename, ''), PHP_URL_QUERY), $params);
+	expect($params['mapname'])->toBe($filename)
+		->and($params['action'])->toBe('draw')
+		->and($params)->toHaveCount(3);
+})->with(['ordinary.conf', 'A&B#C? +%é.conf']);

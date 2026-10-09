@@ -270,7 +270,7 @@ function graphPicker() {
 				pickerTemplate = template;
 
 				var url = 'weathermap-cacti-plugin-editor.php' +
-					'?mapname=' + $('#mapname').val() +
+					'?mapname=' + encodeURIComponent($('#mapname').val()) +
 					'&action=' + action +
 					'&term=' + encodeURIComponent(request.term) +
 					'&target=' + id +
@@ -880,10 +880,10 @@ function form_submit() {
 		success: function(html) {
 			hide_all_dialogs();
 
-			$.get('?action=load_area_data&mapname=' + $('#mapname').val(), function(data) {
+			$.get('?action=load_area_data&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
 				$('.mapData').empty().html(data);
 
-				$.getScript('?action=load_map_javascript&mapname=' + $('#mapname').val(), function(data) {
+				$.getScript('?action=load_map_javascript&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
 					var date = new Date();
 
 					// Reload the images to update page

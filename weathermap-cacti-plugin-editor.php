@@ -329,10 +329,10 @@ if (get_nfilter_request_var('return_to') === 'manage') {
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
 			<div class='debug' style='display:none'><p><strong><?php print __('Debug', 'weathermap'); ?></strong>
-				<a href='?action=retidy_all&mapname=<?php print html_escape($mapname); ?>'><?php print __('Re-tidy ALL', 'weathermap'); ?></a>
-				<a href='?action=retidy&mapname=<?php print html_escape($mapname); ?>'><?php print __('Re-tidy', 'weathermap'); ?></a>
-				<a href='?action=untidy&mapname=<?php print html_escape($mapname); ?>'><?php print __('Un-tidy', 'weathermap'); ?></a>
-				<a href='?action=nothing&mapname=<?php print html_escape($mapname); ?>'><?php print __('Do Nothing', 'weathermap'); ?></a>
+				<a href='?action=retidy_all&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname)); ?>'><?php print __('Re-tidy ALL', 'weathermap'); ?></a>
+				<a href='?action=retidy&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname)); ?>'><?php print __('Re-tidy', 'weathermap'); ?></a>
+				<a href='?action=untidy&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname)); ?>'><?php print __('Un-tidy', 'weathermap'); ?></a>
+				<a href='?action=nothing&mapname=<?php print plugin_weathermap_escape_attr(rawurlencode($mapname)); ?>'><?php print __('Do Nothing', 'weathermap'); ?></a>
 				<span>
 					<label for='mapname'><?php print __('mapfile', 'weathermap'); ?></label>
 					<input id='mapname' name='mapname' type='text' class='ui-state-default ui-corner-all' value='<?php print html_escape($mapname); ?>'>
