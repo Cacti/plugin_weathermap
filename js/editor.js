@@ -529,6 +529,16 @@ function cleanupJS() {
     // IE/Win and Safari (at least) over a period of time with memory leaks.
 }
 
+// Rebuild return navigation from the allowed local pages and a validated map hash.
+function wmEditorReturnUrl(target) {
+	if (target === 'weathermap-cacti-plugin-mgmt.php') {
+		return 'weathermap-cacti-plugin-mgmt.php';
+	}
+
+	var match = typeof target === 'string' ? /^weathermap-cacti-plugin\.php\?action=viewmap&id=([a-f0-9]{20,64})$/i.exec(target) : null;
+	return 'weathermap-cacti-plugin.php' + (match ? '?action=viewmap&id=' + encodeURIComponent(match[1]) : '');
+}
+
 function attach_click_events() {
 	$("area[id^='LINK:']").attr('href', '#').off('click').on('click', click_handler);
 	$("area[id^='NODE:']").attr('href', '#').off('click').on('click', click_handler);
@@ -536,7 +546,7 @@ function attach_click_events() {
 	$("area[id^='LEGEN']").attr('href', '#').off('click').on('click', position_legend);
 
 	$('#tb_newfile').text($('body').attr('data-return-label') || 'Return to Map').off('click').on('click', function() {
-		window.location.assign($('body').attr('data-return-map') || 'weathermap-cacti-plugin.php');
+		window.location.assign(wmEditorReturnUrl($('body').attr('data-return-map')));
 	});
 
 	$('#tb_addnode').off('click').on('click', add_node);
