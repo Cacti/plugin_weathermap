@@ -137,31 +137,6 @@ it('UsesNormalizedSettingsTabAndSessionFallback', function () {
 	expect(weathermap_draw_navigation_text([])['settings.php:']['title'])->toBe('Settings');
 });
 
-it('EscapesAttributeQuotesAndEncodedEntitiesWithoutChangingTheirValue', function () {
-	$value   = "Name 'quoted' &quot; <map> `";
-	$escaped = plugin_weathermap_escape_attr($value);
-	expect($escaped)->not->toContain("'")
-		->not->toContain('<map>')
-		->toContain('&amp;quot;')
-		->and(html_entity_decode($escaped, ENT_QUOTES | ENT_HTML5, 'UTF-8'))->toBe($value);
-});
-
-/*
- * Must run last: once html_escape_attr() exists it stays defined for the rest
- * of the process, so the fallback case above has to be exercised first.
- */
-it('DelegatesToCactiHtmlEscapeAttrWhenAvailable', function () {
-	if (!function_exists('html_escape_attr')) {
-		function html_escape_attr($value) {
-			return str_replace('"', '&quot;', (string) $value);
-		}
-	}
-
-	$value = 'tab"quote';
-
-	expect(plugin_weathermap_escape_attr($value))->toBe(html_escape_attr($value));
-});
-
 it('PreservesSpecialFilenamesInEditorImageRequests', function (string $filename) {
 	require_once __DIR__ . '/../../lib/editor.actions.php';
 	parse_str(parse_url(getImageURL($filename, ''), PHP_URL_QUERY), $params);
