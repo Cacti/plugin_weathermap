@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* issue#294: Resolve bundled font paths independently of CLI working directories
+
 * feature#294: Expose bundled fonts and link comment colours in Map Style
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
