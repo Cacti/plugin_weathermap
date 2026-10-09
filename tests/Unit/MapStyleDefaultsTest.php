@@ -114,6 +114,6 @@ it('OmitsMissingBundledFonts',function () {
 it('UsesReadableFontNamesInTheExistingFontSelector', function () {
 	require_once dirname(__DIR__, 2) . '/lib/editor.inc.php';
 	$map  = wm_style_test_map();
-	$html = get_fontlist($map, 'font\"name', 100);
+	$html = get_fontlist($map, 'font"name', 100);
 	expect($html)->toContain('Vera Sans — 9 pt', 'selected', 'font&quot;name');
 });
