@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* feature: Delete unused configuration files with named confirmation
+* feature#296: Delete unused configuration files with named confirmation
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
