@@ -755,7 +755,7 @@ foreach ($styles as $id => $name) {
 							</td>
 						</tr>
 						<tr>
-							<td><?php print __('Traffic Label Font', 'weathermap'); ?></td>
+							<td><label for='mapstyle_linkfont'><?php print __esc('Traffic Label Font', 'weathermap'); ?></label></td>
 							<td><?php print wm_style_font_select($map, 'mapstyle_linkfont', $map->links['DEFAULT']->bwfont); ?></td>
 						</tr>
 						<?php print wm_comment_style_fields($map); ?>
@@ -767,25 +767,25 @@ foreach ($styles as $id => $name) {
 <p><?php print __('Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions.', 'weathermap'); ?></p>
 <table style='width: 100%;'>
 <tr>
-							<td><?php print __('Node Hover Width (pixels)', 'weathermap'); ?></td>
+							<td><label for='mapstyle_nodewidth'><?php print __esc('Node Hover Width (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_nodewidth' name='mapstyle_nodewidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibwidth; ?>'>
 							</td>
 						</tr>
 <tr>
-							<td><?php print __('Node Hover Height (pixels)', 'weathermap'); ?></td>
+							<td><label for='mapstyle_nodeheight'><?php print __esc('Node Hover Height (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_nodeheight' name='mapstyle_nodeheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibheight; ?>'>
 							</td>
 						</tr>
 <tr>
-							<td><?php print __('Link Hover Width (pixels)', 'weathermap'); ?></td>
+							<td><label for='mapstyle_linkwidth'><?php print __esc('Link Hover Width (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_linkwidth' name='mapstyle_linkwidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibwidth; ?>'>
 							</td>
 						</tr>
 <tr>
-							<td><?php print __('Link Hover Height (pixels)', 'weathermap'); ?></td>
+							<td><label for='mapstyle_linkheight'><?php print __esc('Link Hover Height (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_linkheight' name='mapstyle_linkheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibheight; ?>'>
 							</td>

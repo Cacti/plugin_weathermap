@@ -1430,6 +1430,9 @@ function compactLinkEditor() {
 	if (!$('#wm-link-apply-hint').length)
 		$('<p id="wm-link-apply-hint" style="margin: 0 0 6px;">').text(wmEditorText.applyInterfaceHint)
 			.prependTo(picker.closest('td'));
+	var describedBy = String(picker.attr('aria-describedby') || '').split(/\s+/).filter(Boolean);
+	if (describedBy.indexOf('wm-link-apply-hint') === -1) describedBy.push('wm-link-apply-hint');
+	picker.attr('aria-describedby', describedBy.join(' '));
 	var target = String($('#link_target').val() || '').trim();
 	var file = target.split('/').pop();
 	$('#wm-link-rrd').text(target);

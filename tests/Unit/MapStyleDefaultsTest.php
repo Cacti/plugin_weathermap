@@ -127,3 +127,34 @@ it('AssociatesCommentStyleLabelsWithTheirSelectors', function () {
 			->and($xpath->query('//select[@id="' . $id . '"]')->length)->toBe(1);
 	}
 });
+
+it('LabelsTheTrafficFontAndAdvancedHoverDimensions', function () {
+	$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin-editor.php');
+	$map = wm_style_test_map();
+	$map->nodes = ['DEFAULT' => (object) ['overlibwidth' => 0, 'overlibheight' => 0]];
+	$map->links['DEFAULT']->overlibwidth = 0;
+	$map->links['DEFAULT']->overlibheight = 0;
+	foreach (['mapstyle_linkfont', 'mapstyle_nodewidth', 'mapstyle_nodeheight', 'mapstyle_linkwidth', 'mapstyle_linkheight'] as $id) {
+		preg_match("/<label for='" . $id . "'>.*?<\/label>/s", $source, $label);
+		expect($label)->toHaveCount(1);
+		if ($id === 'mapstyle_linkfont') {
+			$field = wm_style_font_select($map, $id, $map->links['DEFAULT']->bwfont);
+		} else {
+			preg_match("/<input id='" . $id . "'.*?>'>/s", $source, $input);
+			expect($input)->toHaveCount(1);
+			$field = $input[0];
+		}
+		ob_start();
+		try {
+			eval('?>' . $label[0] . $field);
+			$html = ob_get_contents();
+		} finally {
+			ob_end_clean();
+		}
+		$document = new DOMDocument();
+		$document->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+		$xpath = new DOMXPath($document);
+		expect($xpath->query('//label[@for="' . $id . '"]')->length)->toBe(1)
+			->and($xpath->query('//*[@id="' . $id . '"]')->length)->toBe(1);
+	}
+});
