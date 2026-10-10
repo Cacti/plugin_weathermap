@@ -40,4 +40,30 @@ final class BackgroundSizingEngineTest extends TestCase {
 		}
 		self::assertSame("PASS\n", $result);
 	}
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState(false)]
+	public function testThumbnailMaximumNeverEnlargesSourceMaps(): void {
+		require dirname(__DIR__) . '/bootstrap-unit.php';
+		$plugin = dirname(__DIR__, 2);
+		chdir($plugin);
+		require $plugin . '/lib/WeatherMap.class.php';
+		$thumbnail = tempnam(sys_get_temp_dir(), 'wm-thumb-');
+		ob_start();
+		try {
+			foreach ([[400, 200, 400, 200], [200, 400, 200, 400], [1400, 700, 1000, 500], [700, 1400, 500, 1000]] as [$width, $height, $expected_width, $expected_height]) {
+				$map = new WeatherMap();
+				$map->width = $width;
+				$map->height = $height;
+				$map->DrawMap('', $thumbnail, 1000);
+				$image = imagecreatefrompng($thumbnail);
+				self::assertSame([$expected_width, $expected_height], [imagesx($image), imagesy($image)]);
+				self::assertSame([$expected_width, $expected_height], [$map->thumb_width, $map->thumb_height]);
+				imagedestroy($image);
+			}
+		} finally {
+			ob_end_clean();
+			unlink($thumbnail);
+		}
+	}
+
 }
