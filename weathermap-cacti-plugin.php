@@ -43,6 +43,7 @@
 $guest_account  = true;
 
 include_once('../../include/auth.php');
+require_once __DIR__ . '/setup.php';
 
 global $config;
 include_once($config['base_path'] . '/plugins/weathermap/lib/WeatherMap.class.php');
