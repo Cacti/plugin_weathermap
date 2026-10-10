@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-10 00:53+1030\n"
+"POT-Creation-Date: 2026-10-10 00:54+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -258,7 +258,7 @@ msgstr ""
 
 #: lib/editor.inc.php
 #, php-format
-msgid "Connected links to remove: %d."
+msgid "Connected links to remove: %s."
 msgstr ""
 
 #: lib/editor.inc.php
@@ -1049,6 +1049,22 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "Background Image Filename"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php

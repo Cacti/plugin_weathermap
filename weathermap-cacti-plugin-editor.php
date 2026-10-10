@@ -306,7 +306,7 @@ if ($editor_return_context === 'manage') {
 }
 ?>
 <body id='mainView' class='mainView' data-return-label='<?php print plugin_weathermap_escape_attr($editor_return_label); ?>' data-return-map='<?php print plugin_weathermap_escape_attr($editor_return_url); ?>'>
-	<div id='toolbar'>
+	<div id='toolbar' class='cactiTableTitleRow'>
 		<ul>
 			<li class='tb_active' id='tb_newfile'><?php print __('Change<br>File', 'weathermap'); ?></li>
 			<li class='tb_active' id='tb_addnode'><?php print __('Add<br>Node', 'weathermap'); ?></li>
@@ -645,6 +645,18 @@ if (count($backgd_list) == 0) {
 ?>
 								</select>
 							</td>
+						</tr>
+						<tr>
+							<td><label for='map_background_sizing'><?php print __('Background sizing', 'weathermap'); ?></label></td>
+							<td><select id='map_background_sizing' name='map_background_sizing'>
+							<?php
+							$background_sizing = $map->get_hint('background_sizing', 'image');
+							if (!in_array($background_sizing, ['fit', 'stretch', 'image'], true)) { $background_sizing = 'image'; }
+							foreach (['fit' => __('Fit to map', 'weathermap'), 'stretch' => __('Stretch to map', 'weathermap'), 'image' => __('Use image size', 'weathermap')] as $value => $label) {
+								print '<option value="' . $value . '"' . ($background_sizing === $value ? ' selected' : '') . '>' . html_escape($label) . '</option>';
+							}
+							?>
+							</select></td>
 						</tr>
 						<tr>
 							<td><?php print __('Timestamp Text', 'weathermap'); ?></td>
