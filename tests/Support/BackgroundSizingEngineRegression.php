@@ -30,18 +30,6 @@ require $plugin . '/lib/WeatherMap.class.php';
 require $plugin . '/lib/editor.inc.php';
 require $plugin . '/lib/editor.actions.php';
 
-if (!function_exists('cacti_count')) {
-	function cacti_count($value) {
-		return is_countable($value) ? count($value) : 0;
-	}
-}
-
-if (!function_exists('clean_up_name')) {
-	function clean_up_name($value) {
-		return preg_replace('/[^A-Za-z0-9_\-.]/','_',$value);
-	}
-}
-
 if (!defined('MESSAGE_LEVEL_INFO')) {
 	define('MESSAGE_LEVEL_INFO',0);
 }

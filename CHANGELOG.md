@@ -16,9 +16,11 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* issue#298: Use snake_case background variables and test editor mode persistence
-
 * feature#298: Fit or stretch background images within the map canvas
+
+* issue#289: Load viewer helpers explicitly before rendering maps
+
+* issue#288: Preserve dynamic editor labels and cycle countdowns
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
