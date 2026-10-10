@@ -368,6 +368,7 @@ function weathermap_config_settings() {
 		],
 		'weathermap_thumbsize' => [
 			'friendly_name' => __('Thumbnail Maximum Size', 'weathermap'),
+			'default'       => 1000,
 			'description'   => __('The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run.', 'weathermap'),
 			'method'        => 'textbox',
 			'size'          => 3,
