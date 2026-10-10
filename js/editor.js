@@ -753,7 +753,7 @@ function delete_node() {
 	var connected = Object.keys(Links).filter(function(key) { return Links[key].a === name || Links[key].b === name; }).length;
 	var message = delNodePrompt.replace('%s', function() { return wmNodeDisplayName(name); });
 	if (connected) {
-		message += ' ' + delNodeConnected.replace('%d', String(connected));
+		message += ' ' + delNodeConnected.replace('%s', String(connected));
 	}
 	$('.dlgConfirm').text(message + ' ' + delNodeKeepDevice);
 
@@ -1165,6 +1165,10 @@ function show_dialog(dlg) {
 		resizable: false,
 		draggable: true,
 		open: function() {
+			$(this).closest('.ui-dialog').addClass('wm-editor-dialog');
+			$(this).find('.ui-autocomplete-input').each(function() {
+				$(this).autocomplete('option', 'appendTo', $(this).closest('.ui-dialog'));
+			});
 			$('select').not('#node_iconfilename, #map_bgfile').not('.select2-hidden-accessible').selectmenu({
 				open: function() {
 					$('.ui-dialog').css('z-index', '20');
