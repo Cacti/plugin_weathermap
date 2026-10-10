@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* issue#297: Escape translated map title labels and placeholders
+* issue#297: Escape translated map title fields and retain existing titles for normalized empty overrides
 
 * issue#297: Apply existing editor title sanitization to new and copied maps
 

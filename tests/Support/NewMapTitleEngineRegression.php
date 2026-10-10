@@ -69,6 +69,22 @@ try {
 	$copy = new WeatherMap();
 	$copy->ReadConfig($directory . '/copy.conf');
 	wm_engine_assert($copy->title === 'Source title' && $copy->width == 910,'blank title retains source');
+	foreach (["\x01", "\x7f", " \r\n\x02 ", null, []] as $index => $empty_title) {
+		$filename = 'empty-' . $index . '.conf';
+		newMap($filename, 'source.conf', $empty_title);
+		$empty_copy = new WeatherMap();
+		$empty_copy->ReadConfig($directory . '/' . $filename);
+		wm_engine_assert($empty_copy->title === 'Source title' && $empty_copy->width == 910, 'normalized empty override preserves source title and layout');
+	}
+	newMap('blank-control.conf', '', "\x01");
+	$blank = new WeatherMap();
+	$blank->ReadConfig($directory . '/blank-control.conf');
+	$defaults = new WeatherMap();
+	wm_engine_assert($blank->title === $defaults->title, 'normalized empty title preserves a new map default');
+	newMap('mixed.conf', 'source.conf', " \x01New\x7ftitle ");
+	$mixed = new WeatherMap();
+	$mixed->ReadConfig($directory . '/mixed.conf');
+	wm_engine_assert($mixed->title === 'New title', 'mixed control characters normalize before applying a real override');
 	newMap('renamed.conf','source.conf','New <title> & copy');
 	$renamed = new WeatherMap();
 	$renamed->ReadConfig($directory . '/renamed.conf');

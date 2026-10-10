@@ -3358,6 +3358,8 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 
 	require_once __DIR__ . '/lib/editor.inc.php';
 
+	$title = is_string($title) ? wm_editor_sanitize_string(trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title))) : '';
+
 	if ($mapfile == basename($mapfile)) {
 		$mapfile = $weathermap_confdir . '/' . clean_up_name(basename($mapfile, '.conf')) . '.conf';
 	} else {
@@ -3379,8 +3381,8 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 			if ($sourcemapfile != '') {
 				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
 					$map->ReadConfig($sourcemapfile);
-					if (is_string($title) && trim($title) !== '') {
-						$map->title = wm_editor_sanitize_string(trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title)));
+					if ($title !== '') {
+						$map->title = $title;
 					}
 					$map->WriteConfig($mapfile);
 					raise_message('map_message', __('New Map file %s created from %s', basename($mapfile), basename($sourcemapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
@@ -3388,8 +3390,8 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
 				}
 			} elseif ($mapfile != '') {
-				if (is_string($title) && trim($title) !== '') {
-					$map->title = wm_editor_sanitize_string(trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title)));
+				if ($title !== '') {
+					$map->title = $title;
 				}
 				$map->WriteConfig($mapfile);
 				raise_message('map_message', __('New Map file %s created.', basename($mapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
