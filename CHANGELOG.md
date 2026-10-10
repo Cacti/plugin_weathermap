@@ -18,6 +18,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * feature#298: Fit or stretch background images within the map canvas
 
+* issue#291: Improve map selector placement and themed viewer controls
+
 * issue#290: Match editor toolbar colours to Cacti themes and keep pickers visible
 
 * issue#289: Load viewer helpers explicitly before rendering maps

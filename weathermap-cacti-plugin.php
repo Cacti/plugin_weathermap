@@ -367,9 +367,9 @@ switch (get_request_var('action')) {
 }
 
 /**
- * Renders the single-map view: the map selector, a titled box with
- * quick links (settings/permissions/edit for admins, or just a return
- * link for regular users), and the map's pre-generated HTML output (or
+ * Renders the single-map view: a titled box with quick links
+ * (settings/permissions/edit for admins, or just a return link for
+ * regular users), followed by the map selector and pre-generated HTML (or
  * a 'not created yet' notice), for a user authorized to view it.
  * Called from this script's main request-dispatch switch when
  * action=viewmap.
@@ -414,9 +414,9 @@ function weathermap_singleview($mapid) {
 				$maptitle = __esc('Map for config file: %s', $map['configfile']);
 			}
 
-			weathermap_mapselector($mapid);
-
 			print '<table class="cactiTable wm-map-title"><tr class="tableHeader"><td class="textHeaderDark">' . weathermap_map_title_controls($maptitle, $map) . '</td></tr></table>';
+
+			weathermap_mapselector($mapid);
 
 			print '<table class="cactiTable">';
 			print '<tr><td>';
@@ -515,7 +515,7 @@ function weathermap_thumbview($limit_to_group = -1) {
 
 		?>
 		<div class="cactiTable">
-			<div class="cactiTableTitleRow"><?php print $pagetitle; ?></div>
+			<div class="cactiTableTitleRow wm-gallery-heading"><?php print $pagetitle; ?></div>
 		</div>
 		<?php
 
@@ -849,7 +849,7 @@ function weathermap_mapselector($current_id = 0) {
 	if (cacti_sizeof($maps) > 1) {
 		// include graph view filter selector
 
-		html_start_box(__('Weathermap Filter', 'weathermap'), '100%', false, 3, 'center', '');
+		html_start_box('', '100%', false, 3, 'center', '');
 		?>
 		<tr class='even noprint'>
 			<td class='noprint'>

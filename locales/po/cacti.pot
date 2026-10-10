@@ -1986,10 +1986,6 @@ msgid "Weathermap Management"
 msgstr ""
 
 #: weathermap-cacti-plugin.php
-msgid "Weathermap Filter"
-msgstr ""
-
-#: weathermap-cacti-plugin.php
 msgid "Map to View"
 msgstr ""
 
