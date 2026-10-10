@@ -233,12 +233,6 @@ function weathermap_setup_table() {
 			set_config_option('weathermap_output_format', 'png');
 		}
 
-		$tsize = read_config_option('weathermap_thumbsize');
-
-		if ($tsize == '' || $tsize < 1) {
-			set_config_option('weathermap_thumbsize', '250');
-		}
-
 		$ms = read_config_option('weathermap_map_selector');
 
 		if ($ms == '' || $ms < 0 || $ms > 1) {
@@ -284,5 +278,12 @@ function weathermap_setup_table() {
 				break;
 			}
 		}
+	}
+
+	// Normalize invalid sizes even when the schema version is already current.
+	$tsize = read_config_option('weathermap_thumbsize');
+
+	if ($tsize == '' || $tsize < 1) {
+		set_config_option('weathermap_thumbsize', '1000');
 	}
 }
