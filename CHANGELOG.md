@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* feature#298: Fit or stretch background images within the map canvas
+
 * issue#289: Load viewer helpers explicitly before rendering maps
 
 * issue#288: Preserve dynamic editor labels and cycle countdowns
