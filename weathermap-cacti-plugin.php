@@ -366,9 +366,9 @@ switch (get_request_var('action')) {
 }
 
 /**
- * Renders the single-map view: the map selector, a titled box with
- * quick links (settings/permissions/edit for admins, or just a return
- * link for regular users), and the map's pre-generated HTML output (or
+ * Renders the single-map view: a titled box with quick links
+ * (settings/permissions/edit for admins, or just a return link for
+ * regular users), followed by the map selector and pre-generated HTML (or
  * a 'not created yet' notice), for a user authorized to view it.
  * Called from this script's main request-dispatch switch when
  * action=viewmap.
