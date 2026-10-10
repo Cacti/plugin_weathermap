@@ -244,18 +244,16 @@ if (!function_exists('__')) {
 		}
 
 		$text = array_shift($args);
-		array_pop($args); // trailing text-domain argument
 
-		// Match Cacti's formatter: the trailing domain is still a sprintf argument.
-		// Missing runtime values therefore turn %s into the domain and %d into zero.
-		$format = '/%(?:[-]?[0-9]+(?:[.][0-9]+)?)?[bodsuxXeEfFgGhH]/';
-		return preg_match($format, (string) $text) ? vsprintf((string) $text, [...$args, 'weathermap']) : (string) $text;
+		// Cacti passes every argument after the message to sprintf, including a domain.
+		$format = '/%%|%c|%(?:[-]?[0-9]+(?:[.][0-9]+)?)?[bodsuxXeEfFgGhH]/';
+		return preg_match($format, (string) $text) ? vsprintf((string) $text, $args) : (string) $text;
 	}
 }
 
 if (!function_exists('__esc')) {
-	function __esc($t, $d = '') {
-		return htmlspecialchars($t, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+	function __esc(...$args) {
+		return htmlspecialchars(__(...$args), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 	}
 }
 
