@@ -206,7 +206,7 @@ if (!function_exists('read_user_setting')) {
 
 if (!function_exists('db_table_exists')) {
 	function db_table_exists($t) {
-		return false;
+		return $GLOBALS['__test_table_exists'][$t] ?? false;
 	}
 }
 
