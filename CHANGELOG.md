@@ -16,7 +16,17 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* feature#298: Fit or stretch background images within the map canvas
+
 * feature#293: Default new graph assignments to Time Graph View
+
+* issue#291: Improve map selector placement and themed viewer controls
+
+* issue#290: Match editor toolbar colours to Cacti themes and keep pickers visible
+
+* issue#289: Load viewer helpers explicitly before rendering maps
+
+* issue#288: Preserve dynamic editor labels and cycle countdowns
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
