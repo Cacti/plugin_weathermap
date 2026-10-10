@@ -264,6 +264,26 @@ if (!function_exists('cacti_log')) {
 	}
 }
 
+if (!function_exists('cacti_count')) {
+	function cacti_count($value) {
+		if (isset($GLOBALS['__test_cacti_count']) && is_callable($GLOBALS['__test_cacti_count'])) {
+			return ($GLOBALS['__test_cacti_count'])($value);
+		}
+
+		return is_countable($value) ? count($value) : 0;
+	}
+}
+
+if (!function_exists('clean_up_name')) {
+	function clean_up_name($value) {
+		if (isset($GLOBALS['__test_clean_up_name']) && is_callable($GLOBALS['__test_clean_up_name'])) {
+			return ($GLOBALS['__test_clean_up_name'])($value);
+		}
+
+		return preg_replace('/[^A-Za-z0-9_\\-.]/', '_', $value);
+	}
+}
+
 if (!function_exists('cacti_sizeof')) {
 	function cacti_sizeof($a) {
 		return is_array($a) ? count($a) : 0;

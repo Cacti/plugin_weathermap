@@ -1052,6 +1052,22 @@ msgid "Background Image Filename"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
 msgid "Timestamp Text"
 msgstr ""
 
