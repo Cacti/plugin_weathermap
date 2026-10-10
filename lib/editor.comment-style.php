@@ -145,7 +145,7 @@ function wm_style_font_select($map, $name, $current) {
  */
 function wm_comment_style_fields($map) {
 	$current = $map->links['DEFAULT']->commentfont;
-	$out     = '<tr><td>' . __('Link Comment Font', 'weathermap') . '</td><td><select class="fontcombo" name="mapstyle_commentfont" id="mapstyle_commentfont">';
+	$out     = '<tr><td><label for="mapstyle_commentfont">' . html_escape(__('Link Comment Font', 'weathermap')) . '</label></td><td><select class="fontcombo" name="mapstyle_commentfont" id="mapstyle_commentfont">';
 	$out .= wm_style_font_options($map, $current);
 	$out .= '</select></td></tr>';
 	$rgb           = $map->links['DEFAULT']->commentfontcolour;
@@ -155,7 +155,7 @@ function wm_comment_style_fields($map) {
 	if (!isset($colours[$currentColour])) {
 		$colours[$currentColour] = __('Current custom colour (%s)', $currentColour, 'weathermap');
 	}
-	$out .= '<tr><td>' . __('Link Comment Colour', 'weathermap') . '</td><td><select name="mapstyle_commentcolour" id="mapstyle_commentcolour">';
+	$out .= '<tr><td><label for="mapstyle_commentcolour">' . html_escape(__('Link Comment Colour', 'weathermap')) . '</label></td><td><select name="mapstyle_commentcolour" id="mapstyle_commentcolour">';
 
 	foreach ($colours as $value => $label) {
 		$out .= '<option value="' . html_escape($value) . '"' . ($value === $currentColour ? ' selected' : '') . '>' . html_escape($label) . '</option>';

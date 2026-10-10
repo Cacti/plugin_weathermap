@@ -116,3 +116,14 @@ it('DeduplicatesAndReusesPortableFontsFromTheCactiWorkingDirectory', function ()
 		chdir($cwd);
 	}
 });
+
+it('AssociatesCommentStyleLabelsWithTheirSelectors', function () {
+	$document = new DOMDocument();
+	$document->loadHTML('<table>' . wm_comment_style_fields(wm_style_test_map()) . '</table>', LIBXML_NOERROR | LIBXML_NOWARNING);
+	$xpath = new DOMXPath($document);
+	foreach (['mapstyle_commentfont' => 'Link Comment Font', 'mapstyle_commentcolour' => 'Link Comment Colour'] as $id => $text) {
+		$label = $xpath->query('//label[@for="' . $id . '"]')->item(0);
+		expect($label)->not->toBeNull()->and($label->textContent)->toBe($text)
+			->and($xpath->query('//select[@id="' . $id . '"]')->length)->toBe(1);
+	}
+});
