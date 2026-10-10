@@ -10,7 +10,7 @@ input:focus {
 }
 
 .mainView {
-	padding-top: 60px;
+	padding-top: 0;
 }
 
 input {
@@ -31,7 +31,7 @@ input {
 
 #frmMain {
 	position: relative;
-	top: -20px;
+	top: 0;
 }
 
 #toolbar {
@@ -39,7 +39,9 @@ input {
 }
 
 #toolbar {
-	position: fixed;
+	float: none;
+	display: flow-root;
+	position: sticky;
 	top:0px;
 	left: 0px;
 	width: 100%;
