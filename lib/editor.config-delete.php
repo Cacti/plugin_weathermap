@@ -26,6 +26,7 @@
  * Lock the config inode shared by registration and deletion.
  *
  * @param string $path
+ *
  * @return resource|false
  */
 function wm_config_lock($path) {
