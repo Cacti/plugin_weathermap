@@ -53,8 +53,9 @@ it('SerializesTheActualRegistrationAndDeletionPaths', function () {
 	$registered = false;
 	$inserted = 0;
 	$GLOBALS['__test_db_fetch_cell_prepared'] = function () use (&$registered) { return $registered ? 1 : 0; };
-	$GLOBALS['__test_db_execute_prepared'] = function ($sql) use (&$registered, &$inserted, $directory, $file) {
+	$GLOBALS['__test_db_execute_prepared'] = function ($sql, $params) use (&$registered, &$inserted, $directory, $file) {
 		if (strpos($sql, 'INSERT INTO weathermap_maps') !== false) {
+			expect($params[0])->toBe($file);
 			expect(wm_config_delete($directory, $file))->toBe('failed');
 			$registered = true;
 			$inserted++;
@@ -68,7 +69,7 @@ it('SerializesTheActualRegistrationAndDeletionPaths', function () {
 		expect($inserted)->toBe(0)->and(wm_config_delete($directory, $file))->toBe('failed');
 		flock($lock, LOCK_UN);
 		fclose($lock);
-		add_config($file);
+		add_config('./' . $file);
 		expect($inserted)->toBe(1)->and(wm_config_delete($directory, $file))->toBe('used');
 		$registered = false;
 		$GLOBALS['__test_db_fetch_cell_prepared'] = function () use ($file, &$inserted) {

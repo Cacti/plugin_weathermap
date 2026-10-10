@@ -1246,7 +1246,9 @@ function create_prime_mapcache() {
 
 	if (is_array($maps)) {
 		foreach ($maps as $map) {
-			$loaded[$map['id']] = $map['configfile'];
+			$registered = $map['configfile'];
+			$resolved = realpath(substr($registered, 0, 1) === '/' ? $registered : $weathermap_confdir . '/' . $registered);
+			$loaded[$map['id']] = $resolved !== false && dirname($resolved) === realpath($weathermap_confdir) ? basename($resolved) : $registered;
 		}
 	}
 
@@ -1745,6 +1747,7 @@ function add_config($file) {
 		print '<h3>' . __('Path mismatch', 'weathermap') . '</h3>';
 	} else {
 		require_once __DIR__ . '/lib/editor.config-delete.php';
+		$file = basename($file);
 		$realfile = $weathermap_confdir . '/' . $file;
 		$lock = wm_config_lock($realfile);
 		if ($lock === false) {

@@ -109,10 +109,15 @@ body#wm_fullscreen { font-family: sans-serif; margin: 0; border: 0; padding: 0; 
 /* Readable compact controls in the themed header and standalone cycle view. */
 .wm-cycle-control { display: inline-block; padding: 6px; margin: 0 5px; color: inherit !important; font-size: 14px; text-decoration: none; vertical-align: middle; }
 button.wm-cycle-control { appearance: none; background: transparent; border: 0; box-shadow: none; cursor: pointer; line-height: inherit; }
+button.wm-cycle-control.fas { font-family: "Font Awesome 5 Free"; font-weight: 900; }
 .wm-cycle-control:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-.wm-cycle-toolbar { color: var(--text-color-highlight, #fff); }
+.cactiTableTitleRow.wm-cycle-toolbar { color: var(--text-color-highlight, #fff); padding: 8px 10px; line-height: 1.5; }
+.all_map_holder.inplace { margin-top: 10px; }
 #wmcyclecontrolbox.fullscreen { opacity: 1; background: #26351c; color: #fff; width: auto; max-width: calc(100% - 40px); border: 1px solid #829673; border-radius: 4px; }
 #wm_countdown { margin-left: 12px; white-space: nowrap; }
 .wm-cycle-exit-label { font: 14px sans-serif; margin-left: 6px; }
 .wm-progress-track { display: inline-block; width: 140px; height: 6px; margin-left: 10px; vertical-align: middle; overflow: hidden; border: 1px solid currentColor; border-radius: 3px; background: rgba(255,255,255,.25); }
 .wm-progress-track #wm_progress { display: block; width: 100%; height: 100%; margin: 0; background: currentColor; }
+
+/* Keep gallery headings readable against the theme title bar. */
+.cactiTableTitleRow.wm-gallery-heading { color: var(--text-color-highlight, #fff); }

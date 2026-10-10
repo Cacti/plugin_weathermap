@@ -16,11 +16,17 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* issue#296: Serialize config registration and deletion while retaining in-use checks
+* feature#298: Fit or stretch background images within the map canvas
 
-* issue#296: Stop config deletion when the usage query fails and escape filename messages
+* feature#296: Delete unused configuration files with confirmation and protect registered maps
 
-* feature#296: Delete unused configuration files with named confirmation
+* issue#291: Improve map selector placement and themed viewer controls
+
+* issue#290: Match editor toolbar colours to Cacti themes and keep pickers visible
+
+* issue#289: Load viewer helpers explicitly before rendering maps
+
+* issue#288: Preserve dynamic editor labels and cycle countdowns
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 

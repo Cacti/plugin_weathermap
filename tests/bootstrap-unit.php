@@ -73,6 +73,10 @@ if (!function_exists('db_fetch_assoc')) {
 
 if (!function_exists('db_fetch_assoc_prepared')) {
 	function db_fetch_assoc_prepared($sql, $p = []) {
+		if (isset($GLOBALS['__test_db_fetch_assoc_prepared']) && is_callable($GLOBALS['__test_db_fetch_assoc_prepared'])) {
+			return ($GLOBALS['__test_db_fetch_assoc_prepared'])($sql, $p);
+		}
+
 		return [];
 	}
 }
@@ -247,15 +251,16 @@ if (!function_exists('__')) {
 		}
 
 		$text = array_shift($args);
-		array_pop($args); // trailing text-domain argument
 
-		return count($args) ? vsprintf((string) $text, $args) : (string) $text;
+		// Cacti passes every argument after the message to sprintf, including a domain.
+		$format = '/%%|%c|%(?:[-]?[0-9]+(?:[.][0-9]+)?)?[bodsuxXeEfFgGhH]/';
+		return preg_match($format, (string) $text) ? vsprintf((string) $text, $args) : (string) $text;
 	}
 }
 
 if (!function_exists('__esc')) {
-	function __esc($t, $d = '') {
-		return htmlspecialchars($t, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+	function __esc(...$args) {
+		return htmlspecialchars(__(...$args), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 	}
 }
 
@@ -263,6 +268,26 @@ if (!function_exists('cacti_log')) {
 	function cacti_log($m, $p = false, $t = '', $l = 0) {
 		$args = func_get_args();
 		$GLOBALS["__test_cacti_log"][] = isset($args[0]) ? (string) $args[0] : "";
+	}
+}
+
+if (!function_exists('cacti_count')) {
+	function cacti_count($value) {
+		if (isset($GLOBALS['__test_cacti_count']) && is_callable($GLOBALS['__test_cacti_count'])) {
+			return ($GLOBALS['__test_cacti_count'])($value);
+		}
+
+		return is_countable($value) ? count($value) : 0;
+	}
+}
+
+if (!function_exists('clean_up_name')) {
+	function clean_up_name($value) {
+		if (isset($GLOBALS['__test_clean_up_name']) && is_callable($GLOBALS['__test_clean_up_name'])) {
+			return ($GLOBALS['__test_clean_up_name'])($value);
+		}
+
+		return preg_replace('/[^A-Za-z0-9_\\-.]/', '_', $value);
 	}
 }
 

@@ -92,6 +92,19 @@ function wm_config_delete($directory, $file) {
 			return 'used';
 		}
 
+		// Existing registrations may use ./, absolute paths or other aliases.
+		$maps = db_fetch_assoc_prepared('SELECT configfile FROM weathermap_maps', []);
+		if (!is_array($maps)) {
+			return 'failed';
+		}
+		foreach ($maps as $map) {
+			$registered = $map['configfile'];
+			$registered_path = realpath(substr($registered, 0, 1) === '/' ? $registered : $directory . '/' . $registered);
+			if ($registered_path === $resolved) {
+				return 'used';
+			}
+		}
+
 		return unlink($path) ? 'deleted' : 'failed';
 	} finally {
 		flock($lock, LOCK_UN);

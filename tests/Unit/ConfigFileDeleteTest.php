@@ -122,3 +122,30 @@ it('EscapesFilenameMessagesFromTheActualDeleteAction', function () {
 		}
 	}
 });
+
+it('ProtectsRegisteredCanonicalPathAliasesAndFailsClosedOnLookupFailure', function () {
+	$directory = sys_get_temp_dir() . '/wm-alias-' . bin2hex(random_bytes(8));
+	mkdir($directory);
+	mkdir($directory . '/sub');
+	file_put_contents($directory . '/Map.conf', 'original');
+	file_put_contents($directory . '/Other.conf', 'other');
+	$GLOBALS['__test_db_fetch_cell_prepared'] = fn () => 0;
+	try {
+		foreach (['./Map.conf', 'sub/../Map.conf', $directory . '/./Map.conf'] as $alias) {
+			$GLOBALS['__test_db_fetch_assoc_prepared'] = fn () => [['configfile' => $alias]];
+			expect(wm_config_delete($directory, 'Map.conf'))->toBe('used')->and(file_get_contents($directory . '/Map.conf'))->toBe('original');
+		}
+		foreach ([false, null] as $failure) {
+			$GLOBALS['__test_db_fetch_assoc_prepared'] = fn () => $failure;
+			expect(wm_config_delete($directory, 'Map.conf'))->toBe('failed');
+		}
+		$GLOBALS['__test_db_fetch_assoc_prepared'] = fn () => [['configfile' => './Other.conf']];
+		expect(wm_config_delete($directory, 'Map.conf'))->toBe('deleted')->and(file_exists($directory . '/Map.conf'))->toBeFalse();
+	} finally {
+		unset($GLOBALS['__test_db_fetch_cell_prepared'], $GLOBALS['__test_db_fetch_assoc_prepared']);
+		unlink($directory . '/Other.conf');
+		if (file_exists($directory . '/Map.conf')) { unlink($directory . '/Map.conf'); }
+		rmdir($directory . '/sub');
+		rmdir($directory);
+	}
+});
