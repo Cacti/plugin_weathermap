@@ -12,7 +12,7 @@ const w = dom.window,
 	$ = jquery(w);
 w.$ = $;
 const phpStrings = fs.readFileSync(require('node:path').join(__dirname, '../../lib/editor.inc.php'), 'utf8');
-w.wmEditorText = Object.fromEntries(Array.from(phpStrings.matchAll(/'([a-zA-Z]+)'\s*=> __\('([^']*)', 'weathermap'\)/g), match => [match[1], match[2]]));
+w.wmEditorText = Object.fromEntries(Array.from(phpStrings.matchAll(/'([a-zA-Z]+)'\s*=> __\('([^']*)', (?:'%s', )?'weathermap'\)/g), match => [match[1], match[2]]));
 w.infoUrlTarget = 'graph_view.php?action=preview&reset=true&style=selective&graph_list=';
 w.Nodes = { a: { label: 'Switch A' }, b: { label: 'Router B' } };
 w.Links = { 'a-b': { a: 'a', b: 'b', name: 'a-b' } };
@@ -151,7 +151,7 @@ assert.equal(graphLabels.some(item => item.id === 115), true);
 $.fn.dialog = function() { return this; };
 w.mapmode = () => {};
 w.delNodePrompt = 'Translated remove %s?';
-w.delNodeConnected = 'Translated connected count: %d';
+w.delNodeConnected = 'Translated connected count: %s';
 w.delNodeKeepDevice = 'Translated keep device';
 w.delNodeTitle = 'Translated title';
 w.txtCancel = 'Cancel';
