@@ -86,6 +86,28 @@ try {
 		imagedestroy($image);
 	}
 
+	foreach (['fit' => [120, 120], 'stretch' => [120, 120], 'image' => [200, 100], 'invalid' => [200, 100]] as $mode => $size) {
+		$map = new WeatherMap();
+		$map->width = 120;
+		$map->height = 120;
+		$map->background = $directory . '/background.png';
+		$map->add_hint('background_sizing', 'stretch');
+		$map->postprocessclasses = ['SizingOverride'];
+		$map->plugins['post']['SizingOverride'] = new class($mode) {
+			public function __construct(private string $mode) {}
+			public function run($map) {
+				$map->add_hint('background_sizing', $this->mode);
+			}
+		};
+		$file = $directory . '/post-' . $mode . '.png';
+		$map->DrawMap($file);
+		$image = imagecreatefrompng($file);
+		wm_engine_assert([imagesx($image), imagesy($image)] === $size, $mode . ' post-processor canvas');
+		$pixel = imagecolorsforindex($image, imagecolorat($image, 60, 1));
+		wm_engine_assert(($pixel['red'] === 255 && $pixel['green'] === 0) === ($mode !== 'fit'), $mode . ' post-processor proportions');
+		imagedestroy($image);
+	}
+
 	print "PASS\n";
 } finally {
 	foreach (glob($directory . '/*') as $file) {

@@ -3884,10 +3884,6 @@ class WeatherMap extends WeatherMapBase {
 		wm_debug('Trace: DrawMap()');
 
 		$bgimage = null;
-		$background_sizing = $this->get_hint('background_sizing', 'image');
-		if (!in_array($background_sizing, ['fit', 'stretch', 'image'], true)) {
-			$background_sizing = 'image';
-		}
 
 		$this->cachefile_version = false;
 
@@ -3914,6 +3910,11 @@ class WeatherMap extends WeatherMapBase {
 		}
 
 		wm_debug('Finished Post-Processing Plugins...');
+
+		$background_sizing = $this->get_hint('background_sizing', 'image');
+		if (!in_array($background_sizing, ['fit', 'stretch', 'image'], true)) {
+			$background_sizing = 'image';
+		}
 
 		wm_debug('=====================================');
 		wm_debug('Start of Map Drawing');
