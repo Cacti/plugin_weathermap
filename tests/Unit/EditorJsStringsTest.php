@@ -30,6 +30,16 @@ it('emits the translated editor javascript string table', function (): void {
 
 	expect($output)->toContain('var wmEditorText =');
 	expect($output)->toContain('var delNodePrompt =');
+	preg_match('/var wmEditorText = (.*);/', $output, $matches);
+	$strings = json_decode($matches[1], true, 512, JSON_THROW_ON_ERROR);
+	expect($strings['currentGraph'])->toBe('Current graph: %s');
+	expect($strings['internalLink'])->toBe('Internal link ID: %s');
+	expect($strings['bandwidthIn'])->toBe('Bandwidth into %s');
+	expect($strings['bandwidthOut'])->toBe('Bandwidth out of %s');
+	expect($strings['nodeTitle'])->toBe('Node: %s');
+	expect($strings['hoverSummary'])->toBe('Hover graphs: %s');
+	expect($strings['graphSelected'])->toContain('%s');
+	expect($output)->toContain('Connected links to remove: %s.', 'Remove %s from this map?');
 	expect($output)->toContain('currentInterface');
 	expect($output)->toContain('deleteLinkPrompt');
 });

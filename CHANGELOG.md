@@ -16,9 +16,11 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* issue#290: Preserve native theme button text colours and test picker layering on reopen
-
 * issue#290: Match editor toolbar colours to Cacti themes and keep pickers visible
+
+* issue#289: Load viewer helpers explicitly before rendering maps
+
+* issue#288: Preserve dynamic editor labels and cycle countdowns
 
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
 
