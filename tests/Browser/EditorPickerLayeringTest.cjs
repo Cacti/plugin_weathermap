@@ -18,6 +18,7 @@ assert.equal(menu.parent()[0], w.document.body);
 for (let attempt = 0; attempt < 2; attempt++) {
   w.show_dialog('dlgLinkProperties');
   const dialog = $('#dlgLinkProperties').closest('.ui-dialog');
+  assert.ok(dialog.hasClass('wm-editor-dialog'));
   assert.equal($('#picker').autocomplete('option', 'appendTo')[0], dialog[0]);
   assert.equal(menu.parent()[0], dialog[0]);
   $('#dlgLinkProperties').dialog('close');

@@ -311,3 +311,8 @@ body#mainView #wm-link-delete-bar {
  display: flex; justify-content: flex-end; width: 100%; box-sizing: border-box;
 }
 body#mainView #wm-node-delete-bar { min-height: 32px; }
+
+/* Menus are appended to editor dialog wrappers and may extend beyond them. */
+.ui-dialog.wm-editor-dialog {
+	overflow: visible;
+}

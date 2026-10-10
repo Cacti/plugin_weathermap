@@ -1165,6 +1165,7 @@ function show_dialog(dlg) {
 		resizable: false,
 		draggable: true,
 		open: function() {
+			$(this).closest('.ui-dialog').addClass('wm-editor-dialog');
 			$(this).find('.ui-autocomplete-input').each(function() {
 				$(this).autocomplete('option', 'appendTo', $(this).closest('.ui-dialog'));
 			});
