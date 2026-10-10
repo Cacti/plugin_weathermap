@@ -38,7 +38,7 @@ function wm_new_map_preset($map) {
 	$map->links['DEFAULT']->commentfontcolour = [0, 0, 255];
 	$file                                     = realpath(__DIR__ . '/../docs/example/Vera.ttf');
 
-	if ($file !== false && is_readable($file) && function_exists('imagettfbbox') && is_array(imagettfbbox(9, 0, $file, '1G'))) {
+	if ($file !== false && is_readable($file) && function_exists('imagettfbbox') && function_exists('imagettftext') && is_array(imagettfbbox(9, 0, $file, '1G'))) {
 		$number = 100;
 
 		while (isset($map->fonts[$number])) {

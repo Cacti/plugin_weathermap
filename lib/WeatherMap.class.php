@@ -3164,7 +3164,7 @@ class WeatherMap extends WeatherMapBase {
 
 				// truetype font definition (actually, we don't really check if it's truetype) - filename + size
 				if (preg_match('/^\s*FONTDEFINE\s+(\d+)\s+(\S+)\s+(\d+)\s*$/i', $buffer, $matches)) {
-					if (function_exists('imagettfbbox')) {
+					if (function_exists('imagettfbbox') && function_exists('imagettftext')) {
 						// test if this font is valid, before adding it to the font table...
 						$bounds = imagettfbbox((float)$matches[3], 0, wm_font_file($matches[2]), 'Ignore me');
 
@@ -3178,7 +3178,7 @@ class WeatherMap extends WeatherMapBase {
 							wm_warn('Failed to load ttf font ' . $matches[2] . " - at config line $linecount [WMWARN30]");
 						}
 					} else {
-						wm_warn("imagettfbbox() is not a defined function. You don't seem to have FreeType compiled into your gd module. [WMWARN31]");
+						wm_warn("FreeType font functions imagettfbbox() and imagettftext() must both be available in your gd module. [WMWARN31]");
 					}
 
 					$linematched++;

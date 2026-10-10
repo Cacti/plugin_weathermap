@@ -51,5 +51,5 @@ it('UsesReadableLandscapeDefaultsAndAllocatesAnUnusedFontId', function () {
 		->and($map->links['DEFAULT']->commentfont)->toBe(101)
 		->and($map->fonts[101]->file)->toBe('docs/example/Vera.ttf')
 		->and($map->fonts[101]->size)->toBe(9)
-		->and(is_readable($map->fonts[101]->file))->toBeTrue();
+		->and(is_readable(wm_font_file($map->fonts[101]->file)))->toBeTrue();
 });
