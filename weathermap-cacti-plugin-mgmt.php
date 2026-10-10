@@ -3360,6 +3360,12 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 
 	$title = is_string($title) ? wm_editor_sanitize_string(trim(preg_replace('/[\x00-\x1f\x7f]/', ' ', $title))) : '';
 
+	// fgets(..., 4096) must read the complete TITLE line, including its newline.
+	if (strlen($title) > 4088) {
+		raise_message('map_message', __esc('Map title is too long. Use at most 4088 bytes after escaping.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+		return;
+	}
+
 	if ($mapfile == basename($mapfile)) {
 		$mapfile = $weathermap_confdir . '/' . clean_up_name(basename($mapfile, '.conf')) . '.conf';
 	} else {

@@ -91,6 +91,23 @@ try {
 	wm_engine_assert($renamed->title === 'New &lt;title&gt; &amp; copy' && $renamed->width == 910,'override title preserves layout');
 	wm_engine_assert(file_get_contents($directory . '/source.conf') === $before,'source unchanged');
 
+	foreach ([str_repeat('T', 4088), str_repeat('é', 2044)] as $index => $boundary_title) {
+		newMap('boundary-' . $index . '.conf', '', $boundary_title);
+		$boundary = new WeatherMap();
+		$boundary->ReadConfig($directory . '/boundary-' . $index . '.conf');
+		wm_engine_assert($boundary->title === $boundary_title, 'maximum byte-length title round-trips intact');
+	}
+	$include = $directory . '/injected.conf';
+	file_put_contents($include, "WIDTH 9999\n");
+	foreach ([str_repeat('T', 4089), str_repeat('é', 2045), str_repeat('&', 818), str_repeat('T', 4089) . 'INCLUDE ' . $include] as $index => $oversized_title) {
+		foreach (['', 'source.conf'] as $source_map) {
+			$filename = 'oversized-' . $index . '-' . ($source_map === '' ? 'blank' : 'copy') . '.conf';
+			newMap($filename, $source_map, $oversized_title);
+			wm_engine_assert(!file_exists($directory . '/' . $filename), 'oversized title cannot create a config or inject directives');
+		}
+	}
+	wm_engine_assert(file_get_contents($directory . '/source.conf') === $before, 'oversized copied-map override leaves its source untouched');
+
 	print "PASS\n";
 } finally {
 	foreach (glob($directory . '/*') as $file) {
