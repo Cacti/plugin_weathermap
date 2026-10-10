@@ -4201,6 +4201,8 @@ class WeatherMap extends WeatherMapBase {
 						$factor = ($thumbnailmax / $this->height);
 					}
 
+					$factor = min(1, $factor);
+
 					$this->thumb_width  = (int) ceil($this->width * $factor);
 					$this->thumb_height = (int) ceil($this->height * $factor);
 
