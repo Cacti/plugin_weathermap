@@ -23,6 +23,26 @@
 */
 
 /**
+ * Preserve absolute Unix and Windows registered paths before canonicalization.
+ *
+ * @param string $directory
+ * @param string $file
+ *
+ * @return string
+ */
+function wm_config_registered_path($directory, $file) {
+	$first = $file[0] ?? '';
+	$drive_rooted = strlen($file) >= 3 && ctype_alpha($first) && $file[1] === ':' &&
+		($file[2] === '/' || $file[2] === chr(92));
+
+	if ($first === '/' || $first === chr(92) || $drive_rooted) {
+		return $file;
+	}
+
+	return $directory . '/' . $file;
+}
+
+/**
  * Lock the config inode shared by registration and deletion.
  *
  * @param string $path
@@ -99,7 +119,7 @@ function wm_config_delete($directory, $file) {
 		}
 		foreach ($maps as $map) {
 			$registered = $map['configfile'];
-			$registered_path = realpath(substr($registered, 0, 1) === '/' ? $registered : $directory . '/' . $registered);
+			$registered_path = realpath(wm_config_registered_path($directory, $registered));
 			if ($registered_path === $resolved) {
 				return 'used';
 			}

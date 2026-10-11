@@ -1221,6 +1221,8 @@ function maplist() {
 function create_prime_mapcache() {
 	global $weathermap_confdir;
 
+	require_once __DIR__ . '/lib/editor.config-delete.php';
+
 	// Create the map cache if it does not already exist
 	db_execute('CREATE TABLE IF NOT EXISTS weathermap_config_cache (
 		map_id INT UNSIGNED NOT NULL default "0",
@@ -1247,7 +1249,7 @@ function create_prime_mapcache() {
 	if (is_array($maps)) {
 		foreach ($maps as $map) {
 			$registered = $map['configfile'];
-			$resolved = realpath(substr($registered, 0, 1) === '/' ? $registered : $weathermap_confdir . '/' . $registered);
+			$resolved = realpath(wm_config_registered_path($weathermap_confdir, $registered));
 			$loaded[$map['id']] = $resolved !== false && dirname($resolved) === realpath($weathermap_confdir) ? basename($resolved) : $registered;
 		}
 	}

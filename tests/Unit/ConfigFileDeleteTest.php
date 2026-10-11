@@ -149,3 +149,18 @@ it('ProtectsRegisteredCanonicalPathAliasesAndFailsClosedOnLookupFailure', functi
 		rmdir($directory);
 	}
 });
+
+it('PreservesAbsoluteRegisteredPathsOnBothPlatforms', function ($file, $expected) {
+	expect(wm_config_registered_path('/configs', $file))->toBe($expected);
+})->with([
+	'unix' => ['/cacti/configs/Map.conf', '/cacti/configs/Map.conf'],
+	'drive-slash' => ['C:/cacti/configs/Map.conf', 'C:/cacti/configs/Map.conf'],
+	'drive-backslash' => ['C:\\cacti\\configs\\Map.conf', 'C:\\cacti\\configs\\Map.conf'],
+	'unc' => ['\\\\server\\share\\Map.conf', '\\\\server\\share\\Map.conf'],
+	'unc-slash' => ['//server/share/Map.conf', '//server/share/Map.conf'],
+	'rooted-backslash' => ['\\cacti\\configs\\Map.conf', '\\cacti\\configs\\Map.conf'],
+	'relative' => ['Map.conf', '/configs/Map.conf'],
+	'dot-relative' => ['./Map.conf', '/configs/./Map.conf'],
+	'drive-relative' => ['C:Map.conf', '/configs/C:Map.conf'],
+	'not-drive' => ['1:/Map.conf', '/configs/1:/Map.conf'],
+]);
