@@ -1079,9 +1079,9 @@ function wmNodeIconPicker() {
 	var picker = $('<details id="wm-icon-picker" class="wm-icon-picker">').insertAfter(select);
 	var summary = $('<summary>').appendTo(picker);
 	var panel = $('<div class="wm-icon-panel">').appendTo(picker);
-	var search = $('<input type="search" placeholder="Search icons…" aria-label="Search node icons">').appendTo(panel);
+	var search =  $('<input type="search">').attr({placeholder: wmEditorText.iconText0, 'aria-label': wmEditorText.iconText1}).appendTo(panel);
 	var count = $('<div class="wm-icon-count" role="status" aria-live="polite">').appendTo(panel);
-	var grid = $('<div class="wm-icon-grid" aria-label="Node icons">').appendTo(panel);
+	var grid = $('<div class="wm-icon-grid">').attr('aria-label', wmEditorText.iconText2).appendTo(panel);
 	function title(option) {
 		return option.text.replace(/\.(png|gif|jpe?g)$/i, '').replace(/[-_]+/g, ' ');
 	}
@@ -1094,7 +1094,7 @@ function wmNodeIconPicker() {
 		var option = select.find('option:selected')[0];
 		summary.empty();
 		if (option) content(summary, option);
-		else summary.text('Choose an icon');
+		else summary.text(wmEditorText.iconText3);
 		grid.find('button').each(function() {
 			$(this).attr('aria-pressed', String($(this).data('value') === select.val()));
 		});
@@ -1118,7 +1118,7 @@ function wmNodeIconPicker() {
 			$(this).prop('hidden', !matches);
 			if (matches) visible++;
 		});
-		count.text(visible ? visible + (visible === 1 ? ' icon' : ' icons') : 'No matching icons');
+		count.text(visible ? (visible === 1 ? wmEditorText.iconText4 : wmEditorText.iconText5).replace('%s', String(visible)) : wmEditorText.iconText6);
 	});
 	picker.on('keydown', function(event) {
 		if (event.key === 'Escape') {
