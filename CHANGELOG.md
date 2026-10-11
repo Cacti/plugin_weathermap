@@ -18,6 +18,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * feature#298: Fit or stretch background images within the map canvas
 
+* feature#293: Default new graph assignments to Time Graph View
+
 * feature#292: Generate sharper gallery thumbnails by default without enlarging small maps
 
 * issue#291: Improve map selector placement and themed viewer controls
