@@ -800,7 +800,7 @@ class WeatherMapNode extends WeatherMapItem {
 					$lineY += $noteLineHeight;
 				}
 			} else {
-			$map->myimagestring($node_im, $this->labelfont, $txt_x, $txt_y, $this->proclabel, $txcol->gdallocate($node_im),$this->labelangle);
+				$map->myimagestring($node_im, $this->labelfont, $txt_x, $txt_y, $this->proclabel, $txcol->gdallocate($node_im),$this->labelangle);
 			}
 			// $map->myimagestring($node_im, $this->labelfont, $txt_x, $txt_y, $this->proclabel, $txcol->gdallocate($node_im),90);
 		}

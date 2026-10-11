@@ -25,6 +25,9 @@
 /**
  * Notes eligible for high-density map rendering. Restrict the allocation to
  * bounded maps and plain TrueType annotations drawn above the other objects.
+ *
+ * @param WeatherMap $map The rendered map and its object layers.
+ * @return WeatherMapNode[] Notes eligible for high-density rendering.
  */
 function wm_sharp_notes($map) {
 	if ($map->width < 1 || $map->height < 1 || $map->width * $map->height > 4000000) {
@@ -57,7 +60,13 @@ function wm_sharp_notes($map) {
 	return $notes;
 }
 
-/** Render glyphs at twice the density; do not enlarge an existing text bitmap. */
+/**
+ * Render glyphs at twice the density; do not enlarge an existing text bitmap.
+ *
+ * @param WeatherMap $map The composed logical-resolution map.
+ * @param WeatherMapNode[] $notes Notes to draw over the composed image.
+ * @return GdImage The high-density display image.
+ */
 function wm_note_display_image($map, $notes) {
 	$image = imagecreatetruecolor($map->width * 2, $map->height * 2);
 	imagecopyresampled($image, $map->image, 0, 0, 0, 0, $map->width * 2, $map->height * 2, $map->width, $map->height);
@@ -86,4 +95,16 @@ function wm_note_display_image($map, $notes) {
 		}
 	}
 	return $image;
+}
+
+/**
+ * Size the live-view bitmap in logical map coordinates, including high-density output.
+ *
+ * @param WeatherMap $map The map supplying logical display dimensions.
+ * @param string|int $id The registered map identifier.
+ * @return string Escaped live-view image markup.
+ */
+function wm_liveview_image_html($map, $id) {
+	$url = htmlspecialchars('?action=liveviewimage&id=' . rawurlencode((string)$id), ENT_QUOTES, 'UTF-8');
+	return '<img src="' . $url . '" width="' . (int)$map->width . '" height="' . (int)$map->height . '" />' . "\n";
 }

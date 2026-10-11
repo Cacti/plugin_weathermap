@@ -47,6 +47,11 @@ try {
 	note_assert(in_array($map->nodes[$name], $map->seen_zlayers[$map->nodes[$name]->zorder], true), 'new note indexed immediately');
 	$map->DrawMap($directory . '/immediate.png');
 	note_assert(getimagesize($directory . '/immediate.png')[0] === 1200, 'new note renders sharply without rereading');
+	$live = new DOMDocument;
+	$live->loadHTML(wm_liveview_image_html($map, '123'));
+	$liveImage = $live->getElementsByTagName('img')->item(0);
+	note_assert($liveImage->getAttribute('width') === '600' && $liveImage->getAttribute('height') === '300', 'live view constrains high-density image to logical dimensions');
+	note_assert($liveImage->getAttribute('src') === '?action=liveviewimage&id=123', 'live-view image endpoint retained');
 	$map->WriteConfig($file);
 	$saved = new WeatherMap;
 	$saved->ReadConfig($file);
