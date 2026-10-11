@@ -320,7 +320,7 @@ if ($editor_return_context === 'manage') {
 			<li class='tb_active' id='tb_prefs'><?php print __('Editor<br>Settings', 'weathermap'); ?></li>
 			<li class='tb_coords' id='tb_coords'><?php print __('Position<br>---, ---', 'weathermap'); ?></li>
 			<li class='tb_help'>
-				<span id='tb_help'><?php print __('Select a menu item or either right-click or click on a Node or Link to edit it\'s properties', 'weathermap'); ?></span>
+				<span id='tb_help' role='status' aria-live='polite'><?php print __('Select a menu item or either right-click or click on a Node or Link to edit it\'s properties', 'weathermap'); ?></span>
 			</li>
 		</ul>
 	</div>
@@ -700,7 +700,7 @@ if (count($backgd_list) == 0) {
 				<div class='dlgBody'>
 					<table class='cactiTable'>
 						<tr><td colspan='2'>
-						<div class='cactiTableTitleRow' style='display:table'><?php print __('Map Defaults', 'weathermap'); ?></div>
+						<div class='cactiTableTitleRow wm-editor-section'><?php print __('Map Defaults', 'weathermap'); ?></div>
 						</td></tr>
 						<tr>
 							<td><?php print __('HTML Style', 'weathermap'); ?></td>
@@ -736,7 +736,7 @@ foreach ($styles as $id => $name) {
 							<td><?php print get_fontlist($map, 'mapstyle_legendfont', $map->keyfont); ?></td>
 						</tr>
 						<tr><td colspan='2'>
-						<div class='cactiTableTitleRow' style='display:table'><?php print __('Node Defaults', 'weathermap'); ?></div>
+						<div class='cactiTableTitleRow wm-editor-section'><?php print __('Node Defaults', 'weathermap'); ?></div>
 						</td></tr>
 						<tr>
 							<td><?php print __('Node Font', 'weathermap'); ?></td>
@@ -745,7 +745,7 @@ foreach ($styles as $id => $name) {
 
 
 						<tr><td colspan='2'>
-						<div class='cactiTableTitleRow' style='display:table'><?php print __('Link Defaults', 'weathermap'); ?></div>
+						<div class='cactiTableTitleRow wm-editor-section'><?php print __('Link Defaults', 'weathermap'); ?></div>
 						</td></tr>
 						<tr>
 							<td><?php print __('Link Labels', 'weathermap'); ?></td>
@@ -878,14 +878,14 @@ foreach ($styles as $id => $name) {
 		<!-- Images -->
 
 		<!-- TextEdit -->
-        <div id='dlgTextEdit' class='dlgProperties' title='Edit Map Object'>
+        <div id='dlgTextEdit' class='dlgProperties' title='<?php print __esc('Edit Object Configuration', 'weathermap'); ?>'>
 			<div class='cactiTable'>
 				<div class='dlgBody'>
-					<p>You can edit the map items directly here.</p>
+					<p><?php print __esc('Edit the raw configuration for this map object.', 'weathermap'); ?></p>
 	   	             <textarea id='item_configtext' name='item_configtext' cols='80' rows='15'></textarea>
 				</div>
 				<div class='dlgHelp'>
-					From this form, you can edit the Mapfile component directly.  No syntax checking is done.  So, make changes with care.
+					<?php print __esc('Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls.', 'weathermap'); ?>
 				</div>
 				<div class='dlgButtons'>
 					<div class='dlgSubButtons'>
@@ -902,7 +902,8 @@ foreach ($styles as $id => $name) {
 			<div class='cactiTable'>
 				<div class='dlgBody'>
 					<table class='cactiTable'>
-						<tr>
+						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'>Overlays</div></td></tr>
+<tr>
 							<td>Show VIAs overlay</td>
 							<td>
 								<select id='editorsettings_showvias' name='editorsettings_showvias'>
@@ -920,7 +921,8 @@ foreach ($styles as $id => $name) {
 								</select>
 							</td>
 						</tr>
-						<tr>
+						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'>Placement</div></td></tr>
+<tr>
 							<td>Snap To Grid</td>
 							<td>
 								<select id='editorsettings_gridsnap' name='editorsettings_gridsnap'>

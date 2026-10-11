@@ -39,7 +39,7 @@ it('emits the translated editor javascript string table', function (): void {
 	expect($strings['nodeTitle'])->toBe('Node: %s');
 	expect($strings['hoverSummary'])->toBe('Hover graphs: %s');
 	expect($strings['graphSelected'])->toContain('%s');
-	expect($output)->toContain('Connected links to remove: %s.', 'Remove %s from this map?');
+	expect($output)->toContain('This will also remove %s connected links.', 'This will also remove %s connected link.', 'Delete %s from this map?');
 	expect($output)->toContain('currentInterface');
 	expect($output)->toContain('deleteLinkPrompt');
 });

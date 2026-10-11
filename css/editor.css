@@ -26,8 +26,11 @@ input {
 	margin-right: auto;
 	border: 0px;
 	padding: 0px;
-	cursor: crosshair;
+	cursor: auto;
 }
+
+#xycapture, #existingdata.wm-placement-mode { cursor: crosshair; }
+#existingdata:not(.wm-placement-mode) + map area { cursor: pointer; }
 
 #frmMain {
 	position: relative;
@@ -84,6 +87,12 @@ input {
 #toolbar ul li.tb_help {
 	font-style: italic;
 	padding: 2px;
+}
+
+#tb_help {
+	font-size: 13px;
+	font-weight: normal;
+	font-style: italic;
 }
 
 #toolbar ul li {
@@ -315,4 +324,24 @@ body#mainView #wm-node-delete-bar { min-height: 32px; }
 /* Menus are appended to editor dialog wrappers and may extend beyond them. */
 .ui-dialog.wm-editor-dialog {
 	overflow: visible;
+}
+/* Use Cacti's own theme heading colours in every grouped editor dialog. */
+.dlgProperties .wm-editor-section { display: table; width: 100%; box-sizing: border-box; margin: 10px 0 6px; }
+.dlgProperties table .wm-editor-section { margin: 0; }
+/* Destructive node/link controls share readable red styling in every theme. */
+#node_delete, #link_delete, #note_delete,
+.wm-delete-action, .wm-delete-action .ui-menu-item-wrapper {
+ color: #c62828 !important;
+ background: #fff !important;
+}
+#node_delete, #link_delete, #note_delete, button.wm-delete-action {
+ border: 1px solid #c62828 !important;
+}
+
+/* Standalone dialogs need a matching text/surface pair in legacy dark themes. */
+body#mainView .ui-dialog .ui-button:not(.wm-asset-delete):not(.wm-image-delete):not(#note_delete):not(.wm-delete-action):not(#node_delete):not(#link_delete):not(.wm-icon-choice):not(.wm-note-colour),
+body#mainView .ui-dialog input.ui-state-default,
+body#mainView .ui-dialog textarea.ui-state-default {
+ background: var(--background-content, #e6e6e6) !important;
+ color: var(--text-color-lighter, #333) !important;
 }

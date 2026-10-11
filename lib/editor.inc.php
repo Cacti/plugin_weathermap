@@ -1051,9 +1051,10 @@ function getEditorJs() {
 		'deleteLinkPrompt'     => __('Remove the link between %1$s and %2$s?', 'weathermap'),
 		'keepLinkNodes'        => __('The nodes and Cacti graphs will remain.', 'weathermap'),
 	], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-	var delNodePrompt = <?php print json_encode(__('Remove %s from this map?', '%s', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-	var delNodeConnected = <?php print json_encode(__('Connected links to remove: %s.', '%s', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-	var delNodeKeepDevice = <?php print json_encode(__('The Cacti device and graphs will remain.', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+	var delNodePrompt = <?php print json_encode(__('Delete %s from this map?', '%s', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+	var delNodeConnected = <?php print json_encode(__('This will also remove %s connected links.', '%s', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+	var delNodeConnectedSingle = <?php print json_encode(__('This will also remove %s connected link.', '%s', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+	var delNodeKeepDevice = <?php print json_encode(__('The Cacti device and its graphs will remain.', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
 	var delNodeWarning  = '<?php print __esc('WARNING: Pressing \'Delete Node\' will delete this Node.', 'weathermap'); ?>';
 	var delNodeTitle    = '<?php print __esc('Delete Node Confirmation', 'weathermap'); ?>';
@@ -1068,7 +1069,7 @@ function getEditorJs() {
 	var txtLinkActions = '<?php print __esc('Link Actions', 'weathermap'); ?>';
 	var txtMove        = '<?php print __esc('Move', 'weathermap'); ?>';
 	var txtClone       = '<?php print __esc('Clone', 'weathermap'); ?>';
-	var txtEdit        = '<?php print __esc('Edit', 'weathermap'); ?>';
+	var txtEdit        = '<?php print __esc('Edit Configuration', 'weathermap'); ?>';
 	var txtDelete      = '<?php print __esc('Delete', 'weathermap'); ?>';
 	var txtVia         = '<?php print __esc('Via', 'weathermap'); ?>';
 	var txtTidy        = '<?php print __esc('Tidy', 'weathermap'); ?>';

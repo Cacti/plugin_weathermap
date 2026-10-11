@@ -11,6 +11,7 @@ w.$ = w.jQuery = $;
 const cactiJs = process.env.CACTI_JS_DIR || path.join(__dirname, '../../../../include/js');
 w.eval(fs.readFileSync(path.join(cactiJs, 'jquery-ui.js'), 'utf8'));
 const source = fs.readFileSync(path.join(__dirname, '../../js/editor.js'), 'utf8');
+w.eval(source.slice(source.indexOf('function wmResetActionHelp('), source.indexOf('function add_node(')));
 w.eval(source.slice(source.indexOf('function show_dialog('), source.indexOf('function hide_dialog(')));
 $('#picker').autocomplete({source: ['Interface A'], appendTo: w.document.body});
 const menu = $('#picker').autocomplete('widget');
