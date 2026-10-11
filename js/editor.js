@@ -1081,7 +1081,7 @@ function wmNodeIconPicker() {
 	var panel = $('<div class="wm-icon-panel">').appendTo(picker);
 	var search =  $('<input type="search">').attr({placeholder: wmEditorText.iconText0, 'aria-label': wmEditorText.iconText1}).appendTo(panel);
 	var count = $('<div class="wm-icon-count" role="status" aria-live="polite">').appendTo(panel);
-	var grid = $('<div class="wm-icon-grid">').attr('aria-label', wmEditorText.iconText2).appendTo(panel);
+	var grid = $('<div class="wm-icon-grid">').attr({role: 'group', 'aria-label': wmEditorText.iconText2}).appendTo(panel);
 	function title(option) {
 		return option.text.replace(/\.(png|gif|jpe?g)$/i, '').replace(/[-_]+/g, ' ');
 	}

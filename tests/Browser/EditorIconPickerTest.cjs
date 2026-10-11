@@ -14,6 +14,8 @@ const source=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');
 w.eval(source.slice(source.indexOf('function wmNodeIconPicker('),source.indexOf('function prime_link_form(')));
 w.wmNodeIconPicker();
 assert.equal($('input[type=search]').attr('placeholder'),'Rechercher les icônes');
+assert.equal($('.wm-icon-grid').attr('role'),'group');
+assert.equal($('.wm-icon-grid').attr('aria-label'),w.wmEditorText.iconText2);
 assert.equal($('#wm-icon-picker summary').text(),'hospital red');
 $('#wm-icon-picker').prop('open',true);
 $('input[type=search]').val('switch').trigger('input');
