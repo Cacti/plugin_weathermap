@@ -29,8 +29,8 @@ input {
 	cursor: auto;
 }
 
-#xycapture, #existingdata.wm-placement-mode { cursor: crosshair; }
-.mapData map area { cursor: pointer; }
+#xycapture, #existingdata.wm-placement-mode, .mapData.wm-placement-mode map area { cursor: crosshair; }
+.mapData:not(.wm-placement-mode) map area { cursor: pointer; }
 
 #frmMain {
 	position: relative;

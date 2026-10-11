@@ -725,7 +725,7 @@ function wmResetActionHelp() {
 
 function mapmode(m) {
 	var placing = m == 'xy' || $('#action').val() == 'add_link';
-	$('#existingdata').toggleClass('wm-placement-mode', placing);
+	$('#existingdata, .mapData').toggleClass('wm-placement-mode', placing);
 	$('#tb_help').toggleClass('wm-action-help', placing);
 	if (!placing) wmResetActionHelp();
 	if (m == 'xy') {
