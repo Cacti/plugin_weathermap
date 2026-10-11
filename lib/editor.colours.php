@@ -53,8 +53,8 @@ function wm_asset_save_colours($map, $data) {
 	$scales = [];
 	foreach ($rows as $row) {
 		$name = $row['scale'] ?? '';
-		if (!is_string($name) || !preg_match('/^[A-Za-z0-9_-]{1,64}$/D', $name)) throw new InvalidArgumentException(__('Invalid scale name.', 'weathermap'));
-		foreach (['bottom', 'top'] as $key) if (!isset($row[$key]) || !is_numeric($row[$key]) || !is_finite((float)$row[$key]) || $row[$key] < 0 || $row[$key] > 1e15) throw new InvalidArgumentException(__('Invalid scale range.', 'weathermap'));
+		if (!is_string($name) || !preg_match('/^[A-Za-z][A-Za-z0-9_]{0,63}$/D', $name)) throw new InvalidArgumentException(__('Invalid scale name.', 'weathermap'));
+		foreach (['bottom', 'top'] as $key) if (!isset($row[$key]) || !is_numeric($row[$key]) || !is_finite((float)$row[$key]) || abs((float)$row[$key]) > 1e15) throw new InvalidArgumentException(__('Invalid scale range.', 'weathermap'));
 		if ($row['bottom'] > $row['top']) throw new InvalidArgumentException(__('Range start must be no greater than its end.', 'weathermap'));
 		$rgb = wm_asset_rgb($row['colour'] ?? null);
 		$tag = $row['tag'] ?? '';
@@ -72,8 +72,10 @@ function wm_asset_save_colours($map, $data) {
 	foreach ($map->colours as $name => $colours) foreach ($colours as $key => $row) if (!empty($row['special'])) $scales[$name][$key] = $row;
 	// Keep scales referenced by map objects rather than silently replacing them with defaults.
 	foreach (array_merge(array_values($map->nodes), array_values($map->links)) as $object) {
-		$name = $object->usescale;
-		if ($name !== 'none' && isset($map->colours[$name]) && empty(array_filter($scales[$name] ?? [], function($r) { return empty($r['special']); }))) throw new InvalidArgumentException(__('A map object still uses scale %s.', $name, 'weathermap'));
+		foreach (['usescale', 'useiconscale'] as $field) {
+			$name = $object->$field ?? 'none';
+			if ($name !== 'none' && isset($map->colours[$name]) && empty(array_filter($scales[$name] ?? [], function($r) { return empty($r['special']); }))) throw new InvalidArgumentException(__('A map object still uses scale %s.', $name, 'weathermap'));
+		}
 	}
 	$scales['DEFAULT']['BG']['red1'] = $background[0];
 	$scales['DEFAULT']['BG']['green1'] = $background[1];

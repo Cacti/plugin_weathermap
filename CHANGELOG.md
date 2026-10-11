@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* Add traffic colour presets and optional high-load link pulsing
+
 * Fix Safari rendering of high-traffic link glows using native SVG filters
 
 * issue#299: Keep editor picker results open when browsing and allow changing an existing selection

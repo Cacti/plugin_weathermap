@@ -21,6 +21,6 @@ const {JSDOM}=require('jsdom'),jquery=require('jquery'),fs=require('node:fs'),pa
  assert.equal(disabled.querySelector('svg'),null);assert.equal(quiet.querySelector('svg'),null);
  $(w.document).trigger('ajaxComplete');assert.equal(active.querySelectorAll('svg').length,1);assert.equal(observers.length,1);
  media.matches=true;media.listener();assert.ok(active.querySelector('svg').classList.contains('wm-glow-paused'));
- active.remove();observers[0].fn();assert.ok(observers[0].disconnected);assert.equal(media.listener,null);
+ active.remove();$(w.document).trigger('ajaxComplete');assert.ok(observers[0].disconnected);assert.equal(media.listener,null);
  console.log('Traffic glow colour, masking, reduced motion and cleanup PASS');w.close();
 })().catch(e=>{console.error(e);process.exitCode=1});

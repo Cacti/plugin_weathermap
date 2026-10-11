@@ -82,7 +82,11 @@ var waitForFinalEvent = (function () {
 // Optional pulsing glow for links at or above 80% utilisation.
 (function() {
     var maskSequence = 0;
+    var activeMaps = new Map();
     function initTrafficGlow() {
+        activeMaps.forEach(function(cleanup, holder) {
+            if (!holder.isConnected) cleanup();
+        });
         document.querySelectorAll('.weathermapimage[data-wm-traffic]').forEach(function(holder) {
             if (holder.dataset.wmAnimationReady) return;
             var image = holder.querySelector('img[usemap]'), data;
@@ -95,6 +99,7 @@ var waitForFinalEvent = (function () {
             var reduced = window.matchMedia('(prefers-reduced-motion: reduce)'), svg;
             function stop() { if (svg) { svg.remove(); svg = null; } }
             function cleanup() {
+                activeMaps.delete(holder);
                 if (observer) observer.disconnect();
                 image.removeEventListener('load', align);
                 window.removeEventListener('resize', align);
@@ -188,6 +193,7 @@ var waitForFinalEvent = (function () {
                 surface.appendChild(svg); align();
                 if (document.hidden || reduced.matches) svg.classList.add('wm-glow-paused');
             }
+            activeMaps.set(holder, cleanup);
             toggle();
             reduced.addEventListener('change', motionChanged);
             image.addEventListener('load', align);

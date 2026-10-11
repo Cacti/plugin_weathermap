@@ -66,6 +66,20 @@ try {
 	$missing['rows'] = array_values(array_filter($data['rows'], function($row) { return $row['scale'] !== 'custom'; }));
 	try { wm_asset_save_colours($map, $missing); throw new RuntimeException('accepted removal of same-name node scale'); } catch (InvalidArgumentException $expected) {}
 	unset($map->nodes['custom']);
+	$map->nodes['A']->useiconscale = 'custom';
+	try { wm_asset_save_colours($map, $missing); throw new RuntimeException('accepted removal of icon scale'); } catch (InvalidArgumentException $expected) {}
+	$map->nodes['A']->useiconscale = 'none';
+	foreach (['1_hour', 'one-hour', '_hour'] as $badName) {
+		$invalid = $data; $invalid['rows'][1]['scale'] = $badName;
+		try { wm_asset_save_colours($map, $invalid); throw new RuntimeException('accepted parser-incompatible scale name'); } catch (InvalidArgumentException $expected) {}
+	}
+	$negative = $data;
+	$negative['rows'][] = ['scale' => 'Temperature_1', 'bottom' => -20, 'top' => -1, 'colour' => '#0000ff', 'end' => '', 'tag' => 'Cold'];
+	wm_asset_save_colours($map, $negative);
+	$map->WriteConfig($file);
+	$negativeMap = new WeatherMap; $negativeMap->ReadConfig($file);
+	assets_assert($negativeMap->colours['Temperature_1']['-20_-1']['bottom'] === -20.0, 'negative custom scale survives engine reload');
+	wm_asset_save_colours($map, $data);
 	$before = $map->colours;
 	foreach (['bad range', 'bad colour', 'config injection'] as $bad) {
 		$invalid = $data;

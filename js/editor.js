@@ -1703,7 +1703,7 @@ function wmColourRequest(action, extra, callback, errorId) {
 function wmAssetScaleRow(row) {
 	var tr = $('<tr>').appendTo('#wm-scale-rows');
 	['scale', 'bottom', 'top'].forEach(function(key) {
-		$('<td>').append($('<input>').attr('type', key === 'scale' ? 'text' : 'number').attr('step', 'any').attr('min', '0').addClass('wm-range-' + key).val(row[key])).appendTo(tr);
+		$('<td>').append($('<input>').attr('type', key === 'scale' ? 'text' : 'number').attr('step', 'any').addClass('wm-range-' + key).val(row[key])).appendTo(tr);
 	});
 	$('<td>').append(wmAssetColour(row.colour, false)).appendTo(tr);
 	$('<td>').append(wmAssetColour(row.end || '', true)).appendTo(tr);
