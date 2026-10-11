@@ -778,25 +778,25 @@ foreach ($styles as $id => $name) {
 <summary style='cursor: pointer; padding: 8px 0;'><?php print __esc('Advanced settings', 'weathermap'); ?></summary>
 <p><?php print __esc('Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions.', 'weathermap'); ?></p>
 <table style='width: 100%;'>
-<tr>
+						<tr>
 							<td><label for='mapstyle_nodewidth'><?php print __esc('Node Hover Width (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_nodewidth' name='mapstyle_nodewidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibwidth; ?>'>
 							</td>
 						</tr>
-<tr>
+						<tr>
 							<td><label for='mapstyle_nodeheight'><?php print __esc('Node Hover Height (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_nodeheight' name='mapstyle_nodeheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibheight; ?>'>
 							</td>
 						</tr>
-<tr>
+						<tr>
 							<td><label for='mapstyle_linkwidth'><?php print __esc('Link Hover Width (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_linkwidth' name='mapstyle_linkwidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibwidth; ?>'>
 							</td>
 						</tr>
-<tr>
+						<tr>
 							<td><label for='mapstyle_linkheight'><?php print __esc('Link Hover Height (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_linkheight' name='mapstyle_linkheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibheight; ?>'>
@@ -903,7 +903,7 @@ foreach ($styles as $id => $name) {
 				<div class='dlgBody'>
 					<table class='cactiTable'>
 						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Overlays', 'weathermap'); ?></div></td></tr>
-<tr>
+						<tr>
 							<td>Show VIAs overlay</td>
 							<td>
 								<select id='editorsettings_showvias' name='editorsettings_showvias'>
@@ -922,7 +922,7 @@ foreach ($styles as $id => $name) {
 							</td>
 						</tr>
 						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Placement', 'weathermap'); ?></div></td></tr>
-<tr>
+						<tr>
 							<td>Snap To Grid</td>
 							<td>
 								<select id='editorsettings_gridsnap' name='editorsettings_gridsnap'>

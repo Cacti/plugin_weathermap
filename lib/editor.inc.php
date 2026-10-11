@@ -1052,8 +1052,7 @@ function getEditorJs() {
 		'keepLinkNodes'        => __('The nodes and Cacti graphs will remain.', 'weathermap'),
 	], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 	var delNodePrompt = <?php print json_encode(__('Delete %s from this map?', '%s', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-	var delNodeConnected = <?php print json_encode(__('This will also remove %s connected links.', '%s', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-	var delNodeConnectedSingle = <?php print json_encode(__('This will also remove %s connected link.', '%s', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+	var delNodeConnected = <?php print json_encode(__('Connected links to remove: %s.', '%s', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 	var delNodeKeepDevice = <?php print json_encode(__('The Cacti device and its graphs will remain.', 'weathermap'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
 	var delNodeWarning  = '<?php print __esc('WARNING: Pressing \'Delete Node\' will delete this Node.', 'weathermap'); ?>';
