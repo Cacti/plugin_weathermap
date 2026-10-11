@@ -457,6 +457,15 @@ function setMapProperties($mapfile) {
 
 	$map->ReadConfig($mapfile);
 
+    // Omitted by older clients: keep the existing background.
+    $background_colour = get_nfilter_request_var('map_background_colour');
+    if ($background_colour !== null && $background_colour !== '') {
+        if (!is_string($background_colour) || !preg_match('/^#[0-9a-f]{6}$/iD', $background_colour)) return;
+        foreach (['red1', 'green1', 'blue1'] as $i => $channel) {
+            $map->colours['DEFAULT']['BG'][$channel] = hexdec(substr($background_colour, 1 + 2 * $i, 2));
+        }
+    }
+
 	$map->title              = wm_editor_sanitize_string(get_nfilter_request_var('map_title'));
 	$map->keytext['DEFAULT'] = wm_editor_sanitize_string(get_nfilter_request_var('map_legend'));
 	$map->stamptext          = wm_editor_sanitize_string(get_nfilter_request_var('map_stamp'));
@@ -1134,4 +1143,24 @@ function getImageURL($mapname, $selected) {
 	$imageurl .= '&unique=' . time();
 
 	return $imageurl;
+}
+
+function wm_editor_colours($mapfile, $action) {
+    header('Content-Type: application/json');
+    try {
+        if ($action !== 'colour_data' && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') throw new InvalidArgumentException('Use POST to save changes.');
+        $map = new WeatherMap;
+        $map->context = 'editor';
+        if (!$map->ReadConfig($mapfile)) throw new RuntimeException('Cannot read the map configuration.');
+        if ($action === 'set_map_colours') {
+            $data = json_decode(get_nfilter_request_var('colours_json'), true);
+            if (!is_array($data)) throw new InvalidArgumentException('Invalid colour settings.');
+            wm_asset_save_colours($map, $data);
+            if (!$map->WriteConfig($mapfile)) throw new RuntimeException('Could not save the map configuration.');
+        }
+        echo json_encode(['colours' => wm_asset_colour_data($map)]);
+    } catch (Throwable $error) {
+        http_response_code(400);
+        echo json_encode(['error' => $error->getMessage()]);
+    }
 }

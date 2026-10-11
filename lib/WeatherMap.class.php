@@ -4540,7 +4540,9 @@ class WeatherMap extends WeatherMapBase {
 			$html .= "\t<body>" . PHP_EOL;
 		}
 
-		$html .= "\t\t<div class='weathermapimage'>" . PHP_EOL;
+		require_once __DIR__ . "/WeatherMap.animation.php";
+		$traffic = htmlspecialchars(json_encode(wm_traffic_animation_data($this), JSON_INVALID_UTF8_SUBSTITUTE), ENT_QUOTES, "UTF-8");
+		$html .= "\t\t<div class='weathermapimage' data-wm-traffic='" . $traffic . "'>" . PHP_EOL;
 
 		if ($this->imageuri != '') {
 			$html .= sprintf(

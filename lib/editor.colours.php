@@ -1,0 +1,85 @@
+<?php
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group, Howard Jones                   |
+ |                                                                         |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
+ |                                                                         |
+ | This program is distributed in the hope that it will be useful,         |
+ | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
+ | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
+ | GNU General Public License for more details.                            |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
+ +-------------------------------------------------------------------------+
+ | http://www.cacti.net/                                                   |
+ +-------------------------------------------------------------------------+
+*/
+
+/** Local editor colour and image management. */
+function wm_asset_rgb($value) {
+	if ($value === 'none') return [-1, -1, -1];
+	if (!is_string($value) || !preg_match('/^#[0-9a-f]{6}$/iD', $value)) throw new InvalidArgumentException('Choose a valid colour.');
+	return [hexdec(substr($value, 1, 2)), hexdec(substr($value, 3, 2)), hexdec(substr($value, 5, 2))];
+}
+function wm_asset_hex($rgb) {
+	return $rgb[0] < 0 ? 'none' : sprintf('#%02x%02x%02x', ...$rgb);
+}
+function wm_asset_colour_data($map) {
+	$rows = [];
+	foreach ($map->colours as $scale => $colours) foreach ($colours as $row) {
+		if (!empty($row['special'])) continue;
+		$rows[] = ['scale' => $scale, 'bottom' => $row['bottom'], 'top' => $row['top'],
+			'colour' => wm_asset_hex([$row['red1'], $row['green1'], $row['blue1']]),
+			'end' => isset($row['red2']) ? wm_asset_hex([$row['red2'], $row['green2'], $row['blue2']]) : '', 'tag' => $row['tag'] ?? ''];
+	}
+	$bg = $map->colours['DEFAULT']['BG'];
+	return ['background' => wm_asset_hex([$bg['red1'], $bg['green1'], $bg['blue1']]),
+		'outline' => wm_asset_hex($map->links['DEFAULT']->outlinecolour), 'pulse' => $map->get_hint('traffic_pulse', '1') === '1', 'rows' => $rows];
+}
+function wm_asset_save_colours($map, $data) {
+	if (array_key_exists('pulse', $data) && !is_bool($data['pulse'])) throw new InvalidArgumentException('Invalid pulse setting.');
+	$background = array_key_exists('background', $data) ? wm_asset_rgb($data['background']) : [$map->colours['DEFAULT']['BG']['red1'], $map->colours['DEFAULT']['BG']['green1'], $map->colours['DEFAULT']['BG']['blue1']];
+	$outline = wm_asset_rgb($data['outline'] ?? null);
+	if ($background[0] < 0) throw new InvalidArgumentException('The background needs a solid colour.');
+	$rows = $data['rows'] ?? null;
+	if (!is_array($rows) || count($rows) < 1 || count($rows) > 200) throw new InvalidArgumentException('Keep between 1 and 200 scale rows.');
+	$scales = [];
+	foreach ($rows as $row) {
+		$name = $row['scale'] ?? '';
+		if (!is_string($name) || !preg_match('/^[A-Za-z0-9_-]{1,64}$/D', $name)) throw new InvalidArgumentException('Invalid scale name.');
+		foreach (['bottom', 'top'] as $key) if (!isset($row[$key]) || !is_numeric($row[$key]) || !is_finite((float)$row[$key]) || $row[$key] < 0 || $row[$key] > 1e15) throw new InvalidArgumentException('Invalid scale range.');
+		if ($row['bottom'] > $row['top']) throw new InvalidArgumentException('Range start must be no greater than its end.');
+		$rgb = wm_asset_rgb($row['colour'] ?? null);
+		$tag = $row['tag'] ?? '';
+		if (!is_string($tag) || strlen($tag) > 200 || preg_match('/[\x00-\x1f\x7f]/', $tag)) throw new InvalidArgumentException('Invalid scale label.');
+		$key = $row['bottom'] . '_' . $row['top'];
+		if (isset($scales[$name][$key])) throw new InvalidArgumentException('Duplicate range in a scale.');
+		$entry = ['key' => $key, 'bottom' => (float)$row['bottom'], 'top' => (float)$row['top'], 'special' => 0, 'red1' => $rgb[0], 'green1' => $rgb[1], 'blue1' => $rgb[2], 'tag' => $tag];
+		if (!empty($row['end'])) {
+			$end = wm_asset_rgb($row['end']);
+			if ($rgb[0] < 0 || $end[0] < 0) throw new InvalidArgumentException('Gradients need two colours.');
+			$entry += ['red2' => $end[0], 'green2' => $end[1], 'blue2' => $end[2]];
+		}
+		$scales[$name][$key] = $entry;
+	}
+	foreach ($map->colours as $name => $colours) foreach ($colours as $key => $row) if (!empty($row['special'])) $scales[$name][$key] = $row;
+	// Keep scales referenced by map objects rather than silently replacing them with defaults.
+	foreach (array_merge($map->nodes, $map->links) as $object) {
+		$name = $object->usescale;
+		if ($name !== 'none' && isset($map->colours[$name]) && empty(array_filter($scales[$name] ?? [], function($r) { return empty($r['special']); }))) throw new InvalidArgumentException('A map object still uses scale ' . $name . '.');
+	}
+	$scales['DEFAULT']['BG']['red1'] = $background[0];
+	$scales['DEFAULT']['BG']['green1'] = $background[1];
+	$scales['DEFAULT']['BG']['blue1'] = $background[2];
+	$map->colours = $scales;
+	foreach ($scales as $name => $colours) $map->numscales[$name] = count(array_filter($colours, function($r) { return empty($r['special']); }));
+	wm_comment_update_default($map, 'outlinecolour', $outline);
+	if (array_key_exists('pulse', $data)) $map->add_hint('traffic_pulse', $data['pulse'] ? '1' : '0');
+}

@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti\n"
+"Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-11 10:30+1030\n"
+"POT-Creation-Date: 2026-10-11 20:34+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -87,6 +87,16 @@ msgstr ""
 
 #: lib/editor.comment-style.php
 msgid "Link Comment Colour"
+msgstr ""
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr ""
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
 msgstr ""
 
 #: lib/editor.inc.php
@@ -1123,7 +1133,11 @@ msgid "Legend Text"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Background Image Filename"
+msgid "Timestamp Text"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1143,15 +1157,15 @@ msgid "Use image size"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Timestamp Text"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Default Link Width"
+msgid "Map Size"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "pixels"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1167,11 +1181,7 @@ msgid "bit/sec out"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Map Size"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included."
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default width and bandwidth for links. Map dimensions and link width are measured in pixels."
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -2010,6 +2020,10 @@ msgid "Unable to delete the last remaining Map Group."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
 #, php-format
 msgid "The New Map File name %s already exists!"
 msgstr ""
@@ -2141,8 +2155,4 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "Paused"
-msgstr ""
-
-#: weathermap-cacti-plugin-mgmt.php
-msgid "Map title is too long. Use at most 4088 bytes after escaping."
 msgstr ""

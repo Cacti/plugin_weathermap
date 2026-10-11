@@ -59,6 +59,7 @@ try {
 	$saved = new WeatherMap();
 	$saved->ReadConfig($directory . '/new.conf');
 	wm_engine_assert($saved->width == 1400 && $saved->height == 750,'canvas');
+	wm_engine_assert($saved->get_hint('traffic_pulse', '0') === '1','new map saves pulse enabled');
 	wm_engine_assert($saved->htmlstyle === 'overlib','dynamic');
 	wm_engine_assert($saved->links['DEFAULT']->arrowstyle === 'compact','arrows');
 	wm_engine_assert($saved->links['DEFAULT']->commentfontcolour == [0, 0, 255],'blue');
@@ -76,10 +77,12 @@ try {
 	$original->width     = 900;
 	$original->height    = 500;
 	$original->htmlstyle = 'static';
+	$original->add_hint('traffic_pulse', '0');
 	$original->WriteConfig($directory . '/source.conf');
 	newMap('copy.conf','source.conf');
 	$copy = new WeatherMap();
 	$copy->ReadConfig($directory . '/copy.conf');
+	wm_engine_assert($copy->get_hint('traffic_pulse', '1') === '0','copy retains disabled pulse');
 	wm_engine_assert($copy->width == 900 && $copy->height == 500 && $copy->htmlstyle === 'static','copy retains source');
 
 	print "PASS\n";
