@@ -110,15 +110,17 @@ function wm_asset_store_image($kind, $source, $original_name) {
 	$path = wm_asset_image_path($kind, $name);
 	$handle = @fopen($path, 'x');
 	if (!$handle) { imagedestroy($image); throw new RuntimeException(__('Could not reserve an image filename.', 'weathermap')); }
+	$written = false;
 	try {
 		// Re-encode decoded pixels; never publish the original uploaded bytes.
-		$written = $size[2] === IMAGETYPE_JPEG ? $encode($image, $handle, 90) : $encode($image, $handle);
-		if (!$written) throw new RuntimeException(__('Could not save the image.', 'weathermap'));
-		if (!fflush($handle)) throw new RuntimeException(__('Could not save the image.', 'weathermap'));
-		chmod($path, 0644);
-	} catch (Throwable $error) {
-		unlink($path);
-		throw $error;
-	} finally { fclose($handle); imagedestroy($image); }
+		$encoded = $size[2] === IMAGETYPE_JPEG ? $encode($image, $handle, 90) : $encode($image, $handle);
+		$written = $encoded && fflush($handle);
+	} finally {
+		fclose($handle);
+		imagedestroy($image);
+		if (!$written) unlink($path);
+	}
+	if (!$written) throw new RuntimeException(__('Could not save the image.', 'weathermap'));
+	chmod($path, 0644);
 	return $name;
 }
