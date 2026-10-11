@@ -22,7 +22,13 @@
  +-------------------------------------------------------------------------+
 */
 
-/** Editor image library management. */
+/**
+ * Resolve a managed image library, rejecting symlinked directories.
+ *
+ * @param string $kind The objects or backgrounds library.
+ *
+ * @return string The library directory.
+ */
 function wm_asset_directory($kind) {
 	if (!in_array($kind, ['objects', 'backgrounds'], true)) throw new InvalidArgumentException(__('Invalid image category.', 'weathermap'));
 	$parent = dirname(__DIR__) . '/images';
@@ -30,6 +36,14 @@ function wm_asset_directory($kind) {
 	if (is_link($parent) || is_link($dir)) throw new InvalidArgumentException(__('Symbolic links cannot be managed here.', 'weathermap'));
 	return $dir;
 }
+/**
+ * Validate a filename and resolve its non-symlinked library path.
+ *
+ * @param string $kind The library category.
+ * @param mixed $name The filename to validate.
+ *
+ * @return string The validated image path.
+ */
 function wm_asset_image_path($kind, $name) {
 	$dir = wm_asset_directory($kind);
 	if (!is_string($name) || !preg_match('/^[A-Za-z0-9_.-]+\.(png|gif|jpe?g)$/iD', $name) || strpos($name, '..') !== false) throw new InvalidArgumentException(__('Invalid image filename.', 'weathermap'));
@@ -37,6 +51,12 @@ function wm_asset_image_path($kind, $name) {
 	if (is_link($dir) || is_link($path)) throw new InvalidArgumentException(__('Symbolic links cannot be managed here.', 'weathermap'));
 	return $path;
 }
+/**
+ * Read configuration files and includes once to index image references.
+ *
+ *
+ * @return array The reference patterns and source filenames.
+ */
 function wm_asset_image_reference_index() {
 	$references = [];
 	$queue = [];
@@ -78,6 +98,15 @@ function wm_asset_image_reference_index() {
 	}
 	return $references;
 }
+/**
+ * Find map configurations referencing an image.
+ *
+ * @param string $name The image filename.
+ * @param string|null $kind One library category, or both when null.
+ * @param array|null $references A request-local reference index; null builds an index.
+ *
+ * @return string[] Unique configuration filenames using the image.
+ */
 function wm_asset_image_users($name, $kind = null, $references = null) {
 	$references = $references ?? wm_asset_image_reference_index();
 	$users = [];
@@ -92,6 +121,13 @@ function wm_asset_image_users($name, $kind = null, $references = null) {
 	}
 	return array_values(array_unique($users));
 }
+/**
+ * List image metadata using one shared configuration reference index.
+ *
+ * @param array|null $references A precomputed index, or null to read configurations.
+ *
+ * @return array The image dimensions, usage and deletion permissions.
+ */
 function wm_asset_image_list($references = null) {
 	$result = [];
 	$references = $references ?? wm_asset_image_reference_index();
@@ -107,6 +143,15 @@ function wm_asset_image_list($references = null) {
 	}
 	return $result;
 }
+/**
+ * Validate and re-encode an upload under an exclusively reserved filename.
+ *
+ * @param string $kind The destination library category.
+ * @param string $source The temporary source image path.
+ * @param string $original_name The original name used to derive a safe filename.
+ *
+ * @return string The stored filename; invalid images or write failures raise exceptions.
+ */
 function wm_asset_store_image($kind, $source, $original_name) {
 	$dir = wm_asset_directory($kind);
 	if (is_link($dir) || !is_writable($dir)) throw new RuntimeException(__('The image directory is not writable.', 'weathermap'));

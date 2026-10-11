@@ -1136,10 +1136,26 @@ function getImageURL($mapname, $selected) {
 	return $imageurl;
 }
 
+/**
+ * Validate a PHP upload and store its decoded image.
+ *
+ * @param string $kind The destination library category.
+ * @param array $file The PHP upload metadata from $_FILES.
+ *
+ * @return string The stored image filename.
+ */
 function wm_asset_upload_image($kind, $file) {
 	if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name'] ?? '')) throw new InvalidArgumentException(__('Choose a PNG, JPG or GIF file up to 5 MB.', 'weathermap'));
 	return wm_asset_store_image($kind, $file['tmp_name'], $file['name']);
 }
+/**
+ * Read or mutate an image library and emit a JSON response.
+ *
+ * @param string $mapfile The current validated map path.
+ * @param string $action The library operation requested by the editor.
+ *
+ * @return void Errors are returned as HTTP 400 JSON responses.
+ */
 function wm_editor_assets($mapfile, $action) {
 	header('Content-Type: application/json');
 	try {
@@ -1147,8 +1163,9 @@ function wm_editor_assets($mapfile, $action) {
 		if ($action === 'image_data') {
 			$result = ['images' => wm_asset_image_list()];
 		} elseif ($action === 'upload_image') {
+			$references = wm_asset_image_reference_index();
 			$name = wm_asset_upload_image(get_nfilter_request_var('image_kind'), $_FILES['image_file'] ?? []);
-			$result = ['name' => $name, 'images' => wm_asset_image_list()];
+			$result = ['name' => $name, 'images' => wm_asset_image_list($references)];
 		} else {
 			$name = get_nfilter_request_var('image_name');
 			$path = wm_asset_image_path(get_nfilter_request_var('image_kind'), $name);

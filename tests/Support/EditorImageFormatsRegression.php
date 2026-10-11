@@ -101,6 +101,18 @@ try {
 		if (is_link($library)) unlink($library);
 		rename($originalLibrary, $library);
 	}
+	// A reference-scan failure must be reported before upload validation or persistence.
+	$broken = $temporary . '/broken.conf';
+	symlink($temporary . '/missing-target.conf', $broken);
+	file_put_contents($config, "INCLUDE " . $broken . "\n");
+	$_SERVER['REQUEST_METHOD'] = 'POST';
+	$_FILES['image_file'] = ['error' => UPLOAD_ERR_OK, 'tmp_name' => $source, 'name' => 'must-not-persist.png'];
+	$GLOBALS['__test_nfilter_request'] = ['image_kind' => 'objects'];
+	ob_start(); wm_editor_assets($config, 'upload_image'); $response = json_decode(ob_get_clean(), true);
+	image_format_assert(str_contains($response['error'], 'Cannot check configuration references'), 'configuration failure precedes upload persistence');
+	image_format_assert(glob($root . '/images/objects/must-not-persist-*') === [], 'reference error cannot create an uploaded image');
+	unlink($broken); unset($_FILES['image_file']);
+	file_put_contents($config, "# no image references\n");
 	// Read-only listings, reference protection and the final server unlink.
 	$_SERVER['REQUEST_METHOD'] = 'GET';
 	ob_start(); wm_editor_assets($config, 'image_data'); $response = json_decode(ob_get_clean(), true);
