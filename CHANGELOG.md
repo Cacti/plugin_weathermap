@@ -20,6 +20,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * feature#296: Delete unused configuration files with confirmation and protect registered maps
 
+* feature#295: Use a readable landscape preset for new blank maps
+
 * feature#294: Expose bundled fonts and link comment colours in Map Style
 
 * feature#293: Default new graph assignments to Time Graph View
