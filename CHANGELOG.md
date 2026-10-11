@@ -18,6 +18,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * feature#298: Fit or stretch background images within the map canvas
 
+* feature#297: Allow setting a map title when creating configuration files
+
 * feature#296: Delete unused configuration files with confirmation and protect registered maps
 
 * feature#295: Use a readable landscape preset for new blank maps
