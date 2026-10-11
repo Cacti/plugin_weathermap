@@ -1012,6 +1012,25 @@ function getEditorJs() {
 	var addNodeHelp   = '<?php print __esc('Click on the map where you would like to add a new node.', 'weathermap'); ?>';
 
 	var wmEditorText = <?php print json_encode([
+		'imageText0' => __('−', 'weathermap'),
+		'imageText1' => __('No images in this library yet.', 'weathermap'),
+		'imageText2' => __('Choose a PNG, JPG or GIF to upload.', 'weathermap'),
+		'imageText3' => __('The request failed. Please try again.', 'weathermap'),
+		'imageText4' => __('Upload failed.', 'weathermap'),
+		'imageText5' => __('Choose a PNG, JPG or GIF file up to 5 MB.', 'weathermap'),
+		'imageText6' => __('No gradient', 'weathermap'),
+		'imageText7' => __('Custom colour', 'weathermap'),
+		'imageText8' => __('Remove range', 'weathermap'),
+		'imageText9' => __('Delete %s', '%s', 'weathermap'),
+		'imageText10' => __('Delete image "%s" from the server?', '%s', 'weathermap'),
+		'imageText11' => __('%s image', '%s', 'weathermap'),
+		'imageText12' => __('%s images', '%s', 'weathermap'),
+		'imageText13' => __('Uploaded %s', '%s', 'weathermap'),
+		'imageText14' => __('Label Only', 'weathermap'),
+		'imageText15' => __('No background', 'weathermap'),
+		'imageUsed' => __('Used by: %s', '%s', 'weathermap'),
+		'imageUnused' => __('Not used by a map', 'weathermap'),
+
 		'currentInterface'     => __('Current interface', 'weathermap'),
 		'advanced'             => __('Advanced settings', 'weathermap'),
 		'hideAdvanced'         => __('Hide advanced settings', 'weathermap'),

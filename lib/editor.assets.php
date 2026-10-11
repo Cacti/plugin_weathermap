@@ -24,17 +24,17 @@
 
 /** Editor image library management. */
 function wm_asset_directory($kind) {
-	if (!in_array($kind, ['objects', 'backgrounds'], true)) throw new InvalidArgumentException('Invalid image category.');
+	if (!in_array($kind, ['objects', 'backgrounds'], true)) throw new InvalidArgumentException(__('Invalid image category.', 'weathermap'));
 	return dirname(__DIR__) . '/images/' . $kind;
 }
 function wm_asset_image_path($kind, $name) {
 	$dir = wm_asset_directory($kind);
-	if (!is_string($name) || !preg_match('/^[A-Za-z0-9_.-]+\.(png|gif|jpe?g)$/iD', $name) || strpos($name, '..') !== false) throw new InvalidArgumentException('Invalid image filename.');
+	if (!is_string($name) || !preg_match('/^[A-Za-z0-9_.-]+\.(png|gif|jpe?g)$/iD', $name) || strpos($name, '..') !== false) throw new InvalidArgumentException(__('Invalid image filename.', 'weathermap'));
 	$path = $dir . '/' . $name;
-	if (is_link($dir) || is_link($path)) throw new InvalidArgumentException('Symbolic links cannot be managed here.');
+	if (is_link($dir) || is_link($path)) throw new InvalidArgumentException(__('Symbolic links cannot be managed here.', 'weathermap'));
 	return $path;
 }
-function wm_asset_image_users($name) {
+function wm_asset_image_users($name, $kind = null) {
 	$users = [];
 	$queue = [];
 	$root = dirname(__DIR__);
@@ -44,16 +44,35 @@ function wm_asset_image_users($name) {
 	while ($queue) {
 		$path = array_pop($queue);
 		$real = realpath($path);
-		if ($real === false || !is_readable($real)) throw new RuntimeException('Cannot check configuration references.');
+		if ($real === false || !is_readable($real)) throw new RuntimeException(__('Cannot check configuration references.', 'weathermap'));
 		if (isset($seen[$real])) continue;
 		$seen[$real] = true;
-		if (count($seen) > 1000) throw new RuntimeException('Too many included configurations to check.');
+		if (count($seen) > 1000) throw new RuntimeException(__('Too many included configurations to check.', 'weathermap'));
 		$text = file_get_contents($real);
-		if ($text === false) throw new RuntimeException('Cannot check configuration references.');
-		if (strpos($text, $name) !== false) $users[] = basename($real);
+		if ($text === false) throw new RuntimeException(__('Cannot check configuration references.', 'weathermap'));
+		if (preg_match_all('/^\s*(ICON|BACKGROUND)\s+(?:[0-9]+\s+[0-9]+\s+)?(.+?)\s*$/mi', $text, $directives, PREG_SET_ORDER)) {
+			foreach ($directives as $directive) {
+				$image = trim($directive[2]);
+				$image = strpos($image, '/') === 0 ? $image : $root . '/' . $image;
+				$parts = [];
+				foreach (explode('/', $image) as $part) {
+					if ($part === '' || $part === '.') continue;
+					if ($part === '..') array_pop($parts); else $parts[] = $part;
+				}
+				$image = '/' . implode('/', $parts);
+				// Dynamic token values are unknown here: protect all possible paths.
+				$pattern = implode('.*', array_map(function($part) { return preg_quote($part, '~'); }, preg_split('/\{[^}]+\}/', $image)));
+				foreach ($kind === null ? ['objects', 'backgrounds'] : [$kind] as $library) {
+					if (preg_match('~^' . $pattern . '$~D', $root . '/images/' . $library . '/' . $name)) { $users[] = basename($real); break 2; }
+				}
+			}
+		}
 		if (preg_match_all('/^\s*INCLUDE\s+(.+)$/mi', $text, $matches)) foreach ($matches[1] as $include) {
 			$include = trim($include);
-			$queue[] = strpos($include, '/') === 0 ? $include : $root . '/' . $include;
+			$include = strpos($include, '/') === 0 ? $include : $root . '/' . $include;
+			$matches = glob($include);
+			if (!$matches) $queue[] = $include;
+			else foreach ($matches as $match) $queue[] = $match;
 		}
 	}
 	return $users;
@@ -65,33 +84,41 @@ function wm_asset_image_list() {
 		foreach (scandir($dir) ?: [] as $name) {
 			$path = $dir . '/' . $name;
 			if (!is_file($path) || is_link($path) || !is_readable($path) || !preg_match('/\.(png|gif|jpe?g)$/iD', $name)) continue;
-			$result[] = ['kind' => $kind, 'name' => $name, 'url' => 'images/' . $kind . '/' . rawurlencode($name), 'deletable' => (bool) preg_match('/^[A-Za-z0-9_.-]+\.(png|gif|jpe?g)$/iD', $name) && strpos($name, '..') === false];
+			$size = @getimagesize($path);
+			$users = wm_asset_image_users($name, $kind);
+			$result[] = ['width' => $size ? $size[0] : null, 'height' => $size ? $size[1] : null, 'users' => $users, 'kind' => $kind, 'name' => $name, 'url' => 'images/' . $kind . '/' . rawurlencode($name), 'deletable' => !$users && (bool) preg_match('/^[A-Za-z0-9_.-]+\.(png|gif|jpe?g)$/iD', $name) && strpos($name, '..') === false];
 		}
 	}
 	return $result;
 }
 function wm_asset_store_image($kind, $source, $original_name) {
 	$dir = wm_asset_directory($kind);
-	if (is_link($dir) || !is_writable($dir)) throw new RuntimeException('The image directory is not writable.');
-	if (!is_file($source) || filesize($source) > 5 * 1024 * 1024) throw new InvalidArgumentException('Choose a PNG, JPG or GIF file up to 5 MB.');
+	if (is_link($dir) || !is_writable($dir)) throw new RuntimeException(__('The image directory is not writable.', 'weathermap'));
+	if (!is_file($source) || filesize($source) > 5 * 1024 * 1024) throw new InvalidArgumentException(__('Choose a PNG, JPG or GIF file up to 5 MB.', 'weathermap'));
 	$size = @getimagesize($source);
 	$formats = [IMAGETYPE_PNG => ['png', 'imagecreatefrompng', 'imagepng'], IMAGETYPE_JPEG => ['jpg', 'imagecreatefromjpeg', 'imagejpeg'], IMAGETYPE_GIF => ['gif', 'imagecreatefromgif', 'imagegif']];
-	if (!$size || !isset($formats[$size[2]]) || $size[0] * $size[1] > 4000000) throw new InvalidArgumentException('Choose a PNG, JPG or GIF image up to 4 million pixels.');
+	if (!$size || !isset($formats[$size[2]]) || $size[0] * $size[1] > 4000000) throw new InvalidArgumentException(__('Choose a PNG, JPG or GIF image up to 4 million pixels.', 'weathermap'));
 	[$extension, $decode, $encode] = $formats[$size[2]];
 	$image = @$decode($source);
-	if (!$image) throw new InvalidArgumentException('The image could not be read.');
+	if (!$image) throw new InvalidArgumentException(__('The image could not be read.', 'weathermap'));
 	if ($size[2] === IMAGETYPE_PNG) {
 		imagealphablending($image, false);
 		imagesavealpha($image, true);
 	}
 	$stem = preg_replace('/[^A-Za-z0-9_-]/', '_', pathinfo(basename($original_name), PATHINFO_FILENAME));
-	$name = substr($stem ?: 'image', 0, 60) . '-' . bin2hex(random_bytes(4)) . '.' . $extension;
+	$name = substr($stem ?: 'image', 0, 60) . '-' . bin2hex(random_bytes(16)) . '.' . $extension;
 	$path = wm_asset_image_path($kind, $name);
+	$handle = @fopen($path, 'x');
+	if (!$handle) { imagedestroy($image); throw new RuntimeException(__('Could not reserve an image filename.', 'weathermap')); }
 	try {
 		// Re-encode decoded pixels; never publish the original uploaded bytes.
-		$written = $size[2] === IMAGETYPE_JPEG ? $encode($image, $path, 90) : $encode($image, $path);
-		if (!$written) throw new RuntimeException('Could not save the image.');
+		$written = $size[2] === IMAGETYPE_JPEG ? $encode($image, $handle, 90) : $encode($image, $handle);
+		if (!$written) throw new RuntimeException(__('Could not save the image.', 'weathermap'));
+		if (!fflush($handle)) throw new RuntimeException(__('Could not save the image.', 'weathermap'));
 		chmod($path, 0644);
-	} finally { imagedestroy($image); }
+	} catch (Throwable $error) {
+		unlink($path);
+		throw $error;
+	} finally { fclose($handle); imagedestroy($image); }
 	return $name;
 }

@@ -1668,7 +1668,7 @@ function wmAssetRequest(action, extra, callback, errorId) {
 	var values = {action: action, mapname: $('#mapname').val()};
 	if (typeof csrfMagicToken !== 'undefined') values.__csrf_magic = csrfMagicToken;
 	$.ajax({url: editor_url, type: action === 'image_data' ? 'GET' : 'POST', dataType: 'json', data: $.extend(values, extra),
-		success: callback, error: function(xhr) { $('#' + errorId).text(xhr.responseJSON && xhr.responseJSON.error || 'The request failed. Please try again.'); }});
+		success: callback, error: function(xhr) { $('#' + errorId).text(xhr.responseJSON && xhr.responseJSON.error || wmEditorText.imageText3); }});
 }
 function wmAssetImages(images) {
 	$('#wm-images-objects, #wm-images-backgrounds').empty();
@@ -1676,18 +1676,20 @@ function wmAssetImages(images) {
 		var card = $('<div class="wm-image-card">').appendTo('#wm-images-' + item.kind);
 		$('<img>').attr({src: item.url, alt: item.name, loading: 'lazy'}).appendTo(card);
 		$('<span>').text(item.name).appendTo(card);
-		if (item.deletable !== false) $('<button type="button" class="ui-button wm-image-delete">').text('−').attr('aria-label', 'Delete ' + item.name).appendTo(card).on('click', function() {
-			if (!window.confirm('Delete image "' + item.name + '" from the server?')) return;
+		if (item.width && item.height) $('<span>').text(item.width + ' × ' + item.height + ' px').appendTo(card);
+		$('<span>').text(item.users && item.users.length ? wmEditorText.imageUsed.replace('%s', item.users.join(', ')) : wmEditorText.imageUnused).appendTo(card);
+		if (item.deletable !== false) $('<button type="button" class="ui-button wm-image-delete">').text(wmEditorText.imageText0).attr('aria-label', wmEditorText.imageText9.replace('%s', item.name)).appendTo(card).on('click', function() {
+			if (!window.confirm(wmEditorText.imageText10.replace('%s', item.name))) return;
 			wmAssetRequest('delete_image', {image_kind: item.kind, image_name: item.name}, function(data) { wmAssetImages(data.images); }, 'wm-images-error');
 		});
 	});
 	['objects', 'backgrounds'].forEach(function(kind) {
 		var count = images.filter(function(item) { return item.kind === kind; }).length;
-		$('#wm-images-' + kind + '-count').text(count + (count === 1 ? ' image' : ' images'));
-		if (!count) $('#wm-images-' + kind).append($('<p>').text('No images in this library yet.'));
+		$('#wm-images-' + kind + '-count').text((count === 1 ? wmEditorText.imageText11 : wmEditorText.imageText12).replace('%s', String(count)));
+		if (!count) $('#wm-images-' + kind).append($('<p>').text(wmEditorText.imageText1));
 	});
 	// Rebuild the existing image selectors so uploads are available without reloading the editor.
-	[{id: 'node_iconfilename', kind: 'objects', label: 'Label Only'}, {id: 'map_bgfile', kind: 'backgrounds', label: 'No background'}].forEach(function(spec) {
+	[{id: 'node_iconfilename', kind: 'objects', label: wmEditorText.imageText14}, {id: 'map_bgfile', kind: 'backgrounds', label: wmEditorText.imageText15}].forEach(function(spec) {
 		var select = $('#' + spec.id), old = select.val();
 		var slick = select.data('ddslick');
 		if (slick) { old = slick.selectedData && slick.selectedData.value; select.ddslick('destroy'); select = $('#' + spec.id); }
@@ -1706,15 +1708,15 @@ function wmOpenImages() {
 	$('.wm-image-upload').off('click').on('click', function() {
 		var button = $(this), kind = button.attr('data-kind'), input = $('#wm-image-file-' + kind);
 		var file = input[0].files[0];
-		if (!file) { $('#wm-images-error').text('Choose a PNG, JPG or GIF to upload.'); return; }
+		if (!file) { $('#wm-images-error').text(wmEditorText.imageText2); return; }
 		var data = new FormData();
 		data.append('action', 'upload_image'); data.append('mapname', $('#mapname').val());
 		data.append('image_kind', kind); data.append('image_file', file);
 		if (typeof csrfMagicToken !== 'undefined') data.append('__csrf_magic', csrfMagicToken);
 		button.prop('disabled', true);
 		$.ajax({url: editor_url, type: 'POST', data: data, dataType: 'json', contentType: false, processData: false,
-			success: function(result) { $('#wm-images-error').text('Uploaded ' + result.name); input.val(''); wmAssetImages(result.images); },
-			error: function(xhr) { $('#wm-images-error').text(xhr.responseJSON && xhr.responseJSON.error || 'Upload failed.'); },
+			success: function(result) { $('#wm-images-error').text(wmEditorText.imageText13.replace('%s', result.name)); input.val(''); wmAssetImages(result.images); },
+			error: function(xhr) { $('#wm-images-error').text(xhr.responseJSON && xhr.responseJSON.error || wmEditorText.imageText4); },
 			complete: function() { button.prop('disabled', false); }});
 	});
 }
