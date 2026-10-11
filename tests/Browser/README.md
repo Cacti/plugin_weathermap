@@ -12,3 +12,7 @@ It does not replace manual browser testing or the PHP test suite.
 `EditorPickerLayeringTest.cjs` loads Cacti's real jQuery UI and invokes the editor's
 actual `show_dialog()` callback. It checks menu ownership on opening and reopening.
 Run it with the same dependencies and `CACTI_JS_DIR=/path/to/cacti/include/js`.
+
+`EditorPickerReopeningTest.cjs` uses the same dependencies and `CACTI_JS_DIR`.
+It exercises real jQuery UI focus/blur timing, Browse all, input/arrow reopening,
+changing an existing selection and typed filtering in both link and node pickers.
