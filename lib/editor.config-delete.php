@@ -125,7 +125,7 @@ function wm_config_delete($directory, $file) {
 			}
 		}
 
-		return unlink($path) ? 'deleted' : 'failed';
+		return @unlink($path) ? 'deleted' : 'failed';
 	} finally {
 		flock($lock, LOCK_UN);
 		fclose($lock);

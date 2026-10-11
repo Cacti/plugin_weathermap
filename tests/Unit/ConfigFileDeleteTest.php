@@ -63,11 +63,19 @@ it('ReportsADeletionFailureWithoutClaimingSuccess', function () {
 	file_put_contents($dir . '/test.conf','test');
 	chmod($dir,0500);
 	$GLOBALS['__test_db_fetch_cell_prepared'] = fn () => 0;
-	set_error_handler(fn () => true);
+	set_error_handler(function ($severity, $message) {
+		if (error_reporting() & $severity) {
+			throw new ErrorException($message, 0, $severity);
+		}
+		return false;
+	});
+	ob_start();
 
 	try {
 		expect(wm_config_delete($dir,'test.conf'))->toBe('failed')->and(file_exists($dir . '/test.conf'))->toBeTrue();
+		expect(ob_get_contents())->toBe('');
 	} finally {
+		ob_end_clean();
 		restore_error_handler();
 		chmod($dir,0700);
 		unlink($dir . '/test.conf');
