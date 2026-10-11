@@ -20,6 +20,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * feature#295: Use a readable landscape preset for new blank maps
 
+* feature#294: Expose bundled fonts and link comment colours in Map Style
+
 * feature#293: Default new graph assignments to Time Graph View
 
 * feature#292: Generate sharper gallery thumbnails by default without enlarging small maps

@@ -37,7 +37,11 @@ $('#link_target_picker_input').data('options', {source: originalSource, select: 
 vm.runInContext(editor.slice(editor.indexOf('// Compact link workflow;')), dom.getInternalVMContext());
 $('#link_target').val('/rrd/interface.rrd');
 $('#link_infourl').val('/cacti/graph.php?rra_id=all&local_graph_id=10');
+$('#link_target_picker_input').attr('aria-describedby', 'existing-description');
 w.compactLinkEditor();
+assert.equal($('#link_target_picker_input').attr('aria-describedby'), 'existing-description wm-link-apply-hint');
+w.compactLinkEditor();
+assert.equal($('#link_target_picker_input').attr('aria-describedby'), 'existing-description wm-link-apply-hint');
 w.wmFriendlyLinkNames();
 const items = [
 	{ id: '/rrd/interface.rrd', local_graph_id: 10, label: 'Switch A — Gi0/1 — Uplink' },
