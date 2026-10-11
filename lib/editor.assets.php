@@ -25,7 +25,10 @@
 /** Editor image library management. */
 function wm_asset_directory($kind) {
 	if (!in_array($kind, ['objects', 'backgrounds'], true)) throw new InvalidArgumentException(__('Invalid image category.', 'weathermap'));
-	return dirname(__DIR__) . '/images/' . $kind;
+	$parent = dirname(__DIR__) . '/images';
+	$dir = $parent . '/' . $kind;
+	if (is_link($parent) || is_link($dir)) throw new InvalidArgumentException(__('Symbolic links cannot be managed here.', 'weathermap'));
+	return $dir;
 }
 function wm_asset_image_path($kind, $name) {
 	$dir = wm_asset_directory($kind);
@@ -34,8 +37,8 @@ function wm_asset_image_path($kind, $name) {
 	if (is_link($dir) || is_link($path)) throw new InvalidArgumentException(__('Symbolic links cannot be managed here.', 'weathermap'));
 	return $path;
 }
-function wm_asset_image_users($name, $kind = null) {
-	$users = [];
+function wm_asset_image_reference_index() {
+	$references = [];
 	$queue = [];
 	$root = dirname(__DIR__);
 	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root . '/configs', FilesystemIterator::SKIP_DOTS));
@@ -62,30 +65,43 @@ function wm_asset_image_users($name, $kind = null) {
 				$image = '/' . implode('/', $parts);
 				// Dynamic token values are unknown here: protect all possible paths.
 				$pattern = implode('.*', array_map(function($part) { return preg_quote($part, '~'); }, preg_split('/\{[^}]+\}/', $image)));
-				foreach ($kind === null ? ['objects', 'backgrounds'] : [$kind] as $library) {
-					if (preg_match('~^' . $pattern . '$~D', $root . '/images/' . $library . '/' . $name)) { $users[] = basename($real); break 2; }
-				}
+				$references[] = ['pattern' => '~^' . $pattern . '$~D', 'user' => basename($real)];
 			}
 		}
 		if (preg_match_all('/^\s*INCLUDE\s+(.+)$/mi', $text, $matches)) foreach ($matches[1] as $include) {
 			$include = trim($include);
 			$include = strpos($include, '/') === 0 ? $include : $root . '/' . $include;
 			$matches = glob($include);
-			if (!$matches) $queue[] = $include;
-			else foreach ($matches as $match) $queue[] = $match;
+			// The renderer tolerates absent optional includes; unreadable matches still fail closed.
+			foreach ($matches ?: [] as $match) $queue[] = $match;
 		}
 	}
-	return $users;
+	return $references;
+}
+function wm_asset_image_users($name, $kind = null, $references = null) {
+	$references = $references ?? wm_asset_image_reference_index();
+	$users = [];
+	$root = dirname(__DIR__);
+	foreach ($references as $reference) {
+		foreach ($kind === null ? ['objects', 'backgrounds'] : [$kind] as $library) {
+			if (preg_match($reference['pattern'], $root . '/images/' . $library . '/' . $name)) {
+				$users[] = $reference['user'];
+				break;
+			}
+		}
+	}
+	return array_values(array_unique($users));
 }
 function wm_asset_image_list() {
 	$result = [];
+	$references = wm_asset_image_reference_index();
 	foreach (['objects', 'backgrounds'] as $kind) {
 		$dir = wm_asset_directory($kind);
 		foreach (scandir($dir) ?: [] as $name) {
 			$path = $dir . '/' . $name;
 			if (!is_file($path) || is_link($path) || !is_readable($path) || !preg_match('/\.(png|gif|jpe?g)$/iD', $name)) continue;
 			$size = @getimagesize($path);
-			$users = wm_asset_image_users($name, $kind);
+			$users = wm_asset_image_users($name, $kind, $references);
 			$result[] = ['width' => $size ? $size[0] : null, 'height' => $size ? $size[1] : null, 'users' => $users, 'kind' => $kind, 'name' => $name, 'url' => 'images/' . $kind . '/' . rawurlencode($name), 'deletable' => !$users && (bool) preg_match('/^[A-Za-z0-9_.-]+\.(png|gif|jpe?g)$/iD', $name) && strpos($name, '..') === false];
 		}
 	}
@@ -116,7 +132,8 @@ function wm_asset_store_image($kind, $source, $original_name) {
 		$encoded = $size[2] === IMAGETYPE_JPEG ? $encode($image, $handle, 90) : $encode($image, $handle);
 		$written = $encoded && fflush($handle);
 	} finally {
-		fclose($handle);
+		$closed = fclose($handle);
+		$written = $written && $closed;
 		imagedestroy($image);
 		if (!$written) unlink($path);
 	}

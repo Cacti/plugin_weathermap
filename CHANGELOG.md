@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* Add separate icon and background image upload and management libraries
+
 * issue#299: Keep editor picker results open when browsing and allow changing an existing selection
 
 * feature#298: Fit or stretch background images within the map canvas

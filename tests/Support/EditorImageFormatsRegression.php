@@ -78,6 +78,29 @@ try {
 	file_put_contents($included, "BACKGROUND images/backgrounds/included-image.png\n");
 	file_put_contents($config, "INCLUDE " . $included . "\n");
 	image_format_assert(in_array(basename($included), wm_asset_image_users('included-image.png'), true), 'included configurations protect images from deletion');
+	// Missing optional includes must not disable the library, and one index serves all names.
+	file_put_contents($config, "INCLUDE " . $temporary . "/missing-*.conf\nINCLUDE " . $included . "\n");
+	$index = wm_asset_image_reference_index();
+	file_put_contents($included, "# changed after indexing\n");
+	image_format_assert(in_array(basename($included), wm_asset_image_users('included-image.png', 'backgrounds', $index), true), 'reference snapshot reused without rescanning configurations');
+	image_format_assert(wm_asset_image_users('included-image.png', 'backgrounds') === [], 'fresh request reflects changed configuration');
+	image_format_assert(is_array(wm_asset_image_list()), 'unmatched optional include permits listing');
+	// Test symlink rejection only inside this isolated fixture, and always restore its library.
+	$library = $root . '/images';
+	$originalLibrary = $temporary . '/library';
+	image_format_assert(rename($library, $originalLibrary), 'reserve fixture library');
+	try {
+		image_format_assert(symlink($originalLibrary, $library), 'create linked fixture library');
+		foreach (['objects', 'backgrounds'] as $kind) {
+			try { wm_asset_directory($kind); throw new RuntimeException('accepted symlinked library parent'); } catch (InvalidArgumentException $expected) {}
+		}
+		try { wm_asset_image_list(); throw new RuntimeException('listed linked library'); } catch (InvalidArgumentException $expected) {}
+		try { wm_asset_store_image('objects', $source, 'linked.png'); throw new RuntimeException('uploaded to linked library'); } catch (InvalidArgumentException $expected) {}
+		try { wm_asset_image_path('objects', basename($created[0])); throw new RuntimeException('accepted deletion path in linked library'); } catch (InvalidArgumentException $expected) {}
+	} finally {
+		if (is_link($library)) unlink($library);
+		rename($originalLibrary, $library);
+	}
 	// Read-only listings, reference protection and the final server unlink.
 	$_SERVER['REQUEST_METHOD'] = 'GET';
 	ob_start(); wm_editor_assets($config, 'image_data'); $response = json_decode(ob_get_clean(), true);

@@ -1685,7 +1685,7 @@ function wmAssetImages(images) {
 	});
 	['objects', 'backgrounds'].forEach(function(kind) {
 		var count = images.filter(function(item) { return item.kind === kind; }).length;
-		$('#wm-images-' + kind + '-count').text((count === 1 ? wmEditorText.imageText11 : wmEditorText.imageText12).replace('%s', String(count)));
+		$('#wm-images-' + kind + '-count').text(wmEditorText.imageText11.replace('%s', String(count)));
 		if (!count) $('#wm-images-' + kind).append($('<p>').text(wmEditorText.imageText1));
 	});
 	// Rebuild the existing image selectors so uploads are available without reloading the editor.
