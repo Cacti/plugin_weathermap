@@ -66,7 +66,7 @@ $('#link_target_picker_input')
 	.autocomplete('option', 'select')
 	.call($('#link_target_picker_input')[0], {}, { item: items[1] });
 $('#link_target_picker_input').val(items[1].label).trigger('click');
-assert.equal($('#link_target_picker_input').data('lastSearch'), items[1].label);
+assert.equal($('#link_target_picker_input').data('lastSearch'), '');
 assert.equal($('#link_target').val(), items[0].id);
 $('#wm-link-use').trigger('click');
 assert.equal($('#link_target').val(), items[1].id);

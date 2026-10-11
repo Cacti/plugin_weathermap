@@ -1416,19 +1416,20 @@ function compactLinkEditor() {
 	picker.autocomplete('option', 'autoFocus', false);
 	$('#link_target_picker_wrap').off('click dblclick mouseleave');
 	picker.off('click.wmReopen').on('click.wmReopen', function () {
-		picker.autocomplete('search', picker.val());
+		picker.autocomplete('search', '');
 	});
 	$('#link_target_picker_click')
 		.off('click.wmReopen')
 		.on('click.wmReopen', function () {
 			picker.trigger('focus');
-			picker.autocomplete('search', picker.val());
+			picker.autocomplete('search', '');
 		});
 	if (!$('#wm-link-browse').length)
 		$('<button type="button" id="wm-link-browse" class="ui-button ui-corner-all"></button>')
 			.text(wmEditorText.browseAll)
 			.insertAfter('#wm-link-use')
 			.on('click', function () {
+				picker.trigger('focus');
 				picker.autocomplete('search', '');
 			});
 	if (!$('#wm-link-apply-hint').length)
@@ -1538,13 +1539,13 @@ function refineNodePicker() {
 	picker.autocomplete('option', 'autoFocus', false);
 	$('#node_picker_wrap').off('click dblclick mouseleave');
 	picker.off('click.wmNode').on('click.wmNode', function () {
-		picker.autocomplete('search', picker.val());
+		picker.autocomplete('search', '');
 	});
 	$('#node_picker_click')
 		.off('click.wmNode')
 		.on('click.wmNode', function () {
 			picker.trigger('focus');
-			picker.autocomplete('search', picker.val());
+			picker.autocomplete('search', '');
 		});
 	if (!picker.data('wm-node-hook')) {
 		var original = picker.autocomplete('option', 'select');
@@ -1562,6 +1563,7 @@ function refineNodePicker() {
 			.text(wmEditorText.browseAll)
 			.appendTo($('#node_picker').closest('td'))
 			.on('click', function () {
+				picker.trigger('focus');
 				picker.autocomplete('search', '');
 			});
 	if (!$('#wm-node-graphs').length)
