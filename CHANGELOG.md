@@ -20,6 +20,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * feature#297: Allow setting a map title when creating configuration files
 
+* feature#293: Default new graph assignments to Time Graph View
+
 * feature#292: Generate sharper gallery thumbnails by default without enlarging small maps
 
 * issue#291: Improve map selector placement and themed viewer controls
