@@ -326,3 +326,6 @@ body#mainView #wm-node-delete-bar { min-height: 32px; }
 .dlgProperties .wm-editor-section { display: table; width: 100%; box-sizing: border-box; margin: 10px 0 6px; }
 .dlgProperties table .wm-editor-section { margin: 0; }
 #wm-images-error:not(:empty) { color: inherit; border-left: 3px solid #c62828; padding-left: 8px; font-weight: bold; }
+
+#dlgImages > .dlgBody { display: block; width: 100%; box-sizing: border-box; }
+#dlgImages .wm-editor-section { float: none; }
