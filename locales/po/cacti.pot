@@ -1114,7 +1114,7 @@ msgstr ""
 msgid "Map Properties"
 msgstr ""
 
-#: weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
 msgid "Map Title"
 msgstr ""
 
@@ -1622,6 +1622,10 @@ msgid "Name including .conf"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
 msgid "Source Map"
 msgstr ""
 
@@ -2119,4 +2123,8 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "Paused"
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
 msgstr ""
