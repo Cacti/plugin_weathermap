@@ -25,7 +25,7 @@
 /** Local editor colour and image management. */
 function wm_asset_rgb($value) {
 	if ($value === 'none') return [-1, -1, -1];
-	if (!is_string($value) || !preg_match('/^#[0-9a-f]{6}$/iD', $value)) throw new InvalidArgumentException('Choose a valid colour.');
+	if (!is_string($value) || !preg_match('/^#[0-9a-f]{6}$/iD', $value)) throw new InvalidArgumentException(__('Choose a valid colour.', 'weathermap'));
 	return [hexdec(substr($value, 1, 2)), hexdec(substr($value, 3, 2)), hexdec(substr($value, 5, 2))];
 }
 function wm_asset_hex($rgb) {
@@ -44,36 +44,36 @@ function wm_asset_colour_data($map) {
 		'outline' => wm_asset_hex($map->links['DEFAULT']->outlinecolour), 'pulse' => $map->get_hint('traffic_pulse', '1') === '1', 'rows' => $rows];
 }
 function wm_asset_save_colours($map, $data) {
-	if (array_key_exists('pulse', $data) && !is_bool($data['pulse'])) throw new InvalidArgumentException('Invalid pulse setting.');
+	if (array_key_exists('pulse', $data) && !is_bool($data['pulse'])) throw new InvalidArgumentException(__('Invalid pulse setting.', 'weathermap'));
 	$background = array_key_exists('background', $data) ? wm_asset_rgb($data['background']) : [$map->colours['DEFAULT']['BG']['red1'], $map->colours['DEFAULT']['BG']['green1'], $map->colours['DEFAULT']['BG']['blue1']];
 	$outline = wm_asset_rgb($data['outline'] ?? null);
-	if ($background[0] < 0) throw new InvalidArgumentException('The background needs a solid colour.');
+	if ($background[0] < 0) throw new InvalidArgumentException(__('The background needs a solid colour.', 'weathermap'));
 	$rows = $data['rows'] ?? null;
-	if (!is_array($rows) || count($rows) < 1 || count($rows) > 200) throw new InvalidArgumentException('Keep between 1 and 200 scale rows.');
+	if (!is_array($rows) || count($rows) < 1 || count($rows) > 200) throw new InvalidArgumentException(__('Keep between 1 and 200 scale rows.', 'weathermap'));
 	$scales = [];
 	foreach ($rows as $row) {
 		$name = $row['scale'] ?? '';
-		if (!is_string($name) || !preg_match('/^[A-Za-z0-9_-]{1,64}$/D', $name)) throw new InvalidArgumentException('Invalid scale name.');
-		foreach (['bottom', 'top'] as $key) if (!isset($row[$key]) || !is_numeric($row[$key]) || !is_finite((float)$row[$key]) || $row[$key] < 0 || $row[$key] > 1e15) throw new InvalidArgumentException('Invalid scale range.');
-		if ($row['bottom'] > $row['top']) throw new InvalidArgumentException('Range start must be no greater than its end.');
+		if (!is_string($name) || !preg_match('/^[A-Za-z0-9_-]{1,64}$/D', $name)) throw new InvalidArgumentException(__('Invalid scale name.', 'weathermap'));
+		foreach (['bottom', 'top'] as $key) if (!isset($row[$key]) || !is_numeric($row[$key]) || !is_finite((float)$row[$key]) || $row[$key] < 0 || $row[$key] > 1e15) throw new InvalidArgumentException(__('Invalid scale range.', 'weathermap'));
+		if ($row['bottom'] > $row['top']) throw new InvalidArgumentException(__('Range start must be no greater than its end.', 'weathermap'));
 		$rgb = wm_asset_rgb($row['colour'] ?? null);
 		$tag = $row['tag'] ?? '';
-		if (!is_string($tag) || strlen($tag) > 200 || preg_match('/[\x00-\x1f\x7f]/', $tag)) throw new InvalidArgumentException('Invalid scale label.');
+		if (!is_string($tag) || strlen($tag) > 200 || preg_match('/[\x00-\x1f\x7f]/', $tag)) throw new InvalidArgumentException(__('Invalid scale label.', 'weathermap'));
 		$key = $row['bottom'] . '_' . $row['top'];
-		if (isset($scales[$name][$key])) throw new InvalidArgumentException('Duplicate range in a scale.');
+		if (isset($scales[$name][$key])) throw new InvalidArgumentException(__('Duplicate range in a scale.', 'weathermap'));
 		$entry = ['key' => $key, 'bottom' => (float)$row['bottom'], 'top' => (float)$row['top'], 'special' => 0, 'red1' => $rgb[0], 'green1' => $rgb[1], 'blue1' => $rgb[2], 'tag' => $tag];
 		if (!empty($row['end'])) {
 			$end = wm_asset_rgb($row['end']);
-			if ($rgb[0] < 0 || $end[0] < 0) throw new InvalidArgumentException('Gradients need two colours.');
+			if ($rgb[0] < 0 || $end[0] < 0) throw new InvalidArgumentException(__('Gradients need two colours.', 'weathermap'));
 			$entry += ['red2' => $end[0], 'green2' => $end[1], 'blue2' => $end[2]];
 		}
 		$scales[$name][$key] = $entry;
 	}
 	foreach ($map->colours as $name => $colours) foreach ($colours as $key => $row) if (!empty($row['special'])) $scales[$name][$key] = $row;
 	// Keep scales referenced by map objects rather than silently replacing them with defaults.
-	foreach (array_merge($map->nodes, $map->links) as $object) {
+	foreach (array_merge(array_values($map->nodes), array_values($map->links)) as $object) {
 		$name = $object->usescale;
-		if ($name !== 'none' && isset($map->colours[$name]) && empty(array_filter($scales[$name] ?? [], function($r) { return empty($r['special']); }))) throw new InvalidArgumentException('A map object still uses scale ' . $name . '.');
+		if ($name !== 'none' && isset($map->colours[$name]) && empty(array_filter($scales[$name] ?? [], function($r) { return empty($r['special']); }))) throw new InvalidArgumentException(__('A map object still uses scale %s.', $name, 'weathermap'));
 	}
 	$scales['DEFAULT']['BG']['red1'] = $background[0];
 	$scales['DEFAULT']['BG']['green1'] = $background[1];

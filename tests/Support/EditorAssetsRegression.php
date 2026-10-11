@@ -1,4 +1,26 @@
 <?php
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group, Howard Jones                   |
+ |                                                                         |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
+ |                                                                         |
+ | This program is distributed in the hope that it will be useful,         |
+ | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
+ | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
+ | GNU General Public License for more details.                            |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
+ +-------------------------------------------------------------------------+
+ | http://www.cacti.net/                                                   |
+ +-------------------------------------------------------------------------+
+*/
 require dirname(__DIR__) . '/bootstrap-unit.php';
 $plugin = dirname(__DIR__, 2);
 chdir($plugin);
@@ -37,6 +59,13 @@ try {
 	$traffic_only = $data; unset($traffic_only['background']);
 	wm_asset_save_colours($map, $traffic_only);
 	assets_assert(wm_asset_colour_data($map)['background'] === '#eeeeee', 'traffic save preserves background');
+	$shared = clone $map->nodes['A'];
+	$shared->usescale = 'custom';
+	$map->nodes['custom'] = $shared;
+	$missing = $data;
+	$missing['rows'] = array_values(array_filter($data['rows'], function($row) { return $row['scale'] !== 'custom'; }));
+	try { wm_asset_save_colours($map, $missing); throw new RuntimeException('accepted removal of same-name node scale'); } catch (InvalidArgumentException $expected) {}
+	unset($map->nodes['custom']);
 	$before = $map->colours;
 	foreach (['bad range', 'bad colour', 'config injection'] as $bad) {
 		$invalid = $data;
@@ -46,18 +75,18 @@ try {
 		try { wm_asset_save_colours($map, $invalid); throw new RuntimeException('accepted ' . $bad); } catch (InvalidArgumentException $expected) {}
 		assets_assert($map->colours === $before, 'invalid request is atomic');
 	}
-    $GLOBALS['__test_nfilter_request'] = ['map_title' => 'Background test', 'map_legend' => 'Traffic', 'map_stamp' => 'Created', 'map_htmlfile' => 'test.html', 'map_pngfile' => 'test.png', 'map_width' => '600', 'map_height' => '300', 'map_bgfile' => '--NONE--', 'map_background_sizing' => 'fit', 'map_linkdefaultwidth' => '7', 'map_linkdefaultbwin' => '100M', 'map_linkdefaultbwout' => '100M', 'map_background_colour' => '#112233'];
-    setMapProperties($file);
-    $props = new WeatherMap; $props->ReadConfig($file);
-    assets_assert(wm_asset_colour_data($props)['background'] === '#112233', 'map properties saves background');
-    unset($GLOBALS['__test_nfilter_request']['map_background_colour']);
-    setMapProperties($file);
-    $props = new WeatherMap; $props->ReadConfig($file);
-    assets_assert(wm_asset_colour_data($props)['background'] === '#112233', 'older properties client preserves background');
-    $before_file = file_get_contents($file);
-    $GLOBALS['__test_nfilter_request']['map_background_colour'] = '#invalid';
-    setMapProperties($file);
-    assets_assert(file_get_contents($file) === $before_file, 'invalid background does not write');
+	$GLOBALS['__test_nfilter_request'] = ['map_title' => 'Background test', 'map_legend' => 'Traffic', 'map_stamp' => 'Created', 'map_htmlfile' => 'test.html', 'map_pngfile' => 'test.png', 'map_width' => '600', 'map_height' => '300', 'map_bgfile' => '--NONE--', 'map_background_sizing' => 'fit', 'map_linkdefaultwidth' => '7', 'map_linkdefaultbwin' => '100M', 'map_linkdefaultbwout' => '100M', 'map_background_colour' => '#112233'];
+	setMapProperties($file);
+	$props = new WeatherMap; $props->ReadConfig($file);
+	assets_assert(wm_asset_colour_data($props)['background'] === '#112233', 'map properties saves background');
+	unset($GLOBALS['__test_nfilter_request']['map_background_colour']);
+	setMapProperties($file);
+	$props = new WeatherMap; $props->ReadConfig($file);
+	assets_assert(wm_asset_colour_data($props)['background'] === '#112233', 'older properties client preserves background');
+	$before_file = file_get_contents($file);
+	$GLOBALS['__test_nfilter_request']['map_background_colour'] = '#invalid';
+	setMapProperties($file);
+	assets_assert(file_get_contents($file) === $before_file, 'invalid background does not write');
 	$saved->DrawMap($dir . '/map.png');
 	assets_assert(is_file($dir . '/map.png'), 'render after save');
 	echo "Editor assets regression PASS\n";

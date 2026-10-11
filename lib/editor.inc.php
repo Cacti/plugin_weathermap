@@ -1012,6 +1012,17 @@ function getEditorJs() {
 	var addNodeHelp   = '<?php print __esc('Click on the map where you would like to add a new node.', 'weathermap'); ?>';
 
 	var wmEditorText = <?php print json_encode([
+		'colourText0' => __('No gradient', 'weathermap'),
+		'colourText1' => __('Custom colour', 'weathermap'),
+		'colourText2' => __('−', 'weathermap'),
+		'colourText3' => __('No DEFAULT ranges. See Advanced settings for named scales.', 'weathermap'),
+		'colourText4' => __('The request failed. Please try again.', 'weathermap'),
+		'colourText5' => __('Upload failed.', 'weathermap'),
+		'colourText6' => __('Choose a PNG, JPG or GIF file up to 5 MB.', 'weathermap'),
+		'colourText7' => __('Remove range', 'weathermap'),
+		'colourText8' => __('Custom (%s)', '%s', 'weathermap'),
+		'palette' => ['Black' => __('Black', 'weathermap'), 'White' => __('White', 'weathermap'), 'Blue' => __('Blue', 'weathermap'), 'Red' => __('Red', 'weathermap'), 'Green' => __('Green', 'weathermap'), 'Purple' => __('Purple', 'weathermap'), 'Orange' => __('Orange', 'weathermap'), 'Grey' => __('Grey', 'weathermap'), 'None' => __('None', 'weathermap')],
+
 		'currentInterface'     => __('Current interface', 'weathermap'),
 		'advanced'             => __('Advanced settings', 'weathermap'),
 		'hideAdvanced'         => __('Hide advanced settings', 'weathermap'),

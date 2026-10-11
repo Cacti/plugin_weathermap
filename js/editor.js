@@ -1673,22 +1673,22 @@ function wmDecodeEditorUrl(value) {
 var wmAssetPalette = {Black: '#000000', White: '#ffffff', Blue: '#0000ff', Red: '#cc0000', Green: '#008000', Purple: '#800080', Orange: '#b35a00', Grey: '#666666', None: 'none'};
 function wmAssetColour(value, allowEmpty, swatches, solid) {
 	var box = $('<div class="wm-asset-colour">'), select = $('<select class="wm-colour-value">').appendTo(box);
-	if (allowEmpty) select.append($('<option>').val('').text('No gradient'));
-	Object.keys(wmAssetPalette).forEach(function(name) { if (solid && name === 'None') return; select.append($('<option>').val(wmAssetPalette[name]).text(name)); });
-	if (value && Object.values(wmAssetPalette).indexOf(value.toLowerCase()) < 0) select.append($('<option>').val(value).text('Custom (' + value + ')'));
+	if (allowEmpty) select.append($('<option>').val('').text(wmEditorText.colourText0));
+	Object.keys(wmAssetPalette).forEach(function(name) { if (solid && name === 'None') return; select.append($('<option>').val(wmAssetPalette[name]).text(wmEditorText.palette[name])); });
+	if (value && Object.values(wmAssetPalette).indexOf(value.toLowerCase()) < 0) select.append($('<option>').val(value).text(wmEditorText.colourText8.replace('%s', value)));
 	select.val(value);
 	if (swatches) {
 		var palette = $('<div class="wm-asset-swatches">').appendTo(box);
 		Object.keys(wmAssetPalette).forEach(function(name) {
 			if (name === 'None') return;
-			$('<button type="button">').attr({'title': name, 'aria-label': name}).css('background-color', wmAssetPalette[name]).appendTo(palette).on('click', function() { select.val(wmAssetPalette[name]).trigger('change'); });
+			$('<button type="button">').attr({'title': wmEditorText.palette[name], 'aria-label': wmEditorText.palette[name]}).css('background-color', wmAssetPalette[name]).appendTo(palette).on('click', function() { select.val(wmAssetPalette[name]).trigger('change'); });
 		});
 	}
-	var advanced = $('<details>').append($('<summary>').text('Custom colour')).appendTo(box);
+	var advanced = $('<details>').append($('<summary>').text(wmEditorText.colourText1)).appendTo(box);
 	var picker = $('<input type="color">').val(/^#[0-9a-f]{6}$/i.test(value) ? value : '#000000').appendTo(advanced);
 	picker.on('input', function() {
 		var colour = this.value;
-		if (!select.find('option').filter(function() { return this.value === colour; }).length) select.append($('<option>').val(colour).text('Custom (' + colour + ')'));
+		if (!select.find('option').filter(function() { return this.value === colour; }).length) select.append($('<option>').val(colour).text(wmEditorText.colourText8.replace('%s', colour)));
 		select.val(colour).trigger('change');
 	});
 	select.on('change selectmenuchange', function() { if (/^#/.test(this.value)) picker.val(this.value); if (select.selectmenu('instance')) select.selectmenu('refresh'); });
@@ -1698,7 +1698,7 @@ function wmColourRequest(action, extra, callback, errorId) {
 	var values = {action: action, mapname: $('#mapname').val()};
 	if (typeof csrfMagicToken !== 'undefined') values.__csrf_magic = csrfMagicToken;
 	$.ajax({url: editor_url, type: action === 'colour_data' ? 'GET' : 'POST', dataType: 'json', data: $.extend(values, extra),
-		success: callback, error: function(xhr) { $('#' + errorId).text(xhr.responseJSON && xhr.responseJSON.error || 'The request failed. Please try again.'); }});
+		success: callback, error: function(xhr) { $('#' + errorId).text(xhr.responseJSON && xhr.responseJSON.error || wmEditorText.colourText4); }});
 }
 function wmAssetScaleRow(row) {
 	var tr = $('<tr>').appendTo('#wm-scale-rows');
@@ -1708,7 +1708,7 @@ function wmAssetScaleRow(row) {
 	$('<td>').append(wmAssetColour(row.colour, false)).appendTo(tr);
 	$('<td>').append(wmAssetColour(row.end || '', true)).appendTo(tr);
 	$('<td>').append($('<input type="text" class="wm-range-tag">').val(row.tag || '')).appendTo(tr);
-	$('<td>').append($('<button type="button" class="ui-button wm-asset-delete">').text('−').attr('aria-label', 'Remove range').on('click', function() { tr.remove(); })).appendTo(tr);
+	$('<td>').append($('<button type="button" class="ui-button wm-asset-delete">').text(wmEditorText.colourText2).attr('aria-label', wmEditorText.colourText7).on('click', function() { tr.remove(); })).appendTo(tr);
 }
 function wmColourRefreshMap() {
 	$.get('?action=load_area_data&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
@@ -1763,7 +1763,7 @@ function wmTrafficPreview() {
         }
         $('<span>').text(row.bottom === row.top ? row.bottom : row.bottom + '–' + row.top).appendTo(band);
     });
-    if (!preview.children().length) preview.text('No DEFAULT ranges. See Advanced settings for named scales.');
+    if (!preview.children().length) preview.text(wmEditorText.colourText3);
 }
 function wmOpenColours() {
 	$('#wm-colours-error').empty(); $('#wm-colours-save').prop('disabled', true);

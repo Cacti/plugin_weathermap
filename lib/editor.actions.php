@@ -1146,21 +1146,21 @@ function getImageURL($mapname, $selected) {
 }
 
 function wm_editor_colours($mapfile, $action) {
-    header('Content-Type: application/json');
-    try {
-        if ($action !== 'colour_data' && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') throw new InvalidArgumentException('Use POST to save changes.');
-        $map = new WeatherMap;
-        $map->context = 'editor';
-        if (!$map->ReadConfig($mapfile)) throw new RuntimeException('Cannot read the map configuration.');
-        if ($action === 'set_map_colours') {
-            $data = json_decode(get_nfilter_request_var('colours_json'), true);
-            if (!is_array($data)) throw new InvalidArgumentException('Invalid colour settings.');
-            wm_asset_save_colours($map, $data);
-            if (!$map->WriteConfig($mapfile)) throw new RuntimeException('Could not save the map configuration.');
-        }
-        echo json_encode(['colours' => wm_asset_colour_data($map)]);
-    } catch (Throwable $error) {
-        http_response_code(400);
-        echo json_encode(['error' => $error->getMessage()]);
-    }
+	header('Content-Type: application/json');
+	try {
+		if ($action !== 'colour_data' && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') throw new InvalidArgumentException(__('Use POST to save changes.', 'weathermap'));
+		$map = new WeatherMap;
+		$map->context = 'editor';
+		if (!$map->ReadConfig($mapfile)) throw new RuntimeException(__('Cannot read the map configuration.', 'weathermap'));
+		if ($action === 'set_map_colours') {
+			$data = json_decode(get_nfilter_request_var('colours_json'), true);
+			if (!is_array($data)) throw new InvalidArgumentException(__('Invalid colour settings.', 'weathermap'));
+			wm_asset_save_colours($map, $data);
+			if (!$map->WriteConfig($mapfile)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+		}
+		echo json_encode(['colours' => wm_asset_colour_data($map)]);
+	} catch (Throwable $error) {
+		http_response_code(400);
+		echo json_encode(['error' => $error->getMessage()]);
+	}
 }
