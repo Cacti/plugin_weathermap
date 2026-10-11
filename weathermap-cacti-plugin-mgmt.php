@@ -3358,7 +3358,7 @@ function newMap($mapfile, $sourcemapfile = '') {
 		$mapfile = dirname($mapfile) . '/' . clean_up_name(basename($mapfile, '.conf')) . '.conf';
 	}
 
-	if (!file_exists($sourcemapfile) || $sourcemapfile == basename($sourcemapfile)) {
+	if ($sourcemapfile != '' && (!file_exists($sourcemapfile) || $sourcemapfile == basename($sourcemapfile))) {
 		$sourcemapfile = $weathermap_confdir . '/' . $sourcemapfile;
 	}
 
@@ -3368,6 +3368,11 @@ function newMap($mapfile, $sourcemapfile = '') {
 		$map = new WeatherMap;
 
 		$map->context = 'editor';
+
+		if ($sourcemapfile == '') {
+			require_once __DIR__ . '/lib/editor.new-map-preset.php';
+			wm_new_map_preset($map);
+		}
 
 		if ($mapfile != '') {
 			if ($sourcemapfile != '') {
