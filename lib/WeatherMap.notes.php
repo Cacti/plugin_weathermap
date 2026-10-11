@@ -34,27 +34,26 @@ function wm_sharp_notes($map) {
 		return [];
 	}
 	$notes = [];
-	$lastLayer = 0;
-	foreach (array_merge($map->nodes, $map->links) as $item) {
-		if ($item->name !== 'DEFAULT') $lastLayer = max($lastLayer, $item->zorder);
-	}
-	// Later nodes only block annotations they overlap. Their pre-rendered
-	// rectangles preserve stacking without degrading unrelated notes.
-	foreach ($map->seen_zlayers[$lastLayer] ?? [] as $node) {
-		if ($node instanceof WeatherMapNode && $node->name !== 'DEFAULT' && $node->get_hint('editor_note', '0') === '1' && $node->labelangle == 0 && $node->iconfile === '' && $node->zorder < 1000 && $node->labelbgcolour == [-1,-1,-1] && $node->labeloutlinecolour == [-1,-1,-1] && $node->labelfontshadowcolour == [-1,-1,-1] && isset($map->fonts[$node->labelfont]) && $map->fonts[$node->labelfont]->type === 'truetype') {
-			$notes[] = $node;
-		} elseif ($node instanceof WeatherMapNode && !is_null($node->x)) {
-			$notes = array_values(array_filter($notes, function ($note) use ($node) {
-				if (!$node->image || !$note->image) return false;
-				$x = (int)($node->x - $node->centre_x);
-				$y = (int)($node->y - $node->centre_y);
-				$nx = (int)($note->x - $note->centre_x);
-				$ny = (int)($note->y - $note->centre_y);
-				return $x >= $nx + imagesx($note->image) || $nx >= $x + imagesx($node->image)
-					|| $y >= $ny + imagesy($note->image) || $ny >= $y + imagesy($node->image);
-			}));
-		} elseif (!($node instanceof WeatherMapNode) || !is_null($node->x)) {
-			$notes = [];
+	$layers = $map->seen_zlayers;
+	ksort($layers, SORT_NUMERIC);
+	// Follow draw order; later nodes only block annotations they overlap.
+	foreach ($layers as $items) {
+		foreach ($items ?? [] as $node) {
+			if ($node instanceof WeatherMapNode && $node->name !== 'DEFAULT' && $node->get_hint('editor_note', '0') === '1' && $node->labelangle == 0 && $node->iconfile === '' && $node->zorder < 1000 && $node->labelbgcolour == [-1,-1,-1] && $node->labeloutlinecolour == [-1,-1,-1] && $node->labelfontshadowcolour == [-1,-1,-1] && isset($map->fonts[$node->labelfont]) && $map->fonts[$node->labelfont]->type === 'truetype') {
+				$notes[] = $node;
+			} elseif ($node instanceof WeatherMapNode && !is_null($node->x)) {
+				$notes = array_values(array_filter($notes, function ($note) use ($node) {
+					if (!$node->image || !$note->image) return false;
+					$x = (int)($node->x - $node->centre_x);
+					$y = (int)($node->y - $node->centre_y);
+					$nx = (int)($note->x - $note->centre_x);
+					$ny = (int)($note->y - $note->centre_y);
+					return $x >= $nx + imagesx($note->image) || $nx >= $x + imagesx($node->image)
+						|| $y >= $ny + imagesy($note->image) || $ny >= $y + imagesy($node->image);
+				}));
+			} elseif (!($node instanceof WeatherMapNode) || !is_null($node->x)) {
+				$notes = [];
+			}
 		}
 	}
 	return $notes;

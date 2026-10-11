@@ -783,20 +783,21 @@ function delete_node() {
 
 	var name = $('#node_name').val();
 	var connected = Object.keys(Links).filter(function(key) { return Links[key].a === name || Links[key].b === name; }).length;
-	var message = delNodePrompt.replace('%s', function() { return wmNodeDisplayName(name); });
+	var isNote = typeof WMNotes !== 'undefined' && Object.prototype.hasOwnProperty.call(WMNotes, name);
+	var message = (isNote ? wmEditorText.noteDelete : delNodePrompt).replace('%s', function() { return wmNodeDisplayName(name); });
 	if (connected) {
 		message += ' ' + delNodeConnected.replace('%s', String(connected));
 	}
-	$('.dlgConfirm').text(message + ' ' + delNodeKeepDevice);
+	$('.dlgConfirm').text(message + (isNote ? '' : ' ' + delNodeKeepDevice));
 
 	mapmode('xy');
 
 	$('.dlgConfirm').dialog({
 		resizable: false,
-		title: delNodeTitle,
+		title: isNote ? wmEditorText.noteDeleteTitle : delNodeTitle,
 		height: 'auto',
 		width: 400,
-		modal: false,
+		modal: true,
 		buttons: [
 			{
 				text: txtCancel,
@@ -806,10 +807,11 @@ function delete_node() {
 				}
 			},
 			{
-				text: txtDelNode,
+				text: isNote ? wmEditorText.noteDeleteAction : txtDelNode,
 				click: function() {
 					$(this).dialog('close');
 					hide_all_dialogs();
+					$('#param').val(name);
 					$('#action').val('delete_node');
 					form_submit();
 				}

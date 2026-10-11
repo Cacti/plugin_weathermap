@@ -26,4 +26,16 @@ assert.equal(request.type,'POST');assert.match(request.data,/action=set_note_pro
 request.error();assert.equal($('#wm-note-error').text(),'Save failed');assert.notEqual($('#wm-note-error').css('display'),'none');assert.equal($('#note_name').val(),'note1');
 let refreshed=false;$.get=(url,cb)=>{assert.match(url,/load_area_data/);cb('');};$.getScript=(url,cb)=>{assert.match(url,/load_map_javascript/);cb('');};w.initJS=()=>refreshed=true;
 request.success('');assert.ok(refreshed);assert.equal($('#action').val(),'');
+// Exercise the real note-aware confirmation, including attached-link warning and target capture.
+w.eval(fs.readFileSync(path.join(process.env.CACTI_JS_DIR,'jquery-ui.js'),'utf8'));
+Object.assign(w,{Links:{attached:{a:'note1',b:'other'}},delNodePrompt:'Delete %s from this map?',delNodeConnected:'Connected links to remove: %s.',delNodeKeepDevice:'The Cacti device and graphs will remain.',delNodeTitle:'Delete Node',txtCancel:'Cancel',txtDelNode:'Delete Node',wmNodeDisplayName:()=> 'Core maintenance',form_submit:()=>{deleted=$('#param').val();}});
+Object.assign(w.wmEditorText,{noteDelete:'Delete note "%s"?',noteDeleteTitle:'Delete Note Confirmation',noteDeleteAction:'Delete Note'});
+w.eval(source.slice(source.indexOf('function delete_node()'),source.indexOf('function clone_node()')));
+$('#node_name').val('note1');w.delete_node();
+assert.equal($('.dlgConfirm').dialog('option','modal'),true);
+assert.equal($('.dlgConfirm').dialog('option','title'),'Delete Note Confirmation');
+assert.match($('.dlgConfirm').text(),/Delete note "Core maintenance"/);
+assert.match($('.dlgConfirm').text(),/Connected links to remove: 1/);
+assert.doesNotMatch($('.dlgConfirm').text(),/Cacti device/);
+$('#param').val('other_node');$('.dlgConfirm').dialog('option','buttons')[1].click.call($('.dlgConfirm')[0]);assert.equal(deleted,'note1');
 dom.window.close();console.log('PASS: note placement, defaults, edit, clone, move, guarded delete, save/error and refresh');

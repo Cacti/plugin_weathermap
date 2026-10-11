@@ -1022,6 +1022,8 @@ function getEditorJs() {
 		'noInterface'          => __('No interface selected', 'weathermap'),
 		'addNoteHelp' => __('Click on the map where you would like to add a note.', 'weathermap'),
 		'noteTitle' => __('Note', 'weathermap'),
+		'noteDeleteTitle' => __('Delete Note Confirmation', 'weathermap'),
+		'noteDeleteAction' => __('Delete Note', 'weathermap'),
 		'noteDelete' => __('Delete note "%s"?', '%s', 'weathermap'),
 		'noteError' => __('The note could not be saved. Check its text, font and position, then try again.', 'weathermap'),
 		'currentGraph'         => __('Current graph: %s', '%s', 'weathermap'),

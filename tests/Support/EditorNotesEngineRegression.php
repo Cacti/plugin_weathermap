@@ -91,14 +91,15 @@ try {
 	$later->x = 500;
 	$later->y = 250;
 	$saved->nodes[$later->name] = $later;
-	$saved->seen_zlayers[600][] = $later;
+	$later->zorder = 700;
+	$saved->seen_zlayers[700][] = $later;
 	$saved->DrawMap($directory . '/later.png');
 	note_assert(getimagesize($directory . '/later.png')[0] === 1200, 'unrelated later node keeps note sharp');
 	$later->x = $node->x;
 	$later->y = $node->y;
 	$saved->DrawMap($directory . '/overlap.png');
 	note_assert(getimagesize($directory . '/overlap.png')[0] === 600, 'overlapping later node preserves stacking');
-	array_pop($saved->seen_zlayers[600]);
+	array_pop($saved->seen_zlayers[700]);
 	unset($saved->nodes[$later->name]);
 
 	$hashes = [];
