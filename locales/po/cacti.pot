@@ -1308,6 +1308,20 @@ msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 #, php-format
+msgid "Configuration file %s deleted."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
 msgid "All Maps have been Rebuilt in %0.2f Seconds!"
 msgstr ""
 
@@ -1697,6 +1711,10 @@ msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 msgid "Path mismatch"
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php

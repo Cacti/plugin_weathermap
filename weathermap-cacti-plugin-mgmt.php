@@ -270,6 +270,20 @@ switch (get_request_var('action')) {
 		bottom_footer();
 
 		break;
+	case 'delete_config':
+		if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { http_response_code(405); break; }
+		require_once __DIR__ . '/lib/editor.config-delete.php';
+		$file = get_nfilter_request_var('file');
+		$result = wm_config_delete($weathermap_confdir, $file);
+		if ($result === 'deleted') {
+			raise_message('config_deleted', html_escape(__('Configuration file %s deleted.', $file, 'weathermap')), MESSAGE_LEVEL_INFO);
+		} elseif ($result === 'used') {
+			raise_message('config_in_use', html_escape(__('Configuration file %s is used by a map. Remove that map first.', $file, 'weathermap')), MESSAGE_LEVEL_ERROR);
+		} else {
+			raise_message('config_delete_failed', __('Unable to delete the configuration file.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+		}
+		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+		break;
 	case 'addmap_picker':
 		top_header();
 
@@ -1207,6 +1221,8 @@ function maplist() {
 function create_prime_mapcache() {
 	global $weathermap_confdir;
 
+	require_once __DIR__ . '/lib/editor.config-delete.php';
+
 	// Create the map cache if it does not already exist
 	db_execute('CREATE TABLE IF NOT EXISTS weathermap_config_cache (
 		map_id INT UNSIGNED NOT NULL default "0",
@@ -1232,7 +1248,9 @@ function create_prime_mapcache() {
 
 	if (is_array($maps)) {
 		foreach ($maps as $map) {
-			$loaded[$map['id']] = $map['configfile'];
+			$registered = $map['configfile'];
+			$resolved = realpath(wm_config_registered_path($weathermap_confdir, $registered));
+			$loaded[$map['id']] = $resolved !== false && dirname($resolved) === realpath($weathermap_confdir) ? basename($resolved) : $registered;
 		}
 	}
 
@@ -1606,6 +1624,12 @@ function addmap_picker($show_all = false) {
 
 			$action .= "<a target='_new' href='$url' title='$tip'>$value</a>";
 
+
+			if ($map['map_id'] == 0) {
+				require_once __DIR__ . '/lib/editor.config-delete.php';
+				$action .= wm_config_delete_button(basename($map['filename']));
+			}
+
 			form_selectable_cell($action, $i, '1%');
 
 			if ($map['map_id'] > 0) {
@@ -1631,6 +1655,8 @@ function addmap_picker($show_all = false) {
 	}
 
 	html_end_box();
+	require_once __DIR__ . '/lib/editor.config-delete.php';
+	wm_config_delete_script();
 
 	if (cacti_sizeof($maps)) {
 		print $nav;
@@ -1725,28 +1751,40 @@ function add_config($file) {
 		// print "$file_dir != $weathermap_confdir";
 		print '<h3>' . __('Path mismatch', 'weathermap') . '</h3>';
 	} else {
+		require_once __DIR__ . '/lib/editor.config-delete.php';
+		$file = basename($file);
 		$realfile = $weathermap_confdir . '/' . $file;
-		$title    = wmap_get_title($realfile);
+		$lock = wm_config_lock($realfile);
+		if ($lock === false) {
+			raise_message('path_missing', __esc('The configuration file is unavailable. Please retry.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+			return;
+		}
+		try {
+			$title    = wmap_get_title($realfile);
 
-		db_execute_prepared("INSERT INTO weathermap_maps
-			(configfile, titlecache, active, imagefile, htmlfile, filehash, config)
-			VALUES (?, ?, 'on', '', '', '', '')",
-			[$file, $title]);
+			db_execute_prepared("INSERT INTO weathermap_maps
+				(configfile, titlecache, active, imagefile, htmlfile, filehash, config)
+				VALUES (?, ?, 'on', '', '', '', '')",
+				[$file, $title]);
 
-		$last_id = db_fetch_insert_id();
-		$myuid   = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
+			$last_id = db_fetch_insert_id();
+			$myuid   = (isset($_SESSION['sess_user_id']) ? intval($_SESSION['sess_user_id']) : 1);
 
-		db_execute_prepared('INSERT INTO weathermap_auth
-			(mapid, userid)
-			VALUES (?, ?)',
-			[$last_id, $myuid]);
+			db_execute_prepared('INSERT INTO weathermap_auth
+				(mapid, userid)
+				VALUES (?, ?)',
+				[$last_id, $myuid]);
 
-		db_execute_prepared('UPDATE weathermap_maps
-			SET filehash = LEFT(MD5(CONCAT(id, configfile, rand())), 20)
-			WHERE id = ?',
-			[$last_id]);
+			db_execute_prepared('UPDATE weathermap_maps
+				SET filehash = LEFT(MD5(CONCAT(id, configfile, rand())), 20)
+				WHERE id = ?',
+				[$last_id]);
 
-		map_resort();
+			map_resort();
+		} finally {
+			flock($lock, LOCK_UN);
+			fclose($lock);
+		}
 	}
 }
 

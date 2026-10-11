@@ -56,6 +56,9 @@ if (!function_exists('db_execute')) {
 
 if (!function_exists('db_execute_prepared')) {
 	function db_execute_prepared($sql, $params = []) {
+		if (isset($GLOBALS['__test_db_execute_prepared']) && is_callable($GLOBALS['__test_db_execute_prepared'])) {
+			return ($GLOBALS['__test_db_execute_prepared'])($sql, $params);
+		}
 		$GLOBALS['__test_db_calls'][] = ['fn' => 'db_execute_prepared', 'sql' => $sql, 'params' => $params];
 
 		return true;
@@ -70,6 +73,10 @@ if (!function_exists('db_fetch_assoc')) {
 
 if (!function_exists('db_fetch_assoc_prepared')) {
 	function db_fetch_assoc_prepared($sql, $p = []) {
+		if (isset($GLOBALS['__test_db_fetch_assoc_prepared']) && is_callable($GLOBALS['__test_db_fetch_assoc_prepared'])) {
+			return ($GLOBALS['__test_db_fetch_assoc_prepared'])($sql, $p);
+		}
+
 		return [];
 	}
 }
@@ -298,6 +305,9 @@ if (!function_exists('is_realm_allowed')) {
 
 if (!function_exists('raise_message')) {
 	function raise_message($i, $t = '', $l = 0) {
+		if (isset($GLOBALS['__test_raise_message'])) {
+			($GLOBALS['__test_raise_message'])($i, $t, $l);
+		}
 	}
 }
 
@@ -369,4 +379,8 @@ if (!function_exists('describe')) {
 	function describe(string $description, Closure $tests): void {
 		$tests();
 	}
+}
+
+if (!defined('MESSAGE_LEVEL_INFO')) {
+	define('MESSAGE_LEVEL_INFO', 0);
 }
