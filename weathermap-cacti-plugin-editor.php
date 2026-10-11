@@ -95,7 +95,7 @@ if (isset_request_var('action')) {
 		'graphs', 'datasources', 'newmap', 'newmapcopy', 'font_samples', 'draw',
 		'show_config', 'fetch_config', 'set_link_config', 'set_node_config',
 		'set_node_properties', 'set_link_properties', 'set_map_properties',
-		'set_map_style', 'add_link2', 'place_legend', 'place_stamp', 'via_link',
+		'set_map_style', 'image_data', 'upload_image', 'delete_image', 'add_link2', 'place_legend', 'place_stamp', 'via_link',
 		'move_node', 'link_tidy', 'retidy', 'retidy_all', 'untidy',
 		'delete_link', 'add_node', 'editor_settings', 'delete_node',
 		'clone_node', 'load_area_data', 'load_map_javascript', 'nothing'
@@ -130,6 +130,12 @@ wm_debug("Starting Edit Run: action is $action on $mapname");
 wm_debug('==========================================================================================================');
 
 switch($action) {
+	case 'image_data':
+	case 'upload_image':
+	case 'delete_image':
+		require_once __DIR__ . '/lib/editor.assets.php';
+		wm_editor_assets($mapfile, $action);
+		exit;
 	case 'graphs':
 		display_graphs();
 		exit;
@@ -858,22 +864,17 @@ foreach ($styles as $id => $name) {
 
 		<!-- Images -->
 		<div id='dlgImages' class='dlgProperties' title='Manage Images'>
-			<div class='cactiTable'>
-				<div class='dlgBody'>
-					<p>Nothing in here works yet. </p>
-					The aim is to have some nice way to upload images which can be used as icons or backgrounds.
-					These images are what would appear in the dropdown boxes that don't currently do anything in the Node and Map Properties dialogs. This may end up being a separate page rather than a dialog box...
-				</div>
-				<div class='dlgButtons'>
-					<div class='dlgSubButtons'>
-						<a id='tb_images_cancel' class='wm_cancel ui-button ui-corner-all ui-widget'>Cancel</a>
-						<a id='tb_images_submit' class='wm_submit ui-button ui-corner-all ui-widget'>Save</a>
-					</div>
-				</div>
-				<div class='dlgHelp'>
-					In the future, this form will allow you to manage adding additional icons to the Icon library.  For now, you can copy your png files to either &lt;path_cacti&gt;/plugins/weathermap/images/backgrounds/ for Background Images and &lt;path_cacti&gt;/plugins/weathermap/images/objects/ for Icon files.
-				</div>
+			<div class='dlgBody'>
+				<p id='wm-images-error' role='alert'></p>
+				<div class='cactiTableTitleRow wm-editor-section'>Node Icons</div>
+				<div class='wm-image-uploader'><label for='wm-image-file-objects'>Upload node icon</label><input type='file' id='wm-image-file-objects' accept='image/png,image/jpeg,image/gif'><button type='button' class='wm-image-upload ui-button ui-corner-all ui-widget' data-kind='objects'>Upload Node Icon</button></div>
+				<p id='wm-images-objects-count'></p><div id='wm-images-objects' class='wm-image-library' aria-label='Existing node icons'></div>
+				<div class='cactiTableTitleRow wm-editor-section'>Background Images</div>
+				<div class='wm-image-uploader'><label for='wm-image-file-backgrounds'>Upload background</label><input type='file' id='wm-image-file-backgrounds' accept='image/png,image/jpeg,image/gif'><button type='button' class='wm-image-upload ui-button ui-corner-all ui-widget' data-kind='backgrounds'>Upload Background</button></div>
+				<p id='wm-images-backgrounds-count'></p><div id='wm-images-backgrounds' class='wm-image-library' aria-label='Existing background images'></div>
 			</div>
+			<div class='dlgButtons'><div class='dlgSubButtons'><a class='wm_cancel ui-button ui-corner-all ui-widget'>Close</a></div></div>
+			<div class='dlgHelp'>PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted.</div>
 		</div>
 		<!-- Images -->
 

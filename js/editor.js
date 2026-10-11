@@ -700,6 +700,7 @@ function manage_images() {
 	$('#action').val('set_image');
 
 	show_dialog('dlgImages');
+	wmOpenImages();
 }
 
 function prefs() {
@@ -1159,7 +1160,7 @@ function show_dialog(dlg) {
 
 	$('#'+dlg).dialog({
 		autoOpen: true,
-		width: 600,
+		width: dlg === 'dlgImages' ? Math.min(900, $(window).width() - 40) : 600,
 		height: 'auto',
 		modal: false,
 		resizable: false,
@@ -1662,4 +1663,58 @@ function wmFriendlyLinkNames() {
 // Map JavaScript HTML-escapes URL values; undo that when populating text fields.
 function wmDecodeEditorUrl(value) {
 	return String(value || '').replace(/&amp;/g, '&');
+}
+function wmAssetRequest(action, extra, callback, errorId) {
+	var values = {action: action, mapname: $('#mapname').val()};
+	if (typeof csrfMagicToken !== 'undefined') values.__csrf_magic = csrfMagicToken;
+	$.ajax({url: editor_url, type: action === 'image_data' ? 'GET' : 'POST', dataType: 'json', data: $.extend(values, extra),
+		success: callback, error: function(xhr) { $('#' + errorId).text(xhr.responseJSON && xhr.responseJSON.error || 'The request failed. Please try again.'); }});
+}
+function wmAssetImages(images) {
+	$('#wm-images-objects, #wm-images-backgrounds').empty();
+	images.forEach(function(item) {
+		var card = $('<div class="wm-image-card">').appendTo('#wm-images-' + item.kind);
+		$('<img>').attr({src: item.url, alt: item.name, loading: 'lazy'}).appendTo(card);
+		$('<span>').text(item.name).appendTo(card);
+		if (item.deletable !== false) $('<button type="button" class="ui-button wm-image-delete">').text('−').attr('aria-label', 'Delete ' + item.name).appendTo(card).on('click', function() {
+			if (!window.confirm('Delete image "' + item.name + '" from the server?')) return;
+			wmAssetRequest('delete_image', {image_kind: item.kind, image_name: item.name}, function(data) { wmAssetImages(data.images); }, 'wm-images-error');
+		});
+	});
+	['objects', 'backgrounds'].forEach(function(kind) {
+		var count = images.filter(function(item) { return item.kind === kind; }).length;
+		$('#wm-images-' + kind + '-count').text(count + (count === 1 ? ' image' : ' images'));
+		if (!count) $('#wm-images-' + kind).append($('<p>').text('No images in this library yet.'));
+	});
+	// Rebuild the existing image selectors so uploads are available without reloading the editor.
+	[{id: 'node_iconfilename', kind: 'objects', label: 'Label Only'}, {id: 'map_bgfile', kind: 'backgrounds', label: 'No background'}].forEach(function(spec) {
+		var select = $('#' + spec.id), old = select.val();
+		var slick = select.data('ddslick');
+		if (slick) { old = slick.selectedData && slick.selectedData.value; select.ddslick('destroy'); select = $('#' + spec.id); }
+		select.find('option').filter(function() { return /^images\/.*\.(png|gif|jpe?g)$/i.test(this.value); }).remove();
+		if (!select.find('option[value="--NONE--"]').length) select.prepend($('<option>').val('--NONE--').text(spec.label));
+		images.filter(function(item) { return item.kind === spec.kind; }).forEach(function(item) {
+			select.append($('<option>').val('images/' + item.kind + '/' + item.name).text(item.name).attr({'data-imagesrc': item.url, 'data-description': item.name}));
+		});
+		select.val(old);
+	});
+	$('#dlgImages').dialog('option', {maxHeight: $(window).height() - 80, position: {my: 'center', at: 'center', of: window}});
+}
+function wmOpenImages() {
+	$('#wm-images-error').empty();
+	wmAssetRequest('image_data', {}, function(data) { wmAssetImages(data.images); }, 'wm-images-error');
+	$('.wm-image-upload').off('click').on('click', function() {
+		var button = $(this), kind = button.attr('data-kind'), input = $('#wm-image-file-' + kind);
+		var file = input[0].files[0];
+		if (!file) { $('#wm-images-error').text('Choose a PNG, JPG or GIF to upload.'); return; }
+		var data = new FormData();
+		data.append('action', 'upload_image'); data.append('mapname', $('#mapname').val());
+		data.append('image_kind', kind); data.append('image_file', file);
+		if (typeof csrfMagicToken !== 'undefined') data.append('__csrf_magic', csrfMagicToken);
+		button.prop('disabled', true);
+		$.ajax({url: editor_url, type: 'POST', data: data, dataType: 'json', contentType: false, processData: false,
+			success: function(result) { $('#wm-images-error').text('Uploaded ' + result.name); input.val(''); wmAssetImages(result.images); },
+			error: function(xhr) { $('#wm-images-error').text(xhr.responseJSON && xhr.responseJSON.error || 'Upload failed.'); },
+			complete: function() { button.prop('disabled', false); }});
+	});
 }

@@ -316,3 +316,13 @@ body#mainView #wm-node-delete-bar { min-height: 32px; }
 .ui-dialog.wm-editor-dialog {
 	overflow: visible;
 }
+
+.wm-image-delete { color: #c62828 !important; background: #fff !important; border: 1px solid #c62828 !important; font-size: 20px; }
+#dlgImages .wm-image-library { width: 100%; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; max-height: 240px; overflow: auto; align-content: start; padding: 4px; }
+#dlgImages .wm-image-card { min-width: 0; padding: 8px; border: 1px solid #999; display: flex; flex-direction: column; gap: 6px; overflow-wrap: anywhere; align-items: center; }
+#dlgImages .wm-image-card img { width: 100%; max-width: 130px; height: 70px; object-fit: contain; flex: none; }
+#dlgImages .wm-image-uploader { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; }
+/* Use Cacti's own theme heading colours in every grouped editor dialog. */
+.dlgProperties .wm-editor-section { display: table; width: 100%; box-sizing: border-box; margin: 10px 0 6px; }
+.dlgProperties table .wm-editor-section { margin: 0; }
+#wm-images-error:not(:empty) { color: inherit; border-left: 3px solid #c62828; padding-left: 8px; font-weight: bold; }

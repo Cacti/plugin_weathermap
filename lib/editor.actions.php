@@ -1135,3 +1135,30 @@ function getImageURL($mapname, $selected) {
 
 	return $imageurl;
 }
+
+function wm_asset_upload_image($kind, $file) {
+	if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name'] ?? '')) throw new InvalidArgumentException('Choose a PNG, JPG or GIF file up to 5 MB.');
+	return wm_asset_store_image($kind, $file['tmp_name'], $file['name']);
+}
+function wm_editor_assets($mapfile, $action) {
+    header('Content-Type: application/json');
+    try {
+        if ($action !== 'image_data' && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') throw new InvalidArgumentException('Use POST to save changes.');
+        if ($action === 'image_data') {
+            $result = ['images' => wm_asset_image_list()];
+        } elseif ($action === 'upload_image') {
+            $name = wm_asset_upload_image(get_nfilter_request_var('image_kind'), $_FILES['image_file'] ?? []);
+            $result = ['name' => $name, 'images' => wm_asset_image_list()];
+        } else {
+            $name = get_nfilter_request_var('image_name');
+            $path = wm_asset_image_path(get_nfilter_request_var('image_kind'), $name);
+            if (wm_asset_image_users($name)) throw new InvalidArgumentException('This image is still referenced by a map configuration.');
+            if (!is_file($path) || !unlink($path)) throw new RuntimeException('Could not delete the image.');
+            $result = ['images' => wm_asset_image_list()];
+        }
+        echo json_encode($result);
+    } catch (Throwable $error) {
+        http_response_code(400);
+        echo json_encode(['error' => $error->getMessage()]);
+    }
+}
