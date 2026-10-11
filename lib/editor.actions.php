@@ -1145,6 +1145,14 @@ function getImageURL($mapname, $selected) {
 	return $imageurl;
 }
 
+/**
+ * Read or save editor colour settings and emit a JSON response.
+ *
+ * @param string $mapfile The validated map configuration path.
+ * @param string $action The requested colour operation.
+ *
+ * @return void Errors are returned as HTTP 400 JSON responses.
+ */
 function wm_editor_colours($mapfile, $action) {
 	header('Content-Type: application/json');
 	try {

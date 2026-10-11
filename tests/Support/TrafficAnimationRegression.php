@@ -48,6 +48,14 @@ try {
 	$shape = array_values(array_filter($map->imap->shapes, fn($s) => $s->name === 'LINK:L' . $link->id . ':' . IN))[0];
 	animation_assert(count($data['regions'][0]['points']) === count($shape->points), 'full rendered curved polygon retained');
 	animation_assert(str_contains($map->MakeHTML(), 'data-wm-traffic='), 'viewer HTML contains safe metadata');
+	$map->imageuri = '?action=liveviewimage&id=123';
+	$live = new DOMDocument;
+	$live->loadHTML($map->MakeHTML('weathermap_live_imap'));
+	$liveImage = $live->getElementsByTagName('img')->item(0);
+	$liveHolder = $liveImage->parentNode->parentNode;
+	$liveData = json_decode($liveHolder->getAttribute('data-wm-traffic'), true);
+	animation_assert($liveImage->getAttribute('src') === '?action=liveviewimage&id=123' && $liveImage->getAttribute('usemap') === '#weathermap_live_imap', 'live-view endpoint and imagemap preserved');
+	animation_assert(count($liveData['regions']) === 1 && $liveImage->getAttribute('width') === '400' && $liveImage->getAttribute('height') === '300', 'live view carries pulse metadata at logical dimensions');
 	foreach ([[255,0,0], [140,0,255], [0,192,255], [35,120,80], [255,180,0]] as $rgb) {
 		$link->colours[IN] = new Colour(...$rgb);
 		$expected = sprintf('#%02x%02x%02x', ...$rgb);

@@ -81,6 +81,13 @@ try {
 	assets_assert($negativeMap->colours['Temperature_1']['-20_-1']['bottom'] === -20.0, 'negative custom scale survives engine reload');
 	wm_asset_save_colours($map, $data);
 	$before = $map->colours;
+	foreach ([[0, 100, '0.0', '100.0'], [0, 100, '0e0', '1e2'], [0, 100, '-0.0', 100.0000001], [-20, -1, '-20.0000001', '-1.0000001']] as $range) {
+		$duplicate = $data;
+		$duplicate['rows'][] = ['scale' => 'Duplicates', 'bottom' => $range[0], 'top' => $range[1], 'colour' => '#ff0000'];
+		$duplicate['rows'][] = ['scale' => 'Duplicates', 'bottom' => $range[2], 'top' => $range[3], 'colour' => '#0000ff'];
+		try { wm_asset_save_colours($map, $duplicate); throw new RuntimeException('accepted equivalent serialized range'); } catch (InvalidArgumentException $expected) {}
+		assets_assert($map->colours === $before, 'duplicate range validation leaves map unchanged');
+	}
 	foreach (['bad range', 'bad colour', 'config injection'] as $bad) {
 		$invalid = $data;
 		if ($bad === 'bad range') $invalid['rows'][0]['top'] = -1;

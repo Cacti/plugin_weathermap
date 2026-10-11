@@ -22,7 +22,13 @@
  +-------------------------------------------------------------------------+
 */
 
-/** Browser-only high-traffic glow uses the rendered arrow outlines and colours. */
+/**
+ * Build browser glow metadata from rendered link geometry and colours.
+ *
+ * @param WeatherMap $map The rendered map supplying traffic and occlusion geometry.
+ *
+ * @return array{enabled: bool, width: int, height: int, regions: array, occlusions: array} Viewer metadata.
+ */
 function wm_traffic_animation_data($map) {
 	$empty = ['enabled' => $map->get_hint('traffic_pulse', '1') === '1', 'width' => $map->width, 'height' => $map->height, 'regions' => [], 'occlusions' => []];
 	if (!$empty['enabled']) return $empty;

@@ -4547,7 +4547,7 @@ class WeatherMap extends WeatherMapBase {
 		if ($this->imageuri != '') {
 			$html .= sprintf(
 				"\t\t\t<center><img id='wmapimage' src='%s' width='%d' height='%d' border='0' usemap='#%s'",
-				$this->imageuri,
+				htmlspecialchars($this->imageuri, ENT_QUOTES, 'UTF-8'),
 				$this->width,
 				$this->height,
 				$imagemapname
@@ -4557,7 +4557,7 @@ class WeatherMap extends WeatherMapBase {
 		} else {
 			$html .= sprintf(
 				"\t\t\t<center><img id='wmapimage' src='%s' width='%d' height='%d' border='0' usemap='#%s'",
-				$this->imagefile,
+				htmlspecialchars($this->imagefile, ENT_QUOTES, 'UTF-8'),
 				$this->width,
 				$this->height,
 				$imagemapname

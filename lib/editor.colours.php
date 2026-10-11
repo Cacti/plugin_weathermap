@@ -22,15 +22,35 @@
  +-------------------------------------------------------------------------+
 */
 
-/** Local editor colour and image management. */
+/**
+ * Validate a colour string and convert it to RGB; malformed or non-string input is rejected.
+ *
+ * @param mixed $value A hexadecimal colour or the special value none.
+ *
+ * @return int[] The RGB components, or -1 components for none.
+ */
 function wm_asset_rgb($value) {
 	if ($value === 'none') return [-1, -1, -1];
 	if (!is_string($value) || !preg_match('/^#[0-9a-f]{6}$/iD', $value)) throw new InvalidArgumentException(__('Choose a valid colour.', 'weathermap'));
 	return [hexdec(substr($value, 1, 2)), hexdec(substr($value, 3, 2)), hexdec(substr($value, 5, 2))];
 }
+/**
+ * Convert RGB components to a hexadecimal colour or none.
+ *
+ * @param int[] $rgb RGB components, with a negative red component representing none.
+ *
+ * @return string The colour accepted by the editor.
+ */
 function wm_asset_hex($rgb) {
 	return $rgb[0] < 0 ? 'none' : sprintf('#%02x%02x%02x', ...$rgb);
 }
+/**
+ * Read the editable background, outline, pulse and scale settings.
+ *
+ * @param WeatherMap $map The map to inspect.
+ *
+ * @return array The editable settings and scale rows.
+ */
 function wm_asset_colour_data($map) {
 	$rows = [];
 	foreach ($map->colours as $scale => $colours) foreach ($colours as $row) {
@@ -43,6 +63,14 @@ function wm_asset_colour_data($map) {
 	return ['background' => wm_asset_hex([$bg['red1'], $bg['green1'], $bg['blue1']]),
 		'outline' => wm_asset_hex($map->links['DEFAULT']->outlinecolour), 'pulse' => $map->get_hint('traffic_pulse', '1') === '1', 'rows' => $rows];
 }
+/**
+ * Validate all submitted settings before applying them to the map.
+ *
+ * @param WeatherMap $map The map receiving the validated settings.
+ * @param array $data The submitted settings; malformed values are rejected.
+ *
+ * @return void Invalid settings raise InvalidArgumentException.
+ */
 function wm_asset_save_colours($map, $data) {
 	if (array_key_exists('pulse', $data) && !is_bool($data['pulse'])) throw new InvalidArgumentException(__('Invalid pulse setting.', 'weathermap'));
 	$background = array_key_exists('background', $data) ? wm_asset_rgb($data['background']) : [$map->colours['DEFAULT']['BG']['red1'], $map->colours['DEFAULT']['BG']['green1'], $map->colours['DEFAULT']['BG']['blue1']];
@@ -59,9 +87,11 @@ function wm_asset_save_colours($map, $data) {
 		$rgb = wm_asset_rgb($row['colour'] ?? null);
 		$tag = $row['tag'] ?? '';
 		if (!is_string($tag) || strlen($tag) > 200 || preg_match('/[\x00-\x1f\x7f]/', $tag)) throw new InvalidArgumentException(__('Invalid scale label.', 'weathermap'));
-		$key = $row['bottom'] . '_' . $row['top'];
+		$bottom = round((float)$row['bottom'], 6);
+		$top = round((float)$row['top'], 6);
+		$key = sprintf('%.6F_%.6F', $bottom == 0 ? 0 : $bottom, $top == 0 ? 0 : $top);
 		if (isset($scales[$name][$key])) throw new InvalidArgumentException(__('Duplicate range in a scale.', 'weathermap'));
-		$entry = ['key' => $key, 'bottom' => (float)$row['bottom'], 'top' => (float)$row['top'], 'special' => 0, 'red1' => $rgb[0], 'green1' => $rgb[1], 'blue1' => $rgb[2], 'tag' => $tag];
+		$entry = ['key' => $key, 'bottom' => $bottom, 'top' => $top, 'special' => 0, 'red1' => $rgb[0], 'green1' => $rgb[1], 'blue1' => $rgb[2], 'tag' => $tag];
 		if (!empty($row['end'])) {
 			$end = wm_asset_rgb($row['end']);
 			if ($rgb[0] < 0 || $end[0] < 0) throw new InvalidArgumentException(__('Gradients need two colours.', 'weathermap'));
