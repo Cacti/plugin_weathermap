@@ -158,3 +158,20 @@ it('LabelsTheTrafficFontAndAdvancedHoverDimensions', function () {
 			->and($xpath->query('//*[@id="' . $id . '"]')->length)->toBe(1);
 	}
 });
+
+it('EscapesTranslatedAdvancedInstructionsBeforeRendering', function () {
+	$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin-editor.php');
+	preg_match("/<summary[^>]*>.*?<\/summary>\s*<p>.*?<\/p>/s", $source, $match);
+	expect($match)->toHaveCount(1);
+	$payload = "<img src=x onerror=alert(1)> & 'translated'";
+	// Substitute translated message text, retaining the actual output functions.
+	$fragment = preg_replace("/(__esc|__)\('[^']*', 'weathermap'\)/", '$1(' . var_export($payload, true) . ", 'weathermap')", $match[0]);
+	ob_start();
+	try {
+		eval('?>' . $fragment);
+		$html = ob_get_contents();
+	} finally {
+		ob_end_clean();
+	}
+	expect(substr_count($html, '&lt;img'))->toBe(2)->and($html)->not->toContain('<img');
+});

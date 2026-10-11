@@ -775,8 +775,8 @@ foreach ($styles as $id => $name) {
 
 					</table>
 <details class='wm-mapstyle-advanced' style='margin-top: 12px;'>
-<summary style='cursor: pointer; padding: 8px 0;'><?php print __('Advanced settings', 'weathermap'); ?></summary>
-<p><?php print __('Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions.', 'weathermap'); ?></p>
+<summary style='cursor: pointer; padding: 8px 0;'><?php print __esc('Advanced settings', 'weathermap'); ?></summary>
+<p><?php print __esc('Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions.', 'weathermap'); ?></p>
 <table style='width: 100%;'>
 <tr>
 							<td><label for='mapstyle_nodewidth'><?php print __esc('Node Hover Width (pixels)', 'weathermap'); ?></label></td>

@@ -49,7 +49,7 @@ function wm_editor_font_label($number, $font) {
 		$names = wm_comment_font_names();
 		$file  = basename($font->file);
 
-		return ($names[$file] ?? $file) . ' — ' . $font->size . ' pt (font ' . $number . ')';
+		return __('%s — %s pt (font %s)', $names[$file] ?? $file, $font->size, $number, 'weathermap');
 	}
 
 	return $number . ' (' . $font->type . ')';
@@ -93,7 +93,7 @@ function wm_style_font_options($map, $current) {
 
 			foreach ([9, 11, 13] as $size) {
 				$key           = $hash . ':' . $size;
-				$bundled[$key] = ['value' => 'bundled:' . $file . ':' . $size, 'label' => $name . ' — ' . $size . ' pt'];
+				$bundled[$key] = ['value' => 'bundled:' . $file . ':' . $size, 'label' => __('%s — %s pt', $name, $size, 'weathermap')];
 			}
 		}
 	}
