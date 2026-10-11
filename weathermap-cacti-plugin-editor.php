@@ -320,7 +320,7 @@ if ($editor_return_context === 'manage') {
 			<li class='tb_active' id='tb_prefs'><?php print __('Editor<br>Settings', 'weathermap'); ?></li>
 			<li class='tb_coords' id='tb_coords'><?php print __('Position<br>---, ---', 'weathermap'); ?></li>
 			<li class='tb_help'>
-				<span id='tb_help' role='status' aria-live='polite'><?php print __('Select a menu item or either right-click or click on a Node or Link to edit it\'s properties', 'weathermap'); ?></span>
+				<span id='tb_help' role='status' aria-live='polite'><?php print __('Select a menu item or either right-click or click on a Node or Link to edit its properties', 'weathermap'); ?></span>
 			</li>
 		</ul>
 	</div>
@@ -902,7 +902,7 @@ foreach ($styles as $id => $name) {
 			<div class='cactiTable'>
 				<div class='dlgBody'>
 					<table class='cactiTable'>
-						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'>Overlays</div></td></tr>
+						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Overlays', 'weathermap'); ?></div></td></tr>
 <tr>
 							<td>Show VIAs overlay</td>
 							<td>
@@ -921,7 +921,7 @@ foreach ($styles as $id => $name) {
 								</select>
 							</td>
 						</tr>
-						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'>Placement</div></td></tr>
+						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Placement', 'weathermap'); ?></div></td></tr>
 <tr>
 							<td>Snap To Grid</td>
 							<td>

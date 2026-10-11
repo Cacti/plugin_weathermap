@@ -30,7 +30,7 @@ input {
 }
 
 #xycapture, #existingdata.wm-placement-mode { cursor: crosshair; }
-#existingdata:not(.wm-placement-mode) + map area { cursor: pointer; }
+.mapData map area { cursor: pointer; }
 
 #frmMain {
 	position: relative;

@@ -1102,7 +1102,7 @@ function getEditorJs() {
 		'link_default':       '<?php print __esc('This is where help appears for links', 'weathermap'); ?>',
 		'map_default':        '<?php print __esc('This is where help appears for maps', 'weathermap'); ?>',
 		'node_default':       '<?php print __esc('This is where help appears for nodes', 'weathermap'); ?>',
-		'tb_default':         '<?php print __esc('or click a Node or Link to edit it\'s properties', 'weathermap'); ?>'
+		'tb_default':         '<?php print __esc('or click a Node or Link to edit its properties', 'weathermap'); ?>'
 	};
 	</script>
 	<?php

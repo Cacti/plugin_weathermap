@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-11 20:34+1030\n"
+"POT-Creation-Date: 2026-10-12 00:46+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -502,7 +502,7 @@ msgid "This is where help appears for nodes"
 msgstr ""
 
 #: lib/editor.inc.php
-msgid "or click a Node or Link to edit it's properties"
+msgid "or click a Node or Link to edit its properties"
 msgstr ""
 
 #: setup.php
@@ -977,7 +977,7 @@ msgid "Position<br>---, ---"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Select a menu item or either right-click or click on a Node or Link to edit it's properties"
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1310,6 +1310,14 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
