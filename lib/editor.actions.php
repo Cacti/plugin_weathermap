@@ -549,7 +549,6 @@ function setMapStyle($mapfile) {
 
 	$inheritables = [
 		['link', 'labelstyle',    'mapstyle_linklabels', ''],
-		['link', 'bwfont',        'mapstyle_linkfont',   'int'],
 		['link', 'overlibwidth',  'mapstyle_linkwidth',  'int'],
 		['link', 'overlibheight', 'mapstyle_linkheight', 'int'],
 		['link', 'arrowstyle',    'mapstyle_arrowstyle', ''],
@@ -560,6 +559,9 @@ function setMapStyle($mapfile) {
 	];
 
 	handle_inheritance($map, $inheritables);
+
+	wm_comment_update_default($map, 'bwfont', wm_comment_resolve_font($map, get_nfilter_request_var('mapstyle_linkfont')));
+	wm_comment_apply_style($map, get_nfilter_request_var('mapstyle_commentfont'), get_nfilter_request_var('mapstyle_commentcolour'));
 
 	$map->WriteConfig($mapfile);
 }
