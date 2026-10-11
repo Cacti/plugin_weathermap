@@ -85,6 +85,7 @@ function wm_editor_save_note($map, $values, $grid_snap_value = 0) {
 		$node->relative_to = '';
 		$node->add_hint('editor_note', '1');
 		$map->nodes[$name] = $node;
+		$map->seen_zlayers[$node->zorder][] = $node;
 	}
 	$node = $map->nodes[$name];
 	$node->label = str_replace(["\r\n", "\r", "\n"], '\n', trim($text));

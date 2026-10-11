@@ -44,6 +44,9 @@ try {
 	$values = ['name' => '', 'text' => "Main site\n10.0.0.0/24", 'font' => 'bundled:Vera.ttf:11', 'colour' => '#0000ff', 'x' => '155', 'y' => '80'];
 	note_assert(wm_editor_save_note($map, $values), 'create');
 	$name = array_keys(wm_editor_note_data($map))[0];
+	note_assert(in_array($map->nodes[$name], $map->seen_zlayers[$map->nodes[$name]->zorder], true), 'new note indexed immediately');
+	$map->DrawMap($directory . '/immediate.png');
+	note_assert(getimagesize($directory . '/immediate.png')[0] === 1200, 'new note renders sharply without rereading');
 	$map->WriteConfig($file);
 	$saved = new WeatherMap;
 	$saved->ReadConfig($file);

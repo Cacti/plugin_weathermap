@@ -582,12 +582,9 @@ function attach_click_events() {
 		move_node();
 	});
 	$('#note_delete').off('click').on('click', function() {
-		if (window.confirm(wmEditorText.noteDelete.replace('%s', function() { return $('#note_text').val(); }))) {
-			$('#param').val($('#note_name').val());
+		$('#param').val($('#note_name').val());
 		$('#node_name').val($('#note_name').val());
-			$('#action').val('delete_node');
-			form_submit();
-		}
+		delete_node();
 	});
 	$('#tb_poslegend').off('click').on('click', position_first_legend);
 	$('#tb_postime').off('click').on('click', position_timestamp);
