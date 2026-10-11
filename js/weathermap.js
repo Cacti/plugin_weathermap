@@ -129,6 +129,8 @@ var waitForFinalEvent = (function () {
                 var maskId = 'wm-glow-mask-' + (++maskSequence);
                 mask.setAttribute('id', maskId);
                 mask.setAttribute('maskUnits', 'userSpaceOnUse');
+                mask.setAttribute('maskContentUnits', 'userSpaceOnUse');
+                mask.setAttribute('mask-type', 'luminance');
                 mask.setAttribute('x', '-30'); mask.setAttribute('y', '-30');
                 mask.setAttribute('width', data.width + 60); mask.setAttribute('height', data.height + 60);
                 var background = document.createElementNS(ns, 'rect');
@@ -145,7 +147,7 @@ var waitForFinalEvent = (function () {
                 defs.appendChild(mask); svg.appendChild(defs);
                 var arrows = document.createElementNS(ns, 'g');
                 arrows.setAttribute('mask', 'url(#' + maskId + ')'); svg.appendChild(arrows);
-                data.regions.forEach(function(region) {
+                data.regions.forEach(function(region, index) {
                     if (!/^#[0-9a-f]{6}$/i.test(region.colour) || !Array.isArray(region.points) || region.points.length < 3 || !region.points.every(function(p) { return Array.isArray(p) && p.length === 2 && p.every(Number.isFinite); })) return;
                     var polygon = document.createElementNS(ns, 'polygon');
                     polygon.setAttribute('points', region.points.map(function(p) { return p.join(','); }).join(' '));
@@ -153,7 +155,33 @@ var waitForFinalEvent = (function () {
                     polygon.setAttribute('stroke', region.colour);
                     polygon.setAttribute('stroke-width', '2');
                     polygon.setAttribute('stroke-linejoin', 'round');
-                    polygon.style.filter = 'drop-shadow(0 0 2px ' + region.colour + ') drop-shadow(0 0 5px ' + region.colour + ') drop-shadow(0 0 9px ' + region.colour + ')';
+                    // SVG primitives avoid WebKit's CSS drop-shadow failures on SVG shapes.
+                    var filter = document.createElementNS(ns, 'filter');
+                    var filterId = maskId + '-filter-' + index;
+                    var xs = region.points.map(function(p) { return p[0]; });
+                    var ys = region.points.map(function(p) { return p[1]; });
+                    filter.setAttribute('id', filterId);
+                    filter.setAttribute('filterUnits', 'userSpaceOnUse');
+                    filter.setAttribute('x', Math.min.apply(null, xs) - 30);
+                    filter.setAttribute('y', Math.min.apply(null, ys) - 30);
+                    filter.setAttribute('width', Math.max.apply(null, xs) - Math.min.apply(null, xs) + 60);
+                    filter.setAttribute('height', Math.max.apply(null, ys) - Math.min.apply(null, ys) + 60);
+                    filter.setAttribute('color-interpolation-filters', 'sRGB');
+                    var merge = document.createElementNS(ns, 'feMerge');
+                    [2, 5, 9].forEach(function(radius) {
+                        var blur = document.createElementNS(ns, 'feGaussianBlur');
+                        var result = 'glow-' + radius;
+                        blur.setAttribute('in', 'SourceGraphic');
+                        blur.setAttribute('stdDeviation', radius);
+                        blur.setAttribute('result', result);
+                        filter.appendChild(blur);
+                        var layer = document.createElementNS(ns, 'feMergeNode');
+                        layer.setAttribute('in', result); merge.appendChild(layer);
+                    });
+                    var outline = document.createElementNS(ns, 'feMergeNode');
+                    outline.setAttribute('in', 'SourceGraphic'); merge.appendChild(outline);
+                    filter.appendChild(merge); defs.appendChild(filter);
+                    polygon.setAttribute('filter', 'url(#' + filterId + ')');
                     polygon.classList.add('wm-traffic-pulse');
                     arrows.appendChild(polygon);
                 });

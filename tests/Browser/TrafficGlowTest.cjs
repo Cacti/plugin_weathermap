@@ -8,6 +8,15 @@ const {JSDOM}=require('jsdom'),jquery=require('jquery'),fs=require('node:fs'),pa
  const source=fs.readFileSync(path.join(__dirname,'../../js/weathermap.js'),'utf8');w.eval(source.slice(source.indexOf('// Optional pulsing glow')));
  await new Promise(r=>w.setTimeout(r,20));
  assert.equal(active.querySelectorAll('.wm-traffic-pulse').length,1);assert.equal(active.querySelector('polygon.wm-traffic-pulse').getAttribute('stroke'),'#ff8000');
+ const polygon=active.querySelector('polygon.wm-traffic-pulse');
+ const filter=active.querySelector('filter');
+ assert.equal(polygon.style.filter,'');
+ assert.equal(polygon.getAttribute('filter'),'url(#'+filter.id+')');
+ assert.equal(filter.getAttribute('filterUnits'),'userSpaceOnUse');
+ assert.equal(filter.getAttribute('x'),'-20');assert.equal(filter.getAttribute('width'),'80');
+ assert.deepEqual([...filter.querySelectorAll('feGaussianBlur')].map(b=>b.getAttribute('stdDeviation')),['2','5','9']);
+ assert.equal(filter.querySelectorAll('feMergeNode').length,4);
+ assert.equal(active.querySelector('mask').getAttribute('mask-type'),'luminance');
  assert.equal(active.querySelectorAll('mask polygon').length,1);assert.equal(active.querySelector('area').getAttribute('href'),'graph.php');
  assert.equal(disabled.querySelector('svg'),null);assert.equal(quiet.querySelector('svg'),null);
  $(w.document).trigger('ajaxComplete');assert.equal(active.querySelectorAll('svg').length,1);assert.equal(observers.length,1);
