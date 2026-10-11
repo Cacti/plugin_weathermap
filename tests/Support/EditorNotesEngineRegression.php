@@ -133,6 +133,25 @@ try {
 	$deleted = new WeatherMap;
 	$deleted->ReadConfig($file);
 	note_assert(!isset($deleted->nodes[$name]), 'delete persists');
+	$templateFile = $directory . '/templates.conf';
+	file_put_contents($templateFile, "NODE templateNode\n LABEL Template\nNODE A\n POSITION 10 10\nNODE B\n POSITION 50 50\nLINK templateLink\n WIDTH 8\nLINK trafficLink\n NODES A B\n");
+	$templateMap = new WeatherMap;
+	note_assert($templateMap->ReadConfig($templateFile), 'read templates and real link');
+	note_assert($templateMap->WriteConfig($templateFile), 'write templates and real link');
+	$reloadedTemplates = new WeatherMap;
+	$reloadedTemplates->ReadConfig($templateFile);
+	note_assert(isset($reloadedTemplates->nodes['templateNode'], $reloadedTemplates->links['templateLink'], $reloadedTemplates->links['trafficLink']), 'write retains template nodes and template/real links');
+	class NoteFailingWriteStream {
+		public $context;
+		public function url_stat($path, $flags) { return ['mode' => 0100777]; }
+		public function stream_open($path, $mode, $options, &$opened) { return true; }
+		public function stream_write($data) { return 0; }
+		public function stream_flush() { return false; }
+		public function stream_close() {}
+	}
+	stream_wrapper_register('notewritefail', NoteFailingWriteStream::class);
+	try { note_assert($map->WriteConfig('notewritefail://map/config') === false, 'write and flush failures propagate'); }
+	finally { stream_wrapper_unregister('notewritefail'); }
 	print "PASS: note create, render, edit, styles, multiline, validation and delete\n";
 } finally {
 	foreach (glob($directory . '/*') as $file) unlink($file);
