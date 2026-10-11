@@ -3383,6 +3383,11 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 
 		$map->context = 'editor';
 
+		if ($sourcemapfile == '') {
+			require_once __DIR__ . '/lib/editor.new-map-preset.php';
+			wm_new_map_preset($map);
+		}
+
 		if ($mapfile != '') {
 			if ($sourcemapfile != '') {
 				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
