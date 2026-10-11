@@ -9,6 +9,7 @@ const inc=fs.readFileSync(path.join(__dirname,'../../lib/editor.inc.php'),'utf8'
 w.wmEditorText={};
 for(const match of inc.matchAll(/'(iconText[0-9]+)' => __\('([^']+)'/g))w.wmEditorText[match[1]]=match[2];
 w.wmEditorText.iconText0='Rechercher les icônes';
+w.wmEditorText.iconText4='Icônes correspondantes : %s';
 const source=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');
 w.eval(source.slice(source.indexOf('function wmNodeIconPicker('),source.indexOf('function prime_link_form(')));
 w.wmNodeIconPicker();
@@ -17,6 +18,7 @@ assert.equal($('#wm-icon-picker summary').text(),'hospital red');
 $('#wm-icon-picker').prop('open',true);
 $('input[type=search]').val('switch').trigger('input');
 assert.equal($('.wm-icon-choice').filter((i,e)=>!e.hidden).length,1);
+assert.equal($('.wm-icon-count').text(),'Icônes correspondantes : 1');
 $('.wm-icon-choice').filter((i,e)=>!e.hidden).trigger('click');
 assert.equal($('#node_iconfilename').val(),'switch.png');
 assert.equal($('form').serialize(),'node_iconfilename=switch.png');

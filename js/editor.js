@@ -1118,7 +1118,7 @@ function wmNodeIconPicker() {
 			$(this).prop('hidden', !matches);
 			if (matches) visible++;
 		});
-		count.text(visible ? (visible === 1 ? wmEditorText.iconText4 : wmEditorText.iconText5).replace('%s', String(visible)) : wmEditorText.iconText6);
+		count.text(visible ? wmEditorText.iconText4.replace('%s', String(visible)) : wmEditorText.iconText6);
 	});
 	picker.on('keydown', function(event) {
 		if (event.key === 'Escape') {

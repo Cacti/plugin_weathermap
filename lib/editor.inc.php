@@ -1016,8 +1016,7 @@ function getEditorJs() {
 		'iconText1' => __('Search node icons', 'weathermap'),
 		'iconText2' => __('Node icons', 'weathermap'),
 		'iconText3' => __('Choose an icon', 'weathermap'),
-		'iconText4' => __('%s icon', '%s', 'weathermap'),
-		'iconText5' => __('%s icons', '%s', 'weathermap'),
+		'iconText4' => __('Matching icons: %s', '%s', 'weathermap'),
 		'iconText6' => __('No matching icons', 'weathermap'),
 
 		'currentInterface'     => __('Current interface', 'weathermap'),
