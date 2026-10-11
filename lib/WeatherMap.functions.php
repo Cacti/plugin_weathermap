@@ -1898,6 +1898,25 @@ function nice_scalar($number, $kilo = 1000, $decimals = 1) {
 
 // ***********************************************
 
+/**
+ * Resolve a bundled TrueType font independently of the process working directory.
+ *
+ * @param string $file The portable FONTDEFINE filename.
+ *
+ * @return string The runtime font filename; custom paths are unchanged.
+ */
+function wm_font_file($file) {
+	if (preg_match('~^docs/example/Vera[A-Za-z]*\.ttf$~D', $file)) {
+		$bundled = dirname(__DIR__) . '/' . $file;
+
+		if (is_readable($bundled)) {
+			return $bundled;
+		}
+	}
+
+	return $file;
+}
+
 // Skeleton class just to keep strict mode quiet.
 class WMFont {
 	/** @var mixed */
