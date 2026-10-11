@@ -92,9 +92,9 @@ function wm_asset_image_users($name, $kind = null, $references = null) {
 	}
 	return array_values(array_unique($users));
 }
-function wm_asset_image_list() {
+function wm_asset_image_list($references = null) {
 	$result = [];
-	$references = wm_asset_image_reference_index();
+	$references = $references ?? wm_asset_image_reference_index();
 	foreach (['objects', 'backgrounds'] as $kind) {
 		$dir = wm_asset_directory($kind);
 		foreach (scandir($dir) ?: [] as $name) {

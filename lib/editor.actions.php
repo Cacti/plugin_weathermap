@@ -1152,9 +1152,10 @@ function wm_editor_assets($mapfile, $action) {
 		} else {
 			$name = get_nfilter_request_var('image_name');
 			$path = wm_asset_image_path(get_nfilter_request_var('image_kind'), $name);
-			if (wm_asset_image_users($name, get_nfilter_request_var('image_kind'))) throw new InvalidArgumentException(__('This image is still referenced by a map configuration.', 'weathermap'));
+			$references = wm_asset_image_reference_index();
+			if (wm_asset_image_users($name, get_nfilter_request_var('image_kind'), $references)) throw new InvalidArgumentException(__('This image is still referenced by a map configuration.', 'weathermap'));
 			if (!is_file($path) || !unlink($path)) throw new RuntimeException(__('Could not delete the image.', 'weathermap'));
-			$result = ['images' => wm_asset_image_list()];
+			$result = ['images' => wm_asset_image_list($references)];
 		}
 		echo json_encode($result);
 	} catch (Throwable $error) {
