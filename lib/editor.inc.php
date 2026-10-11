@@ -41,6 +41,7 @@
 */
 
 require_once __DIR__ . '/editor.comment-style.php';
+require_once __DIR__ . '/editor.notes.php';
 
 /** editor.inc.php
  *
@@ -1019,6 +1020,10 @@ function getEditorJs() {
 		'changeInterface'      => __('Change interface', 'weathermap'),
 		'searchInterface'      => __('Search device or interface', 'weathermap'),
 		'noInterface'          => __('No interface selected', 'weathermap'),
+		'addNoteHelp' => __('Click on the map where you would like to add a note.', 'weathermap'),
+		'noteTitle' => __('Note', 'weathermap'),
+		'noteDelete' => __('Delete note "%s"?', '%s', 'weathermap'),
+		'noteError' => __('The note could not be saved. Check its text, font and position, then try again.', 'weathermap'),
 		'currentGraph'         => __('Current graph: %s', '%s', 'weathermap'),
 		'customConfig'         => __('Custom configuration — details under Advanced', 'weathermap'),
 		'chooseInterface'      => __('Choose an interface below', 'weathermap'),

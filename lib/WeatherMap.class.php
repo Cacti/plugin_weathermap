@@ -45,6 +45,7 @@ require_once('HTML_ImageMap.class.php');
 require_once('WeatherMap.functions.php');
 require_once('geometry.php');
 require_once('WeatherMapNode.class.php');
+require_once('WeatherMap.notes.php');
 require_once('WeatherMapLink.class.php');
 
 $weathermap_debugging  = false;
@@ -4005,6 +4006,8 @@ class WeatherMap extends WeatherMapBase {
 
 			// do the node rendering stuff first, regardless of where they are actually drawn.
 			// this is so we can get the size of the nodes, which links will need if they use offsets
+			foreach ($this->nodes as $node) $node->render_note_hidpi = false;
+
 			foreach ($this->nodes as $node) {
 				// don't try and draw template nodes
 				wm_debug('Pre-rendering ' . $node->name . ' to get bounding boxes.');
@@ -4014,6 +4017,15 @@ class WeatherMap extends WeatherMapBase {
 				}
 			}
 
+			$sharpNotes = ($filename !== 'null' && $withnodes && $this->context !== 'editor2') ? wm_sharp_notes($this) : [];
+			foreach ($sharpNotes as $node) {
+				$node->render_note_hidpi = true;
+				$bounds = $node->boundingboxes;
+				$node->pre_render($image, $this);
+				$node->boundingboxes = $bounds;
+			}
+
+			$noteForeground = null;
 			$all_layers = array_keys($this->seen_zlayers);
 			sort($all_layers);
 
@@ -4024,6 +4036,12 @@ class WeatherMap extends WeatherMapBase {
 
 				// all the map 'furniture' is fixed at z=1000
 				if ($z == 1000) {
+					if ($sharpNotes !== []) {
+						$baseImage = $image;
+						$image = imagecreatetruecolor($this->width, $this->height);
+						imagesavealpha($image, true);
+						imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
+					}
 					foreach ($this->colours as $scalename => $colours) {
 						wm_debug("Drawing KEY for $scalename if necessary.");
 
@@ -4058,6 +4076,12 @@ class WeatherMap extends WeatherMapBase {
 					}
 
 					$this->DrawTitle($image, $this->titlefont, $this->colours['DEFAULT']['TITLE']['gdref1']);
+				}
+
+				if ($z == 1000 && $sharpNotes !== []) {
+					$noteForeground = $image;
+					$image = $baseImage;
+					imagecopy($image, $noteForeground, 0, 0, 0, 0, $this->width, $this->height);
 				}
 
 				if (is_array($z_items)) {
@@ -4144,6 +4168,18 @@ class WeatherMap extends WeatherMapBase {
 			//	$this->myimagestring($image, 30, 100, 100, "Test 1\nLine 2", $overlay,0);
 			// $this->myimagestring($image, 30, 200, 200, "Test 1\nLine 2", $overlay,45);
 
+			// Compose at logical coordinates; render note glyphs at display density.
+			if ($sharpNotes !== []) {
+				$this->image = $image;
+				$image = wm_note_display_image($this, $sharpNotes);
+				if ($noteForeground !== null) {
+					imagecopyresampled($image, $noteForeground, 0, 0, 0, 0, imagesx($image), imagesy($image), $this->width, $this->height);
+					imagedestroy($noteForeground);
+				}
+				$this->image = $image;
+			}
+			foreach ($this->nodes as $node) $node->render_note_hidpi = false;
+
 			// Ready to output the results...
 
 			if ($filename == 'null') {
@@ -4209,7 +4245,7 @@ class WeatherMap extends WeatherMapBase {
 					$imagethumb = imagecreatetruecolor(max(1, $this->thumb_width), max(1, $this->thumb_height));
 
 					imagecopyresampled($imagethumb, $image, 0, 0, 0, 0, $this->thumb_width, $this->thumb_height,
-						(int) round((float) $this->width), (int) round((float) $this->height)
+						imagesx($image), imagesy($image)
 					);
 
 					$result = imagepng($imagethumb, $thumbnailfile);

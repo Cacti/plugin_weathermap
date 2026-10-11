@@ -540,6 +540,9 @@ function wmEditorReturnUrl(target) {
 }
 
 function attach_click_events() {
+	$('#xycapture').off('click.wmnote').on('click.wmnote', function(event) {
+		if ($('#action').val() === 'place_note' || ($('#action').val() === 'move_node' && typeof WMNotes !== 'undefined' && WMNotes[$('#param').val()])) coord_update(event);
+	});
 	$("area[id^='LINK:']").attr('href', '#').off('click').on('click', click_handler);
 	$("area[id^='NODE:']").attr('href', '#').off('click').on('click', click_handler);
 	$("area[id^='TIMES']").attr('href', '#').off('click').on('click', position_timestamp);
@@ -554,6 +557,38 @@ function attach_click_events() {
 	$('#tb_mapstyle').off('click').on('click', map_style);
 
 	$('#tb_addlink').off('click').on('click', add_link);
+	$('#tb_addnote').off('click').on('click', add_note);
+	$('.wm-note-colour').off('click').on('click', function() {
+		$('#note_colour').val($(this).attr('data-colour'));
+		wmNoteRefreshPalette();
+	});
+	$('#note_colour').off('input change').on('input change', wmNoteRefreshPalette);
+	$('#note_advanced_toggle').off('click').on('click', function() {
+		var open = $(this).attr('aria-expanded') !== 'true';
+		$(this).attr('aria-expanded', String(open)).text(open ? wmEditorText.hideAdvanced : wmEditorText.advanced);
+		$('#note_advanced').toggle(open);
+	});
+	$('#note_clone').off('click').on('click', function() {
+		$('#note_name').val('');
+		$('#note_x').val(Math.min(parseInt($('#note_x').attr('max'), 10), parseInt($('#note_x').val(), 10) + 20));
+		$('#note_y').val(Math.min(parseInt($('#note_y').attr('max'), 10), parseInt($('#note_y').val(), 10) + 20));
+		$('#note_delete,#note_move,#note_clone').hide();
+		$('#note_text').trigger('focus');
+	});
+	$('#note_move').off('click').on('click', function() {
+		$('#param').val($('#note_name').val());
+		$('#node_name').val($('#note_name').val());
+		hide_dialog('dlgNoteProperties');
+		move_node();
+	});
+	$('#note_delete').off('click').on('click', function() {
+		if (window.confirm(wmEditorText.noteDelete.replace('%s', function() { return $('#note_text').val(); }))) {
+			$('#param').val($('#note_name').val());
+		$('#node_name').val($('#note_name').val());
+			$('#action').val('delete_node');
+			form_submit();
+		}
+	});
 	$('#tb_poslegend').off('click').on('click', position_first_legend);
 	$('#tb_postime').off('click').on('click', position_timestamp);
 	$('#tb_colours').off('click').on('click', manage_colours);
@@ -871,12 +906,20 @@ function delete_link() {
 }
 
 function form_submit() {
+	if ($('#action').val() === 'place_note') {
+		show_note('', $('#x').val(), $('#y').val());
+		return;
+	}
+	var savingNote = $('#action').val() === 'set_note_properties';
 	var data = $('input, select, textarea').serialize();
 
 	$.ajax({
 		type: 'POST',
 		url: editor_url,
 		data: data,
+		error: function() {
+			if (savingNote) $('#wm-note-error').text(wmEditorText.noteError).show();
+		},
 		success: function(html) {
 			hide_all_dialogs();
 
@@ -1041,6 +1084,10 @@ function prime_node_form(name) {
 }
 
 function show_node(name) {
+	if (typeof WMNotes !== 'undefined' && Object.prototype.hasOwnProperty.call(WMNotes, name)) {
+		show_note(name);
+		return;
+	}
 	mapmode('existing');
 
 	hide_all_dialogs();
@@ -1192,6 +1239,7 @@ function hide_all_dialogs() {
 	hide_dialog('dlgLinkProperties');
 	hide_dialog('dlgTextEdit');
 	hide_dialog('dlgNodeProperties');
+	hide_dialog('dlgNoteProperties');
 	hide_dialog('dlgColours');
 	hide_dialog('dlgImages');
 	hide_dialog('dlgEditorSettings');
@@ -1662,4 +1710,48 @@ function wmFriendlyLinkNames() {
 // Map JavaScript HTML-escapes URL values; undo that when populating text fields.
 function wmDecodeEditorUrl(value) {
 	return String(value || '').replace(/&amp;/g, '&');
+}
+// Notes are ordinary label-only nodes, with a small editor-specific style form.
+function add_note() {
+	hide_all_dialogs();
+	$('#tb_help').addClass('wm-action-help').text(wmEditorText.addNoteHelp);
+	$('#action').val('place_note');
+	mapmode('xy');
+}
+function wmNoteRefreshPalette() {
+	var colour = String($('#note_colour').val()).toLowerCase();
+	$('.wm-note-colour').each(function() {
+		var selected = $(this).attr('data-colour') === colour;
+		$(this).attr('aria-pressed', selected ? 'true' : 'false').css('outline', selected ? '2px solid currentColor' : '');
+	});
+}
+function show_note(name, x, y) {
+	hide_all_dialogs();
+	mapmode('existing');
+	var node = name ? Nodes[name] : null;
+	var style = name ? WMNotes[name] : null;
+	$('#note_name').val(name);
+	$('#note_align').val(style && ['left', 'centre', 'right'].indexOf(style.align) !== -1 ? style.align : 'left');
+	$('#note_text').val(node ? node.label.replace(/\\n/g, '\n') : '');
+	$('#note_x').val(node ? node.x : x);
+	$('#note_y').val(node ? node.y : y);
+	$('#note_colour').val(style ? style.colour : '#000000');
+	wmNoteRefreshPalette();
+	$('#note_advanced').hide();
+	$('#note_advanced_toggle').attr('aria-expanded', 'false').text(wmEditorText.advanced);
+	if (style) {
+		if (!$('#note_font option').filter(function() { return this.value === style.font; }).length) {
+			$('<option>').val(style.font).text(style.fontLabel).appendTo('#note_font');
+		}
+		$('#note_font').val(style.font);
+	} else {
+		var defaultFont = $('#note_font option').filter(function() { return this.value === 'bundled:Vera.ttf:9' || $(this).text() === 'Vera Sans — 9 pt'; }).first();
+		$('#note_font').val(defaultFont.length ? defaultFont.val() : '3');
+	}
+	$('#note_delete,#note_move,#note_clone').toggle(!!node);
+	$('#wm-note-error').hide();
+	$('#action').val('set_note_properties');
+	show_dialog('dlgNoteProperties');
+	$('#note_font,#note_align').selectmenu('refresh');
+	$('#note_text').trigger('focus');
 }

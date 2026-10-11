@@ -103,6 +103,7 @@ function getMapJavaScript($mapfile) {
 	$map->ReadConfig($mapfile);
 
 	print $map->asJS();
+	print 'var WMNotes = ' . json_encode(wm_editor_note_data($map), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';';
 }
 
 /**
@@ -1134,4 +1135,27 @@ function getImageURL($mapname, $selected) {
 	$imageurl .= '&unique=' . time();
 
 	return $imageurl;
+}
+
+/**
+ * Save a note through the authenticated editor request path.
+ *
+ * @param string $mapfile Validated configuration path.
+ * @param int $grid_snap_value Placement grid spacing.
+ *
+ * @return void
+ */
+function setNoteProperties($mapfile, $grid_snap_value) {
+	$map = new WeatherMap;
+	$map->context = 'editor';
+	$map->ReadConfig($mapfile);
+	$values = [];
+	foreach (['name', 'text', 'font', 'colour', 'x', 'y', 'align'] as $field) {
+		$values[$field] = get_nfilter_request_var('note_' . $field);
+	}
+	if (!wm_editor_save_note($map, $values, $grid_snap_value)) {
+		http_response_code(400);
+		return;
+	}
+	if (!$map->WriteConfig($mapfile)) http_response_code(500);
 }
