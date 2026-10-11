@@ -778,7 +778,7 @@ function delete_node() {
 		title: delNodeTitle,
 		height: 'auto',
 		width: 400,
-		modal: false,
+		modal: true,
 		buttons: [
 			{
 				text: txtCancel,
@@ -793,6 +793,7 @@ function delete_node() {
 				click: function() {
 					$(this).dialog('close');
 					hide_all_dialogs();
+					$('#param').val(name);
 					$('#action').val('delete_node');
 					form_submit();
 				}
