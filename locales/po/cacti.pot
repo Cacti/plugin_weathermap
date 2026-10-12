@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 13:04+1030\n"
+"POT-Creation-Date: 2026-10-12 23:15+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -272,6 +272,22 @@ msgstr ""
 #: lib/editor.inc.php
 #, php-format
 msgid "Custom (%s)"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
 msgstr ""
 
 #: lib/editor.inc.php
@@ -1320,10 +1336,6 @@ msgid "Use Map Background Colour"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Map Background Colour"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
 msgid "Shown without an image, or through its transparent areas."
 msgstr ""
 
@@ -1484,10 +1496,6 @@ msgid "Link Appearance"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Link Border Colour"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
 msgid " Pulse links at 80%+"
 msgstr ""
 
@@ -1548,15 +1556,7 @@ msgid "Each row is a colour range. From and To are its limits, Colour is the fil
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Colour"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
 msgid "From (usually %)"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Gradient End"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -2438,4 +2438,8 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "Paused"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
 msgstr ""

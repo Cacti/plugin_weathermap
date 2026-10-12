@@ -2,13 +2,16 @@
 const {JSDOM}=require('jsdom'),jquery=require('jquery'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const dom=new JSDOM('<input id="mapname" value="map.conf"><div id="dlgColours"></div><div id="wm-colours-error"></div><button id="wm-colours-save"></button><input type="checkbox" id="wm-traffic-pulse"><div id="wm-outline-colour"></div><table><tbody id="wm-scale-rows"></tbody></table><details id="wm-traffic-advanced"></details><select id="wm-traffic-preset"></select><div id="wm-traffic-preview"></div><button id="wm-scale-add"></button>',{runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,$=jquery(w);w.$=w.jQuery=$;w.editor_url='/editor';w.csrfMagicToken='fixture';$.fn.dialog=function(){return this;};$.fn.selectmenu=function(command){return command==='instance'?undefined:this;};
-w.wmEditorText={palette:{Black:'Black',White:'White',Blue:'Bleu',Red:'Red',Green:'Green',Purple:'Purple',Orange:'Orange',Grey:'Grey',None:'None'},colourText0:'No gradient',colourText1:'Custom colour',colourText2:'Remove',colourText3:'No ranges',colourText4:'Save failed',colourText7:'Remove range',colourText8:'Custom %s'};
+w.wmEditorText={backgroundColour:'Map background',borderColour:'Link border',rangeColour:'Range colour',gradientColour:'Gradient end',palette:{Black:'Black',White:'White',Blue:'Bleu',Red:'Red',Green:'Green',Purple:'Purple',Orange:'Orange',Grey:'Grey',None:'None'},colourText0:'No gradient',colourText1:'Custom colour',colourText2:'Remove',colourText3:'No ranges',colourText4:'Save failed',colourText7:'Remove range',colourText8:'Custom %s'};
 const source=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');w.eval(source.slice(source.indexOf('var wmAssetPalette')));
 Object.keys(w.wmTrafficPresets).concat('custom').forEach(key=>$('#wm-traffic-preset').append($('<option>').val(key).text(key)));
 let request;$.ajax=opts=>request=opts;w.wmOpenColours();assert.equal(request.data.action,'colour_data');assert.equal(request.type,'GET');
 const named={scale:'Temperature'+ 'A'.repeat(70),bottom:-20,top:0,colour:'#0000ff',end:'',tag:'Cold'};
 const rows=w.wmTrafficPresets.classic.map(b=>({scale:'DEFAULT',bottom:b[0],top:b[1],colour:b[2],end:'',tag:''})).concat(named);
 request.success({colours:{outline:'#000000',pulse:true,rows}});
+assert.equal($('#wm-outline-colour select').attr('aria-label'),'Link border');
+assert.equal($('#wm-scale-rows tr').first().find('td').eq(3).find('select').attr('aria-label'),'Range colour');
+assert.equal($('#wm-scale-rows tr').first().find('td').eq(4).find('input[type=color]').attr('aria-label'),'Gradient end');
 assert.equal($('#wm-traffic-preset').val(),'classic');assert.equal($('#wm-traffic-preview .wm-traffic-band').length,w.wmTrafficPresets.classic.length);
 assert.equal($('#wm-scale-rows tr').first().find('td').eq(4).find('option[value="none"]').length,0,'gradient cannot offer None');
 $('#wm-traffic-preset').val('signals').trigger('change');
