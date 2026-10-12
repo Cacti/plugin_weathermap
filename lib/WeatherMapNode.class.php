@@ -368,7 +368,7 @@ class WeatherMapNode extends WeatherMapItem {
 				}
 				[, $noteLineHeight] = $map->myimagestringsize($this->labelfont, 'Ag');
 				$noteLineHeight = max(1, ceil($noteLineHeight));
-				$strheight = count($noteLines) * $noteLineHeight;
+				$strheight = cacti_count($noteLines) * $noteLineHeight;
 			}
 
 			if ($this->labelangle == 90 || $this->labelangle == 270) {

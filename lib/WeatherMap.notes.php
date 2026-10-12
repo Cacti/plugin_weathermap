@@ -82,7 +82,7 @@ function wm_note_display_image($map, $notes) {
 		$colour = imagecolorallocate($image, ...$node->labelfontcolour);
 		$originX = (int)($node->x - $node->centre_x);
 		$originY = (int)($node->y - $node->centre_y);
-		$lineY = $node->centre_y - count($lines) * $height / 2 + $height;
+		$lineY = $node->centre_y - cacti_count($lines) * $height / 2 + $height;
 		foreach ($lines as $line) {
 			[$lineWidth] = $map->myimagestringsize($node->labelfont, $line);
 			$align = $node->get_hint('editor_note_align', 'left');

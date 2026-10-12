@@ -909,7 +909,9 @@ function form_submit() {
 		show_note('', $('#x').val(), $('#y').val());
 		return;
 	}
-	var savingNote = $('#action').val() === 'set_note_properties';
+	var noteAction = $('#action').val();
+	var noteTarget = noteAction === 'set_note_properties' ? $('#note_name').val() : noteAction === 'move_node' ? $('#node_name').val() : $('#param').val();
+	var savingNote = noteAction === 'set_note_properties' || (['move_node', 'delete_node'].indexOf(noteAction) !== -1 && typeof WMNotes !== 'undefined' && WMNotes[noteTarget]);
 	var data = $('input, select, textarea').serialize();
 
 	$.ajax({
@@ -917,7 +919,10 @@ function form_submit() {
 		url: editor_url,
 		data: data,
 		error: function() {
-			if (savingNote) $('#wm-note-error').text(wmEditorText.noteError).show();
+			if (savingNote) {
+				if (noteAction !== 'set_note_properties') show_note(noteTarget);
+				$('#wm-note-error').text(wmEditorText.noteError).show();
+			}
 		},
 		success: function(html) {
 			hide_all_dialogs();
@@ -1744,13 +1749,13 @@ function show_note(name, x, y) {
 		}
 		$('#note_font').val(style.font);
 	} else {
-		var defaultFont = $('#note_font option').filter(function() { return this.value === 'bundled:Vera.ttf:9' || $(this).text() === 'Vera Sans — 9 pt'; }).first();
+		var defaultFont = $('#note_font option').filter(function() { return this.value === 'bundled:Vera.ttf:9' || $(this).attr('data-wm-note-default') === '1'; }).first();
 		$('#note_font').val(defaultFont.length ? defaultFont.val() : '3');
 	}
 	$('#note_delete,#note_move,#note_clone').toggle(!!node);
 	$('#wm-note-error').hide();
 	$('#action').val('set_note_properties');
 	show_dialog('dlgNoteProperties');
-	$('#note_font,#note_align').selectmenu('refresh');
+	$('#note_font,#note_align').each(function() { if ($(this).data('ui-selectmenu')) $(this).selectmenu('refresh'); });
 	$('#note_text').trigger('focus');
 }

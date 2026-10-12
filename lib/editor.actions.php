@@ -789,7 +789,7 @@ function moveNode($mapfile, $grid_snap_value) {
 		$map->nodes[$node_name]->x = $x;
 		$map->nodes[$node_name]->y = $y;
 
-		$map->WriteConfig($mapfile);
+		if (!$map->WriteConfig($mapfile)) http_response_code(500);
 	}
 }
 
@@ -981,7 +981,7 @@ function deleteNode($mapfile) {
 
 		unset($map->nodes[$target]);
 
-		$map->WriteConfig($mapfile);
+		if (!$map->WriteConfig($mapfile)) http_response_code(500);
 	}
 }
 

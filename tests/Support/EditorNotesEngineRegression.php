@@ -102,6 +102,33 @@ try {
 	array_pop($saved->seen_zlayers[700]);
 	unset($saved->nodes[$later->name]);
 
+	// Furniture is composed once, and a node above it must retain its z-order.
+	$previousTitle = $saved->title;
+	$saved->title = 'MMMMMMMMMMMMMMMM'; $saved->titlex = 450; $saved->titley = 225;
+	$saved->titlefont = $node->labelfont;
+	$node->add_hint('editor_note', '0'); $saved->DrawMap($directory . '/furniture-reference.png');
+	$node->add_hint('editor_note', '1'); $saved->DrawMap($directory . '/furniture-sharp.png');
+	$reference = imagecreatefrompng($directory . '/furniture-reference.png');
+	$expected = imagecreatetruecolor(1200, 600); imagecopyresampled($expected, $reference, 0, 0, 0, 0, 1200, 600, 600, 300);
+	$actual = imagecreatefrompng($directory . '/furniture-sharp.png');
+	$maxDifference = 0;
+	for ($x = 900; $x < 1180; $x++) for ($y = 405; $y < 455; $y++) {
+		$left = imagecolorat($expected, $x, $y); $right = imagecolorat($actual, $x, $y);
+		foreach ([0,8,16] as $shift) $maxDifference = max($maxDifference, abs((($left >> $shift) & 255) - (($right >> $shift) & 255)));
+	}
+	note_assert($maxDifference <= 2, 'furniture antialiasing is not composited twice');
+	imagedestroy($reference); imagedestroy($expected); imagedestroy($actual);
+	$foreground = clone $node; $foreground->name = 'foreground'; $foreground->label = 'Foreground';
+	$foreground->x = 500; $foreground->y = 225; $foreground->zorder = 1001; $foreground->add_hint('editor_note', '0');
+	$foreground->labelfont = 5; $foreground->labelfontcolour = [255,0,0]; $foreground->labelbgcolour = [255,0,0]; $foreground->labeloutlinecolour = [255,0,0];
+	$saved->nodes['foreground'] = $foreground; $saved->seen_zlayers[1001][] = $foreground;
+	$saved->DrawMap($directory . '/foreground.png'); $actual = imagecreatefrompng($directory . '/foreground.png');
+	for ($x = 990; $x <= 1010; $x++) for ($y = 442; $y <= 450; $y++) note_assert((imagecolorat($actual, $x, $y) & 0xffffff) === 0xff0000, 'higher node stays above title furniture');
+	imagedestroy($actual); unset($saved->nodes['foreground'], $saved->seen_zlayers[1001]); $saved->title = $previousTitle;
+	wm_comment_resolve_font($saved, 'bundled:Vera.ttf:9');
+	$fontOptions = wm_style_font_options($saved, 3);
+	note_assert(preg_match('/<option value="[0-9]+" data-wm-note-default="1"/', $fontOptions) === 1, 'registered Vera 9 exposes a stable default marker');
+
 	$hashes = [];
 	foreach (['left', 'centre', 'right'] as $alignment) {
 		$aligned = $values;
@@ -116,7 +143,7 @@ try {
 		$rendered->DrawMap($png);
 		$hashes[] = hash_file('sha256', $png);
 	}
-	note_assert(count(array_unique($hashes)) === 3, 'alignments change rendered pixels');
+	note_assert(cacti_count(array_unique($hashes)) === 3, 'alignments change rendered pixels');
 	$values['name'] = $name;
 	$values['text'] = 'Edited note';
 	$values['colour'] = '#c00000';
