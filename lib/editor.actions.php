@@ -49,6 +49,40 @@
  */
 
 /**
+ * Read an existing editor map and reject stale or unreadable targets.
+ *
+ * @param WeatherMap $map Engine receiving the configuration.
+ * @param string $mapfile Configuration path.
+ * @return bool Whether the map was loaded.
+ */
+function wm_editor_read_config($map, $mapfile) {
+	if (!is_file($mapfile) || !is_readable($mapfile)) {
+		http_response_code(404);
+		return false;
+	}
+	if (!$map->ReadConfig($mapfile)) {
+		http_response_code(422);
+		return false;
+	}
+	return true;
+}
+
+/**
+ * Propagate failed editor configuration saves to the AJAX caller.
+ *
+ * @param WeatherMap $map Engine containing the edited configuration.
+ * @param string $mapfile Configuration path.
+ * @return bool Whether the complete configuration was saved.
+ */
+function wm_editor_write_config($map, $mapfile) {
+	if (!$map->WriteConfig($mapfile)) {
+		http_response_code(500);
+		return false;
+	}
+	return true;
+}
+
+/**
  * @return void
  * @param  mixed $mapfile
  */
@@ -59,7 +93,7 @@ function newMap($mapfile) {
 
 	require_once __DIR__ . '/editor.new-map-preset.php';
 	wm_new_map_preset($map);
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -86,7 +120,7 @@ function newMapCopy($mapfile) {
 
 		if (file_exists($sourcemap) && is_readable($sourcemap)) {
 			$map->ReadConfig($sourcemap);
-			$map->WriteConfig($mapfile);
+			wm_editor_write_config($map, $mapfile);
 		}
 	}
 }
@@ -100,7 +134,7 @@ function getMapJavaScript($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	print $map->asJS();
 	print 'var WMNotes = ' . json_encode(wm_editor_note_data($map), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';';
@@ -115,7 +149,7 @@ function getMapAreaData($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	// we need to draw and throw away a map, to get the
 	// dimensions for the imagemap.
@@ -142,7 +176,7 @@ function drawMap($mapfile, $selected, $use_overlay, $use_relative_overlay) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	if ($selected != '') {
 		if (substr($selected, 0, 5) == 'NODE:') {
@@ -187,7 +221,7 @@ function fetchConfig($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	header('Content-type: text/plain');
 
@@ -224,7 +258,7 @@ function setNodeConfig($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$node_name   = get_nfilter_request_var('node_name');
 	$node_config = get_nfilter_request_var('item_configtext');
@@ -232,7 +266,7 @@ function setNodeConfig($mapfile) {
 	if (isset($map->nodes[$node_name])) {
 		$map->nodes[$node_name]->config_override = $node_config;
 
-		$map->WriteConfig($mapfile);
+		wm_editor_write_config($map, $mapfile);
 
 		// now clear and reload the map object, because the in-memory one is out of sync
 		// - we don't know what changes the user made here, so we just have to reload.
@@ -242,7 +276,7 @@ function setNodeConfig($mapfile) {
 
 		$map->context = 'editor';
 
-		$map->ReadConfig($mapfile);
+		if (!wm_editor_read_config($map, $mapfile)) return;
 	}
 }
 
@@ -255,7 +289,7 @@ function setLinkConfig($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$link_name   = get_nfilter_request_var('link_name');
 	$link_config = get_nfilter_request_var('item_configtext');
@@ -263,7 +297,7 @@ function setLinkConfig($mapfile) {
 	if (isset($map->links[$link_name])) {
 		$map->links[$link_name]->config_override = $link_config;
 
-		$map->WriteConfig($mapfile);
+		wm_editor_write_config($map, $mapfile);
 
 		// now clear and reload the map object, because the in-memory one is out of sync
 		// - we don't know what changes the user made here, so we just have to reload.
@@ -273,7 +307,7 @@ function setLinkConfig($mapfile) {
 
 		$map->context = 'editor';
 
-		$map->ReadConfig($mapfile);
+		if (!wm_editor_read_config($map, $mapfile)) return;
 	}
 }
 
@@ -286,7 +320,7 @@ function setNodeProperties($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$node_name     = get_nfilter_request_var('node_name');
 	$new_node_name = get_nfilter_request_var('node_new_name');
@@ -363,7 +397,7 @@ function setNodeProperties($mapfile) {
 		$map->nodes[$new_node_name]->iconfile = $iconfile;
 	}
 
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -375,7 +409,7 @@ function setLinkProperties($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$link_name = get_nfilter_request_var('link_name');
 
@@ -443,7 +477,7 @@ function setLinkProperties($mapfile) {
 
 		// $map->links[$link_name]->SetBandwidth($bwin,$bwout);
 
-		$map->WriteConfig($mapfile);
+		wm_editor_write_config($map, $mapfile);
 	}
 }
 
@@ -456,7 +490,7 @@ function setMapProperties($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$map->title              = wm_editor_sanitize_string(get_nfilter_request_var('map_title'));
 	$map->keytext['DEFAULT'] = wm_editor_sanitize_string(get_nfilter_request_var('map_legend'));
@@ -529,7 +563,7 @@ function setMapProperties($mapfile) {
 		}
 	}
 
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -541,7 +575,7 @@ function setMapStyle($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	if (wm_editor_validate_one_of(get_nfilter_request_var('mapstyle_htmlstyle'), ['static', 'overlib'], false)) {
 		$map->htmlstyle = strtolower(get_nfilter_request_var('mapstyle_htmlstyle'));
@@ -566,7 +600,7 @@ function setMapStyle($mapfile) {
 	wm_comment_update_default($map, 'bwfont', wm_comment_resolve_font($map, get_nfilter_request_var('mapstyle_linkfont')));
 	wm_comment_apply_style($map, get_nfilter_request_var('mapstyle_commentfont'), get_nfilter_request_var('mapstyle_commentcolour'));
 
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -578,7 +612,7 @@ function addLink($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$a = get_nfilter_request_var('param');
 	$b = get_nfilter_request_var('param2');
@@ -610,7 +644,7 @@ function addLink($mapfile) {
 		$map->links[$newlinkname] = $newlink;
 		array_push($map->seen_zlayers[$newlink->zorder], $newlink);
 
-		$map->WriteConfig($mapfile);
+		wm_editor_write_config($map, $mapfile);
 	}
 }
 
@@ -629,12 +663,12 @@ function placeLegend($mapfile, $grid_snap_value) {
 
 	$scalename = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$map->keyx[$scalename] = $x;
 	$map->keyy[$scalename] = $y;
 
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -650,12 +684,12 @@ function placeStamp($mapfile, $grid_snap_value) {
 	$x = snap(intval(get_nfilter_request_var('x')), $grid_snap_value);
 	$y = snap(intval(get_nfilter_request_var('y')), $grid_snap_value);
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$map->timex = $x;
 	$map->timey = $y;
 
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -672,11 +706,11 @@ function viaLink($mapfile) {
 
 	$link_name = wm_editor_sanitize_name(get_nfilter_request_var('link_name'));
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	if (isset($map->links[$link_name])) {
 		$map->links[$link_name]->vialist = [[0 =>$x, 1=>$y]];
-		$map->WriteConfig($mapfile);
+		wm_editor_write_config($map, $mapfile);
 	}
 }
 
@@ -695,8 +729,12 @@ function moveNode($mapfile, $grid_snap_value) {
 
 	$node_name = wm_editor_sanitize_name(get_nfilter_request_var('node_name'));
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
+	if (!isset($map->nodes[$node_name])) {
+		http_response_code(404);
+		return;
+	}
 	if (isset($map->nodes[$node_name])) {
 		// This is a complicated bit. Find out if this node is involved in any
 		// links that have VIAs. If it is, we want to rotate those VIA points
@@ -789,7 +827,7 @@ function moveNode($mapfile, $grid_snap_value) {
 		$map->nodes[$node_name]->x = $x;
 		$map->nodes[$node_name]->y = $y;
 
-		if (!$map->WriteConfig($mapfile)) http_response_code(500);
+		if (!wm_editor_write_config($map, $mapfile)) http_response_code(500);
 	}
 }
 
@@ -802,7 +840,7 @@ function linkTidy($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
@@ -812,7 +850,7 @@ function linkTidy($mapfile) {
 
 		tidy_link($map, $target);
 
-		$map->WriteConfig($mapfile);
+		wm_editor_write_config($map, $mapfile);
 	}
 }
 
@@ -825,13 +863,13 @@ function reTidy($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	// draw a map and throw it away, to calculate all the bounding boxes
 	$map->DrawMap('null');
 	retidy_links($map);
 
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -843,13 +881,13 @@ function reTidyAll($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	// draw a map and throw it away, to calculate all the bounding boxes
 	$map->DrawMap('null');
 	retidy_links($map,true);
 
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -861,13 +899,13 @@ function unTidy($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	// draw a map and throw it away, to calculate all the bounding boxes
 	$map->DrawMap('null');
 	untidy_links($map);
 
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -879,7 +917,7 @@ function deleteLink($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 	$log    = 'delete link ' . $target;
@@ -887,7 +925,7 @@ function deleteLink($mapfile) {
 	if (isset($map->links[$target])) {
 		unset($map->links[$target]);
 
-		$map->WriteConfig($mapfile);
+		wm_editor_write_config($map, $mapfile);
 	}
 }
 
@@ -904,7 +942,7 @@ function addNode($mapfile, $grid_snap_value) {
 	$x = snap(intval(get_nfilter_request_var('x')), $grid_snap_value);
 	$y = snap(intval(get_nfilter_request_var('y')), $grid_snap_value);
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$newnodename = sprintf('node%05d', time() % 10000);
 
@@ -933,7 +971,7 @@ function addNode($mapfile, $grid_snap_value) {
 	$map->nodes[$node->name] = $node;
 	$log                     = "added a node called $newnodename at $x,$y to $mapfile";
 
-	$map->WriteConfig($mapfile);
+	wm_editor_write_config($map, $mapfile);
 }
 
 /**
@@ -948,7 +986,7 @@ function editorSettings($mapfile) {
 	$map->context = 'editor';
 
 	// have to do this, otherwise the editor will be unresponsive afterwards - not actually going to change anything!
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$use_overlay          = (isset_request_var('editorsettings_showvias') ? intval(get_nfilter_request_var('editorsettings_showvias')) : false);
 	$use_relative_overlay = (isset_request_var('editorsettings_showrelative') ? intval(get_nfilter_request_var('editorsettings_showrelative')) : false);
@@ -964,10 +1002,14 @@ function deleteNode($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
+	if (!isset($map->nodes[$target])) {
+		http_response_code(404);
+		return;
+	}
 	if (isset($map->nodes[$target])) {
 		$log = 'delete node ' . $target;
 
@@ -981,7 +1023,7 @@ function deleteNode($mapfile) {
 
 		unset($map->nodes[$target]);
 
-		if (!$map->WriteConfig($mapfile)) http_response_code(500);
+		if (!wm_editor_write_config($map, $mapfile)) http_response_code(500);
 	}
 }
 
@@ -994,7 +1036,7 @@ function cloneNode($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
@@ -1025,7 +1067,7 @@ function cloneNode($mapfile) {
 
 		array_push($map->seen_zlayers[$node->zorder], $node);
 
-		$map->WriteConfig($mapfile);
+		wm_editor_write_config($map, $mapfile);
 	}
 }
 
@@ -1038,7 +1080,7 @@ function displayFontSamples($mapfile) {
 
 	$map->context = 'editor';
 
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	ksort($map->fonts);
 	header('Content-type: image/png');
@@ -1148,7 +1190,7 @@ function getImageURL($mapname, $selected) {
 function setNoteProperties($mapfile, $grid_snap_value) {
 	$map = new WeatherMap;
 	$map->context = 'editor';
-	$map->ReadConfig($mapfile);
+	if (!wm_editor_read_config($map, $mapfile)) return;
 	$values = [];
 	foreach (['name', 'text', 'font', 'colour', 'x', 'y', 'align'] as $field) {
 		$values[$field] = get_nfilter_request_var('note_' . $field);
@@ -1157,5 +1199,5 @@ function setNoteProperties($mapfile, $grid_snap_value) {
 		http_response_code(400);
 		return;
 	}
-	if (!$map->WriteConfig($mapfile)) http_response_code(500);
+	if (!wm_editor_write_config($map, $mapfile)) http_response_code(500);
 }

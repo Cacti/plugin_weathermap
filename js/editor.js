@@ -922,6 +922,8 @@ function form_submit() {
 			if (savingNote) {
 				if (noteAction !== 'set_note_properties') show_note(noteTarget);
 				$('#wm-note-error').text(wmEditorText.noteError).show();
+			} else {
+				window.alert(wmEditorText.saveError);
 			}
 		},
 		success: function(html) {

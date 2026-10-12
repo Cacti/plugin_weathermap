@@ -1020,6 +1020,7 @@ function getEditorJs() {
 		'iconMatchCount' => __('Matching icons: %s', '%s', 'weathermap'),
 		'iconNoMatches' => __('No matching icons', 'weathermap'),
 
+		'saveError' => __('Unable to save changes. Please try again.', 'weathermap'),
 		'currentInterface'     => __('Current interface', 'weathermap'),
 		'advanced'             => __('Advanced settings', 'weathermap'),
 		'hideAdvanced'         => __('Hide advanced settings', 'weathermap'),
@@ -1032,7 +1033,7 @@ function getEditorJs() {
 		'noteDeleteTitle' => __('Delete Note Confirmation', 'weathermap'),
 		'noteDeleteAction' => __('Delete Note', 'weathermap'),
 		'noteDelete' => __('Delete note "%s"?', '%s', 'weathermap'),
-		'noteError' => __('The note could not be saved. Check its text, font and position, then try again.', 'weathermap'),
+		'noteError' => __('Unable to save changes. Please try again.', 'weathermap'),
 		'currentGraph'         => __('Current graph: %s', '%s', 'weathermap'),
 		'customConfig'         => __('Custom configuration — details under Advanced', 'weathermap'),
 		'chooseInterface'      => __('Choose an interface below', 'weathermap'),

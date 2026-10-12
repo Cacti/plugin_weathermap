@@ -51,6 +51,10 @@ try {
 		note_assert(wm_editor_note_data($map)[$name]['font'] === '3', 'missing note font falls back to a built-in');
 	} finally { restore_error_handler(); }
 	$map->nodes[$name]->labelfont = $validFont;
+	$validFile = $map->fonts[$validFont]->file;
+	$map->fonts[$validFont]->file = '/nonexistent/note-font.ttf';
+	note_assert(wm_editor_note_data($map)[$name]['font'] === '3', 'unreadable TrueType font falls back');
+	$map->fonts[$validFont]->file = $validFile;
 	note_assert(in_array($map->nodes[$name], $map->seen_zlayers[$map->nodes[$name]->zorder], true), 'new note indexed immediately');
 	$map->DrawMap($directory . '/immediate.png');
 	note_assert(getimagesize($directory . '/immediate.png')[0] === 1200, 'new note renders sharply without rereading');

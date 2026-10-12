@@ -111,6 +111,10 @@ function wm_editor_note_data($map) {
 		}
 		$fontId = isset($map->fonts[$node->labelfont]) ? $node->labelfont : 3;
 		$font = $map->fonts[$fontId];
+		if ($font->type === 'truetype' && !is_readable(wm_font_file($font->file))) {
+			$fontId = 3;
+			$font = $map->fonts[$fontId];
+		}
 		$rgb = $node->labelfontcolour;
 		$notes[$name] = ['align' => $node->get_hint('editor_note_align', 'left'), 'font' => (string)$fontId, 'fontLabel' => wm_editor_font_label($fontId, $font),
 			'colour' => sprintf('#%02x%02x%02x', max(0, $rgb[0]), max(0, $rgb[1]), max(0, $rgb[2]))];

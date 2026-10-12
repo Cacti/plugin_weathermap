@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* Make configuration saves and repairs atomic; coordinate writes, registration and deletion with destination-directory locks and report failed editor saves
+
 * Add editable map notes with alignment and sharp text at logical map dimensions
 * Reduce gallery preview cards by 20% while preserving generated thumbnail resolution
 * Add a searchable node icon picker and bundled enterprise site icons
