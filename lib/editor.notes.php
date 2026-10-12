@@ -109,9 +109,10 @@ function wm_editor_note_data($map) {
 		if ($node->get_hint('editor_note', '0') !== '1' || $name === 'DEFAULT') {
 			continue;
 		}
-		$font = $map->fonts[$node->labelfont];
+		$fontId = isset($map->fonts[$node->labelfont]) ? $node->labelfont : 3;
+		$font = $map->fonts[$fontId];
 		$rgb = $node->labelfontcolour;
-		$notes[$name] = ['align' => $node->get_hint('editor_note_align', 'left'), 'font' => (string)$node->labelfont, 'fontLabel' => wm_editor_font_label($node->labelfont, $font),
+		$notes[$name] = ['align' => $node->get_hint('editor_note_align', 'left'), 'font' => (string)$fontId, 'fontLabel' => wm_editor_font_label($fontId, $font),
 			'colour' => sprintf('#%02x%02x%02x', max(0, $rgb[0]), max(0, $rgb[1]), max(0, $rgb[2]))];
 	}
 	return $notes;
