@@ -1101,14 +1101,7 @@ function show_node(name) {
 	if (success) {
 		$('#action').val('set_node_properties');
 
-		if ($('#node_iconfilename.dd-container').length) {
-			$('#node_iconfilename').ddslick('destroy');
-		}
-
-		$('#node_iconfilename').val(selectedNode).ddslick({
-			height:240,
-			defaultSelectedIndex:selectedNode
-		});
+		wmNodeIconPicker();
 
 		$('.dd-container').on('click', function() {
 			$('.ui-dialog').css('z-index', '100');
@@ -1124,6 +1117,71 @@ function show_node(name) {
 	} else {
 		console.log('Unable to find node');
 	}
+}
+
+function wmNodeIconPicker() {
+	var select = $('#node_iconfilename');
+	if (select.hasClass('dd-container')) {
+		select.ddslick('destroy');
+		select = $('#node_iconfilename');
+	}
+	select.val(selectedNode).addClass('wm-icon-source');
+	$('#wm-icon-picker').remove();
+	var picker = $('<details id="wm-icon-picker" class="wm-icon-picker">').insertAfter(select);
+	var summary = $('<summary>').appendTo(picker);
+	var panel = $('<div class="wm-icon-panel">').appendTo(picker);
+	var search =  $('<input type="search">').attr({placeholder: wmEditorText.iconSearchPlaceholder, 'aria-label': wmEditorText.iconSearchLabel}).appendTo(panel);
+	var count = $('<div class="wm-icon-count" role="status" aria-live="polite">').appendTo(panel);
+	var grid = $('<div class="wm-icon-grid">').attr({role: 'group', 'aria-label': wmEditorText.iconGroupLabel}).appendTo(panel);
+	function title(option) {
+		return option.text.replace(/\.(png|gif|jpe?g)$/i, '').replace(/[-_]+/g, ' ');
+	}
+	function content(target, option) {
+		var src = $(option).attr('data-imagesrc');
+		if (src) $('<img alt="">').attr('src', src).appendTo(target);
+		$('<span>').text(title(option)).appendTo(target);
+	}
+	function updateSelection() {
+		var option = select.find('option:selected')[0];
+		summary.empty();
+		if (option) content(summary, option);
+		else summary.text(wmEditorText.iconChoosePrompt);
+		grid.find('button').each(function() {
+			$(this).attr('aria-pressed', String($(this).data('value') === select.val()));
+		});
+	}
+	select.find('option').each(function() {
+		var option = this;
+		var button = $('<button type="button" class="wm-icon-choice">').attr('title', option.text).data('value', option.value).appendTo(grid);
+		content(button, option);
+		button.on('click', function() {
+			select.val(option.value);
+			updateSelection();
+			picker.prop('open', false);
+			summary.trigger('focus');
+		});
+	});
+	search.on('input', function() {
+		var query = this.value.trim().toLowerCase();
+		var visible = 0;
+		grid.find('button').each(function() {
+			var matches = ($(this).text() + ' ' + $(this).data('value')).toLowerCase().indexOf(query) !== -1;
+			$(this).prop('hidden', !matches);
+			if (matches) visible++;
+		});
+		count.text(visible ? wmEditorText.iconMatchCount.replace('%s', String(visible)) : wmEditorText.iconNoMatches);
+	});
+	picker.on('keydown', function(event) {
+		if (event.key === 'Escape' && picker.prop('open')) {
+			event.stopPropagation();
+			picker.prop('open', false);
+			summary.trigger('focus');
+		} else if (event.key === 'Enter' && event.target === search[0]) {
+			event.preventDefault();
+		}
+	});
+	search.trigger('input');
+	updateSelection();
 }
 
 function prime_link_form(name) {
