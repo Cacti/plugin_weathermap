@@ -1150,7 +1150,7 @@ function getImageURL($mapname, $selected) {
  * @param string $mapfile The validated map configuration path.
  * @param string $action The requested colour operation.
  *
- * @return void Errors are returned as HTTP 400 JSON responses.
+ * @return void Errors are returned as JSON with the appropriate HTTP status.
  */
 function wm_editor_colours($mapfile, $action) {
 	header('Content-Type: application/json');
@@ -1159,8 +1159,9 @@ function wm_editor_colours($mapfile, $action) {
 		$map = new WeatherMap;
 		$map->context = 'editor';
 		if (!$map->ReadConfig($mapfile)) throw new RuntimeException(__('Cannot read the map configuration.', 'weathermap'));
+		$currentRevision = $map->config_revision ?? hash_file('sha256', $mapfile);
 		$revision = get_nfilter_request_var('config_revision');
-		if ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals($map->config_revision ?? hash_file('sha256', $mapfile), $revision))) {
+		if (($action === 'set_map_colours' || ($revision !== null && $revision !== '')) && (!is_string($revision) || !hash_equals($currentRevision, $revision))) {
 			http_response_code(409);
 			echo json_encode(['error' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap')]);
 			return;
@@ -1171,7 +1172,7 @@ function wm_editor_colours($mapfile, $action) {
 			wm_asset_save_colours($map, $data);
 			if (!$map->WriteConfig($mapfile)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
 		}
-		echo json_encode(['colours' => wm_asset_colour_data($map)]);
+		echo json_encode(['colours' => wm_asset_colour_data($map), 'revision' => hash_file('sha256', $mapfile)]);
 	} catch (Throwable $error) {
 		http_response_code(400);
 		echo json_encode(['error' => $error->getMessage()]);

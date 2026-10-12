@@ -8,7 +8,7 @@ Object.keys(w.wmTrafficPresets).concat('custom').forEach(key=>$('#wm-traffic-pre
 let request;$.ajax=opts=>request=opts;w.wmOpenColours();assert.equal(request.data.action,'colour_data');assert.equal(request.type,'GET');
 const named={scale:'Temperature'+ 'A'.repeat(70),bottom:-20,top:0,colour:'#0000ff',end:'',tag:'Cold'};
 const rows=w.wmTrafficPresets.classic.map(b=>({scale:'DEFAULT',bottom:b[0],top:b[1],colour:b[2],end:'',tag:''})).concat(named);
-request.success({colours:{outline:'#000000',pulse:true,rows}});
+request.success({revision:'a'.repeat(64),colours:{outline:'#000000',pulse:true,rows}});
 assert.equal($('#wm-outline-colour select').attr('aria-label'),'Link border');
 assert.equal($('#wm-scale-rows tr').first().find('td').eq(3).find('select').attr('aria-label'),'Range colour');
 assert.equal($('#wm-scale-rows tr').first().find('td').eq(4).find('input[type=color]').attr('aria-label'),'Gradient end');
@@ -21,8 +21,9 @@ $('#wm-traffic-preset').val('custom').trigger('change');assert.equal($('#wm-traf
 $('#wm-scale-rows tr').filter((i,tr)=>$(tr).find('.wm-range-scale').val()==='DEFAULT').first().find('td').eq(3).find('select').val('#cc0000').trigger('change');
 assert.equal($('#wm-traffic-preview .wm-traffic-swatch').first().css('background-color'),'rgb(204, 0, 0)');
 $('#wm-outline-colour select').val('#0000ff');$('#wm-traffic-pulse').prop('checked',false);$('#wm-colours-save').trigger('click');
-assert.equal(request.type,'POST');assert.equal(request.data.action,'set_map_colours');assert.equal(request.data.__csrf_magic,'fixture');
+assert.equal(request.type,'POST');assert.equal(request.data.action,'set_map_colours');assert.equal(request.data.config_revision,'a'.repeat(64));assert.equal(request.data.__csrf_magic,'fixture');
 const payload=JSON.parse(request.data.colours_json);assert.equal(payload.outline,'#0000ff');assert.equal(payload.pulse,false);assert.equal(payload.rows.find(r=>r.scale===named.scale).tag,'Cold');assert.equal('background' in payload,false);
+w.hide_all_dialogs=()=>{};w.wmColourRefreshMap=()=>{};request.success({revision:'b'.repeat(64)});assert.equal(w.wmColourRevision,'b'.repeat(64));
 request.error({responseJSON:{error:'Invalid range'}});assert.equal($('#wm-colours-error').text(),'Invalid range');
 // Cancel leaves the named background value untouched; submitting commits it.
 $('body').append('<input name="map_background_colour" id="map_background_colour" value="#ffffff"><input id="action"><div id="wm-map-background-colour"></div><div id="dlgMapProperties"></div><input id="map_title">');

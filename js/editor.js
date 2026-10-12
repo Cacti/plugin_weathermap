@@ -1752,12 +1752,13 @@ function wmAssetColour(value, allowEmpty, swatches, solid, label) {
 	select.on('change selectmenuchange', function() { if (/^#/.test(this.value)) picker.val(this.value); if (select.selectmenu('instance')) select.selectmenu('refresh'); });
 	return box;
 }
+var wmColourRevision = null;
 function wmColourRequest(action, extra, callback, errorId) {
 	var values = {action: action, mapname: $('#mapname').val()};
-	if (typeof WMConfigRevision !== 'undefined') values.config_revision = WMConfigRevision;
+	if (action === 'set_map_colours') values.config_revision = wmColourRevision;
 	if (typeof csrfMagicToken !== 'undefined') values.__csrf_magic = csrfMagicToken;
 	$.ajax({url: editor_url, type: action === 'colour_data' ? 'GET' : 'POST', dataType: 'json', data: $.extend(values, extra),
-		success: callback, error: function(xhr) { $('#' + errorId).text(xhr.status === 409 && wmEditorText.staleError || xhr.responseJSON && xhr.responseJSON.error || wmEditorText.colourText4); }});
+		success: function(data) { if (data.revision) wmColourRevision = data.revision; callback(data); }, error: function(xhr) { $('#' + errorId).text(xhr.status === 409 && wmEditorText.staleError || xhr.responseJSON && xhr.responseJSON.error || wmEditorText.colourText4); }});
 }
 function wmAssetScaleRow(row) {
 	var tr = $('<tr>').appendTo('#wm-scale-rows');

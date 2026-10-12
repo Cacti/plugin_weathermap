@@ -128,6 +128,17 @@ try {
 	$GLOBALS['__test_nfilter_request']['map_background_colour'] = '#invalid';
 	setMapProperties($file);
 	assets_assert(file_get_contents($file) === $before_file, 'invalid background does not write');
+	$GLOBALS['__test_nfilter_request'] = [];
+	ob_start(); wm_editor_colours($file, 'colour_data'); $loadedColours = json_decode(ob_get_clean(), true);
+	assets_assert($loadedColours['revision'] === hash_file('sha256', $file), 'colour load returns its revision');
+	$GLOBALS['__test_nfilter_request'] = ['colours_json' => json_encode($data)];
+	$_SERVER['REQUEST_METHOD'] = 'POST';
+	ob_start(); wm_editor_colours($file, 'set_map_colours'); $missingRevision = json_decode(ob_get_clean(), true);
+	assets_assert(http_response_code() === 409 && isset($missingRevision['error']) && file_get_contents($file) === $before_file, 'colour save requires a revision');
+	$GLOBALS['__test_nfilter_request']['config_revision'] = $loadedColours['revision'];
+	ob_start(); wm_editor_colours($file, 'set_map_colours'); $savedColours = json_decode(ob_get_clean(), true);
+	assets_assert(isset($savedColours['revision']) && $savedColours['revision'] === hash_file('sha256', $file), 'colour save returns its new revision');
+	$before_file = file_get_contents($file);
 	$GLOBALS['__test_nfilter_request'] = ['config_revision' => str_repeat('0', 64), 'colours_json' => json_encode($data)];
 	$_SERVER['REQUEST_METHOD'] = 'POST';
 	ob_start(); wm_editor_colours($file, 'set_map_colours'); $staleResponse = json_decode(ob_get_clean(), true);
