@@ -1022,6 +1022,12 @@ function getEditorJs() {
 		'colourText7' => __('Remove range', 'weathermap'),
 		'colourText8' => __('Custom (%s)', '%s', 'weathermap'),
 		'palette' => ['Black' => __('Black', 'weathermap'), 'White' => __('White', 'weathermap'), 'Blue' => __('Blue', 'weathermap'), 'Red' => __('Red', 'weathermap'), 'Green' => __('Green', 'weathermap'), 'Purple' => __('Purple', 'weathermap'), 'Orange' => __('Orange', 'weathermap'), 'Grey' => __('Grey', 'weathermap'), 'None' => __('None', 'weathermap')],
+		'iconSearchPlaceholder' => __('Search icons…', 'weathermap'),
+		'iconSearchLabel' => __('Search node icons', 'weathermap'),
+		'iconGroupLabel' => __('Node icons', 'weathermap'),
+		'iconChoosePrompt' => __('Choose an icon', 'weathermap'),
+		'iconMatchCount' => __('Matching icons: %s', '%s', 'weathermap'),
+		'iconNoMatches' => __('No matching icons', 'weathermap'),
 
 		'currentInterface'     => __('Current interface', 'weathermap'),
 		'advanced'             => __('Advanced settings', 'weathermap'),
