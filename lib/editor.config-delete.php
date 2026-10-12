@@ -91,7 +91,7 @@ function wm_config_delete($directory, $file) {
 		return 'invalid';
 	}
 	require_once __DIR__ . '/WeatherMap.config.php';
-	$directory_lock = \WeathermapConfig\acquire($directory);
+	$directory_lock = \WeathermapConfig\acquire($directory, false);
 	if (!$directory_lock) return 'failed';
 	try {
 		$path     = $directory . '/' . $file;
