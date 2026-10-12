@@ -59,5 +59,8 @@ $('#action').val('add_link');w.mapmode('existing');
 contextOptions.beforeOpen.call($('map')[0],{}, {target:$('#NODE\\:1\\:0')});
 assert.equal($('#action').val(),'');
 assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));
+w.eval(src.slice(src.indexOf('function click_execute('),src.indexOf('function show_context_help(')));
+$('#action').val('add_link');w.mapmode('existing');assert.ok($('#existingdata').hasClass('wm-placement-mode'));
+w.click_execute({},'LINK:1:0');assert.equal($('#action').val(),'');assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));assert.equal($('area').css('cursor'),'pointer');
 dom.window.close();
 console.log('PASS: context menu cancels placement; node/link confirmations and closing restore normal map mode');

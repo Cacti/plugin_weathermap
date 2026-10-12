@@ -672,7 +672,8 @@ function click_execute(event, alt) {
 			// reset back to standard state, and see if we can oblige them
 			//		alert('A bit confused');
 			$('#action').val('');
-			hide_all_dialogs()
+			hide_all_dialogs();
+			mapmode('existing');
 		}
 	}
 }
