@@ -873,6 +873,9 @@ function delete_link() {
 }
 
 function form_submit() {
+	if ($('#action').val() === 'set_map_properties') {
+		$('#map_background_colour').val($('#wm-map-background-colour .wm-colour-value').val());
+	}
 	var data = $('input, select, textarea').serialize();
 
 	$.ajax({
@@ -906,11 +909,8 @@ function map_properties() {
 
 	hide_all_dialogs();
 
-    var background = wmAssetColour($('#map_background_colour').val(), false, true, true);
-    $('#wm-map-background-colour').empty().append(background);
-    background.on('input change selectmenuchange', function() {
-        $('#map_background_colour').val(background.find('.wm-colour-value').val());
-    });
+	var background = wmAssetColour($('#map_background_colour').val(), false, true, true);
+	$('#wm-map-background-colour').empty().append(background);
 	$('#action').val('set_map_properties');
 
 	show_dialog('dlgMapProperties');

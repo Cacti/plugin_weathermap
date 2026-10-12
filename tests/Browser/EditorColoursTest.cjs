@@ -21,4 +21,15 @@ $('#wm-outline-colour select').val('#0000ff');$('#wm-traffic-pulse').prop('check
 assert.equal(request.type,'POST');assert.equal(request.data.action,'set_map_colours');assert.equal(request.data.__csrf_magic,'fixture');
 const payload=JSON.parse(request.data.colours_json);assert.equal(payload.outline,'#0000ff');assert.equal(payload.pulse,false);assert.equal(payload.rows.find(r=>r.scale===named.scale).tag,'Cold');assert.equal('background' in payload,false);
 request.error({responseJSON:{error:'Invalid range'}});assert.equal($('#wm-colours-error').text(),'Invalid range');
+// Cancel leaves the named background value untouched; submitting commits it.
+$('body').append('<input name="map_background_colour" id="map_background_colour" value="#ffffff"><input id="action"><div id="wm-map-background-colour"></div><div id="dlgMapProperties"></div><input id="map_title">');
+w.mapmode=()=>{};w.hide_all_dialogs=()=>{};w.show_dialog=()=>{};
+const open=source.slice(source.indexOf('function map_properties()'),source.indexOf('function map_style()'));
+w.eval(open);w.map_properties();
+$('#wm-map-background-colour select').val('#0000ff').trigger('change');
+assert.equal($('#map_background_colour').val(),'#ffffff','cancelled edit does not mutate saved field');
+w.map_properties();assert.equal($('#wm-map-background-colour select').val(),'#ffffff','reopening discards cancelled colour');
+$('#wm-map-background-colour select').val('#0000ff').trigger('change');
+w.eval(source.slice(source.indexOf('function form_submit()'),source.indexOf('function map_properties()')));
+w.form_submit();assert.equal($('#map_background_colour').val(),'#0000ff');assert.ok(request.data.includes('map_background_colour=%230000ff'));
 dom.window.close();console.log('PASS: colour preset preview, named scales, Custom, gradients, save and errors');

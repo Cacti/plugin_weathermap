@@ -642,7 +642,7 @@ foreach ($graph_templates as $gt) {
 if (count($backgd_list) == 0) {
 	print '<option data-value="--NONE--">(no images are available)</option>';
 } else {
-	print '<option data-description="Use Map Background Colour" data-imagesrc="" value="--NONE--">--NO BACKGROUND--</option>';
+	print '<option data-description="' . __esc('Use Map Background Colour', 'weathermap') . '" data-imagesrc="" value="--NONE--">' . __esc('--NO BACKGROUND--', 'weathermap') . '</option>';
 
 	foreach ($backgd_list as $im) {
 		$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($im)));

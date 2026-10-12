@@ -1,4 +1,4 @@
-$(function() {
+function initWeatherMapView() {
 	$('map').tooltip({
 		items: 'area',
 		track: false,
@@ -58,7 +58,9 @@ $(function() {
 	waitForFinalEvent(function() {
 		$('.cactiGraphContentArea').removeClass('cactiGraphContentArea').addClass('wm_scroll');
 	});
-});
+}
+$(initWeatherMapView);
+$(document).ajaxComplete(initWeatherMapView);
 
 /**
  * only perform the recalculation of elements at the final end of the windows resize event

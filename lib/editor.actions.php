@@ -457,15 +457,14 @@ function setMapProperties($mapfile) {
 
 	$map->ReadConfig($mapfile);
 
-    // Omitted by older clients: keep the existing background.
-    $background_colour = get_nfilter_request_var('map_background_colour');
-    if ($background_colour !== null && $background_colour !== '') {
-        if (!is_string($background_colour) || !preg_match('/^#[0-9a-f]{6}$/iD', $background_colour)) return;
-        foreach (['red1', 'green1', 'blue1'] as $i => $channel) {
-            $map->colours['DEFAULT']['BG'][$channel] = hexdec(substr($background_colour, 1 + 2 * $i, 2));
-        }
-    }
-
+	// Omitted by older clients: keep the existing background.
+	$background_colour = get_nfilter_request_var('map_background_colour');
+	if ($background_colour !== null && $background_colour !== '') {
+		if (!is_string($background_colour) || !preg_match('/^#[0-9a-f]{6}$/iD', $background_colour)) return;
+		foreach (['red1', 'green1', 'blue1'] as $i => $channel) {
+			$map->colours['DEFAULT']['BG'][$channel] = hexdec(substr($background_colour, 1 + 2 * $i, 2));
+		}
+	}
 	$map->title              = wm_editor_sanitize_string(get_nfilter_request_var('map_title'));
 	$map->keytext['DEFAULT'] = wm_editor_sanitize_string(get_nfilter_request_var('map_legend'));
 	$map->stamptext          = wm_editor_sanitize_string(get_nfilter_request_var('map_stamp'));

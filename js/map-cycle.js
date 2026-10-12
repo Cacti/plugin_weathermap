@@ -53,12 +53,30 @@ var WMcycler = {
         }
     },
     forceReload: function (that) {
-        var d = new Date(),
-            newurl = $(that).find('img').attr("src");
-
-        newurl = newurl.replace(/time=\d+/, "time=" + d.getTime());
-
-        $(that).find('img').attr("src", newurl);
+        var holder = $(that);
+        if (holder.find('.weathermapimage[data-wm-traffic]').length) {
+            // Refresh the generated image, hotspots and glow metadata as one snapshot.
+            if (holder.data('wm-refreshing')) return;
+            holder.data('wm-refreshing', true);
+            $.ajax({
+                url: document.location.href,
+                dataType: 'html',
+                cache: false,
+                success: function(html) {
+                    if (!holder[0].isConnected) return;
+                    var page = $('<div>').append($.parseHTML(html, document, false));
+                    var replacement = page.find('.weathermapholder').filter(function() {
+                        return this.id === holder.attr('id');
+                    }).find('.weathermapimage').first();
+                    if (replacement.length) holder.find('.weathermapimage').first().replaceWith(replacement);
+                },
+                complete: function() { holder.removeData('wm-refreshing'); }
+            });
+            return;
+        }
+        var d = new Date(), newurl = holder.find('img').attr('src');
+        newurl = newurl.replace(/time=\d+/, 'time=' + d.getTime());
+        holder.find('img').attr('src', newurl);
     },
 
     // change to the next (or previous) map, reset the countdown, update the bar
