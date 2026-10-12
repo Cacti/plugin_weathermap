@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 23:20+1030\n"
+"POT-Creation-Date: 2026-10-13 09:09+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -1858,12 +1858,20 @@ msgid "(No Title)"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-msgid "Could not save the map configuration."
+msgid "Could not lock map configurations."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 #, php-format
 msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
