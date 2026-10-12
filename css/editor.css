@@ -345,3 +345,43 @@ body#mainView .ui-dialog textarea.ui-state-default {
  background: var(--background-content, #e6e6e6) !important;
  color: var(--text-color-lighter, #333) !important;
 }
+
+/* Searchable node icon gallery; keep backgrounds on their existing selector. */
+body#mainView .wm-icon-source { display: none; }
+body#mainView .wm-icon-picker { width: 320px; max-width: 100%; }
+body#mainView .wm-icon-picker summary {
+ display: flex; align-items: center; gap: 10px; cursor: pointer;
+ padding: 8px 12px; min-height: 48px; box-sizing: border-box;
+ border: 1px solid var(--border-color, #888); border-radius: 4px;
+ background: var(--background, #fff); color: var(--text-color-lighter, #333);
+ list-style: none;
+}
+body#mainView .wm-icon-picker summary::-webkit-details-marker { display: none; }
+body#mainView .wm-icon-picker summary::after { content: '▾'; margin-left: auto; }
+body#mainView .wm-icon-picker[open] summary::after { content: '▴'; }
+body#mainView .wm-icon-picker summary img { width: 40px; height: 40px; object-fit: contain; }
+body#mainView .wm-icon-panel {
+ padding: 8px; border: 1px solid var(--border-color, #888); border-top: 0;
+ background: var(--background, #fff); color: var(--text-color-lighter, #333); box-sizing: border-box;
+}
+body#mainView .wm-icon-panel input[type="search"] { width: 100%; box-sizing: border-box; margin: 0; caret-color: auto; }
+body#mainView .wm-icon-count { font-size: 12px; margin: 6px 0; }
+body#mainView .wm-icon-grid {
+ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+ gap: 6px; max-height: 220px; overflow-y: auto; overscroll-behavior: contain;
+}
+body#mainView .wm-icon-grid .wm-icon-choice {
+ display: flex; flex-direction: column; align-items: center; gap: 5px;
+ width: 100%; min-width: 0; min-height: 86px; padding: 6px; margin: 0;
+ border: 1px solid var(--border-color, #888); border-radius: 4px;
+ background: var(--background, #fff); color: var(--text-color-lighter, #333);
+ cursor: pointer; white-space: normal; font-size: 12px; line-height: 1.25;
+}
+body#mainView .wm-icon-choice[hidden] { display: none !important; }
+body#mainView .wm-icon-choice img { width: 48px; height: 48px; object-fit: contain; }
+body#mainView .wm-icon-choice span { overflow-wrap: anywhere; }
+body#mainView .wm-icon-choice:hover,
+body#mainView .wm-icon-choice[aria-pressed="true"] {
+ background: var(--background-lowlight, #eee);
+ border-color: var(--text-color-highlight-a, #2874aa);
+}
