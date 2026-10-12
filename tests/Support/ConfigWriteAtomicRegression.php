@@ -326,6 +326,40 @@ namespace {
 			unset($GLOBALS['__test_db_fetch_assoc'], $GLOBALS['config_before_lock']);
 			foreach ([$stageSource, $stageTarget, $stageConfig] as $path) if (is_file($path)) unlink($path);
 		}
+		// Exercise legacy background and icon relocation in a separate filesystem tree.
+		$repairRoot = $dir . '/repair-fixture';
+		$repairPlugin = $repairRoot . '/cacti/plugins/weathermap';
+		mkdir($repairPlugin . '/configs', 0777, true); mkdir($repairPlugin . '/images');
+		symlink($plugin . '/lib', $repairPlugin . '/lib');
+		file_put_contents($repairPlugin . '/legacy-background.png', 'Background bytes');
+		file_put_contents($repairPlugin . '/legacy-icon.png', 'Icon bytes');
+		$legacyFixture = "BACKGROUND legacy-background.png\nNODE Legacy\n ICON legacy-icon.png\n";
+		$fixtureConfig = $repairPlugin . '/configs/legacy.conf';
+		$oldConfig = $GLOBALS['config']; $oldSuppress = $GLOBALS['weathermap_error_suppress'] ?? [];
+		$GLOBALS['config']['base_path'] = $repairRoot . '/cacti';
+		$GLOBALS['__test_db_fetch_assoc'] = fn () => [['configfile' => 'legacy.conf']];
+		$GLOBALS['weathermap_error_suppress'] = ['WMPOLL09', 'WMPOLL10', 'WMPOLL11', 'WMPOLL12', 'WMPOLL13'];
+		try {
+			file_put_contents($fixtureConfig, $legacyFixture); weathermap_repair_maps();
+			$repairedFixture = file_get_contents($fixtureConfig);
+			atomic_assert(str_contains($repairedFixture, 'BACKGROUND images/backgrounds/legacy-background.png') && str_contains($repairedFixture, 'ICON images/objects/legacy-icon.png'), 'repair creates libraries and copies both legacy asset kinds');
+			atomic_assert(is_file($repairPlugin . '/legacy-background.png') && is_file($repairPlugin . '/legacy-icon.png'), 'successful repair preserves both original assets');
+			file_put_contents($fixtureConfig, $legacyFixture); weathermap_repair_maps();
+			atomic_assert(file_get_contents($fixtureConfig) === $repairedFixture, 'existing complete copies support path-only repair');
+			weathermap_repair_maps(); atomic_assert(file_get_contents($fixtureConfig) === $repairedFixture, 'correct paths require no rewrite');
+			unlink($repairPlugin . '/images/backgrounds/legacy-background.png'); unlink($repairPlugin . '/images/objects/legacy-icon.png');
+			file_put_contents($fixtureConfig, $legacyFixture); $GLOBALS['config_fault'] = 'rename'; weathermap_repair_maps();
+			atomic_assert(file_get_contents($fixtureConfig) === $legacyFixture && is_file($repairPlugin . '/legacy-background.png') && is_file($repairPlugin . '/legacy-icon.png'), 'failed background and icon staging preserves usable original references');
+			$GLOBALS['config_fault'] = ''; file_put_contents($fixtureConfig, "BACKGROUND absent-background.png\nNODE Missing\n ICON absent-icon.png\n");
+			$missingFixture = file_get_contents($fixtureConfig); weathermap_repair_maps();
+			atomic_assert(file_get_contents($fixtureConfig) === $missingFixture, 'missing assets do not change config paths');
+		} finally {
+			$GLOBALS['config'] = $oldConfig; $GLOBALS['weathermap_error_suppress'] = $oldSuppress; $GLOBALS['config_fault'] = '';
+			unset($GLOBALS['__test_db_fetch_assoc']); chdir($plugin);
+			$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($repairRoot, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
+			foreach ($iterator as $entry) { if ($entry->isDir() && !$entry->isLink()) rmdir($entry->getPathname()); else unlink($entry->getPathname()); }
+			rmdir($repairRoot);
+		}
 		$management = file_get_contents($plugin . '/weathermap-cacti-plugin-mgmt.php');
 		$start = strpos($management, 'function newMap(');
 		eval(str_replace(['__DIR__', 'function newMap('], [var_export($plugin, true), 'function wm_management_newMap('], substr($management, $start)));
