@@ -878,6 +878,7 @@ function form_submit() {
 		type: 'POST',
 		url: editor_url,
 		data: data,
+		error: function() { window.alert(wmEditorText.saveError); },
 		success: function(html) {
 			hide_all_dialogs();
 

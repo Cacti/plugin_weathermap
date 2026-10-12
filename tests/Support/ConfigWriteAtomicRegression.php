@@ -241,12 +241,20 @@ namespace {
 		$map = new \WeatherMap; $map->ReadConfig($file); $map->title = 'Changed';
 		atomic_assert(!$map->WriteConfig($file) && file_get_contents($file) === $original, 'engine failure preserves original');
 		$GLOBALS['__test_nfilter_request'] = ['node_name' => 'note1', 'param' => 'note1', 'x' => '70', 'y' => '80'];
-		if (function_exists('wm_editor_save_note')) {
+		{
 			http_response_code(200); moveNode($file, 0);
 			atomic_assert(http_response_code() === 500 && file_get_contents($file) === $original, 'failed move surfaces error without changing file');
 			http_response_code(200); deleteNode($file);
 			atomic_assert(http_response_code() === 500 && file_get_contents($file) === $original, 'failed delete surfaces error without changing file');
 		}
+		$GLOBALS['config_fault'] = '';
+		$GLOBALS['__test_nfilter_request'] = ['node_name' => 'missing', 'param' => 'missing', 'x' => '70', 'y' => '80'];
+		http_response_code(200); moveNode($file, 0);
+		atomic_assert(http_response_code() === 404 && file_get_contents($file) === $original, 'missing move target is an error');
+		http_response_code(200); deleteNode($file);
+		atomic_assert(http_response_code() === 404 && file_get_contents($file) === $original, 'missing delete target is an error');
+		unlink($file); http_response_code(200); moveNode($file, 0);
+		atomic_assert(http_response_code() === 404 && !file_exists($file), 'deleted map cannot report a successful edit');
 		echo "Atomic configuration write and locking regression PASS\n";
 	} finally {
 		$GLOBALS['config_fault'] = '';

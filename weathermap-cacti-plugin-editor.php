@@ -873,7 +873,7 @@ foreach ($styles as $id => $name) {
 				<div class='wm-image-uploader'><label for='wm-image-file-backgrounds'><?php print __esc('Upload background', 'weathermap'); ?></label><input type='file' id='wm-image-file-backgrounds' accept='image/png,image/jpeg,image/gif'><button type='button' class='wm-image-upload ui-button ui-corner-all ui-widget' data-kind='backgrounds'><?php print __esc('Upload Background', 'weathermap'); ?></button></div>
 				<p id='wm-images-backgrounds-count'></p><div id='wm-images-backgrounds' class='wm-image-library' aria-label='<?php print __esc('Existing background images', 'weathermap'); ?>'></div>
 			</div>
-			<div class='dlgButtons'><div class='dlgSubButtons'><a class='wm_cancel ui-button ui-corner-all ui-widget'><?php print __esc('Close', 'weathermap'); ?></a></div></div>
+			<div class='dlgButtons'><div class='dlgSubButtons'><button type='button' class='wm_cancel ui-button ui-corner-all ui-widget'><?php print __esc('Close', 'weathermap'); ?></button></div></div>
 			<div class='dlgHelp'><?php print __esc('PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted.', 'weathermap'); ?></div>
 		</div>
 		<!-- Images -->

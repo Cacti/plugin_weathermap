@@ -1036,6 +1036,7 @@ function getEditorJs() {
 		'iconMatchCount' => __('Matching icons: %s', '%s', 'weathermap'),
 		'iconNoMatches' => __('No matching icons', 'weathermap'),
 
+		'saveError' => __('Unable to save changes. Please try again.', 'weathermap'),
 		'currentInterface'     => __('Current interface', 'weathermap'),
 		'advanced'             => __('Advanced settings', 'weathermap'),
 		'hideAdvanced'         => __('Hide advanced settings', 'weathermap'),
