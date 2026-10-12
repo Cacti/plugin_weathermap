@@ -1079,9 +1079,9 @@ function wmNodeIconPicker() {
 	var picker = $('<details id="wm-icon-picker" class="wm-icon-picker">').insertAfter(select);
 	var summary = $('<summary>').appendTo(picker);
 	var panel = $('<div class="wm-icon-panel">').appendTo(picker);
-	var search =  $('<input type="search">').attr({placeholder: wmEditorText.iconText0, 'aria-label': wmEditorText.iconText1}).appendTo(panel);
+	var search =  $('<input type="search">').attr({placeholder: wmEditorText.iconSearchPlaceholder, 'aria-label': wmEditorText.iconSearchLabel}).appendTo(panel);
 	var count = $('<div class="wm-icon-count" role="status" aria-live="polite">').appendTo(panel);
-	var grid = $('<div class="wm-icon-grid">').attr({role: 'group', 'aria-label': wmEditorText.iconText2}).appendTo(panel);
+	var grid = $('<div class="wm-icon-grid">').attr({role: 'group', 'aria-label': wmEditorText.iconGroupLabel}).appendTo(panel);
 	function title(option) {
 		return option.text.replace(/\.(png|gif|jpe?g)$/i, '').replace(/[-_]+/g, ' ');
 	}
@@ -1094,7 +1094,7 @@ function wmNodeIconPicker() {
 		var option = select.find('option:selected')[0];
 		summary.empty();
 		if (option) content(summary, option);
-		else summary.text(wmEditorText.iconText3);
+		else summary.text(wmEditorText.iconChoosePrompt);
 		grid.find('button').each(function() {
 			$(this).attr('aria-pressed', String($(this).data('value') === select.val()));
 		});
@@ -1118,7 +1118,7 @@ function wmNodeIconPicker() {
 			$(this).prop('hidden', !matches);
 			if (matches) visible++;
 		});
-		count.text(visible ? wmEditorText.iconText4.replace('%s', String(visible)) : wmEditorText.iconText6);
+		count.text(visible ? wmEditorText.iconMatchCount.replace('%s', String(visible)) : wmEditorText.iconNoMatches);
 	});
 	picker.on('keydown', function(event) {
 		if (event.key === 'Escape' && picker.prop('open')) {

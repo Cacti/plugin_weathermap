@@ -1012,12 +1012,12 @@ function getEditorJs() {
 	var addNodeHelp   = '<?php print __esc('Click on the map where you would like to add a new node.', 'weathermap'); ?>';
 
 	var wmEditorText = <?php print json_encode([
-		'iconText0' => __('Search icons…', 'weathermap'),
-		'iconText1' => __('Search node icons', 'weathermap'),
-		'iconText2' => __('Node icons', 'weathermap'),
-		'iconText3' => __('Choose an icon', 'weathermap'),
-		'iconText4' => __('Matching icons: %s', '%s', 'weathermap'),
-		'iconText6' => __('No matching icons', 'weathermap'),
+		'iconSearchPlaceholder' => __('Search icons…', 'weathermap'),
+		'iconSearchLabel' => __('Search node icons', 'weathermap'),
+		'iconGroupLabel' => __('Node icons', 'weathermap'),
+		'iconChoosePrompt' => __('Choose an icon', 'weathermap'),
+		'iconMatchCount' => __('Matching icons: %s', '%s', 'weathermap'),
+		'iconNoMatches' => __('No matching icons', 'weathermap'),
 
 		'currentInterface'     => __('Current interface', 'weathermap'),
 		'advanced'             => __('Advanced settings', 'weathermap'),
