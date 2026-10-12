@@ -101,6 +101,7 @@ it('SerializesTheActualRegistrationAndDeletionPaths', function () {
 		$weathermap_confdir = $old_directory;
 		unset($GLOBALS['__test_db_execute_prepared'], $GLOBALS['__test_db_fetch_cell_prepared']);
 		foreach (glob($directory . '/*') as $entry) { unlink($entry); }
+		if (is_file($directory . '/.weathermap-config.lock')) unlink($directory . '/.weathermap-config.lock');
 		rmdir($directory);
 	}
 });

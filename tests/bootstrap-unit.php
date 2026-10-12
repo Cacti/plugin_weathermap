@@ -67,6 +67,7 @@ if (!function_exists('db_execute_prepared')) {
 
 if (!function_exists('db_fetch_assoc')) {
 	function db_fetch_assoc($sql) {
+		if (isset($GLOBALS['__test_db_fetch_assoc'])) return ($GLOBALS['__test_db_fetch_assoc'])($sql);
 		return [];
 	}
 }
@@ -181,14 +182,6 @@ if (!function_exists('get_current_page')) {
 if (!function_exists('test_set_current_page')) {
 	function test_set_current_page($page) {
 		$GLOBALS['__test_current_page'] = $page;
-	}
-}
-
-// Real implementation lives in lib/poller-common.php, which is never included
-// at runtime by the test suites (it pulls in WeatherMap.class.php); stub it so
-// the upgrade-path test can drive plugin_weathermap_upgrade() safely.
-if (!function_exists('weathermap_repair_maps')) {
-	function weathermap_repair_maps() {
 	}
 }
 

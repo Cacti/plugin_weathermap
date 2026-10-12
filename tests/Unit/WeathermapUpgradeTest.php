@@ -21,6 +21,11 @@
  * suite stubs.
  */
 
+// Only upgrade tests stub the filesystem repair; isolated engine tests load it.
+if (!function_exists('weathermap_repair_maps')) {
+	function weathermap_repair_maps() {}
+}
+
 beforeAll(function () {
 	require_once __DIR__ . '/../../setup.php';
 });
