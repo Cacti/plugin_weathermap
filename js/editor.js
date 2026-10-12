@@ -1706,7 +1706,7 @@ function wmAssetScaleRow(row) {
 		$('<td>').append($('<input>').attr('type', key === 'scale' ? 'text' : 'number').attr('step', 'any').addClass('wm-range-' + key).val(row[key])).appendTo(tr);
 	});
 	$('<td>').append(wmAssetColour(row.colour, false)).appendTo(tr);
-	$('<td>').append(wmAssetColour(row.end || '', true)).appendTo(tr);
+	$('<td>').append(wmAssetColour(row.end || '', true, false, true)).appendTo(tr);
 	$('<td>').append($('<input type="text" class="wm-range-tag">').val(row.tag || '')).appendTo(tr);
 	$('<td>').append($('<button type="button" class="ui-button wm-asset-delete">').text(wmEditorText.colourText2).attr('aria-label', wmEditorText.colourText7).on('click', function() { tr.remove(); })).appendTo(tr);
 }

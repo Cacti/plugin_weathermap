@@ -77,11 +77,11 @@ function wm_asset_save_colours($map, $data) {
 	$outline = wm_asset_rgb($data['outline'] ?? null);
 	if ($background[0] < 0) throw new InvalidArgumentException(__('The background needs a solid colour.', 'weathermap'));
 	$rows = $data['rows'] ?? null;
-	if (!is_array($rows) || count($rows) < 1 || count($rows) > 200) throw new InvalidArgumentException(__('Keep between 1 and 200 scale rows.', 'weathermap'));
+	if (!is_array($rows) || cacti_count($rows) < 1 || cacti_count($rows) > 200) throw new InvalidArgumentException(__('Keep between 1 and 200 scale rows.', 'weathermap'));
 	$scales = [];
 	foreach ($rows as $row) {
 		$name = $row['scale'] ?? '';
-		if (!is_string($name) || !preg_match('/^[A-Za-z][A-Za-z0-9_]{0,63}$/D', $name)) throw new InvalidArgumentException(__('Invalid scale name.', 'weathermap'));
+		if (!is_string($name) || !preg_match('/^[A-Za-z][A-Za-z0-9_]*$/D', $name)) throw new InvalidArgumentException(__('Invalid scale name.', 'weathermap'));
 		foreach (['bottom', 'top'] as $key) if (!isset($row[$key]) || !is_numeric($row[$key]) || !is_finite((float)$row[$key]) || abs((float)$row[$key]) > 1e15) throw new InvalidArgumentException(__('Invalid scale range.', 'weathermap'));
 		if ($row['bottom'] > $row['top']) throw new InvalidArgumentException(__('Range start must be no greater than its end.', 'weathermap'));
 		$rgb = wm_asset_rgb($row['colour'] ?? null);
@@ -89,7 +89,12 @@ function wm_asset_save_colours($map, $data) {
 		if (!is_string($tag) || strlen($tag) > 200 || preg_match('/[\x00-\x1f\x7f]/', $tag)) throw new InvalidArgumentException(__('Invalid scale label.', 'weathermap'));
 		$bottom = round((float)$row['bottom'], 6);
 		$top = round((float)$row['top'], 6);
-		$key = sprintf('%.6F_%.6F', $bottom == 0 ? 0 : $bottom, $top == 0 ? 0 : $top);
+		$serialize = function($value) use ($map) {
+			$decimal = localeconv()['decimal_point'];
+			$number = rtrim(rtrim(sprintf('%f', $value == 0 ? 0 : $value), '0'), $decimal);
+			return $number > 1000 ? nice_bandwidth($value, $map->kilo) : $number;
+		};
+		$key = $serialize($bottom) . '_' . $serialize($top);
 		if (isset($scales[$name][$key])) throw new InvalidArgumentException(__('Duplicate range in a scale.', 'weathermap'));
 		$entry = ['key' => $key, 'bottom' => $bottom, 'top' => $top, 'special' => 0, 'red1' => $rgb[0], 'green1' => $rgb[1], 'blue1' => $rgb[2], 'tag' => $tag];
 		if (!empty($row['end'])) {
@@ -111,7 +116,7 @@ function wm_asset_save_colours($map, $data) {
 	$scales['DEFAULT']['BG']['green1'] = $background[1];
 	$scales['DEFAULT']['BG']['blue1'] = $background[2];
 	$map->colours = $scales;
-	foreach ($scales as $name => $colours) $map->numscales[$name] = count(array_filter($colours, function($r) { return empty($r['special']); }));
+	foreach ($scales as $name => $colours) $map->numscales[$name] = cacti_count(array_filter($colours, function($r) { return empty($r['special']); }));
 	wm_comment_update_default($map, 'outlinecolour', $outline);
 	if (array_key_exists('pulse', $data)) $map->add_hint('traffic_pulse', $data['pulse'] ? '1' : '0');
 }

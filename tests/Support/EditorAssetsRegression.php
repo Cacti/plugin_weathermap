@@ -79,9 +79,15 @@ try {
 	$map->WriteConfig($file);
 	$negativeMap = new WeatherMap; $negativeMap->ReadConfig($file);
 	assets_assert($negativeMap->colours['Temperature_1']['-20_-1']['bottom'] === -20.0, 'negative custom scale survives engine reload');
+	$longName = 'Scale' . str_repeat('A', 70);
+	$longScale = $data;
+	$longScale['rows'][] = ['scale' => $longName, 'bottom' => 0, 'top' => 50, 'colour' => '#008000'];
+	wm_asset_save_colours($map, $longScale); $map->WriteConfig($file);
+	$longMap = new WeatherMap; $longMap->ReadConfig($file);
+	assets_assert(isset($longMap->colours[$longName]), 'valid long scale name survives roundtrip');
 	wm_asset_save_colours($map, $data);
 	$before = $map->colours;
-	foreach ([[0, 100, '0.0', '100.0'], [0, 100, '0e0', '1e2'], [0, 100, '-0.0', 100.0000001], [-20, -1, '-20.0000001', '-1.0000001']] as $range) {
+	foreach ([[0, 100, '0.0', '100.0'], [0, 100, '0e0', '1e2'], [0, 100, '-0.0', 100.0000001], [-20, -1, '-20.0000001', '-1.0000001'], [1001, 2001, 1002, 2002]] as $range) {
 		$duplicate = $data;
 		$duplicate['rows'][] = ['scale' => 'Duplicates', 'bottom' => $range[0], 'top' => $range[1], 'colour' => '#ff0000'];
 		$duplicate['rows'][] = ['scale' => 'Duplicates', 'bottom' => $range[2], 'top' => $range[3], 'colour' => '#0000ff'];
