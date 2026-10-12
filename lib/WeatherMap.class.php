@@ -341,6 +341,8 @@ class WeatherMap extends WeatherMapBase {
 	var $colours;
 	/** @var mixed */
 	var $configfile;
+	var $config_revision = null;
+	var $editor_config_revision = null;
 	/** @var mixed */
 	var $imagefile;
 	/** @var mixed */
@@ -2445,6 +2447,7 @@ class WeatherMap extends WeatherMapBase {
 	 */
 	function ReadConfig($input, $is_include = false) {
 		global $config, $weathermap_error_suppress;
+		if (!$is_include) $this->config_revision = null;
 
 		$curnode    = null;
 		$curlink    = null;
@@ -2491,16 +2494,19 @@ class WeatherMap extends WeatherMapBase {
 			}
 
 			if (is_file($filename)) {
-				$fd = fopen($filename, 'r');
+				$fd = fopen($filename, 'rb');
 
 				if ($fd) {
+					$revision = hash_init('sha256');
 					while (($buffer = fgets($fd, 4096)) !== false) {
+						hash_update($revision, $buffer);
 						// strip out any Windows line-endings that have gotten in here
 						$buffer  = str_replace("\r", '', $buffer);
 						$lines[] = $buffer;
 					}
 
 					fclose($fd);
+					if (!$is_include) $this->config_revision = hash_final($revision);
 				}
 			}
 		}
@@ -3604,9 +3610,11 @@ class WeatherMap extends WeatherMapBase {
 
 	/**
 	 * @param string $filename
+	 * @param bool $createOnly Require a new destination.
+	 * @param string|null $expectedRevision Optional request snapshot revision.
 	 * @return bool
 	 */
-	function WriteConfig($filename) {
+	function WriteConfig($filename, $createOnly = false, $expectedRevision = null) {
 		require_once __DIR__ . '/WeatherMap.config.php';
 		$fd = fopen('php://temp', 'w+b');
 
@@ -3847,7 +3855,10 @@ class WeatherMap extends WeatherMapBase {
 			$contents = stream_get_contents($fd);
 			$closed = fclose($fd);
 
-			return $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $this->configfile !== '' && $filename === $this->configfile);
+			$sameFile = $this->configfile !== '' && $filename === $this->configfile;
+			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly);
+			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
+			return $saved;
 		} else {
 			wm_warn("Couldn't open config file $filename for writing");
 

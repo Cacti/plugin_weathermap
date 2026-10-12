@@ -26,6 +26,11 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
 final class ConfigWriteAtomicTest extends TestCase {
+	/**
+	 * Verify real engine persistence and coordinated filesystem failures.
+	 *
+	 * @return void
+	 */
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testRealEngineRegression(): void {

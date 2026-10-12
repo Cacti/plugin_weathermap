@@ -80,22 +80,27 @@ function writeAll($stream, $contents) {
  * @param string $filename The destination configuration path.
  * @param string $contents The complete new configuration.
  * @param bool $mustExist Refuse to recreate an existing map deleted during editing.
+ * @param string|null $expectedRevision SHA-256 of the snapshot being edited.
+ * @param bool $createOnly Refuse to replace an existing destination.
  *
  * @return bool Success; failures preserve the existing configuration.
  */
-function atomicWrite($filename, $contents, $mustExist = false) {
+function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision = null, $createOnly = false) {
 	if (strpos($filename, '://') !== false) return false;
 	if (is_link($filename)) $filename = realpath($filename);
 	if ($filename === false || !is_dir(dirname($filename)) || !is_writable(dirname($filename))) return false;
 	if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
-	$mustExist = $mustExist || file_exists($filename);
+	$existed = file_exists($filename);
+	$mustExist = $mustExist || $existed;
 	$lock = acquire(dirname($filename));
 	if (!$lock) return false;
 	$temp = false;
 	$stream = false;
 	try {
 		clearstatcache(true, $filename);
+		if (($createOnly || !$existed) && file_exists($filename)) return false;
 		if ($mustExist && !is_file($filename)) return false;
+		if ($expectedRevision !== null && @hash_file('sha256', $filename) !== $expectedRevision) return false;
 		if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
 		$temp = @tempnam(dirname($filename), '.wm-config-');
 		if ($temp === false) return false;

@@ -21,6 +21,11 @@ final class WeathermapUpgradeTest extends TestCase {
 	protected function setUp(): void {
 		require_once __DIR__ . '/../../setup.php';
 		if (!function_exists('weathermap_repair_maps')) {
+			/**
+			 * Stub filesystem repair only within an isolated upgrade test.
+			 *
+			 * @return void
+			 */
 			function weathermap_repair_maps() {}
 		}
 		$GLOBALS['__test_db_calls'] = [];

@@ -44,6 +44,7 @@ namespace WeathermapConfig {
 	 */
 	function flock($stream, $mode) {
 		if (($GLOBALS['config_fault'] ?? '') === 'lock' && $mode === LOCK_EX) return false;
+		if (($mode & LOCK_EX) && isset($GLOBALS['config_before_lock'])) ($GLOBALS['config_before_lock'])();
 		return \flock($stream, $mode);
 	}
 	/**
@@ -204,6 +205,44 @@ namespace {
 		atomic_assert(!\WeathermapConfig\acquire($dir . '/missing'), 'missing lock directory rejected');
 		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/deleted.conf', 'Replacement', true), 'deleted existing maps are not recreated');
 		atomic_assert(is_file($dir . '/.weathermap-config.lock'), 'arbitrary output uses its destination directory lock');
+		atomic_assert(!\WeathermapConfig\atomicWrite($file, 'Overwrite', false, null, true), 'create-only destination refuses existing files');
+		$first = new \WeatherMap; $second = new \WeatherMap;
+		$first->ReadConfig($file); $second->ReadConfig($file);
+		$first->title = 'First edit'; $second->title = 'Stale edit';
+		atomic_assert($first->WriteConfig($file), 'first revision saves');
+		$current = file_get_contents($file);
+		atomic_assert(!$second->WriteConfig($file) && file_get_contents($file) === $current, 'stale reader cannot overwrite the first edit');
+		$first->title = 'Next edit';
+		atomic_assert($first->WriteConfig($file), 'successful save updates its revision for subsequent writes');
+		$raw = new \WeatherMap; wm_editor_read_config($raw, $file);
+		$raw->ReadConfig("TITLE Fragment edit\n");
+		file_put_contents($file, $original);
+		http_response_code(200);
+		atomic_assert(!wm_editor_write_config($raw, $file) && http_response_code() === 500 && file_get_contents($file) === $original, 'raw fragment edits retain the original request revision');
+		if (function_exists('pcntl_fork')) {
+			$createFile = $dir . '/create.conf';
+			$lock = \WeathermapConfig\acquire($dir); $children = [];
+			for ($index = 0; $index < 2; $index++) {
+				$child = pcntl_fork();
+				if ($child === 0) {
+					\fclose($lock);
+					$GLOBALS['config_before_lock'] = function() use ($dir, $index) { file_put_contents($dir . '/create-ready-' . $index, 'ready'); };
+					$saved = \WeathermapConfig\atomicWrite($createFile, 'Creator ' . $index, false, null, true);
+					file_put_contents($dir . '/create-result-' . $index, $saved ? '1' : '0');
+					exit(0);
+				}
+				$children[] = $child;
+			}
+			for ($wait = 0; $wait < 100 && cacti_count(glob($dir . '/create-ready-*')) < 2; $wait++) usleep(10000);
+			\WeathermapConfig\release($lock);
+			foreach ($children as $child) pcntl_waitpid($child, $status);
+			atomic_assert((int)file_get_contents($dir . '/create-result-0') + (int)file_get_contents($dir . '/create-result-1') === 1, 'exactly one concurrent creator commits');
+			atomic_assert(in_array(file_get_contents($createFile), ['Creator 0', 'Creator 1'], true), 'winning creator content remains intact');
+		}
+		$crlfFile = $dir . '/crlf.conf';
+		$crlf = "WIDTH 600\r\nHEIGHT 300\r\n"; file_put_contents($crlfFile, $crlf);
+		$crlfMap = new \WeatherMap; $crlfMap->ReadConfig($crlfFile);
+		atomic_assert($crlfMap->config_revision === hash('sha256', $crlf) && $crlfMap->WriteConfig($crlfFile), 'revision hashes preserve raw CRLF bytes');
 		$templateFile = $dir . '/templates.conf';
 		file_put_contents($templateFile, "NODE templateNode\n LABEL Template\nNODE A\n POSITION 10 10\nNODE B\n POSITION 50 50\nLINK templateLink\n WIDTH 8\nLINK trafficLink\n NODES A B\n");
 		$templateMap = new \WeatherMap; $templateMap->ReadConfig($templateFile);
@@ -228,6 +267,15 @@ namespace {
 			$GLOBALS['config_fault'] = '';
 			weathermap_repair_maps();
 			atomic_assert(file_get_contents($repairFile) === 'BACKGROUND images/backgrounds/' . basename($repairImage), 'repair uses complete atomic replacement');
+			file_put_contents($repairFile, $legacy);
+			$newerRepair = 'TITLE Concurrent editor save' . "\n" . $legacy;
+			$GLOBALS['config_before_lock'] = function() use ($repairFile, $newerRepair) {
+				unset($GLOBALS['config_before_lock']);
+				file_put_contents($repairFile, $newerRepair);
+			};
+			$GLOBALS['weathermap_error_suppress'] = ['WMPOLL13'];
+			try { weathermap_repair_maps(); } finally { $GLOBALS['weathermap_error_suppress'] = $oldSuppress; }
+			atomic_assert(file_get_contents($repairFile) === $newerRepair, 'repair CAS preserves a concurrent editor save');
 		} finally {
 			$GLOBALS['config'] = $oldConfig;
 			unset($GLOBALS['__test_db_fetch_assoc']);

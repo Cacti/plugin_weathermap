@@ -2026,7 +2026,7 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 			if ($contents !== false) {
 				$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
 				require_once __DIR__ . '/lib/WeatherMap.config.php';
-				if (!\WeathermapConfig\atomicWrite($newfile, $contents)) {
+				if (!\WeathermapConfig\atomicWrite($newfile, $contents, false, null, true)) {
 					raise_message('new_map_' . $newid, __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
 				}
 			} else {
