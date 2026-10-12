@@ -271,7 +271,10 @@ function weathermap_repair_maps() {
 
 			if ($changes) {
 				wm_debug('Writing updated file to: ' . $configfile);
-				file_put_contents($configfile, implode("\n", $outcontents), LOCK_EX);
+				require_once __DIR__ . '/WeatherMap.config.php';
+				if (!\WeathermapConfig\atomicWrite($configfile, implode("\n", $outcontents), true)) {
+					wm_warn('Unable to save repaired configuration: ' . $configfile . ' [WMPOLL13]');
+				}
 			} else {
 				wm_debug('File has correct BACKGROUND and ICON paths: ' . $configfile);
 			}

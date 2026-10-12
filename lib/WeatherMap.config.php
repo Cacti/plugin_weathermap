@@ -25,15 +25,20 @@
 namespace WeathermapConfig;
 
 /**
- * Acquire the lock shared by configuration writers and image deletion.
+ * Acquire a persistent directory lock shared by config writers and deletion.
+ *
+ * @param string|null $directory Destination directory; null selects plugin configs.
+ * @param bool $blocking Wait for the lock, or return false when it is busy.
  *
  * @return resource|false The exclusive lock handle, or false on failure.
  */
-function acquire() {
-	$path = dirname(__DIR__) . '/configs/.weathermap-config.lock';
+function acquire($directory = null, $blocking = true) {
+	$directory = realpath($directory ?? dirname(__DIR__) . '/configs');
+	if ($directory === false) return false;
+	$path = $directory . '/.weathermap-config.lock';
 	$handle = @fopen($path, 'c+b');
 	if (!$handle) $handle = @fopen($path, 'rb');
-	if ($handle && flock($handle, LOCK_EX)) return $handle;
+	if ($handle && flock($handle, LOCK_EX | ($blocking ? 0 : LOCK_NB))) return $handle;
 	if ($handle) fclose($handle);
 	return false;
 }
@@ -74,19 +79,24 @@ function writeAll($stream, $contents) {
  *
  * @param string $filename The destination configuration path.
  * @param string $contents The complete new configuration.
+ * @param bool $mustExist Refuse to recreate an existing map deleted during editing.
  *
  * @return bool Success; failures preserve the existing configuration.
  */
-function atomicWrite($filename, $contents) {
+function atomicWrite($filename, $contents, $mustExist = false) {
 	if (strpos($filename, '://') !== false) return false;
 	if (is_link($filename)) $filename = realpath($filename);
 	if ($filename === false || !is_dir(dirname($filename)) || !is_writable(dirname($filename))) return false;
 	if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
-	$lock = acquire();
+	$mustExist = $mustExist || file_exists($filename);
+	$lock = acquire(dirname($filename));
 	if (!$lock) return false;
 	$temp = false;
 	$stream = false;
 	try {
+		clearstatcache(true, $filename);
+		if ($mustExist && !is_file($filename)) return false;
+		if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
 		$temp = @tempnam(dirname($filename), '.wm-config-');
 		if ($temp === false) return false;
 		$stream = @fopen($temp, 'wb');

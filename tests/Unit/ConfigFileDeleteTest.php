@@ -54,7 +54,9 @@ it('DeletesOnlyUnusedRegularConfigurationFiles', function () {
 
 		foreach (glob($dir . '/*') as $p) {
 			unlink($p);
-		}rmdir($dir);
+		}
+		if (is_file($dir . '/.weathermap-config.lock')) unlink($dir . '/.weathermap-config.lock');
+		rmdir($dir);
 	}
 });
 it('ReportsADeletionFailureWithoutClaimingSuccess', function () {
@@ -79,6 +81,7 @@ it('ReportsADeletionFailureWithoutClaimingSuccess', function () {
 		restore_error_handler();
 		chmod($dir,0700);
 		unlink($dir . '/test.conf');
+		if (is_file($dir . '/.weathermap-config.lock')) unlink($dir . '/.weathermap-config.lock');
 		rmdir($dir);
 		unset($GLOBALS['__test_db_fetch_cell_prepared']);
 	}
@@ -120,6 +123,7 @@ it('EscapesFilenameMessagesFromTheActualDeleteAction', function () {
 		foreach (glob($weathermap_confdir . '/*') as $path) {
 			unlink($path);
 		}
+		if (is_file($weathermap_confdir . '/.weathermap-config.lock')) unlink($weathermap_confdir . '/.weathermap-config.lock');
 		rmdir($weathermap_confdir);
 		unset($GLOBALS['__test_nfilter_request']['file'], $GLOBALS['__test_raise_message'], $GLOBALS['__test_delete_message'], $GLOBALS['__test_db_fetch_cell_prepared']);
 
@@ -153,7 +157,9 @@ it('ProtectsRegisteredCanonicalPathAliasesAndFailsClosedOnLookupFailure', functi
 		unset($GLOBALS['__test_db_fetch_cell_prepared'], $GLOBALS['__test_db_fetch_assoc_prepared']);
 		unlink($directory . '/Other.conf');
 		if (file_exists($directory . '/Map.conf')) { unlink($directory . '/Map.conf'); }
+		if (is_file($directory . '/sub' . '/.weathermap-config.lock')) unlink($directory . '/sub' . '/.weathermap-config.lock');
 		rmdir($directory . '/sub');
+		if (is_file($directory . '/.weathermap-config.lock')) unlink($directory . '/.weathermap-config.lock');
 		rmdir($directory);
 	}
 });

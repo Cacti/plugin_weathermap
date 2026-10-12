@@ -121,6 +121,7 @@ namespace WeathermapConfig {
 	}
 }
 namespace {
+	require dirname(__DIR__, 2) . '/lib/poller-common.php';
 	require dirname(__DIR__) . '/bootstrap-unit.php';
 	chdir(dirname(__DIR__, 2));
 	require dirname(__DIR__, 2) . '/setup.php';
@@ -165,22 +166,77 @@ namespace {
 			atomic_assert(is_link($link), 'link itself retained'); unlink($link);
 		}
 		if (function_exists('pcntl_fork')) {
-			$lock = \WeathermapConfig\acquire();
+			$lock = \WeathermapConfig\acquire($dir);
 			$child = pcntl_fork();
 			if ($child === 0) {
-				$probe = \fopen(dirname(__DIR__, 2) . '/configs/.weathermap-config.lock', 'rb');
+				$probe = \fopen($dir . '/.weathermap-config.lock', 'rb');
 				$blocked = !\flock($probe, LOCK_EX | LOCK_NB); \fclose($probe);
 				exit($blocked ? 0 : 1);
 			}
 			pcntl_waitpid($child, $status); \WeathermapConfig\release($lock);
 			atomic_assert(pcntl_wexitstatus($status) === 0, 'shared lock excludes concurrent configuration writers');
 		}
+		// Deletion waits for the same stable directory mutex used by atomic replacement.
+		if (function_exists('pcntl_fork')) {
+			require_once dirname(__DIR__, 2) . '/lib/editor.config-delete.php';
+			$GLOBALS['__test_db_fetch_cell_prepared'] = fn () => 0;
+			$GLOBALS['__test_db_fetch_assoc_prepared'] = fn () => [];
+			$lock = \WeathermapConfig\acquire($dir);
+			$ready = $dir . '/ready'; $done = $dir . '/done';
+			$child = pcntl_fork();
+			if ($child === 0) {
+				\fclose($lock);
+				file_put_contents($ready, 'ready');
+				$result = wm_config_delete($dir, 'map.conf');
+				file_put_contents($done, $result);
+				exit($result === 'deleted' ? 0 : 1);
+			}
+			for ($wait = 0; $wait < 100 && !is_file($ready); $wait++) usleep(10000);
+			usleep(50000);
+			$blocked = !is_file($done) && is_file($file);
+			\WeathermapConfig\release($lock);
+			pcntl_waitpid($child, $status);
+			atomic_assert($blocked && pcntl_wexitstatus($status) === 0, 'config deletion cannot unlink during a directory-locked write');
+			unlink($ready); unlink($done);
+			unset($GLOBALS['__test_db_fetch_cell_prepared'], $GLOBALS['__test_db_fetch_assoc_prepared']);
+			file_put_contents($file, $original);
+		}
+		atomic_assert(!\WeathermapConfig\acquire($dir . '/missing'), 'missing lock directory rejected');
+		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/deleted.conf', 'Replacement', true), 'deleted existing maps are not recreated');
+		atomic_assert(is_file($dir . '/.weathermap-config.lock'), 'arbitrary output uses its destination directory lock');
 		$templateFile = $dir . '/templates.conf';
 		file_put_contents($templateFile, "NODE templateNode\n LABEL Template\nNODE A\n POSITION 10 10\nNODE B\n POSITION 50 50\nLINK templateLink\n WIDTH 8\nLINK trafficLink\n NODES A B\n");
 		$templateMap = new \WeatherMap; $templateMap->ReadConfig($templateFile);
 		atomic_assert($templateMap->WriteConfig($templateFile), 'atomic save supports templates and traffic links');
 		$reloaded = new \WeatherMap; $reloaded->ReadConfig($templateFile);
 		atomic_assert(isset($reloaded->nodes['templateNode'], $reloaded->links['templateLink'], $reloaded->links['trafficLink']), 'template and real objects survive atomic roundtrip');
+		$plugin = dirname(__DIR__, 2);
+		$repairName = 'atomic-repair-' . bin2hex(random_bytes(4)) . '.conf';
+		$repairFile = $plugin . '/configs/' . $repairName;
+		$repairImage = $plugin . '/images/backgrounds/' . $repairName . '.png';
+		$legacy = 'BACKGROUND ' . basename($repairImage) . "\n";
+		file_put_contents($repairFile, $legacy); file_put_contents($repairImage, 'fixture');
+		$oldConfig = $GLOBALS['config'];
+		$GLOBALS['config']['base_path'] = dirname($plugin, 2);
+		$GLOBALS['__test_db_fetch_assoc'] = fn ($sql) => [['configfile' => $repairName]];
+		try {
+			$GLOBALS['config_fault'] = 'rename';
+			$oldSuppress = $GLOBALS['weathermap_error_suppress'] ?? [];
+			$GLOBALS['weathermap_error_suppress'] = ['WMPOLL13'];
+			try { weathermap_repair_maps(); } finally { $GLOBALS['weathermap_error_suppress'] = $oldSuppress; }
+			atomic_assert(file_get_contents($repairFile) === $legacy, 'failed repair preserves original config');
+			$GLOBALS['config_fault'] = '';
+			weathermap_repair_maps();
+			atomic_assert(file_get_contents($repairFile) === 'BACKGROUND images/backgrounds/' . basename($repairImage), 'repair uses complete atomic replacement');
+		} finally {
+			$GLOBALS['config'] = $oldConfig;
+			unset($GLOBALS['__test_db_fetch_assoc']);
+			unlink($repairFile); unlink($repairImage);
+		}
+		$deletedMap = new \WeatherMap; $deletedMap->ReadConfig($file);
+		unlink($file);
+		atomic_assert(!$deletedMap->WriteConfig($file) && !file_exists($file), 'saving a previously loaded deleted map fails without resurrection');
+		file_put_contents($file, $original);
 		$GLOBALS['config_fault'] = 'rename';
 		$map = new \WeatherMap; $map->ReadConfig($file); $map->title = 'Changed';
 		atomic_assert(!$map->WriteConfig($file) && file_get_contents($file) === $original, 'engine failure preserves original');
@@ -196,6 +252,7 @@ namespace {
 		$GLOBALS['config_fault'] = '';
 		foreach (glob($dir . '/*') as $path) unlink($path);
 		foreach (glob($dir . '/.wm-config-*') as $path) unlink($path);
+		if (is_file($dir . '/.weathermap-config.lock')) unlink($dir . '/.weathermap-config.lock');
 		rmdir($dir);
 	}
 }

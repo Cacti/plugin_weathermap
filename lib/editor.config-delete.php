@@ -90,45 +90,52 @@ function wm_config_delete($directory, $file) {
 		strpos($file, chr(92)) !== false || preg_match('/[\x00-\x1f\x7f]/', $file) || substr($file, -5) !== '.conf' || !$directory) {
 		return 'invalid';
 	}
-	$path     = $directory . '/' . $file;
-	$resolved = realpath($path);
-
-	if (is_link($path) || !is_file($path) || $resolved === false || dirname($resolved) !== $directory) {
-		return 'invalid';
-	}
-
-	$lock = wm_config_lock($path);
-	if ($lock === false) {
-		return 'failed';
-	}
+	require_once __DIR__ . '/WeatherMap.config.php';
+	$directory_lock = \WeathermapConfig\acquire($directory);
+	if (!$directory_lock) return 'failed';
 	try {
-		$usage = db_fetch_cell_prepared('SELECT COUNT(*) FROM weathermap_maps WHERE configfile IN (?, ?)', [$file, $path]);
+		$path     = $directory . '/' . $file;
+		$resolved = realpath($path);
 
-		if ($usage === false || $usage === null) {
+		if (is_link($path) || !is_file($path) || $resolved === false || dirname($resolved) !== $directory) {
+			return 'invalid';
+		}
+
+		$lock = wm_config_lock($path);
+		if ($lock === false) {
 			return 'failed';
 		}
+		try {
+			$usage = db_fetch_cell_prepared('SELECT COUNT(*) FROM weathermap_maps WHERE configfile IN (?, ?)', [$file, $path]);
 
-		if ($usage) {
-			return 'used';
-		}
+			if ($usage === false || $usage === null) {
+				return 'failed';
+			}
 
-		// Existing registrations may use ./, absolute paths or other aliases.
-		$maps = db_fetch_assoc_prepared('SELECT configfile FROM weathermap_maps', []);
-		if (!is_array($maps)) {
-			return 'failed';
-		}
-		foreach ($maps as $map) {
-			$registered = $map['configfile'];
-			$registered_path = realpath(wm_config_registered_path($directory, $registered));
-			if ($registered_path === $resolved) {
+			if ($usage) {
 				return 'used';
 			}
-		}
 
-		return @unlink($path) ? 'deleted' : 'failed';
+			// Existing registrations may use ./, absolute paths or other aliases.
+			$maps = db_fetch_assoc_prepared('SELECT configfile FROM weathermap_maps', []);
+			if (!is_array($maps)) {
+				return 'failed';
+			}
+			foreach ($maps as $map) {
+				$registered = $map['configfile'];
+				$registered_path = realpath(wm_config_registered_path($directory, $registered));
+				if ($registered_path === $resolved) {
+					return 'used';
+				}
+			}
+
+			return @unlink($path) ? 'deleted' : 'failed';
+		} finally {
+			flock($lock, LOCK_UN);
+			fclose($lock);
+		}
 	} finally {
-		flock($lock, LOCK_UN);
-		fclose($lock);
+		\WeathermapConfig\release($directory_lock);
 	}
 }
 /**

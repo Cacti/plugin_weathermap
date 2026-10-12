@@ -195,5 +195,6 @@ try {
 	print "PASS: note create, render, edit, styles, multiline, validation and delete\n";
 } finally {
 	foreach (glob($directory . '/*') as $file) unlink($file);
+	if (is_file($directory . '/.weathermap-config.lock')) unlink($directory . '/.weathermap-config.lock');
 	rmdir($directory);
 }

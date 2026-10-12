@@ -3848,7 +3848,7 @@ class WeatherMap extends WeatherMapBase {
 			$contents = stream_get_contents($fd);
 			$closed = fclose($fd);
 
-			return $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents);
+			return $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $this->configfile !== '' && $filename === $this->configfile);
 		} else {
 			wm_warn("Couldn't open config file $filename for writing");
 
