@@ -17,6 +17,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 --- develop ---
 
 * Add editable map notes with alignment and sharp text at logical map dimensions
+* Reduce gallery preview cards by 20% while preserving generated thumbnail resolution
 * Add a searchable node icon picker and bundled enterprise site icons
 
 * issue#299: Keep editor picker results open when browsing and allow changing an existing selection
