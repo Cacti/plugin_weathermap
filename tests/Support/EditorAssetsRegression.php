@@ -29,7 +29,18 @@ require $plugin . '/lib/WeatherMap.class.php';
 require $plugin . '/lib/editor.inc.php';
 require $plugin . '/lib/editor.colours.php';
 require $plugin . '/lib/editor.actions.php';
-function assets_assert($value, $message) { if (!$value) throw new RuntimeException($message); }
+/**
+ * Assert a real-engine regression condition.
+ *
+ * @param bool $value Whether the condition holds.
+ * @param string $message Failure description.
+ * @return void
+ */
+function assets_assert($value, $message) {
+	if (!$value) {
+		throw new RuntimeException($message);
+	}
+}
 $dir = sys_get_temp_dir() . '/wm-assets-' . bin2hex(random_bytes(4));
 mkdir($dir);
 try {

@@ -621,7 +621,7 @@ foreach ($graph_templates as $gt) {
 				<div class='dlgBody'>
 					<table class='cactiTable'>
 						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Map Details', 'weathermap'); ?></div></td></tr>
-<tr>
+						<tr>
 							<td><?php print __('Map Title', 'weathermap'); ?></td>
 							<td><input id='map_title' name='map_title' type='text' class='ui-state-default ui-corner-all' size='40' value='<?php print html_escape($map->title) ?>'/></td>
 						</tr>
@@ -633,14 +633,14 @@ foreach ($graph_templates as $gt) {
 							<td><?php print __('Timestamp Text', 'weathermap'); ?></td>
 							<td><input id='map_stamp' name='map_stamp' type='text' class='ui-state-default ui-corner-all' size='40' value='<?php print html_escape($map->stamptext) ?>' /></td>
 						</tr>
-<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Background and Canvas', 'weathermap'); ?></div></td></tr>
-<tr>
+						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Background and Canvas', 'weathermap'); ?></div></td></tr>
+						<tr>
 							<td><?php print __('Background Image', 'weathermap'); ?></td>
 							<td>
 								<select id='map_bgfile' name='map_bgfile'>
 									<?php
-if (count($backgd_list) == 0) {
-	print '<option data-value="--NONE--">(no images are available)</option>';
+if (cacti_count($backgd_list) == 0) {
+	print '<option data-value="--NONE--">' . __esc('(no images are available)', 'weathermap') . '</option>';
 } else {
 	print '<option data-description="' . __esc('Use Map Background Colour', 'weathermap') . '" data-imagesrc="" value="--NONE--">' . __esc('--NO BACKGROUND--', 'weathermap') . '</option>';
 
@@ -657,13 +657,13 @@ if (count($backgd_list) == 0) {
 								</select>
 							</td>
 						</tr>
-                        <tr>
-                            <td><?php print __esc('Map Background Colour', 'weathermap'); ?></td>
-                            <td><input type='hidden' id='map_background_colour' name='map_background_colour' value='<?php $bg = $map->colours['DEFAULT']['BG']; print sprintf('#%02x%02x%02x', $bg['red1'], $bg['green1'], $bg['blue1']); ?>' />
-                                <div id='wm-map-background-colour'></div>
-                                <small><?php print __esc('Shown without an image, or through its transparent areas.', 'weathermap'); ?></small>
-                            </td>
-                        </tr>
+						<tr>
+							<td><?php print __esc('Map Background Colour', 'weathermap'); ?></td>
+							<td><input type='hidden' id='map_background_colour' name='map_background_colour' value='<?php $bg = $map->colours['DEFAULT']['BG']; print sprintf('#%02x%02x%02x', $bg['red1'], $bg['green1'], $bg['blue1']); ?>' />
+								<div id='wm-map-background-colour'></div>
+								<small><?php print __esc('Shown without an image, or through its transparent areas.', 'weathermap'); ?></small>
+							</td>
+						</tr>
 						<tr>
 							<td><label for='map_background_sizing'><?php print __('Background sizing', 'weathermap'); ?></label></td>
 							<td><select id='map_background_sizing' name='map_background_sizing'>
@@ -684,8 +684,8 @@ if (count($backgd_list) == 0) {
 								<input id='map_height' name='map_height' type='text' class='ui-state-default ui-corner-all' size='5' value='<?php print html_escape($map->height) ?>' /> <?php print __('pixels', 'weathermap'); ?>
 							</td>
 						</tr>
-<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Link Defaults', 'weathermap'); ?></div></td></tr>
-<tr>
+						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Link Defaults', 'weathermap'); ?></div></td></tr>
+						<tr>
 							<td><?php print __('Default Link Width', 'weathermap'); ?></td>
 							<td><input id='map_linkdefaultwidth' name='map_linkdefaultwidth' type='text' class='ui-state-default ui-corner-all' size='6' value='<?php print html_escape($map->links['DEFAULT']->width) ?>' /> <?php print __('pixels', 'weathermap'); ?></td>
 						</tr>
@@ -795,25 +795,25 @@ foreach ($styles as $id => $name) {
 <summary style='cursor: pointer; padding: 8px 0;'><?php print __esc('Advanced settings', 'weathermap'); ?></summary>
 <p><?php print __esc('Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions.', 'weathermap'); ?></p>
 <table style='width: 100%;'>
-<tr>
+						<tr>
 							<td><label for='mapstyle_nodewidth'><?php print __esc('Node Hover Width (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_nodewidth' name='mapstyle_nodewidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibwidth; ?>'>
 							</td>
 						</tr>
-<tr>
+						<tr>
 							<td><label for='mapstyle_nodeheight'><?php print __esc('Node Hover Height (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_nodeheight' name='mapstyle_nodeheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibheight; ?>'>
 							</td>
 						</tr>
-<tr>
+						<tr>
 							<td><label for='mapstyle_linkwidth'><?php print __esc('Link Hover Width (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_linkwidth' name='mapstyle_linkwidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibwidth; ?>'>
 							</td>
 						</tr>
-<tr>
+						<tr>
 							<td><label for='mapstyle_linkheight'><?php print __esc('Link Hover Height (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_linkheight' name='mapstyle_linkheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibheight; ?>'>
@@ -843,19 +843,19 @@ foreach ($styles as $id => $name) {
 				<p id='wm-colours-error' role='alert'></p>
 				<div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Link Appearance', 'weathermap'); ?></div>
 				<table class='cactiTable'><tr><td><?php print __esc('Link Border Colour', 'weathermap'); ?></td><td id='wm-outline-colour'></td></tr></table>
-                <label><input type='checkbox' id='wm-traffic-pulse'><?php print __esc(' Pulse links at 80%+', 'weathermap'); ?></label>
-                <p><?php print __esc('Links at 80% utilisation or above pulse in their traffic colour.', 'weathermap'); ?></p>
+				<label><input type='checkbox' id='wm-traffic-pulse'><?php print __esc(' Pulse links at 80%+', 'weathermap'); ?></label>
+				<p><?php print __esc('Links at 80% utilisation or above pulse in their traffic colour.', 'weathermap'); ?></p>
 				<div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Traffic Load Colours', 'weathermap'); ?></div>
-                <label for='wm-traffic-preset'><?php print __esc('Colour preset', 'weathermap'); ?></label>
-                <select id='wm-traffic-preset'><option value='classic'><?php print __esc('Default (Classic)', 'weathermap'); ?></option><option value='signals'><?php print __esc('Green / Amber / Red', 'weathermap'); ?></option><option value='ocean'><?php print __esc('Ocean Blues', 'weathermap'); ?></option><option value='heat'><?php print __esc('Purple / Orange / Red', 'weathermap'); ?></option><option value='modern'><?php print __esc('Modern Greens', 'weathermap'); ?></option><option value='sunrise'><?php print __esc('Sunrise Amber', 'weathermap'); ?></option><option value='midwinter'><?php print __esc('Midwinter Ice', 'weathermap'); ?></option><option value='custom'><?php print __esc('Custom', 'weathermap'); ?></option></select>
-                <p><?php print __esc('Colours show how much of a link\'s bandwidth is being used. For example, 75% means three quarters of its capacity.', 'weathermap'); ?></p>
-                <div id='wm-traffic-preview' aria-live='polite'></div>
-                <p><?php print __esc('Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept.', 'weathermap'); ?></p>
-                <details id='wm-traffic-advanced'><summary><?php print __esc('Advanced settings', 'weathermap'); ?></summary>
-                <p><?php print __esc('Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units.', 'weathermap'); ?></p>
+				<label for='wm-traffic-preset'><?php print __esc('Colour preset', 'weathermap'); ?></label>
+				<select id='wm-traffic-preset'><option value='classic'><?php print __esc('Default (Classic)', 'weathermap'); ?></option><option value='signals'><?php print __esc('Green / Amber / Red', 'weathermap'); ?></option><option value='ocean'><?php print __esc('Ocean Blues', 'weathermap'); ?></option><option value='heat'><?php print __esc('Purple / Orange / Red', 'weathermap'); ?></option><option value='modern'><?php print __esc('Modern Greens', 'weathermap'); ?></option><option value='sunrise'><?php print __esc('Sunrise Amber', 'weathermap'); ?></option><option value='midwinter'><?php print __esc('Midwinter Ice', 'weathermap'); ?></option><option value='custom'><?php print __esc('Custom', 'weathermap'); ?></option></select>
+				<p><?php print __esc('Colours show how much of a link\'s bandwidth is being used. For example, 75% means three quarters of its capacity.', 'weathermap'); ?></p>
+				<div id='wm-traffic-preview' aria-live='polite'></div>
+				<p><?php print __esc('Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept.', 'weathermap'); ?></p>
+				<details id='wm-traffic-advanced'><summary><?php print __esc('Advanced settings', 'weathermap'); ?></summary>
+				<p><?php print __esc('Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units.', 'weathermap'); ?></p>
 				<table class='cactiTable'><thead><tr><th><?php print __esc('Scale', 'weathermap'); ?></th><th><?php print __esc('From (usually %)', 'weathermap'); ?></th><th><?php print __esc('To (usually %)', 'weathermap'); ?></th><th><?php print __esc('Colour', 'weathermap'); ?></th><th><?php print __esc('Gradient End', 'weathermap'); ?></th><th><?php print __esc('Label', 'weathermap'); ?></th><th></th></tr></thead><tbody id='wm-scale-rows'></tbody></table>
 				<button type='button' id='wm-scale-add' class='ui-button ui-corner-all ui-widget'><?php print __esc('Add range', 'weathermap'); ?></button>
-                </details>
+				</details>
 			</div>
 			<div class='dlgButtons'><div class='dlgSubButtons'>
 				<a class='wm_cancel ui-button ui-corner-all ui-widget'><?php print __esc('Cancel', 'weathermap'); ?></a>
@@ -887,7 +887,7 @@ foreach ($styles as $id => $name) {
 		<!-- Images -->
 
 		<!-- TextEdit -->
-        <div id='dlgTextEdit' class='dlgProperties' title='Edit Map Object'>
+		<div id='dlgTextEdit' class='dlgProperties' title='Edit Map Object'>
 			<div class='cactiTable'>
 				<div class='dlgBody'>
 					<p>You can edit the map items directly here.</p>

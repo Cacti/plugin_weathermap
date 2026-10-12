@@ -26,7 +26,18 @@ chdir(dirname(__DIR__, 2));
 require 'setup.php';
 require 'lib/WeatherMap.class.php';
 require 'lib/WeatherMap.animation.php';
-function animation_assert($condition, $message) { if (!$condition) throw new RuntimeException($message); }
+/**
+ * Assert a real-engine regression condition.
+ *
+ * @param bool $condition Whether the condition holds.
+ * @param string $message Failure description.
+ * @return void
+ */
+function animation_assert($condition, $message) {
+	if (!$condition) {
+		throw new RuntimeException($message);
+	}
+}
 $file = tempnam(sys_get_temp_dir(), 'wm-glow-');
 try {
 	file_put_contents($file, "WIDTH 400\nHEIGHT 300\nNODE A\n POSITION 40 40\nNODE B\n POSITION 350 240\nLINK curve\n NODES A B\n VIA 150 200\n SPLITPOS 30\n");
