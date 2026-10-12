@@ -41,9 +41,10 @@ function wm_traffic_animation_data($map) {
 			$colour = $link->colours[$direction] ?? null;
 			if (!$colour || !$colour->is_real()) continue;
 			$coordinates = $link->traffic_glow_points[$direction] ?? [];
-			if (count($coordinates) < 6) continue;
+			$coordinateCount = cacti_count($coordinates);
+			if ($coordinateCount < 6) continue;
 			$points = [];
-			for ($i = 0; $i + 1 < count($coordinates); $i += 2) {
+			for ($i = 0; $i + 1 < $coordinateCount; $i += 2) {
 				// SVG coordinates describe edges; GD coordinates describe pixel centres.
 				$points[] = [$coordinates[$i] + 0.5, $coordinates[$i + 1] + 0.5];
 			}

@@ -59,16 +59,15 @@ var WMcycler = {
             if (holder.data('wm-refreshing')) return;
             holder.data('wm-refreshing', true);
             $.ajax({
-                url: document.location.href,
+                url: 'weathermap-cacti-plugin.php',
+                data: {action: 'viewmap', id: holder.attr('id').replace(/^mapholder_/, ''), header: 'false'},
                 dataType: 'html',
                 cache: false,
                 success: function(html) {
                     if (!holder[0].isConnected) return;
                     var page = $('<div>').append($.parseHTML(html, document, false));
-                    var replacement = page.find('.weathermapholder').filter(function() {
-                        return this.id === holder.attr('id');
-                    }).find('.weathermapimage').first();
-                    if (replacement.length) holder.find('.weathermapimage').first().replaceWith(replacement);
+                    var replacement = page.find('.weathermapimage');
+                    if (replacement.length === 1) holder.find('.weathermapimage').first().replaceWith(replacement);
                 },
                 complete: function() { holder.removeData('wm-refreshing'); }
             });

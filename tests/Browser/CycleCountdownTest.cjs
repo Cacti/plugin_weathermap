@@ -37,9 +37,9 @@ $('.weathermapholder').last().remove();c.start({period:0,poller_cycle:300000,ful
 const glowHolder=$('.weathermapholder').first().attr('id','mapholder_test');
 glowHolder.html('<div class="weathermapimage" data-wm-traffic="old"><img src="old.png?time=0"></div>');
 let refresh;$.ajax=opts=>refresh=opts;c.forceReload(glowHolder[0]);
-assert.equal(refresh.dataType,'html');assert.equal(glowHolder.find('img').attr('src'),'old.png?time=0');
+assert.equal(refresh.dataType,'html');assert.equal(refresh.data.action,'viewmap');assert.equal(refresh.data.id,'test');assert.equal(refresh.data.header,'false');assert.equal(glowHolder.find('img').attr('src'),'old.png?time=0');
 c.forceReload(glowHolder[0]);const firstRefresh=refresh;
-firstRefresh.success('<div class="weathermapholder" id="mapholder_other"><div class="weathermapimage">Wrong</div></div><div class="weathermapholder" id="mapholder_test"><div class="weathermapimage" data-wm-traffic="new"><img src="new.png"><map><area coords="1,2,3"></map><script>throw new Error("must not execute")</script></div></div>');
+firstRefresh.success('<div class="weathermapholder" id="mapholder_test"><div class="weathermapimage" data-wm-traffic="new"><img src="new.png"><map><area coords="1,2,3"></map><script>throw new Error("must not execute")</script></div></div>');
 assert.equal(glowHolder.find('img').attr('src'),'new.png');assert.equal(glowHolder.find('.weathermapimage').attr('data-wm-traffic'),'new');assert.equal(glowHolder.find('area').attr('coords'),'1,2,3');assert.equal(glowHolder.find('script').length,0);
 firstRefresh.complete();c.forceReload(glowHolder[0]);assert.notEqual(refresh,firstRefresh);
 refresh.complete();
