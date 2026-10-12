@@ -119,5 +119,6 @@ try {
 	echo "Editor assets regression PASS\n";
 } finally {
 	foreach (glob($dir . '/*') as $path) unlink($path);
+	if (is_file($dir . '/.weathermap-config.lock')) unlink($dir . '/.weathermap-config.lock');
 	rmdir($dir);
 }
