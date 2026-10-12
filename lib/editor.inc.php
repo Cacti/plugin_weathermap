@@ -337,7 +337,7 @@ function wm_editor_sanitize_file($filename,$allowed_exts = []) {
 	foreach ($allowed_exts as $ext) {
 		$match = '.' . $ext;
 
-		if (substr($filename, -strlen($match),strlen($match)) == $match) {
+		if (strcasecmp(substr($filename, -strlen($match), strlen($match)), $match) === 0) {
 			$ok = true;
 		}
 	}

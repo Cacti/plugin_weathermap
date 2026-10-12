@@ -26,6 +26,11 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
 final class EditorImageFormatsTest extends TestCase {
+	/**
+	 * Exercise raster image selection, validation and save compatibility.
+	 *
+	 * @return void
+	 */
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testRealEngineRegression(): void {

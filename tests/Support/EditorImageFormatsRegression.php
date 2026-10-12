@@ -84,6 +84,7 @@ try {
 	file_put_contents($config, "ICON images/objects/" . basename($created[0]) . "\n");
 	$listed = array_values(array_filter(wm_asset_image_list(), function($item) use ($created) { return $item['kind'] === 'objects' && $item['name'] === basename($created[0]); }));
 	image_format_assert($listed[0]['width'] === 12 && $listed[0]['height'] === 8 && !$listed[0]['deletable'] && $listed[0]['users'], 'dimensions and usage disable referenced image deletion');
+	image_format_assert(wm_editor_sanitize_file('images/backgrounds/legacy.JPG', ['png', 'jpg', 'gif', 'jpeg']) === 'images/backgrounds/legacy.JPG', 'uppercase background save retains path');
 	foreach (['safe.png', 'safe.jpg', 'safe.jpeg', 'safe.gif', 'safe.JPG'] as $name) image_format_assert(str_ends_with(wm_asset_image_path('backgrounds', $name), $name), 'accepted filename');
 	foreach (['../outside.jpg', 'bad.php', 'bad.svg', 'bad.jpg.php', 'bad..gif'] as $name) {
 		try { wm_asset_image_path('objects', $name); throw new RuntimeException('accepted invalid filename'); } catch (InvalidArgumentException $expected) {}
