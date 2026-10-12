@@ -176,7 +176,7 @@ namespace {
 			pcntl_waitpid($child, $status); \WeathermapConfig\release($lock);
 			atomic_assert(pcntl_wexitstatus($status) === 0, 'shared lock excludes concurrent configuration writers');
 		}
-		// Deletion waits for the same stable directory mutex used by atomic replacement.
+		// Deletion refuses a busy stable directory mutex rather than blocking the UI.
 		if (function_exists('pcntl_fork')) {
 			require_once dirname(__DIR__, 2) . '/lib/editor.config-delete.php';
 			$GLOBALS['__test_db_fetch_cell_prepared'] = fn () => 0;
@@ -189,14 +189,14 @@ namespace {
 				file_put_contents($ready, 'ready');
 				$result = wm_config_delete($dir, 'map.conf');
 				file_put_contents($done, $result);
-				exit($result === 'deleted' ? 0 : 1);
+				exit($result === 'failed' ? 0 : 1);
 			}
-			for ($wait = 0; $wait < 100 && !is_file($ready); $wait++) usleep(10000);
-			usleep(50000);
-			$blocked = !is_file($done) && is_file($file);
+			for ($wait = 0; $wait < 100 && !is_file($done); $wait++) usleep(10000);
+			$blocked = is_file($done) && file_get_contents($done) === 'failed' && is_file($file);
 			\WeathermapConfig\release($lock);
 			pcntl_waitpid($child, $status);
 			atomic_assert($blocked && pcntl_wexitstatus($status) === 0, 'config deletion cannot unlink during a directory-locked write');
+			atomic_assert(wm_config_delete($dir, 'map.conf') === 'deleted', 'deletion succeeds after the writer releases its lock');
 			unlink($ready); unlink($done);
 			unset($GLOBALS['__test_db_fetch_cell_prepared'], $GLOBALS['__test_db_fetch_assoc_prepared']);
 			file_put_contents($file, $original);
