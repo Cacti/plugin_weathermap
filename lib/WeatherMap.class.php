@@ -4196,8 +4196,6 @@ class WeatherMap extends WeatherMapBase {
 				if ($noteForeground !== null) {
 					imagecopyresampled($image, $noteForeground, 0, 0, 0, 0, imagesx($image), imagesy($image), $this->width, $this->height);
 					imagedestroy($noteForeground);
-				} else {
-					imagedestroy($noteImages[1]);
 				}
 				$this->image = $image;
 			}
