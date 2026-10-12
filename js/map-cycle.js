@@ -67,7 +67,15 @@ var WMcycler = {
                     if (!holder[0].isConnected) return;
                     var page = $('<div>').append($.parseHTML(html, document, false));
                     var replacement = page.find('.weathermapimage');
-                    if (replacement.length === 1) holder.find('.weathermapimage').first().replaceWith(replacement);
+                    var current = holder.find('.weathermapimage').first();
+                    var oldName = current.find('img[usemap]').attr('usemap');
+                    var newName = replacement.find('img[usemap]').attr('usemap');
+                    var oldMap = holder.find('map').filter(function() { return '#' + this.name === oldName; });
+                    var newMap = page.find('map').filter(function() { return '#' + this.name === newName; });
+                    if (replacement.length === 1 && oldMap.length === 1 && newMap.length === 1) {
+                        oldMap.replaceWith(newMap);
+                        current.replaceWith(replacement);
+                    }
                 },
                 complete: function() { holder.removeData('wm-refreshing'); }
             });
