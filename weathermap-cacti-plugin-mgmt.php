@@ -2003,40 +2003,49 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		$oldfile = $confdir . '/' . $map['configfile'];
 		$newfile = $confdir . '/' . $save['configfile'];
 
-		$contents = is_file($oldfile) ? file_get_contents($oldfile) : false;
-		if ($contents !== false) {
-			$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
-			require_once __DIR__ . '/lib/WeatherMap.config.php';
-			if (!\WeathermapConfig\atomicWrite($newfile, $contents, false, null, true)) {
-				raise_message('map_message', __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
-				return;
-			}
-		} else {
-			raise_message('map_message', __('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
+		require_once __DIR__ . '/lib/WeatherMap.config.php';
+		$lock = \WeathermapConfig\acquire($confdir);
+		if (!$lock) {
+			raise_message('map_message', __('Could not lock map configurations.', 'weathermap'), MESSAGE_LEVEL_ERROR);
 			return;
 		}
+		$newid = 0;
+		$created = false;
+		try {
+			$contents = is_file($oldfile) ? file_get_contents($oldfile) : false;
+			if ($contents === false) throw new RuntimeException(__('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'));
+			$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
+			if (!\WeathermapConfig\atomicWrite($newfile, $contents, false, null, true, $lock)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+			$created = true;
+			$newid = sql_save($save, 'weathermap_maps');
+			if (!$newid) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));
 
-		$newid = sql_save($save, 'weathermap_maps');
-
-		if ($newid) {
-			db_execute_prepared("INSERT INTO weathermap_auth
+			if (db_execute_prepared("INSERT INTO weathermap_auth
 				(userid, mapid)
 				SELECT userid, '$newid' AS mapid
 				FROM weathermap_auth
-				WHERE mapid = ?",
-				[$id]);
-
-			db_execute_prepared("INSERT INTO weathermap_settings
+				WHERE mapid = ?", [$id]) === false) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));
+			if (db_execute_prepared("INSERT INTO weathermap_settings
 				(mapid, groupid, optname, optvalue)
 				SELECT '$newid' AS mapid, groupid, optname, optvalue
 				FROM weathermap_settings
-				WHERE mapid = ?",
-				[$id]);
-
-			raise_message('new_map_' . $newid, __('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
-
-			weathermap_run_maps(__DIR__, true, [$newid]);
+				WHERE mapid = ?", [$id]) === false) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));
+		} catch (Throwable $error) {
+			// Only this attempt's records and successfully reserved file may be removed.
+			try {
+				if ($newid) {
+					db_execute_prepared('DELETE FROM weathermap_auth WHERE mapid = ?', [$newid]);
+					db_execute_prepared('DELETE FROM weathermap_settings WHERE mapid = ?', [$newid]);
+					db_execute_prepared('DELETE FROM weathermap_maps WHERE id = ?', [$newid]);
+				}
+			} finally { if ($created) unlink($newfile); }
+			raise_message('map_message', $error->getMessage(), MESSAGE_LEVEL_ERROR);
+			return;
+		} finally {
+			\WeathermapConfig\release($lock);
 		}
+		raise_message('new_map_' . $newid, __('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
+		weathermap_run_maps(__DIR__, true, [$newid]);
 	}
 }
 

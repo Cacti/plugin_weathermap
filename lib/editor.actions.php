@@ -83,7 +83,9 @@ function wm_editor_read_config($map, $mapfile) {
  */
 function wm_editor_write_config($map, $mapfile, $createOnly = false) {
 	if (!$map->WriteConfig($mapfile, $createOnly, $map->editor_config_revision)) {
-		http_response_code(500);
+		$current = is_file($mapfile) ? @hash_file('sha256', $mapfile) : false;
+		$stale = $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
+		http_response_code($stale ? 409 : 500);
 		return false;
 	}
 	return true;
@@ -273,17 +275,7 @@ function setNodeConfig($mapfile) {
 	if (isset($map->nodes[$node_name])) {
 		$map->nodes[$node_name]->config_override = $node_config;
 
-		wm_editor_write_config($map, $mapfile);
-
-		// now clear and reload the map object, because the in-memory one is out of sync
-		// - we don't know what changes the user made here, so we just have to reload.
-		unset($map);
-
-		$map = new WeatherMap;
-
-		$map->context = 'editor';
-
-		if (!wm_editor_read_config($map, $mapfile)) return;
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 
@@ -304,17 +296,7 @@ function setLinkConfig($mapfile) {
 	if (isset($map->links[$link_name])) {
 		$map->links[$link_name]->config_override = $link_config;
 
-		wm_editor_write_config($map, $mapfile);
-
-		// now clear and reload the map object, because the in-memory one is out of sync
-		// - we don't know what changes the user made here, so we just have to reload.
-		unset($map);
-
-		$map = new WeatherMap;
-
-		$map->context = 'editor';
-
-		if (!wm_editor_read_config($map, $mapfile)) return;
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 

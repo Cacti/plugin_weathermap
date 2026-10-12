@@ -225,7 +225,7 @@ namespace {
 		$raw->ReadConfig("TITLE Fragment edit\n");
 		file_put_contents($file, $original);
 		http_response_code(200);
-		atomic_assert(!wm_editor_write_config($raw, $file) && http_response_code() === 500 && file_get_contents($file) === $original, 'raw fragment edits retain the original request revision');
+		atomic_assert(!wm_editor_write_config($raw, $file) && http_response_code() === 409 && file_get_contents($file) === $original, 'raw fragment edits retain the original request revision');
 		if (function_exists('pcntl_fork')) {
 			$createFile = $dir . '/create.conf';
 			$lock = \WeathermapConfig\acquire($dir); $children = [];
@@ -246,6 +246,17 @@ namespace {
 			atomic_assert((int)file_get_contents($dir . '/create-result-0') + (int)file_get_contents($dir . '/create-result-1') === 1, 'exactly one concurrent creator commits');
 			atomic_assert(in_array(file_get_contents($createFile), ['Creator 0', 'Creator 1'], true), 'winning creator content remains intact');
 		}
+		$held = \WeathermapConfig\acquire($dir);
+		atomic_assert(\WeathermapConfig\atomicWrite($dir . '/held.conf', 'Held write', false, null, true, $held), 'caller-owned mutex supports atomic creation');
+		if (function_exists('pcntl_fork')) {
+			$child = pcntl_fork();
+			if ($child === 0) { $probe = \fopen($dir . '/.weathermap-config.lock', 'rb'); $busy = !\flock($probe, LOCK_EX | LOCK_NB); exit($busy ? 0 : 1); }
+			pcntl_waitpid($child, $status);
+			atomic_assert(pcntl_wexitstatus($status) === 0, 'atomicWrite leaves caller mutex held');
+		}
+		\WeathermapConfig\release($held);
+		$wrong = \fopen($file, 'rb');
+		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/wrong-lock.conf', 'Wrong', false, null, true, $wrong), 'different lock file rejected'); \fclose($wrong);
 		$crlfFile = $dir . '/crlf.conf';
 		$crlf = "WIDTH 600\r\nHEIGHT 300\r\n"; file_put_contents($crlfFile, $crlf);
 		$crlfMap = new \WeatherMap; $crlfMap->ReadConfig($crlfFile);
@@ -288,6 +299,33 @@ namespace {
 			unset($GLOBALS['__test_db_fetch_assoc']);
 			unlink($repairFile); unlink($repairImage);
 		}
+		$stageSource = $plugin . '/legacy-stage-' . bin2hex(random_bytes(4)) . '.png';
+		$stageTarget = $plugin . '/images/backgrounds/' . basename($stageSource);
+		file_put_contents($stageSource, 'Legacy asset bytes');
+		$stageConfig = $plugin . '/configs/' . basename($stageSource) . '.conf';
+		$stageLegacy = 'BACKGROUND ' . basename($stageSource) . "\n";
+		file_put_contents($stageConfig, $stageLegacy);
+		$GLOBALS['__test_db_fetch_assoc'] = fn () => [['configfile' => basename($stageConfig)]];
+		$oldConfig = $GLOBALS['config']; $GLOBALS['config']['base_path'] = dirname($plugin, 2);
+		$oldSuppress = $GLOBALS['weathermap_error_suppress'] ?? [];
+		try {
+			// A staged copy succeeds, but the config CAS must fail after a concurrent save.
+			$staged = weathermap_stage_asset_copy($stageSource, $stageTarget);
+			atomic_assert($staged && is_file($stageSource) && file_get_contents($stageTarget) === 'Legacy asset bytes', 'staging keeps original and complete destination');
+			$stageNewer = "TITLE Concurrent repair edit\n" . $stageLegacy;
+			$GLOBALS['config_before_lock'] = function() use ($stageConfig, $stageNewer) { unset($GLOBALS['config_before_lock']); file_put_contents($stageConfig, $stageNewer); };
+			$GLOBALS['weathermap_error_suppress'] = ['WMPOLL13']; weathermap_repair_maps();
+			atomic_assert(file_get_contents($stageConfig) === $stageNewer && is_file($stageSource), 'rejected repair leaves original asset usable');
+			$GLOBALS['config_fault'] = 'rename'; weathermap_repair_maps();
+			atomic_assert(file_get_contents($stageConfig) === $stageNewer && is_file($stageSource), 'I/O failure leaves original asset usable');
+			$GLOBALS['config_fault'] = ''; unlink($stageTarget); file_put_contents($stageConfig, $stageLegacy);
+			weathermap_repair_maps();
+			atomic_assert(str_contains(file_get_contents($stageConfig), 'images/backgrounds/') && is_file($stageSource) && is_file($stageTarget), 'successful relocation copies rather than removes legacy asset');
+		} finally {
+			$GLOBALS['config'] = $oldConfig; $GLOBALS['weathermap_error_suppress'] = $oldSuppress; $GLOBALS['config_fault'] = '';
+			unset($GLOBALS['__test_db_fetch_assoc'], $GLOBALS['config_before_lock']);
+			foreach ([$stageSource, $stageTarget, $stageConfig] as $path) if (is_file($path)) unlink($path);
+		}
 		$management = file_get_contents($plugin . '/weathermap-cacti-plugin-mgmt.php');
 		$start = strpos($management, 'function newMap(');
 		eval(str_replace(['__DIR__', 'function newMap('], [var_export($plugin, true), 'function wm_management_newMap('], substr($management, $start)));
@@ -313,6 +351,43 @@ namespace {
 			map_duplicate(1, 'Clone', 'clone');
 			atomic_assert($GLOBALS['__test_db_calls'] === [] && $GLOBALS['atomic_sql_saves'] === [], 'failed clone never registers auth or settings or invokes runner');
 		} finally { unset($GLOBALS['__test_db_fetch_row_prepared'], $GLOBALS['__test_sql_save'], $GLOBALS['__test_db_fetch_cell']); unlink($plugin . '/configs/' . $duplicateSource); $GLOBALS['config_fault'] = ''; }
+		// Real raw node/link saves must not re-check their own pre-save page token.
+		$rawFile = $dir . '/raw.conf';
+		$rawConfig = "WIDTH 300\nHEIGHT 200\nNODE A\n LABEL A\n POSITION 10 10\nNODE B\n LABEL B\n POSITION 50 50\nLINK AB\n NODES A B\n";
+		foreach (['node', 'link'] as $kind) {
+			file_put_contents($rawFile, $rawConfig);
+			$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $rawFile), 'node_name' => 'A', 'link_name' => 'AB', 'item_configtext' => $kind === 'node' ? "NODE A\n LABEL Updated\n POSITION 10 10\n" : "LINK AB\n NODES A B\n WIDTH 12\n"];
+			http_response_code(200); if ($kind === 'node') setNodeConfig($rawFile); else setLinkConfig($rawFile);
+			atomic_assert(http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'raw ' . $kind . ' edit saves without false conflict');
+		}
+		// Registration failure must retain a mutex through the callback and remove its reservation.
+		file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\n");
+		$GLOBALS['__test_db_fetch_row_prepared'] = fn () => ['configfile' => $duplicateSource, 'titlecache' => 'Source', 'group_id' => 1, 'active' => 'on', 'thumb_height' => 10, 'thumb_width' => 10, 'schedule' => '', 'archiving' => ''];
+		$GLOBALS['__test_db_fetch_cell'] = fn () => 0;
+		$GLOBALS['weathermap_confdir'] = $plugin . '/configs';
+		try {
+			foreach (['false', 'throw', 'auth-false', 'settings-false', 'auth-throw', 'settings-throw'] as $failure) {
+				$GLOBALS['__test_sql_save'] = function($record) use ($plugin, $failure) {
+					atomic_assert(is_file($plugin . '/configs/' . $record['configfile']), 'reserved file exists during registration');
+					if (function_exists('pcntl_fork')) {
+						$child = pcntl_fork();
+						if ($child === 0) { $probe = \fopen($plugin . '/configs/.weathermap-config.lock', 'rb'); exit(!\flock($probe, LOCK_EX | LOCK_NB) ? 0 : 1); }
+						pcntl_waitpid($child, $status); atomic_assert(pcntl_wexitstatus($status) === 0, 'registration retains directory mutex');
+					}
+					if ($failure === 'throw') throw new RuntimeException('registration failed');
+					return $failure === 'false' ? false : 987;
+				};
+				$GLOBALS['__test_db_calls'] = [];
+				$GLOBALS['__test_db_execute_prepared'] = function($sql, $params) use ($failure) {
+					$GLOBALS['__test_db_calls'][] = ['sql' => $sql, 'params' => $params];
+					if ((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-throw') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-throw')) throw new RuntimeException('insert failed');
+					return !((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-false') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-false'));
+				};
+				map_duplicate(1, 'Clone', 'clone');
+				atomic_assert(!is_file($plugin . '/configs/clone.conf'), 'failed registration removes its own reserved configuration');
+				if (str_ends_with($failure, '-false') || str_ends_with($failure, '-throw')) atomic_assert(cacti_count(array_filter($GLOBALS['__test_db_calls'], fn ($call) => str_starts_with($call['sql'], 'DELETE'))) === 3, 'partial registration removes map/auth/settings records');
+			}
+		} finally { unset($GLOBALS['__test_db_fetch_row_prepared'], $GLOBALS['__test_sql_save'], $GLOBALS['__test_db_fetch_cell'], $GLOBALS['__test_db_execute_prepared']); unlink($plugin . '/configs/' . $duplicateSource); }
 		$deletedMap = new \WeatherMap; $deletedMap->ReadConfig($file);
 		unlink($file);
 		atomic_assert(!$deletedMap->WriteConfig($file) && !file_exists($file), 'saving a previously loaded deleted map fails without resurrection');

@@ -87,7 +87,7 @@ function wm_asset_image_reference_index() {
 	$queue = [];
 	$root = dirname(__DIR__);
 	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root . '/configs', FilesystemIterator::SKIP_DOTS));
-	foreach ($iterator as $file) if ($file->isFile() && $file->getFilename() !== '.weathermap-config.lock' && strpos($file->getFilename(), '.wm-config-') !== 0) $queue[] = $file->getPathname();
+	foreach ($iterator as $file) if ($file->isFile() && strtolower($file->getExtension()) === 'conf') $queue[] = $file->getPathname();
 	$seen = [];
 	while ($queue) {
 		$path = array_pop($queue);

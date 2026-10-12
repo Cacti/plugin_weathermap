@@ -100,6 +100,9 @@ try {
 	file_put_contents($included, "BACKGROUND images/backgrounds/included-image.png\n");
 	file_put_contents($config, "INCLUDE " . $included . "\n");
 	image_format_assert(in_array(basename($included), wm_asset_image_users('included-image.png'), true), 'included configurations protect images from deletion');
+	$backup = $root . '/configs/ignored-backup-' . bin2hex(random_bytes(4)) . '.bak';
+	file_put_contents($backup, "ICON images/objects/backup-only.png\n");
+	try { image_format_assert(wm_asset_image_users('backup-only.png') === [], 'backup files are not map configurations'); } finally { unlink($backup); }
 	// Missing optional includes must not disable the library, and one index serves all names.
 	file_put_contents($config, "INCLUDE " . $temporary . "/missing-*.conf\nINCLUDE " . $included . "\n");
 	$index = wm_asset_image_reference_index();
