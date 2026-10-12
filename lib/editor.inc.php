@@ -1029,6 +1029,12 @@ function getEditorJs() {
 		'imageText15' => __('No background', 'weathermap'),
 		'imageUsed' => __('Used by: %s', '%s', 'weathermap'),
 		'imageUnused' => __('Not used by a map', 'weathermap'),
+		'iconSearchPlaceholder' => __('Search icons…', 'weathermap'),
+		'iconSearchLabel' => __('Search node icons', 'weathermap'),
+		'iconGroupLabel' => __('Node icons', 'weathermap'),
+		'iconChoosePrompt' => __('Choose an icon', 'weathermap'),
+		'iconMatchCount' => __('Matching icons: %s', '%s', 'weathermap'),
+		'iconNoMatches' => __('No matching icons', 'weathermap'),
 
 		'currentInterface'     => __('Current interface', 'weathermap'),
 		'advanced'             => __('Advanced settings', 'weathermap'),

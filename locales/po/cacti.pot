@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 11:05+1030\n"
+"POT-Creation-Date: 2026-10-12 12:29+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -303,6 +303,31 @@ msgstr ""
 
 #: lib/editor.inc.php
 msgid "Not used by a map"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No matching icons"
 msgstr ""
 
 #: lib/editor.inc.php
