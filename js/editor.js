@@ -1693,7 +1693,7 @@ function wmAssetImages(images) {
 		var select = $('#' + spec.id), old = select.val();
 		var slick = select.data('ddslick');
 		if (slick) { old = slick.selectedData && slick.selectedData.value; select.ddslick('destroy'); select = $('#' + spec.id); }
-		select.find('option').filter(function() { return /^images\/.*\.(png|gif|jpe?g)$/i.test(this.value); }).remove();
+		select.find('option').filter(function() { return this.value.indexOf('images/' + spec.kind + '/') === 0 && /\.(png|gif|jpe?g)$/i.test(this.value); }).remove();
 		if (!select.find('option[value="--NONE--"]').length) select.prepend($('<option>').val('--NONE--').text(spec.label));
 		images.filter(function(item) { return item.kind === spec.kind; }).forEach(function(item) {
 			select.append($('<option>').val('images/' + item.kind + '/' + item.name).text(item.name).attr({'data-imagesrc': item.url, 'data-description': item.name}));

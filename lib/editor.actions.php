@@ -1169,9 +1169,16 @@ function wm_editor_assets($mapfile, $action) {
 		} else {
 			$name = get_nfilter_request_var('image_name');
 			$path = wm_asset_image_path(get_nfilter_request_var('image_kind'), $name);
-			$references = wm_asset_image_reference_index();
-			if (wm_asset_image_users($name, get_nfilter_request_var('image_kind'), $references)) throw new InvalidArgumentException(__('This image is still referenced by a map configuration.', 'weathermap'));
-			if (!is_file($path) || !unlink($path)) throw new RuntimeException(__('Could not delete the image.', 'weathermap'));
+			require_once __DIR__ . '/WeatherMap.config.php';
+			$lock = \WeathermapConfig\acquire();
+			if (!$lock) throw new RuntimeException(__('Could not lock map configurations.', 'weathermap'));
+			try {
+				$references = wm_asset_image_reference_index();
+				if (wm_asset_image_users($name, get_nfilter_request_var('image_kind'), $references)) throw new InvalidArgumentException(__('This image is still referenced by a map configuration.', 'weathermap'));
+				if (!is_file($path) || !unlink($path)) throw new RuntimeException(__('Could not delete the image.', 'weathermap'));
+			} finally {
+				\WeathermapConfig\release($lock);
+			}
 			$result = ['images' => wm_asset_image_list($references)];
 		}
 		echo json_encode($result);

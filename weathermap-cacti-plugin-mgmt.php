@@ -2012,22 +2012,15 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 			$oldfile = $confdir . '/' . $map['configfile'];
 			$newfile = $confdir . '/' . $save['configfile'];
 
-			if (file_exists($oldfile)) {
-				if (copy($oldfile, $newfile)) {
-					$contents = file_get_contents($newfile);
-
-					if ($contents !== false) {
-						$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
-
-						file_put_contents($newfile, $contents);
-					} else {
-						raise_message('title_fail_' . $newid, __('The new Map %s was copied, but its title could not be updated in the config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_WARN);
-					}
-				} else {
-					raise_message('copy_fail_' . $newid, __('The new Map with the name %s was unable to create the config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
+			$contents = is_file($oldfile) ? file_get_contents($oldfile) : false;
+			if ($contents !== false) {
+				$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
+				require_once __DIR__ . '/lib/WeatherMap.config.php';
+				if (!\WeathermapConfig\atomicWrite($newfile, $contents)) {
+					raise_message('new_map_' . $newid, __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
 				}
 			} else {
-				raise_message('missing_fail_' . $newid, __('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
+				raise_message('new_map_' . $newid, __('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
 			}
 
 			weathermap_run_maps(__DIR__, true, [$newid]);

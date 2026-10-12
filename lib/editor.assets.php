@@ -52,6 +52,30 @@ function wm_asset_image_path($kind, $name) {
 	return $path;
 }
 /**
+ * Canonicalise directive paths using portable forward-slash separators.
+ *
+ * @param string $path The image or include path.
+ * @param string $root The base for relative paths.
+ *
+ * @return string The normalised absolute path.
+ */
+function wm_asset_normalize_path($path, $root) {
+	$path = str_replace('\\', '/', $path);
+	$root = str_replace('\\', '/', $root);
+	if (substr($path, 0, 1) !== '/' && !preg_match('~^[A-Za-z]:/~', $path)) $path = rtrim($root, '/') . '/' . $path;
+	$prefix = substr($path, 0, 2) === '//' ? '//' : '/';
+	if (preg_match('~^([A-Za-z]:)/~', $path, $drive)) {
+		$prefix = $drive[1] . '/';
+		$path = substr($path, 3);
+	}
+	$parts = [];
+	foreach (explode('/', $path) as $part) {
+		if ($part === '' || $part === '.') continue;
+		if ($part === '..') array_pop($parts); else $parts[] = $part;
+	}
+	return $prefix . implode('/', $parts);
+}
+/**
  * Read configuration files and includes once to index image references.
  *
  *
@@ -62,7 +86,7 @@ function wm_asset_image_reference_index() {
 	$queue = [];
 	$root = dirname(__DIR__);
 	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root . '/configs', FilesystemIterator::SKIP_DOTS));
-	foreach ($iterator as $file) if ($file->isFile()) $queue[] = $file->getPathname();
+	foreach ($iterator as $file) if ($file->isFile() && $file->getFilename() !== '.weathermap-config.lock' && strpos($file->getFilename(), '.wm-config-') !== 0) $queue[] = $file->getPathname();
 	$seen = [];
 	while ($queue) {
 		$path = array_pop($queue);
@@ -70,27 +94,19 @@ function wm_asset_image_reference_index() {
 		if ($real === false || !is_readable($real)) throw new RuntimeException(__('Cannot check configuration references.', 'weathermap'));
 		if (isset($seen[$real])) continue;
 		$seen[$real] = true;
-		if (count($seen) > 1000) throw new RuntimeException(__('Too many included configurations to check.', 'weathermap'));
+		if (cacti_count($seen) > 1000) throw new RuntimeException(__('Too many included configurations to check.', 'weathermap'));
 		$text = file_get_contents($real);
 		if ($text === false) throw new RuntimeException(__('Cannot check configuration references.', 'weathermap'));
 		if (preg_match_all('/^\s*(ICON|BACKGROUND)\s+(?:[0-9]+\s+[0-9]+\s+)?(.+?)\s*$/mi', $text, $directives, PREG_SET_ORDER)) {
 			foreach ($directives as $directive) {
-				$image = trim($directive[2]);
-				$image = strpos($image, '/') === 0 ? $image : $root . '/' . $image;
-				$parts = [];
-				foreach (explode('/', $image) as $part) {
-					if ($part === '' || $part === '.') continue;
-					if ($part === '..') array_pop($parts); else $parts[] = $part;
-				}
-				$image = '/' . implode('/', $parts);
+				$image = wm_asset_normalize_path(trim($directive[2]), $root);
 				// Dynamic token values are unknown here: protect all possible paths.
 				$pattern = implode('.*', array_map(function($part) { return preg_quote($part, '~'); }, preg_split('/\{[^}]+\}/', $image)));
-				$references[] = ['pattern' => '~^' . $pattern . '$~D', 'user' => basename($real)];
+				$references[] = ['pattern' => '~^' . $pattern . '$~iD', 'user' => basename($real)];
 			}
 		}
 		if (preg_match_all('/^\s*INCLUDE\s+(.+)$/mi', $text, $matches)) foreach ($matches[1] as $include) {
-			$include = trim($include);
-			$include = strpos($include, '/') === 0 ? $include : $root . '/' . $include;
+			$include = wm_asset_normalize_path(trim($include), $root);
 			$matches = glob($include);
 			// The renderer tolerates absent optional includes; unreadable matches still fail closed.
 			foreach ($matches ?: [] as $match) $queue[] = $match;
@@ -113,7 +129,7 @@ function wm_asset_image_users($name, $kind = null, $references = null) {
 	$root = dirname(__DIR__);
 	foreach ($references as $reference) {
 		foreach ($kind === null ? ['objects', 'backgrounds'] : [$kind] as $library) {
-			if (preg_match($reference['pattern'], $root . '/images/' . $library . '/' . $name)) {
+			if (preg_match($reference['pattern'], wm_asset_normalize_path('images/' . $library . '/' . $name, $root))) {
 				$users[] = $reference['user'];
 				break;
 			}
@@ -169,7 +185,7 @@ function wm_asset_store_image($kind, $source, $original_name) {
 	$stem = preg_replace('/[^A-Za-z0-9_-]/', '_', pathinfo(basename($original_name), PATHINFO_FILENAME));
 	$name = substr($stem ?: 'image', 0, 60) . '-' . bin2hex(random_bytes(16)) . '.' . $extension;
 	$path = wm_asset_image_path($kind, $name);
-	$handle = @fopen($path, 'x');
+	$handle = @fopen($path, 'xb');
 	if (!$handle) { imagedestroy($image); throw new RuntimeException(__('Could not reserve an image filename.', 'weathermap')); }
 	$written = false;
 	try {

@@ -24,7 +24,20 @@
 require dirname(__DIR__) . "/bootstrap-unit.php";
 require dirname(__DIR__, 2) . '/lib/editor.assets.php';
 require dirname(__DIR__, 2) . '/lib/editor.actions.php';
-function image_format_assert($value, $message) { if (!$value) throw new RuntimeException($message); }
+require dirname(__DIR__, 2) . '/lib/editor.inc.php';
+/**
+ * Assert an image-format regression condition.
+ *
+ * @param bool $value Whether the condition holds.
+ * @param string $message The failure description.
+ *
+ * @return void
+ */
+function image_format_assert($value, $message) {
+	if (!$value) {
+		throw new RuntimeException($message);
+	}
+}
 $root = dirname(__DIR__, 2);
 $temporary = $root . '/tests/wm-image-formats-' . bin2hex(random_bytes(4));
 mkdir($temporary);
@@ -48,13 +61,21 @@ try {
 			image_format_assert($size[0] === 12 && $size[1] === 8 && $size[2] === $type, 'decoded format and dimensions preserved');
 			image_format_assert(strpos(file_get_contents($path), 'UNTRUSTED_TRAILING_BYTES') === false, 'uploaded trailing bytes removed');
 			$listed = array_values(array_filter(wm_asset_image_list(), function($item) use ($kind, $name) { return $item['kind'] === $kind && $item['name'] === $name; }));
-			image_format_assert(count($listed) === 1 && $listed[0]['deletable'], 'each format listed and deletable');
+			image_format_assert(cacti_count($listed) === 1 && $listed[0]['deletable'], 'each format listed and deletable');
 			file_put_contents($config, 'BACKGROUND images/' . $kind . '/' . $name . "\n");
 			image_format_assert(in_array(basename($config), wm_asset_image_users($name), true), 'reference protection applies to every format');
 		}
 	}
 	file_put_contents($config, "ICON images/objects/core-router.png\n# router.png is merely a comment\n");
 	image_format_assert(wm_asset_image_users('router.png', 'objects') === [], 'substring and comment do not count as references');
+	file_put_contents($config, "ICON images/objects/ROUTER.PNG\n");
+	image_format_assert(wm_asset_image_users('router.png', 'objects') !== [], 'case-insensitive paths protect in-use images');
+	image_format_assert(wm_asset_normalize_path('images\\objects\\Router.PNG', 'C:\\Cacti\\plugins\\weathermap') === 'C:/Cacti/plugins/weathermap/images/objects/Router.PNG', 'Windows relative path canonicalised');
+	image_format_assert(wm_asset_normalize_path('D:\\assets\\router.png', 'C:/Cacti') === 'D:/assets/router.png', 'Windows absolute drive path retained');
+	image_format_assert(wm_asset_normalize_path('\\\\server\\share\\router.png', 'C:/Cacti') === '//server/share/router.png', 'UNC absolute path retained');
+	$jpegPath = $root . '/images/backgrounds/format-reload-' . bin2hex(random_bytes(4)) . '.jpeg';
+	copy($created[3], $jpegPath); $created[] = $jpegPath;
+	image_format_assert(in_array('images/backgrounds/' . basename($jpegPath), get_imagelist('backgrounds'), true), 'existing JPEG background survives selector reload');
 	file_put_contents($config, "ICON /outside/router.png\n");
 	image_format_assert(wm_asset_image_users('router.png', 'objects') === [], 'complete paths distinguish external images');
 	file_put_contents($config, "ICON 32 32 images/objects/updown_{node:this:bandwidth_in}.png\n");

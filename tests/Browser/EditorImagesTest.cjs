@@ -11,7 +11,9 @@ for(const m of inc.matchAll(/'(imageText[0-9]+|imageUsed|imageUnused)' => __\('(
 w.wmEditorText.imageUnused='Non utilisée';
 const source=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');w.eval(source.slice(source.indexOf('function wmAssetRequest(')));
 const images=[{kind:'objects',name:'hospital.png',url:'images/objects/hospital.png',width:96,height:96,users:['map.conf'],deletable:false},{kind:'backgrounds',name:'background.jpg',url:'images/backgrounds/background.jpg',width:800,height:600,users:[],deletable:true}];
+$('#node_iconfilename').append('<option value="images/icons/external.png">External icon</option>').val('images/icons/external.png');
 w.wmAssetImages(images);
+assert.equal($('#node_iconfilename').val(),'images/icons/external.png');assert.equal($('#node_iconfilename option[value="images/icons/external.png"]').length,1);
 assert.equal($('#wm-images-objects .wm-image-delete').length,0);assert.match($('#wm-images-objects').text(),/96 × 96 px/);assert.match($('#wm-images-objects').text(),/map.conf/);assert.match($('#wm-images-backgrounds').text(),/Non utilisée/);
 assert.equal($('#node_iconfilename option[value="images/objects/hospital.png"]').length,1);
 let request;$.ajax=opts=>request=opts;w.confirm=()=>false;$('#wm-images-backgrounds .wm-image-delete').trigger('click');assert.equal(request,undefined);
