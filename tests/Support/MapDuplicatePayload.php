@@ -96,6 +96,11 @@ function sql_save($payload, $table) {
 	return 0;
 }
 
+/** Ignore expected registration failure notices in this schema-only fixture. */
+function raise_message($id, $text = '', $level = 0) {}
+/** Return the untranslated fixture string. */
+function __($text, ...$args) { return $text; }
+define('MESSAGE_LEVEL_ERROR', 3);
 try {
 	map_duplicate(5, '<map_title> Copy');
 	print json_encode($GLOBALS['duplicate_save'], JSON_THROW_ON_ERROR);

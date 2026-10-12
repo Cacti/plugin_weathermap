@@ -82,17 +82,21 @@ function writeAll($stream, $contents) {
  * @param bool $mustExist Refuse to recreate an existing map deleted during editing.
  * @param string|null $expectedRevision SHA-256 of the snapshot being edited.
  * @param bool $createOnly Refuse to replace an existing destination.
+ * @param resource|null $heldLock Optional caller-owned mutex for this destination directory.
  *
  * @return bool Success; failures preserve the existing configuration.
  */
-function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision = null, $createOnly = false) {
+function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision = null, $createOnly = false, $heldLock = null) {
 	if (strpos($filename, '://') !== false) return false;
 	if (is_link($filename)) $filename = realpath($filename);
 	if ($filename === false || !is_dir(dirname($filename)) || !is_writable(dirname($filename))) return false;
 	if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
 	$existed = file_exists($filename);
 	$mustExist = $mustExist || $existed;
-	$lock = acquire(dirname($filename));
+	$ownsLock = $heldLock === null;
+	$lockPath = realpath(dirname($filename) . '/.weathermap-config.lock');
+	if (!$ownsLock && ($lockPath === false || !is_resource($heldLock) || get_resource_type($heldLock) !== 'stream' || realpath(stream_get_meta_data($heldLock)['uri']) !== $lockPath)) return false;
+	$lock = $ownsLock ? acquire(dirname($filename)) : $heldLock;
 	if (!$lock) return false;
 	$temp = false;
 	$stream = false;
@@ -117,6 +121,6 @@ function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision
 	} finally {
 		if (is_resource($stream)) fclose($stream);
 		if ($temp !== false && file_exists($temp)) unlink($temp);
-		release($lock);
+		if ($ownsLock) release($lock);
 	}
 }
