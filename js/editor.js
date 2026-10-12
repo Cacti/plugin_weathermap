@@ -1121,7 +1121,7 @@ function wmNodeIconPicker() {
 		count.text(visible ? wmEditorText.iconText4.replace('%s', String(visible)) : wmEditorText.iconText6);
 	});
 	picker.on('keydown', function(event) {
-		if (event.key === 'Escape') {
+		if (event.key === 'Escape' && picker.prop('open')) {
 			event.stopPropagation();
 			picker.prop('open', false);
 			summary.trigger('focus');

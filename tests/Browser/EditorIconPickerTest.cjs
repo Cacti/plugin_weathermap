@@ -30,6 +30,8 @@ assert.equal($('#wm-icon-picker').length,1);
 assert.equal($('#wm-icon-picker summary').text(),'Label Only');
 $('#wm-icon-picker').prop('open',true).trigger($.Event('keydown',{key:'Escape'}));
 assert.equal($('#wm-icon-picker').prop('open'),false);
+let escaped=0;$(w.document).on('keydown',e=>{if(e.key==='Escape')escaped++});
+$('#wm-icon-picker summary').trigger($.Event('keydown',{key:'Escape'}));assert.equal(escaped,1,'closed picker lets Escape close its parent dialog');
 $('input[type=search]').val('nothing-matches').trigger('input');
 assert.equal($('.wm-icon-count').text(),'No matching icons');
 console.log('Icon picker selection, search, reopening and Escape PASS');
