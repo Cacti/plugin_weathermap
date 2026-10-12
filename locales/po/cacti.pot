@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti\n"
+"Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-11 10:30+1030\n"
+"POT-Creation-Date: 2026-10-12 01:30+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -89,6 +89,16 @@ msgstr ""
 msgid "Link Comment Colour"
 msgstr ""
 
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr ""
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr ""
+
 #: lib/editor.inc.php
 msgid "Next results"
 msgstr ""
@@ -164,6 +174,31 @@ msgstr ""
 
 #: lib/editor.inc.php
 msgid "Click on the map where you would like to add a new node."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No matching icons"
 msgstr ""
 
 #: lib/editor.inc.php
@@ -2010,6 +2045,10 @@ msgid "Unable to delete the last remaining Map Group."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
 #, php-format
 msgid "The New Map File name %s already exists!"
 msgstr ""
@@ -2141,8 +2180,4 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "Paused"
-msgstr ""
-
-#: weathermap-cacti-plugin-mgmt.php
-msgid "Map title is too long. Use at most 4088 bytes after escaping."
 msgstr ""
