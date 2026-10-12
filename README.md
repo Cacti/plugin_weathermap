@@ -12,6 +12,13 @@ See CHANGELOG.md for the most recent updates, listed by version.
 
 See COPYING for the license under which php-weathermap is released.
 
+## Bundled building icons
+
+The node icon library in `images/objects/` includes modern corporate building,
+branch office, hospital, clinic, data centre and warehouse icons. These
+transparent PNGs are 96 × 96 pixels and can be selected from the editor's node
+icon picker without uploading additional files.
+
 ## Compatibility
 
 This version only works with Cacti 1.2.x onwards.  A re-write of the user interface
