@@ -144,7 +144,7 @@ namespace {
 	$original = "WIDTH 600\nHEIGHT 300\nNODE note1\n LABEL Original\n POSITION 50 50\n SET editor_note 1\n";
 	file_put_contents($file, $original);
 	try {
-		foreach (['lock-open', 'lock', 'temp-name', 'temp-open', 'write-false', 'write-zero', 'flush', 'close', 'group', 'mode', 'rename'] as $fault) {
+		foreach (array_filter(['lock-open', 'lock', 'temp-name', 'temp-open', 'write-false', 'write-zero', 'flush', 'close', 'group', 'mode', 'rename'], function($fault) { return PHP_OS_FAMILY !== 'Windows' || $fault !== 'group'; }) as $fault) {
 			$GLOBALS['config_fault'] = $fault;
 			atomic_assert(\WeathermapConfig\atomicWrite($file, 'Replacement') === false, 'failure propagated: ' . $fault);
 			atomic_assert(file_get_contents($file) === $original, 'original retained: ' . $fault);
@@ -153,15 +153,17 @@ namespace {
 		$GLOBALS['config_fault'] = 'short-write';
 		atomic_assert(\WeathermapConfig\atomicWrite($file, 'Complete replacement'), 'short writes completed');
 		atomic_assert(file_get_contents($file) === 'Complete replacement', 'complete bytes retained');
-		$GLOBALS['config_fault'] = 'lock-read';
+		$GLOBALS['config_fault'] = PHP_OS_FAMILY === 'Windows' ? '' : 'lock-read';
 		atomic_assert(\WeathermapConfig\atomicWrite($file, $original), 'readable lock supports another writer account');
 		$GLOBALS['config_fault'] = '';
 		atomic_assert(!\WeathermapConfig\atomicWrite('notewritefail://map/config', 'Replacement'), 'unsupported stream rejected');
 		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/missing/map.conf', 'Replacement'), 'missing directory rejected');
 		atomic_assert(!\WeathermapConfig\atomicWrite($dir, 'Replacement'), 'directory target rejected');
-		$link = $dir . '/link.conf'; symlink($file, $link);
-		atomic_assert(\WeathermapConfig\atomicWrite($link, $original), 'configuration symlink target preserved');
-		atomic_assert(is_link($link), 'link itself retained'); unlink($link);
+		$link = $dir . '/link.conf';
+		if (@symlink($file, $link)) {
+			atomic_assert(\WeathermapConfig\atomicWrite($link, $original), 'configuration symlink target preserved');
+			atomic_assert(is_link($link), 'link itself retained'); unlink($link);
+		}
 		if (function_exists('pcntl_fork')) {
 			$lock = \WeathermapConfig\acquire();
 			$child = pcntl_fork();
