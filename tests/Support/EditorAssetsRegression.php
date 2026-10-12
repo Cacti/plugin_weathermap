@@ -66,7 +66,10 @@ try {
 	$disabled = new WeatherMap; $disabled->ReadConfig($file);
 	assets_assert(wm_asset_colour_data($disabled)['pulse'] === false, 'pulse disabled survives config roundtrip');
 	assets_assert($loaded['background'] === '#eeeeee' && $loaded['outline'] === '#0000ff', 'colour roundtrip');
-	assets_assert(count($loaded['rows']) === 2 && $loaded['rows'][0]['end'] === '#ff0000' && $loaded['rows'][0]['tag'] === 'Traffic', 'scales and gradients roundtrip');
+	assets_assert(cacti_count($loaded['rows']) === 2 && $loaded['rows'][0]['end'] === '#ff0000' && $loaded['rows'][0]['tag'] === 'Traffic', 'scales and gradients roundtrip');
+	// Each independent edit starts from the latest persisted revision.
+	$map = new WeatherMap;
+	assets_assert($map->ReadConfig($file), 'reload after another editor saves');
 	$traffic_only = $data; unset($traffic_only['background']);
 	wm_asset_save_colours($map, $traffic_only);
 	assets_assert(wm_asset_colour_data($map)['background'] === '#eeeeee', 'traffic save preserves background');
