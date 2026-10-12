@@ -107,22 +107,21 @@ try {
 	image_format_assert(in_array(basename($included), wm_asset_image_users('included-image.png', 'backgrounds', $index), true), 'reference snapshot reused without rescanning configurations');
 	image_format_assert(wm_asset_image_users('included-image.png', 'backgrounds') === [], 'fresh request reflects changed configuration');
 	image_format_assert(is_array(wm_asset_image_list()), 'unmatched optional include permits listing');
-	// Test symlink rejection only inside this isolated fixture, and always restore its library.
-	$library = $root . '/images';
-	$originalLibrary = $temporary . '/library';
-	image_format_assert(rename($library, $originalLibrary), 'reserve fixture library');
+	// Test directory rejection without renaming any shared checkout assets.
+	$fixtureRoot = $temporary . '/fixture'; mkdir($fixtureRoot);
+	$library = $fixtureRoot . '/images';
+	image_format_assert(symlink($root . '/images', $library), 'create linked fixture library');
 	try {
-		image_format_assert(symlink($originalLibrary, $library), 'create linked fixture library');
 		foreach (['objects', 'backgrounds'] as $kind) {
-			try { wm_asset_directory($kind); throw new RuntimeException('accepted symlinked library parent'); } catch (InvalidArgumentException $expected) {}
+			try { wm_asset_directory($kind, $fixtureRoot); throw new RuntimeException('accepted symlinked library parent'); } catch (InvalidArgumentException $expected) {}
 		}
-		try { wm_asset_image_list(); throw new RuntimeException('listed linked library'); } catch (InvalidArgumentException $expected) {}
-		try { wm_asset_store_image('objects', $source, 'linked.png'); throw new RuntimeException('uploaded to linked library'); } catch (InvalidArgumentException $expected) {}
-		try { wm_asset_image_path('objects', basename($created[0])); throw new RuntimeException('accepted deletion path in linked library'); } catch (InvalidArgumentException $expected) {}
-	} finally {
-		if (is_link($library)) unlink($library);
-		rename($originalLibrary, $library);
-	}
+	} finally { unlink($library); rmdir($fixtureRoot); }
+	$literal = $temporary . '/site[1].conf';
+	file_put_contents($literal, "BACKGROUND images/backgrounds/literal-image.png\n");
+	file_put_contents($config, "INCLUDE " . $literal . "\n");
+	image_format_assert(in_array(basename($literal), wm_asset_image_users('literal-image.png'), true), 'literal brackets in INCLUDE protect referenced images');
+	file_put_contents($config, "INCLUDE " . $temporary . "/site*.conf\n");
+	image_format_assert(wm_asset_image_users('literal-image.png') === [], 'wildcard text is not expanded beyond renderer semantics');
 	// A reference-scan failure must be reported before upload validation or persistence.
 	$broken = $temporary . '/broken.conf';
 	symlink($temporary . '/missing-target.conf', $broken);

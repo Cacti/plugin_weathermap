@@ -873,12 +873,13 @@ function delete_link() {
 
 function form_submit() {
 	var data = $('input, select, textarea').serialize();
+	if (typeof WMConfigRevision !== 'undefined') data += '&config_revision=' + encodeURIComponent(WMConfigRevision);
 
 	$.ajax({
 		type: 'POST',
 		url: editor_url,
 		data: data,
-		error: function() { window.alert(wmEditorText.saveError); },
+		error: function(xhr) { window.alert(xhr && xhr.status === 409 ? wmEditorText.staleError : wmEditorText.saveError); },
 		success: function(html) {
 			hide_all_dialogs();
 

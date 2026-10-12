@@ -26,12 +26,13 @@
  * Resolve a managed image library, rejecting symlinked directories.
  *
  * @param string $kind The objects or backgrounds library.
+ * @param string|null $root Optional library root; defaults to the plugin directory.
  *
  * @return string The library directory.
  */
-function wm_asset_directory($kind) {
+function wm_asset_directory($kind, $root = null) {
 	if (!in_array($kind, ['objects', 'backgrounds'], true)) throw new InvalidArgumentException(__('Invalid image category.', 'weathermap'));
-	$parent = dirname(__DIR__) . '/images';
+	$parent = ($root ?? dirname(__DIR__)) . '/images';
 	$dir = $parent . '/' . $kind;
 	if (is_link($parent) || is_link($dir)) throw new InvalidArgumentException(__('Symbolic links cannot be managed here.', 'weathermap'));
 	return $dir;
@@ -107,9 +108,8 @@ function wm_asset_image_reference_index() {
 		}
 		if (preg_match_all('/^\s*INCLUDE\s+(.+)$/mi', $text, $matches)) foreach ($matches[1] as $include) {
 			$include = wm_asset_normalize_path(trim($include), $root);
-			$matches = glob($include);
-			// The renderer tolerates absent optional includes; unreadable matches still fail closed.
-			foreach ($matches ?: [] as $match) $queue[] = $match;
+			// INCLUDE is a literal filename in the renderer, including glob metacharacters.
+			if (file_exists($include) || is_link($include)) $queue[] = $include;
 		}
 	}
 	return $references;

@@ -1998,6 +1998,24 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		$save['duration']     = 0;
 		$save['last_runtime'] = 0;
 
+		$confdir = __DIR__ . '/configs';
+
+		$oldfile = $confdir . '/' . $map['configfile'];
+		$newfile = $confdir . '/' . $save['configfile'];
+
+		$contents = is_file($oldfile) ? file_get_contents($oldfile) : false;
+		if ($contents !== false) {
+			$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
+			require_once __DIR__ . '/lib/WeatherMap.config.php';
+			if (!\WeathermapConfig\atomicWrite($newfile, $contents, false, null, true)) {
+				raise_message('map_message', __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+				return;
+			}
+		} else {
+			raise_message('map_message', __('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
+			return;
+		}
+
 		$newid = sql_save($save, 'weathermap_maps');
 
 		if ($newid) {
@@ -2016,22 +2034,6 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 				[$id]);
 
 			raise_message('new_map_' . $newid, __('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
-
-			$confdir = __DIR__ . '/configs';
-
-			$oldfile = $confdir . '/' . $map['configfile'];
-			$newfile = $confdir . '/' . $save['configfile'];
-
-			$contents = is_file($oldfile) ? file_get_contents($oldfile) : false;
-			if ($contents !== false) {
-				$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
-				require_once __DIR__ . '/lib/WeatherMap.config.php';
-				if (!\WeathermapConfig\atomicWrite($newfile, $contents, false, null, true)) {
-					raise_message('new_map_' . $newid, __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
-				}
-			} else {
-				raise_message('new_map_' . $newid, __('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'), MESSAGE_LEVEL_ERROR);
-			}
 
 			weathermap_run_maps(__DIR__, true, [$newid]);
 		}
@@ -3432,11 +3434,17 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 		if ($mapfile != '') {
 			if ($sourcemapfile != '') {
 				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
-					$map->ReadConfig($sourcemapfile);
+					if (!$map->ReadConfig($sourcemapfile)) {
+					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
+					return;
+				}
 					if ($title !== '') {
 						$map->title = $title;
 					}
-					$map->WriteConfig($mapfile);
+					if (!$map->WriteConfig($mapfile, true)) {
+					raise_message('map_message', __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+					return;
+				}
 					raise_message('map_message', __('New Map file %s created from %s', basename($mapfile), basename($sourcemapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 				} else {
 					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
@@ -3445,7 +3453,10 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 				if ($title !== '') {
 					$map->title = $title;
 				}
-				$map->WriteConfig($mapfile);
+				if (!$map->WriteConfig($mapfile, true)) {
+					raise_message('map_message', __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+					return;
+				}
 				raise_message('map_message', __('New Map file %s created.', basename($mapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 			}
 		} else {
