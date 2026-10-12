@@ -104,6 +104,7 @@ if (!function_exists('db_fetch_row_prepared')) {
 
 if (!function_exists('db_fetch_cell')) {
 	function db_fetch_cell($sql) {
+		if (isset($GLOBALS['__test_db_fetch_cell'])) return ($GLOBALS['__test_db_fetch_cell'])($sql);
 		return '';
 	}
 }
@@ -339,6 +340,7 @@ if (!function_exists('is_error_message')) {
 
 if (!function_exists('sql_save')) {
 	function sql_save($a, $t, $k = 'id') {
+		if (isset($GLOBALS['__test_sql_save'])) return ($GLOBALS['__test_sql_save'])($a, $t, $k);
 		return isset($a['id']) ? $a['id'] : 1;
 	}
 }

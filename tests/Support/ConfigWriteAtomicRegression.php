@@ -214,6 +214,13 @@ namespace {
 		atomic_assert(!$second->WriteConfig($file) && file_get_contents($file) === $current, 'stale reader cannot overwrite the first edit');
 		$first->title = 'Next edit';
 		atomic_assert($first->WriteConfig($file), 'successful save updates its revision for subsequent writes');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash('sha256', $original), 'node_name' => 'note1', 'x' => 90, 'y' => 90];
+		http_response_code(200); moveNode($file, 0);
+		atomic_assert(http_response_code() === 409 && file_get_contents($file) !== $original, 'stale loaded page cannot overwrite another user save');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file)];
+		$matching = new \WeatherMap;
+		atomic_assert(wm_editor_read_config($matching, $file), 'matching loaded page revision accepted');
+		$GLOBALS['__test_nfilter_request'] = [];
 		$raw = new \WeatherMap; wm_editor_read_config($raw, $file);
 		$raw->ReadConfig("TITLE Fragment edit\n");
 		file_put_contents($file, $original);
@@ -281,6 +288,31 @@ namespace {
 			unset($GLOBALS['__test_db_fetch_assoc']);
 			unlink($repairFile); unlink($repairImage);
 		}
+		$management = file_get_contents($plugin . '/weathermap-cacti-plugin-mgmt.php');
+		$start = strpos($management, 'function newMap(');
+		eval(str_replace(['__DIR__', 'function newMap('], [var_export($plugin, true), 'function wm_management_newMap('], substr($management, $start)));
+		$GLOBALS['weathermap_confdir'] = $dir;
+		foreach (['', 'map.conf'] as $source) {
+			$destination = $dir . '/management-create.conf';
+			$GLOBALS['config_before_lock'] = function() use ($destination) { file_put_contents($destination, 'Concurrent creator'); unset($GLOBALS['config_before_lock']); };
+			wm_management_newMap('management-create.conf', $source);
+			atomic_assert(file_get_contents($destination) === 'Concurrent creator', 'management create-only preserves concurrent destination');
+			unlink($destination);
+		}
+		$start = strpos($management, 'function map_get_next_name('); $end = strpos($management, "\n/**", $start);
+		eval(str_replace('__DIR__', var_export($plugin, true), substr($management, $start, $end - $start)));
+		$start = strpos($management, 'function map_duplicate('); $end = strpos($management, "\n/**", $start);
+		eval(str_replace('__DIR__', var_export($plugin, true), substr($management, $start, $end - $start)));
+		$duplicateSource = 'atomic-duplicate-' . bin2hex(random_bytes(4)) . '.conf';
+		file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\n");
+		$GLOBALS['__test_db_fetch_row_prepared'] = fn () => ['configfile' => $duplicateSource, 'titlecache' => 'Source', 'group_id' => 1, 'active' => 'on', 'thumb_height' => 10, 'thumb_width' => 10, 'schedule' => '', 'archiving' => '',];
+		$GLOBALS['__test_db_calls'] = []; $GLOBALS['atomic_sql_saves'] = [];
+		$GLOBALS['__test_db_fetch_cell'] = fn () => 0;
+		$GLOBALS['__test_sql_save'] = function($record) { $GLOBALS['atomic_sql_saves'][] = $record; return 1; }; $GLOBALS['config_fault'] = 'rename';
+		try {
+			map_duplicate(1, 'Clone', 'clone');
+			atomic_assert($GLOBALS['__test_db_calls'] === [] && $GLOBALS['atomic_sql_saves'] === [], 'failed clone never registers auth or settings or invokes runner');
+		} finally { unset($GLOBALS['__test_db_fetch_row_prepared'], $GLOBALS['__test_sql_save'], $GLOBALS['__test_db_fetch_cell']); unlink($plugin . '/configs/' . $duplicateSource); $GLOBALS['config_fault'] = ''; }
 		$deletedMap = new \WeatherMap; $deletedMap->ReadConfig($file);
 		unlink($file);
 		atomic_assert(!$deletedMap->WriteConfig($file) && !file_exists($file), 'saving a previously loaded deleted map fails without resurrection');
@@ -288,6 +320,13 @@ namespace {
 		$GLOBALS['config_fault'] = 'rename';
 		$map = new \WeatherMap; $map->ReadConfig($file); $map->title = 'Changed';
 		atomic_assert(!$map->WriteConfig($file) && file_get_contents($file) === $original, 'engine failure preserves original');
+		$GLOBALS['__test_nfilter_request'] = ['map_title' => 'Failed title', 'map_legend' => 'Traffic', 'map_stamp' => 'Created', 'map_width' => 600, 'map_height' => 300, 'map_bgfile' => '--NONE--', 'map_linkdefaultwidth' => 7, 'map_linkdefaultbwin' => '100M', 'map_linkdefaultbwout' => '100M'];
+		$GLOBALS['__test_db_calls'] = [];
+		http_response_code(200); setMapProperties($file);
+		atomic_assert(http_response_code() === 500 && $GLOBALS['__test_db_calls'] === [], 'failed properties save cannot change titlecache');
+		$GLOBALS['config_fault'] = ''; http_response_code(200); setMapProperties($file);
+		atomic_assert(http_response_code() === 200 && cacti_count($GLOBALS['__test_db_calls']) === 1, 'successful properties save updates titlecache');
+		file_put_contents($file, $original); $GLOBALS['config_fault'] = 'rename';
 		$GLOBALS['__test_nfilter_request'] = ['node_name' => 'note1', 'param' => 'note1', 'x' => '70', 'y' => '80'];
 		{
 			http_response_code(200); moveNode($file, 0);

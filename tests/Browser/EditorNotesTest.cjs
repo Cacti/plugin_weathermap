@@ -24,8 +24,9 @@ w.show_note('note1');assert.equal($('#note_text').val(),'Core\nMaintenance');ass
 $('#note_x,#note_y').attr('max',600);$('#note_clone').trigger('click');assert.equal($('#note_name').val(),'');assert.equal($('#note_x').val(),'70');
 w.show_note('note1');$('#note_move').trigger('click');assert.equal(moved,'note1');
 w.show_note('note1');$('#note_delete').trigger('click');assert.equal(deleted,'note1');assert.equal($('#param').val(),'note1');
+w.WMConfigRevision='a'.repeat(64);
 $.ajax=opts=>request=opts;w.show_note('note1');w.form_submit();
-assert.equal(request.type,'POST');assert.match(request.data,/action=set_note_properties/);assert.match(request.data,/note_name=note1/);
+assert.match(request.data,/config_revision=a{64}/);assert.equal(request.type,'POST');assert.match(request.data,/action=set_note_properties/);assert.match(request.data,/note_name=note1/);
 request.error();assert.equal($('#wm-note-error').text(),'Save failed');assert.notEqual($('#wm-note-error').css('display'),'none');assert.equal($('#note_name').val(),'note1');
 for(const action of ['move_node','delete_node']) {
  w.show_note('note1');$('#node_name,#param').val('note1');$('#action').val(action);w.form_submit();request.error();

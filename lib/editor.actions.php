@@ -64,6 +64,11 @@ function wm_editor_read_config($map, $mapfile) {
 		http_response_code(422);
 		return false;
 	}
+	$revision = get_nfilter_request_var('config_revision');
+	if ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals($map->config_revision, $revision))) {
+		http_response_code(409);
+		return false;
+	}
 	$map->editor_config_revision = $map->config_revision;
 	return true;
 }
@@ -139,6 +144,7 @@ function getMapJavaScript($mapfile) {
 	if (!wm_editor_read_config($map, $mapfile)) return;
 
 	print $map->asJS();
+	print 'var WMConfigRevision = ' . json_encode($map->config_revision) . ';';
 	print 'var WMNotes = ' . json_encode(wm_editor_note_data($map), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';';
 }
 
@@ -516,10 +522,6 @@ function setMapProperties($mapfile) {
 		$map->add_hint('background_sizing', $background_sizing);
 	}
 
-	db_execute_prepared('UPDATE weathermap_maps
-		SET titlecache = ?
-		WHERE configfile = ?',
-		[$map->title, basename($mapfile)]);
 
 	$inheritables = [
 		['link', 'width', 'map_linkdefaultwidth', 'float']
@@ -565,7 +567,11 @@ function setMapProperties($mapfile) {
 		}
 	}
 
-	wm_editor_write_config($map, $mapfile);
+	if (!wm_editor_write_config($map, $mapfile)) return;
+	db_execute_prepared('UPDATE weathermap_maps
+		SET titlecache = ?
+		WHERE configfile = ?',
+		[$map->title, basename($mapfile)]);
 }
 
 /**

@@ -913,12 +913,17 @@ function form_submit() {
 	var noteTarget = noteAction === 'set_note_properties' ? $('#note_name').val() : noteAction === 'move_node' ? $('#node_name').val() : $('#param').val();
 	var savingNote = noteAction === 'set_note_properties' || (['move_node', 'delete_node'].indexOf(noteAction) !== -1 && typeof WMNotes !== 'undefined' && WMNotes[noteTarget]);
 	var data = $('input, select, textarea').serialize();
+	if (typeof WMConfigRevision !== 'undefined') data += '&config_revision=' + encodeURIComponent(WMConfigRevision);
 
 	$.ajax({
 		type: 'POST',
 		url: editor_url,
 		data: data,
-		error: function() {
+		error: function(xhr) {
+			if (xhr && xhr.status === 409) {
+				window.alert(wmEditorText.staleError);
+				return;
+			}
 			if (savingNote) {
 				if (noteAction !== 'set_note_properties') show_note(noteTarget);
 				$('#wm-note-error').text(wmEditorText.noteError).show();

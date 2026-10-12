@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 21:53+1030\n"
+"POT-Creation-Date: 2026-10-12 23:20+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -199,6 +199,10 @@ msgstr ""
 
 #: lib/editor.inc.php
 msgid "No matching icons"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
 msgstr ""
 
 #: lib/editor.inc.php
@@ -1854,17 +1858,17 @@ msgid "(No Title)"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-#, php-format
-msgid "The new Map with the name %s was created using config file %s"
-msgstr ""
-
-#: weathermap-cacti-plugin-mgmt.php
 msgid "Could not save the map configuration."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 #, php-format
 msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
@@ -2145,12 +2149,12 @@ msgid "The New Map File name %s already exists!"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-#, php-format
-msgid "New Map file %s created from %s"
+msgid "The Source Map File name is not readable or does not exist!"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-msgid "The Source Map File name is not readable or does not exist!"
+#, php-format
+msgid "New Map file %s created from %s"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
