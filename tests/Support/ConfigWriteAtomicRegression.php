@@ -173,6 +173,12 @@ namespace {
 			pcntl_waitpid($child, $status); \WeathermapConfig\release($lock);
 			atomic_assert(pcntl_wexitstatus($status) === 0, 'shared lock excludes concurrent configuration writers');
 		}
+		$templateFile = $dir . '/templates.conf';
+		file_put_contents($templateFile, "NODE templateNode\n LABEL Template\nNODE A\n POSITION 10 10\nNODE B\n POSITION 50 50\nLINK templateLink\n WIDTH 8\nLINK trafficLink\n NODES A B\n");
+		$templateMap = new \WeatherMap; $templateMap->ReadConfig($templateFile);
+		atomic_assert($templateMap->WriteConfig($templateFile), 'atomic save supports templates and traffic links');
+		$reloaded = new \WeatherMap; $reloaded->ReadConfig($templateFile);
+		atomic_assert(isset($reloaded->nodes['templateNode'], $reloaded->links['templateLink'], $reloaded->links['trafficLink']), 'template and real objects survive atomic roundtrip');
 		$GLOBALS['config_fault'] = 'rename';
 		$map = new \WeatherMap; $map->ReadConfig($file); $map->title = 'Changed';
 		atomic_assert(!$map->WriteConfig($file) && file_get_contents($file) === $original, 'engine failure preserves original');
