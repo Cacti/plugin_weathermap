@@ -128,6 +128,11 @@ try {
 	$GLOBALS['__test_nfilter_request']['map_background_colour'] = '#invalid';
 	setMapProperties($file);
 	assets_assert(file_get_contents($file) === $before_file, 'invalid background does not write');
+	$GLOBALS['__test_nfilter_request'] = ['config_revision' => str_repeat('0', 64), 'colours_json' => json_encode($data)];
+	$_SERVER['REQUEST_METHOD'] = 'POST';
+	ob_start(); wm_editor_colours($file, 'set_map_colours'); $staleResponse = json_decode(ob_get_clean(), true);
+	assets_assert(http_response_code() === 409 && isset($staleResponse['error']) && file_get_contents($file) === $before_file, 'stale colour form is rejected without changing saved configuration');
+	unset($GLOBALS['__test_nfilter_request']['config_revision']);
 	$saved->DrawMap($dir . '/map.png');
 	assets_assert(is_file($dir . '/map.png'), 'render after save');
 	echo "Editor assets regression PASS\n";

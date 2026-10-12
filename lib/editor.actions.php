@@ -1159,6 +1159,12 @@ function wm_editor_colours($mapfile, $action) {
 		$map = new WeatherMap;
 		$map->context = 'editor';
 		if (!$map->ReadConfig($mapfile)) throw new RuntimeException(__('Cannot read the map configuration.', 'weathermap'));
+		$revision = get_nfilter_request_var('config_revision');
+		if ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals($map->config_revision ?? hash_file('sha256', $mapfile), $revision))) {
+			http_response_code(409);
+			echo json_encode(['error' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap')]);
+			return;
+		}
 		if ($action === 'set_map_colours') {
 			$data = json_decode(get_nfilter_request_var('colours_json'), true);
 			if (!is_array($data)) throw new InvalidArgumentException(__('Invalid colour settings.', 'weathermap'));

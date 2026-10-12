@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 23:15+1030\n"
+"POT-Creation-Date: 2026-10-12 23:25+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -24,6 +24,10 @@ msgstr ""
 
 #: lib/editor.actions.php
 msgid "Cannot read the map configuration."
+msgstr ""
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
 msgstr ""
 
 #: lib/editor.actions.php
@@ -2438,8 +2442,4 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "Paused"
-msgstr ""
-
-#: lib/editor.inc.php
-msgid "This map has changed since you opened it. Reload the editor before saving your changes."
 msgstr ""
