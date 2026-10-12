@@ -342,6 +342,8 @@ class WeatherMap extends WeatherMapBase {
 	var $colours;
 	/** @var mixed */
 	var $configfile;
+	var $config_revision = null;
+	var $editor_config_revision = null;
 	/** @var mixed */
 	var $imagefile;
 	/** @var mixed */
@@ -2446,6 +2448,7 @@ class WeatherMap extends WeatherMapBase {
 	 */
 	function ReadConfig($input, $is_include = false) {
 		global $config, $weathermap_error_suppress;
+		if (!$is_include) $this->config_revision = null;
 
 		$curnode    = null;
 		$curlink    = null;
@@ -2492,16 +2495,19 @@ class WeatherMap extends WeatherMapBase {
 			}
 
 			if (is_file($filename)) {
-				$fd = fopen($filename, 'r');
+				$fd = fopen($filename, 'rb');
 
 				if ($fd) {
+					$revision = hash_init('sha256');
 					while (($buffer = fgets($fd, 4096)) !== false) {
+						hash_update($revision, $buffer);
 						// strip out any Windows line-endings that have gotten in here
 						$buffer  = str_replace("\r", '', $buffer);
 						$lines[] = $buffer;
 					}
 
 					fclose($fd);
+					if (!$is_include) $this->config_revision = hash_final($revision);
 				}
 			}
 		}
@@ -3605,9 +3611,11 @@ class WeatherMap extends WeatherMapBase {
 
 	/**
 	 * @param string $filename
+	 * @param bool $createOnly Require a new destination.
+	 * @param string|null $expectedRevision Optional request snapshot revision.
 	 * @return bool
 	 */
-	function WriteConfig($filename) {
+	function WriteConfig($filename, $createOnly = false, $expectedRevision = null) {
 		require_once __DIR__ . '/WeatherMap.config.php';
 		$fd = fopen('php://temp', 'w+b');
 
@@ -3848,7 +3856,10 @@ class WeatherMap extends WeatherMapBase {
 			$contents = stream_get_contents($fd);
 			$closed = fclose($fd);
 
-			return $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $this->configfile !== '' && $filename === $this->configfile);
+			$sameFile = $this->configfile !== '' && $filename === $this->configfile;
+			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly);
+			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
+			return $saved;
 		} else {
 			wm_warn("Couldn't open config file $filename for writing");
 
@@ -4027,6 +4038,8 @@ class WeatherMap extends WeatherMapBase {
 			}
 
 			$sharpNotes = ($filename !== 'null' && $withnodes && $this->context !== 'editor2') ? wm_sharp_notes($this) : [];
+			$noteImages = $sharpNotes !== [] ? wm_note_prepare_images($this) : false;
+			if ($noteImages === false) $sharpNotes = [];
 			foreach ($sharpNotes as $node) {
 				$node->render_note_hidpi = true;
 				$bounds = $node->boundingboxes;
@@ -4047,7 +4060,7 @@ class WeatherMap extends WeatherMapBase {
 				if ($z == 1000) {
 					if ($sharpNotes !== []) {
 						$baseImage = $image;
-						$image = imagecreatetruecolor($this->width, $this->height);
+						$image = $noteImages[1];
 						imagesavealpha($image, true);
 						imagealphablending($image, false);
 						imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
@@ -4179,10 +4192,12 @@ class WeatherMap extends WeatherMapBase {
 			if ($sharpNotes !== []) {
 				if ($noteForeground !== null) $image = $baseImage;
 				$this->image = $image;
-				$image = wm_note_display_image($this, $sharpNotes);
+				$image = wm_note_display_image($this, $sharpNotes, $noteImages[0]);
 				if ($noteForeground !== null) {
 					imagecopyresampled($image, $noteForeground, 0, 0, 0, 0, imagesx($image), imagesy($image), $this->width, $this->height);
 					imagedestroy($noteForeground);
+				} else {
+					imagedestroy($noteImages[1]);
 				}
 				$this->image = $image;
 			}

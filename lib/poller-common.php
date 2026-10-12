@@ -144,6 +144,7 @@ function weathermap_repair_maps() {
 
 			if (file_exists($configfile) && is_writable($configfile)) {
 				$contents    = file($configfile) ?: [];
+				$revision = hash('sha256', implode('', $contents));
 
 				foreach ($contents as $line) {
 					if (strpos($line, 'BACKGROUND') !== false) {
@@ -272,7 +273,7 @@ function weathermap_repair_maps() {
 			if ($changes) {
 				wm_debug('Writing updated file to: ' . $configfile);
 				require_once __DIR__ . '/WeatherMap.config.php';
-				if (!\WeathermapConfig\atomicWrite($configfile, implode("\n", $outcontents), true)) {
+				if (!\WeathermapConfig\atomicWrite($configfile, implode("\n", $outcontents), true, $revision)) {
 					wm_warn('Unable to save repaired configuration: ' . $configfile . ' [WMPOLL13]');
 				}
 			} else {

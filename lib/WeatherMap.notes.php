@@ -22,6 +22,24 @@
  +-------------------------------------------------------------------------+
 */
 
+namespace WeathermapNotes {
+	/**
+	 * Allocate a note canvas without propagating GD allocation failures.
+	 *
+	 * @param int $width Canvas width.
+	 * @param int $height Canvas height.
+	 * @return \GdImage|false Allocated canvas, or false when unavailable.
+	 */
+	function allocate($width, $height) {
+		try {
+			return @imagecreatetruecolor($width, $height);
+		} catch (\Throwable $error) {
+			return false;
+		}
+	}
+}
+
+namespace {
 /**
  * Notes eligible for high-density map rendering. Restrict the allocation to
  * bounded maps and plain TrueType annotations drawn above the other objects.
@@ -60,14 +78,33 @@ function wm_sharp_notes($map) {
 }
 
 /**
+ * Reserve both note canvases before suppressing logical-resolution glyphs.
+ *
+ * @param WeatherMap $map Map being rendered.
+ * @return array{GdImage, GdImage}|false Display and foreground canvases.
+ */
+function wm_note_prepare_images($map) {
+	$display = \WeathermapNotes\allocate($map->width * 2, $map->height * 2);
+	if ($display === false) return false;
+	$foreground = \WeathermapNotes\allocate($map->width, $map->height);
+	if ($foreground === false) {
+		imagedestroy($display);
+		return false;
+	}
+	return [$display, $foreground];
+}
+
+/**
  * Render glyphs at twice the density; do not enlarge an existing text bitmap.
  *
  * @param WeatherMap $map The composed logical-resolution map.
  * @param WeatherMapNode[] $notes Notes to draw over the composed image.
- * @return GdImage The high-density display image.
+ * @param GdImage|null $image Optional preallocated display canvas.
+ * @return GdImage|false The display image, or false on allocation failure.
  */
-function wm_note_display_image($map, $notes) {
-	$image = imagecreatetruecolor($map->width * 2, $map->height * 2);
+function wm_note_display_image($map, $notes, $image = null) {
+	$image = $image ?? \WeathermapNotes\allocate($map->width * 2, $map->height * 2);
+	if ($image === false) return false;
 	imagecopyresampled($image, $map->image, 0, 0, 0, 0, $map->width * 2, $map->height * 2, $map->width, $map->height);
 	foreach ($notes as $node) {
 		$lines = explode("\n", $node->proclabel);
@@ -106,4 +143,6 @@ function wm_note_display_image($map, $notes) {
 function wm_liveview_image_html($map, $id) {
 	$url = htmlspecialchars('?action=liveviewimage&id=' . rawurlencode((string)$id), ENT_QUOTES, 'UTF-8');
 	return '<img src="' . $url . '" width="' . (int)$map->width . '" height="' . (int)$map->height . '" />' . "\n";
+}
+
 }

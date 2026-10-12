@@ -64,6 +64,7 @@ function wm_editor_read_config($map, $mapfile) {
 		http_response_code(422);
 		return false;
 	}
+	$map->editor_config_revision = $map->config_revision;
 	return true;
 }
 
@@ -72,10 +73,11 @@ function wm_editor_read_config($map, $mapfile) {
  *
  * @param WeatherMap $map Engine containing the edited configuration.
  * @param string $mapfile Configuration path.
+ * @param bool $createOnly Require a new destination for map creation.
  * @return bool Whether the complete configuration was saved.
  */
-function wm_editor_write_config($map, $mapfile) {
-	if (!$map->WriteConfig($mapfile)) {
+function wm_editor_write_config($map, $mapfile, $createOnly = false) {
+	if (!$map->WriteConfig($mapfile, $createOnly, $map->editor_config_revision)) {
 		http_response_code(500);
 		return false;
 	}
@@ -93,7 +95,7 @@ function newMap($mapfile) {
 
 	require_once __DIR__ . '/editor.new-map-preset.php';
 	wm_new_map_preset($map);
-	wm_editor_write_config($map, $mapfile);
+	wm_editor_write_config($map, $mapfile, true);
 }
 
 /**
@@ -120,7 +122,7 @@ function newMapCopy($mapfile) {
 
 		if (file_exists($sourcemap) && is_readable($sourcemap)) {
 			$map->ReadConfig($sourcemap);
-			wm_editor_write_config($map, $mapfile);
+			wm_editor_write_config($map, $mapfile, true);
 		}
 	}
 }
