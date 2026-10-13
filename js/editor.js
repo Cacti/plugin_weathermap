@@ -860,6 +860,7 @@ function delete_link() {
 	$('.dlgConfirm').text(prompt + ' ' + wmEditorText.keepLinkNodes);
 
 	if (['add_link', 'add_link2', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
+	$('#param').val($('#link_name').val());
 	mapmode('existing');
 
 	$('.dlgConfirm').dialog({

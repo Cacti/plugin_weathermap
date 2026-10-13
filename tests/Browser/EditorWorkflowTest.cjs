@@ -310,15 +310,16 @@ for (const failOld of [false, true]) {
  assert.equal($('#link_infourl').val().includes('local_graph_id=20'), true);
 }
 // Real mode and delete handlers must cancel placement on every confirmation exit.
-$('body').append('<input id="action"><input id="debug"><input id="xycapture"><img id="existingdata" data-width="600" data-height="300"><div class="mapData"></div><span id="tb_help"></span>');
+$('body').append('<input id="param"><input id="action"><input id="debug"><input id="xycapture"><img id="existingdata" data-width="600" data-height="300"><div class="mapData"></div><span id="tb_help"></span>');
 $('#tb_help').data('idle-help','Idle help');
 w.setCanvasSize=()=>{};
 w.eval(editor.slice(editor.indexOf('function wmResetActionHelp()'),editor.indexOf('function setCanvasSize(')));
 for (const kind of ['node','link']) {
  for (const exit of ['cancel','close']) for (const placement of ['add_link','add_link2']) {
-  $('#action').val(placement);w.mapmode('existing');$('#tb_help').text('Place link');
+  $('#param').val('first-endpoint');$('#action').val(placement);w.mapmode('existing');$('#tb_help').text('Place link');
   assert.equal($('#existingdata').hasClass('wm-placement-mode'),true);
   if(kind==='node') w.delete_node();else w.delete_link();
+  if(kind==='link')assert.equal($('#param').val(),$('#link_name').val());
   if(exit==='cancel')$('.dlgConfirm').dialog('option','buttons')[0].click.call($('.dlgConfirm')[0]);else $('.dlgConfirm').dialog('close');
   assert.equal($('#action').val(),'');assert.equal($('#existingdata').hasClass('wm-placement-mode'),false);assert.equal($('#tb_help').text(),'Idle help');
  }
