@@ -1208,10 +1208,20 @@ function wm_editor_colours($mapfile, $action) {
 			return;
 		}
 		if ($action === 'set_map_colours') {
-			$data = json_decode(get_nfilter_request_var('colours_json'), true);
+			$payload = get_nfilter_request_var('colours_json');
+			if (!is_string($payload)) throw new InvalidArgumentException(__('Invalid colour settings.', 'weathermap'));
+			$data = json_decode($payload, true);
 			if (!is_array($data)) throw new InvalidArgumentException(__('Invalid colour settings.', 'weathermap'));
 			wm_asset_save_colours($map, $data);
-			if (!$map->WriteConfig($mapfile, false, $map->config_revision, $lock)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+			if (!$map->WriteConfig($mapfile, false, $map->config_revision, $lock)) {
+				$current = @hash_file('sha256', $mapfile);
+				if ($current !== $map->config_revision || !\WeathermapConfig\dependenciesMatch($map->config_dependencies)) {
+					http_response_code(409);
+					echo json_encode(['error' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap')]);
+					return;
+				}
+				throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+			}
 		}
 		echo json_encode(['colours' => wm_asset_colour_data($map), 'revision' => \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies)]);
 	} catch (Throwable $error) {

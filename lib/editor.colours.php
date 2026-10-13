@@ -97,7 +97,7 @@ function wm_asset_save_colours($map, $data) {
 		$key = $serialize($bottom) . '_' . $serialize($top);
 		if (isset($scales[$name][$key])) throw new InvalidArgumentException(__('Duplicate range in a scale.', 'weathermap'));
 		$entry = ['key' => $key, 'bottom' => $bottom, 'top' => $top, 'special' => 0, 'red1' => $rgb[0], 'green1' => $rgb[1], 'blue1' => $rgb[2], 'tag' => $tag];
-		if (!empty($row['end'])) {
+		if (array_key_exists('end', $row) && $row['end'] !== '') {
 			$end = wm_asset_rgb($row['end']);
 			if ($rgb[0] < 0 || $end[0] < 0) throw new InvalidArgumentException(__('Gradients need two colours.', 'weathermap'));
 			$entry += ['red2' => $end[0], 'green2' => $end[1], 'blue2' => $end[2]];

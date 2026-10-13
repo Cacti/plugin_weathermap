@@ -379,6 +379,21 @@ namespace {
 		eval(str_replace(['__DIR__', 'function wm_editor_colours(', 'new WeatherMap'], [var_export($plugin . '/lib', true), 'function unreadColourEndpoint(', 'new UnreadColourMap'], substr($actions, $start, $end - $start)));
 		$GLOBALS['__test_nfilter_request'] = []; http_response_code(200); ob_start(); unreadColourEndpoint($file, 'colour_data'); $error = json_decode(ob_get_clean(), true);
 		colour_atomic_assert(http_response_code() === 500 && isset($error['error']) && !isset($error['colours']), 'unread colour config returns an error instead of default colours');
+
+		$targetDir = $dir . '/alias-target'; mkdir($targetDir); $targetFile = $targetDir . '/map.conf'; file_put_contents($targetFile, $initial);
+		$alias = $dir . '/alias.conf'; symlink($targetFile, $alias); $targetLock = \WeathermapConfig\acquire($targetDir);
+		colour_atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Alias change', true, hash('sha256', $initial)) && file_get_contents($targetFile) === $initial, 'physical target mutex blocks an alias writer');
+		\WeathermapConfig\release($targetLock); colour_atomic_assert(\WeathermapConfig\atomicWrite($alias, $initial, true, hash('sha256', $initial)), 'alias write succeeds after shared target lock release');
+		unlink($alias); unlink($targetFile); unlink($targetDir . '/.weathermap-config.lock'); rmdir($targetDir);
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'colours_json' => ['x']];
+		http_response_code(200); ob_start(); wm_editor_colours($file, 'set_map_colours'); ob_end_clean();
+		colour_atomic_assert(http_response_code() === 400, 'non-string colours_json is a client error');
+		foreach (['0', 0, false, null, []] as $badEnd) {
+			$badData = $data; $badData['rows'][0]['end'] = $badEnd;
+			$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'colours_json' => json_encode($badData)];
+			http_response_code(200); ob_start(); wm_editor_colours($file, 'set_map_colours'); ob_end_clean();
+			colour_atomic_assert(http_response_code() === 400, 'unsupported gradient value is rejected');
+		}
 		$probe = \WeathermapConfig\acquire($dir, false);
 		colour_atomic_assert(is_resource($probe), 'endpoint always releases mutex');
 		\WeathermapConfig\release($probe);
