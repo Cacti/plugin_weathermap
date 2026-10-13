@@ -771,6 +771,7 @@ function delete_node() {
 	}
 	$('.dlgConfirm').text(message + ' ' + delNodeKeepDevice);
 
+	if (['add_link', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
 	mapmode('existing');
 
 	$('.dlgConfirm').dialog({
@@ -858,6 +859,7 @@ function delete_link() {
 		});
 	$('.dlgConfirm').text(prompt + ' ' + wmEditorText.keepLinkNodes);
 
+	if (['add_link', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
 	mapmode('existing');
 
 	$('.dlgConfirm').dialog({
