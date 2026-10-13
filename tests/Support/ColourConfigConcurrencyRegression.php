@@ -384,6 +384,22 @@ namespace {
 		$alias = $dir . '/alias.conf'; symlink($targetFile, $alias); $targetLock = \WeathermapConfig\acquire($targetDir);
 		colour_atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Alias change', true, hash('sha256', $initial)) && file_get_contents($targetFile) === $initial, 'physical target mutex blocks an alias writer');
 		\WeathermapConfig\release($targetLock); colour_atomic_assert(\WeathermapConfig\atomicWrite($alias, $initial, true, hash('sha256', $initial)), 'alias write succeeds after shared target lock release');
+
+		$lockCalls = 0;
+		$GLOBALS['config_before_lock'] = function () use (&$lockCalls, $targetFile) {
+			if (++$lockCalls === 2) file_put_contents($targetFile, 'Direct writer winner');
+		};
+		try {
+			colour_atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Stale alias edit', true, hash('sha256', $initial)) && file_get_contents($targetFile) === 'Direct writer winner', 'alias revision is checked after physical target lock acquisition');
+		} finally { unset($GLOBALS['config_before_lock']); }
+		file_put_contents($targetFile, "TITLE Physical include\n");
+		file_put_contents($includeRoot, "WIDTH 600\nHEIGHT 300\nINCLUDE " . $alias . "\n");
+		$aliasMap = new \WeatherMap; $aliasMap->ReadConfig($includeRoot);
+		colour_atomic_assert(array_key_exists(realpath($targetFile), $aliasMap->config_dependencies), 'symlink include snapshot records physical filename');
+		$targetLock = \WeathermapConfig\acquire($targetDir);
+		colour_atomic_assert(!$aliasMap->WriteConfig($includeRoot), 'symlink include cannot bypass physical dependency mutex');
+		\WeathermapConfig\release($targetLock);
+		colour_atomic_assert($aliasMap->WriteConfig($includeRoot), 'symlink include save succeeds after dependency mutex release');
 		unlink($alias); unlink($targetFile); unlink($targetDir . '/.weathermap-config.lock'); rmdir($targetDir);
 		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'colours_json' => ['x']];
 		http_response_code(200); ob_start(); wm_editor_colours($file, 'set_map_colours'); ob_end_clean();

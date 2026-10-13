@@ -19,6 +19,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * Add traffic colour presets and optional high-load link pulsing
 
 * Fix Safari rendering of high-traffic link glows using native SVG filters
+* Fix editor placement reset, destructive action controls and theme contrast
 * Reduce gallery preview cards by 20% while preserving generated thumbnail resolution
 * Add a searchable node icon picker and bundled enterprise site icons
 

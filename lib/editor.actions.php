@@ -997,6 +997,9 @@ function editorSettings($mapfile) {
 	$use_overlay          = (isset_request_var('editorsettings_showvias') ? intval(get_nfilter_request_var('editorsettings_showvias')) : false);
 	$use_relative_overlay = (isset_request_var('editorsettings_showrelative') ? intval(get_nfilter_request_var('editorsettings_showrelative')) : false);
 	$grid_snap_value      = (isset_request_var('editorsettings_gridsnap') ? intval(get_nfilter_request_var('editorsettings_gridsnap')) : 0);
+
+	// This AJAX action exits before the entry page's cookie write.
+	cacti_cookie_set('wmeditor', ($use_overlay ? '1' : '0') . ':' . ($use_relative_overlay ? '1' : '0') . ':' . intval($grid_snap_value));
 }
 
 /**

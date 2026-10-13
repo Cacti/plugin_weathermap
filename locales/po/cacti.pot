@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-13 13:13+1030\n"
+"POT-Creation-Date: 2026-10-13 23:16+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -38,7 +38,7 @@ msgstr ""
 msgid "Invalid colour settings."
 msgstr ""
 
-#: lib/editor.actions.php
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
 msgid "Could not save the map configuration."
 msgstr ""
 
@@ -283,6 +283,10 @@ msgid "Custom (%s)"
 msgstr ""
 
 #: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
 msgid "Map Background Colour"
 msgstr ""
 
@@ -521,7 +525,7 @@ msgstr ""
 
 #: lib/editor.inc.php
 #, php-format
-msgid "Remove %s from this map?"
+msgid "Delete %s from this map?"
 msgstr ""
 
 #: lib/editor.inc.php
@@ -530,7 +534,7 @@ msgid "Connected links to remove: %s."
 msgstr ""
 
 #: lib/editor.inc.php
-msgid "The Cacti device and graphs will remain."
+msgid "The Cacti device and its graphs will remain."
 msgstr ""
 
 #: lib/editor.inc.php
@@ -578,9 +582,8 @@ msgstr ""
 msgid "Clone"
 msgstr ""
 
-#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
-#: weathermap-cacti-plugin-mgmt.php
-msgid "Edit"
+#: lib/editor.inc.php
+msgid "Edit Configuration"
 msgstr ""
 
 #: lib/editor.inc.php weathermap-cacti-plugin-editor.php
@@ -681,7 +684,7 @@ msgid "This is where help appears for nodes"
 msgstr ""
 
 #: lib/editor.inc.php
-msgid "or click a Node or Link to edit it's properties"
+msgid "or click a Node or Link to edit its properties"
 msgstr ""
 
 #: setup.php
@@ -1156,7 +1159,7 @@ msgid "Position<br>---, ---"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Select a menu item or either right-click or click on a Node or Link to edit it's properties"
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1237,6 +1240,10 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "Graph Selector"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1581,6 +1588,26 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit Object Configuration"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
@@ -2320,12 +2347,12 @@ msgid "The New Map File name %s already exists!"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-#, php-format
-msgid "New Map file %s created from %s"
+msgid "The Source Map File name is not readable or does not exist!"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-msgid "The Source Map File name is not readable or does not exist!"
+#, php-format
+msgid "New Map file %s created from %s"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
@@ -2446,8 +2473,4 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "Paused"
-msgstr ""
-
-#: lib/editor.inc.php
-msgid "Unable to save changes. Please try again."
 msgstr ""

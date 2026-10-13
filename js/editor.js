@@ -379,6 +379,7 @@ $(function() {
 function initJS() {
 	// if the xycapture element is there, then we are in the main edit screen
 	if ($('#xycapture').length) {
+		if ($('#tb_help').data('idle-help') === undefined) $('#tb_help').data('idle-help', $('#tb_help').text());
 		attach_click_events();
 		attach_help_events();
 		//show_context_help('node_label', 'node_help');
@@ -433,7 +434,7 @@ function initContextMenu() {
 		{title: txtMove, cmd: 'move', uiIcon: 'ui-icon-arrow-4'},
 		{title: txtClone, cmd: 'clone', uiIcon: 'ui-icon-copy'},
 		{title: txtEdit, cmd: 'edit', uiIcon: 'ui-icon-pencil'},
-		{title: txtDelete, cmd: 'delete', uiIcon: 'ui-icon-trash'},
+		{title: txtDelNode, cmd: 'delete', uiIcon: 'ui-icon-trash', addClass: 'wm-delete-action'},
 		{title: "----"},
 		{title: txtProperties, cmd: 'properties', uiIcon: 'ui-icon-gear'}
 	];
@@ -443,7 +444,7 @@ function initContextMenu() {
 		{title: txtTidy, cmd: 'tidy', uiIcon: 'ui-icon-arrow-4'},
 		{title: txtVia, cmd: 'via', uiIcon: 'ui-icon-copy'},
 		{title: txtEdit, cmd: 'edit', uiIcon: 'ui-icon-pencil'},
-		{title: txtDelete, cmd: 'delete', uiIcon: 'ui-icon-trash'},
+		{title: txtDelLink, cmd: 'delete', uiIcon: 'ui-icon-trash', addClass: 'wm-delete-action'},
 		{title: "----"},
 		{title: txtProperties, cmd: 'properties', uiIcon: 'ui-icon-gear'}
 	];
@@ -461,6 +462,10 @@ function initContextMenu() {
 		},
 		beforeOpen: function(event, ui) {
 			var target = ui.target[0].id;
+			if (target.startsWith('LINK') || target.startsWith('NODE')) {
+				if (['add_link', 'add_link2', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
+				mapmode('existing');
+			}
 
 			if (target.startsWith('LINK')) {
 				$(this).contextmenu('replaceMenu', linkMenu);
@@ -658,7 +663,7 @@ function click_execute(event, alt) {
 		if (objecttype == 'NODE' && $('#action').val() == 'add_link') {
 			$('#param').val(NodeIDs[objectid]);
 			$('#action').val('add_link2');
-			$('#tb_help').text('Click on the second node for the end of the link.');
+			$('#tb_help').addClass('wm-action-help').text('Click on the second node for the end of the link.');
 		} else if (objecttype == 'NODE' && $('#action').val() == 'add_link2') {
 			$('#param2').val(NodeIDs[objectid]);
 			form_submit();
@@ -667,7 +672,8 @@ function click_execute(event, alt) {
 			// reset back to standard state, and see if we can oblige them
 			//		alert('A bit confused');
 			$('#action').val('');
-			hide_all_dialogs()
+			hide_all_dialogs();
+			mapmode('existing');
 		}
 	}
 }
@@ -716,7 +722,15 @@ function new_file() {
 	self.location = '?action=newfile';
 }
 
+function wmResetActionHelp() {
+	$('#tb_help').removeClass('wm-action-help').text($('#tb_help').data('idle-help'));
+}
+
 function mapmode(m) {
+	var placing = m == 'xy' || ['add_link', 'add_link2'].indexOf($('#action').val()) !== -1;
+	$('#existingdata, .mapData').toggleClass('wm-placement-mode', placing);
+	$('#tb_help').toggleClass('wm-action-help', placing);
+	if (!placing) wmResetActionHelp();
 	if (m == 'xy') {
 		$('#debug').val('xy');
 		$('#xycapture').show();
@@ -740,7 +754,7 @@ function setCanvasSize(element) {
 }
 
 function add_node() {
-	$('#tb_help').text(addNodeHelp);
+	$('#tb_help').addClass('wm-action-help').text(addNodeHelp);
 	$('#action').val('add_node');
 
 	mapmode('xy');
@@ -759,14 +773,16 @@ function delete_node() {
 	}
 	$('.dlgConfirm').text(message + ' ' + delNodeKeepDevice);
 
-	mapmode('xy');
+	if (['add_link', 'add_link2', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
+	mapmode('existing');
 
 	$('.dlgConfirm').dialog({
+		close: function() { mapmode('existing'); },
 		resizable: false,
 		title: delNodeTitle,
 		height: 'auto',
 		width: 400,
-		modal: false,
+		modal: true,
 		buttons: [
 			{
 				text: txtCancel,
@@ -777,9 +793,11 @@ function delete_node() {
 			},
 			{
 				text: txtDelNode,
+				'class': 'wm-delete-action',
 				click: function() {
 					$(this).dialog('close');
 					hide_all_dialogs();
+					$('#param').val(name);
 					$('#action').val('delete_node');
 					form_submit();
 				}
@@ -809,7 +827,7 @@ function edit_link() {
 function move_node() {
 	hide_dialog('dlgNodeProperties');
 
-	$('#tb_help').text(moveNodeHelp);
+	$('#tb_help').addClass('wm-action-help').text(moveNodeHelp);
 	$('#action').val('move_node');
 
 	mapmode('xy');
@@ -818,14 +836,14 @@ function move_node() {
 function via_link() {
 	hide_dialog('dlgLinkProperties');
 
-	$('#tb_help').text(viaLinkHelp);
+	$('#tb_help').addClass('wm-action-help').text(viaLinkHelp);
 	$('#action').val('via_link');
 
 	mapmode('xy');
 }
 
 function add_link() {
-	$('#tb_help').text(addLinkHelp);
+	$('#tb_help').addClass('wm-action-help').text(addLinkHelp);
 	$('#action').val('add_link');
 
 	mapmode('existing');
@@ -843,9 +861,12 @@ function delete_link() {
 		});
 	$('.dlgConfirm').text(prompt + ' ' + wmEditorText.keepLinkNodes);
 
-	mapmode('xy');
+	if (['add_link', 'add_link2', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
+	$('#param').val($('#link_name').val());
+	mapmode('existing');
 
 	$('.dlgConfirm').dialog({
+		close: function() { mapmode('existing'); },
 		resizable: false,
 		title: delLinkTitle,
 		height: 'auto',
@@ -861,6 +882,7 @@ function delete_link() {
 			},
 			{
 				text: txtDelLink,
+				'class': 'wm-delete-action',
 				click: function() {
 					$(this).dialog('close');
 					hide_all_dialogs();
@@ -957,7 +979,7 @@ function map_style() {
 }
 
 function position_timestamp() {
-	$('#tb_help').text(timeStHelp);
+	$('#tb_help').addClass('wm-action-help').text(timeStHelp);
 	$('#action').val('place_stamp');
 
 	mapmode('xy');
@@ -993,7 +1015,7 @@ function position_legend(event) {
 }
 
 function real_position_legend(scalename) {
-	$('#tb_help').text(posLegendHelp);
+	$('#tb_help').addClass('wm-action-help').text(posLegendHelp);
 	$('#action').val('place_legend');
 	$('#param').val(scalename);
 
@@ -1231,6 +1253,8 @@ show_dialog('dlgLinkProperties');
 }
 
 function show_dialog(dlg) {
+	mapmode('existing');
+	wmResetActionHelp();
 	if (dlg == 'dlgMapProperties') {
 		var selectedNode = $('#map_bgfile').val();
 
