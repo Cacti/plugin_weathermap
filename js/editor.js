@@ -725,7 +725,7 @@ function wmResetActionHelp() {
 }
 
 function mapmode(m) {
-	var placing = m == 'xy' || $('#action').val() == 'add_link';
+	var placing = m == 'xy' || ['add_link', 'add_link2'].indexOf($('#action').val()) !== -1;
 	$('#existingdata, .mapData').toggleClass('wm-placement-mode', placing);
 	$('#tb_help').toggleClass('wm-action-help', placing);
 	if (!placing) wmResetActionHelp();
@@ -771,7 +771,7 @@ function delete_node() {
 	}
 	$('.dlgConfirm').text(message + ' ' + delNodeKeepDevice);
 
-	if (['add_link', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
+	if (['add_link', 'add_link2', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
 	mapmode('existing');
 
 	$('.dlgConfirm').dialog({
@@ -859,7 +859,7 @@ function delete_link() {
 		});
 	$('.dlgConfirm').text(prompt + ' ' + wmEditorText.keepLinkNodes);
 
-	if (['add_link', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
+	if (['add_link', 'add_link2', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
 	mapmode('existing');
 
 	$('.dlgConfirm').dialog({

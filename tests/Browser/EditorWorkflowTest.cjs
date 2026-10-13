@@ -315,8 +315,8 @@ $('#tb_help').data('idle-help','Idle help');
 w.setCanvasSize=()=>{};
 w.eval(editor.slice(editor.indexOf('function wmResetActionHelp()'),editor.indexOf('function setCanvasSize(')));
 for (const kind of ['node','link']) {
- for (const exit of ['cancel','close']) {
-  $('#action').val('add_link');w.mapmode('existing');$('#tb_help').text('Place link');
+ for (const exit of ['cancel','close']) for (const placement of ['add_link','add_link2']) {
+  $('#action').val(placement);w.mapmode('existing');$('#tb_help').text('Place link');
   assert.equal($('#existingdata').hasClass('wm-placement-mode'),true);
   if(kind==='node') w.delete_node();else w.delete_link();
   if(exit==='cancel')$('.dlgConfirm').dialog('option','buttons')[0].click.call($('.dlgConfirm')[0]);else $('.dlgConfirm').dialog('close');
