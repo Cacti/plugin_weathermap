@@ -64,6 +64,10 @@ function wm_editor_read_config($map, $mapfile) {
 		http_response_code(422);
 		return false;
 	}
+	if (!is_string($map->config_revision)) {
+		http_response_code(404);
+		return false;
+	}
 	$revision = get_nfilter_request_var('config_revision');
 	if ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals($map->config_revision, $revision))) {
 		http_response_code(409);
@@ -138,12 +142,12 @@ function newMapCopy($mapfile) {
  * @param  mixed $mapfile
  * @return void
  */
-function getMapJavaScript($mapfile) {
-	$map = new WeatherMap;
-
-	$map->context = 'editor';
-
-	if (!wm_editor_read_config($map, $mapfile)) return;
+function getMapJavaScript($mapfile, $map = null) {
+	if ($map === null) {
+		$map = new WeatherMap;
+		$map->context = 'editor';
+		if (!wm_editor_read_config($map, $mapfile)) return;
+	}
 
 	print $map->asJS();
 	print 'var WMConfigRevision = ' . json_encode($map->config_revision) . ';';

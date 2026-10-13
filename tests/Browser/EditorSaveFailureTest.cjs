@@ -4,4 +4,5 @@ let request,message,closed=0,refreshed=0;$.ajax=opts=>request=opts;w.alert=text=
 const source=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');w.eval(source.slice(source.indexOf('function form_submit()'),source.indexOf('function map_properties()')));
 w.form_submit();request.error();assert.equal(message,'Unable to save changes');assert.equal(closed,0);assert.equal(refreshed,0);assert.equal($('#action').val(),'set_map_properties');
 w.WMConfigRevision='b'.repeat(64);w.form_submit();assert.match(request.data,/config_revision=b{64}/);request.error({status:409});assert.equal(message,'Reload the editor');assert.equal(closed,0);assert.equal(refreshed,0);
+let reloads=0;w.hide_all_dialogs=()=>closed++;w.wmReloadEditor=()=>reloads++;$.get=()=>{throw Error('partial editor refresh');};request.success();assert.equal(reloads,1);
 w.close();console.log('PASS: save failure reports retry and preserves the form');

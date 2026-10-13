@@ -871,6 +871,19 @@ function delete_link() {
 	});
 }
 
+function wmEditorReloadUrl() {
+	var url = new URL(window.location.href);
+	url.searchParams.set('mapname', $('#mapname').val());
+	url.searchParams.set('action', 'nothing');
+	url.searchParams.delete('config_revision');
+	url.searchParams.delete('__csrf_magic');
+	return url.href;
+}
+
+function wmReloadEditor() {
+	window.location.replace(wmEditorReloadUrl());
+}
+
 function form_submit() {
 	var data = $('input, select, textarea').serialize();
 	if (typeof WMConfigRevision !== 'undefined') data += '&config_revision=' + encodeURIComponent(WMConfigRevision);
@@ -880,27 +893,13 @@ function form_submit() {
 		url: editor_url,
 		data: data,
 		error: function(xhr) { window.alert(xhr && xhr.status === 409 ? wmEditorText.staleError : wmEditorText.saveError); },
-		success: function(html) {
+		success: function() {
 			hide_all_dialogs();
-
-			$.get('?action=load_area_data&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
-				$('.mapData').empty().html(data);
-
-				$.getScript('?action=load_map_javascript&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
-					var date = new Date();
-
-					// Reload the images to update page
-					$('#existingdata').attr('src', $('#existingdata').attr('src') + '&date=' + date.getTime());
-					$('#xycapture').attr('src', $('#xycapture').attr('src') + '&date=' + date.getTime());
-
-					$('#action').val('');
-
-					initJS();
-				});
-			});
+			wmReloadEditor();
 		}
 	});
 }
+
 
 function map_properties() {
 	mapmode('existing');
