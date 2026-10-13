@@ -139,7 +139,8 @@ function newMapCopy($mapfile) {
 }
 
 /**
- * @param  mixed $mapfile
+ * @param mixed $mapfile Configuration path.
+ * @param WeatherMap|null $map Loaded control snapshot, or null for a standalone response.
  * @return void
  */
 function getMapJavaScript($mapfile, $map = null) {
