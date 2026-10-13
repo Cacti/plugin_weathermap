@@ -384,6 +384,17 @@ namespace {
 			$GLOBALS['config_fault'] = '';
 			weathermap_repair_maps();
 			atomic_assert(file_get_contents($repairFile) === 'BACKGROUND images/backgrounds/' . basename($repairImage), 'repair uses complete atomic replacement');
+			foreach (['corrupt', 'directory', 'symlink'] as $invalidTarget) {
+				unlink($repairImage); file_put_contents($repairFile, $legacy);
+				if ($invalidTarget === 'directory') mkdir($repairImage);
+				elseif ($invalidTarget === 'symlink') symlink($repairFile, $repairImage);
+				else file_put_contents($repairImage, 'corrupt image');
+				$GLOBALS['weathermap_error_suppress'] = ['WMPOLL10'];
+				try { weathermap_repair_maps(); } finally { $GLOBALS['weathermap_error_suppress'] = $oldSuppress; }
+				atomic_assert(file_get_contents($repairFile) === $legacy, 'repair retains legacy background for invalid existing target: ' . $invalidTarget);
+				if (is_dir($repairImage)) rmdir($repairImage); else unlink($repairImage);
+				file_put_contents($repairImage, $validAsset);
+			}
 			file_put_contents($repairFile, $legacy);
 			$newerRepair = 'TITLE Concurrent editor save' . "\n" . $legacy;
 			$GLOBALS['config_before_lock'] = function() use ($repairFile, $newerRepair) {
