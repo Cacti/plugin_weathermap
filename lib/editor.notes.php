@@ -44,7 +44,6 @@ function wm_note_effective_dimensions($map) {
 		foreach ($items as $key => $item) {
 			if ($item instanceof WeatherMapNode) $preview->seen_zlayers[$layer][$key] = $preview->nodes[$item->name];
 			elseif ($item instanceof WeatherMapLink) $preview->seen_zlayers[$layer][$key] = $preview->links[$item->name];
-			elseif ($item === $map) $preview->seen_zlayers[$layer][$key] = $preview;
 		}
 	}
 	foreach ($preview->plugins['post'] as $name => $plugin) $preview->plugins['post'][$name] = clone $plugin;
