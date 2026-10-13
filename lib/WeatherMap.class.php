@@ -2445,11 +2445,16 @@ class WeatherMap extends WeatherMapBase {
 
 	/**
 	 * Collect managed image references for commit-time existence checks.
+	 * @param string|null $serialized Proposed output, including raw overrides.
 	 * @return string[] Paths relative to the plugin directory.
 	 */
-	function ManagedImagePaths() {
+	function ManagedImagePaths($serialized = null) {
 		$paths = [$this->background];
 		foreach ($this->nodes as $node) $paths[] = $node->iconfile;
+		if ($serialized !== null) {
+			$paths = [];
+			if (preg_match_all('/^\s*(?:ICON|BACKGROUND)\s+(?:[0-9]+\s+[0-9]+\s+)?(.+?)\s*$/mi', $serialized, $matches)) $paths = $matches[1];
+		}
 		return array_values(array_unique(array_filter($paths, function ($path) {
 			return is_string($path) && preg_match('#^images/(objects|backgrounds)/#', $path);
 		})));
@@ -3877,7 +3882,8 @@ class WeatherMap extends WeatherMapBase {
 			$closed = fclose($fd);
 
 			$this->config_asset_conflict = false;
-			$newAssets = array_diff($this->ManagedImagePaths(), $this->config_managed_assets);
+			$savedAssets = $contents !== false ? $this->ManagedImagePaths($contents) : [];
+			$newAssets = array_diff($savedAssets, $this->config_managed_assets);
 			$validate = function () use ($newAssets) {
 				foreach ($newAssets as $asset) {
 					if (!is_file(dirname(__DIR__) . '/' . $asset)) {
@@ -3889,7 +3895,7 @@ class WeatherMap extends WeatherMapBase {
 			};
 			$sameFile = $this->configfile !== '' && $filename === $this->configfile;
 			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $this->config_dependencies, $validate);
-			if ($saved) $this->config_managed_assets = $this->ManagedImagePaths();
+			if ($saved) $this->config_managed_assets = $savedAssets;
 			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
 			return $saved;
 		} else {

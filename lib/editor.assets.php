@@ -82,7 +82,8 @@ function wm_asset_normalize_path($path, $root) {
  *
  * @return array The reference patterns and source filenames.
  */
-function wm_asset_image_reference_index() {
+function wm_asset_image_reference_index(&$directories = null) {
+	$directories = [];
 	$references = [];
 	$queue = [];
 	$root = dirname(__DIR__);
@@ -94,6 +95,8 @@ function wm_asset_image_reference_index() {
 		$real = realpath($path);
 		if ($real === false || !is_readable($real)) throw new RuntimeException(__('Cannot check configuration references.', 'weathermap'));
 		if (isset($seen[$real])) continue;
+		$directories[dirname($path)] = true;
+		$directories[dirname($real)] = true;
 		$seen[$real] = true;
 		if (cacti_count($seen) > 1000) throw new RuntimeException(__('Too many included configurations to check.', 'weathermap'));
 		$text = file_get_contents($real);
@@ -114,6 +117,30 @@ function wm_asset_image_reference_index() {
 	}
 	return $references;
 }
+/**
+ * Lock every physical reference source before deciding whether deletion is safe.
+ * @param string $rootDirectory Already locked logical config directory.
+ * @param array $locks Additional locks, released by the caller.
+ * @return array The stable reference index.
+ */
+function wm_asset_locked_reference_index($rootDirectory, &$locks) {
+	$covered = [realpath($rootDirectory) => true];
+	while (true) {
+		$references = wm_asset_image_reference_index($directories);
+		$added = false;
+		foreach (array_keys($directories) as $directory) {
+			$directory = realpath($directory);
+			if (isset($covered[$directory])) continue;
+			$lock = \WeathermapConfig\acquire($directory, false);
+			if (!$lock && (is_writable($directory) || file_exists($directory . '/.weathermap-config.lock'))) throw new RuntimeException(__('Could not lock map configurations.', 'weathermap'));
+			if ($lock) $locks[] = $lock;
+			$covered[$directory] = true;
+			$added = true;
+		}
+		if (!$added) return $references;
+	}
+}
+
 /**
  * Find map configurations referencing an image.
  *

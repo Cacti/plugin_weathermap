@@ -137,7 +137,7 @@ function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision
 		if ($expectedRevision !== null && @hash_file('sha256', $filename) !== $expectedRevision) return false;
 		if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
 		// Additional directories use nonblocking locks so opposing include graphs cannot deadlock.
-		$directories = array_unique(array_map('dirname', array_keys($dependencies)));
+		$directories = array_unique(array_merge([dirname($filename)], array_map('dirname', array_keys($dependencies))));
 		sort($directories);
 		foreach ($directories as $directory) {
 			if (realpath($directory) === realpath($lockDirectory)) continue;

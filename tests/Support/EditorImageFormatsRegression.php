@@ -150,6 +150,18 @@ try {
 	ob_start(); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
 	image_format_assert(isset($response['error']) && is_file($deletePath), 'referenced image cannot be deleted');
 	file_put_contents($config, "# no image reference\n");
+
+	$externalDir = $temporary . '/reference-source'; mkdir($externalDir); $externalFile = $externalDir . '/map.conf'; file_put_contents($externalFile, "# External source\n");
+	$externalAlias = $root . '/configs/alias-' . bin2hex(random_bytes(4)) . '.conf'; symlink($externalFile, $externalAlias); $created[] = $externalAlias;
+	$externalLock = \WeathermapConfig\acquire($externalDir);
+	ob_start(); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
+	image_format_assert(http_response_code() === 500 && isset($response['error']) && is_file($deletePath), 'image deletion cannot bypass a physical configuration mutex');
+	\WeathermapConfig\release($externalLock);
+	file_put_contents($externalFile, "ICON images/objects/" . $deleteName . "\n");
+	ob_start(); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
+	image_format_assert(isset($response['error']) && is_file($deletePath), 'external symlink references remain protected after acquiring shared locks');
+	unlink($externalAlias); unlink($externalFile); unlink($externalDir . '/.weathermap-config.lock'); rmdir($externalDir);
+
 	ob_start(); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
 	image_format_assert(isset($response['images']) && !is_file($deletePath), 'delete removes the actual server file');
 	echo "Editor image formats regression PASS\n";

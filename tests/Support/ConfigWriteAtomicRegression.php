@@ -262,10 +262,10 @@ namespace {
 		if (@symlink($externalFile, $alias)) {
 			$logicalLock = \WeathermapConfig\acquire($dir);
 			atomic_assert(\WeathermapConfig\atomicWrite($alias, $original, true, hash('sha256', $original), false, $logicalLock), 'external symlink accepts caller-held logical configuration mutex');
-			atomic_assert(!is_file($external . '/.weathermap-config.lock'), 'symlink replacement does not choose external target mutex');
+			atomic_assert(is_file($external . '/.weathermap-config.lock'), 'symlink writes retain logical mutex and also acquire the physical target mutex');
 			\WeathermapConfig\release($logicalLock); unlink($alias);
 		}
-		unlink($externalFile); rmdir($external);
+		unlink($externalFile); unlink($external . '/.weathermap-config.lock'); rmdir($external);
 
 		$includeFile = $dir . '/included.conf'; $includeRoot = $dir . '/include-root.conf';
 		file_put_contents($includeFile, "TITLE Included old\n");
@@ -298,6 +298,21 @@ namespace {
 		atomic_assert($selection->WriteConfig($file), 'existing newly selected image saves under mutex'); unlink($assetFile);
 		atomic_assert($selection->WriteConfig($file), 'already saved references do not prevent repairing legacy missing images');
 		file_put_contents($file, $original);
+
+		$targetDir = $dir . '/alias-target'; mkdir($targetDir); $targetFile = $targetDir . '/map.conf'; file_put_contents($targetFile, $original);
+		$alias = $dir . '/alias.conf'; symlink($targetFile, $alias); $targetLock = \WeathermapConfig\acquire($targetDir);
+		atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Alias change', true, hash('sha256', $original)) && file_get_contents($targetFile) === $original, 'alias cannot bypass a held physical target mutex');
+		\WeathermapConfig\release($targetLock);
+		atomic_assert(\WeathermapConfig\atomicWrite($alias, $original, true, hash('sha256', $original)), 'alias save succeeds after shared target mutex release');
+		unlink($alias); unlink($targetFile); unlink($targetDir . '/.weathermap-config.lock'); rmdir($targetDir);
+
+		$rawAsset = 'images/objects/raw-asset-' . bin2hex(random_bytes(5)) . '.png'; $rawAssetFile = dirname(__DIR__, 2) . '/' . $rawAsset;
+		$GLOBALS['__test_nfilter_request'] = ['node_name' => 'note1', 'item_configtext' => "NODE note1\n LABEL Raw\n POSITION 50 50\n ICON 40 40 " . $rawAsset . "\n"];
+		file_put_contents($file, $original); http_response_code(200); setNodeConfig($file);
+		atomic_assert(http_response_code() === 409 && file_get_contents($file) === $original, 'raw node override cannot commit a missing managed icon');
+		file_put_contents($rawAssetFile, 'Image fixture'); http_response_code(200); setNodeConfig($file);
+		atomic_assert(http_response_code() === 200 && str_contains(file_get_contents($file), $rawAsset), 'raw node override accepts an existing managed icon');
+		unlink($rawAssetFile); file_put_contents($file, $original); $GLOBALS['__test_nfilter_request'] = [];
 		$wrong = \fopen($file, 'rb');
 		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/wrong-lock.conf', 'Wrong', false, null, true, $wrong), 'different lock file rejected'); \fclose($wrong);
 		// Revision metadata must describe the same map snapshot as the controls.

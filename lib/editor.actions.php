@@ -1216,18 +1216,20 @@ function wm_editor_assets($mapfile, $action) {
 			require_once __DIR__ . '/WeatherMap.config.php';
 			$lock = \WeathermapConfig\acquire();
 			if (!$lock) throw new RuntimeException(__('Could not lock map configurations.', 'weathermap'));
+			$referenceLocks = [];
 			try {
-				$references = wm_asset_image_reference_index();
+				$references = wm_asset_locked_reference_index(dirname(__DIR__) . '/configs', $referenceLocks);
 				if (wm_asset_image_users($name, get_nfilter_request_var('image_kind'), $references)) throw new InvalidArgumentException(__('This image is still referenced by a map configuration.', 'weathermap'));
 				if (!is_file($path) || !unlink($path)) throw new RuntimeException(__('Could not delete the image.', 'weathermap'));
 			} finally {
+				foreach ($referenceLocks as $referenceLock) \WeathermapConfig\release($referenceLock);
 				\WeathermapConfig\release($lock);
 			}
 			$result = ['images' => wm_asset_image_list($references)];
 		}
 		echo json_encode($result);
 	} catch (Throwable $error) {
-		http_response_code(400);
+		http_response_code($error instanceof InvalidArgumentException ? 400 : 500);
 		echo json_encode(['error' => $error->getMessage()]);
 	}
 }
