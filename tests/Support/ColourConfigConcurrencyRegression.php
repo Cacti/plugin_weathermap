@@ -283,19 +283,37 @@ namespace {
 		colour_atomic_assert(!is_file($dir . '/failed-create.conf') && end($messages)[1] === MESSAGE_LEVEL_ERROR, 'management reports failed persistence instead of creation success');
 		$GLOBALS['config_fault'] = '';
 		unset($GLOBALS['__test_raise_message']);
-		foreach (['cli/map-tidyup.php' => '$outputfile', 'cli/cacti-integrate.php' => '$outputmapfile', 'cli/convert-to-dsstats.php' => '$outputfile'] as $cli => $outputVariable) {
-			$script = file_get_contents($plugin . '/' . $cli);
-			$start = strpos($script, 'if (!$map->WriteConfig(' . $outputVariable . '))');
-			$end = strpos($script, "\n}", $start) + 2;
-			$dispatch = substr($script, $start, $end - $start);
-			$testCli = $dir . '/fault-cli.php';
-			file_put_contents($testCli, '<?php class FailedWriter { function WriteConfig($file) { return false; } } $map = new FailedWriter; ' . $outputVariable . ' = "failed.conf"; ' . $dispatch . ' print "Wrote";');
-			$command = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($testCli) . ' 2>&1';
-			$cliOutput = [];
-			exec($command, $cliOutput, $exitCode);
-			colour_atomic_assert($exitCode === 1 && !str_contains(implode("\n", $cliOutput), 'Wrote') && str_contains(implode("\n", $cliOutput), 'Could not write'), 'CLI exits with error before success output');
-			unlink($testCli);
+
+		// Run the actual CLI programs in an isolated Cacti tree with stubbed services.
+		$cliRoot = $dir . '/cacti';
+		mkdir($cliRoot); mkdir($cliRoot . '/include'); mkdir($cliRoot . '/plugins');
+		mkdir($cliRoot . '/plugins/weathermap'); mkdir($cliRoot . '/plugins/weathermap/cli');
+		symlink($plugin . '/lib', $cliRoot . '/plugins/weathermap/lib');
+		foreach (['map-tidyup.php', 'cacti-integrate.php', 'convert-to-dsstats.php'] as $cli) copy($plugin . '/cli/' . $cli, $cliRoot . '/plugins/weathermap/cli/' . $cli);
+		$bootstrap = '<?php require ' . var_export($plugin . '/tests/bootstrap-unit.php', true) . '; require ' . var_export($plugin . '/setup.php', true) . '; $config["base_path"] = ' . var_export($cliRoot, true) . ';';
+		file_put_contents($cliRoot . '/include/cli_check.php', $bootstrap);
+		$prepend = $dir . '/coverage-prepend.php';
+		file_put_contents($prepend, '<?php if (function_exists("xdebug_start_code_coverage")) { xdebug_start_code_coverage(); register_shutdown_function(function () { file_put_contents(getenv("WM_CLI_COVERAGE_FILE"), json_encode(xdebug_get_code_coverage())); }); }');
+		file_put_contents($dir . '/cli-input.conf', "WIDTH 100\nHEIGHT 100\n");
+		$GLOBALS['colour_cli_coverage'] = [];
+		foreach (['map-tidyup.php', 'cacti-integrate.php', 'convert-to-dsstats.php'] as $cli) {
+			$coverageFile = $dir . '/' . $cli . '.json';
+			putenv('WM_CLI_COVERAGE_FILE=' . $coverageFile);
+			$command = escapeshellarg(PHP_BINARY) . ' -d auto_prepend_file=' . escapeshellarg($prepend) . ' ' . escapeshellarg($cliRoot . '/plugins/weathermap/cli/' . $cli)
+				. ' --input=' . escapeshellarg($dir . '/cli-input.conf') . ' --output=' . escapeshellarg($dir . '/missing/output.conf') . ' 2>&1';
+			chdir($cliRoot . '/plugins/weathermap/cli');
+			$cliOutput = []; exec($command, $cliOutput, $exitCode); chdir($plugin);
+			colour_atomic_assert($exitCode === 1 && !str_contains(implode("\n", $cliOutput), 'Wrote') && str_contains(implode("\n", $cliOutput), 'Could not write configuration'), 'actual CLI reports failed persistence: ' . $cli . ' ' . implode("\n", $cliOutput));
+			if (is_file($coverageFile)) {
+				$raw = json_decode(file_get_contents($coverageFile), true);
+				$raw[$plugin . '/cli/' . $cli] = $raw[$cliRoot . '/plugins/weathermap/cli/' . $cli] ?? [];
+				unset($raw[$cliRoot . '/plugins/weathermap/cli/' . $cli]);
+				$GLOBALS['colour_cli_coverage'][] = $raw;
+			}
 		}
+		foreach (glob($cliRoot . '/plugins/weathermap/cli/*') as $cliFile) unlink($cliFile);
+		rmdir($cliRoot . '/plugins/weathermap/cli'); unlink($cliRoot . '/plugins/weathermap/lib'); rmdir($cliRoot . '/plugins/weathermap'); rmdir($cliRoot . '/plugins');
+		unlink($cliRoot . '/include/cli_check.php'); rmdir($cliRoot . '/include'); rmdir($cliRoot);
 
 		// Normal editor mutations also expose persistence conflicts and suppress title-cache side effects.
 		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'map_title' => 'Attempted'];

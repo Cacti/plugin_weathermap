@@ -16,6 +16,7 @@
         <include>
             <directory suffix=".php">lib</directory>
             <file>setup.php</file>
+            <directory suffix=".php">cli</directory>
         </include>
         <exclude>
             <directory>lib/pre</directory>

@@ -42,5 +42,12 @@ final class ColourConfigConcurrencyTest extends TestCase {
 			ob_end_clean();
 		}
 		self::assertSame("Colour concurrent configuration regression PASS\n", $result);
+		$coverage = \PHPUnit\Runner\CodeCoverage::instance();
+		if ($coverage->isActive()) {
+			foreach ($GLOBALS['colour_cli_coverage'] ?? [] as $raw) {
+				$coverage->codeCoverage()->append(\SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData::fromXdebugWithoutPathCoverage($raw), 'CLI failure regression');
+			}
+		}
+
 	}
 }
