@@ -3764,19 +3764,19 @@ class WeatherMap extends WeatherMapBase {
 
 				$locale = localeconv();
 
-				$decimal_point = $locale['decimal_point'];
+				$decimal_point = '.';
 
 				foreach ($colours as $k => $colour) {
 					if (!isset($colour['special']) || !$colour['special']) {
-						$top    = rtrim(rtrim(sprintf('%f', $colour['top']), '0'), $decimal_point);
-						$bottom = rtrim(rtrim(sprintf('%f', $colour['bottom']), '0'), $decimal_point);
+						$top    = rtrim(rtrim(sprintf('%F', $colour['top']), '0'), $decimal_point);
+						$bottom = rtrim(rtrim(sprintf('%F', $colour['bottom']), '0'), $decimal_point);
 
 						if ($bottom > 1000) {
-							$bottom = nice_bandwidth($colour['bottom'], $this->kilo);
+							$bottom = str_replace(localeconv()['decimal_point'], '.', nice_bandwidth($colour['bottom'], $this->kilo));
 						}
 
 						if ($top > 1000) {
-							$top = nice_bandwidth($colour['top'], $this->kilo);
+							$top = str_replace(localeconv()['decimal_point'], '.', nice_bandwidth($colour['top'], $this->kilo));
 						}
 
 						$tag = ($colour['tag'] ?? '');
@@ -3883,7 +3883,8 @@ class WeatherMap extends WeatherMapBase {
 
 			$this->config_asset_conflict = false;
 			$savedAssets = $contents !== false ? $this->ManagedImagePaths($contents) : [];
-			$newAssets = array_diff($savedAssets, $this->config_managed_assets);
+			$sameDestination = $this->configfile !== '' && $filename === $this->configfile;
+			$newAssets = ($createOnly || !$sameDestination) ? $savedAssets : array_diff($savedAssets, $this->config_managed_assets);
 			$validate = function () use ($newAssets) {
 				foreach ($newAssets as $asset) {
 					if (!is_file(dirname(__DIR__) . '/' . $asset)) {
