@@ -370,7 +370,9 @@ namespace {
 		colour_atomic_assert(!$externalMap->WriteConfig($includeRoot), 'busy dependency directory rejects save without deadlock');
 		\WeathermapConfig\release($busy);
 		colour_atomic_assert($externalMap->WriteConfig($includeRoot), 'external dependency save succeeds after mutex release');
-		unlink($outsideFile); unlink($outside . '/.weathermap-config.lock'); rmdir($outside);
+		unlink($outside . '/.weathermap-config.lock'); chmod($outside, 0555);
+		colour_atomic_assert($externalMap->WriteConfig($includeRoot), 'read-only included dependency needs no new lock file');
+		chmod($outside, 0755); unlink($outsideFile); rmdir($outside);
 
 		class UnreadColourMap extends \WeatherMap { function ReadConfig($input, $is_include = false) { $this->config_revision = null; return true; } }
 		$actions = file_get_contents($plugin . '/lib/editor.actions.php'); $start = strpos($actions, 'function wm_editor_colours('); $end = strpos($actions, "\n/**", $start); if ($end === false) $end = strlen($actions);

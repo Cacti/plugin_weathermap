@@ -143,14 +143,14 @@ switch($action) {
 		exit;
 	case 'newmap':
 		if (!newMap($mapfile)) {
-			print __esc('Could not save the map configuration.', 'weathermap');
+			print __esc('Unable to save changes. Please try again.', 'weathermap');
 			exit();
 		}
 
 		break;
 	case 'newmapcopy':
 		if (!newMapCopy($mapfile)) {
-			print __esc('Could not save the map configuration.', 'weathermap');
+			print __esc('Unable to save changes. Please try again.', 'weathermap');
 			exit();
 		}
 
