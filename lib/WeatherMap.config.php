@@ -75,6 +75,31 @@ function writeAll($stream, $contents) {
 }
 
 /**
+ * Compare every included configuration against the bytes used by the snapshot.
+ * @param array<string,string> $dependencies Included filenames and hashes.
+ * @return bool Whether all dependencies still match.
+ */
+function dependenciesMatch($dependencies) {
+	foreach ($dependencies as $path => $revision) {
+		clearstatcache(true, $path);
+		if (!is_string($revision) || @hash_file('sha256', $path) !== $revision) return false;
+	}
+	return true;
+}
+
+/**
+ * Bind an editor token to its root configuration and included dependencies.
+ * @param string|null $root Root configuration hash.
+ * @param array<string,string> $dependencies Included filenames and hashes.
+ * @return string|null Snapshot token.
+ */
+function snapshotRevision($root, $dependencies) {
+	if (!$dependencies) return $root;
+	ksort($dependencies);
+	return hash('sha256', serialize([$root, $dependencies]));
+}
+
+/**
  * Replace a configuration only after a complete, flushed and closed local write.
  *
  * @param string $filename The destination configuration path.
@@ -84,9 +109,11 @@ function writeAll($stream, $contents) {
  * @param bool $createOnly Refuse to replace an existing destination.
  * @param resource|null $heldLock Optional caller-owned mutex for this destination directory.
  *
+ * @param array<string,string> $dependencies Included configuration snapshots.
+ * @param callable|null $validate Additional commit-time validation.
  * @return bool Success; failures preserve the existing configuration.
  */
-function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision = null, $createOnly = false, $heldLock = null) {
+function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision = null, $createOnly = false, $heldLock = null, $dependencies = [], $validate = null) {
 	if (strpos($filename, '://') !== false) return false;
 	$lockDirectory = dirname($filename);
 	if (is_link($filename)) $filename = realpath($filename);
@@ -101,12 +128,24 @@ function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision
 	if (!$lock) return false;
 	$temp = false;
 	$stream = false;
+	$dependencyLocks = [];
 	try {
 		clearstatcache(true, $filename);
 		if (($createOnly || !$existed) && file_exists($filename)) return false;
 		if ($mustExist && !is_file($filename)) return false;
 		if ($expectedRevision !== null && @hash_file('sha256', $filename) !== $expectedRevision) return false;
 		if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
+		// Additional directories use nonblocking locks so opposing include graphs cannot deadlock.
+		$directories = array_unique(array_map('dirname', array_keys($dependencies)));
+		sort($directories);
+		foreach ($directories as $directory) {
+			if (realpath($directory) === realpath($lockDirectory)) continue;
+			$dependencyLock = acquire($directory, false);
+			if (!$dependencyLock) return false;
+			$dependencyLocks[] = $dependencyLock;
+		}
+		if (!dependenciesMatch($dependencies) || ($validate !== null && !$validate())) return false;
+
 		$temp = @tempnam(dirname($filename), '.wm-config-');
 		if ($temp === false) return false;
 		$stream = @fopen($temp, 'wb');
@@ -122,6 +161,7 @@ function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision
 	} finally {
 		if (is_resource($stream)) fclose($stream);
 		if ($temp !== false && file_exists($temp)) unlink($temp);
+		foreach ($dependencyLocks as $dependencyLock) release($dependencyLock);
 		if ($ownsLock) release($lock);
 	}
 }

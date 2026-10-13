@@ -74,6 +74,10 @@ namespace {
 			if (!wm_editor_save_note($map,$values,0) || $map->nodes['label']->labelfont !== 3) throw new \RuntimeException('submitted invalid registered font must fall back');
 			if ($fontCase === 'unreadable') chmod($fontPath,0600);
 		}
+		$values['font'] = '99999';
+		if (!wm_editor_save_note($map, $values, 0) || $map->nodes['label']->labelfont !== 3) throw new \RuntimeException('unavailable submitted numeric font falls back');
+		$values['font'] = '../bad.ttf';
+		if (wm_editor_save_note($map, $values, 0)) throw new \RuntimeException('path-like font still rejected');
 		if (wm_note_font_id($map,99999)!==3) throw new \RuntimeException('unknown font fallback');
 		$GLOBALS['note_allocations'] = 0; $GLOBALS['note_fail_at'] = 1;
 		if (wm_note_display_image($map, []) !== false) throw new \RuntimeException('direct display allocation failure');

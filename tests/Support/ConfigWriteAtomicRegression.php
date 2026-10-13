@@ -266,6 +266,27 @@ namespace {
 			\WeathermapConfig\release($logicalLock); unlink($alias);
 		}
 		unlink($externalFile); rmdir($external);
+
+		$includeFile = $dir . '/included.conf'; $includeRoot = $dir . '/include-root.conf';
+		file_put_contents($includeFile, "TITLE Included old\n");
+		$includeConfig = "WIDTH 600\nHEIGHT 300\nINCLUDE " . $includeFile . "\n";
+		file_put_contents($includeRoot, $includeConfig);
+		$dependent = new \WeatherMap; $dependent->ReadConfig($includeRoot);
+		$token = \WeathermapConfig\snapshotRevision($dependent->config_revision, $dependent->config_dependencies);
+		file_put_contents($includeFile, "TITLE Included winner\n"); $dependent->title = 'Stale edit';
+		atomic_assert(!$dependent->WriteConfig($includeRoot) && file_get_contents($includeRoot) === $includeConfig, 'included file changes reject stale root persistence');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => $token]; http_response_code(200);
+		atomic_assert(!wm_editor_read_config(new \WeatherMap, $includeRoot) && http_response_code() === 409, 'included-file changes invalidate loaded editor page token');
+		$GLOBALS['__test_nfilter_request'] = []; $fresh = new \WeatherMap; $fresh->ReadConfig($includeRoot);
+		atomic_assert($fresh->WriteConfig($includeRoot), 'unchanged included dependency can be saved');
+		atomic_assert(!\WeathermapConfig\dependenciesMatch([$includeFile => null]), 'unread included dependency rejected');
+		$outside = $dir . '/dependency-directory'; mkdir($outside); $outsideFile = $outside . '/outside.conf'; file_put_contents($outsideFile, "TITLE Outside\n");
+		file_put_contents($includeRoot, "WIDTH 600\nHEIGHT 300\nINCLUDE " . $outsideFile . "\n");
+		$externalMap = new \WeatherMap; $externalMap->ReadConfig($includeRoot); $busy = \WeathermapConfig\acquire($outside);
+		atomic_assert(!$externalMap->WriteConfig($includeRoot), 'busy dependency directory rejects save without deadlock');
+		\WeathermapConfig\release($busy);
+		atomic_assert($externalMap->WriteConfig($includeRoot), 'external dependency save succeeds after mutex release');
+		unlink($outsideFile); unlink($outside . '/.weathermap-config.lock'); rmdir($outside);
 		$wrong = \fopen($file, 'rb');
 		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/wrong-lock.conf', 'Wrong', false, null, true, $wrong), 'different lock file rejected'); \fclose($wrong);
 		// Revision metadata must describe the same map snapshot as the controls.
@@ -415,6 +436,30 @@ namespace {
 			wm_management_newMap('management-create.conf', $source);
 			atomic_assert(file_get_contents($destination) === 'Concurrent creator', 'management create-only preserves concurrent destination');
 			unlink($destination);
+		}
+
+		if (!function_exists('db_fetch_insert_id')) { function db_fetch_insert_id() { return 1; } }
+		// A read-only configs directory with no provisioned mutex still permits registration.
+		foreach (['add_config', 'wmap_get_title', 'map_resort'] as $functionName) {
+			$start = strpos($management, 'function ' . $functionName . '('); $end = strpos($management, "\n/**", $start);
+			eval(str_replace('__DIR__', var_export($plugin, true), substr($management, $start, $end - $start)));
+		}
+		$readonly = $dir . '/readonly'; mkdir($readonly); file_put_contents($readonly . '/map.conf', "TITLE Readonly\n");
+		chmod($readonly, 0555); $GLOBALS['weathermap_confdir'] = realpath($readonly); $GLOBALS['__test_db_calls'] = [];
+		try {
+			add_config($readonly . '/map.conf');
+			atomic_assert(cacti_count(array_filter($GLOBALS['__test_db_calls'], fn ($call) => str_contains($call['sql'], 'INSERT INTO weathermap_maps'))) === 1, 'read-only config registered without a directory lock file');
+		} finally { chdir($plugin); chmod($readonly, 0755); unlink($readonly . '/map.conf'); if (is_file($readonly . '/.weathermap-config.lock')) unlink($readonly . '/.weathermap-config.lock'); rmdir($readonly); }
+		$GLOBALS['weathermap_confdir'] = $dir;
+		foreach (['newmap', 'newmapcopy'] as $createAction) {
+			$destination = $dir . '/failed-editor-create.conf';
+			$GLOBALS['__test_request']['sourcemap'] = basename($file); $GLOBALS['__test_nfilter_request'] = ['sourcemap' => basename($file)]; $GLOBALS['mapdir'] = $dir;
+			$GLOBALS['config_fault'] = 'rename'; http_response_code(200);
+			$controller = file_get_contents($plugin . '/weathermap-cacti-plugin-editor.php'); $start = strpos($controller, "case '" . $createAction . "':"); $colon = strpos($controller, ':', $start); $end = strpos($controller, "case '", $colon);
+			$dispatch = substr($controller, $colon + 1, $end - $colon - 1); $mapfile = $destination; $terminated = false;
+			ob_start(); try { eval('switch (true) { case true:' . str_replace('exit();', 'throw new \\RuntimeException("create-finished");', $dispatch) . '}'); } catch (\RuntimeException $error) { $terminated = $error->getMessage() === 'create-finished'; } $message = ob_get_clean();
+			atomic_assert($terminated && http_response_code() === 500 && !is_file($destination) && str_contains($message, 'Could not save'), 'failed create stops controller with save status and guidance');
+			$GLOBALS['config_fault'] = ''; unset($GLOBALS['__test_request']['sourcemap']);
 		}
 		$start = strpos($management, 'function map_get_next_name('); $end = strpos($management, "\n/**", $start);
 		eval(str_replace('__DIR__', var_export($plugin, true), substr($management, $start, $end - $start)));

@@ -57,7 +57,9 @@ function wm_editor_save_note($map, $values, $grid_snap_value = 0) {
 	if ($name !== '' && (!isset($map->nodes[$name]) || $map->nodes[$name]->get_hint('editor_note', '0') !== '1')) {
 		return false;
 	}
-	$font = wm_comment_resolve_font($map, $values['font'] ?? null);
+	$selection = $values['font'] ?? null;
+	$font = is_scalar($selection) && preg_match('/^\d+$/D', (string)$selection)
+		? wm_note_font_id($map, (string)$selection) : wm_comment_resolve_font($map, $selection);
 	if ($font === null) {
 		return false;
 	}
