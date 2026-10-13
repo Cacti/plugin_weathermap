@@ -163,11 +163,11 @@ switch($action) {
 	case 'set_link_config':
 		setLinkConfig($mapfile);
 
-		break;
+		exit();
 	case 'set_node_config':
 		setNodeConfig($mapfile);
 
-		break;
+		exit();
 	case 'set_note_properties':
 		setNoteProperties($mapfile, $grid_snap_value);
 		exit;
