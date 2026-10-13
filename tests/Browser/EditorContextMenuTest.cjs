@@ -68,5 +68,20 @@ for (const action of ['set_node_properties','set_link_properties']) {
 w.eval(src.slice(src.indexOf('function click_execute('),src.indexOf('function show_context_help(')));
 $('#action').val('add_link');w.mapmode('existing');assert.ok($('#existingdata').hasClass('wm-placement-mode'));
 w.click_execute({},'LINK:1:0');assert.equal($('#action').val(),'');assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));assert.equal($('area').css('cursor'),'pointer');
+w.eval(src.slice(src.indexOf('function form_submit('),src.indexOf('function map_properties(')));
+$('body').append('<div id="dlgNodeProperties"></div><div id="dlgLinkProperties"></div>');
+let saveRequest;$.ajax=opts=>saveRequest=opts;w.editor_url='/editor';
+for (const kind of ['node','link']) for (const exit of ['cancel','close']) {
+ const dialog=$('#dlg'+(kind==='node'?'Node':'Link')+'Properties');dialog.dialog({modal:false});
+ $('#action').val('add_link2');$('#param').val('first-endpoint');w.mapmode('existing');
+ if(kind==='node')w.delete_node();else w.delete_link();
+ if(exit==='cancel')$('.dlgConfirm').dialog('option','buttons')[0].click.call($('.dlgConfirm')[0]);else $('.dlgConfirm').dialog('close');
+ assert.ok(dialog.dialog('isOpen'));
+ w.form_submit({currentTarget:{id:kind==='node'?'tb_node_submit':'tb_link_submit'}});
+ const submitted=new URLSearchParams(saveRequest.data);
+ assert.equal(submitted.get('action'),kind==='node'?'set_node_properties':'set_link_properties');
+ assert.equal(submitted.get('param'),$(kind==='node'?'#node_name':'#link_name').val());
+ assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));dialog.dialog('close');
+}
 dom.window.close();
 console.log('PASS: context menu cancels placement; node/link confirmations and closing restore normal map mode');

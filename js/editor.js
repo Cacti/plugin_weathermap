@@ -892,7 +892,17 @@ function delete_link() {
 	});
 }
 
-function form_submit() {
+function form_submit(event) {
+	// Property dialogs can remain open while a toolbar placement action is active.
+	// Their own Save buttons always dispatch the properties they are showing.
+	var button = event && event.currentTarget && event.currentTarget.id;
+	if (button === 'tb_node_submit' || button === 'tb_link_submit') {
+		var node = button === 'tb_node_submit';
+		$('#action').val(node ? 'set_node_properties' : 'set_link_properties');
+		$('#param').val($(node ? '#node_name' : '#link_name').val());
+		mapmode('existing');
+	}
+
 	var data = $('input, select, textarea').serialize();
 
 	$.ajax({
