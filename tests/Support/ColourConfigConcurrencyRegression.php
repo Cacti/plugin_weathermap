@@ -144,6 +144,9 @@ namespace {
   colour_atomic_assert(!\WeathermapConfig\atomicWrite($file,'x',false,null,true),'create-only existing file rejected');
   $link=$dir.'/link.conf';if(@symlink($file,$link)){colour_atomic_assert(\WeathermapConfig\atomicWrite($link,$initial),'symlink target maintained');unlink($link);}
   $wrong=\fopen($file,'rb');colour_atomic_assert(!\WeathermapConfig\atomicWrite($file,$initial,true,null,false,$wrong),'unrelated held mutex rejected');\fclose($wrong);
+  $templates=$dir.'/templates.conf';file_put_contents($templates,"NODE templateNode\n LABEL Template\nNODE A\n POSITION 10 10\nNODE B\n POSITION 50 50\nLINK templateLink\n WIDTH 8\nLINK trafficLink\n NODES A B\n");
+  $templateMap=new \WeatherMap;$templateMap->ReadConfig($templates);colour_atomic_assert($templateMap->WriteConfig($templates),'atomic save serializes template nodes and links');
+  $templateReload=new \WeatherMap;$templateReload->ReadConfig($templates);colour_atomic_assert(isset($templateReload->nodes['templateNode'],$templateReload->links['templateLink'],$templateReload->links['trafficLink']),'templates and traffic objects survive atomic persistence');
   $first=new \WeatherMap;$second=new \WeatherMap;$first->ReadConfig($file);$second->ReadConfig($file);$first->title='Winner';$second->title='Stale';
   colour_atomic_assert($first->WriteConfig($file),'engine atomic write');$winner=file_get_contents($file);colour_atomic_assert(!$second->WriteConfig($file)&&file_get_contents($file)===$winner,'engine CAS rejects stale readers');
   $map=new \WeatherMap;$map->ReadConfig($file);$data=wm_asset_colour_data($map);$revision=hash_file('sha256',$file);
