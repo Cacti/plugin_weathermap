@@ -119,9 +119,25 @@ function weathermap_check_cron($time, $string) {
  * @return bool Whether a complete copy was reserved at the destination.
  */
 function weathermap_stage_asset_copy($old, $new) {
+	global $config;
 	require_once __DIR__ . '/WeatherMap.config.php';
-	$contents = @file_get_contents($old);
-	return $contents !== false && \WeathermapConfig\atomicWrite($new, $contents, false, null, true);
+	$root = realpath($config['base_path'] . '/plugins/weathermap');
+	$source = realpath($old);
+	$destination = realpath(dirname($new));
+	if ($root === false || $source === false || $destination === false) return false;
+	$root = str_replace('\\', '/', $root); $source = str_replace('\\', '/', $source); $destination = str_replace('\\', '/', $destination);
+	if (!str_starts_with($source, $root . '/')
+		|| !in_array($destination, [$root . '/images/objects', $root . '/images/backgrounds'], true)
+		|| !in_array(strtolower(pathinfo($source, PATHINFO_EXTENSION)), ['png', 'jpg', 'jpeg', 'gif'], true)) return false;
+	$contents = @file_get_contents($source);
+	if ($contents === false) return false;
+	$info = @getimagesizefromstring($contents);
+	if ($info === false || !in_array($info[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) return false;
+	set_error_handler(function () { return true; }, E_WARNING);
+	try { $image = imagecreatefromstring($contents); } finally { restore_error_handler(); }
+	if ($image === false) return false;
+	imagedestroy($image);
+	return \WeathermapConfig\atomicWrite($new, $contents, false, null, true);
 }
 
 /**

@@ -143,6 +143,7 @@ namespace {
 	$dir = sys_get_temp_dir() . '/wm-atomic-' . bin2hex(random_bytes(5));
 	mkdir($dir);
 	$file = $dir . '/map.conf';
+	$bitmap = imagecreatetruecolor(2, 2); ob_start(); imagepng($bitmap); $validAsset = ob_get_clean(); imagedestroy($bitmap);
 	$original = "WIDTH 600\nHEIGHT 300\nNODE note1\n LABEL Original\n POSITION 50 50\n SET editor_note 1\n";
 	file_put_contents($file, $original);
 	try {
@@ -347,7 +348,7 @@ namespace {
 		$repairFile = $plugin . '/configs/' . $repairName;
 		$repairImage = $plugin . '/images/backgrounds/' . $repairName . '.png';
 		$legacy = 'BACKGROUND ' . basename($repairImage) . "\n";
-		file_put_contents($repairFile, $legacy); file_put_contents($repairImage, 'fixture');
+		file_put_contents($repairFile, $legacy); file_put_contents($repairImage, $validAsset);
 		$oldConfig = $GLOBALS['config'];
 		$GLOBALS['config']['base_path'] = dirname($plugin, 2);
 		$GLOBALS['__test_db_fetch_assoc'] = fn ($sql) => [['configfile' => $repairName]];
@@ -376,7 +377,13 @@ namespace {
 		}
 		$stageSource = $plugin . '/legacy-stage-' . bin2hex(random_bytes(4)) . '.png';
 		$stageTarget = $plugin . '/images/backgrounds/' . basename($stageSource);
-		file_put_contents($stageSource, 'Legacy asset bytes');
+		file_put_contents($stageSource, $validAsset);
+
+		$outsideAsset = $dir . '/outside.png'; file_put_contents($outsideAsset, $validAsset);
+		atomic_assert(!weathermap_stage_asset_copy($outsideAsset, $stageTarget) && !is_file($stageTarget), 'repair rejects a valid image outside the legacy root');
+		$badAsset = $plugin . '/invalid-stage-' . bin2hex(random_bytes(4)) . '.png'; file_put_contents($badAsset, 'not an image');
+		atomic_assert(!weathermap_stage_asset_copy($badAsset, $stageTarget) && !is_file($stageTarget), 'repair rejects non-image bytes within the legacy root');
+		unlink($badAsset); unlink($outsideAsset);
 		$stageConfig = $plugin . '/configs/' . basename($stageSource) . '.conf';
 		$stageLegacy = 'BACKGROUND ' . basename($stageSource) . "\n";
 		file_put_contents($stageConfig, $stageLegacy);
@@ -386,7 +393,7 @@ namespace {
 		try {
 			// A staged copy succeeds, but the config CAS must fail after a concurrent save.
 			$staged = weathermap_stage_asset_copy($stageSource, $stageTarget);
-			atomic_assert($staged && is_file($stageSource) && file_get_contents($stageTarget) === 'Legacy asset bytes', 'staging keeps original and complete destination');
+			atomic_assert($staged && is_file($stageSource) && file_get_contents($stageTarget) === $validAsset, 'staging keeps original and complete destination');
 			$stageNewer = "TITLE Concurrent repair edit\n" . $stageLegacy;
 			$GLOBALS['config_before_lock'] = function() use ($stageConfig, $stageNewer) { unset($GLOBALS['config_before_lock']); file_put_contents($stageConfig, $stageNewer); };
 			$GLOBALS['weathermap_error_suppress'] = ['WMPOLL13']; weathermap_repair_maps();
@@ -406,8 +413,8 @@ namespace {
 		$repairPlugin = $repairRoot . '/cacti/plugins/weathermap';
 		mkdir($repairPlugin . '/configs', 0777, true); mkdir($repairPlugin . '/images');
 		symlink($plugin . '/lib', $repairPlugin . '/lib');
-		file_put_contents($repairPlugin . '/legacy-background.png', 'Background bytes');
-		file_put_contents($repairPlugin . '/legacy-icon.png', 'Icon bytes');
+		file_put_contents($repairPlugin . '/legacy-background.png', $validAsset);
+		file_put_contents($repairPlugin . '/legacy-icon.png', $validAsset);
 		$legacyFixture = "BACKGROUND legacy-background.png\nNODE Legacy\n ICON legacy-icon.png\n";
 		$fixtureConfig = $repairPlugin . '/configs/legacy.conf';
 		$oldConfig = $GLOBALS['config']; $oldSuppress = $GLOBALS['weathermap_error_suppress'] ?? [];

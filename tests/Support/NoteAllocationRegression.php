@@ -58,11 +58,12 @@ namespace {
 			imagedestroy($image);
 		}
 		require_once 'lib/editor.inc.php'; require_once 'lib/editor.notes.php';
-		foreach (['missing', 'invalid', 'unreadable'] as $fontCase) {
+		foreach (['missing', 'invalid', 'unreadable', 'truncated'] as $fontCase) {
 			$GLOBALS['note_allocations'] = 0; $GLOBALS['note_fail_at'] = 0;
 			$map = new \WeatherMap; $map->ReadConfig($file); $map->stamptext = '';
 			$fontPath = $dir . '/font-' . $fontCase . '.ttf';
 			if ($fontCase === 'invalid') file_put_contents($fontPath, 'invalid font');
+			if ($fontCase === 'truncated') file_put_contents($fontPath, "\x00\x01\x00\x00" . str_repeat("\0", 20));
 			if ($fontCase === 'unreadable') { copy('docs/example/Vera.ttf', $fontPath); chmod($fontPath, 0000); if (is_readable($fontPath)) { chmod($fontPath, 0600); continue; } }
 			$map->fonts[100]->file = $fontPath;
 			$output = $dir . '/fallback-' . $fontCase . '.png'; $map->DrawMap($output);
