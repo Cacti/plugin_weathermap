@@ -286,8 +286,11 @@ namespace {
 
 		// Run the actual CLI programs in an isolated Cacti tree with stubbed services.
 		$cliRoot = $dir . '/cacti';
-		mkdir($cliRoot); mkdir($cliRoot . '/include'); mkdir($cliRoot . '/plugins');
-		mkdir($cliRoot . '/plugins/weathermap'); mkdir($cliRoot . '/plugins/weathermap/cli');
+		mkdir($cliRoot);
+		mkdir($cliRoot . '/include');
+		mkdir($cliRoot . '/plugins');
+		mkdir($cliRoot . '/plugins/weathermap');
+		mkdir($cliRoot . '/plugins/weathermap/cli');
 		symlink($plugin . '/lib', $cliRoot . '/plugins/weathermap/lib');
 		foreach (['map-tidyup.php', 'cacti-integrate.php', 'convert-to-dsstats.php'] as $cli) copy($plugin . '/cli/' . $cli, $cliRoot . '/plugins/weathermap/cli/' . $cli);
 		$bootstrap = '<?php require ' . var_export($plugin . '/tests/bootstrap-unit.php', true) . '; require ' . var_export($plugin . '/setup.php', true) . '; $config["base_path"] = ' . var_export($cliRoot, true) . ';';
@@ -299,10 +302,11 @@ namespace {
 		foreach (['map-tidyup.php', 'cacti-integrate.php', 'convert-to-dsstats.php'] as $cli) {
 			$coverageFile = $dir . '/' . $cli . '.json';
 			putenv('WM_CLI_COVERAGE_FILE=' . $coverageFile);
-			$command = escapeshellarg(PHP_BINARY) . ' -d auto_prepend_file=' . escapeshellarg($prepend) . ' ' . escapeshellarg($cliRoot . '/plugins/weathermap/cli/' . $cli)
-				. ' --input=' . escapeshellarg($dir . '/cli-input.conf') . ' --output=' . escapeshellarg($dir . '/missing/output.conf') . ' 2>&1';
+			$command = escapeshellarg(PHP_BINARY) . ' -d auto_prepend_file=' . escapeshellarg($prepend) . ' ' . escapeshellarg($cliRoot . '/plugins/weathermap/cli/' . $cli) . ' --input=' . escapeshellarg($dir . '/cli-input.conf') . ' --output=' . escapeshellarg($dir . '/missing/output.conf') . ' 2>&1';
 			chdir($cliRoot . '/plugins/weathermap/cli');
-			$cliOutput = []; exec($command, $cliOutput, $exitCode); chdir($plugin);
+			$cliOutput = [];
+			exec($command, $cliOutput, $exitCode);
+			chdir($plugin);
 			colour_atomic_assert($exitCode === 1 && !str_contains(implode("\n", $cliOutput), 'Wrote') && str_contains(implode("\n", $cliOutput), 'Could not write configuration'), 'actual CLI reports failed persistence: ' . $cli . ' ' . implode("\n", $cliOutput));
 			if (is_file($coverageFile)) {
 				$raw = json_decode(file_get_contents($coverageFile), true);
@@ -312,8 +316,13 @@ namespace {
 			}
 		}
 		foreach (glob($cliRoot . '/plugins/weathermap/cli/*') as $cliFile) unlink($cliFile);
-		rmdir($cliRoot . '/plugins/weathermap/cli'); unlink($cliRoot . '/plugins/weathermap/lib'); rmdir($cliRoot . '/plugins/weathermap'); rmdir($cliRoot . '/plugins');
-		unlink($cliRoot . '/include/cli_check.php'); rmdir($cliRoot . '/include'); rmdir($cliRoot);
+		rmdir($cliRoot . '/plugins/weathermap/cli');
+		unlink($cliRoot . '/plugins/weathermap/lib');
+		rmdir($cliRoot . '/plugins/weathermap');
+		rmdir($cliRoot . '/plugins');
+		unlink($cliRoot . '/include/cli_check.php');
+		rmdir($cliRoot . '/include');
+		rmdir($cliRoot);
 
 		// Normal editor mutations also expose persistence conflicts and suppress title-cache side effects.
 		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'map_title' => 'Attempted'];
