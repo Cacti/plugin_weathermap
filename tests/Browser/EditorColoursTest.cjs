@@ -34,6 +34,6 @@ $('#wm-map-background-colour select').val('#0000ff').trigger('change');
 assert.equal($('#map_background_colour').val(),'#ffffff','cancelled edit does not mutate saved field');
 w.map_properties();assert.equal($('#wm-map-background-colour select').val(),'#ffffff','reopening discards cancelled colour');
 $('#wm-map-background-colour select').val('#0000ff').trigger('change');
-w.eval(source.slice(source.indexOf('function form_submit()'),source.indexOf('function map_properties()')));
+w.eval(source.slice(source.indexOf('function form_submit('),source.indexOf('function map_properties()')));
 w.form_submit();assert.equal($('#map_background_colour').val(),'#0000ff');assert.ok(request.data.includes('map_background_colour=%230000ff'));
 dom.window.close();console.log('PASS: colour preset preview, named scales, Custom, gradients, save and errors');
