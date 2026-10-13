@@ -1,0 +1,173 @@
+<?php
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group, Howard Jones                   |
+ |                                                                         |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
+ |                                                                         |
+ | This program is distributed in the hope that it will be useful,         |
+ | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
+ | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
+ | GNU General Public License for more details.                            |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
+ +-------------------------------------------------------------------------+
+ | http://www.cacti.net/                                                   |
+ +-------------------------------------------------------------------------+
+*/
+
+namespace WeathermapConfig {
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $path
+	 * @param string $mode
+	 * @return resource|false
+	 */
+	function fopen($path, $mode) {
+		$fault = $GLOBALS['config_fault'] ?? '';
+		if (($fault === 'lock-open' && str_ends_with($path, '.lock')) || ($fault === 'lock-read' && $mode === 'c+b') || ($fault === 'temp-open' && $mode === 'wb')) return false;
+		return \fopen($path, $mode);
+	}
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param resource $stream
+	 * @param int $mode
+	 * @return bool
+	 */
+	function flock($stream, $mode) {
+		if (($GLOBALS['config_fault'] ?? '') === 'lock' && $mode === LOCK_EX) return false;
+		if (($mode & LOCK_EX) && isset($GLOBALS['config_before_lock'])) ($GLOBALS['config_before_lock'])();
+		return \flock($stream, $mode);
+	}
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $dir
+	 * @param string $prefix
+	 * @return string|false
+	 */
+	function tempnam($dir, $prefix) {
+		return ($GLOBALS['config_fault'] ?? '') === 'temp-name' ? false : \tempnam($dir, $prefix);
+	}
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param resource $stream
+	 * @param string $bytes
+	 * @return int|false
+	 */
+	function fwrite($stream, $bytes) {
+		$fault = $GLOBALS['config_fault'] ?? '';
+		if ($fault === 'write-false') return false;
+		if ($fault === 'write-zero') return 0;
+		return \fwrite($stream, $fault === 'short-write' ? substr($bytes, 0, 2) : $bytes);
+	}
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param resource $stream
+	 * @return bool
+	 */
+	function fflush($stream) {
+		return ($GLOBALS['config_fault'] ?? '') !== 'flush' && \fflush($stream);
+	}
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param resource $stream
+	 * @return bool
+	 */
+	function fclose($stream) {
+		$temp = strpos(stream_get_meta_data($stream)['uri'], '.wm-config-') !== false;
+		$closed = \fclose($stream);
+		return !(($GLOBALS['config_fault'] ?? '') === 'close' && $temp) && $closed;
+	}
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $path
+	 * @param int $group
+	 * @return bool
+	 */
+	function chgrp($path, $group) {
+		return ($GLOBALS['config_fault'] ?? '') !== 'group' && \chgrp($path, $group);
+	}
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $path
+	 * @param int $mode
+	 * @return bool
+	 */
+	function chmod($path, $mode) {
+		return ($GLOBALS['config_fault'] ?? '') !== 'mode' && \chmod($path, $mode);
+	}
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $source
+	 * @param string $target
+	 * @return bool
+	 */
+	function rename($source, $target) {
+		return ($GLOBALS['config_fault'] ?? '') !== 'rename' && \rename($source, $target);
+	}
+}
+namespace {
+ require dirname(__DIR__) . '/bootstrap-unit.php';
+ $plugin=dirname(__DIR__,2); chdir($plugin);
+ require $plugin . '/setup.php'; require $plugin . '/lib/WeatherMap.class.php'; require $plugin . '/lib/WeatherMap.config.php';
+ require $plugin . '/lib/editor.inc.php'; require $plugin . '/lib/editor.colours.php'; require $plugin . '/lib/editor.actions.php';
+ /** Assert a persistence or concurrent endpoint result in this isolated process. */
+ function colour_atomic_assert($condition,$message) { if(!$condition)throw new \RuntimeException($message); }
+ $dir=sys_get_temp_dir().'/wm-colour-atomic-'.bin2hex(random_bytes(5));mkdir($dir);
+ $file=$dir.'/map.conf';$initial="WIDTH 600\nHEIGHT 300\nNODE A\n POSITION 10 10\nNODE B\n POSITION 50 50\nLINK AB\n NODES A B\n";file_put_contents($file,$initial);
+ try {
+  foreach(array_filter(['lock-open','lock','temp-name','temp-open','write-false','write-zero','flush','close','group','mode','rename'],fn($fault)=>PHP_OS_FAMILY!=='Windows'||$fault!=='group') as $fault) {
+   $GLOBALS['config_fault']=$fault;colour_atomic_assert(!\WeathermapConfig\atomicWrite($file,'Replacement'),'I/O failure reported');colour_atomic_assert(file_get_contents($file)===$initial,'I/O failure retains original');
+  }
+  $GLOBALS['config_fault']='short-write';colour_atomic_assert(\WeathermapConfig\atomicWrite($file,$initial),'partial chunks completed');
+  $GLOBALS['config_fault']=PHP_OS_FAMILY==='Windows'?'':'lock-read';colour_atomic_assert(\WeathermapConfig\atomicWrite($file,$initial),'read-only lock stream supported');$GLOBALS['config_fault']='';
+  colour_atomic_assert(!\WeathermapConfig\atomicWrite('invalid://map','x'),'unsupported stream rejected');
+  colour_atomic_assert(!\WeathermapConfig\atomicWrite($dir.'/missing/map','x'),'missing destination directory rejected');
+  colour_atomic_assert(!\WeathermapConfig\atomicWrite($dir,'x'),'directory target rejected');
+  colour_atomic_assert(!\WeathermapConfig\acquire($dir.'/missing'),'missing lock directory rejected');
+  colour_atomic_assert(!\WeathermapConfig\atomicWrite($dir.'/absent.conf','x',true),'deleted map not recreated');
+  colour_atomic_assert(!\WeathermapConfig\atomicWrite($file,'x',false,null,true),'create-only existing file rejected');
+  $link=$dir.'/link.conf';if(@symlink($file,$link)){colour_atomic_assert(\WeathermapConfig\atomicWrite($link,$initial),'symlink target maintained');unlink($link);}
+  $wrong=\fopen($file,'rb');colour_atomic_assert(!\WeathermapConfig\atomicWrite($file,$initial,true,null,false,$wrong),'unrelated held mutex rejected');\fclose($wrong);
+  $first=new \WeatherMap;$second=new \WeatherMap;$first->ReadConfig($file);$second->ReadConfig($file);$first->title='Winner';$second->title='Stale';
+  colour_atomic_assert($first->WriteConfig($file),'engine atomic write');$winner=file_get_contents($file);colour_atomic_assert(!$second->WriteConfig($file)&&file_get_contents($file)===$winner,'engine CAS rejects stale readers');
+  $map=new \WeatherMap;$map->ReadConfig($file);$data=wm_asset_colour_data($map);$revision=hash_file('sha256',$file);
+  $_SERVER['REQUEST_METHOD']='POST';
+  if(function_exists('pcntl_fork')) {
+   $lock=\WeathermapConfig\acquire($dir);$children=[];
+   for($i=0;$i<2;$i++) {
+    $child=pcntl_fork();if($child===0) {
+     \fclose($lock);$GLOBALS['config_before_lock']=function()use($dir,$i){file_put_contents($dir.'/ready-'.$i,'ready');};
+     $payload=$data;$payload['outline']=$i===0?'#0000ff':'#cc0000';
+     $GLOBALS['__test_nfilter_request']=['config_revision'=>$revision,'colours_json'=>json_encode($payload)];http_response_code(200);
+     ob_start();wm_editor_colours($file,'set_map_colours');$response=json_decode(ob_get_clean(),true);file_put_contents($dir.'/result-'.$i,json_encode(['status'=>http_response_code(),'response'=>$response]));exit(0);
+    }$children[]=$child;
+   }
+   for($wait=0;$wait<200&&cacti_count(glob($dir.'/ready-*'))<2;$wait++)usleep(10000);
+   \WeathermapConfig\release($lock);foreach($children as $child)pcntl_waitpid($child,$status);
+   $results=[json_decode(file_get_contents($dir.'/result-0'),true),json_decode(file_get_contents($dir.'/result-1'),true)];$statuses=array_column($results,'status');sort($statuses);
+   colour_atomic_assert($statuses===[200,409],'two concurrent colour requests produce exactly one save and one stale response');
+   $saved=new \WeatherMap;$saved->ReadConfig($file);$outline=wm_asset_colour_data($saved)['outline'];$winning=$results[0]['status']===200?0:1;
+   colour_atomic_assert($outline===($winning===0?'#0000ff':'#cc0000'),'second request cannot overwrite winning colour');
+  }else {
+   $GLOBALS['__test_nfilter_request']=['config_revision'=>$revision,'colours_json'=>json_encode($data)];ob_start();wm_editor_colours($file,'set_map_colours');ob_end_clean();colour_atomic_assert(http_response_code()===200,'locked endpoint succeeds');
+  }
+  $probe=\WeathermapConfig\acquire($dir,false);colour_atomic_assert(is_resource($probe),'endpoint always releases mutex');\WeathermapConfig\release($probe);
+  echo "Colour concurrent configuration regression PASS\n";
+ }finally {$GLOBALS['config_fault']='';foreach(glob($dir.'/*') as $path)unlink($path);foreach(glob($dir.'/.wm-config-*') as $path)unlink($path);if(is_file($dir.'/.weathermap-config.lock'))unlink($dir.'/.weathermap-config.lock');rmdir($dir);}
+}

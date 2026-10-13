@@ -1154,8 +1154,12 @@ function getImageURL($mapname, $selected) {
  */
 function wm_editor_colours($mapfile, $action) {
 	header('Content-Type: application/json');
+	$lock = false;
 	try {
 		if ($action !== 'colour_data' && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') throw new InvalidArgumentException(__('Use POST to save changes.', 'weathermap'));
+		require_once __DIR__ . '/WeatherMap.config.php';
+		$lock = \WeathermapConfig\acquire(dirname($mapfile));
+		if (!$lock) throw new RuntimeException(__('Could not lock map configurations.', 'weathermap'));
 		$map = new WeatherMap;
 		$map->context = 'editor';
 		if (!$map->ReadConfig($mapfile)) throw new RuntimeException(__('Cannot read the map configuration.', 'weathermap'));
@@ -1170,11 +1174,13 @@ function wm_editor_colours($mapfile, $action) {
 			$data = json_decode(get_nfilter_request_var('colours_json'), true);
 			if (!is_array($data)) throw new InvalidArgumentException(__('Invalid colour settings.', 'weathermap'));
 			wm_asset_save_colours($map, $data);
-			if (!$map->WriteConfig($mapfile)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+			if (!$map->WriteConfig($mapfile, false, $currentRevision, $lock)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
 		}
 		echo json_encode(['colours' => wm_asset_colour_data($map), 'revision' => hash_file('sha256', $mapfile)]);
 	} catch (Throwable $error) {
 		http_response_code(400);
 		echo json_encode(['error' => $error->getMessage()]);
+	} finally {
+		if ($lock) \WeathermapConfig\release($lock);
 	}
 }
