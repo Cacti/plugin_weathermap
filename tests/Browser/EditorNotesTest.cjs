@@ -21,6 +21,7 @@ assert.equal(shown,'dlgNoteProperties');assert.equal($('#note_font').val(),'bund
 $('#note_font').empty().append('<option value="10" data-wm-note-default="1">Translated Vera label (font 10)</option><option value="3">Builtin</option>');
 w.show_note('',10,20);assert.equal($('#note_font').val(),'10');
 w.show_note('note1');assert.equal($('#note_text').val(),'Core\nMaintenance');assert.equal($('#note_align').val(),'centre');
+w.WMNotes.note1.text='C:\\new site\nSecond line';w.show_note('note1');assert.equal($('#note_text').val(),w.WMNotes.note1.text);delete w.WMNotes.note1.text;
 $('#note_x,#note_y').attr('max',600);$('#note_clone').trigger('click');assert.equal($('#note_name').val(),'');assert.equal($('#note_x').val(),'70');
 w.show_note('note1');$('#note_move').trigger('click');assert.equal(moved,'note1');
 w.show_note('note1');$('#note_delete').trigger('click');assert.equal(deleted,'note1');assert.equal($('#param').val(),'note1');

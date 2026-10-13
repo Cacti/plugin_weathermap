@@ -1800,7 +1800,7 @@ function show_note(name, x, y) {
 	var style = name ? WMNotes[name] : null;
 	$('#note_name').val(name);
 	$('#note_align').val(style && ['left', 'centre', 'right'].indexOf(style.align) !== -1 ? style.align : 'left');
-	$('#note_text').val(node ? node.label.replace(/\\n/g, '\n') : '');
+	$('#note_text').val(node ? (style && typeof style.text === 'string' ? style.text : node.label.replace(/\\n/g, '\n')) : '');
 	$('#note_x').val(node ? node.x : x);
 	$('#note_y').val(node ? node.y : y);
 	$('#note_colour').val(style ? style.colour : '#000000');

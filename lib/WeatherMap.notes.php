@@ -41,6 +41,18 @@ namespace WeathermapNotes {
 
 namespace {
 /**
+ * Decode text from an escaped note label, preserving literal backslashes.
+ *
+ * @param string $text Encoded configuration label.
+ * @return string Display text.
+ */
+function wm_note_decode_text($text) {
+	return preg_replace_callback('/\\\\(\\\\|n)/', function ($match) {
+		return $match[1] === 'n' ? "\n" : '\\';
+	}, $text);
+}
+
+/**
  * Resolve a usable note font before measuring or drawing its text.
  *
  * @param WeatherMap $map The rendered map.

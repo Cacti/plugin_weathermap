@@ -88,15 +88,16 @@ function writeAll($stream, $contents) {
  */
 function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision = null, $createOnly = false, $heldLock = null) {
 	if (strpos($filename, '://') !== false) return false;
+	$lockDirectory = dirname($filename);
 	if (is_link($filename)) $filename = realpath($filename);
 	if ($filename === false || !is_dir(dirname($filename)) || !is_writable(dirname($filename))) return false;
 	if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
 	$existed = file_exists($filename);
 	$mustExist = $mustExist || $existed;
 	$ownsLock = $heldLock === null;
-	$lockPath = realpath(dirname($filename) . '/.weathermap-config.lock');
+	$lockPath = realpath($lockDirectory . '/.weathermap-config.lock');
 	if (!$ownsLock && ($lockPath === false || !is_resource($heldLock) || get_resource_type($heldLock) !== 'stream' || realpath(stream_get_meta_data($heldLock)['uri']) !== $lockPath)) return false;
-	$lock = $ownsLock ? acquire(dirname($filename)) : $heldLock;
+	$lock = $ownsLock ? acquire($lockDirectory) : $heldLock;
 	if (!$lock) return false;
 	$temp = false;
 	$stream = false;

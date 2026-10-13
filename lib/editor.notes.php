@@ -89,7 +89,8 @@ function wm_editor_save_note($map, $values, $grid_snap_value = 0) {
 		$map->seen_zlayers[$node->zorder][] = $node;
 	}
 	$node = $map->nodes[$name];
-	$node->label = str_replace(["\r\n", "\r", "\n"], '\n', trim($text));
+	$node->label = str_replace(["\r\n", "\r", "\n"], '\n', str_replace('\\', '\\\\', trim($text)));
+	$node->add_hint('editor_note_escaped', '1');
 	$node->labelfont = $font;
 	$node->add_hint('editor_note_align', $alignment);
 	$node->labelfontcolour = [hexdec(substr($colour, 1, 2)), hexdec(substr($colour, 3, 2)), hexdec(substr($colour, 5, 2))];
@@ -113,7 +114,7 @@ function wm_editor_note_data($map) {
 		$fontId = wm_note_font_id($map, $node->labelfont);
 		$font = $map->fonts[$fontId];
 		$rgb = $node->labelfontcolour;
-		$notes[$name] = ['align' => $node->get_hint('editor_note_align', 'left'), 'font' => (string)$fontId, 'fontLabel' => wm_editor_font_label($fontId, $font),
+		$notes[$name] = ['text' => $node->get_hint('editor_note_escaped', '0') === '1' ? wm_note_decode_text($node->label) : str_replace('\\n', "\n", $node->label), 'align' => $node->get_hint('editor_note_align', 'left'), 'font' => (string)$fontId, 'fontLabel' => wm_editor_font_label($fontId, $font),
 			'colour' => sprintf('#%02x%02x%02x', max(0, $rgb[0]), max(0, $rgb[1]), max(0, $rgb[2]))];
 	}
 	return $notes;

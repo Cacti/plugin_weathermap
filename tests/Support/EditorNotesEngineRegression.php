@@ -86,6 +86,23 @@ try {
 	note_assert(imagesx($saved->image) === 600, 'HTML-only rendering keeps logical dimensions');
 	$saved->imageuri = 'note.png';
 	note_assert(str_contains($saved->MakeHTML(), "width='600' height='300'"), 'viewer display size remains logical');
+
+	$literal = "C:\\new site\nD:\\nested\\notes\\\\share";
+	$literalValues = $values;
+	$literalValues['name'] = $name;
+	$literalValues['text'] = $literal;
+	note_assert(wm_editor_save_note($saved, $literalValues), 'save literal backslashes');
+	note_assert($saved->WriteConfig($file), 'persist escaped note');
+	$literalReload = new WeatherMap;
+	$literalReload->ReadConfig($file);
+	$literalNode = $literalReload->nodes[$name];
+	note_assert(wm_editor_note_data($literalReload)[$name]['text'] === $literal, 'dialog text preserves literal backslashes and real newlines');
+	note_assert($literalReload->ProcessString($literalNode->label, $literalNode, true, true) === $literal, 'render text preserves literal backslashes and real newlines');
+	$literalReload->DrawMap($directory . '/literal.png');
+	note_assert(is_file($directory . '/literal.png'), 'escaped note renders through high-density path');
+	$legacy = new WeatherMapNode;
+	$legacy->name = 'legacy'; $legacy->Reset($literalReload); $legacy->label = 'Old\nNote';
+	note_assert($literalReload->ProcessString($legacy->label, $legacy, true, true) === "Old\nNote", 'legacy multiline semantics retained');
 	$oldWidth = $saved->width;
 	$saved->width = 50000;
 	note_assert(wm_sharp_notes($saved) === [], 'large map allocation bounded');

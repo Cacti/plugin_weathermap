@@ -944,7 +944,8 @@ class WeatherMap extends WeatherMapBase {
 
 		if ($multiline == true) {
 			$i     = $input;
-			$input = str_replace('\\n', "\n", $i);
+			$input = $context instanceof WeatherMapNode && $context->get_hint('editor_note_escaped', '0') === '1'
+				? wm_note_decode_text($i) : str_replace('\\n', "\n", $i);
 		}
 
 		$output = $input;
