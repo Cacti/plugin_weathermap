@@ -170,6 +170,36 @@ namespace {
   }else {
    $GLOBALS['__test_nfilter_request']=['config_revision'=>$revision,'colours_json'=>json_encode($data)];ob_start();wm_editor_colours($file,'set_map_colours');ob_end_clean();colour_atomic_assert(http_response_code()===200,'locked endpoint succeeds');
   }
+
+		// Real raw node/link saves must not re-check their own pre-save page token.
+		$rawFile = $dir . '/raw.conf';
+		$rawConfig = "WIDTH 300\nHEIGHT 200\nNODE A\n LABEL A\n POSITION 10 10\nNODE B\n LABEL B\n POSITION 50 50\nLINK AB\n NODES A B\n";
+		foreach (['node', 'link'] as $kind) {
+			file_put_contents($rawFile, $rawConfig);
+			$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $rawFile), 'node_name' => 'A', 'link_name' => 'AB', 'item_configtext' => $kind === 'node' ? "NODE A\n LABEL Updated\n POSITION 10 10\n" : "LINK AB\n NODES A B\n WIDTH 12\n"];
+			http_response_code(200); if ($kind === 'node') setNodeConfig($rawFile); else setLinkConfig($rawFile);
+			colour_atomic_assert(http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'raw ' . $kind . ' edit saves without false conflict');
+			file_put_contents($rawFile, $rawConfig); http_response_code(200);
+			$controller = file_get_contents($plugin . '/weathermap-cacti-plugin-editor.php');
+			$caseStart = strpos($controller, "case 'set_" . $kind . "_config':");
+			$caseEnd = strpos($controller, "case '", $caseStart + 5);
+			$dispatch = substr($controller, strpos($controller, ':', $caseStart) + 1, $caseEnd - strpos($controller, ':', $caseStart) - 1);
+			$mapfile = $rawFile; $terminated = false;
+			try { eval(str_replace('exit();', 'throw new \\RuntimeException("request-finished");', $dispatch)); }
+			catch (\RuntimeException $error) { if ($error->getMessage() !== 'request-finished') throw $error; $terminated = true; }
+			colour_atomic_assert($terminated && http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'controller ends successful raw ' . $kind . ' save before rendering with old token');
+
+		}
+
+  // Normal editor mutations also expose persistence conflicts and suppress title-cache side effects.
+  $GLOBALS['__test_nfilter_request']=['config_revision'=>hash_file('sha256',$file),'map_title'=>'Attempted'];
+  $GLOBALS['__test_db_calls']=[];
+  $GLOBALS['config_before_lock']=function()use($file){file_put_contents($file,"TITLE Concurrent\n");unset($GLOBALS['config_before_lock']);};
+  http_response_code(200);setMapProperties($file);
+  colour_atomic_assert(http_response_code()===409 && file_get_contents($file)==="TITLE Concurrent\n" && $GLOBALS['__test_db_calls']===[], 'normal editor CAS conflict is visible and does not update title cache');
+  $GLOBALS['__test_nfilter_request']=['config_revision'=>hash_file('sha256',$file),'colours_json'=>json_encode($data)];
+  foreach(['lock','rename'] as $fault){$GLOBALS['config_fault']=$fault;http_response_code(200);ob_start();wm_editor_colours($file,'set_map_colours');ob_end_clean();colour_atomic_assert(http_response_code()===500,'operational endpoint failures return server error');}
+  $GLOBALS['config_fault']='';$GLOBALS['__test_nfilter_request']['colours_json']='invalid';http_response_code(200);ob_start();wm_editor_colours($file,'set_map_colours');ob_end_clean();colour_atomic_assert(http_response_code()===400,'invalid payload remains client error');
   $probe=\WeathermapConfig\acquire($dir,false);colour_atomic_assert(is_resource($probe),'endpoint always releases mutex');\WeathermapConfig\release($probe);
   echo "Colour concurrent configuration regression PASS\n";
  }finally {$GLOBALS['config_fault']='';foreach(glob($dir.'/*') as $path)unlink($path);foreach(glob($dir.'/.wm-config-*') as $path)unlink($path);if(is_file($dir.'/.weathermap-config.lock'))unlink($dir.'/.weathermap-config.lock');rmdir($dir);}
