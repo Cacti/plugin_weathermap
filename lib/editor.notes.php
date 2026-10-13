@@ -30,6 +30,7 @@
 function wm_note_effective_dimensions($map) {
 	$preview = clone $map;
 	$preview->image = null;
+	$preview->imap = new HTML_ImageMap('weathermap');
 	foreach ($preview->nodes as $name => $node) {
 		$preview->nodes[$name] = clone $node;
 		$preview->nodes[$name]->owner = $preview;

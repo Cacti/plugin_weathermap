@@ -332,7 +332,7 @@ if ($editor_return_context === 'manage') {
 			<li class='tb_active' id='tb_prefs'><?php print __('Editor<br>Settings', 'weathermap'); ?></li>
 			<li class='tb_coords' id='tb_coords'><?php print __('Position<br>---, ---', 'weathermap'); ?></li>
 			<li class='tb_help'>
-				<span id='tb_help'><?php print __('Select a menu item or either right-click or click on a Node or Link to edit it\'s properties', 'weathermap'); ?></span>
+				<span id='tb_help' role='status' aria-live='polite'><?php print __('Select a menu item or either right-click or click on a Node or Link to edit its properties', 'weathermap'); ?></span>
 			</li>
 		</ul>
 	</div>
@@ -738,7 +738,7 @@ if (count($backgd_list) == 0) {
 				<div class='dlgBody'>
 					<table class='cactiTable'>
 						<tr><td colspan='2'>
-						<div class='cactiTableTitleRow' style='display:table'><?php print __('Map Defaults', 'weathermap'); ?></div>
+						<div class='cactiTableTitleRow wm-editor-section'><?php print __('Map Defaults', 'weathermap'); ?></div>
 						</td></tr>
 						<tr>
 							<td><?php print __('HTML Style', 'weathermap'); ?></td>
@@ -774,7 +774,7 @@ foreach ($styles as $id => $name) {
 							<td><?php print get_fontlist($map, 'mapstyle_legendfont', $map->keyfont); ?></td>
 						</tr>
 						<tr><td colspan='2'>
-						<div class='cactiTableTitleRow' style='display:table'><?php print __('Node Defaults', 'weathermap'); ?></div>
+						<div class='cactiTableTitleRow wm-editor-section'><?php print __('Node Defaults', 'weathermap'); ?></div>
 						</td></tr>
 						<tr>
 							<td><?php print __('Node Font', 'weathermap'); ?></td>
@@ -783,7 +783,7 @@ foreach ($styles as $id => $name) {
 
 
 						<tr><td colspan='2'>
-						<div class='cactiTableTitleRow' style='display:table'><?php print __('Link Defaults', 'weathermap'); ?></div>
+						<div class='cactiTableTitleRow wm-editor-section'><?php print __('Link Defaults', 'weathermap'); ?></div>
 						</td></tr>
 						<tr>
 							<td><?php print __('Link Labels', 'weathermap'); ?></td>
@@ -816,25 +816,25 @@ foreach ($styles as $id => $name) {
 <summary style='cursor: pointer; padding: 8px 0;'><?php print __esc('Advanced settings', 'weathermap'); ?></summary>
 <p><?php print __esc('Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions.', 'weathermap'); ?></p>
 <table style='width: 100%;'>
-<tr>
+						<tr>
 							<td><label for='mapstyle_nodewidth'><?php print __esc('Node Hover Width (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_nodewidth' name='mapstyle_nodewidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibwidth; ?>'>
 							</td>
 						</tr>
-<tr>
+						<tr>
 							<td><label for='mapstyle_nodeheight'><?php print __esc('Node Hover Height (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_nodeheight' name='mapstyle_nodeheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->nodes['DEFAULT']->overlibheight; ?>'>
 							</td>
 						</tr>
-<tr>
+						<tr>
 							<td><label for='mapstyle_linkwidth'><?php print __esc('Link Hover Width (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_linkwidth' name='mapstyle_linkwidth' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibwidth; ?>'>
 							</td>
 						</tr>
-<tr>
+						<tr>
 							<td><label for='mapstyle_linkheight'><?php print __esc('Link Hover Height (pixels)', 'weathermap'); ?></label></td>
 							<td>
 								<input id='mapstyle_linkheight' name='mapstyle_linkheight' type='text' size='6' class='ui-state-default ui-corner-all' value='<?php print $map->links['DEFAULT']->overlibheight; ?>'>
@@ -916,14 +916,14 @@ foreach ($styles as $id => $name) {
 		<!-- Images -->
 
 		<!-- TextEdit -->
-        <div id='dlgTextEdit' class='dlgProperties' title='Edit Map Object'>
+        <div id='dlgTextEdit' class='dlgProperties' title='<?php print __esc('Edit Object Configuration', 'weathermap'); ?>'>
 			<div class='cactiTable'>
 				<div class='dlgBody'>
-					<p>You can edit the map items directly here.</p>
+					<p><?php print __esc('Edit the raw configuration for this map object.', 'weathermap'); ?></p>
 	   	             <textarea id='item_configtext' name='item_configtext' cols='80' rows='15'></textarea>
 				</div>
 				<div class='dlgHelp'>
-					From this form, you can edit the Mapfile component directly.  No syntax checking is done.  So, make changes with care.
+					<?php print __esc('Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls.', 'weathermap'); ?>
 				</div>
 				<div class='dlgButtons'>
 					<div class='dlgSubButtons'>
@@ -940,6 +940,7 @@ foreach ($styles as $id => $name) {
 			<div class='cactiTable'>
 				<div class='dlgBody'>
 					<table class='cactiTable'>
+						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Overlays', 'weathermap'); ?></div></td></tr>
 						<tr>
 							<td>Show VIAs overlay</td>
 							<td>
@@ -958,6 +959,7 @@ foreach ($styles as $id => $name) {
 								</select>
 							</td>
 						</tr>
+						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Placement', 'weathermap'); ?></div></td></tr>
 						<tr>
 							<td>Snap To Grid</td>
 							<td>

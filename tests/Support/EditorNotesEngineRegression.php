@@ -48,6 +48,9 @@ try {
 	$backgroundValues = ['name' => '', 'text' => 'Inside background', 'font' => '3', 'colour' => '#000000', 'x' => 150, 'y' => 80];
 	note_assert(wm_editor_save_note($sized, $backgroundValues), 'note fits effective background beyond configured width');
 	$backgroundValues['x'] = 201; note_assert(!wm_editor_save_note($sized, $backgroundValues), 'note outside effective background is rejected');
+	$originalImap = $sized->imap; $originalAreas = serialize($originalImap);
+	wm_note_effective_dimensions($sized); wm_note_effective_dimensions($sized);
+	note_assert($sized->imap === $originalImap && serialize($sized->imap) === $originalAreas, 'repeated dimension previews preserve original clickable regions');
 	class DimensionPostProcessor extends WeatherMapPostProcessor { function run(&$map) { $map->width = 240; $map->height = 90; } }
 	$sized->background = ''; $sized->plugins['post']['DimensionPostProcessor'] = new DimensionPostProcessor; $sized->postprocessclasses = ['DimensionPostProcessor'];
 	note_assert(wm_note_effective_dimensions($sized) === [240, 90] && $sized->width === 120, 'postprocessor dimensions are reflected without changing original map');
