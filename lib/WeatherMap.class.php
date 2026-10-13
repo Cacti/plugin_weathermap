@@ -2497,7 +2497,7 @@ class WeatherMap extends WeatherMapBase {
 			$filename = $input;
 
 			if ($is_include) {
-				$dependencyPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+				$dependencyPath = realpath($filename) ?: (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
 				if (!array_key_exists($dependencyPath, $this->config_dependencies)) $this->config_dependencies[$dependencyPath] = null;
 				wm_debug('ReadConfig Detected that this is an INCLUDED config filename.');
 
@@ -3887,6 +3887,7 @@ class WeatherMap extends WeatherMapBase {
 			$newAssets = ($createOnly || !$sameDestination) ? $savedAssets : array_diff($savedAssets, $this->config_managed_assets);
 			$validate = function () use ($newAssets) {
 				foreach ($newAssets as $asset) {
+					if (preg_match('/\{[^}]+\}/', $asset)) continue;
 					if (!is_file(dirname(__DIR__) . '/' . $asset)) {
 						$this->config_asset_conflict = true;
 						return false;

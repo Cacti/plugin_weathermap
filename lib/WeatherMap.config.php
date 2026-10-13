@@ -134,7 +134,6 @@ function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision
 		clearstatcache(true, $filename);
 		if (($createOnly || !$existed) && file_exists($filename)) return false;
 		if ($mustExist && !is_file($filename)) return false;
-		if ($expectedRevision !== null && @hash_file('sha256', $filename) !== $expectedRevision) return false;
 		if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
 		// Additional directories use nonblocking locks so opposing include graphs cannot deadlock.
 		$directories = array_unique(array_merge([dirname($filename)], array_map('dirname', array_keys($dependencies))));
@@ -148,6 +147,7 @@ function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision
 			}
 			$dependencyLocks[] = $dependencyLock;
 		}
+		if ($expectedRevision !== null && @hash_file('sha256', $filename) !== $expectedRevision) return false;
 		if (!dependenciesMatch($dependencies) || ($validate !== null && !$validate())) return false;
 
 		$temp = @tempnam(dirname($filename), '.wm-config-');

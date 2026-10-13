@@ -305,6 +305,22 @@ namespace {
 		atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Alias change', true, hash('sha256', $original)) && file_get_contents($targetFile) === $original, 'alias cannot bypass a held physical target mutex');
 		\WeathermapConfig\release($targetLock);
 		atomic_assert(\WeathermapConfig\atomicWrite($alias, $original, true, hash('sha256', $original)), 'alias save succeeds after shared target mutex release');
+
+		$lockCalls = 0;
+		$GLOBALS['config_before_lock'] = function () use (&$lockCalls, $targetFile) {
+			if (++$lockCalls === 2) file_put_contents($targetFile, 'Direct writer winner');
+		};
+		try {
+			atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Stale alias edit', true, hash('sha256', $original)) && file_get_contents($targetFile) === 'Direct writer winner', 'alias revision is checked after physical target lock acquisition');
+		} finally { unset($GLOBALS['config_before_lock']); }
+		file_put_contents($targetFile, "TITLE Physical include\n");
+		file_put_contents($includeRoot, "WIDTH 600\nHEIGHT 300\nINCLUDE " . $alias . "\n");
+		$aliasMap = new \WeatherMap; $aliasMap->ReadConfig($includeRoot);
+		atomic_assert(array_key_exists(realpath($targetFile), $aliasMap->config_dependencies), 'symlink include snapshot records physical filename');
+		$targetLock = \WeathermapConfig\acquire($targetDir);
+		atomic_assert(!$aliasMap->WriteConfig($includeRoot), 'symlink include cannot bypass physical dependency mutex');
+		\WeathermapConfig\release($targetLock);
+		atomic_assert($aliasMap->WriteConfig($includeRoot), 'symlink include save succeeds after dependency mutex release');
 		unlink($alias); unlink($targetFile); unlink($targetDir . '/.weathermap-config.lock'); rmdir($targetDir);
 
 		$rawAsset = 'images/objects/raw-asset-' . bin2hex(random_bytes(5)) . '.png'; $rawAssetFile = dirname(__DIR__, 2) . '/' . $rawAsset;
@@ -321,6 +337,15 @@ namespace {
 		atomic_assert(!$copyMap->WriteConfig($dir . '/missing-copy.conf', true) && !is_file($dir . '/missing-copy.conf'), 'create-only copy validates inherited image paths after deletion');
 		file_put_contents($copyAssetFile, $validAsset); atomic_assert($copyMap->WriteConfig($dir . '/valid-copy.conf', true), 'copy with existing inherited image succeeds');
 		unlink($copyAssetFile); file_put_contents($file, $original);
+
+		$dynamicIcon = 'images/objects/updown_{node:this:bandwidth_in}.png';
+		file_put_contents($file, $original . " ICON " . $dynamicIcon . "\n");
+		$dynamicMap = new \WeatherMap; $dynamicMap->ReadConfig($file);
+		atomic_assert($dynamicMap->WriteConfig($dir . '/dynamic-copy.conf', true), 'create-only copy retains tokenized managed icons');
+		$GLOBALS['__test_nfilter_request'] = ['node_name' => 'note1', 'item_configtext' => "NODE note1\n LABEL Dynamic\n POSITION 50 50\n ICON " . $dynamicIcon . "\n"];
+		file_put_contents($file, $original); http_response_code(200); setNodeConfig($file);
+		atomic_assert(http_response_code() === 200 && str_contains(file_get_contents($file), $dynamicIcon), 'raw edit accepts renderer tokenized icon paths');
+		$GLOBALS['__test_nfilter_request'] = []; file_put_contents($file, $original);
 
 		$numericLocale = setlocale(LC_NUMERIC, 0); setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR');
 		try {
