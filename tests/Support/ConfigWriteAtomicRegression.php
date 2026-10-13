@@ -414,6 +414,7 @@ namespace {
 				$GLOBALS['__test_db_calls'] = [];
 				$GLOBALS['__test_db_execute_prepared'] = function($sql, $params) use ($failure) {
 					$GLOBALS['__test_db_calls'][] = ['sql' => $sql, 'params' => $params];
+					if (str_starts_with($sql,'INSERT')) atomic_assert(!str_contains($sql, '987') && $params === [987,1], 'clone IDs are bound as prepared parameters');
 					if ((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-throw') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-throw')) throw new RuntimeException('insert failed');
 					return !((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-false') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-false'));
 				};

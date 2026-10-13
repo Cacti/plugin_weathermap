@@ -2022,14 +2022,14 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 
 			if (db_execute_prepared("INSERT INTO weathermap_auth
 				(userid, mapid)
-				SELECT userid, '$newid' AS mapid
+				SELECT userid, ? AS mapid
 				FROM weathermap_auth
-				WHERE mapid = ?", [$id]) === false) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));
+				WHERE mapid = ?", [$newid, $id]) === false) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));
 			if (db_execute_prepared("INSERT INTO weathermap_settings
 				(mapid, groupid, optname, optvalue)
-				SELECT '$newid' AS mapid, groupid, optname, optvalue
+				SELECT ? AS mapid, groupid, optname, optvalue
 				FROM weathermap_settings
-				WHERE mapid = ?", [$id]) === false) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));
+				WHERE mapid = ?", [$newid, $id]) === false) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));
 		} catch (Throwable $error) {
 			// Only this attempt's records and successfully reserved file may be removed.
 			try {

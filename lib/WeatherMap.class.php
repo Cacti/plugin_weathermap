@@ -3612,9 +3612,10 @@ class WeatherMap extends WeatherMapBase {
 	 * @param string $filename
 	 * @param bool $createOnly Require a new destination.
 	 * @param string|null $expectedRevision Optional request snapshot revision.
+	 * @param resource|null $heldLock Caller-owned destination directory mutex.
 	 * @return bool
 	 */
-	function WriteConfig($filename, $createOnly = false, $expectedRevision = null) {
+	function WriteConfig($filename, $createOnly = false, $expectedRevision = null, $heldLock = null) {
 		require_once __DIR__ . '/WeatherMap.config.php';
 		$fd = fopen('php://temp', 'w+b');
 
@@ -3856,7 +3857,7 @@ class WeatherMap extends WeatherMapBase {
 			$closed = fclose($fd);
 
 			$sameFile = $this->configfile !== '' && $filename === $this->configfile;
-			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly);
+			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock);
 			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
 			return $saved;
 		} else {
