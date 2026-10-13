@@ -286,7 +286,9 @@ namespace {
 		atomic_assert(!$externalMap->WriteConfig($includeRoot), 'busy dependency directory rejects save without deadlock');
 		\WeathermapConfig\release($busy);
 		atomic_assert($externalMap->WriteConfig($includeRoot), 'external dependency save succeeds after mutex release');
-		unlink($outsideFile); unlink($outside . '/.weathermap-config.lock'); rmdir($outside);
+		unlink($outside . '/.weathermap-config.lock'); chmod($outside, 0555);
+		atomic_assert($externalMap->WriteConfig($includeRoot), 'read-only included dependency needs no new lock file');
+		chmod($outside, 0755); unlink($outsideFile); rmdir($outside);
 
 		$asset = 'images/objects/atomic-asset-' . bin2hex(random_bytes(5)) . '.png'; $assetFile = dirname(__DIR__, 2) . '/' . $asset;
 		file_put_contents($assetFile, 'Image fixture'); file_put_contents($file, $original);
@@ -467,7 +469,7 @@ namespace {
 			$controller = file_get_contents($plugin . '/weathermap-cacti-plugin-editor.php'); $start = strpos($controller, "case '" . $createAction . "':"); $colon = strpos($controller, ':', $start); $end = strpos($controller, "case '", $colon);
 			$dispatch = substr($controller, $colon + 1, $end - $colon - 1); $mapfile = $destination; $terminated = false;
 			ob_start(); try { eval('switch (true) { case true:' . str_replace('exit();', 'throw new \\RuntimeException("create-finished");', $dispatch) . '}'); } catch (\RuntimeException $error) { $terminated = $error->getMessage() === 'create-finished'; } $message = ob_get_clean();
-			atomic_assert($terminated && http_response_code() === 500 && !is_file($destination) && str_contains($message, 'Could not save'), 'failed create stops controller with save status and guidance');
+			atomic_assert($terminated && http_response_code() === 500 && !is_file($destination) && str_contains($message, 'Please try again'), 'failed create stops controller with save status and guidance');
 			$GLOBALS['config_fault'] = ''; unset($GLOBALS['__test_request']['sourcemap']);
 		}
 		$start = strpos($management, 'function map_get_next_name('); $end = strpos($management, "\n/**", $start);
