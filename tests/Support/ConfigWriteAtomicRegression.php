@@ -463,6 +463,12 @@ namespace {
 			file_put_contents($fixtureConfig, $legacyFixture); weathermap_repair_maps();
 			atomic_assert(file_get_contents($fixtureConfig) === $repairedFixture, 'existing complete copies support path-only repair');
 			weathermap_repair_maps(); atomic_assert(file_get_contents($fixtureConfig) === $repairedFixture, 'correct paths require no rewrite');
+			$sizedLegacy = "NODE Sized\n ICON 100 80 legacy-icon.png\nNODE Shape\n ICON 30 40 box\n";
+			file_put_contents($fixtureConfig, $sizedLegacy); weathermap_repair_maps();
+			atomic_assert(str_contains(file_get_contents($fixtureConfig), 'ICON 100 80 images/objects/legacy-icon.png') && str_contains(file_get_contents($fixtureConfig), 'ICON 30 40 box'), 'sized legacy icon repair preserves dimensions and built-in shapes');
+			unlink($repairPlugin . '/images/objects/legacy-icon.png'); file_put_contents($fixtureConfig, $sizedLegacy); weathermap_repair_maps();
+			atomic_assert(str_contains(file_get_contents($fixtureConfig), 'ICON 100 80 images/objects/legacy-icon.png') && is_file($repairPlugin . '/images/objects/legacy-icon.png'), 'sized legacy icon is staged into managed library');
+
 			unlink($repairPlugin . '/images/backgrounds/legacy-background.png'); unlink($repairPlugin . '/images/objects/legacy-icon.png');
 			file_put_contents($fixtureConfig, $legacyFixture); $GLOBALS['config_fault'] = 'rename'; weathermap_repair_maps();
 			atomic_assert(file_get_contents($fixtureConfig) === $legacyFixture && is_file($repairPlugin . '/legacy-background.png') && is_file($repairPlugin . '/legacy-icon.png'), 'failed background and icon staging preserves usable original references');
