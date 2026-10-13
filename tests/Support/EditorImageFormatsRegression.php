@@ -66,6 +66,23 @@ try {
 			image_format_assert(in_array(basename($config), wm_asset_image_users($name), true), 'reference protection applies to every format');
 		}
 	}
+	$uploadSource = $temporary . '/publication.png'; $bitmap = imagecreatetruecolor(12, 8); imagepng($bitmap, $uploadSource); imagedestroy($bitmap);
+	$storeSource = file_get_contents($root . '/lib/editor.assets.php'); $start = strpos($storeSource, 'function wm_asset_store_image(');
+	$instrumented = substr($storeSource, $start);
+	$instrumented = str_replace(['function wm_asset_store_image(', "'imagepng'"], ['function publication_store_image(', "'publication_encode'"], $instrumented);
+	eval($instrumented);
+	function publication_encode($image, $handle) {
+		$visible = array_filter(wm_asset_image_list(), fn ($item) => str_starts_with($item['name'], 'publication-'));
+		image_format_assert($visible === [], 'encoding image is not selectable before publication');
+		if ($GLOBALS['publication_fail']) { fwrite($handle, 'partial bytes'); return false; }
+		return imagepng($image, $handle);
+	}
+	$GLOBALS['publication_fail'] = true;
+	try { publication_store_image('objects', $uploadSource, 'publication.png'); throw new RuntimeException('accepted failed encoding'); } catch (RuntimeException $expected) { image_format_assert(str_contains($expected->getMessage(), 'Could not save'), 'encoding failure reported'); }
+	image_format_assert(glob($root . '/images/objects/publication-*.png') === [] && glob($root . '/images/objects/.wm-upload-*') === [], 'failed encoding leaves no library file or staging file');
+	$GLOBALS['publication_fail'] = false;
+	$published = publication_store_image('objects', $uploadSource, 'publication.png'); $created[] = wm_asset_image_path('objects', $published);
+	image_format_assert(getimagesize(end($created))[0] === 12 && (fileperms(end($created)) & 0777) === 0644 && glob($root . '/images/objects/.wm-upload-*') === [], 'successful upload publishes complete permitted image and removes staging file');
 	file_put_contents($config, "ICON images/objects/core-router.png\n# router.png is merely a comment\n");
 	image_format_assert(wm_asset_image_users('router.png', 'objects') === [], 'substring and comment do not count as references');
 	file_put_contents($config, "ICON images/objects/ROUTER.PNG\n");

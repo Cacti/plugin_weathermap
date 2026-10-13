@@ -264,8 +264,10 @@ function weathermap_repair_maps() {
 							$dirgood = false;
 							$attribs = preg_split('/\s+/', trim($parts[1]));
 
-							if (cacti_sizeof($attribs) == 1) {
-								$objfile = trim($parts[1]);
+							if (cacti_sizeof($attribs) == 1 || (cacti_sizeof($attribs) == 3 && ctype_digit($attribs[0]) && ctype_digit($attribs[1]))) {
+								$objfile = end($attribs);
+								$dimensions = cacti_sizeof($attribs) == 3 ? $attribs[0] . ' ' . $attribs[1] . ' ' : '';
+								if (in_array(strtolower($objfile), ['box', 'rbox', 'round', 'inpie', 'outpie', 'gauge', 'nink', 'nlink', 'none'], true)) { $outcontents[] = rtrim($line); continue; }
 
 								if (strpos($objfile, 'images/objects/') === false) {
 									wm_debug('Found icon file reference in old location: ' . $objfile);
@@ -273,7 +275,7 @@ function weathermap_repair_maps() {
 									if (weathermap_read_raster($mydir . 'images/objects/' . basename($objfile)) !== false) {
 										wm_debug('Found file already in new location! Updating path only.');
 
-										$line = "\tICON images/objects/" . basename($objfile);
+										$line = "\tICON " . $dimensions . "images/objects/" . basename($objfile);
 
 										$changes++;
 									} else {
@@ -292,7 +294,7 @@ function weathermap_repair_maps() {
 											if (is_readable($mydir . $objfile)) {
 												if (is_readable($old) && is_writeable(dirname($new))) {
 													if (weathermap_stage_asset_copy($old, $new)) {
-														$line = "\tICON images/objects/" . basename($objfile);
+														$line = "\tICON " . $dimensions . "images/objects/" . basename($objfile);
 														$changes++;
 													} else {
 														wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));

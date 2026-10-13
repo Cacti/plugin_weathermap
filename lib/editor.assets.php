@@ -212,20 +212,20 @@ function wm_asset_store_image($kind, $source, $original_name) {
 	$stem = preg_replace('/[^A-Za-z0-9_-]/', '_', pathinfo(basename($original_name), PATHINFO_FILENAME));
 	$name = substr($stem ?: 'image', 0, 60) . '-' . bin2hex(random_bytes(16)) . '.' . $extension;
 	$path = wm_asset_image_path($kind, $name);
-	$handle = @fopen($path, 'xb');
-	if (!$handle) { imagedestroy($image); throw new RuntimeException(__('Could not reserve an image filename.', 'weathermap')); }
-	$written = false;
+	$temporary = @tempnam($dir, '.wm-upload-');
+	$handle = $temporary !== false ? @fopen($temporary, 'wb') : false;
+	if (!$handle) { if ($temporary !== false) unlink($temporary); imagedestroy($image); throw new RuntimeException(__('Could not reserve an image filename.', 'weathermap')); }
 	try {
-		// Re-encode decoded pixels; never publish the original uploaded bytes.
+		// Keep encoded bytes outside the library until flush, close and permissions succeed.
 		$encoded = $size[2] === IMAGETYPE_JPEG ? $encode($image, $handle, 90) : $encode($image, $handle);
 		$written = $encoded && fflush($handle);
-	} finally {
 		$closed = fclose($handle);
-		$written = $written && $closed;
+		$handle = false;
+		if (!$written || !$closed || !chmod($temporary, 0644) || !@link($temporary, $path)) throw new RuntimeException(__('Could not save the image.', 'weathermap'));
+	} finally {
+		if (is_resource($handle)) fclose($handle);
 		imagedestroy($image);
-		if (!$written) unlink($path);
+		unlink($temporary);
 	}
-	if (!$written) throw new RuntimeException(__('Could not save the image.', 'weathermap'));
-	chmod($path, 0644);
 	return $name;
 }

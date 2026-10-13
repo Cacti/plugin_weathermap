@@ -338,6 +338,13 @@ namespace {
 		file_put_contents($copyAssetFile, $validAsset); atomic_assert($copyMap->WriteConfig($dir . '/valid-copy.conf', true), 'copy with existing inherited image succeeds');
 		unlink($copyAssetFile); file_put_contents($file, $original);
 
+		$includeAsset = $dir . '/image-include.conf';
+		file_put_contents($includeAsset, "NODE Inherited\n POSITION 20 20\n ICON images/objects/missing-included-image.png\n");
+		file_put_contents($file, "INCLUDE " . $includeAsset . "\n" . $original);
+		$includedImageMap = new \WeatherMap; $includedImageMap->ReadConfig($file);
+		atomic_assert(!$includedImageMap->WriteConfig($dir . '/included-image-copy.conf', true) && !is_file($dir . '/included-image-copy.conf'), 'create-only copy checks effective image references inherited through INCLUDE');
+		file_put_contents($file, $original);
+
 		$dynamicIcon = 'images/objects/updown_{node:this:bandwidth_in}.png';
 		file_put_contents($file, $original . " ICON " . $dynamicIcon . "\n");
 		$dynamicMap = new \WeatherMap; $dynamicMap->ReadConfig($file);
@@ -496,6 +503,12 @@ namespace {
 			file_put_contents($fixtureConfig, $legacyFixture); weathermap_repair_maps();
 			atomic_assert(file_get_contents($fixtureConfig) === $repairedFixture, 'existing complete copies support path-only repair');
 			weathermap_repair_maps(); atomic_assert(file_get_contents($fixtureConfig) === $repairedFixture, 'correct paths require no rewrite');
+			$sizedLegacy = "NODE Sized\n ICON 100 80 legacy-icon.png\nNODE Shape\n ICON 30 40 box\n";
+			file_put_contents($fixtureConfig, $sizedLegacy); weathermap_repair_maps();
+			atomic_assert(str_contains(file_get_contents($fixtureConfig), 'ICON 100 80 images/objects/legacy-icon.png') && str_contains(file_get_contents($fixtureConfig), 'ICON 30 40 box'), 'sized legacy icon repair preserves dimensions and built-in shapes');
+			unlink($repairPlugin . '/images/objects/legacy-icon.png'); file_put_contents($fixtureConfig, $sizedLegacy); weathermap_repair_maps();
+			atomic_assert(str_contains(file_get_contents($fixtureConfig), 'ICON 100 80 images/objects/legacy-icon.png') && is_file($repairPlugin . '/images/objects/legacy-icon.png'), 'sized legacy icon is staged into managed library');
+
 			unlink($repairPlugin . '/images/backgrounds/legacy-background.png'); unlink($repairPlugin . '/images/objects/legacy-icon.png');
 			file_put_contents($fixtureConfig, $legacyFixture); $GLOBALS['config_fault'] = 'rename'; weathermap_repair_maps();
 			atomic_assert(file_get_contents($fixtureConfig) === $legacyFixture && is_file($repairPlugin . '/legacy-background.png') && is_file($repairPlugin . '/legacy-icon.png'), 'failed background and icon staging preserves usable original references');
@@ -559,6 +572,9 @@ namespace {
 			file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\nNODE A\n POSITION 10 10\n ICON images/objects/missing-clone-asset.png\n");
 			map_duplicate(1, 'Clone', 'clone');
 			atomic_assert($GLOBALS['atomic_sql_saves'] === [] && !is_file($plugin . '/configs/clone.conf'), 'management clone rejects missing inherited managed image before registration');
+			file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\nINCLUDE " . $includeAsset . "\n");
+			map_duplicate(1, 'Clone', 'clone');
+			atomic_assert($GLOBALS['atomic_sql_saves'] === [] && !is_file($plugin . '/configs/clone.conf'), 'management clone rejects missing image inherited through INCLUDE before registration');
 			file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\n"); $GLOBALS['config_fault'] = 'rename';
 			map_duplicate(1, 'Clone', 'clone');
 			atomic_assert($GLOBALS['__test_db_calls'] === [] && $GLOBALS['atomic_sql_saves'] === [], 'failed clone never registers auth or settings or invokes runner');

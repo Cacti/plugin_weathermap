@@ -3894,7 +3894,7 @@ class WeatherMap extends WeatherMapBase {
 			$this->config_asset_conflict = false;
 			$savedAssets = $contents !== false ? $this->ManagedImagePaths($contents) : [];
 			$sameDestination = $this->configfile !== '' && $filename === $this->configfile;
-			$newAssets = ($createOnly || !$sameDestination) ? $savedAssets : array_diff($savedAssets, $this->config_managed_assets);
+			$newAssets = ($createOnly || !$sameDestination) ? array_unique(array_merge($this->ManagedImagePaths(), $savedAssets)) : array_diff($savedAssets, $this->config_managed_assets);
 			$validate = function () use ($newAssets) {
 				foreach ($newAssets as $asset) {
 					if (preg_match('/\{[^}]+\}/', $asset)) continue;

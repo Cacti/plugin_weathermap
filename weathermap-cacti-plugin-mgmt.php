@@ -2015,14 +2015,23 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		try {
 			$contents = is_file($oldfile) ? file_get_contents($oldfile) : false;
 			if ($contents === false) throw new RuntimeException(__('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'));
+			$previousDirectory = getcwd();
+			try {
+				chdir(__DIR__);
+				$assetMap = new WeatherMap;
+				if (!$assetMap->ReadConfig($oldfile) || $assetMap->config_revision !== hash('sha256', $contents)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+			} finally { chdir($previousDirectory); }
+			$dependencies = $assetMap->config_dependencies;
+			$dependencies[realpath($oldfile)] = $assetMap->config_revision;
 			$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
-			$validateAssets = function () use ($contents) {
-				foreach (WeatherMap::ManagedImagePathsFromConfig($contents) as $asset) {
+			$assets = array_unique(array_merge($assetMap->ManagedImagePaths(), WeatherMap::ManagedImagePathsFromConfig($contents)));
+			$validateAssets = function () use ($assets) {
+				foreach ($assets as $asset) {
 					if (!preg_match('/\{[^}]+\}/', $asset) && !is_file(__DIR__ . '/' . $asset)) return false;
 				}
 				return true;
 			};
-			if (!\WeathermapConfig\atomicWrite($newfile, $contents, false, null, true, $lock, [], $validateAssets)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+			if (!\WeathermapConfig\atomicWrite($newfile, $contents, false, null, true, $lock, $dependencies, $validateAssets)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
 			$created = true;
 			$newid = sql_save($save, 'weathermap_maps');
 			if (!$newid) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));
@@ -3451,16 +3460,16 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 			if ($sourcemapfile != '') {
 				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
 					if (!$map->ReadConfig($sourcemapfile) || !is_string($map->config_revision)) {
-					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
-					return;
-				}
+						raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
+						return;
+					}
 					if ($title !== '') {
 						$map->title = $title;
 					}
 					if (!$map->WriteConfig($mapfile, true)) {
-					raise_message('map_message', __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
-					return;
-				}
+						raise_message('map_message', __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+						return;
+					}
 					raise_message('map_message', __('New Map file %s created from %s', basename($mapfile), basename($sourcemapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 				} else {
 					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
