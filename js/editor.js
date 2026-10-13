@@ -392,7 +392,7 @@ function initJS() {
 
 	$('#frmMain').off('submit').on('submit', function(event) {
 		event.preventDefault();
-		form_submit();
+		form_submit(event);
 	});
 
 	/* Cacti core may have already converted this select to select2; don't
@@ -896,10 +896,23 @@ function form_submit(event) {
 	// Property dialogs can remain open while a toolbar placement action is active.
 	// Their own Save buttons always dispatch the properties they are showing.
 	var button = event && event.currentTarget && event.currentTarget.id;
-	if (button === 'tb_node_submit' || button === 'tb_link_submit') {
-		var node = button === 'tb_node_submit';
-		$('#action').val(node ? 'set_node_properties' : 'set_link_properties');
-		$('#param').val($(node ? '#node_name' : '#link_name').val());
+	var sources = {
+		tb_node_submit: ['set_node_properties', '#node_name'],
+		tb_link_submit: ['set_link_properties', '#link_name'],
+		tb_map_submit: ['set_map_properties'],
+		tb_mapstyle_submit: ['set_map_style'],
+		tb_editorsettings_submit: ['editor_settings'],
+		tb_note_submit: ['set_note_properties', '#note_name'],
+		tb_textedit_submit: [$('#dlgTextEdit').data('wm-config-action')]
+	};
+	if (button === 'frmMain' || !button) {
+		var focused = $(button === 'frmMain' ? document.activeElement : event && event.currentTarget).closest('.ui-dialog-content').attr('id');
+		var dialogs = {dlgNodeProperties: 'tb_node_submit', dlgLinkProperties: 'tb_link_submit', dlgMapProperties: 'tb_map_submit', dlgMapStyle: 'tb_mapstyle_submit', dlgEditorSettings: 'tb_editorsettings_submit', dlgNoteProperties: 'tb_note_submit', dlgTextEdit: 'tb_textedit_submit'};
+		button = dialogs[focused];
+	}
+	if (sources[button] && sources[button][0]) {
+		$('#action').val(sources[button][0]);
+		if (sources[button][1]) $('#param').val($(sources[button][1]).val());
 		mapmode('existing');
 	}
 
@@ -1014,6 +1027,7 @@ function show_itemtext(itemtype,name) {
 		$('#action').val('set_link_config');
 	}
 
+	$('#dlgTextEdit').data('wm-config-action', $('#action').val());
 	show_dialog('dlgTextEdit');
 
 	$.ajax({
