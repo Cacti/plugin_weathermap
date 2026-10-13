@@ -36,6 +36,7 @@ function acquire($directory = null, $blocking = true) {
 	$directory = realpath($directory ?? dirname(__DIR__) . '/configs');
 	if ($directory === false) return false;
 	$path = $directory . '/.weathermap-config.lock';
+	if (!is_writable($directory) && !file_exists($path) && !is_link($path)) return false;
 	$handle = @fopen($path, 'c+b');
 	if (!$handle) $handle = @fopen($path, 'rb');
 	if ($handle && flock($handle, LOCK_EX | ($blocking ? 0 : LOCK_NB))) return $handle;
@@ -141,7 +142,10 @@ function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision
 		foreach ($directories as $directory) {
 			if (realpath($directory) === realpath($lockDirectory)) continue;
 			$dependencyLock = acquire($directory, false);
-			if (!$dependencyLock) return false;
+			if (!$dependencyLock) {
+				if (!is_writable($directory) && !file_exists($directory . '/.weathermap-config.lock')) continue;
+				return false;
+			}
 			$dependencyLocks[] = $dependencyLock;
 		}
 		if (!dependenciesMatch($dependencies) || ($validate !== null && !$validate())) return false;

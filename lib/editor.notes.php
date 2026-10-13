@@ -58,7 +58,7 @@ function wm_editor_save_note($map, $values, $grid_snap_value = 0) {
 		return false;
 	}
 	$selection = $values['font'] ?? null;
-	$font = is_scalar($selection) && preg_match('/^\d+$/D', (string)$selection)
+	$font = (is_string($selection) || is_int($selection)) && preg_match('/^\d+$/D', (string)$selection)
 		? wm_note_font_id($map, (string)$selection) : wm_comment_resolve_font($map, $selection);
 	if ($font === null) {
 		return false;
