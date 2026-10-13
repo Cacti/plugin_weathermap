@@ -112,6 +112,24 @@ function weathermap_check_cron($time, $string) {
 }
 
 /**
+ * Read a regular managed raster only after successful decoding.
+ * @param string $path Asset filename.
+ * @return string|false Validated image bytes, or false.
+ */
+function weathermap_read_raster($path) {
+	if (is_link($path) || !is_file($path) || !in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), ['png', 'jpg', 'jpeg', 'gif'], true)) return false;
+	$contents = @file_get_contents($path);
+	if ($contents === false) return false;
+	$info = @getimagesizefromstring($contents);
+	if ($info === false || !in_array($info[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) return false;
+	set_error_handler(function () { return true; }, E_WARNING);
+	try { $image = imagecreatefromstring($contents); } finally { restore_error_handler(); }
+	if ($image === false) return false;
+	imagedestroy($image);
+	return $contents;
+}
+
+/**
  * Stage a complete legacy asset copy while keeping every old map reference usable.
  *
  * @param string $old Source asset path.
@@ -129,14 +147,8 @@ function weathermap_stage_asset_copy($old, $new) {
 	if (!str_starts_with($source, $root . '/')
 		|| !in_array($destination, [$root . '/images/objects', $root . '/images/backgrounds'], true)
 		|| !in_array(strtolower(pathinfo($source, PATHINFO_EXTENSION)), ['png', 'jpg', 'jpeg', 'gif'], true)) return false;
-	$contents = @file_get_contents($source);
+	$contents = weathermap_read_raster($source);
 	if ($contents === false) return false;
-	$info = @getimagesizefromstring($contents);
-	if ($info === false || !in_array($info[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) return false;
-	set_error_handler(function () { return true; }, E_WARNING);
-	try { $image = imagecreatefromstring($contents); } finally { restore_error_handler(); }
-	if ($image === false) return false;
-	imagedestroy($image);
 	return \WeathermapConfig\atomicWrite($new, $contents, false, null, true);
 }
 
@@ -190,7 +202,7 @@ function weathermap_repair_maps() {
 							if (strpos($bgfile, 'images/backgrounds/') === false) {
 								wm_debug('Found background file reference in old location: ' . $bgfile);
 
-								if (file_exists($mydir . 'images/backgrounds/' . basename($bgfile))) {
+								if (weathermap_read_raster($mydir . 'images/backgrounds/' . basename($bgfile)) !== false) {
 									wm_debug('Background file found in new location! Updating path only.');
 
 									$line = 'BACKGROUND images/backgrounds/' . basename($bgfile);
@@ -258,7 +270,7 @@ function weathermap_repair_maps() {
 								if (strpos($objfile, 'images/objects/') === false) {
 									wm_debug('Found icon file reference in old location: ' . $objfile);
 
-									if (file_exists($mydir . 'images/objects/' . basename($objfile))) {
+									if (weathermap_read_raster($mydir . 'images/objects/' . basename($objfile)) !== false) {
 										wm_debug('Found file already in new location! Updating path only.');
 
 										$line = "\tICON images/objects/" . basename($objfile);

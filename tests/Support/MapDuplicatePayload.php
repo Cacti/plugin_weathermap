@@ -6,6 +6,9 @@
  +-------------------------------------------------------------------------+
 */
 
+chdir(dirname(__DIR__, 2));
+require dirname(__DIR__, 2) . '/lib/WeatherMap.class.php';
+
 // Run the actual function without executing the management page dispatcher.
 $source = file_get_contents(__DIR__ . '/../../weathermap-cacti-plugin-mgmt.php');
 $start  = strpos($source, 'function map_duplicate(');

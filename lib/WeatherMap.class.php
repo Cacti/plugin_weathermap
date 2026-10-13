@@ -2444,17 +2444,27 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	/**
-	 * Collect managed image references for commit-time existence checks.
+	 * Collect managed image references from proposed serialized output.
+	 * @param string $serialized Proposed output, including raw overrides.
+	 * @return string[] Paths relative to the plugin directory.
+	 */
+	static function ManagedImagePathsFromConfig($serialized) {
+		$paths = [];
+		if (preg_match_all('/^\s*(?:ICON|BACKGROUND)\s+(?:[0-9]+\s+[0-9]+\s+)?(.+?)\s*$/mi', $serialized, $matches)) $paths = $matches[1];
+		return array_values(array_unique(array_filter($paths, function ($path) {
+			return preg_match('#^images/(objects|backgrounds)/#', $path);
+		})));
+	}
+
+	/**
+	 * Collect managed image references from map objects or proposed output.
 	 * @param string|null $serialized Proposed output, including raw overrides.
 	 * @return string[] Paths relative to the plugin directory.
 	 */
 	function ManagedImagePaths($serialized = null) {
 		$paths = [$this->background];
 		foreach ($this->nodes as $node) $paths[] = $node->iconfile;
-		if ($serialized !== null) {
-			$paths = [];
-			if (preg_match_all('/^\s*(?:ICON|BACKGROUND)\s+(?:[0-9]+\s+[0-9]+\s+)?(.+?)\s*$/mi', $serialized, $matches)) $paths = $matches[1];
-		}
+		if ($serialized !== null) return self::ManagedImagePathsFromConfig($serialized);
 		return array_values(array_unique(array_filter($paths, function ($path) {
 			return is_string($path) && preg_match('#^images/(objects|backgrounds)/#', $path);
 		})));

@@ -98,7 +98,7 @@ function wm_editor_write_config($map, $mapfile, $createOnly = false) {
 }
 
 /**
- * @return void
+ * @return bool
  * @param  mixed $mapfile
  */
 function newMap($mapfile) {
@@ -113,7 +113,7 @@ function newMap($mapfile) {
 
 /**
  * @param  mixed $mapfile
- * @return void
+ * @return bool
  */
 function newMapCopy($mapfile) {
 	global $mapdir;

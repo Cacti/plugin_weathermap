@@ -417,6 +417,17 @@ namespace {
 			$GLOBALS['config_fault'] = '';
 			weathermap_repair_maps();
 			atomic_assert(file_get_contents($repairFile) === 'BACKGROUND images/backgrounds/' . basename($repairImage), 'repair uses complete atomic replacement');
+			foreach (['corrupt', 'directory', 'symlink'] as $invalidTarget) {
+				unlink($repairImage); file_put_contents($repairFile, $legacy);
+				if ($invalidTarget === 'directory') mkdir($repairImage);
+				elseif ($invalidTarget === 'symlink') symlink($repairFile, $repairImage);
+				else file_put_contents($repairImage, 'corrupt image');
+				$GLOBALS['weathermap_error_suppress'] = ['WMPOLL10'];
+				try { weathermap_repair_maps(); } finally { $GLOBALS['weathermap_error_suppress'] = $oldSuppress; }
+				atomic_assert(file_get_contents($repairFile) === $legacy, 'repair retains legacy background for invalid existing target: ' . $invalidTarget);
+				if (is_dir($repairImage)) rmdir($repairImage); else unlink($repairImage);
+				file_put_contents($repairImage, $validAsset);
+			}
 			file_put_contents($repairFile, $legacy);
 			$newerRepair = 'TITLE Concurrent editor save' . "\n" . $legacy;
 			$GLOBALS['config_before_lock'] = function() use ($repairFile, $newerRepair) {
@@ -544,6 +555,11 @@ namespace {
 		$GLOBALS['__test_db_fetch_cell'] = fn () => 0;
 		$GLOBALS['__test_sql_save'] = function($record) { $GLOBALS['atomic_sql_saves'][] = $record; return 1; }; $GLOBALS['config_fault'] = 'rename';
 		try {
+			$GLOBALS['config_fault'] = '';
+			file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\nNODE A\n POSITION 10 10\n ICON images/objects/missing-clone-asset.png\n");
+			map_duplicate(1, 'Clone', 'clone');
+			atomic_assert($GLOBALS['atomic_sql_saves'] === [] && !is_file($plugin . '/configs/clone.conf'), 'management clone rejects missing inherited managed image before registration');
+			file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\n"); $GLOBALS['config_fault'] = 'rename';
 			map_duplicate(1, 'Clone', 'clone');
 			atomic_assert($GLOBALS['__test_db_calls'] === [] && $GLOBALS['atomic_sql_saves'] === [], 'failed clone never registers auth or settings or invokes runner');
 		} finally { unset($GLOBALS['__test_db_fetch_row_prepared'], $GLOBALS['__test_sql_save'], $GLOBALS['__test_db_fetch_cell']); unlink($plugin . '/configs/' . $duplicateSource); $GLOBALS['config_fault'] = ''; }
