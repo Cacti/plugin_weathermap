@@ -893,14 +893,17 @@ function form_submit(event) {
 		tb_node_submit: ['set_node_properties', '#node_name'],
 		tb_link_submit: ['set_link_properties', '#link_name'],
 		tb_map_submit: ['set_map_properties'],
-		tb_mapstyle_submit: ['set_map_style']
+		tb_mapstyle_submit: ['set_map_style'],
+		tb_editorsettings_submit: ['editor_settings'],
+		tb_note_submit: ['set_note_properties', '#note_name'],
+		tb_textedit_submit: [$('#dlgTextEdit').data('wm-config-action')]
 	};
-	if (button === 'frmMain') {
-		var focused = $(document.activeElement).closest('.ui-dialog-content').attr('id');
-		var dialogs = {dlgNodeProperties: 'tb_node_submit', dlgLinkProperties: 'tb_link_submit', dlgMapProperties: 'tb_map_submit', dlgMapStyle: 'tb_mapstyle_submit'};
+	if (button === 'frmMain' || !button) {
+		var focused = $(button === 'frmMain' ? document.activeElement : event && event.currentTarget).closest('.ui-dialog-content').attr('id');
+		var dialogs = {dlgNodeProperties: 'tb_node_submit', dlgLinkProperties: 'tb_link_submit', dlgMapProperties: 'tb_map_submit', dlgMapStyle: 'tb_mapstyle_submit', dlgEditorSettings: 'tb_editorsettings_submit', dlgNoteProperties: 'tb_note_submit', dlgTextEdit: 'tb_textedit_submit'};
 		button = dialogs[focused];
 	}
-	if (sources[button]) {
+	if (sources[button] && sources[button][0]) {
 		$('#action').val(sources[button][0]);
 		if (sources[button][1]) $('#param').val($(sources[button][1]).val());
 		mapmode('existing');
@@ -1012,6 +1015,7 @@ function show_itemtext(itemtype,name) {
 		$('#action').val('set_link_config');
 	}
 
+	$('#dlgTextEdit').data('wm-config-action', $('#action').val());
 	show_dialog('dlgTextEdit');
 
 	$.ajax({

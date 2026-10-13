@@ -399,6 +399,7 @@ namespace {
 		$commaLocale = setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR', 'de_DE.UTF-8');
 		try {
 			$decimalData = $data; $decimalData['rows'] = [['scale' => 'DEFAULT', 'bottom' => 1.5, 'top' => 2.5, 'colour' => '#ff0000', 'end' => '', 'tag' => 'Fractional']];
+			$decimalData['rows'][] = ['scale' => 'large', 'bottom' => 1500, 'top' => 2500, 'colour' => '#00ff00', 'end' => '', 'tag' => 'Large'];
 			$decimalMap = new \WeatherMap; $decimalMap->ReadConfig($file); wm_asset_save_colours($decimalMap, $decimalData);
 			colour_atomic_assert($decimalMap->WriteConfig($dir . '/decimal.conf'), 'fractional scales save under alternate locale');
 			$decimalText = file_get_contents($dir . '/decimal.conf'); colour_atomic_assert(str_contains($decimalText, '1.5') && str_contains($decimalText, '2.5') && !str_contains($decimalText, '1,5'), 'scale serialization uses dot decimal independently of locale');
