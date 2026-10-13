@@ -3443,7 +3443,7 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 		if ($mapfile != '') {
 			if ($sourcemapfile != '') {
 				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
-					if (!$map->ReadConfig($sourcemapfile)) {
+					if (!$map->ReadConfig($sourcemapfile) || !is_string($map->config_revision)) {
 					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
 					return;
 				}

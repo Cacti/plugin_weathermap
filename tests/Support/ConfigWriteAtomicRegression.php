@@ -275,6 +275,21 @@ namespace {
 			file_put_contents($file, $original); $GLOBALS['__test_nfilter_request'] = $request;
 			http_response_code(200); atomic_assert(!wm_editor_read_config(new AtomicDeletedDuringReadMap, $file) && http_response_code() === 404, 'deletion race cannot proceed with a null revision');
 		}
+
+		$plugin = dirname(__DIR__, 2);
+		// Exercise both copy entry points with an engine that loses the source during loading.
+		$actions = file_get_contents($plugin . '/lib/editor.actions.php');
+		$copyStart = strpos($actions, 'function newMapCopy('); $copyEnd = strpos($actions, "\n/**", $copyStart);
+		eval(str_replace(['function newMapCopy(', 'new WeatherMap'], ['function atomicLostSourceCopy(', 'new AtomicDeletedDuringReadMap'], substr($actions, $copyStart, $copyEnd - $copyStart)));
+		$GLOBALS['mapdir'] = $dir; $GLOBALS['__test_request']['sourcemap'] = basename($file); $GLOBALS['__test_nfilter_request'] = ['sourcemap' => basename($file)];
+		file_put_contents($file, $original); http_response_code(200); atomicLostSourceCopy($dir . '/lost-copy.conf');
+		atomic_assert(http_response_code() === 404 && !is_file($dir . '/lost-copy.conf'), 'editor copy rejects source lost during load');
+		$managementCopy = file_get_contents($plugin . '/weathermap-cacti-plugin-mgmt.php');
+		eval(str_replace(['__DIR__', 'function newMap(', 'new WeatherMap'], [var_export($plugin, true), 'function atomicLostManagementCopy(', 'new AtomicDeletedDuringReadMap'], substr($managementCopy, strpos($managementCopy, 'function newMap('))));
+		$GLOBALS['weathermap_confdir'] = $dir; file_put_contents($file, $original);
+		atomicLostManagementCopy('lost-management-copy.conf', basename($file));
+		atomic_assert(!is_file($dir . '/lost-management-copy.conf'), 'management copy rejects source lost during load');
+		unset($GLOBALS['__test_request']['sourcemap']);
 		$GLOBALS['__test_nfilter_request'] = []; file_put_contents($file, $original);
 		$crlfFile = $dir . '/crlf.conf';
 		$crlf = "WIDTH 600\r\nHEIGHT 300\r\n"; file_put_contents($crlfFile, $crlf);
@@ -412,6 +427,16 @@ namespace {
 			$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $rawFile), 'node_name' => 'A', 'link_name' => 'AB', 'item_configtext' => $kind === 'node' ? "NODE A\n LABEL Updated\n POSITION 10 10\n" : "LINK AB\n NODES A B\n WIDTH 12\n"];
 			http_response_code(200); if ($kind === 'node') setNodeConfig($rawFile); else setLinkConfig($rawFile);
 			atomic_assert(http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'raw ' . $kind . ' edit saves without false conflict');
+			file_put_contents($rawFile, $rawConfig); http_response_code(200);
+			$controller = file_get_contents($plugin . '/weathermap-cacti-plugin-editor.php');
+			$caseStart = strpos($controller, "case 'set_" . $kind . "_config':");
+			$caseEnd = strpos($controller, "case '", $caseStart + 5);
+			$dispatch = substr($controller, strpos($controller, ':', $caseStart) + 1, $caseEnd - strpos($controller, ':', $caseStart) - 1);
+			$mapfile = $rawFile; $terminated = false;
+			try { eval(str_replace('exit();', 'throw new \\RuntimeException("request-finished");', $dispatch)); }
+			catch (\RuntimeException $error) { if ($error->getMessage() !== 'request-finished') throw $error; $terminated = true; }
+			atomic_assert($terminated && http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'controller ends successful raw ' . $kind . ' save before rendering with old token');
+
 		}
 		// Registration failure must retain a mutex through the callback and remove its reservation.
 		file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\n");

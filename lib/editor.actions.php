@@ -132,7 +132,10 @@ function newMapCopy($mapfile) {
 		$sourcemap = $mapdir . '/' . $sourcemapname;
 
 		if (file_exists($sourcemap) && is_readable($sourcemap)) {
-			$map->ReadConfig($sourcemap);
+			if (!$map->ReadConfig($sourcemap) || !is_string($map->config_revision)) {
+				http_response_code(404);
+				return;
+			}
 			wm_editor_write_config($map, $mapfile, true);
 		}
 	}
