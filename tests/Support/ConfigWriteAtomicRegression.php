@@ -394,6 +394,16 @@ namespace {
 			http_response_code(200); if ($kind === 'node') setNodeConfig($rawFile); else setLinkConfig($rawFile);
 			atomic_assert(http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'raw ' . $kind . ' edit saves without false conflict');
 		}
+		// All note mutations retain the 409 chosen for a save arriving after request read.
+		foreach (['move', 'delete', 'properties'] as $operation) {
+			file_put_contents($file, $original);
+			$newer = "TITLE Concurrent writer\n" . $original;
+			$GLOBALS['config_before_lock'] = function() use ($file,$newer) { unset($GLOBALS['config_before_lock']); file_put_contents($file,$newer); };
+			$GLOBALS['__test_nfilter_request'] = ['config_revision'=>hash_file('sha256',$file),'node_name'=>'note1','param'=>'note1','x'=>70,'y'=>80,'note_name'=>'note1','note_text'=>'Changed','note_font'=>'3','note_colour'=>'#000000','note_x'=>50,'note_y'=>50,'note_align'=>'left'];
+			http_response_code(200);
+			if($operation==='move')moveNode($file,0);elseif($operation==='delete')deleteNode($file);else setNoteProperties($file,0);
+			atomic_assert(http_response_code()===409 && file_get_contents($file)===$newer,'note ' . $operation . ' preserves concurrent-edit response');
+		}
 		// Registration failure must retain a mutex through the callback and remove its reservation.
 		file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\n");
 		$GLOBALS['__test_db_fetch_row_prepared'] = fn () => ['configfile' => $duplicateSource, 'titlecache' => 'Source', 'group_id' => 1, 'active' => 'on', 'thumb_height' => 10, 'thumb_width' => 10, 'schedule' => '', 'archiving' => ''];
@@ -414,6 +424,7 @@ namespace {
 				$GLOBALS['__test_db_calls'] = [];
 				$GLOBALS['__test_db_execute_prepared'] = function($sql, $params) use ($failure) {
 					$GLOBALS['__test_db_calls'][] = ['sql' => $sql, 'params' => $params];
+					if (str_starts_with($sql,'INSERT')) atomic_assert(!str_contains($sql, '987') && $params === [987,1], 'clone IDs are bound as prepared parameters');
 					if ((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-throw') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-throw')) throw new RuntimeException('insert failed');
 					return !((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-false') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-false'));
 				};
