@@ -872,6 +872,19 @@ function delete_link() {
 	});
 }
 
+function wmEditorReloadUrl() {
+	var url = new URL(window.location.href);
+	url.searchParams.set('mapname', $('#mapname').val());
+	url.searchParams.set('action', 'nothing');
+	url.searchParams.delete('config_revision');
+	url.searchParams.delete('__csrf_magic');
+	return url.href;
+}
+
+function wmReloadEditor() {
+	window.location.replace(wmEditorReloadUrl());
+}
+
 function form_submit() {
 	if ($('#action').val() === 'set_map_properties') {
 		$('#map_background_colour').val($('#wm-map-background-colour .wm-colour-value').val());
@@ -882,27 +895,13 @@ function form_submit() {
 		type: 'POST',
 		url: editor_url,
 		data: data,
-		success: function(html) {
+		success: function() {
 			hide_all_dialogs();
-
-			$.get('?action=load_area_data&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
-				$('.mapData').empty().html(data);
-
-				$.getScript('?action=load_map_javascript&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
-					var date = new Date();
-
-					// Reload the images to update page
-					$('#existingdata').attr('src', $('#existingdata').attr('src') + '&date=' + date.getTime());
-					$('#xycapture').attr('src', $('#xycapture').attr('src') + '&date=' + date.getTime());
-
-					$('#action').val('');
-
-					initJS();
-				});
-			});
+			wmReloadEditor();
 		}
 	});
 }
+
 
 function map_properties() {
 	mapmode('existing');
@@ -1771,13 +1770,7 @@ function wmAssetScaleRow(row) {
 	$('<td>').append($('<button type="button" class="ui-button wm-asset-delete">').text(wmEditorText.colourText2).attr('aria-label', wmEditorText.colourText7).on('click', function() { tr.remove(); })).appendTo(tr);
 }
 function wmColourRefreshMap() {
-	$.get('?action=load_area_data&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
-		$('.mapData').empty().html(data);
-		$.getScript('?action=load_map_javascript&mapname=' + encodeURIComponent($('#mapname').val()), function() {
-			['existingdata', 'xycapture'].forEach(function(id) { var image = $('#' + id); image.attr('src', image.attr('src') + '&date=' + Date.now()); });
-			$('#action').val(''); initJS();
-		});
-	});
+	wmReloadEditor();
 }
 // Presets affect only DEFAULT; other named scales remain available in Advanced.
 var wmTrafficPresets = {

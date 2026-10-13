@@ -23,7 +23,7 @@ assert.equal($('#wm-traffic-preview .wm-traffic-swatch').first().css('background
 $('#wm-outline-colour select').val('#0000ff');$('#wm-traffic-pulse').prop('checked',false);$('#wm-colours-save').trigger('click');
 assert.equal(request.type,'POST');assert.equal(request.data.action,'set_map_colours');assert.equal(request.data.config_revision,'a'.repeat(64));assert.equal(request.data.__csrf_magic,'fixture');
 const payload=JSON.parse(request.data.colours_json);assert.equal(payload.outline,'#0000ff');assert.equal(payload.pulse,false);assert.equal(payload.rows.find(r=>r.scale===named.scale).tag,'Cold');assert.equal('background' in payload,false);
-w.hide_all_dialogs=()=>{};w.wmColourRefreshMap=()=>{};request.success({revision:'b'.repeat(64)});assert.equal(w.wmColourRevision,'b'.repeat(64));
+let refreshed=false;w.hide_all_dialogs=()=>{};w.wmReloadEditor=()=>refreshed=true;request.success({revision:'b'.repeat(64)});assert.equal(w.wmColourRevision,'b'.repeat(64));assert.equal(refreshed,true,'colour save reloads all editor controls');
 request.error({responseJSON:{error:'Invalid range'}});assert.equal($('#wm-colours-error').text(),'Invalid range');
 // Cancel leaves the named background value untouched; submitting commits it.
 $('body').append('<input name="map_background_colour" id="map_background_colour" value="#ffffff"><input id="action"><div id="wm-map-background-colour"></div><div id="dlgMapProperties"></div><input id="map_title">');
