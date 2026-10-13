@@ -463,7 +463,7 @@ function initContextMenu() {
 		beforeOpen: function(event, ui) {
 			var target = ui.target[0].id;
 			if (target.startsWith('LINK') || target.startsWith('NODE')) {
-				$('#action').val('');
+				if (['add_link', 'add_link2', 'add_node', 'place_note', 'move_node', 'via_link', 'place_legend', 'place_stamp'].indexOf($('#action').val()) !== -1) $('#action').val('');
 				mapmode('existing');
 			}
 
