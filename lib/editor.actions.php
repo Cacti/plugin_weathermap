@@ -40,6 +40,8 @@
  +-------------------------------------------------------------------------+
 */
 
+require_once __DIR__ . '/WeatherMap.config.php';
+
 /** editor.actions.php
  *
  * All the functions used by the that wrap in request variables
@@ -69,7 +71,7 @@ function wm_editor_read_config($map, $mapfile) {
 		return false;
 	}
 	$revision = get_nfilter_request_var('config_revision');
-	if ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals($map->config_revision, $revision))) {
+	if ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies), $revision))) {
 		http_response_code(409);
 		return false;
 	}
@@ -88,7 +90,7 @@ function wm_editor_read_config($map, $mapfile) {
 function wm_editor_write_config($map, $mapfile, $createOnly = false) {
 	if (!$map->WriteConfig($mapfile, $createOnly, $map->editor_config_revision)) {
 		$current = is_file($mapfile) ? @hash_file('sha256', $mapfile) : false;
-		$stale = $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
+		$stale = $map->config_asset_conflict || !\WeathermapConfig\dependenciesMatch($map->config_dependencies) || $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
 		http_response_code($stale ? 409 : 500);
 		return false;
 	}
@@ -106,7 +108,7 @@ function newMap($mapfile) {
 
 	require_once __DIR__ . '/editor.new-map-preset.php';
 	wm_new_map_preset($map);
-	wm_editor_write_config($map, $mapfile, true);
+	return wm_editor_write_config($map, $mapfile, true);
 }
 
 /**
@@ -134,11 +136,13 @@ function newMapCopy($mapfile) {
 		if (file_exists($sourcemap) && is_readable($sourcemap)) {
 			if (!$map->ReadConfig($sourcemap) || !is_string($map->config_revision)) {
 				http_response_code(404);
-				return;
+				return false;
 			}
-			wm_editor_write_config($map, $mapfile, true);
+			return wm_editor_write_config($map, $mapfile, true);
 		}
 	}
+	http_response_code(404);
+	return false;
 }
 
 /**
@@ -154,7 +158,7 @@ function getMapJavaScript($mapfile, $map = null) {
 	}
 
 	print $map->asJS();
-	print 'var WMConfigRevision = ' . json_encode($map->config_revision) . ';';
+	print 'var WMConfigRevision = ' . json_encode(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies)) . ';';
 }
 
 /**

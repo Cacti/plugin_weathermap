@@ -143,11 +143,17 @@ switch($action) {
 		display_datasources();
 		exit;
 	case 'newmap':
-		newMap($mapfile);
+		if (!newMap($mapfile)) {
+			print __esc('Could not save the map configuration.', 'weathermap');
+			exit();
+		}
 
 		break;
 	case 'newmapcopy':
-		newMapCopy($mapfile);
+		if (!newMapCopy($mapfile)) {
+			print __esc('Could not save the map configuration.', 'weathermap');
+			exit();
+		}
 
 		break;
 	case 'font_samples':

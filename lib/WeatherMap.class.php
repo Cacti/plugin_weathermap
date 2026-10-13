@@ -342,6 +342,9 @@ class WeatherMap extends WeatherMapBase {
 	/** @var mixed */
 	var $configfile;
 	var $config_revision = null;
+	var $config_dependencies = [];
+	var $config_managed_assets = [];
+	var $config_asset_conflict = false;
 	var $editor_config_revision = null;
 	/** @var mixed */
 	var $imagefile;
@@ -2441,13 +2444,25 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	/**
+	 * Collect managed image references for commit-time existence checks.
+	 * @return string[] Paths relative to the plugin directory.
+	 */
+	function ManagedImagePaths() {
+		$paths = [$this->background];
+		foreach ($this->nodes as $node) $paths[] = $node->iconfile;
+		return array_values(array_unique(array_filter($paths, function ($path) {
+			return is_string($path) && preg_match('#^images/(objects|backgrounds)/#', $path);
+		})));
+	}
+
+	/**
 	 * @param mixed $input
 	 * @param bool $is_include
 	 * @return bool
 	 */
 	function ReadConfig($input, $is_include = false) {
 		global $config, $weathermap_error_suppress;
-		if (!$is_include) $this->config_revision = null;
+		if (!$is_include) { $this->config_revision = null; $this->config_dependencies = []; }
 
 		$curnode    = null;
 		$curlink    = null;
@@ -2477,6 +2492,8 @@ class WeatherMap extends WeatherMapBase {
 			$filename = $input;
 
 			if ($is_include) {
+				$dependencyPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+				if (!array_key_exists($dependencyPath, $this->config_dependencies)) $this->config_dependencies[$dependencyPath] = null;
 				wm_debug('ReadConfig Detected that this is an INCLUDED config filename.');
 
 				if ($is_include && in_array($filename, $this->included_files, true)) {
@@ -2506,7 +2523,9 @@ class WeatherMap extends WeatherMapBase {
 					}
 
 					fclose($fd);
-					if (!$is_include) $this->config_revision = hash_final($revision);
+					$loadedRevision = hash_final($revision);
+					if (!$is_include) $this->config_revision = $loadedRevision;
+					else $this->config_dependencies[$dependencyPath] = $loadedRevision;
 				}
 			}
 		}
@@ -3535,6 +3554,7 @@ class WeatherMap extends WeatherMapBase {
 
 		wm_debug('Finished Pre-Processing Plugins...');
 
+		if (!$is_include) $this->config_managed_assets = $this->ManagedImagePaths();
 		return (true);
 	}
 
@@ -3856,8 +3876,20 @@ class WeatherMap extends WeatherMapBase {
 			$contents = stream_get_contents($fd);
 			$closed = fclose($fd);
 
+			$this->config_asset_conflict = false;
+			$newAssets = array_diff($this->ManagedImagePaths(), $this->config_managed_assets);
+			$validate = function () use ($newAssets) {
+				foreach ($newAssets as $asset) {
+					if (!is_file(dirname(__DIR__) . '/' . $asset)) {
+						$this->config_asset_conflict = true;
+						return false;
+					}
+				}
+				return true;
+			};
 			$sameFile = $this->configfile !== '' && $filename === $this->configfile;
-			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock);
+			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $this->config_dependencies, $validate);
+			if ($saved) $this->config_managed_assets = $this->ManagedImagePaths();
 			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
 			return $saved;
 		} else {
