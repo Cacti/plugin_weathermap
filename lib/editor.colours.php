@@ -90,9 +90,9 @@ function wm_asset_save_colours($map, $data) {
 		$bottom = round((float)$row['bottom'], 6);
 		$top = round((float)$row['top'], 6);
 		$serialize = function($value) use ($map) {
-			$decimal = localeconv()['decimal_point'];
-			$number = rtrim(rtrim(sprintf('%f', $value == 0 ? 0 : $value), '0'), $decimal);
-			return $number > 1000 ? nice_bandwidth($value, $map->kilo) : $number;
+			$decimal = '.';
+			$number = rtrim(rtrim(sprintf('%F', $value == 0 ? 0 : $value), '0'), $decimal);
+			return $number > 1000 ? str_replace(localeconv()['decimal_point'], '.', nice_bandwidth($value, $map->kilo)) : $number;
 		};
 		$key = $serialize($bottom) . '_' . $serialize($top);
 		if (isset($scales[$name][$key])) throw new InvalidArgumentException(__('Duplicate range in a scale.', 'weathermap'));

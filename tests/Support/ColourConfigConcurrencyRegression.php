@@ -394,6 +394,16 @@ namespace {
 			http_response_code(200); ob_start(); wm_editor_colours($file, 'set_map_colours'); ob_end_clean();
 			colour_atomic_assert(http_response_code() === 400, 'unsupported gradient value is rejected');
 		}
+
+		$oldLocale = setlocale(LC_NUMERIC, 0);
+		$commaLocale = setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR', 'de_DE.UTF-8');
+		try {
+			$decimalData = $data; $decimalData['rows'] = [['scale' => 'DEFAULT', 'bottom' => 1.5, 'top' => 2.5, 'colour' => '#ff0000', 'end' => '', 'tag' => 'Fractional']];
+			$decimalMap = new \WeatherMap; $decimalMap->ReadConfig($file); wm_asset_save_colours($decimalMap, $decimalData);
+			colour_atomic_assert($decimalMap->WriteConfig($dir . '/decimal.conf'), 'fractional scales save under alternate locale');
+			$decimalText = file_get_contents($dir . '/decimal.conf'); colour_atomic_assert(str_contains($decimalText, '1.5') && str_contains($decimalText, '2.5') && !str_contains($decimalText, '1,5'), 'scale serialization uses dot decimal independently of locale');
+			$decimalReload = new \WeatherMap; $decimalReload->ReadConfig($dir . '/decimal.conf'); colour_atomic_assert($decimalReload->colours['DEFAULT']['1.5_2.5']['bottom'] === 1.5, 'fractional scale reparses correctly');
+		} finally { setlocale(LC_NUMERIC, $oldLocale); }
 		$probe = \WeathermapConfig\acquire($dir, false);
 		colour_atomic_assert(is_resource($probe), 'endpoint always releases mutex');
 		\WeathermapConfig\release($probe);

@@ -391,7 +391,7 @@ function initJS() {
 
 	$('#frmMain').off('submit').on('submit', function(event) {
 		event.preventDefault();
-		form_submit();
+		form_submit(event);
 	});
 
 	/* Cacti core may have already converted this select to select2; don't
@@ -889,10 +889,20 @@ function form_submit(event) {
 	// Property dialogs can remain open while a toolbar placement action is active.
 	// Their own Save buttons always dispatch the properties they are showing.
 	var button = event && event.currentTarget && event.currentTarget.id;
-	if (button === 'tb_node_submit' || button === 'tb_link_submit') {
-		var node = button === 'tb_node_submit';
-		$('#action').val(node ? 'set_node_properties' : 'set_link_properties');
-		$('#param').val($(node ? '#node_name' : '#link_name').val());
+	var sources = {
+		tb_node_submit: ['set_node_properties', '#node_name'],
+		tb_link_submit: ['set_link_properties', '#link_name'],
+		tb_map_submit: ['set_map_properties'],
+		tb_mapstyle_submit: ['set_map_style']
+	};
+	if (button === 'frmMain') {
+		var focused = $(document.activeElement).closest('.ui-dialog-content').attr('id');
+		var dialogs = {dlgNodeProperties: 'tb_node_submit', dlgLinkProperties: 'tb_link_submit', dlgMapProperties: 'tb_map_submit', dlgMapStyle: 'tb_mapstyle_submit'};
+		button = dialogs[focused];
+	}
+	if (sources[button]) {
+		$('#action').val(sources[button][0]);
+		if (sources[button][1]) $('#param').val($(sources[button][1]).val());
 		mapmode('existing');
 	}
 
