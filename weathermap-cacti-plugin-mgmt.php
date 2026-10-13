@@ -3439,11 +3439,17 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 		if ($mapfile != '') {
 			if ($sourcemapfile != '') {
 				if (file_exists($sourcemapfile) && is_readable($sourcemapfile)) {
-					$map->ReadConfig($sourcemapfile);
+					if (!$map->ReadConfig($sourcemapfile) || !is_string($map->config_revision)) {
+					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
+					return;
+				}
 					if ($title !== '') {
 						$map->title = $title;
 					}
-					$map->WriteConfig($mapfile);
+					if (!$map->WriteConfig($mapfile, true)) {
+					raise_message('map_message', __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+					return;
+				}
 					raise_message('map_message', __('New Map file %s created from %s', basename($mapfile), basename($sourcemapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 				} else {
 					raise_message('map_message', __('The Source Map File name is not readable or does not exist!', 'weathermap'), MESSAGE_LEVEL_ERROR);
@@ -3452,7 +3458,10 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 				if ($title !== '') {
 					$map->title = $title;
 				}
-				$map->WriteConfig($mapfile);
+				if (!$map->WriteConfig($mapfile, true)) {
+					raise_message('map_message', __('Could not save the map configuration.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+					return;
+				}
 				raise_message('map_message', __('New Map file %s created.', basename($mapfile), 'weathermap'), MESSAGE_LEVEL_INFO);
 			}
 		} else {

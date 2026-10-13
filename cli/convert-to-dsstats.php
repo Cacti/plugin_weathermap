@@ -244,7 +244,10 @@ foreach ($allitems as $myobj) {
 	}
 }
 
-$map->WriteConfig($outputfile);
+if (!$map->WriteConfig($outputfile)) {
+	fwrite(STDERR, "Could not write configuration to " . $outputfile . PHP_EOL);
+	exit(1);
+}
 
 print "Wrote new config to $outputfile" . PHP_EOL;
 
