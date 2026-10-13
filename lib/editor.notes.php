@@ -23,6 +23,41 @@
 */
 
 /**
+ * Determine logical dimensions after background sizing and post-processing.
+ * @param WeatherMap $map Loaded editor snapshot.
+ * @return int[] Effective width and height without changing the saved configuration.
+ */
+function wm_note_effective_dimensions($map) {
+	$preview = clone $map;
+	$preview->image = null;
+	foreach ($preview->nodes as $name => $node) {
+		$preview->nodes[$name] = clone $node;
+		$preview->nodes[$name]->owner = $preview;
+		$preview->nodes[$name]->image = null;
+	}
+	foreach ($preview->links as $name => $link) {
+		$preview->links[$name] = clone $link;
+		$preview->links[$name]->owner = $preview;
+		foreach (['a', 'b'] as $end) if ($link->$end instanceof WeatherMapNode) $preview->links[$name]->$end = $preview->nodes[$link->$end->name];
+	}
+	foreach ($preview->seen_zlayers as $layer => $items) {
+		foreach ($items as $key => $item) {
+			if ($item instanceof WeatherMapNode) $preview->seen_zlayers[$layer][$key] = $preview->nodes[$item->name];
+			elseif ($item instanceof WeatherMapLink) $preview->seen_zlayers[$layer][$key] = $preview->links[$item->name];
+			elseif ($item === $map) $preview->seen_zlayers[$layer][$key] = $preview;
+		}
+	}
+	foreach ($preview->plugins['post'] as $name => $plugin) $preview->plugins['post'][$name] = clone $plugin;
+	try {
+		if (function_exists('fixMapBackgroundAndImages')) fixMapBackgroundAndImages($preview);
+		$preview->DrawMap('null');
+		return [(int)$preview->width, (int)$preview->height];
+	} finally {
+		$preview->CleanUp();
+	}
+}
+
+/**
  * Create or update a label-only note using existing map node directives.
  *
  * @param WeatherMap $map Map being edited.
@@ -49,9 +84,10 @@ function wm_editor_save_note($map, $values, $grid_snap_value = 0) {
 			return false;
 		}
 	}
+	[$width, $height] = wm_note_effective_dimensions($map);
 	$x = (int)$values['x'];
 	$y = (int)$values['y'];
-	if ($x > $map->width || $y > $map->height) {
+	if ($x > $width || $y > $height) {
 		return false;
 	}
 	if ($name !== '' && (!isset($map->nodes[$name]) || $map->nodes[$name]->get_hint('editor_note', '0') !== '1')) {
@@ -96,8 +132,8 @@ function wm_editor_save_note($map, $values, $grid_snap_value = 0) {
 	$node->labelfont = $font;
 	$node->add_hint('editor_note_align', $alignment);
 	$node->labelfontcolour = [hexdec(substr($colour, 1, 2)), hexdec(substr($colour, 3, 2)), hexdec(substr($colour, 5, 2))];
-	$node->x = min($map->width, snap($x, $grid_snap_value));
-	$node->y = min($map->height, snap($y, $grid_snap_value));
+	$node->x = min($width, snap($x, $grid_snap_value));
+	$node->y = min($height, snap($y, $grid_snap_value));
 	return true;
 }
 /**

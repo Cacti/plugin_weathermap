@@ -256,6 +256,7 @@ wm_debug('Finished modifying');
 // expected.  This function should re redundant as the images are relocated during upgrade, but
 // is left here just in case.
 fixMapBackgroundAndImages($map);
+[$editor_width, $editor_height] = wm_note_effective_dimensions($map);
 
 // get the list from the images/ folder too
 $image_list   = get_imagelist('objects');
@@ -337,8 +338,8 @@ if ($editor_return_context === 'manage') {
 	</div>
 	<form id='frmMain' action='<?php print $editor_name ?>' method='post'>
 		<div class='mainArea'>
-			<input id='xycapture' name='xycapture' width='<?php print html_escape($map->width); ?>' height='<?php print html_escape($map->height); ?>' data-width='<?php print html_escape($map->width); ?>' data-height='<?php print html_escape($map->height); ?>' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
-			<img id='existingdata' name='existingdata' width='<?php print html_escape($map->width); ?>' height='<?php print html_escape($map->height); ?>' data-width='<?php print html_escape($map->width); ?>' data-height='<?php print html_escape($map->height); ?>' src='<?php print html_escape($imageurl); ?>' usemap='#weathermap_imap' />
+			<input id='xycapture' name='xycapture' width='<?php print html_escape($editor_width); ?>' height='<?php print html_escape($editor_height); ?>' data-width='<?php print html_escape($editor_width); ?>' data-height='<?php print html_escape($editor_height); ?>' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
+			<img id='existingdata' name='existingdata' width='<?php print html_escape($editor_width); ?>' height='<?php print html_escape($editor_height); ?>' data-width='<?php print html_escape($editor_width); ?>' data-height='<?php print html_escape($editor_height); ?>' src='<?php print html_escape($imageurl); ?>' usemap='#weathermap_imap' />
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
 			<div class='debug' style='display:none'><p><strong><?php print __('Debug', 'weathermap'); ?></strong>
@@ -396,7 +397,7 @@ if ($editor_return_context === 'manage') {
 					<?php foreach (['#000000' => __esc('Black', 'weathermap'), '#0000ff' => __esc('Blue', 'weathermap'), '#cc0000' => __esc('Red', 'weathermap'), '#008000' => __esc('Green', 'weathermap'), '#800080' => __esc('Purple', 'weathermap'), '#b35900' => __esc('Orange', 'weathermap'), '#666666' => __esc('Grey', 'weathermap'), '#ffffff' => __esc('White', 'weathermap')] as $colour => $label) { ?>
 						<button type='button' class='wm-note-colour ui-button ui-corner-all' data-colour='<?php print $colour; ?>' aria-pressed='false'><span aria-hidden='true' style='display:inline-block;width:12px;height:12px;background:<?php print $colour; ?>;border:1px solid #888;margin-right:5px'></span><?php print $label; ?></button>
 					<?php } ?></div></td></tr>
-					<tr><td><?php print __esc('Position', 'weathermap'); ?></td><td><input type='text' aria-label='X' size='4' class='ui-state-default ui-corner-all' id='note_x' name='note_x' min='0' max='<?php print (int)$map->width; ?>' />,<input type='text' aria-label='Y' size='4' class='ui-state-default ui-corner-all' id='note_y' name='note_y' min='0' max='<?php print (int)$map->height; ?>' /></td></tr>
+					<tr><td><?php print __esc('Position', 'weathermap'); ?></td><td><input type='text' aria-label='X' size='4' class='ui-state-default ui-corner-all' id='note_x' name='note_x' min='0' max='<?php print $editor_width; ?>' />,<input type='text' aria-label='Y' size='4' class='ui-state-default ui-corner-all' id='note_y' name='note_y' min='0' max='<?php print $editor_height; ?>' /></td></tr>
 				</table>
 				<button type='button' id='note_advanced_toggle' class='ui-button ui-corner-all' aria-expanded='false' aria-controls='note_advanced'><?php print __esc('Advanced settings', 'weathermap'); ?></button><div id='note_advanced' style='display:none'><p><label for='note_colour'><?php print __esc('Custom colour', 'weathermap'); ?></label> <input type='color' id='note_colour' name='note_colour' value='#000000' /></p></div>
 				<p id='wm-note-error' role='alert' style='display:none'></p>

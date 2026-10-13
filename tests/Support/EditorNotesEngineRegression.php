@@ -41,6 +41,20 @@ try {
 	$file = $directory . '/note.conf';
 	$map->WriteConfig($file);
 	$map->ReadConfig($file);
+
+	$background = $directory . '/large-background.png'; $bitmap = imagecreatetruecolor(200, 100); imagepng($bitmap, $background); imagedestroy($bitmap);
+	$sized = new WeatherMap; $sized->width = 120; $sized->height = 120; $sized->background = $background; $sized->add_hint('background_sizing', 'image');
+	note_assert(wm_note_effective_dimensions($sized) === [200, 100] && $sized->width === 120 && $sized->height === 120, 'background dimensions are effective while configured dimensions remain unchanged');
+	$backgroundValues = ['name' => '', 'text' => 'Inside background', 'font' => '3', 'colour' => '#000000', 'x' => 150, 'y' => 80];
+	note_assert(wm_editor_save_note($sized, $backgroundValues), 'note fits effective background beyond configured width');
+	$backgroundValues['x'] = 201; note_assert(!wm_editor_save_note($sized, $backgroundValues), 'note outside effective background is rejected');
+	class DimensionPostProcessor extends WeatherMapPostProcessor { function run(&$map) { $map->width = 240; $map->height = 90; } }
+	$sized->background = ''; $sized->plugins['post']['DimensionPostProcessor'] = new DimensionPostProcessor; $sized->postprocessclasses = ['DimensionPostProcessor'];
+	note_assert(wm_note_effective_dimensions($sized) === [240, 90] && $sized->width === 120, 'postprocessor dimensions are reflected without changing original map');
+	$controller = file_get_contents($plugin . '/weathermap-cacti-plugin-editor.php');
+	$start = strpos($controller, "<input id='xycapture'"); $end = strpos($controller, "<input id='x'", $start); $markup = substr($controller, $start, $end - $start);
+	$editor_width = 200; $editor_height = 100; $imageurl = 'fixture.png'; ob_start(); eval('?>' . $markup); $renderedElements = ob_get_clean();
+	note_assert(substr_count($renderedElements, "width='200'") === 4 && substr_count($renderedElements, "height='100'") === 4, 'editor image attributes and data coordinates use effective logical size');
 	$values = ['name' => '', 'text' => "Main site\n10.0.0.0/24", 'font' => 'bundled:Vera.ttf:11', 'colour' => '#0000ff', 'x' => '155', 'y' => '80'];
 	note_assert(wm_editor_save_note($map, $values), 'create');
 	$name = array_keys(wm_editor_note_data($map))[0];

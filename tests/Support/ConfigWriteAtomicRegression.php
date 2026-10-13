@@ -262,10 +262,10 @@ namespace {
 		if (@symlink($externalFile, $alias)) {
 			$logicalLock = \WeathermapConfig\acquire($dir);
 			atomic_assert(\WeathermapConfig\atomicWrite($alias, $original, true, hash('sha256', $original), false, $logicalLock), 'external symlink accepts caller-held logical configuration mutex');
-			atomic_assert(!is_file($external . '/.weathermap-config.lock'), 'symlink replacement does not choose external target mutex');
+			atomic_assert(is_file($external . '/.weathermap-config.lock'), 'symlink writes retain logical mutex and also acquire the physical target mutex');
 			\WeathermapConfig\release($logicalLock); unlink($alias);
 		}
-		unlink($externalFile); rmdir($external);
+		unlink($externalFile); unlink($external . '/.weathermap-config.lock'); rmdir($external);
 
 		$includeFile = $dir . '/included.conf'; $includeRoot = $dir . '/include-root.conf';
 		file_put_contents($includeFile, "TITLE Included old\n");
@@ -289,6 +289,13 @@ namespace {
 		unlink($outside . '/.weathermap-config.lock'); chmod($outside, 0555);
 		atomic_assert($externalMap->WriteConfig($includeRoot), 'read-only included dependency needs no new lock file');
 		chmod($outside, 0755); unlink($outsideFile); rmdir($outside);
+
+		$targetDir = $dir . '/alias-target'; mkdir($targetDir); $targetFile = $targetDir . '/map.conf'; file_put_contents($targetFile, $original);
+		$alias = $dir . '/alias.conf'; symlink($targetFile, $alias); $targetLock = \WeathermapConfig\acquire($targetDir);
+		atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Alias change', true, hash('sha256', $original)) && file_get_contents($targetFile) === $original, 'alias cannot bypass a held physical target mutex');
+		\WeathermapConfig\release($targetLock);
+		atomic_assert(\WeathermapConfig\atomicWrite($alias, $original, true, hash('sha256', $original)), 'alias save succeeds after shared target mutex release');
+		unlink($alias); unlink($targetFile); unlink($targetDir . '/.weathermap-config.lock'); rmdir($targetDir);
 		$wrong = \fopen($file, 'rb');
 		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/wrong-lock.conf', 'Wrong', false, null, true, $wrong), 'different lock file rejected'); \fclose($wrong);
 		// Revision metadata must describe the same map snapshot as the controls.
