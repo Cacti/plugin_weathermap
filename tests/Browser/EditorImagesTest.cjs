@@ -16,6 +16,17 @@ w.wmAssetImages(images);
 assert.equal($('#node_iconfilename').val(),'images/icons/external.png');assert.equal($('#node_iconfilename option[value="images/icons/external.png"]').length,1);
 assert.equal($('#wm-images-objects .wm-image-delete').length,0);assert.match($('#wm-images-objects').text(),/96 × 96 px/);assert.match($('#wm-images-objects').text(),/map.conf/);assert.match($('#wm-images-backgrounds').text(),/Non utilisée/);
 assert.equal($('#node_iconfilename option[value="images/objects/hospital.png"]').length,1);
+for (const [id, value] of [['node_iconfilename','images/objects/custom folder/site.png'], ['map_bgfile','images/backgrounds/private.jpg']]) {
+ const select=$('#'+id);
+ select.append($('<option>').val(value).text('Current custom image').attr('data-imagesrc',value)).val(value);
+ w.wmAssetImages(images);
+ assert.equal(select.val(),value);
+ assert.equal(select.find('option').filter(function(){return this.value===value;}).length,1);
+ assert.equal(select.find('option:selected').attr('data-imagesrc'),value);
+ w.wmAssetImages(images);
+ assert.equal(select.val(),value);
+ assert.equal(select.find('option').filter(function(){return this.value===value;}).length,1);
+}
 let request;$.ajax=opts=>request=opts;w.confirm=()=>false;$('#wm-images-backgrounds .wm-image-delete').trigger('click');assert.equal(request,undefined);
 w.confirm=()=>true;$('#wm-images-backgrounds .wm-image-delete').trigger('click');assert.equal(request.type,'POST');assert.equal(request.data.action,'delete_image');assert.equal(request.data.image_kind,'backgrounds');assert.equal(request.data.__csrf_magic,'fixture');
 request.error({responseJSON:{error:'In use'}});assert.equal($('#wm-images-error').text(),'In use');

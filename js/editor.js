@@ -884,7 +884,17 @@ function wmReloadEditor() {
 	window.location.replace(wmEditorReloadUrl());
 }
 
-function form_submit() {
+function form_submit(event) {
+	// Property dialogs can remain open while a toolbar placement action is active.
+	// Their own Save buttons always dispatch the properties they are showing.
+	var button = event && event.currentTarget && event.currentTarget.id;
+	if (button === 'tb_node_submit' || button === 'tb_link_submit') {
+		var node = button === 'tb_node_submit';
+		$('#action').val(node ? 'set_node_properties' : 'set_link_properties');
+		$('#param').val($(node ? '#node_name' : '#link_name').val());
+		mapmode('existing');
+	}
+
 	var data = $('input, select, textarea').serialize();
 	if (typeof WMConfigRevision !== 'undefined') data += '&config_revision=' + encodeURIComponent(WMConfigRevision);
 
@@ -1752,11 +1762,15 @@ function wmAssetImages(images) {
 		var select = $('#' + spec.id), old = select.val();
 		var slick = select.data('ddslick');
 		if (slick) { old = slick.selectedData && slick.selectedData.value; select.ddslick('destroy'); select = $('#' + spec.id); }
+		var current = select.find('option').filter(function() { return this.value === old; }).first().clone();
 		select.find('option').filter(function() { return this.value.indexOf('images/' + spec.kind + '/') === 0 && /\.(png|gif|jpe?g)$/i.test(this.value); }).remove();
 		if (!select.find('option[value="--NONE--"]').length) select.prepend($('<option>').val('--NONE--').text(spec.label));
 		images.filter(function(item) { return item.kind === spec.kind; }).forEach(function(item) {
 			select.append($('<option>').val('images/' + item.kind + '/' + item.name).text(item.name).attr({'data-imagesrc': item.url, 'data-description': item.name}));
 		});
+		if (old && !select.find('option').filter(function() { return this.value === old; }).length) {
+			select.append(current.length ? current : $('<option>').val(old).text(old));
+		}
 		select.val(old);
 	});
 	$('#dlgImages').dialog('option', {maxHeight: $(window).height() - 80, position: {my: 'center', at: 'center', of: window}});
