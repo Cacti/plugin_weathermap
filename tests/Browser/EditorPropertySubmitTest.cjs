@@ -11,4 +11,7 @@ for(const [id,action] of ids.map((id,index)=>[id,['set_node_properties','set_lin
  $('#'+id+' input')[0].focus();$('#action').val('place_legend');$('#frmMain').trigger('submit');assert.equal(new URLSearchParams(request.data).get('action'),action);
 }
 $('#action').val('move_node');w.form_submit();assert.equal(new URLSearchParams(request.data).get('action'),'move_node');
+for (const [id,action] of [['dlgEditorSettings','editor_settings'],['dlgNoteProperties','set_note_properties'],['dlgTextEdit','set_node_config']]) {
+ const dialog=$('<div>').attr('id',id).addClass('ui-dialog-content').appendTo('#frmMain');const button=$('<button>').appendTo(dialog);$('#dlgTextEdit').data('wm-config-action','set_node_config');$('#action').val('place_stamp');w.form_submit({currentTarget:button[0]});assert.equal(new URLSearchParams(request.data).get('action'),action);
+}
 dom.window.close();console.log('PASS: modeless dialog buttons and implicit form submission restore property actions');

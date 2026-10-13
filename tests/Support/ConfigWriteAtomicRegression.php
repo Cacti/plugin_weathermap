@@ -321,6 +321,13 @@ namespace {
 		atomic_assert(!$copyMap->WriteConfig($dir . '/missing-copy.conf', true) && !is_file($dir . '/missing-copy.conf'), 'create-only copy validates inherited image paths after deletion');
 		file_put_contents($copyAssetFile, $validAsset); atomic_assert($copyMap->WriteConfig($dir . '/valid-copy.conf', true), 'copy with existing inherited image succeeds');
 		unlink($copyAssetFile); file_put_contents($file, $original);
+
+		$numericLocale = setlocale(LC_NUMERIC, 0); setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR');
+		try {
+			$largeScale = new \WeatherMap; $largeScale->ReadConfig("SCALE large 1500 2500 0 255 0\n");
+			atomic_assert($largeScale->WriteConfig($dir . '/large-scale.conf'), 'large scale saves under alternate locale');
+			$largeText = file_get_contents($dir . '/large-scale.conf'); atomic_assert(str_contains($largeText, '1.5K') && str_contains($largeText, '2.5K'), 'unit-suffixed ranges retain parser-compatible decimal points');
+		} finally { setlocale(LC_NUMERIC, $numericLocale); }
 		$wrong = \fopen($file, 'rb');
 		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/wrong-lock.conf', 'Wrong', false, null, true, $wrong), 'different lock file rejected'); \fclose($wrong);
 		// Revision metadata must describe the same map snapshot as the controls.
