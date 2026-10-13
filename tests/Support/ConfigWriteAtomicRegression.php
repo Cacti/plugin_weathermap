@@ -257,6 +257,25 @@ namespace {
 		\WeathermapConfig\release($held);
 		$wrong = \fopen($file, 'rb');
 		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/wrong-lock.conf', 'Wrong', false, null, true, $wrong), 'different lock file rejected'); \fclose($wrong);
+		// Revision metadata must describe the same map snapshot as the controls.
+		file_put_contents($file, $original); $snapshot = new \WeatherMap; $snapshot->ReadConfig($file);
+		$loadedRevision = $snapshot->config_revision;
+		$updatedSnapshot = str_replace('Original', 'NewSnapshot', $original); file_put_contents($file, $updatedSnapshot);
+		$GLOBALS['__test_nfilter_request'] = [];
+		ob_start(); getMapJavaScript($file, $snapshot); $javascript = ob_get_clean();
+		atomic_assert(str_contains($javascript, 'Original') && !str_contains($javascript, 'NewSnapshot') && str_contains($javascript, $loadedRevision), 'rendered values and revision come from one loaded snapshot');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => $loadedRevision];
+		http_response_code(200); atomic_assert(!wm_editor_read_config(new \WeatherMap, $file) && http_response_code() === 409, 'concurrent save cannot be hidden by a refreshed token');
+		// Simulate deletion between the existence check and the engine file read.
+		class AtomicDeletedDuringReadMap extends \WeatherMap {
+			/** Simulate an engine load that loses its file before opening it. */
+			function ReadConfig($input, $is_include = false) { unlink($input); $this->config_revision = null; return true; }
+		}
+		foreach ([[], ['config_revision' => $loadedRevision]] as $request) {
+			file_put_contents($file, $original); $GLOBALS['__test_nfilter_request'] = $request;
+			http_response_code(200); atomic_assert(!wm_editor_read_config(new AtomicDeletedDuringReadMap, $file) && http_response_code() === 404, 'deletion race cannot proceed with a null revision');
+		}
+		$GLOBALS['__test_nfilter_request'] = []; file_put_contents($file, $original);
 		$crlfFile = $dir . '/crlf.conf';
 		$crlf = "WIDTH 600\r\nHEIGHT 300\r\n"; file_put_contents($crlfFile, $crlf);
 		$crlfMap = new \WeatherMap; $crlfMap->ReadConfig($crlfFile);

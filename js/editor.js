@@ -904,6 +904,19 @@ function delete_link() {
 	});
 }
 
+function wmEditorReloadUrl() {
+	var url = new URL(window.location.href);
+	url.searchParams.set('mapname', $('#mapname').val());
+	url.searchParams.set('action', 'nothing');
+	url.searchParams.delete('config_revision');
+	url.searchParams.delete('__csrf_magic');
+	return url.href;
+}
+
+function wmReloadEditor() {
+	window.location.replace(wmEditorReloadUrl());
+}
+
 function form_submit() {
 	if ($('#action').val() === 'place_note') {
 		show_note('', $('#x').val(), $('#y').val());
@@ -931,27 +944,13 @@ function form_submit() {
 				window.alert(wmEditorText.saveError);
 			}
 		},
-		success: function(html) {
+		success: function() {
 			hide_all_dialogs();
-
-			$.get('?action=load_area_data&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
-				$('.mapData').empty().html(data);
-
-				$.getScript('?action=load_map_javascript&mapname=' + encodeURIComponent($('#mapname').val()), function(data) {
-					var date = new Date();
-
-					// Reload the images to update page
-					$('#existingdata').attr('src', $('#existingdata').attr('src') + '&date=' + date.getTime());
-					$('#xycapture').attr('src', $('#xycapture').attr('src') + '&date=' + date.getTime());
-
-					$('#action').val('');
-
-					initJS();
-				});
-			});
+			wmReloadEditor();
 		}
 	});
 }
+
 
 function map_properties() {
 	mapmode('existing');

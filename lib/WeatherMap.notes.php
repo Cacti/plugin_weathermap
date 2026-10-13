@@ -41,6 +41,25 @@ namespace WeathermapNotes {
 
 namespace {
 /**
+ * Resolve a usable note font before measuring or drawing its text.
+ *
+ * @param WeatherMap $map The rendered map.
+ * @param int|string $id Registered font slot.
+ * @return int|string Usable font slot, or built-in font 3.
+ */
+function wm_note_font_id($map, $id) {
+	if (!isset($map->fonts[$id])) return 3;
+	$font = $map->fonts[$id];
+	if ($font->type === 'truetype') {
+		$file = wm_font_file($font->file);
+		if (!is_readable($file) || !function_exists('imagettfbbox') || !function_exists('imagettftext')) return 3;
+		$signature = @file_get_contents($file, false, null, 0, 4);
+		if (!in_array($signature, ["\x00\x01\x00\x00", 'OTTO', 'ttcf', 'true', 'typ1'], true)) return 3;
+	}
+	return $id;
+}
+
+/**
  * Notes eligible for high-density map rendering. Restrict the allocation to
  * bounded maps and plain TrueType annotations drawn above the other objects.
  *

@@ -33,7 +33,7 @@ for(const action of ['move_node','delete_node']) {
  assert.equal(shown,'dlgNoteProperties');assert.equal($('#note_name').val(),'note1');assert.equal($('#wm-note-error').text(),'Save failed');
 }
 w.show_note('note1');w.form_submit();
-let refreshed=false;$.get=(url,cb)=>{assert.match(url,/load_area_data/);cb('');};$.getScript=(url,cb)=>{assert.match(url,/load_map_javascript/);cb('');};w.initJS=()=>refreshed=true;
+let refreshed=false;$.get=()=>{throw Error('partial editor refresh');};$.getScript=()=>{throw Error('token-only refresh');};w.wmReloadEditor=()=>refreshed=true;
 request.success('');assert.ok(refreshed);assert.equal($('#action').val(),'');
 // Exercise the real note-aware confirmation, including attached-link warning and target capture.
 w.eval(fs.readFileSync(path.join(process.env.CACTI_JS_DIR,'jquery-ui.js'),'utf8'));

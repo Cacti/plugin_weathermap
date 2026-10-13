@@ -61,6 +61,7 @@ function wm_editor_save_note($map, $values, $grid_snap_value = 0) {
 	if ($font === null) {
 		return false;
 	}
+	$font = wm_note_font_id($map, $font);
 	if ($name === '') {
 		do {
 			$name = 'note_' . bin2hex(random_bytes(6));
@@ -109,12 +110,8 @@ function wm_editor_note_data($map) {
 		if ($node->get_hint('editor_note', '0') !== '1' || $name === 'DEFAULT') {
 			continue;
 		}
-		$fontId = isset($map->fonts[$node->labelfont]) ? $node->labelfont : 3;
+		$fontId = wm_note_font_id($map, $node->labelfont);
 		$font = $map->fonts[$fontId];
-		if ($font->type === 'truetype' && !is_readable(wm_font_file($font->file))) {
-			$fontId = 3;
-			$font = $map->fonts[$fontId];
-		}
 		$rgb = $node->labelfontcolour;
 		$notes[$name] = ['align' => $node->get_hint('editor_note_align', 'left'), 'font' => (string)$fontId, 'fontLabel' => wm_editor_font_label($fontId, $font),
 			'colour' => sprintf('#%02x%02x%02x', max(0, $rgb[0]), max(0, $rgb[1]), max(0, $rgb[2]))];

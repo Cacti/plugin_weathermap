@@ -4027,7 +4027,10 @@ class WeatherMap extends WeatherMapBase {
 
 			// do the node rendering stuff first, regardless of where they are actually drawn.
 			// this is so we can get the size of the nodes, which links will need if they use offsets
-			foreach ($this->nodes as $node) $node->render_note_hidpi = false;
+			foreach ($this->nodes as $node) {
+				$node->render_note_hidpi = false;
+				if ($node->get_hint('editor_note', '0') === '1') $node->labelfont = wm_note_font_id($this, $node->labelfont);
+			}
 
 			foreach ($this->nodes as $node) {
 				// don't try and draw template nodes
@@ -4200,7 +4203,10 @@ class WeatherMap extends WeatherMapBase {
 				}
 				$this->image = $image;
 			}
-			foreach ($this->nodes as $node) $node->render_note_hidpi = false;
+			foreach ($this->nodes as $node) {
+				$node->render_note_hidpi = false;
+				if ($node->get_hint('editor_note', '0') === '1') $node->labelfont = wm_note_font_id($this, $node->labelfont);
+			}
 
 			// Ready to output the results...
 
