@@ -255,6 +255,17 @@ namespace {
 			atomic_assert(pcntl_wexitstatus($status) === 0, 'atomicWrite leaves caller mutex held');
 		}
 		\WeathermapConfig\release($held);
+
+		$external = sys_get_temp_dir() . '/wm-external-' . bin2hex(random_bytes(5));
+		mkdir($external); $externalFile = $external . '/map.conf'; file_put_contents($externalFile, $original);
+		$alias = $dir . '/external.conf';
+		if (@symlink($externalFile, $alias)) {
+			$logicalLock = \WeathermapConfig\acquire($dir);
+			atomic_assert(\WeathermapConfig\atomicWrite($alias, $original, true, hash('sha256', $original), false, $logicalLock), 'external symlink accepts caller-held logical configuration mutex');
+			atomic_assert(!is_file($external . '/.weathermap-config.lock'), 'symlink replacement does not choose external target mutex');
+			\WeathermapConfig\release($logicalLock); unlink($alias);
+		}
+		unlink($externalFile); rmdir($external);
 		$wrong = \fopen($file, 'rb');
 		atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/wrong-lock.conf', 'Wrong', false, null, true, $wrong), 'different lock file rejected'); \fclose($wrong);
 		// Revision metadata must describe the same map snapshot as the controls.
