@@ -36,4 +36,5 @@ w.map_properties();assert.equal($('#wm-map-background-colour select').val(),'#ff
 $('#wm-map-background-colour select').val('#0000ff').trigger('change');
 w.eval(source.slice(source.indexOf('function form_submit('),source.indexOf('function map_properties()')));
 w.form_submit();assert.equal($('#map_background_colour').val(),'#0000ff');assert.ok(request.data.includes('map_background_colour=%230000ff'));
+let alertText;w.alert=text=>alertText=text;w.wmEditorText.saveError='Save failed';w.wmEditorText.staleError='Reload first';w.form_submit();request.error({status:409});assert.equal(alertText,'Reload first');request.error({status:500});assert.equal(alertText,'Save failed');
 dom.window.close();console.log('PASS: colour preset preview, named scales, Custom, gradients, save and errors');

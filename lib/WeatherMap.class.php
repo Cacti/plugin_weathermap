@@ -342,6 +342,7 @@ class WeatherMap extends WeatherMapBase {
 	/** @var mixed */
 	var $configfile;
 	var $config_revision = null;
+	var $config_dependencies = [];
 	var $editor_config_revision = null;
 	/** @var mixed */
 	var $imagefile;
@@ -2447,7 +2448,7 @@ class WeatherMap extends WeatherMapBase {
 	 */
 	function ReadConfig($input, $is_include = false) {
 		global $config, $weathermap_error_suppress;
-		if (!$is_include) $this->config_revision = null;
+		if (!$is_include) { $this->config_revision = null; $this->config_dependencies = []; }
 
 		$curnode    = null;
 		$curlink    = null;
@@ -2477,6 +2478,8 @@ class WeatherMap extends WeatherMapBase {
 			$filename = $input;
 
 			if ($is_include) {
+				$dependencyPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+				if (!array_key_exists($dependencyPath, $this->config_dependencies)) $this->config_dependencies[$dependencyPath] = null;
 				wm_debug('ReadConfig Detected that this is an INCLUDED config filename.');
 
 				if ($is_include && in_array($filename, $this->included_files, true)) {
@@ -2506,7 +2509,9 @@ class WeatherMap extends WeatherMapBase {
 					}
 
 					fclose($fd);
-					if (!$is_include) $this->config_revision = hash_final($revision);
+					$loadedRevision = hash_final($revision);
+					if (!$is_include) $this->config_revision = $loadedRevision;
+					else $this->config_dependencies[$dependencyPath] = $loadedRevision;
 				}
 			}
 		}
@@ -3857,7 +3862,7 @@ class WeatherMap extends WeatherMapBase {
 			$closed = fclose($fd);
 
 			$sameFile = $this->configfile !== '' && $filename === $this->configfile;
-			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock);
+			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $this->config_dependencies);
 			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
 			return $saved;
 		} else {

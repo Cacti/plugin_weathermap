@@ -1754,7 +1754,7 @@ function add_config($file) {
 		require_once __DIR__ . '/lib/editor.config-delete.php';
 		require_once __DIR__ . '/lib/WeatherMap.config.php';
 		$directory_lock = \WeathermapConfig\acquire($weathermap_confdir, false);
-		if (!$directory_lock) {
+		if (!$directory_lock && (is_writable($weathermap_confdir) || file_exists($weathermap_confdir . '/.weathermap-config.lock'))) {
 			raise_message('path_missing', __esc('The configuration file is unavailable. Please retry.', 'weathermap'), MESSAGE_LEVEL_ERROR);
 			return;
 		}
@@ -1793,7 +1793,7 @@ function add_config($file) {
 				fclose($lock);
 			}
 		} finally {
-			\WeathermapConfig\release($directory_lock);
+			if ($directory_lock) \WeathermapConfig\release($directory_lock);
 		}
 	}
 }

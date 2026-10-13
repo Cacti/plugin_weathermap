@@ -900,11 +900,15 @@ function form_submit(event) {
 		$('#map_background_colour').val($('#wm-map-background-colour .wm-colour-value').val());
 	}
 	var data = $('input, select, textarea').serialize();
+	if (typeof WMConfigRevision !== 'undefined') data += '&config_revision=' + encodeURIComponent(WMConfigRevision);
 
 	$.ajax({
 		type: 'POST',
 		url: editor_url,
 		data: data,
+		error: function(xhr) {
+			window.alert(xhr && xhr.status === 409 ? wmEditorText.staleError : wmEditorText.saveError);
+		},
 		success: function() {
 			hide_all_dialogs();
 			wmReloadEditor();

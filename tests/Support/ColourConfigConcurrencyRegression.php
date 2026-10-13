@@ -350,6 +350,33 @@ namespace {
 		wm_editor_colours($file, 'set_map_colours');
 		ob_end_clean();
 		colour_atomic_assert(http_response_code() === 400, 'invalid payload remains client error');
+
+		$includeFile = $dir . '/included.conf'; $includeRoot = $dir . '/include-root.conf';
+		file_put_contents($includeFile, "TITLE Included old\n");
+		$includeConfig = "WIDTH 600\nHEIGHT 300\nINCLUDE " . $includeFile . "\n";
+		file_put_contents($includeRoot, $includeConfig);
+		$dependent = new \WeatherMap; $dependent->ReadConfig($includeRoot);
+		$token = \WeathermapConfig\snapshotRevision($dependent->config_revision, $dependent->config_dependencies);
+		file_put_contents($includeFile, "TITLE Included winner\n"); $dependent->title = 'Stale edit';
+		colour_atomic_assert(!$dependent->WriteConfig($includeRoot) && file_get_contents($includeRoot) === $includeConfig, 'included file changes reject stale root persistence');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => $token]; http_response_code(200);
+		colour_atomic_assert(!wm_editor_read_config(new \WeatherMap, $includeRoot) && http_response_code() === 409, 'included-file changes invalidate loaded editor page token');
+		$GLOBALS['__test_nfilter_request'] = []; $fresh = new \WeatherMap; $fresh->ReadConfig($includeRoot);
+		colour_atomic_assert($fresh->WriteConfig($includeRoot), 'unchanged included dependency can be saved');
+		colour_atomic_assert(!\WeathermapConfig\dependenciesMatch([$includeFile => null]), 'unread included dependency rejected');
+		$outside = $dir . '/dependency-directory'; mkdir($outside); $outsideFile = $outside . '/outside.conf'; file_put_contents($outsideFile, "TITLE Outside\n");
+		file_put_contents($includeRoot, "WIDTH 600\nHEIGHT 300\nINCLUDE " . $outsideFile . "\n");
+		$externalMap = new \WeatherMap; $externalMap->ReadConfig($includeRoot); $busy = \WeathermapConfig\acquire($outside);
+		colour_atomic_assert(!$externalMap->WriteConfig($includeRoot), 'busy dependency directory rejects save without deadlock');
+		\WeathermapConfig\release($busy);
+		colour_atomic_assert($externalMap->WriteConfig($includeRoot), 'external dependency save succeeds after mutex release');
+		unlink($outsideFile); unlink($outside . '/.weathermap-config.lock'); rmdir($outside);
+
+		class UnreadColourMap extends \WeatherMap { function ReadConfig($input, $is_include = false) { $this->config_revision = null; return true; } }
+		$actions = file_get_contents($plugin . '/lib/editor.actions.php'); $start = strpos($actions, 'function wm_editor_colours('); $end = strpos($actions, "\n/**", $start); if ($end === false) $end = strlen($actions);
+		eval(str_replace(['__DIR__', 'function wm_editor_colours(', 'new WeatherMap'], [var_export($plugin . '/lib', true), 'function unreadColourEndpoint(', 'new UnreadColourMap'], substr($actions, $start, $end - $start)));
+		$GLOBALS['__test_nfilter_request'] = []; http_response_code(200); ob_start(); unreadColourEndpoint($file, 'colour_data'); $error = json_decode(ob_get_clean(), true);
+		colour_atomic_assert(http_response_code() === 500 && isset($error['error']) && !isset($error['colours']), 'unread colour config returns an error instead of default colours');
 		$probe = \WeathermapConfig\acquire($dir, false);
 		colour_atomic_assert(is_resource($probe), 'endpoint always releases mutex');
 		\WeathermapConfig\release($probe);

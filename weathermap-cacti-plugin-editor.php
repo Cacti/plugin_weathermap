@@ -142,11 +142,17 @@ switch($action) {
 		display_datasources();
 		exit;
 	case 'newmap':
-		newMap($mapfile);
+		if (!newMap($mapfile)) {
+			print __esc('Could not save the map configuration.', 'weathermap');
+			exit();
+		}
 
 		break;
 	case 'newmapcopy':
-		newMapCopy($mapfile);
+		if (!newMapCopy($mapfile)) {
+			print __esc('Could not save the map configuration.', 'weathermap');
+			exit();
+		}
 
 		break;
 	case 'font_samples':
@@ -242,7 +248,8 @@ switch($action) {
 }
 
 $map = new WeatherMap;
-$map->ReadConfig($mapfile);
+$map->context = 'editor';
+if (!wm_editor_read_config($map, $mapfile)) exit;
 
 // by here, there should be a valid $map - either a blank one, the existing one, or the existing one with requested changes
 wm_debug('Finished modifying');
@@ -368,7 +375,7 @@ if ($editor_return_context === 'manage') {
 		<!-- Data for overlay and selection -->
 		<div class='scriptData'>
 			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
-			<?php getMapJavaScript($mapfile); ?>
+			<?php getMapJavaScript($mapfile, $map); ?>
 			<?php print 'var infoUrlStyle=' . intval(read_config_option('weathermap_infourl_style')) . ';'; ?>
 			</script>
 		</div>

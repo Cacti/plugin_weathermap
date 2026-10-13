@@ -2447,3 +2447,7 @@ msgstr ""
 #: weathermap-cacti-plugin.php
 msgid "Paused"
 msgstr ""
+
+#: lib/editor.inc.php
+msgid "Unable to save changes. Please try again."
+msgstr ""

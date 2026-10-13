@@ -1021,6 +1021,7 @@ function getEditorJs() {
 		'colourText6' => __('Choose a PNG, JPG or GIF file up to 5 MB.', 'weathermap'),
 		'colourText7' => __('Remove range', 'weathermap'),
 		'colourText8' => __('Custom (%s)', '%s', 'weathermap'),
+		'saveError' => __('Unable to save changes. Please try again.', 'weathermap'),
 		'staleError' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap'),
 		'backgroundColour' => __('Map Background Colour', 'weathermap'),
 		'borderColour' => __('Link Border Colour', 'weathermap'),
