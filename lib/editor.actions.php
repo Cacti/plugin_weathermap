@@ -72,7 +72,7 @@ function wm_editor_read_config($map, $mapfile, $requireRevision = false) {
 		return false;
 	}
 	$revision = get_nfilter_request_var('config_revision');
-	if (($requireRevision && (!is_string($revision) || $revision === '')) || ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies), $revision)))) {
+	if (($requireRevision && (!is_string($revision) || $revision === '')) || ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity), $revision)))) {
 		http_response_code(409);
 		return false;
 	}
@@ -91,7 +91,7 @@ function wm_editor_read_config($map, $mapfile, $requireRevision = false) {
 function wm_editor_write_config($map, $mapfile, $createOnly = false) {
 	if (!$map->WriteConfig($mapfile, $createOnly, $map->editor_config_revision)) {
 		$current = is_file($mapfile) ? @hash_file('sha256', $mapfile) : false;
-		$stale = $map->config_asset_conflict || !\WeathermapConfig\dependenciesMatch($map->config_dependencies) || $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
+		$stale = $map->config_asset_conflict || !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity)) || $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
 		http_response_code($stale ? 409 : 500);
 		return false;
 	}
@@ -159,7 +159,7 @@ function getMapJavaScript($mapfile, $map = null) {
 	}
 
 	print $map->asJS();
-	print 'var WMConfigRevision = ' . json_encode(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies)) . ';';
+	print 'var WMConfigRevision = ' . json_encode(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity)) . ';';
 }
 
 /**
