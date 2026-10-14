@@ -34,6 +34,8 @@ final class EditorImageFormatsTest extends TestCase {
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testRealEngineRegression(): void {
+		$plugin = dirname(__DIR__, 2);
+		$beforeLibraries = [glob($plugin . '/images/objects/*'), glob($plugin . '/images/backgrounds/*')];
 		ob_start();
 		try {
 			require dirname(__DIR__) . '/Support/EditorImageFormatsRegression.php';
@@ -42,5 +44,6 @@ final class EditorImageFormatsTest extends TestCase {
 			ob_end_clean();
 		}
 		self::assertSame("Editor image formats regression PASS\n", $result);
+		self::assertSame($beforeLibraries, [glob($plugin . '/images/objects/*'), glob($plugin . '/images/backgrounds/*')], 'Fixture cleanup leaves both libraries unchanged, including dangling symlinks');
 	}
 }

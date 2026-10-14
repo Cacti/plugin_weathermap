@@ -301,7 +301,7 @@ try {
 	image_format_assert(str_contains(wm_asset_managed_path('images/objects/dynamic_{node:this:name}.png', $root), '{node:this:name}'), 'renderer tokens preserved in identity');
 	echo "Editor image formats regression PASS\n";
 } finally {
-	foreach ($created as $path) if (is_file($path)) unlink($path);
+	foreach ($created as $path) if (is_file($path) || is_link($path)) unlink($path);
 	if (is_file($config)) unlink($config);
 	$cleanup = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($temporary, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST);
 	foreach ($cleanup as $entry) {
