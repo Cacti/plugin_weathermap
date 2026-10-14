@@ -646,7 +646,7 @@ function get_imagelist($imagedir) {
 				$realfile = $imdir . '/' . $file;
 				$uri      = "images/$imagedir/$file";
 
-				if (is_file($realfile) && !is_link($realfile) && is_readable($realfile) && (preg_match('/\.(gif|jpe?g|png)$/i', $file))) {
+				if (is_file($realfile) && is_readable($realfile) && (preg_match('/\.(gif|jpe?g|png)$/i', $file))) {
 					$size = @getimagesize($realfile);
 					if (!$size || !in_array($size[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) continue;
 					$imagelist[] = $uri;

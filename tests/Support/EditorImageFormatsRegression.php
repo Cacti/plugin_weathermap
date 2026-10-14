@@ -51,6 +51,20 @@ function image_format_revision($file) {
 	$map = new WeatherMap; $map->ReadConfig($file);
 	$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity);
 }
+/**
+ * Inject creation of an optional include between reference scans.
+ *
+ * @param array|null $directories Parent directories discovered by the real scanner.
+ *
+ * @return array Reference index preceding the injected writer.
+ */
+function image_format_scan(&$directories = null) {
+	$result = wm_asset_image_reference_index($directories);
+	if (++$GLOBALS['image_format_scans'] === 1) {
+		image_format_assert(\WeathermapConfig\atomicWrite($GLOBALS['image_format_optional'], "BACKGROUND " . $GLOBALS['image_format_reference'] . "\n", false, null, true), 'cooperating writer creates missing include');
+	}
+	return $result;
+}
 $root = dirname(__DIR__, 2);
 $temporary = $root . '/tests/wm-image-formats-' . bin2hex(random_bytes(4));
 mkdir($temporary);
@@ -219,10 +233,79 @@ try {
 			image_format_assert(file_get_contents($protected) === $protectedBytes, 'rejected mutation preserves library file');
 		}
 	}
+	// Existing raster symlinks remain selectable but never manageable.
+	$backgroundAlias = $root . '/images/backgrounds/alias-' . bin2hex(random_bytes(4)) . '.png';
+	symlink($protected, $backgroundAlias); $created[] = $backgroundAlias;
+	image_format_assert(in_array('images/backgrounds/' . basename($backgroundAlias), get_imagelist('backgrounds'), true), 'readable raster symlink remains in initial background selector');
+	image_format_assert(!array_filter(wm_asset_image_list(), fn ($item) => $item['name'] === basename($backgroundAlias)), 'symlink stays outside managed library operations');
+	try { wm_asset_image_path('backgrounds', basename($backgroundAlias)); throw new RuntimeException('managed symlink accepted'); } catch (InvalidArgumentException $expected) {}
+	// Missing include destinations contribute parent locks before the final rescan.
+	$optionalDir = $temporary . '/optional'; mkdir($optionalDir); $optional = $optionalDir . '/optional.inc';
+	file_put_contents($config, "INCLUDE $optional\n");
+	wm_asset_image_reference_index($directories);
+	image_format_assert(isset($directories[$optionalDir]), 'missing literal INCLUDE parent indexed');
+	$parentLock = \WeathermapConfig\acquire($optionalDir); $locks = [];
+	try { wm_asset_locked_reference_index($root . '/configs', $locks); throw new RuntimeException('missing include mutex bypassed'); } catch (RuntimeException $expected) {
+		image_format_assert(str_contains($expected->getMessage(), 'Could not lock'), 'held missing include destination lock blocks deletion');
+	} finally { foreach ($locks as $held) \WeathermapConfig\release($held); \WeathermapConfig\release($parentLock); }
+	// Inject a cooperating writer after the first index: the subsequent locked scan must see it.
+	$assetSource = file_get_contents($root . '/lib/editor.assets.php');
+	$begin = strpos($assetSource, 'function wm_asset_locked_reference_index(');
+	$end = strpos($assetSource, "\n/**", $begin);
+	$instrumentedLockIndex = substr($assetSource, $begin, $end - $begin);
+	eval(str_replace(['wm_asset_locked_reference_index(', 'wm_asset_image_reference_index('], ['image_format_locked_index(', 'image_format_scan('], $instrumentedLockIndex));
+	$GLOBALS['image_format_optional'] = $optional; $GLOBALS['image_format_reference'] = 'images/backgrounds/' . basename($protected); $GLOBALS['image_format_scans'] = 0;
+	$locks = [];
+	try {
+		$lockedReferences = image_format_locked_index($root . '/configs', $locks);
+		image_format_assert($GLOBALS['image_format_scans'] >= 2 && wm_asset_image_users(basename($protected), 'backgrounds', $lockedReferences), 'new include references are detected by locked rescan');
+		image_format_assert(\WeathermapConfig\acquire($optionalDir, false) === false, 'deletion retains missing include parent mutex through unlink decision');
+	} finally { foreach ($locks as $held) \WeathermapConfig\release($held); }
+	file_put_contents($config, "INCLUDE " . $optionalDir . "/absent-parent/file.inc\n"); $locks = [];
+	try { wm_asset_locked_reference_index($root . '/configs', $locks); throw new RuntimeException('unstable include parent accepted'); } catch (RuntimeException $expected) {
+		image_format_assert(str_contains($expected->getMessage(), 'Could not lock'), 'unresolvable include destination fails safely');
+	} finally { foreach ($locks as $held) \WeathermapConfig\release($held); }
+	// Filesystem symlink/.. semantics must match the renderer, not lexical path collapse.
+	$target = $temporary . '/target'; mkdir($target); mkdir($target . '/sub');
+	$linked = $temporary . '/linked'; symlink($target . '/sub', $linked);
+	file_put_contents($target . '/include.conf', "BACKGROUND images/backgrounds/" . basename($protected) . "\n");
+	file_put_contents($config, "INCLUDE $linked/../include.conf\n");
+	image_format_assert(wm_asset_image_users(basename($protected), 'backgrounds') !== [], 'symlink-parent INCLUDE references protected');
+	unlink($linked); unlink($target . '/include.conf'); rmdir($target . '/sub'); rmdir($target);
+	unlink($optional); unlink($optionalDir . '/.weathermap-config.lock'); rmdir($optionalDir);
+	// Both collectors canonicalise alternate renderer spellings, including missing paths.
+	file_put_contents($config, "WIDTH 100\nHEIGHT 100\nNODE A\n POSITION 20 20\n");
+	$missingName = 'missing-' . bin2hex(random_bytes(4)) . '.png';
+	foreach (['./images/objects/' . $missingName, 'images/./objects/' . $missingName, $root . '/images/objects/' . $missingName] as $spelling) {
+		$assetMap = new WeatherMap; $assetMap->ReadConfig($config); $assetMap->nodes['A']->iconfile = $spelling;
+		image_format_assert($assetMap->ManagedImagePaths() === ['images/objects/' . $missingName], 'object collector normalizes missing path');
+		image_format_assert(WeatherMap::ManagedImagePathsFromConfig("ICON 32 32 $spelling\n") === ['images/objects/' . $missingName], 'raw collector normalizes missing path');
+		$before = file_get_contents($config);
+		image_format_assert(!$assetMap->WriteConfig($config) && $assetMap->config_asset_conflict && file_get_contents($config) === $before, 'alternate missing-image spelling cannot commit');
+		$assetMap->nodes['A']->iconfile = '';
+		$assetMap->nodes['A']->config_override = "NODE A\n POSITION 20 20\n ICON $spelling\n";
+		image_format_assert(!$assetMap->WriteConfig($config), 'raw override cannot bypass missing-image validation');
+	}
+	$missingInclude = $temporary . '/missing-asset.inc';
+	file_put_contents($missingInclude, "BACKGROUND ./images/backgrounds/$missingName\n");
+	file_put_contents($config, "INCLUDE $missingInclude\n");
+	$copyMap = new WeatherMap; $copyMap->ReadConfig($config);
+	image_format_assert(!$copyMap->WriteConfig($temporary . '/copy.conf', true) && !is_file($temporary . '/copy.conf'), 'copy rejects inherited missing image in normalized spelling');
+	file_put_contents($config, "WIDTH 100\nHEIGHT 100\nNODE A\n POSITION 20 20\n");
+	$baseline = new WeatherMap; $baseline->ReadConfig($config);
+	$baseline->background = './images/backgrounds/' . basename($protected);
+	image_format_assert($baseline->WriteConfig($config), 'existing alternate image spelling saves');
+	$baseline = new WeatherMap; $baseline->ReadConfig($config);
+	image_format_assert($baseline->config_managed_assets === ['images/backgrounds/' . basename($protected)], 'loaded image baseline uses same canonical identity');
+	image_format_assert(wm_asset_managed_path('outside.png', $root) === null && wm_asset_managed_path(null, $root) === null, 'unmanaged image paths excluded');
+	image_format_assert(str_contains(wm_asset_managed_path('images/objects/dynamic_{node:this:name}.png', $root), '{node:this:name}'), 'renderer tokens preserved in identity');
 	echo "Editor image formats regression PASS\n";
 } finally {
 	foreach ($created as $path) if (is_file($path)) unlink($path);
 	if (is_file($config)) unlink($config);
-	foreach (glob($temporary . '/*') as $path) unlink($path);
+	$cleanup = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($temporary, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST);
+	foreach ($cleanup as $entry) {
+		if ($entry->isDir() && !$entry->isLink()) rmdir($entry->getPathname()); else unlink($entry->getPathname());
+	}
 	rmdir($temporary);
 }

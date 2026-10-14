@@ -77,8 +77,46 @@ function wm_asset_normalize_path($path, $root) {
 	return $prefix . implode('/', $parts);
 }
 /**
+ * Make a renderer path absolute without collapsing symlinks or parent components.
+ *
+ * @param string $path Original directive path.
+ * @param string $root Renderer working directory for relative paths.
+ *
+ * @return string Absolute path with filesystem resolution semantics preserved.
+ */
+function wm_asset_absolute_path($path, $root) {
+	if (substr($path, 0, 1) === '/' || substr($path, 0, 1) === '\\' || preg_match('~^[A-Za-z]:[/\\\\]~', $path)) return $path;
+	return rtrim($root, '/\\') . '/' . $path;
+}
+/**
+ * Resolve a managed image identity even when the final file does not exist.
+ *
+ * @param mixed $path Original image path, retaining any renderer tokens.
+ * @param string $root Plugin directory.
+ *
+ * @return string|null Library-relative identity, or null for an unmanaged path.
+ */
+function wm_asset_managed_path($path, $root) {
+	if (!is_string($path) || $path === '') return null;
+	clearstatcache(true);
+	$parent = wm_asset_absolute_path($path, $root);
+	$tail = [];
+	while (($resolved = realpath($parent)) === false) {
+		$next = dirname($parent);
+		if ($next === $parent) return null;
+		array_unshift($tail, basename($parent));
+		$parent = $next;
+	}
+	$identity = wm_asset_normalize_path($resolved . ($tail ? '/' . implode('/', $tail) : ''), $root);
+	$base = rtrim(str_replace('\\', '/', realpath($root) ?: $root), '/') . '/';
+	if (substr($identity, 0, strlen($base)) !== $base) return null;
+	$relative = substr($identity, strlen($base));
+	return preg_match('#^images/(objects|backgrounds)/#', $relative) ? $relative : null;
+}
+/**
  * Read configuration files and includes once to index image references.
  *
+ * @param array|null $directories Logical and physical parent directories to stabilise.
  *
  * @return array The reference patterns and source filenames.
  */
@@ -103,14 +141,17 @@ function wm_asset_image_reference_index(&$directories = null) {
 		if ($text === false) throw new RuntimeException(__('Cannot check configuration references.', 'weathermap'));
 		if (preg_match_all('/^\s*(ICON|BACKGROUND)\s+(?:[0-9]+\s+[0-9]+\s+)?(.+?)\s*$/mi', $text, $directives, PREG_SET_ORDER)) {
 			foreach ($directives as $directive) {
-				$image = wm_asset_normalize_path(trim($directive[2]), $root);
+				$rawImage = trim($directive[2]);
+				$image = wm_asset_normalize_path(wm_asset_managed_path($rawImage, $root) ?? $rawImage, $root);
 				// Dynamic token values are unknown here: protect all possible paths.
 				$pattern = implode('.*', array_map(function($part) { return preg_quote($part, '~'); }, preg_split('/\{[^}]+\}/', $image)));
 				$references[] = ['pattern' => '~^' . $pattern . '$~iD', 'user' => basename($real)];
 			}
 		}
 		if (preg_match_all('/^\s*INCLUDE\s+(.+)$/mi', $text, $matches)) foreach ($matches[1] as $include) {
-			$include = wm_asset_normalize_path(trim($include), $root);
+			$include = wm_asset_absolute_path(trim($include), $root);
+			// A writer can create a currently missing include while holding its parent lock.
+			$directories[dirname($include)] = true;
 			// INCLUDE is a literal filename in the renderer, including glob metacharacters.
 			if (file_exists($include) || is_link($include)) $queue[] = $include;
 		}
@@ -119,8 +160,10 @@ function wm_asset_image_reference_index(&$directories = null) {
 }
 /**
  * Lock every physical reference source before deciding whether deletion is safe.
+ *
  * @param string $rootDirectory Already locked logical config directory.
  * @param array $locks Additional locks, released by the caller.
+ *
  * @return array The stable reference index.
  */
 function wm_asset_locked_reference_index($rootDirectory, &$locks) {
@@ -130,11 +173,13 @@ function wm_asset_locked_reference_index($rootDirectory, &$locks) {
 		$added = false;
 		foreach (array_keys($directories) as $directory) {
 			$directory = realpath($directory);
+			if ($directory === false) throw new RuntimeException(__('Could not lock map configurations.', 'weathermap'));
 			if (isset($covered[$directory])) continue;
 			$lock = \WeathermapConfig\acquire($directory, false);
-			if (!$lock && (is_writable($directory) || file_exists($directory . '/.weathermap-config.lock'))) throw new RuntimeException(__('Could not lock map configurations.', 'weathermap'));
+			if (!$lock) throw new RuntimeException(__('Could not lock map configurations.', 'weathermap'));
 			if ($lock) $locks[] = $lock;
 			$covered[$directory] = true;
+			if (count($covered) > 1000) throw new RuntimeException(__('Too many included configurations to check.', 'weathermap'));
 			$added = true;
 		}
 		if (!$added) return $references;
