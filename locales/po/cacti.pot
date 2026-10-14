@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-15 09:32+1030\n"
+"POT-Creation-Date: 2026-10-15 10:19+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -18,20 +18,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr ""
+
 #: lib/editor.actions.php
 msgid "Use POST to save changes."
 msgstr ""
 
-#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
-msgid "Could not lock map configurations."
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
 msgstr ""
 
 #: lib/editor.actions.php
 msgid "Cannot read the map configuration."
 msgstr ""
 
-#: lib/editor.actions.php lib/editor.inc.php
-msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+#: lib/editor.actions.php lib/editor.assets.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr ""
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr ""
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
 msgstr ""
 
 #: lib/editor.actions.php
@@ -40,6 +53,46 @@ msgstr ""
 
 #: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
 msgid "Could not save the map configuration."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr ""
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
 msgstr ""
 
 #: lib/editor.colours.php
@@ -263,19 +316,15 @@ msgid "Click on the map where you would like to add a new node."
 msgstr ""
 
 #: lib/editor.inc.php
-msgid "No gradient"
-msgstr ""
-
-#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
-msgid "Custom colour"
-msgstr ""
-
-#: lib/editor.inc.php
 msgid "−"
 msgstr ""
 
 #: lib/editor.inc.php
-msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgid "No images in this library yet."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
 msgstr ""
 
 #: lib/editor.inc.php
@@ -287,11 +336,56 @@ msgid "Upload failed."
 msgstr ""
 
 #: lib/editor.inc.php
-msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgid "No gradient"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
 msgstr ""
 
 #: lib/editor.inc.php
 msgid "Remove range"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
 msgstr ""
 
 #: lib/editor.inc.php
@@ -1662,6 +1756,50 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php

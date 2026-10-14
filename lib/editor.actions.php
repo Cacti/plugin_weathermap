@@ -91,7 +91,7 @@ function wm_editor_read_config($map, $mapfile, $requireRevision = false) {
 function wm_editor_write_config($map, $mapfile, $createOnly = false) {
 	if (!$map->WriteConfig($mapfile, $createOnly, $map->editor_config_revision)) {
 		$current = is_file($mapfile) ? @hash_file('sha256', $mapfile) : false;
-		$stale = !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity)) || $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
+		$stale = $map->config_asset_conflict || !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity)) || $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
 		http_response_code($stale ? 409 : 500);
 		return false;
 	}
@@ -1198,6 +1198,70 @@ function getImageURL($mapname, $selected) {
 	$imageurl .= '&unique=' . time();
 
 	return $imageurl;
+}
+
+/**
+ * Validate a PHP upload and store its decoded image.
+ *
+ * @param string $kind The destination library category.
+ * @param array $file The PHP upload metadata from $_FILES.
+ *
+ * @return string The stored image filename.
+ */
+function wm_asset_upload_image($kind, $file) {
+	if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name'] ?? '')) throw new InvalidArgumentException(__('Choose a PNG, JPG or GIF file up to 5 MB.', 'weathermap'));
+	return wm_asset_store_image($kind, $file['tmp_name'], $file['name']);
+}
+/**
+ * Read or mutate an image library and emit a JSON response.
+ *
+ * @param string $mapfile The current validated map path.
+ * @param string $action The library operation requested by the editor.
+ *
+ * @return void Errors are returned as HTTP 400 JSON responses.
+ */
+function wm_editor_assets($mapfile, $action) {
+	header('Content-Type: application/json');
+	try {
+		if ($action !== 'image_data' && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') throw new InvalidArgumentException(__('Use POST to save changes.', 'weathermap'));
+		if ($action !== 'image_data') {
+			$map = new WeatherMap;
+			$map->context = 'editor';
+			if (!wm_editor_read_config($map, $mapfile, true)) {
+				echo json_encode(['error' => http_response_code() === 409
+					? __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap')
+					: __('Cannot read the map configuration.', 'weathermap')]);
+				return;
+			}
+		}
+		if ($action === 'image_data') {
+			$result = ['images' => wm_asset_image_list()];
+		} elseif ($action === 'upload_image') {
+			$references = wm_asset_image_reference_index();
+			$name = wm_asset_upload_image(get_nfilter_request_var('image_kind'), $_FILES['image_file'] ?? []);
+			$result = ['name' => $name, 'images' => wm_asset_image_list($references)];
+		} else {
+			$name = get_nfilter_request_var('image_name');
+			$path = wm_asset_image_path(get_nfilter_request_var('image_kind'), $name);
+			require_once __DIR__ . '/WeatherMap.config.php';
+			$lock = \WeathermapConfig\acquire();
+			if (!$lock) throw new RuntimeException(__('Could not lock map configurations.', 'weathermap'));
+			$referenceLocks = [];
+			try {
+				$references = wm_asset_locked_reference_index(dirname(__DIR__) . '/configs', $referenceLocks);
+				if (wm_asset_image_users($name, get_nfilter_request_var('image_kind'), $references)) throw new InvalidArgumentException(__('This image is still referenced by a map configuration.', 'weathermap'));
+				if (!is_file($path) || !unlink($path)) throw new RuntimeException(__('Could not delete the image.', 'weathermap'));
+			} finally {
+				foreach ($referenceLocks as $referenceLock) \WeathermapConfig\release($referenceLock);
+				\WeathermapConfig\release($lock);
+			}
+			$result = ['images' => wm_asset_image_list($references)];
+		}
+		echo json_encode($result);
+	} catch (Throwable $error) {
+		http_response_code($error instanceof InvalidArgumentException ? 400 : 500);
+		echo json_encode(['error' => $error->getMessage()]);
+	}
 }
 
 /**

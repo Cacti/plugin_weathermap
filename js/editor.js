@@ -740,6 +740,7 @@ function manage_images() {
 	$('#action').val('set_image');
 
 	show_dialog('dlgImages');
+	wmOpenImages();
 }
 
 function prefs() {
@@ -1328,7 +1329,7 @@ function show_dialog(dlg) {
 
 	$('#'+dlg).dialog({
 		autoOpen: true,
-		width: 600,
+		width: dlg === 'dlgImages' ? Math.min(900, $(window).width() - 40) : 600,
 		height: 'auto',
 		modal: false,
 		resizable: false,
@@ -1833,6 +1834,69 @@ function wmFriendlyLinkNames() {
 function wmDecodeEditorUrl(value) {
 	return String(value || '').replace(/&amp;/g, '&');
 }
+function wmAssetRequest(action, extra, callback, errorId) {
+	var values = {action: action, mapname: $('#mapname').val()};
+	if (action !== 'image_data' && typeof WMConfigRevision !== 'undefined') values.config_revision = WMConfigRevision;
+	if (typeof csrfMagicToken !== 'undefined') values.__csrf_magic = csrfMagicToken;
+	$.ajax({url: editor_url, type: action === 'image_data' ? 'GET' : 'POST', dataType: 'json', data: $.extend(values, extra),
+		success: callback, error: function(xhr) { $('#' + errorId).text(xhr.responseJSON && xhr.responseJSON.error || wmEditorText.imageText3); }});
+}
+function wmAssetImages(images) {
+	$('#wm-images-objects, #wm-images-backgrounds').empty();
+	images.forEach(function(item) {
+		var card = $('<div class="wm-image-card">').appendTo('#wm-images-' + item.kind);
+		$('<img>').attr({src: item.url, alt: item.name, loading: 'lazy'}).appendTo(card);
+		$('<span>').text(item.name).appendTo(card);
+		if (item.width && item.height) $('<span>').text(item.width + ' × ' + item.height + ' px').appendTo(card);
+		$('<span>').text(item.users && item.users.length ? wmEditorText.imageUsed.replace('%s', item.users.join(', ')) : wmEditorText.imageUnused).appendTo(card);
+		if (item.deletable !== false) $('<button type="button" class="ui-button wm-image-delete">').text(wmEditorText.imageText0).attr('aria-label', wmEditorText.imageText9.replace('%s', item.name)).appendTo(card).on('click', function() {
+			if (!window.confirm(wmEditorText.imageText10.replace('%s', item.name))) return;
+			wmAssetRequest('delete_image', {image_kind: item.kind, image_name: item.name}, function(data) { wmAssetImages(data.images); }, 'wm-images-error');
+		});
+	});
+	['objects', 'backgrounds'].forEach(function(kind) {
+		var count = images.filter(function(item) { return item.kind === kind; }).length;
+		$('#wm-images-' + kind + '-count').text(wmEditorText.imageText11.replace('%s', String(count)));
+		if (!count) $('#wm-images-' + kind).append($('<p>').text(wmEditorText.imageText1));
+	});
+	// Rebuild the existing image selectors so uploads are available without reloading the editor.
+	[{id: 'node_iconfilename', kind: 'objects', label: wmEditorText.imageText14}, {id: 'map_bgfile', kind: 'backgrounds', label: wmEditorText.imageText15}].forEach(function(spec) {
+		var select = $('#' + spec.id), old = select.val();
+		var slick = select.data('ddslick');
+		if (slick) { old = slick.selectedData && slick.selectedData.value; select.ddslick('destroy'); select = $('#' + spec.id); }
+		var current = select.find('option').filter(function() { return this.value === old; }).first().clone();
+		select.find('option').filter(function() { return this.value.indexOf('images/' + spec.kind + '/') === 0 && /\.(png|gif|jpe?g)$/i.test(this.value); }).remove();
+		if (!select.find('option[value="--NONE--"]').length) select.prepend($('<option>').val('--NONE--').text(spec.label));
+		images.filter(function(item) { return item.kind === spec.kind; }).forEach(function(item) {
+			select.append($('<option>').val('images/' + item.kind + '/' + item.name).text(item.name).attr({'data-imagesrc': item.url, 'data-description': item.name}));
+		});
+		if (old && !select.find('option').filter(function() { return this.value === old; }).length) {
+			select.append(current.length ? current : $('<option>').val(old).text(old));
+		}
+		select.val(old);
+	});
+	$('#dlgImages').dialog('option', {maxHeight: $(window).height() - 80, position: {my: 'center', at: 'center', of: window}});
+}
+function wmOpenImages() {
+	$('#wm-images-error').empty();
+	wmAssetRequest('image_data', {}, function(data) { wmAssetImages(data.images); }, 'wm-images-error');
+	$('.wm-image-upload').off('click').on('click', function() {
+		var button = $(this), kind = button.attr('data-kind'), input = $('#wm-image-file-' + kind);
+		var file = input[0].files[0];
+		if (!file) { $('#wm-images-error').text(wmEditorText.imageText2); return; }
+		var data = new FormData();
+		data.append('action', 'upload_image'); data.append('mapname', $('#mapname').val());
+		data.append('image_kind', kind); data.append('image_file', file);
+		if (typeof WMConfigRevision !== 'undefined') data.append('config_revision', WMConfigRevision);
+		if (typeof csrfMagicToken !== 'undefined') data.append('__csrf_magic', csrfMagicToken);
+		button.prop('disabled', true);
+		$.ajax({url: editor_url, type: 'POST', data: data, dataType: 'json', contentType: false, processData: false,
+			success: function(result) { $('#wm-images-error').text(wmEditorText.imageText13.replace('%s', result.name)); input.val(''); wmAssetImages(result.images); },
+			error: function(xhr) { $('#wm-images-error').text(xhr.responseJSON && xhr.responseJSON.error || wmEditorText.imageText4); },
+			complete: function() { button.prop('disabled', false); }});
+	});
+}
+
 var wmAssetPalette = {Black: '#000000', White: '#ffffff', Blue: '#0000ff', Red: '#cc0000', Green: '#008000', Purple: '#800080', Orange: '#b35a00', Grey: '#666666', None: 'none'};
 function wmAssetColour(value, allowEmpty, swatches, solid, label) {
 	var box = $('<div class="wm-asset-colour">'), select = $('<select class="wm-colour-value">').attr('aria-label', label).appendTo(box);

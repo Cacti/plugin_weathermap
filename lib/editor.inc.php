@@ -338,7 +338,7 @@ function wm_editor_sanitize_file($filename,$allowed_exts = []) {
 	foreach ($allowed_exts as $ext) {
 		$match = '.' . $ext;
 
-		if (substr($filename, -strlen($match),strlen($match)) == $match) {
+		if (strcasecmp(substr($filename, -strlen($match), strlen($match)), $match) === 0) {
 			$ok = true;
 		}
 	}
@@ -646,7 +646,9 @@ function get_imagelist($imagedir) {
 				$realfile = $imdir . '/' . $file;
 				$uri      = "images/$imagedir/$file";
 
-				if (is_readable($realfile) && (preg_match('/\.(gif|jpg|png)$/i', $file))) {
+				if (is_file($realfile) && is_readable($realfile) && (preg_match('/\.(gif|jpe?g|png)$/i', $file))) {
+					$size = @getimagesize($realfile);
+					if (!$size || !in_array($size[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) continue;
 					$imagelist[] = $uri;
 					$n++;
 				}
@@ -1013,6 +1015,24 @@ function getEditorJs() {
 	var addNodeHelp   = '<?php print __esc('Click on the map where you would like to add a new node.', 'weathermap'); ?>';
 
 	var wmEditorText = <?php print json_encode([
+		'imageText0' => __('−', 'weathermap'),
+		'imageText1' => __('No images in this library yet.', 'weathermap'),
+		'imageText2' => __('Choose a PNG, JPG or GIF to upload.', 'weathermap'),
+		'imageText3' => __('The request failed. Please try again.', 'weathermap'),
+		'imageText4' => __('Upload failed.', 'weathermap'),
+		'imageText5' => __('Choose a PNG, JPG or GIF file up to 5 MB.', 'weathermap'),
+		'imageText6' => __('No gradient', 'weathermap'),
+		'imageText7' => __('Custom colour', 'weathermap'),
+		'imageText8' => __('Remove range', 'weathermap'),
+		'imageText9' => __('Delete %s', '%s', 'weathermap'),
+		'imageText10' => __('Delete image "%s" from the server?', '%s', 'weathermap'),
+		'imageText11' => __('Images: %s', '%s', 'weathermap'),
+		'imageText13' => __('Uploaded %s', '%s', 'weathermap'),
+		'imageText14' => __('Label Only', 'weathermap'),
+		'imageText15' => __('No background', 'weathermap'),
+		'imageUsed' => __('Used by: %s', '%s', 'weathermap'),
+		'imageUnused' => __('Not used by a map', 'weathermap'),
+
 		'colourText0' => __('No gradient', 'weathermap'),
 		'colourText1' => __('Custom colour', 'weathermap'),
 		'colourText2' => __('−', 'weathermap'),
@@ -1041,8 +1061,6 @@ function getEditorJs() {
 		'iconMatchCount' => __('Matching icons: %s', '%s', 'weathermap'),
 		'iconNoMatches' => __('No matching icons', 'weathermap'),
 
-		'staleError' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap'),
-		'saveError' => __('Unable to save changes. Please try again.', 'weathermap'),
 		'currentInterface'     => __('Current interface', 'weathermap'),
 		'advanced'             => __('Advanced settings', 'weathermap'),
 		'hideAdvanced'         => __('Hide advanced settings', 'weathermap'),

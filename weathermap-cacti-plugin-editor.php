@@ -95,7 +95,7 @@ if (isset_request_var('action')) {
 		'graphs', 'datasources', 'newmap', 'newmapcopy', 'font_samples', 'draw',
 		'show_config', 'fetch_config', 'set_link_config', 'set_node_config',
 		'set_note_properties', 'set_node_properties', 'set_link_properties', 'set_map_properties',
-		'set_map_style', 'colour_data', 'set_map_colours', 'add_link2', 'place_legend', 'place_stamp', 'via_link',
+		'set_map_style', 'image_data', 'upload_image', 'delete_image', 'colour_data', 'set_map_colours', 'add_link2', 'place_legend', 'place_stamp', 'via_link',
 		'move_node', 'link_tidy', 'retidy', 'retidy_all', 'untidy',
 		'delete_link', 'add_node', 'editor_settings', 'delete_node',
 		'clone_node', 'load_area_data', 'load_map_javascript', 'nothing'
@@ -130,6 +130,12 @@ wm_debug("Starting Edit Run: action is $action on $mapname");
 wm_debug('==========================================================================================================');
 
 switch($action) {
+	case 'image_data':
+	case 'upload_image':
+	case 'delete_image':
+		require_once __DIR__ . '/lib/editor.assets.php';
+		wm_editor_assets($mapfile, $action);
+		exit;
 	case 'colour_data':
 	case 'set_map_colours':
 		require_once __DIR__ . '/lib/editor.colours.php';
@@ -904,23 +910,18 @@ foreach ($styles as $id => $name) {
 		<!-- Colours -->
 
 		<!-- Images -->
-		<div id='dlgImages' class='dlgProperties' title='Manage Images'>
-			<div class='cactiTable'>
-				<div class='dlgBody'>
-					<p>Nothing in here works yet. </p>
-					The aim is to have some nice way to upload images which can be used as icons or backgrounds.
-					These images are what would appear in the dropdown boxes that don't currently do anything in the Node and Map Properties dialogs. This may end up being a separate page rather than a dialog box...
-				</div>
-				<div class='dlgButtons'>
-					<div class='dlgSubButtons'>
-						<a id='tb_images_cancel' class='wm_cancel ui-button ui-corner-all ui-widget'>Cancel</a>
-						<a id='tb_images_submit' class='wm_submit ui-button ui-corner-all ui-widget'>Save</a>
-					</div>
-				</div>
-				<div class='dlgHelp'>
-					In the future, this form will allow you to manage adding additional icons to the Icon library.  For now, you can copy your png files to either &lt;path_cacti&gt;/plugins/weathermap/images/backgrounds/ for Background Images and &lt;path_cacti&gt;/plugins/weathermap/images/objects/ for Icon files.
-				</div>
+		<div id='dlgImages' class='dlgProperties' title='<?php print __esc('Manage Images', 'weathermap'); ?>'>
+			<div class='dlgBody'>
+				<p id='wm-images-error' role='alert'></p>
+				<div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Node Icons', 'weathermap'); ?></div>
+				<div class='wm-image-uploader'><label for='wm-image-file-objects'><?php print __esc('Upload node icon', 'weathermap'); ?></label><input type='file' id='wm-image-file-objects' accept='image/png,image/jpeg,image/gif'><button type='button' class='wm-image-upload ui-button ui-corner-all ui-widget' data-kind='objects'><?php print __esc('Upload Node Icon', 'weathermap'); ?></button></div>
+				<p id='wm-images-objects-count'></p><div id='wm-images-objects' class='wm-image-library' aria-label='<?php print __esc('Existing node icons', 'weathermap'); ?>'></div>
+				<div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Background Images', 'weathermap'); ?></div>
+				<div class='wm-image-uploader'><label for='wm-image-file-backgrounds'><?php print __esc('Upload background', 'weathermap'); ?></label><input type='file' id='wm-image-file-backgrounds' accept='image/png,image/jpeg,image/gif'><button type='button' class='wm-image-upload ui-button ui-corner-all ui-widget' data-kind='backgrounds'><?php print __esc('Upload Background', 'weathermap'); ?></button></div>
+				<p id='wm-images-backgrounds-count'></p><div id='wm-images-backgrounds' class='wm-image-library' aria-label='<?php print __esc('Existing background images', 'weathermap'); ?>'></div>
 			</div>
+			<div class='dlgButtons'><div class='dlgSubButtons'><button type='button' class='wm_cancel ui-button ui-corner-all ui-widget'><?php print __esc('Close', 'weathermap'); ?></button></div></div>
+			<div class='dlgHelp'><?php print __esc('PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted.', 'weathermap'); ?></div>
 		</div>
 		<!-- Images -->
 

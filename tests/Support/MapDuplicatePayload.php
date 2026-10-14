@@ -6,6 +6,9 @@
  +-------------------------------------------------------------------------+
 */
 
+chdir(dirname(__DIR__, 2));
+require dirname(__DIR__, 2) . '/lib/WeatherMap.class.php';
+
 // Run the actual function without executing the management page dispatcher.
 $source = file_get_contents(__DIR__ . '/../../weathermap-cacti-plugin-mgmt.php');
 $start  = strpos($source, 'function map_duplicate(');
@@ -14,7 +17,7 @@ $end    = strpos($source, "\n/**", $start);
 if ($start === false || $end === false) {
 	throw new RuntimeException('Unable to locate the map duplication function.');
 }
-$fixture = sys_get_temp_dir() . '/wm-duplicate-' . bin2hex(random_bytes(5));
+$fixture = realpath(sys_get_temp_dir()) . '/wm-duplicate-' . bin2hex(random_bytes(5));
 mkdir($fixture); mkdir($fixture . '/configs');
 symlink(dirname(__DIR__, 2) . '/lib', $fixture . '/lib');
 file_put_contents($fixture . '/configs/Original.conf', "TITLE Original Map\n");
@@ -54,6 +57,15 @@ function db_fetch_cell($sql) {
 function cacti_sizeof($value) {
 	return count($value);
 }
+
+/**
+ * Count effective scale entries for the combined engine fixture.
+ *
+ * @param array $value Values to count.
+ *
+ * @return int Number of entries.
+ */
+function cacti_count($value) { return count($value); }
 
 /**
  * Supply a destination filename without touching the filesystem.

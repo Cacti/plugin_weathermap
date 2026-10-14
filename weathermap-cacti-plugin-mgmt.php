@@ -2015,8 +2015,24 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		try {
 			$contents = is_file($oldfile) ? file_get_contents($oldfile) : false;
 			if ($contents === false) throw new RuntimeException(__('The new Map with the name %s was unable to locate the config file %s to copy', $save['titlecache'], $map['configfile'], 'weathermap'));
+			$previousDirectory = getcwd();
+			try {
+				chdir(__DIR__);
+				$assetMap = new WeatherMap;
+				if (!$assetMap->ReadConfig($oldfile) || $assetMap->config_revision !== hash('sha256', $contents)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+			} finally { chdir($previousDirectory); }
+			$dependencies = $assetMap->config_dependencies;
+			foreach ($assetMap->config_root_identity as $logical => $state) $dependencies[$logical] = $state;
+			if (!isset($dependencies[realpath($oldfile)])) $dependencies[realpath($oldfile)] = $assetMap->config_revision;
 			$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
-			if (!\WeathermapConfig\atomicWrite($newfile, $contents, false, null, true, $lock)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+			$assets = array_unique(array_merge($assetMap->ManagedImagePaths(), WeatherMap::ManagedImagePathsFromConfig($contents)));
+			$validateAssets = function () use ($assets) {
+				foreach ($assets as $asset) {
+					if (!preg_match('/\{[^}]+\}/', $asset) && !is_file(__DIR__ . '/' . $asset)) return false;
+				}
+				return true;
+			};
+			if (!\WeathermapConfig\atomicWrite($newfile, $contents, false, null, true, $lock, $dependencies, $validateAssets)) throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
 			$created = true;
 			$newid = sql_save($save, 'weathermap_maps');
 			if (!$newid) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));

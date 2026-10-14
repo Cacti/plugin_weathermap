@@ -305,6 +305,15 @@ function wm_fixture_revision($file, $callback) {
 		atomic_assert($externalMap->WriteConfig($includeRoot), 'read-only included dependency needs no new lock file');
 		chmod($outside, 0755); unlink($outsideFile); rmdir($outside);
 
+		$asset = 'images/objects/atomic-asset-' . bin2hex(random_bytes(5)) . '.png'; $assetFile = dirname(__DIR__, 2) . '/' . $asset;
+		file_put_contents($assetFile, 'Image fixture'); file_put_contents($file, $original);
+		$selection = new \WeatherMap; $selection->ReadConfig($file); $selection->nodes['note1']->iconfile = $asset; unlink($assetFile);
+		atomic_assert(!$selection->WriteConfig($file) && $selection->config_asset_conflict && file_get_contents($file) === $original, 'deleted newly selected image cannot be restored as a broken reference');
+		file_put_contents($assetFile, 'Image fixture');
+		atomic_assert($selection->WriteConfig($file), 'existing newly selected image saves under mutex'); unlink($assetFile);
+		atomic_assert($selection->WriteConfig($file), 'already saved references do not prevent repairing legacy missing images');
+		file_put_contents($file, $original);
+
 		$targetDir = $dir . '/alias-target'; mkdir($targetDir); $targetFile = $targetDir . '/map.conf'; file_put_contents($targetFile, $original);
 		$alias = $dir . '/alias.conf'; symlink($targetFile, $alias); $targetLock = \WeathermapConfig\acquire($targetDir);
 		atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Alias change', true, hash('sha256', $original)) && file_get_contents($targetFile) === $original, 'alias cannot bypass a held physical target mutex');
@@ -327,6 +336,37 @@ function wm_fixture_revision($file, $callback) {
 		\WeathermapConfig\release($targetLock);
 		atomic_assert($aliasMap->WriteConfig($includeRoot), 'symlink include save succeeds after dependency mutex release');
 		unlink($alias); unlink($targetFile); unlink($targetDir . '/.weathermap-config.lock'); rmdir($targetDir);
+
+		$rawAsset = 'images/objects/raw-asset-' . bin2hex(random_bytes(5)) . '.png'; $rawAssetFile = dirname(__DIR__, 2) . '/' . $rawAsset;
+		$GLOBALS['__test_nfilter_request'] = ['node_name' => 'note1', 'item_configtext' => "NODE note1\n LABEL Raw\n POSITION 50 50\n ICON 40 40 " . $rawAsset . "\n"];
+		file_put_contents($file, $original); http_response_code(200); wm_fixture_revision($file, fn () => setNodeConfig($file));
+		atomic_assert(http_response_code() === 409 && file_get_contents($file) === $original, 'raw node override cannot commit a missing managed icon');
+		file_put_contents($rawAssetFile, 'Image fixture'); http_response_code(200); wm_fixture_revision($file, fn () => setNodeConfig($file));
+		atomic_assert(http_response_code() === 200 && str_contains(file_get_contents($file), $rawAsset), 'raw node override accepts an existing managed icon');
+		unlink($rawAssetFile); file_put_contents($file, $original); $GLOBALS['__test_nfilter_request'] = [];
+
+		$copyAsset = 'images/objects/copy-asset-' . bin2hex(random_bytes(4)) . '.png'; $copyAssetFile = $plugin = dirname(__DIR__, 2); $copyAssetFile .= '/' . $copyAsset;
+		file_put_contents($copyAssetFile, $validAsset); file_put_contents($file, $original . " ICON " . $copyAsset . "\n");
+		$copyMap = new \WeatherMap; $copyMap->ReadConfig($file); unlink($copyAssetFile);
+		atomic_assert(!$copyMap->WriteConfig($dir . '/missing-copy.conf', true) && !is_file($dir . '/missing-copy.conf'), 'create-only copy validates inherited image paths after deletion');
+		file_put_contents($copyAssetFile, $validAsset); atomic_assert($copyMap->WriteConfig($dir . '/valid-copy.conf', true), 'copy with existing inherited image succeeds');
+		unlink($copyAssetFile); file_put_contents($file, $original);
+
+		$includeAsset = $dir . '/image-include.conf';
+		file_put_contents($includeAsset, "NODE Inherited\n POSITION 20 20\n ICON images/objects/missing-included-image.png\n");
+		file_put_contents($file, "INCLUDE " . $includeAsset . "\n" . $original);
+		$includedImageMap = new \WeatherMap; $includedImageMap->ReadConfig($file);
+		atomic_assert(!$includedImageMap->WriteConfig($dir . '/included-image-copy.conf', true) && !is_file($dir . '/included-image-copy.conf'), 'create-only copy checks effective image references inherited through INCLUDE');
+		file_put_contents($file, $original);
+
+		$dynamicIcon = 'images/objects/updown_{node:this:bandwidth_in}.png';
+		file_put_contents($file, $original . " ICON " . $dynamicIcon . "\n");
+		$dynamicMap = new \WeatherMap; $dynamicMap->ReadConfig($file);
+		atomic_assert($dynamicMap->WriteConfig($dir . '/dynamic-copy.conf', true), 'create-only copy retains tokenized managed icons');
+		$GLOBALS['__test_nfilter_request'] = ['node_name' => 'note1', 'item_configtext' => "NODE note1\n LABEL Dynamic\n POSITION 50 50\n ICON " . $dynamicIcon . "\n"];
+		file_put_contents($file, $original); http_response_code(200); wm_fixture_revision($file, fn () => setNodeConfig($file));
+		atomic_assert(http_response_code() === 200 && str_contains(file_get_contents($file), $dynamicIcon), 'raw edit accepts renderer tokenized icon paths');
+		$GLOBALS['__test_nfilter_request'] = []; file_put_contents($file, $original);
 
 		$GLOBALS['__test_nfilter_request'] = [];
 		atomic_assert(wm_editor_read_config(new \WeatherMap, $file), 'read/render paths accept absent page revisions');
@@ -597,6 +637,14 @@ function wm_fixture_revision($file, $callback) {
 		$GLOBALS['__test_db_fetch_cell'] = fn () => 0;
 		$GLOBALS['__test_sql_save'] = function($record) { $GLOBALS['atomic_sql_saves'][] = $record; return 1; }; $GLOBALS['config_fault'] = 'rename';
 		try {
+			$GLOBALS['config_fault'] = '';
+			file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\nNODE A\n POSITION 10 10\n ICON images/objects/missing-clone-asset.png\n");
+			map_duplicate(1, 'Clone', 'clone');
+			atomic_assert($GLOBALS['atomic_sql_saves'] === [] && !is_file($plugin . '/configs/clone.conf'), 'management clone rejects missing inherited managed image before registration');
+			file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\nINCLUDE " . $includeAsset . "\n");
+			map_duplicate(1, 'Clone', 'clone');
+			atomic_assert($GLOBALS['atomic_sql_saves'] === [] && !is_file($plugin . '/configs/clone.conf'), 'management clone rejects missing image inherited through INCLUDE before registration');
+			file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\n"); $GLOBALS['config_fault'] = 'rename';
 			map_duplicate(1, 'Clone', 'clone');
 			atomic_assert($GLOBALS['__test_db_calls'] === [] && $GLOBALS['atomic_sql_saves'] === [], 'failed clone never registers auth or settings or invokes runner');
 		} finally { unset($GLOBALS['__test_db_fetch_row_prepared'], $GLOBALS['__test_sql_save'], $GLOBALS['__test_db_fetch_cell']); unlink($plugin . '/configs/' . $duplicateSource); $GLOBALS['config_fault'] = ''; }

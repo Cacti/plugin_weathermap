@@ -347,6 +347,8 @@ class WeatherMap extends WeatherMapBase {
 	var $included_scale_names = [];
 	/** @var array Loaded root paths, physical targets and revisions. */
 	var $config_root_identity = [];
+	var $config_managed_assets = [];
+	var $config_asset_conflict = false;
 	var $editor_config_revision = null;
 	/** @var mixed */
 	var $imagefile;
@@ -2452,6 +2454,45 @@ class WeatherMap extends WeatherMapBase {
 	}
 
 	/**
+	 * Collect managed image references from proposed serialized output.
+	 *
+	 * @param string $serialized Proposed output, including raw overrides.
+	 *
+	 * @return string[] Paths relative to the plugin directory.
+	 */
+	static function ManagedImagePathsFromConfig($serialized) {
+		$paths = [];
+		if (preg_match_all('/^[ \t]*(?:ICON|BACKGROUND)[ \t]+(?:[0-9]+[ \t]+[0-9]+[ \t]+)?([^\r\n]+?)[ \t]*\r?$/mi', $serialized, $matches)) $paths = $matches[1];
+		require_once __DIR__ . '/editor.assets.php';
+		$identities = [];
+		foreach ($paths as $path) {
+			$identity = wm_asset_managed_path($path, dirname(__DIR__));
+			if ($identity !== null) $identities[] = $identity;
+		}
+		return array_values(array_unique($identities));
+	}
+
+	/**
+	 * Collect managed image references from map objects or proposed output.
+	 *
+	 * @param string|null $serialized Proposed output, including raw overrides.
+	 *
+	 * @return string[] Paths relative to the plugin directory.
+	 */
+	function ManagedImagePaths($serialized = null) {
+		$paths = [$this->background];
+		foreach ($this->nodes as $node) $paths[] = $node->iconfile;
+		if ($serialized !== null) return self::ManagedImagePathsFromConfig($serialized);
+		require_once __DIR__ . '/editor.assets.php';
+		$identities = [];
+		foreach ($paths as $path) {
+			$identity = wm_asset_managed_path($path, dirname(__DIR__));
+			if ($identity !== null) $identities[] = $identity;
+		}
+		return array_values(array_unique($identities));
+	}
+
+	/**
 	 * @param mixed $input
 	 * @param bool $is_include
 	 * @return bool
@@ -3575,6 +3616,7 @@ class WeatherMap extends WeatherMapBase {
 
 		wm_debug('Finished Pre-Processing Plugins...');
 
+		if (!$is_include) $this->config_managed_assets = $this->ManagedImagePaths();
 		return (true);
 	}
 
@@ -3903,6 +3945,20 @@ class WeatherMap extends WeatherMapBase {
 			$contents = stream_get_contents($fd);
 			$closed = fclose($fd);
 
+			$this->config_asset_conflict = false;
+			$savedAssets = $contents !== false ? $this->ManagedImagePaths($contents) : [];
+			$sameDestination = \WeathermapConfig\sameFile($filename, $this->configfile);
+			$newAssets = ($createOnly || !$sameDestination) ? array_unique(array_merge($this->ManagedImagePaths(), $savedAssets)) : array_diff($savedAssets, $this->config_managed_assets);
+			$validate = function () use ($newAssets) {
+				foreach ($newAssets as $asset) {
+					if (preg_match('/\{[^}]+\}/', $asset)) continue;
+					if (!is_file(dirname(__DIR__) . '/' . $asset)) {
+						$this->config_asset_conflict = true;
+						return false;
+					}
+				}
+				return true;
+			};
 			$sameFile = \WeathermapConfig\sameFile($filename, $this->configfile);
 			$dependencies = $this->config_dependencies;
 			foreach ($this->config_root_identity as $logical => $state) {
@@ -3915,7 +3971,8 @@ class WeatherMap extends WeatherMapBase {
 				if (!isset($dependencies[$physicalSource])) $dependencies[$physicalSource] = $this->config_revision;
 				if ($logicalSource !== $physicalSource && !isset($dependencies[$logicalSource])) $dependencies[$logicalSource] = ['target' => $physicalSource, 'revision' => $this->config_revision];
 			}
-			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $dependencies);
+			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $dependencies, $validate);
+			if ($saved) $this->config_managed_assets = $savedAssets;
 			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
 			if ($saved) foreach ($this->config_root_identity as $logical => $state) {
 				if (realpath($filename) === $state['target']) $this->config_root_identity[$logical]['revision'] = hash('sha256', $contents);
