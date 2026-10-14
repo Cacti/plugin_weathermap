@@ -345,6 +345,13 @@ try {
 	assets_assert(!empty($stillLocal->colour_overrides['background']) && !empty($stillLocal->colour_overrides['pulse']) && $stillLocal->WriteConfig($orderedRoot), 'include without matching settings does not clear local overrides');
 	$stillLocalReload = new WeatherMap; $stillLocalReload->ReadConfig($orderedRoot);
 	assets_assert(wm_asset_colour_data($stillLocalReload)['background'] === '#010203' && wm_asset_colour_data($stillLocalReload)['pulse'] === false, 'winning root settings retain precedence');
+	file_put_contents($lastInclude, "SET traffic_pulse\n");
+	file_put_contents($orderedRoot, "INCLUDE $firstInclude\nSET traffic_pulse 1\nINCLUDE $lastInclude\n");
+	$emptyPulseMap = new WeatherMap; $emptyPulseMap->ReadConfig($orderedRoot);
+	assets_assert(empty($emptyPulseMap->colour_overrides['pulse']) && $emptyPulseMap->get_hint('traffic_pulse') === '' && $emptyPulseMap->WriteConfig($orderedRoot), 'empty included pulse directive wins and does not become a root override');
+	file_put_contents($lastInclude, "SET traffic_pulse 1\n");
+	$emptyPulseReload = new WeatherMap; $emptyPulseReload->ReadConfig($orderedRoot);
+	assets_assert(wm_asset_colour_data($emptyPulseReload)['pulse'] === true, 'empty pulse setting keeps inheriting future include updates');
 	echo "Editor assets regression PASS\n";
 } finally {
 	foreach (glob($dir . '/*') as $path) unlink($path);
