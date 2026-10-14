@@ -104,6 +104,7 @@ function wm_asset_save_colours($map, $data) {
 		}
 		$scales[$name][$key] = $entry;
 	}
+	if (empty($scales['DEFAULT'])) throw new InvalidArgumentException(__('Keep at least one DEFAULT traffic range.', 'weathermap'));
 	foreach ($map->colours as $name => $colours) foreach ($colours as $key => $row) if (!empty($row['special'])) $scales[$name][$key] = $row;
 	// Keep scales referenced by map objects rather than silently replacing them with defaults.
 	foreach (array_merge(array_values($map->nodes), array_values($map->links)) as $object) {

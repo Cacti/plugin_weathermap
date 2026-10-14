@@ -109,6 +109,8 @@ try {
 	$bounded = $data; $bounded['rows'][] = ['scale'=>str_repeat('A',1024), 'bottom'=>-1e15, 'top'=>1e15, 'colour'=>'#008000','end'=>'#ffffff','tag'=>str_repeat('L',200)];
 	wm_asset_save_colours($map,$bounded); $map->WriteConfig($file); $boundedMap = new WeatherMap; $boundedMap->ReadConfig($file);
 	assets_assert(isset($boundedMap->colours[str_repeat('A',1024)]), 'maximum scale name and directive fields survive parser roundtrip');
+	$noDefault = $data; $noDefault['rows'] = [['scale'=>'NamedOnly','bottom'=>0,'top'=>100,'colour'=>'#0000ff']];
+	try { wm_asset_save_colours($map, $noDefault); throw new RuntimeException('accepted empty DEFAULT scale'); } catch (InvalidArgumentException $expected) {}
 	$longName = 'Scale' . str_repeat('A', 70);
 	$longScale = $data;
 	$longScale['rows'][] = ['scale' => $longName, 'bottom' => 0, 'top' => 50, 'colour' => '#008000'];
@@ -136,10 +138,12 @@ try {
 	wm_fixture_revision($file, fn () => setMapProperties($file));
 	$props = new WeatherMap; $props->ReadConfig($file);
 	assets_assert(wm_asset_colour_data($props)['background'] === '#112233', 'map properties saves background');
-	unset($GLOBALS['__test_nfilter_request']['map_background_colour']);
+	unset($GLOBALS['__test_nfilter_request']['map_background_colour'], $GLOBALS['__test_nfilter_request']['config_revision']);
+	$GLOBALS['__test_nfilter_request']['map_title'] = 'Older properties saved';
+	http_response_code(200);
 	wm_fixture_revision($file, fn () => setMapProperties($file));
 	$props = new WeatherMap; $props->ReadConfig($file);
-	assets_assert(wm_asset_colour_data($props)['background'] === '#112233', 'older properties client preserves background');
+	assets_assert(http_response_code() === 200 && $props->title === 'Older properties saved' && wm_asset_colour_data($props)['background'] === '#112233', 'older properties client saves with fresh revision and preserves background');
 	$before_file = file_get_contents($file);
 	$GLOBALS['__test_nfilter_request']['map_background_colour'] = '#invalid';
 	wm_fixture_revision($file, fn () => setMapProperties($file));

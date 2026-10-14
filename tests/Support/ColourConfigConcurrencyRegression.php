@@ -434,6 +434,27 @@ function wm_fixture_revision($file, $callback) {
 		colour_atomic_assert(wm_editor_read_config(new \WeatherMap, $file, true), 'matching mutation revision remains accepted');
 		$GLOBALS['__test_nfilter_request'] = [];
 
+		$aliasSource = $dir . '/source-alias.conf'; symlink($file, $aliasSource);
+		$aliasLoaded = new \WeatherMap; $aliasLoaded->ReadConfig($aliasSource);
+		file_put_contents($file, "TITLE New direct winner\n");
+		colour_atomic_assert(!$aliasLoaded->WriteConfig($file) && file_get_contents($file) === "TITLE New direct winner\n", 'canonical destination identity preserves CAS across source alias');
+		file_put_contents($file, $initial);
+		$copySource = new \WeatherMap; $copySource->ReadConfig($file);
+		file_put_contents($file, "TITLE New copy source winner\n");
+		colour_atomic_assert(!$copySource->WriteConfig($dir . '/stale-source-copy.conf', true) && !is_file($dir . '/stale-source-copy.conf'), 'create-only copy validates source root revision');
+		file_put_contents($file, $initial); $copySource = new \WeatherMap; $copySource->ReadConfig($file); unlink($file);
+		colour_atomic_assert(!$copySource->WriteConfig($dir . '/deleted-source-copy.conf', true), 'deleted source cannot be copied from stale memory');
+		file_put_contents($file, $initial); $copySource = new \WeatherMap; $copySource->ReadConfig($aliasSource);
+		colour_atomic_assert($copySource->WriteConfig($dir . '/fresh-alias-copy.conf', true), 'unchanged alias source copies with logical and physical dependencies');
+		unlink($aliasSource);
+		$retargetA = $dir . '/retarget-a.conf'; $retargetB = $dir . '/retarget-b.conf'; $retargetAlias = $dir . '/retarget-alias.conf';
+		file_put_contents($retargetA, "TITLE Same include bytes\n"); file_put_contents($retargetB, "TITLE Same include bytes\n"); symlink($retargetA, $retargetAlias);
+		file_put_contents($includeRoot, "WIDTH 600\nHEIGHT 300\nINCLUDE " . $retargetAlias . "\n");
+		$retargetMap = new \WeatherMap; $retargetMap->ReadConfig($includeRoot); unlink($retargetAlias); symlink($retargetB, $retargetAlias); clearstatcache();
+		colour_atomic_assert(!$retargetMap->WriteConfig($includeRoot), 'retargeted INCLUDE is rejected even when replacement bytes are identical');
+		$retargetMap = new \WeatherMap; $retargetMap->ReadConfig($includeRoot); colour_atomic_assert($retargetMap->WriteConfig($includeRoot), 'freshly loaded retargeted INCLUDE succeeds');
+		unlink($retargetAlias); unlink($retargetA); unlink($retargetB);
+
 		$oldLocale = setlocale(LC_NUMERIC, 0);
 		$commaLocale = setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR', 'de_DE.UTF-8');
 		try {

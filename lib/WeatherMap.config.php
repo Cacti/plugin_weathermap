@@ -77,12 +77,31 @@ function writeAll($stream, $contents) {
 
 /**
  * Compare every included configuration against the bytes used by the snapshot.
- * @param array<string,string> $dependencies Included filenames and hashes.
+ * @param array<string,string|array> $dependencies Included filenames and hashes.
  * @return bool Whether all dependencies still match.
  */
+
+/**
+ * Compare filesystem destinations as well as identical path strings.
+ * @param string $left First filename.
+ * @param string $right Second filename.
+ * @return bool Whether both names identify the same file.
+ */
+function sameFile($left, $right) {
+	if ($left === '' || $right === '') return false;
+	if ($left === $right) return true;
+	$resolved = realpath($left);
+	return $resolved !== false && $resolved === realpath($right);
+}
+
 function dependenciesMatch($dependencies) {
 	foreach ($dependencies as $path => $revision) {
 		clearstatcache(true, $path);
+		if (is_array($revision)) {
+			if (realpath($path) !== $revision['target']) return false;
+			$revision = $revision['revision'];
+		}
+		if (!is_file($path)) return false;
 		if (!is_string($revision) || @hash_file('sha256', $path) !== $revision) return false;
 	}
 	return true;
@@ -91,7 +110,7 @@ function dependenciesMatch($dependencies) {
 /**
  * Bind an editor token to its root configuration and included dependencies.
  * @param string|null $root Root configuration hash.
- * @param array<string,string> $dependencies Included filenames and hashes.
+ * @param array<string,string|array> $dependencies Included filenames and hashes.
  * @return string|null Snapshot token.
  */
 function snapshotRevision($root, $dependencies) {
@@ -110,7 +129,7 @@ function snapshotRevision($root, $dependencies) {
  * @param bool $createOnly Refuse to replace an existing destination.
  * @param resource|null $heldLock Optional caller-owned mutex for this destination directory.
  *
- * @param array<string,string> $dependencies Included configuration snapshots.
+ * @param array<string,string|array> $dependencies Included configuration snapshots.
  * @param callable|null $validate Additional commit-time validation.
  * @return bool Success; failures preserve the existing configuration.
  */

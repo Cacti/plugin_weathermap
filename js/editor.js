@@ -1891,6 +1891,9 @@ function wmOpenColours() {
         $('#wm-traffic-preset').selectmenu('refresh');
         wmTrafficPreview();
 		$('#dlgColours').dialog('option', {maxHeight: $(window).height() - 80, position: {my: 'center', at: 'center', of: window}});
+		$('#dlgColours').off('keydown.wmColourSave').on('keydown.wmColourSave', 'input', function(event) {
+			if (event.key === 'Enter' && (this.type === 'text' || this.type === 'number')) { event.preventDefault(); event.stopPropagation(); $('#wm-colours-save').trigger('click'); }
+		});
 		$('#wm-colours-save').prop('disabled', false).off('click').on('click', function() {
 			var rows = wmAssetScaleRows();
 			wmColourRequest('set_map_colours', {colours_json: JSON.stringify({outline: $('#wm-outline-colour .wm-colour-value').val(), pulse: $('#wm-traffic-pulse').prop('checked'), rows: rows})}, function() { hide_all_dialogs(); wmColourRefreshMap(); }, 'wm-colours-error');
