@@ -47,7 +47,7 @@ namespace WeathermapConfig {
 	 */
 	function flock($stream, $mode) {
 		if (($GLOBALS['config_fault'] ?? '') === 'lock' && $mode === LOCK_EX) return false;
-		if (($mode & LOCK_EX) && isset($GLOBALS['config_before_lock'])) ($GLOBALS['config_before_lock'])();
+		if (($mode & ~LOCK_NB) === LOCK_EX && isset($GLOBALS['config_before_lock'])) ($GLOBALS['config_before_lock'])();
 		return \flock($stream, $mode);
 	}
 
@@ -474,6 +474,27 @@ function wm_fixture_revision($file, $callback) {
 		$freshRoot->ReadConfig("TITLE Fragment save\n");
 		colour_atomic_assert($freshRoot->config_root_identity !== [], 'raw fragments retain captured root identity');
 		unlink($rootAlias); unlink($rootA); unlink($rootB);
+
+		$conflictDir = $dir . '/colour-conflict-targets'; mkdir($conflictDir);
+		$conflictA = $conflictDir . '/a.conf'; $conflictB = $conflictDir . '/b.conf'; $conflictAlias = $dir . '/colour-conflict.conf';
+		file_put_contents($conflictA, $initial); file_put_contents($conflictB, $initial); symlink($conflictA, $conflictAlias);
+		$colourSnapshot = new \WeatherMap; $colourSnapshot->ReadConfig($conflictAlias);
+		$GLOBALS['__test_nfilter_request'] = ['config_revision'=>\WeathermapConfig\snapshotRevision($colourSnapshot->config_revision, $colourSnapshot->config_dependencies, $colourSnapshot->config_root_identity), 'colours_json'=>json_encode($data)];
+		$conflictLocks = 0;
+		$GLOBALS['config_before_lock'] = function () use (&$conflictLocks, $conflictAlias, $conflictB) {
+			if (++$conflictLocks === 2) { unlink($conflictAlias); symlink($conflictB, $conflictAlias); clearstatcache(true, $conflictAlias); }
+		};
+		try {
+			http_response_code(200); ob_start(); wm_editor_colours($conflictAlias, 'set_map_colours'); $conflictReply = json_decode(ob_get_clean(), true);
+			colour_atomic_assert($conflictLocks === 2 && http_response_code() === 409 && str_contains($conflictReply['error'], 'Reload'), 'colour endpoint classifies identical-byte root retarget during commit as reload conflict');
+			colour_atomic_assert(file_get_contents($conflictA) === $initial && file_get_contents($conflictB) === $initial, 'colour root-retarget conflict preserves both target files');
+		} finally { unset($GLOBALS['config_before_lock']); }
+		$colourSnapshot = new \WeatherMap; $colourSnapshot->ReadConfig($conflictAlias);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($colourSnapshot->config_revision, $colourSnapshot->config_dependencies, $colourSnapshot->config_root_identity);
+		http_response_code(200); ob_start(); wm_editor_colours($conflictAlias, 'set_map_colours'); $freshReply = json_decode(ob_get_clean(), true);
+		colour_atomic_assert(http_response_code() === 200 && isset($freshReply['revision']), 'fresh colour snapshot saves after root retarget reload');
+		unlink($conflictAlias); unlink($conflictA); unlink($conflictB); unlink($conflictDir . '/.weathermap-config.lock'); rmdir($conflictDir);
+		$GLOBALS['__test_nfilter_request'] = [];
 
 		$oldLocale = setlocale(LC_NUMERIC, 0);
 		$commaLocale = setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR', 'de_DE.UTF-8');

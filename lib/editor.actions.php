@@ -1219,7 +1219,7 @@ function wm_editor_colours($mapfile, $action) {
 			wm_asset_save_colours($map, $data);
 			if (!$map->WriteConfig($mapfile, false, $map->config_revision, $lock)) {
 				$current = @hash_file('sha256', $mapfile);
-				if ($current !== $map->config_revision || !\WeathermapConfig\dependenciesMatch($map->config_dependencies)) {
+				if ($current !== $map->config_revision || !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity))) {
 					http_response_code(409);
 					echo json_encode(['error' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap')]);
 					return;
