@@ -1,5 +1,5 @@
 function initWeatherMapView() {
-	$('map').tooltip({
+	if (typeof $.fn.tooltip === 'function') $('map').tooltip({
 		items: 'area',
 		track: false,
 		show: false,
@@ -93,6 +93,9 @@ var waitForFinalEvent = (function () {
             if (holder.dataset.wmAnimationReady) return;
             var image = holder.querySelector('img[usemap]'), data;
             try { data = JSON.parse(holder.dataset.wmTraffic); } catch (error) { return; }
+            if (!image || !data) return;
+            data.width = Number(data.width); data.height = Number(data.height);
+            if (!Number.isFinite(data.width) || !Number.isFinite(data.height)) return;
             if (!image || !data || data.enabled !== true || !(data.width > 0) || !(data.height > 0) || !Array.isArray(data.regions) || !data.regions.length) return;
             holder.dataset.wmAnimationReady = '1';
             var surface = document.createElement('span');

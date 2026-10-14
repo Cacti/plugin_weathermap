@@ -1960,7 +1960,7 @@ function wmOpenColours() {
 			wmColourRequest('set_map_colours', {colours_json: JSON.stringify({outline: $('#wm-outline-colour .wm-colour-value').val(), pulse: $('#wm-traffic-pulse').prop('checked'), rows: rows})}, function() { hide_all_dialogs(); wmColourRefreshMap(); }, 'wm-colours-error');
 		});
 	}, 'wm-colours-error');
-	$('#wm-scale-add').off('click').on('click', function() { wmAssetScaleRow({scale: wmLockedScales.indexOf('DEFAULT') !== -1 ? 'Custom' : 'DEFAULT', bottom: 0, top: 100, colour: '#0000ff'}); $('#wm-traffic-preset').val('custom').selectmenu('refresh'); wmTrafficPreview(); });
+	$('#wm-scale-add').off('click').on('click', function() { var scale = 'DEFAULT'; if (wmLockedScales.indexOf(scale) !== -1) { scale = 'Custom'; var suffix = 2; while (wmLockedScales.indexOf(scale) !== -1) scale = 'Custom' + suffix++; } wmAssetScaleRow({scale: scale, bottom: 0, top: 100, colour: '#0000ff'}); $('#wm-traffic-preset').val('custom').selectmenu('refresh'); wmTrafficPreview(); });
 }
 
 // Notes are ordinary label-only nodes, with a small editor-specific style form.

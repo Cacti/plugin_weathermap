@@ -50,6 +50,11 @@ try {
 	$map->DrawMap('null');
 	$data = wm_traffic_animation_data($map);
 	animation_assert($data['enabled'] === true, 'pulse defaults on');
+	foreach (['LEGEND:DEFAULT', 'TITLE', 'TIMESTAMP', 'MINTIMESTAMP', 'MAXTIMESTAMP'] as $foregroundIndex => $foreground) {
+		$x = 21 + 10 * $foregroundIndex;
+		$map->imap->addArea('Rectangle', $foreground, '', [$x, 22, $x + 10, 32]);
+		animation_assert(in_array([[$x,22],[$x+10,22],[$x+10,32],[$x,32]], wm_traffic_animation_data($map)['occlusions'], true), 'foreground rectangle masks glow: ' . $foreground);
+	}
 	$map->add_hint('traffic_pulse', '0');
 	animation_assert(wm_traffic_animation_data($map)['enabled'] === false, 'saved setting disables pulse');
 	$map->add_hint('traffic_pulse', '1');

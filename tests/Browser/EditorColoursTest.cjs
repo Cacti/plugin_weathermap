@@ -46,6 +46,8 @@ assert.ok($('#wm-scale-rows tr').filter((i,tr)=>$(tr).find('.wm-range-scale').va
 w.wmOpenColours();request.success({revision:'e'.repeat(64),colours:{outline:'#000000',pulse:true,rows}});
 assert.equal($('#wm-included-scale-help').length,0,'shared help clears on map without includes');
 assert.equal($('#wm-traffic-preset').prop('disabled'),false);
+w.wmOpenColours();request.success({revision:'f'.repeat(64),colours:{outline:'#000000',pulse:true,rows,locked_scales:['DEFAULT','Custom','Custom2','Custom3']}});
+$('#wm-scale-add').trigger('click');const added=$('#wm-scale-rows tr').last();assert.equal(added.find('.wm-range-scale').val(),'Custom4');assert.ok(added.find('input,select,button').toArray().every(el=>!el.disabled));added.find('.wm-asset-delete').trigger('click');assert.equal($('#wm-scale-rows tr').length,rows.length,'new unlocked row can be removed without losing pending edits');
 // Cancel leaves the named background value untouched; submitting commits it.
 $('body').append('<input name="map_background_colour" id="map_background_colour" value="#ffffff"><input id="action"><div id="wm-map-background-colour"></div><div id="dlgMapProperties"></div><input id="map_title">');
 w.mapmode=()=>{};w.hide_all_dialogs=()=>{};w.show_dialog=()=>{};

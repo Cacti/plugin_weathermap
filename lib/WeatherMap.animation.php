@@ -54,7 +54,7 @@ function wm_traffic_animation_data($map) {
 	if (!$regions) return $empty;
 	$occlusions = [];
 	foreach ($map->imap->shapes as $shape) {
-		if (!preg_match('/^(?:NODE:|LINK:L[0-9]+:[23]$)/', $shape->name)) continue;
+		if (!preg_match('/^(?:NODE:|LINK:L[0-9]+:[23]$|LEGEND:|TITLE$|(?:MIN|MAX)?TIMESTAMP$)/', $shape->name)) continue;
 		if ($shape instanceof HTML_ImageMap_Area_Polygon) {
 			$occlusions[] = $shape->points;
 		} elseif ($shape instanceof HTML_ImageMap_Area_Rectangle) {
