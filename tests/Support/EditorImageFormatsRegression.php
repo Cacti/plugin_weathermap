@@ -204,6 +204,7 @@ try {
 			file_put_contents($fake, $bytes); $created[] = $fake;
 			if ($name === 'unsupported') image_format_assert(getimagesize($fake)[2] === IMAGETYPE_BMP, 'fixture really detects an unsupported raster');
 			image_format_assert(!array_filter(wm_asset_image_list(), fn ($item) => $item['kind'] === $kind && $item['name'] === basename($fake)), 'unsupported or invalid image omitted from library');
+			image_format_assert(!in_array('images/' . $kind . '/' . basename($fake), get_imagelist($kind), true), 'initial selector also excludes unsupported or invalid images');
 		}
 	}
 	// Stale, missing and nonexistent map tokens fail before upload validation or deletion.
