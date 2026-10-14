@@ -72,7 +72,7 @@ function wm_editor_read_config($map, $mapfile, $requireRevision = false) {
 		return false;
 	}
 	$revision = get_nfilter_request_var('config_revision');
-	if (($requireRevision && (!is_string($revision) || $revision === '')) || ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies), $revision)))) {
+	if (($requireRevision && (!is_string($revision) || $revision === '')) || ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity), $revision)))) {
 		http_response_code(409);
 		return false;
 	}
@@ -91,7 +91,7 @@ function wm_editor_read_config($map, $mapfile, $requireRevision = false) {
 function wm_editor_write_config($map, $mapfile, $createOnly = false) {
 	if (!$map->WriteConfig($mapfile, $createOnly, $map->editor_config_revision)) {
 		$current = is_file($mapfile) ? @hash_file('sha256', $mapfile) : false;
-		$stale = !\WeathermapConfig\dependenciesMatch($map->config_dependencies) || $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
+		$stale = !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity)) || $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
 		http_response_code($stale ? 409 : 500);
 		return false;
 	}
@@ -154,7 +154,7 @@ function getMapJavaScript($mapfile, $map = null) {
 		if (!wm_editor_read_config($map, $mapfile)) return;
 	}
 	print $map->asJS();
-	print 'var WMConfigRevision = ' . json_encode(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies)) . ';';
+	print 'var WMConfigRevision = ' . json_encode(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity)) . ';';
 }
 
 /**
@@ -1204,7 +1204,7 @@ function wm_editor_colours($mapfile, $action) {
 		$map = new WeatherMap;
 		$map->context = 'editor';
 		if (!$map->ReadConfig($mapfile) || !is_string($map->config_revision)) throw new RuntimeException(__('Cannot read the map configuration.', 'weathermap'));
-		$currentRevision = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies);
+		$currentRevision = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity);
 		$revision = get_nfilter_request_var('config_revision');
 		if (($action === 'set_map_colours' || ($revision !== null && $revision !== '')) && (!is_string($revision) || !hash_equals($currentRevision, $revision))) {
 			http_response_code(409);
@@ -1227,7 +1227,7 @@ function wm_editor_colours($mapfile, $action) {
 				throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
 			}
 		}
-		echo json_encode(['colours' => wm_asset_colour_data($map), 'revision' => \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies)]);
+		echo json_encode(['colours' => wm_asset_colour_data($map), 'revision' => \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity)]);
 	} catch (Throwable $error) {
 		http_response_code($error instanceof InvalidArgumentException ? 400 : 500);
 		echo json_encode(['error' => $error->getMessage()]);

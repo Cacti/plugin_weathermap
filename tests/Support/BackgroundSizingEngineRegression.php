@@ -3,7 +3,7 @@
 function wm_fixture_revision($file, $callback) {
 	if (!array_key_exists('config_revision', $GLOBALS['__test_nfilter_request'] ?? []) && is_file($file)) {
 		$map = new \WeatherMap; $map->ReadConfig($file);
-		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity);
 	}
 	return $callback();
 }

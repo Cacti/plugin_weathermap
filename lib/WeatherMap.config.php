@@ -76,12 +76,6 @@ function writeAll($stream, $contents) {
 }
 
 /**
- * Compare every included configuration against the bytes used by the snapshot.
- * @param array<string,string|array> $dependencies Included filenames and hashes.
- * @return bool Whether all dependencies still match.
- */
-
-/**
  * Compare filesystem destinations as well as identical path strings.
  * @param string $left First filename.
  * @param string $right Second filename.
@@ -94,6 +88,11 @@ function sameFile($left, $right) {
 	return $resolved !== false && $resolved === realpath($right);
 }
 
+/**
+ * Compare every included configuration against the bytes used by the snapshot.
+ * @param array<string,string|array> $dependencies Included filenames and hashes.
+ * @return bool Whether all dependencies still match.
+ */
 function dependenciesMatch($dependencies) {
 	foreach ($dependencies as $path => $revision) {
 		clearstatcache(true, $path);
@@ -111,9 +110,11 @@ function dependenciesMatch($dependencies) {
  * Bind an editor token to its root configuration and included dependencies.
  * @param string|null $root Root configuration hash.
  * @param array<string,string|array> $dependencies Included filenames and hashes.
+ * @param array $rootIdentity Loaded root path identities.
  * @return string|null Snapshot token.
  */
-function snapshotRevision($root, $dependencies) {
+function snapshotRevision($root, $dependencies, $rootIdentity = []) {
+	foreach ($rootIdentity as $logical => $state) if ($logical !== $state['target']) $dependencies[$logical] = $state;
 	if (!$dependencies) return $root;
 	ksort($dependencies);
 	return hash('sha256', serialize([$root, $dependencies]));

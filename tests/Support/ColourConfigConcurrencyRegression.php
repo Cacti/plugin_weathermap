@@ -136,7 +136,7 @@ namespace {
 function wm_fixture_revision($file, $callback) {
 	if (!array_key_exists('config_revision', $GLOBALS['__test_nfilter_request'] ?? []) && is_file($file)) {
 		$map = new \WeatherMap; $map->ReadConfig($file);
-		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity);
 	}
 	return $callback();
 }
@@ -365,7 +365,7 @@ function wm_fixture_revision($file, $callback) {
 		$includeConfig = "WIDTH 600\nHEIGHT 300\nINCLUDE " . $includeFile . "\n";
 		file_put_contents($includeRoot, $includeConfig);
 		$dependent = new \WeatherMap; $dependent->ReadConfig($includeRoot);
-		$token = \WeathermapConfig\snapshotRevision($dependent->config_revision, $dependent->config_dependencies);
+		$token = \WeathermapConfig\snapshotRevision($dependent->config_revision, $dependent->config_dependencies, $dependent->config_root_identity);
 		file_put_contents($includeFile, "TITLE Included winner\n"); $dependent->title = 'Stale edit';
 		colour_atomic_assert(!$dependent->WriteConfig($includeRoot) && file_get_contents($includeRoot) === $includeConfig, 'included file changes reject stale root persistence');
 		$GLOBALS['__test_nfilter_request'] = ['config_revision' => $token]; http_response_code(200);
@@ -430,7 +430,7 @@ function wm_fixture_revision($file, $callback) {
 		moveNode($file, 0);
 		colour_atomic_assert(http_response_code() === 409 && file_get_contents($file) === $beforeMissingRevision, 'missing mutation token cannot alter configuration');
 		$revisionMap = new \WeatherMap; $revisionMap->ReadConfig($file);
-		$GLOBALS['__test_nfilter_request'] = ['config_revision' => \WeathermapConfig\snapshotRevision($revisionMap->config_revision, $revisionMap->config_dependencies)];
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => \WeathermapConfig\snapshotRevision($revisionMap->config_revision, $revisionMap->config_dependencies, $revisionMap->config_root_identity)];
 		colour_atomic_assert(wm_editor_read_config(new \WeatherMap, $file, true), 'matching mutation revision remains accepted');
 		$GLOBALS['__test_nfilter_request'] = [];
 
@@ -454,6 +454,26 @@ function wm_fixture_revision($file, $callback) {
 		colour_atomic_assert(!$retargetMap->WriteConfig($includeRoot), 'retargeted INCLUDE is rejected even when replacement bytes are identical');
 		$retargetMap = new \WeatherMap; $retargetMap->ReadConfig($includeRoot); colour_atomic_assert($retargetMap->WriteConfig($includeRoot), 'freshly loaded retargeted INCLUDE succeeds');
 		unlink($retargetAlias); unlink($retargetA); unlink($retargetB);
+
+		$rootA = $dir . '/root-a.conf'; $rootB = $dir . '/root-b.conf'; $rootAlias = $dir . '/root-alias.conf';
+		$rootBytes = "WIDTH 100\nHEIGHT 100\nTITLE Identical roots\n";
+		file_put_contents($rootA, $rootBytes); file_put_contents($rootB, $rootBytes); symlink($rootA, $rootAlias);
+		$rootMap = new \WeatherMap; $rootMap->ReadConfig($rootAlias);
+		$rootToken = \WeathermapConfig\snapshotRevision($rootMap->config_revision, $rootMap->config_dependencies, $rootMap->config_root_identity);
+		unlink($rootAlias); symlink($rootB, $rootAlias); clearstatcache(true, $rootAlias);
+		$rootMap->title = 'Unexpected write';
+		colour_atomic_assert(!$rootMap->WriteConfig($rootAlias) && file_get_contents($rootA) === $rootBytes && file_get_contents($rootB) === $rootBytes, 'root retargeting cannot overwrite another identical-content file');
+		http_response_code(200);
+		colour_atomic_assert(!wm_editor_write_config($rootMap, $rootAlias) && http_response_code() === 409, 'commit-time root retarget conflicts return HTTP 409');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision'=>$rootToken]; http_response_code(200);
+		colour_atomic_assert(!wm_editor_read_config(new \WeatherMap, $rootAlias, true) && http_response_code() === 409, 'rendered page revision binds root alias identity before mutation dispatch');
+		$GLOBALS['__test_nfilter_request'] = [];
+		$freshRoot = new \WeatherMap; $freshRoot->ReadConfig($rootAlias); $freshRoot->title = 'Fresh root save';
+		colour_atomic_assert($freshRoot->WriteConfig($rootAlias), 'freshly loaded root alias saves');
+		$freshRoot->title = 'Second root save'; colour_atomic_assert($freshRoot->WriteConfig($rootAlias), 'successful saves refresh root identity revisions');
+		$freshRoot->ReadConfig("TITLE Fragment save\n");
+		colour_atomic_assert($freshRoot->config_root_identity !== [], 'raw fragments retain captured root identity');
+		unlink($rootAlias); unlink($rootA); unlink($rootB);
 
 		$oldLocale = setlocale(LC_NUMERIC, 0);
 		$commaLocale = setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR', 'de_DE.UTF-8');
