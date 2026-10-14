@@ -2507,7 +2507,8 @@ class WeatherMap extends WeatherMapBase {
 			$filename = $input;
 
 			if ($is_include) {
-				$dependencyPath = realpath($filename) ?: (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+				$dependencyLogicalPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+				$dependencyPath = realpath($filename) ?: $dependencyLogicalPath;
 				if (!array_key_exists($dependencyPath, $this->config_dependencies)) $this->config_dependencies[$dependencyPath] = null;
 				wm_debug('ReadConfig Detected that this is an INCLUDED config filename.');
 
@@ -2540,7 +2541,10 @@ class WeatherMap extends WeatherMapBase {
 					fclose($fd);
 					$loadedRevision = hash_final($revision);
 					if (!$is_include) $this->config_revision = $loadedRevision;
-					else $this->config_dependencies[$dependencyPath] = $loadedRevision;
+					else {
+						$this->config_dependencies[$dependencyPath] = $loadedRevision;
+						if ($dependencyLogicalPath !== $dependencyPath) $this->config_dependencies[$dependencyLogicalPath] = ['target' => $dependencyPath, 'revision' => $loadedRevision];
+					}
 				}
 			}
 		}
@@ -3893,7 +3897,7 @@ class WeatherMap extends WeatherMapBase {
 
 			$this->config_asset_conflict = false;
 			$savedAssets = $contents !== false ? $this->ManagedImagePaths($contents) : [];
-			$sameDestination = $this->configfile !== '' && $filename === $this->configfile;
+			$sameDestination = \WeathermapConfig\sameFile($filename, $this->configfile);
 			$newAssets = ($createOnly || !$sameDestination) ? array_unique(array_merge($this->ManagedImagePaths(), $savedAssets)) : array_diff($savedAssets, $this->config_managed_assets);
 			$validate = function () use ($newAssets) {
 				foreach ($newAssets as $asset) {
@@ -3905,8 +3909,15 @@ class WeatherMap extends WeatherMapBase {
 				}
 				return true;
 			};
-			$sameFile = $this->configfile !== '' && $filename === $this->configfile;
-			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $this->config_dependencies, $validate);
+			$sameFile = \WeathermapConfig\sameFile($filename, $this->configfile);
+			$dependencies = $this->config_dependencies;
+			if (!$sameFile && $this->configfile !== '' && is_string($this->config_revision)) {
+				$logicalSource = (realpath(dirname($this->configfile)) ?: dirname($this->configfile)) . '/' . basename($this->configfile);
+				$physicalSource = realpath($this->configfile) ?: $logicalSource;
+				$dependencies[$physicalSource] = $this->config_revision;
+				if ($logicalSource !== $physicalSource) $dependencies[$logicalSource] = ['target' => $physicalSource, 'revision' => $this->config_revision];
+			}
+			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $dependencies, $validate);
 			if ($saved) $this->config_managed_assets = $savedAssets;
 			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
 			return $saved;
