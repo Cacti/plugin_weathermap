@@ -1,4 +1,13 @@
 <?php
+/** Submit the page revision expected by production mutation routes. */
+function wm_fixture_revision($file, $callback) {
+	if (!array_key_exists('config_revision', $GLOBALS['__test_nfilter_request'] ?? []) && is_file($file)) {
+		$map = new \WeatherMap; $map->ReadConfig($file);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity);
+	}
+	return $callback();
+}
+
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group, Howard Jones                   |
@@ -59,7 +68,7 @@ try {
 			'map_bgfile'           => $directory . '/background.png', 'map_background_sizing' => $mode,
 			'map_linkdefaultwidth' => '7', 'map_linkdefaultbwin' => '100M', 'map_linkdefaultbwout' => '100M',
 		];
-		setMapProperties($directory . '/' . $mode . '.conf');
+		wm_fixture_revision($directory . '/' . $mode . '.conf', fn () => setMapProperties($directory . '/' . $mode . '.conf'));
 		$saved = new WeatherMap();
 		$saved->ReadConfig($directory . '/' . $mode . '.conf');
 		wm_engine_assert($saved->get_hint('background_sizing') === ($mode === 'invalid' ? 'image' : $mode), $mode . ' editor persistence');
@@ -100,5 +109,7 @@ try {
 } finally {
 	foreach (glob($directory . '/*') as $file) {
 		unlink($file);
-	}rmdir($directory);
+	}
+	if (is_file($directory . '/.weathermap-config.lock')) unlink($directory . '/.weathermap-config.lock');
+	rmdir($directory);
 }

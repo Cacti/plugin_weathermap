@@ -143,5 +143,6 @@ try {
 		unlink($file);
 	}
 	rmdir($directory . '/output');
+	if (is_file($directory . '/.weathermap-config.lock')) unlink($directory . '/.weathermap-config.lock');
 	rmdir($directory);
 }

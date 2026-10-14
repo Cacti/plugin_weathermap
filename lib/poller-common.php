@@ -112,6 +112,47 @@ function weathermap_check_cron($time, $string) {
 }
 
 /**
+ * Read a regular managed raster only after successful decoding.
+ * @param string $path Asset filename.
+ * @return string|false Validated image bytes, or false.
+ */
+function weathermap_read_raster($path) {
+	if (is_link($path) || !is_file($path) || !in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), ['png', 'jpg', 'jpeg', 'gif'], true)) return false;
+	$contents = @file_get_contents($path);
+	if ($contents === false) return false;
+	$info = @getimagesizefromstring($contents);
+	if ($info === false || !in_array($info[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) return false;
+	set_error_handler(function () { return true; }, E_WARNING);
+	try { $image = imagecreatefromstring($contents); } finally { restore_error_handler(); }
+	if ($image === false) return false;
+	imagedestroy($image);
+	return $contents;
+}
+
+/**
+ * Stage a complete legacy asset copy while keeping every old map reference usable.
+ *
+ * @param string $old Source asset path.
+ * @param string $new New asset path.
+ * @return bool Whether a complete copy was reserved at the destination.
+ */
+function weathermap_stage_asset_copy($old, $new) {
+	global $config;
+	require_once __DIR__ . '/WeatherMap.config.php';
+	$root = realpath($config['base_path'] . '/plugins/weathermap');
+	$source = realpath($old);
+	$destination = realpath(dirname($new));
+	if ($root === false || $source === false || $destination === false) return false;
+	$root = str_replace('\\', '/', $root); $source = str_replace('\\', '/', $source); $destination = str_replace('\\', '/', $destination);
+	if (!str_starts_with($source, $root . '/')
+		|| !in_array($destination, [$root . '/images/objects', $root . '/images/backgrounds'], true)
+		|| !in_array(strtolower(pathinfo($source, PATHINFO_EXTENSION)), ['png', 'jpg', 'jpeg', 'gif'], true)) return false;
+	$contents = weathermap_read_raster($source);
+	if ($contents === false) return false;
+	return \WeathermapConfig\atomicWrite($new, $contents, false, null, true);
+}
+
+/**
  * @return void
  */
 function weathermap_repair_maps() {
@@ -142,44 +183,54 @@ function weathermap_repair_maps() {
 			wm_debug('---------------------------------------------');
 			wm_debug("Processing Map File $configfile");
 
-			if (file_exists($configfile) && is_writable($configfile)) {
-				$contents    = file($configfile) ?: [];
+			if (!is_file($configfile) || !is_writable($configfile)) continue;
+			$contents = file($configfile);
+			if ($contents === false) continue;
+			$revision = hash('sha256', implode('', $contents));
+			require_once __DIR__ . '/WeatherMap.config.php';
+			$repairLock = \WeathermapConfig\acquire($confdir);
+			if (!$repairLock) { wm_warn('Unable to lock repaired configuration: ' . $configfile . ' [WMPOLL13]'); continue; }
+			try {
+				if (file_exists($configfile) && is_writable($configfile)) {
 
-				foreach ($contents as $line) {
-					if (strpos($line, 'BACKGROUND') !== false) {
-						$parts   = explode('BACKGROUND', $line);
-						$dirgood = false;
-						$bgfile  = trim($parts[1]);
+					foreach ($contents as $line) {
+						if (strpos($line, 'BACKGROUND') !== false) {
+							$parts   = explode('BACKGROUND', $line);
+							$dirgood = false;
+							$bgfile  = trim($parts[1]);
 
-						if (strpos($bgfile, 'images/backgrounds/') === false) {
-							wm_debug('Found background file reference in old location: ' . $bgfile);
+							if (strpos($bgfile, 'images/backgrounds/') === false) {
+								wm_debug('Found background file reference in old location: ' . $bgfile);
 
-							if (file_exists($mydir . 'images/backgrounds/' . basename($bgfile))) {
-								wm_debug('Background file found in new location! Updating path only.');
+								if (weathermap_read_raster($mydir . 'images/backgrounds/' . basename($bgfile)) !== false) {
+									wm_debug('Background file found in new location! Updating path only.');
 
-								$line = 'BACKGROUND images/backgrounds/' . basename($bgfile);
+									$line = 'BACKGROUND images/backgrounds/' . basename($bgfile);
 
-								$changes++;
-							} else {
-								wm_debug('Background file not found in new location! Attempting to move.');
-
-								if (!is_dir($mydir . 'images/backgrounds')) {
-									$dirgood = mkdir($mydir . 'images/backgrounds');
+									$changes++;
 								} else {
-									$dirgood = true;
-								}
+									wm_debug('Background file not found in new location! Attempting to move.');
 
-								if ($dirgood && file_exists($mydir . $bgfile)) {
-									wm_debug('Found background file on disk: ' . $mydir . $bgfile . ' relocating!');
+									if (!is_dir($mydir . 'images/backgrounds')) {
+										$dirgood = mkdir($mydir . 'images/backgrounds');
+									} else {
+										$dirgood = true;
+									}
 
-									$old = $mydir . $bgfile;
-									$new = $mydir . 'images/backgrounds/' . basename($bgfile);
+									if ($dirgood && file_exists($mydir . $bgfile)) {
+										wm_debug('Found background file on disk: ' . $mydir . $bgfile . ' relocating!');
 
-									if (is_writable($mydir . $bgfile)) {
-										if (is_writeable($old) && is_writeable(dirname($new)) && is_writeable($new)) {
-											if (rename($old, $new)) {
-												$line = 'BACKGROUND images/backgrounds/' . basename($bgfile);
-												$changes++;
+										$old = $mydir . $bgfile;
+										$new = $mydir . 'images/backgrounds/' . basename($bgfile);
+
+										if (is_readable($mydir . $bgfile)) {
+											if (is_readable($old) && is_writeable(dirname($new))) {
+												if (weathermap_stage_asset_copy($old, $new)) {
+													$line = 'BACKGROUND images/backgrounds/' . basename($bgfile);
+													$changes++;
+												} else {
+													wm_warn(sprintf('Unable to move BACKGROUND %s to %s, Permission error [WMPOLL09]', $old, $new));
+												}
 											} else {
 												wm_warn(sprintf('Unable to move BACKGROUND %s to %s, Permission error [WMPOLL09]', $old, $new));
 											}
@@ -187,65 +238,67 @@ function weathermap_repair_maps() {
 											wm_warn(sprintf('Unable to move BACKGROUND %s to %s, Permission error [WMPOLL09]', $old, $new));
 										}
 									} else {
-										wm_warn(sprintf('Unable to move BACKGROUND %s to %s, Permission error [WMPOLL09]', $old, $new));
+										wm_warn(sprintf('BACKGROUND file not found on disk: %s skipping! [WMPOLL10]', $mydir . $bgfile));
 									}
-								} else {
-									wm_warn(sprintf('BACKGROUND file not found on disk: %s skipping! [WMPOLL10]', $mydir . $bgfile));
 								}
+							} elseif (strpos($bgfile, 'images/backgrounds/') !== false) {
+								wm_debug('Found background file reference in correct location: ' . $bgfile);
 							}
-						} elseif (strpos($bgfile, 'images/backgrounds/') !== false) {
-							wm_debug('Found background file reference in correct location: ' . $bgfile);
-						}
-					} elseif (strpos($line, 'ICON') !== false) {
-						/**
-						 * We are looking at the ICON parameter.  It can take two forms.  The first form is
-						 * a path to a filename, or the pattern as follows
-						 *
-						 * ICON height width type
-						 *
-						 * Types include:
-						 *
-						 * - box - a square cornered box
-						 * - rbox - a round cornered box
-						 * - round - a circle or an ellipse
-						 * - inpie & outpie to produce a pie chart of either the in or out value relative to it's maximum
-						 * - nlink - to produce a circular 'yin-yang' style symbox with each half showing the in and out values
-						 *
-						 */
-						$parts   = explode('ICON', $line);
-						$dirgood = false;
-						$attribs = explode(' ', $parts[1]);
+						} elseif (strpos($line, 'ICON') !== false) {
+							/**
+							 * We are looking at the ICON parameter.  It can take two forms.  The first form is
+							 * a path to a filename, or the pattern as follows
+							 *
+							 * ICON height width type
+							 *
+							 * Types include:
+							 *
+							 * - box - a square cornered box
+							 * - rbox - a round cornered box
+							 * - round - a circle or an ellipse
+							 * - inpie & outpie to produce a pie chart of either the in or out value relative to it's maximum
+							 * - nlink - to produce a circular 'yin-yang' style symbox with each half showing the in and out values
+							 *
+							 */
+							$parts   = explode('ICON', $line);
+							$dirgood = false;
+							$attribs = preg_split('/\s+/', trim($parts[1]));
 
-						if (cacti_sizeof($attribs) == 1) {
-							$objfile = trim($parts[1]);
+							if (cacti_sizeof($attribs) == 1 || (cacti_sizeof($attribs) == 3 && ctype_digit($attribs[0]) && ctype_digit($attribs[1]))) {
+								$objfile = end($attribs);
+								$dimensions = cacti_sizeof($attribs) == 3 ? $attribs[0] . ' ' . $attribs[1] . ' ' : '';
+								if (in_array(strtolower($objfile), ['box', 'rbox', 'round', 'inpie', 'outpie', 'gauge', 'nink', 'nlink', 'none'], true)) { $outcontents[] = rtrim($line); continue; }
 
-							if (strpos($objfile, 'images/objects/') === false) {
-								wm_debug('Found icon file reference in old location: ' . $objfile);
+								if (strpos($objfile, 'images/objects/') === false) {
+									wm_debug('Found icon file reference in old location: ' . $objfile);
 
-								if (file_exists($mydir . 'images/objects/' . basename($objfile))) {
-									wm_debug('Found file already in new location! Updating path only.');
+									if (weathermap_read_raster($mydir . 'images/objects/' . basename($objfile)) !== false) {
+										wm_debug('Found file already in new location! Updating path only.');
 
-									$line = "\tICON images/objects/" . basename($objfile);
+										$line = "\tICON " . $dimensions . "images/objects/" . basename($objfile);
 
-									$changes++;
-								} else {
-									if (!is_dir($mydir . 'images/objects')) {
-										$dirgood = mkdir($mydir . 'images/objects');
+										$changes++;
 									} else {
-										$dirgood = true;
-									}
+										if (!is_dir($mydir . 'images/objects')) {
+											$dirgood = mkdir($mydir . 'images/objects');
+										} else {
+											$dirgood = true;
+										}
 
-									if ($dirgood && file_exists($mydir . $objfile)) {
-										wm_debug('Object file found on disk: ' . $mydir . $objfile . ' relocating!');
+										if ($dirgood && file_exists($mydir . $objfile)) {
+											wm_debug('Object file found on disk: ' . $mydir . $objfile . ' relocating!');
 
-										$old = $mydir . $objfile;
-										$new = $mydir . 'images/objects/' . basename($objfile);
+											$old = $mydir . $objfile;
+											$new = $mydir . 'images/objects/' . basename($objfile);
 
-										if (is_writable($mydir . $objfile)) {
-											if (is_writeable($old) && is_writeable(dirname($new)) && is_writeable($new)) {
-												if (rename($old, $new)) {
-													$line = "\tICON images/objects/" . basename($objfile);
-													$changes++;
+											if (is_readable($mydir . $objfile)) {
+												if (is_readable($old) && is_writeable(dirname($new))) {
+													if (weathermap_stage_asset_copy($old, $new)) {
+														$line = "\tICON " . $dimensions . "images/objects/" . basename($objfile);
+														$changes++;
+													} else {
+														wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
+													}
 												} else {
 													wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
 												}
@@ -253,28 +306,29 @@ function weathermap_repair_maps() {
 												wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
 											}
 										} else {
-											wm_warn(sprintf('Unable to move ICONFILE %s to %s, Permission error [WMPOLL11]', $old, $new));
+											wm_warn(sprintf('ICONFILE file not found on disk: %s skipping! [WMPOLL12]', $mydir . $objfile));
 										}
-									} else {
-										wm_warn(sprintf('ICONFILE file not found on disk: %s skipping! [WMPOLL12]', $mydir . $objfile));
 									}
+								} elseif (strpos($objfile, 'images/objects/') !== false) {
+									wm_debug('Found object file reference in correct location: ' . $objfile);
 								}
-							} elseif (strpos($objfile, 'images/objects/') !== false) {
-								wm_debug('Found object file reference in correct location: ' . $objfile);
 							}
 						}
+
+						$outcontents[] = rtrim($line);
 					}
-
-					$outcontents[] = rtrim($line);
 				}
-			}
 
-			if ($changes) {
-				wm_debug('Writing updated file to: ' . $configfile);
-				file_put_contents($configfile, implode("\n", $outcontents), LOCK_EX);
-			} else {
-				wm_debug('File has correct BACKGROUND and ICON paths: ' . $configfile);
-			}
+				if ($changes) {
+					wm_debug('Writing updated file to: ' . $configfile);
+					require_once __DIR__ . '/WeatherMap.config.php';
+					if (!\WeathermapConfig\atomicWrite($configfile, implode("\n", $outcontents), true, $revision, false, $repairLock)) {
+						wm_warn('Unable to save repaired configuration: ' . $configfile . ' [WMPOLL13]');
+					}
+				} else {
+					wm_debug('File has correct BACKGROUND and ICON paths: ' . $configfile);
+				}
+			} finally { \WeathermapConfig\release($repairLock); }
 		}
 	}
 }

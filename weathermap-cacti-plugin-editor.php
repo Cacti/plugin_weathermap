@@ -94,7 +94,7 @@ if (isset_request_var('action')) {
 	$action = wm_editor_sanitize_action(get_nfilter_request_var('action'), [
 		'graphs', 'datasources', 'newmap', 'newmapcopy', 'font_samples', 'draw',
 		'show_config', 'fetch_config', 'set_link_config', 'set_node_config',
-		'set_node_properties', 'set_link_properties', 'set_map_properties',
+		'set_note_properties', 'set_node_properties', 'set_link_properties', 'set_map_properties',
 		'set_map_style', 'add_link2', 'place_legend', 'place_stamp', 'via_link',
 		'move_node', 'link_tidy', 'retidy', 'retidy_all', 'untidy',
 		'delete_link', 'add_node', 'editor_settings', 'delete_node',
@@ -137,11 +137,17 @@ switch($action) {
 		display_datasources();
 		exit;
 	case 'newmap':
-		newMap($mapfile);
+		if (!newMap($mapfile)) {
+			print __esc('Unable to save changes. Please try again.', 'weathermap');
+			exit();
+		}
 
 		break;
 	case 'newmapcopy':
-		newMapCopy($mapfile);
+		if (!newMapCopy($mapfile)) {
+			print __esc('Unable to save changes. Please try again.', 'weathermap');
+			exit();
+		}
 
 		break;
 	case 'font_samples':
@@ -163,11 +169,14 @@ switch($action) {
 	case 'set_link_config':
 		setLinkConfig($mapfile);
 
-		break;
+		exit();
 	case 'set_node_config':
 		setNodeConfig($mapfile);
 
-		break;
+		exit();
+	case 'set_note_properties':
+		setNoteProperties($mapfile, $grid_snap_value);
+		exit;
 	case 'set_node_properties':
 		setNodeProperties($mapfile);
 		exit;
@@ -237,7 +246,8 @@ switch($action) {
 }
 
 $map = new WeatherMap;
-$map->ReadConfig($mapfile);
+$map->context = 'editor';
+if (!wm_editor_read_config($map, $mapfile)) exit;
 
 // by here, there should be a valid $map - either a blank one, the existing one, or the existing one with requested changes
 wm_debug('Finished modifying');
@@ -246,6 +256,7 @@ wm_debug('Finished modifying');
 // expected.  This function should re redundant as the images are relocated during upgrade, but
 // is left here just in case.
 fixMapBackgroundAndImages($map);
+[$editor_width, $editor_height] = wm_note_effective_dimensions($map);
 
 // get the list from the images/ folder too
 $image_list   = get_imagelist('objects');
@@ -311,6 +322,7 @@ if ($editor_return_context === 'manage') {
 			<li class='tb_active' id='tb_newfile'><?php print __('Change<br>File', 'weathermap'); ?></li>
 			<li class='tb_active' id='tb_addnode'><?php print __('Add<br>Node', 'weathermap'); ?></li>
 			<li class='tb_active' id='tb_addlink'><?php print __('Add<br>Link', 'weathermap'); ?></li>
+			<li class='tb_active' id='tb_addnote'><?php print __('Add<br>Note', 'weathermap'); ?></li>
 			<li class='tb_active' id='tb_poslegend'><?php print __('Position<br>Legend', 'weathermap'); ?></li>
 			<li class='tb_active' id='tb_postime'><?php print __('Position<br>Timestamp', 'weathermap'); ?></li>
 			<li class='tb_active' id='tb_mapprops'><?php print __('Map<br>Properties', 'weathermap'); ?></li>
@@ -326,8 +338,8 @@ if ($editor_return_context === 'manage') {
 	</div>
 	<form id='frmMain' action='<?php print $editor_name ?>' method='post'>
 		<div class='mainArea'>
-			<input id='xycapture' name='xycapture' data-width='<?php print html_escape($map->width); ?>' data-height='<?php print html_escape($map->height); ?>' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
-			<img id='existingdata' name='existingdata' data-width='<?php print html_escape($map->width); ?>' data-height='<?php print html_escape($map->height); ?>' src='<?php print html_escape($imageurl); ?>' usemap='#weathermap_imap' />
+			<input id='xycapture' name='xycapture' width='<?php print html_escape($editor_width); ?>' height='<?php print html_escape($editor_height); ?>' data-width='<?php print html_escape($editor_width); ?>' data-height='<?php print html_escape($editor_height); ?>' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
+			<img id='existingdata' name='existingdata' width='<?php print html_escape($editor_width); ?>' height='<?php print html_escape($editor_height); ?>' data-width='<?php print html_escape($editor_width); ?>' data-height='<?php print html_escape($editor_height); ?>' src='<?php print html_escape($imageurl); ?>' usemap='#weathermap_imap' />
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
 			<div class='debug' style='display:none'><p><strong><?php print __('Debug', 'weathermap'); ?></strong>
@@ -363,7 +375,7 @@ if ($editor_return_context === 'manage') {
 		<!-- Data for overlay and selection -->
 		<div class='scriptData'>
 			<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
-			<?php getMapJavaScript($mapfile); ?>
+			<?php getMapJavaScript($mapfile, $map); ?>
 			<?php print 'var infoUrlStyle=' . intval(read_config_option('weathermap_infourl_style')) . ';'; ?>
 			</script>
 		</div>
@@ -371,6 +383,32 @@ if ($editor_return_context === 'manage') {
 			<?php getMapAreaData($mapfile); ?>
 		</div>
 		<!-- End Data for overlay and selection -->
+
+
+		<div id='dlgNoteProperties' class='dlgProperties' title='<?php print __esc('Note', 'weathermap'); ?>'>
+			<div class='dlgBody'>
+				<div id='wm-note-delete-bar' style='text-align:right;margin-bottom:8px'><button type='button' id='note_delete' class='ui-button ui-corner-all' style='color:#9b2525'><?php print __esc('Delete Note', 'weathermap'); ?></button></div>
+				<input type='hidden' id='note_name' name='note_name' value='' />
+				<table class='cactiTable'>
+					<tr><td><label for='note_text'><?php print __esc('Text', 'weathermap'); ?></label></td><td><textarea id='note_text' name='note_text' rows='3' maxlength='2000' style='width:100%'></textarea></td></tr>
+					<tr><td><label for='note_align'><?php print __esc('Text alignment', 'weathermap'); ?></label></td><td><select id='note_align' name='note_align'><option value='left'><?php print __esc('Left', 'weathermap'); ?></option><option value='centre'><?php print __esc('Centre', 'weathermap'); ?></option><option value='right'><?php print __esc('Right', 'weathermap'); ?></option></select></td></tr>
+					<tr><td><label for='note_font'><?php print __esc('Font', 'weathermap'); ?></label></td><td><select id='note_font' name='note_font'><?php print wm_style_font_options($map, $map->nodes['DEFAULT']->labelfont); ?></select></td></tr>
+					<tr><td><?php print __esc('Colour', 'weathermap'); ?></td><td><div id='note_palette' role='group' aria-label='<?php print __esc('Note colour', 'weathermap'); ?>' style='display:flex;flex-wrap:wrap;gap:6px'>
+					<?php foreach (['#000000' => __esc('Black', 'weathermap'), '#0000ff' => __esc('Blue', 'weathermap'), '#cc0000' => __esc('Red', 'weathermap'), '#008000' => __esc('Green', 'weathermap'), '#800080' => __esc('Purple', 'weathermap'), '#b35900' => __esc('Orange', 'weathermap'), '#666666' => __esc('Grey', 'weathermap'), '#ffffff' => __esc('White', 'weathermap')] as $colour => $label) { ?>
+						<button type='button' class='wm-note-colour ui-button ui-corner-all' data-colour='<?php print $colour; ?>' aria-pressed='false'><span aria-hidden='true' style='display:inline-block;width:12px;height:12px;background:<?php print $colour; ?>;border:1px solid #888;margin-right:5px'></span><?php print $label; ?></button>
+					<?php } ?></div></td></tr>
+					<tr><td><?php print __esc('Position', 'weathermap'); ?></td><td><input type='text' aria-label='X' size='4' class='ui-state-default ui-corner-all' id='note_x' name='note_x' min='0' max='<?php print $editor_width; ?>' />,<input type='text' aria-label='Y' size='4' class='ui-state-default ui-corner-all' id='note_y' name='note_y' min='0' max='<?php print $editor_height; ?>' /></td></tr>
+				</table>
+				<button type='button' id='note_advanced_toggle' class='ui-button ui-corner-all' aria-expanded='false' aria-controls='note_advanced'><?php print __esc('Advanced settings', 'weathermap'); ?></button><div id='note_advanced' style='display:none'><p><label for='note_colour'><?php print __esc('Custom colour', 'weathermap'); ?></label> <input type='color' id='note_colour' name='note_colour' value='#000000' /></p></div>
+				<p id='wm-note-error' role='alert' style='display:none'></p>
+			</div>
+			<div class='dlgButtons'>
+				<div class='dlgSubButtons'><button type='button' id='note_move' class='ui-button ui-corner-all'><?php print __esc('Move', 'weathermap'); ?></button><button type='button' id='note_clone' class='ui-button ui-corner-all' style='margin-right:24px'><?php print __esc('Clone', 'weathermap'); ?></button>
+				<button type='button' class='wm_submit ui-button ui-corner-all' style='font-weight:bold'><?php print __esc('Save', 'weathermap'); ?></button>
+				<button type='button' class='wm_cancel ui-button ui-corner-all'><?php print __esc('Cancel', 'weathermap'); ?></button>
+				</div>
+			</div>
+		</div>
 
 		<!-- Node Properties -->
 		<div id='dlgNodeProperties' class='dlgProperties' title='<?php print __('Node Properties', 'weathermap'); ?>'>

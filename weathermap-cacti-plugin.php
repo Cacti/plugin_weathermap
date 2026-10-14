@@ -203,7 +203,7 @@ switch (get_request_var('action')) {
 
 					print '';
 
-					print "<img src='?action=liveviewimage&id=$id' />\n";
+					print wm_liveview_image_html($map, $id);
 					print $map->imap->subHTML('LEGEND:');
 					print $map->imap->subHTML('TIMESTAMP');
 					print $map->imap->subHTML('NODE:');

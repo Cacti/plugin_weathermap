@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 12:29+1030\n"
+"POT-Creation-Date: 2026-10-15 00:01+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -202,6 +202,14 @@ msgid "No matching icons"
 msgstr ""
 
 #: lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr ""
+
+#: lib/editor.inc.php
 msgid "Current interface"
 msgstr ""
 
@@ -227,6 +235,27 @@ msgstr ""
 
 #: lib/editor.inc.php
 msgid "No interface selected"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
 msgstr ""
 
 #: lib/editor.inc.php
@@ -965,6 +994,10 @@ msgid "Add<br>Link"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
 msgid "Position<br>Legend"
 msgstr ""
 
@@ -1045,6 +1078,78 @@ msgid "See config"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
 msgid "Node Properties"
 msgstr ""
 
@@ -1082,10 +1187,6 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
 msgid "Edit"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Save"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1780,23 +1881,29 @@ msgid "(No Title)"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-#, php-format
-msgid "The new Map with the name %s was created using config file %s"
-msgstr ""
-
-#: weathermap-cacti-plugin-mgmt.php
-#, php-format
-msgid "The new Map %s was copied, but its title could not be updated in the config file %s"
-msgstr ""
-
-#: weathermap-cacti-plugin-mgmt.php
-#, php-format
-msgid "The new Map with the name %s was unable to create the config file %s"
+msgid "Could not lock map configurations."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 #, php-format
 msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
@@ -2077,12 +2184,12 @@ msgid "The New Map File name %s already exists!"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-#, php-format
-msgid "New Map file %s created from %s"
+msgid "The Source Map File name is not readable or does not exist!"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-msgid "The Source Map File name is not readable or does not exist!"
+#, php-format
+msgid "New Map file %s created from %s"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
