@@ -271,6 +271,35 @@ try {
 		$cloneReload = new WeatherMap; $cloneReload->ReadConfig($cloneRelative);
 		assets_assert(http_response_code() === 200 && isset($cloneReload->nodes['A_copy']) && (int)$cloneReload->nodes['A_copy']->x === 40 && (int)$cloneReload->nodes['A_copy']->y === 50, 'relative controller clone is serialized and reloads at its offset: ' . json_encode([http_response_code(), array_keys($cloneReload->nodes), $cloneReload->nodes['A_copy']->x ?? null, $cloneReload->nodes['A_copy']->y ?? null]));
 	} finally { unlink($cloneRelative); }
+	$styleShared = $dir . '/style-shared.conf'; $styleRoot = $dir . '/style-root.conf';
+	file_put_contents($styleShared, "NODE A\n POSITION 10 10\nNODE B\n POSITION 90 90\nLINK shared\n NODES A B\n OUTLINECOLOR 0 0 0\n");
+	file_put_contents($styleRoot, "WIDTH 100\nHEIGHT 100\nINCLUDE $styleShared\nLINK local\n TEMPLATE shared\n NODES A B\nLINK custom\n NODES A B\n OUTLINECOLOR 255 0 255\n");
+	$styleMap = new WeatherMap; $styleMap->ReadConfig($styleRoot);
+	$oldSharedOutline = $styleMap->links['shared']->outlinecolour;
+	$oldSharedFont = $styleMap->links['shared']->commentfont;
+	$oldSharedComment = $styleMap->links['shared']->commentfontcolour;
+	$styleData = wm_asset_colour_data($styleMap); $styleData['outline'] = '#0000ff';
+	wm_asset_save_colours($styleMap, $styleData);
+	$newFont = (int)$oldSharedFont === 3 ? 4 : 3;
+	wm_comment_update_default($styleMap, 'commentfont', $newFont);
+	wm_comment_update_default($styleMap, 'commentfontcolour', [255, 255, 255]);
+	assets_assert($styleMap->links['shared']->outlinecolour === $oldSharedOutline && $styleMap->links['shared']->commentfont === $oldSharedFont && $styleMap->links['shared']->commentfontcolour === $oldSharedComment, 'included link style objects remain unchanged in memory');
+	assets_assert($styleMap->WriteConfig($styleRoot), 'root link style overrides save');
+	$styleReload = new WeatherMap; $styleReload->ReadConfig($styleRoot);
+	assets_assert($styleReload->links['local']->outlinecolour == [0,0,255] && (int)$styleReload->links['local']->commentfont === $newFont && $styleReload->links['local']->commentfontcolour == [255,255,255], 'root-owned link overrides persist against the actual shared template');
+	assets_assert($styleReload->links['shared']->outlinecolour == $oldSharedOutline && $styleReload->links['custom']->outlinecolour == [255,0,255], 'shared and custom link styles remain unchanged after reload');
+	$precise = wm_asset_colour_data($styleReload); $beforePrecision = $styleReload->colours;
+	foreach ([[0.00000001,0.00000002], ['1e-8','2e-8'], [0.1234567,0.2234567], [1001,2001]] as [$from,$to]) {
+		$invalid = $precise; $invalid['rows'] = [['scale'=>'DEFAULT','bottom'=>$from,'top'=>$to,'colour'=>'#0000ff']];
+		try { wm_asset_save_colours($styleReload, $invalid); throw new RuntimeException('lossy bounds accepted'); } catch (InvalidArgumentException $expected) {
+			assets_assert(str_contains($expected->getMessage(), 'rounding'), 'lossy bound validation explains precision limit');
+		}
+		assets_assert($styleReload->colours === $beforePrecision, 'precision rejection leaves map unchanged');
+	}
+	$precise['rows'] = [['scale'=>'DEFAULT','bottom'=>0.000001,'top'=>0.123456,'colour'=>'#0000ff'], ['scale'=>'ExactUnits','bottom'=>1500,'top'=>2500,'colour'=>'#ff0000']];
+	wm_asset_save_colours($styleReload, $precise); assets_assert($styleReload->WriteConfig($styleRoot), 'representable fractional and bandwidth-unit ranges save');
+	$precisionReload = new WeatherMap; $precisionReload->ReadConfig($styleRoot);
+	assets_assert($precisionReload->colours['DEFAULT']['0.000001_0.123456']['bottom'] === 0.000001 && $precisionReload->colours['DEFAULT']['0.000001_0.123456']['top'] === 0.123456 && $precisionReload->colours['ExactUnits']['1.5K_2.5K']['bottom'] === 1500.0, 'accepted bounds retain their exact numeric meaning after reload');
 	echo "Editor assets regression PASS\n";
 } finally {
 	foreach (glob($dir . '/*') as $path) unlink($path);

@@ -95,6 +95,7 @@ function wm_asset_save_colours($map, $data) {
 			$number = rtrim(rtrim(sprintf('%F', $value == 0 ? 0 : $value), '0'), $decimal);
 			return $number > 1000 ? str_replace(localeconv()['decimal_point'], '.', nice_bandwidth($value, $map->kilo)) : $number;
 		};
+		if ($bottom !== (float)$row['bottom'] || $top !== (float)$row['top'] || unformat_number($serialize($bottom), $map->kilo) != $bottom || unformat_number($serialize($top), $map->kilo) != $top) throw new InvalidArgumentException(__('Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units.', 'weathermap'));
 		$key = $serialize($bottom) . '_' . $serialize($top);
 		if (isset($scales[$name][$key])) throw new InvalidArgumentException(__('Duplicate range in a scale.', 'weathermap'));
 		$entry = ['key' => $key, 'bottom' => $bottom, 'top' => $top, 'special' => 0, 'red1' => $rgb[0], 'green1' => $rgb[1], 'blue1' => $rgb[2], 'tag' => $tag];

@@ -39,9 +39,9 @@ function wm_style_test_map() {
 	$builtin           = new WMFont();
 	$builtin->type     = 'GD builtin';
 	$builtin->gdnumber = 2;
-	$default           = (object)['bwfont'=> 100, 'commentfont'=> 100, 'commentfontcolour'=>['0', '0', '255']];
+	$default           = (object)['defined_in'=>'/fixture/map.conf', 'bwfont'=> 100, 'commentfont'=> 100, 'commentfontcolour'=>['0', '0', '255']];
 
-	return (object)['fonts'=>[2=>$builtin, 100=>$font], 'links'=>[':: DEFAULT ::'=>clone $default, 'DEFAULT'=>clone $default, 'ordinary'=>clone $default, 'custom'=>(object)['bwfont'=>2, 'commentfont'=>2, 'commentfontcolour'=>[255, 0, 0]]]];
+	return (object)['configfile'=>'/fixture/map.conf', 'fonts'=>[2=>$builtin, 100=>$font], 'links'=>[':: DEFAULT ::'=>clone $default, 'DEFAULT'=>clone $default, 'ordinary'=>clone $default, 'custom'=>(object)['defined_in'=>'/fixture/map.conf', 'bwfont'=>2, 'commentfont'=>2, 'commentfontcolour'=>[255, 0, 0]]]];
 }
 it('UpdatesMatchingDefaultsAndPreservesDifferentStyles', function () {
 	$map = wm_style_test_map();
