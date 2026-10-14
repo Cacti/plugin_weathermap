@@ -139,7 +139,7 @@ function wm_asset_image_reference_index(&$directories = null) {
 		if (cacti_count($seen) > 1000) throw new RuntimeException(__('Too many included configurations to check.', 'weathermap'));
 		$text = file_get_contents($real);
 		if ($text === false) throw new RuntimeException(__('Cannot check configuration references.', 'weathermap'));
-		if (preg_match_all('/^\s*(ICON|BACKGROUND)\s+(?:[0-9]+\s+[0-9]+\s+)?(.+?)\s*$/mi', $text, $directives, PREG_SET_ORDER)) {
+		if (preg_match_all('/^[ \t]*(ICON|BACKGROUND)[ \t]+(?:[0-9]+[ \t]+[0-9]+[ \t]+)?([^\r\n]+?)[ \t]*\r?$/mi', $text, $directives, PREG_SET_ORDER)) {
 			foreach ($directives as $directive) {
 				$rawImage = trim($directive[2]);
 				$image = wm_asset_normalize_path(wm_asset_managed_path($rawImage, $root) ?? $rawImage, $root);
@@ -148,7 +148,8 @@ function wm_asset_image_reference_index(&$directories = null) {
 				$references[] = ['pattern' => '~^' . $pattern . '$~iD', 'user' => basename($real)];
 			}
 		}
-		if (preg_match_all('/^\s*INCLUDE\s+(.+)$/mi', $text, $matches)) foreach ($matches[1] as $include) {
+		if (preg_match_all('/^[ \t]*INCLUDE[ \t]+([^\r\n]+?)[ \t]*\r?$/mi', $text, $matches)) foreach ($matches[1] as $include) {
+			if (trim($include) === '') continue;
 			$include = wm_asset_absolute_path(trim($include), $root);
 			// A writer can create a currently missing include while holding its parent lock.
 			$directories[dirname($include)] = true;

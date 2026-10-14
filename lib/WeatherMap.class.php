@@ -2456,7 +2456,7 @@ class WeatherMap extends WeatherMapBase {
 	 */
 	static function ManagedImagePathsFromConfig($serialized) {
 		$paths = [];
-		if (preg_match_all('/^\s*(?:ICON|BACKGROUND)\s+(?:[0-9]+\s+[0-9]+\s+)?(.+?)\s*$/mi', $serialized, $matches)) $paths = $matches[1];
+		if (preg_match_all('/^[ \t]*(?:ICON|BACKGROUND)[ \t]+(?:[0-9]+[ \t]+[0-9]+[ \t]+)?([^\r\n]+?)[ \t]*\r?$/mi', $serialized, $matches)) $paths = $matches[1];
 		require_once __DIR__ . '/editor.assets.php';
 		$identities = [];
 		foreach ($paths as $path) {

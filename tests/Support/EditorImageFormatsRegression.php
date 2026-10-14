@@ -299,6 +299,21 @@ try {
 	image_format_assert($baseline->config_managed_assets === ['images/backgrounds/' . basename($protected)], 'loaded image baseline uses same canonical identity');
 	image_format_assert(wm_asset_managed_path('outside.png', $root) === null && wm_asset_managed_path(null, $root) === null, 'unmanaged image paths excluded');
 	image_format_assert(str_contains(wm_asset_managed_path('images/objects/dynamic_{node:this:name}.png', $root), '{node:this:name}'), 'renderer tokens preserved in identity');
+	$lineInclude = $temporary . '/line-include.inc';
+	$missingLineAsset = 'images/objects/line-missing-' . bin2hex(random_bytes(4)) . '.png';
+	foreach (["\n", "\r\n"] as $eol) {
+		file_put_contents($lineInclude, 'BACKGROUND ' . $eol . 'BACKGROUND images/backgrounds/' . basename($protected) . $eol);
+		file_put_contents($config, 'INCLUDE ' . $eol . 'INCLUDE ' . $lineInclude . $eol . 'ICON ' . $eol . 'ICON 32 32 images/backgrounds/' . basename($protected) . $eol);
+		$lineReferences = wm_asset_image_reference_index();
+		image_format_assert(wm_asset_image_users(basename($protected), 'backgrounds', $lineReferences) !== [], 'empty LF/CRLF directives do not hide referenced images');
+		image_format_assert(in_array(basename($lineInclude), wm_asset_image_users(basename($protected), 'backgrounds', $lineReferences), true), 'empty LF/CRLF INCLUDE does not hide the following literal include');
+		$raw = 'NODE A' . $eol . ' ICON ' . $eol . ' ICON 32 32 ' . $missingLineAsset . $eol;
+		image_format_assert(WeatherMap::ManagedImagePathsFromConfig($raw) === [$missingLineAsset], 'raw image collection stays within LF/CRLF lines');
+		file_put_contents($config, "WIDTH 100\nHEIGHT 100\nNODE A\n POSITION 20 20\n");
+		$lineMap = new WeatherMap; $lineMap->ReadConfig($config); $lineMap->nodes['A']->config_override = $raw;
+		$beforeLineSave = file_get_contents($config);
+		image_format_assert(!$lineMap->WriteConfig($config) && $lineMap->config_asset_conflict && file_get_contents($config) === $beforeLineSave, 'empty LF/CRLF raw ICON cannot bypass missing-image validation');
+	}
 	echo "Editor image formats regression PASS\n";
 } finally {
 	foreach ($created as $path) if (is_file($path) || is_link($path)) unlink($path);
