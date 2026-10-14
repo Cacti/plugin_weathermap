@@ -2054,8 +2054,11 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 					db_execute_prepared('DELETE FROM weathermap_settings WHERE mapid = ?', [$newid]);
 					db_execute_prepared('DELETE FROM weathermap_maps WHERE id = ?', [$newid]);
 				}
+			} catch (Throwable $cleanupError) {
+				cacti_log('Weathermap clone cleanup failed: ' . $cleanupError->getMessage(), false, 'WEATHERMAP');
 			} finally { if ($created) unlink($newfile); }
-			raise_message('map_message', $error->getMessage(), MESSAGE_LEVEL_ERROR);
+			cacti_log('Weathermap map clone failed: ' . $error->getMessage(), false, 'WEATHERMAP');
+			raise_message('map_message', __('Could not create the map copy. Please try again.', 'weathermap'), MESSAGE_LEVEL_ERROR);
 			return;
 		} finally {
 			\WeathermapConfig\release($lock);

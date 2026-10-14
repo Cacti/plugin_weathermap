@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-13 23:15+1030\n"
+"POT-Creation-Date: 2026-10-14 23:12+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -1972,6 +1972,10 @@ msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 msgid "Could not register the new map."
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
