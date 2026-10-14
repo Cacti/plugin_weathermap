@@ -131,7 +131,7 @@ function wm_asset_image_reference_index(&$directories = null) {
 	while ($queue) {
 		$path = array_pop($queue);
 		$real = realpath($path);
-		if ($real === false || !is_readable($real)) throw new RuntimeException(__('Cannot check configuration references.', 'weathermap'));
+		if ($real === false || !is_file($real) || !is_readable($real)) throw new RuntimeException(__('Cannot check configuration references.', 'weathermap'));
 		if (isset($seen[$real])) continue;
 		$directories[dirname($path)] = true;
 		$directories[dirname($real)] = true;

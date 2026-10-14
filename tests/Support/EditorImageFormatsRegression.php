@@ -65,6 +65,17 @@ function image_format_scan(&$directories = null) {
 	}
 	return $result;
 }
+/**
+ * Make the non-regular source regression fail safely instead of blocking on a FIFO.
+ *
+ * @param string $path Scanner-selected source.
+ *
+ * @return string|false Contents of a regular source.
+ */
+function image_format_regular_read($path) {
+	if (!is_file($path)) throw new RuntimeException('Unexpected non-regular read');
+	return file_get_contents($path);
+}
 $root = dirname(__DIR__, 2);
 $temporary = $root . '/tests/wm-image-formats-' . bin2hex(random_bytes(4));
 mkdir($temporary);
@@ -313,6 +324,26 @@ try {
 		$lineMap = new WeatherMap; $lineMap->ReadConfig($config); $lineMap->nodes['A']->config_override = $raw;
 		$beforeLineSave = file_get_contents($config);
 		image_format_assert(!$lineMap->WriteConfig($config) && $lineMap->config_asset_conflict && file_get_contents($config) === $beforeLineSave, 'empty LF/CRLF raw ICON cannot bypass missing-image validation');
+	}
+	// Non-regular include targets must fail before the scanner calls a reader.
+	$referenceSource = file_get_contents($root . '/lib/editor.assets.php');
+	$scanStart = strpos($referenceSource, 'function wm_asset_image_reference_index(');
+	$scanEnd = strpos($referenceSource, "\n/**", $scanStart);
+	$guardedScan = str_replace('dirname(__DIR__)', var_export($root, true), substr($referenceSource, $scanStart, $scanEnd - $scanStart));
+	eval(str_replace(['wm_asset_image_reference_index(', 'file_get_contents('], ['image_format_nonregular_index(', 'image_format_regular_read('], $guardedScan));
+	$nonregular = [$temporary];
+	if (is_readable('/dev/null')) $nonregular[] = '/dev/null';
+	if (function_exists('posix_mkfifo')) { $fifo = $temporary . '/fifo.inc'; image_format_assert(posix_mkfifo($fifo, 0600), 'FIFO fixture created'); $nonregular[] = $fifo; }
+	foreach ($nonregular as $target) {
+		file_put_contents($config, "INCLUDE $target\n");
+		if (!isset($fifo) || $target !== $fifo) {
+			try { wm_asset_image_reference_index(); throw new RuntimeException('non-regular include accepted'); } catch (RuntimeException $expected) {
+				image_format_assert(str_contains($expected->getMessage(), 'Cannot check configuration references'), 'production scanner rejects non-regular source');
+			}
+		}
+		try { image_format_nonregular_index(); throw new RuntimeException('non-regular include accepted'); } catch (RuntimeException $expected) {
+			image_format_assert(str_contains($expected->getMessage(), 'Cannot check configuration references'), 'non-regular include rejected before read: ' . $target . ' ' . $expected->getMessage());
+		}
 	}
 	echo "Editor image formats regression PASS\n";
 } finally {
