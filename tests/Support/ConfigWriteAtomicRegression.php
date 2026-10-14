@@ -122,6 +122,15 @@ namespace WeathermapConfig {
 	}
 }
 namespace {
+/** Submit the page revision expected by production mutation routes. */
+function wm_fixture_revision($file, $callback) {
+	if (!array_key_exists('config_revision', $GLOBALS['__test_nfilter_request'] ?? []) && is_file($file)) {
+		$map = new \WeatherMap; $map->ReadConfig($file);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies);
+	}
+	return $callback();
+}
+
 	require dirname(__DIR__, 2) . '/lib/poller-common.php';
 	require dirname(__DIR__) . '/bootstrap-unit.php';
 	chdir(dirname(__DIR__, 2));
@@ -216,7 +225,7 @@ namespace {
 		$first->title = 'Next edit';
 		atomic_assert($first->WriteConfig($file), 'successful save updates its revision for subsequent writes');
 		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash('sha256', $original), 'node_name' => 'note1', 'x' => 90, 'y' => 90];
-		http_response_code(200); moveNode($file, 0);
+		http_response_code(200); wm_fixture_revision($file, fn () => moveNode($file, 0));
 		atomic_assert(http_response_code() === 409 && file_get_contents($file) !== $original, 'stale loaded page cannot overwrite another user save');
 		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file)];
 		$matching = new \WeatherMap;
@@ -313,6 +322,20 @@ namespace {
 		\WeathermapConfig\release($targetLock);
 		atomic_assert($aliasMap->WriteConfig($includeRoot), 'symlink include save succeeds after dependency mutex release');
 		unlink($alias); unlink($targetFile); unlink($targetDir . '/.weathermap-config.lock'); rmdir($targetDir);
+
+		$GLOBALS['__test_nfilter_request'] = [];
+		atomic_assert(wm_editor_read_config(new \WeatherMap, $file), 'read/render paths accept absent page revisions');
+		foreach ([null, '', [], 'invalid'] as $missingRevision) {
+			$GLOBALS['__test_nfilter_request'] = ['config_revision' => $missingRevision]; http_response_code(200);
+			atomic_assert(!wm_editor_read_config(new \WeatherMap, $file, true) && http_response_code() === 409, 'mutation requires valid nonempty loaded revision');
+		}
+		$GLOBALS['__test_nfilter_request'] = []; $beforeMissingRevision = file_get_contents($file); http_response_code(200);
+		moveNode($file, 0);
+		atomic_assert(http_response_code() === 409 && file_get_contents($file) === $beforeMissingRevision, 'missing mutation token cannot alter configuration');
+		$revisionMap = new \WeatherMap; $revisionMap->ReadConfig($file);
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => \WeathermapConfig\snapshotRevision($revisionMap->config_revision, $revisionMap->config_dependencies)];
+		atomic_assert(wm_editor_read_config(new \WeatherMap, $file, true), 'matching mutation revision remains accepted');
+		$GLOBALS['__test_nfilter_request'] = [];
 
 		$numericLocale = setlocale(LC_NUMERIC, 0); setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR');
 		try {
@@ -537,7 +560,7 @@ namespace {
 		foreach (['node', 'link'] as $kind) {
 			file_put_contents($rawFile, $rawConfig);
 			$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $rawFile), 'node_name' => 'A', 'link_name' => 'AB', 'item_configtext' => $kind === 'node' ? "NODE A\n LABEL Updated\n POSITION 10 10\n" : "LINK AB\n NODES A B\n WIDTH 12\n"];
-			http_response_code(200); if ($kind === 'node') setNodeConfig($rawFile); else setLinkConfig($rawFile);
+			http_response_code(200); if ($kind === 'node') wm_fixture_revision($rawFile, fn () => setNodeConfig($rawFile)); else wm_fixture_revision($rawFile, fn () => setLinkConfig($rawFile));
 			atomic_assert(http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'raw ' . $kind . ' edit saves without false conflict');
 			file_put_contents($rawFile, $rawConfig); http_response_code(200);
 			$controller = file_get_contents($plugin . '/weathermap-cacti-plugin-editor.php');
@@ -557,7 +580,7 @@ namespace {
 			$GLOBALS['config_before_lock'] = function() use ($file,$newer) { unset($GLOBALS['config_before_lock']); file_put_contents($file,$newer); };
 			$GLOBALS['__test_nfilter_request'] = ['config_revision'=>hash_file('sha256',$file),'node_name'=>'note1','param'=>'note1','x'=>70,'y'=>80,'note_name'=>'note1','note_text'=>'Changed','note_font'=>'3','note_colour'=>'#000000','note_x'=>50,'note_y'=>50,'note_align'=>'left'];
 			http_response_code(200);
-			if($operation==='move')moveNode($file,0);elseif($operation==='delete')deleteNode($file);else setNoteProperties($file,0);
+			if($operation==='move')wm_fixture_revision($file, fn () => moveNode($file,0));elseif($operation==='delete')wm_fixture_revision($file, fn () => deleteNode($file));else wm_fixture_revision($file, fn () => setNoteProperties($file,0));
 			atomic_assert(http_response_code()===409 && file_get_contents($file)===$newer,'note ' . $operation . ' preserves concurrent-edit response');
 		}
 		// Registration failure must retain a mutex through the callback and remove its reservation.
@@ -584,7 +607,11 @@ namespace {
 					if ((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-throw') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-throw')) throw new RuntimeException('insert failed');
 					return !((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-false') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-false'));
 				};
+				$cloneMessages = []; $GLOBALS['__test_raise_message'] = function ($id, $text) use (&$cloneMessages) { $cloneMessages[] = $text; };
+				$GLOBALS['__test_cacti_log'] = [];
 				map_duplicate(1, 'Clone', 'clone');
+				unset($GLOBALS['__test_raise_message']);
+				atomic_assert($cloneMessages === ['Could not create the map copy. Please try again.'] && $GLOBALS['__test_cacti_log'] !== [], 'clone failures show only generic guidance and log original diagnostics');
 				atomic_assert(!is_file($plugin . '/configs/clone.conf'), 'failed registration removes its own reserved configuration');
 				if (str_ends_with($failure, '-false') || str_ends_with($failure, '-throw')) atomic_assert(cacti_count(array_filter($GLOBALS['__test_db_calls'], fn ($call) => str_starts_with($call['sql'], 'DELETE'))) === 3, 'partial registration removes map/auth/settings records');
 			}
@@ -598,25 +625,25 @@ namespace {
 		atomic_assert(!$map->WriteConfig($file) && file_get_contents($file) === $original, 'engine failure preserves original');
 		$GLOBALS['__test_nfilter_request'] = ['map_title' => 'Failed title', 'map_legend' => 'Traffic', 'map_stamp' => 'Created', 'map_width' => 600, 'map_height' => 300, 'map_bgfile' => '--NONE--', 'map_linkdefaultwidth' => 7, 'map_linkdefaultbwin' => '100M', 'map_linkdefaultbwout' => '100M'];
 		$GLOBALS['__test_db_calls'] = [];
-		http_response_code(200); setMapProperties($file);
+		http_response_code(200); wm_fixture_revision($file, fn () => setMapProperties($file));
 		atomic_assert(http_response_code() === 500 && $GLOBALS['__test_db_calls'] === [], 'failed properties save cannot change titlecache');
-		$GLOBALS['config_fault'] = ''; http_response_code(200); setMapProperties($file);
+		$GLOBALS['config_fault'] = ''; http_response_code(200); wm_fixture_revision($file, fn () => setMapProperties($file));
 		atomic_assert(http_response_code() === 200 && cacti_count($GLOBALS['__test_db_calls']) === 1, 'successful properties save updates titlecache');
 		file_put_contents($file, $original); $GLOBALS['config_fault'] = 'rename';
 		$GLOBALS['__test_nfilter_request'] = ['node_name' => 'note1', 'param' => 'note1', 'x' => '70', 'y' => '80'];
 		{
-			http_response_code(200); moveNode($file, 0);
+			http_response_code(200); wm_fixture_revision($file, fn () => moveNode($file, 0));
 			atomic_assert(http_response_code() === 500 && file_get_contents($file) === $original, 'failed move surfaces error without changing file');
-			http_response_code(200); deleteNode($file);
+			http_response_code(200); wm_fixture_revision($file, fn () => deleteNode($file));
 			atomic_assert(http_response_code() === 500 && file_get_contents($file) === $original, 'failed delete surfaces error without changing file');
 		}
 		$GLOBALS['config_fault'] = '';
 		$GLOBALS['__test_nfilter_request'] = ['node_name' => 'missing', 'param' => 'missing', 'x' => '70', 'y' => '80'];
-		http_response_code(200); moveNode($file, 0);
+		http_response_code(200); wm_fixture_revision($file, fn () => moveNode($file, 0));
 		atomic_assert(http_response_code() === 404 && file_get_contents($file) === $original, 'missing move target is an error');
-		http_response_code(200); deleteNode($file);
+		http_response_code(200); wm_fixture_revision($file, fn () => deleteNode($file));
 		atomic_assert(http_response_code() === 404 && file_get_contents($file) === $original, 'missing delete target is an error');
-		unlink($file); http_response_code(200); moveNode($file, 0);
+		unlink($file); http_response_code(200); wm_fixture_revision($file, fn () => moveNode($file, 0));
 		atomic_assert(http_response_code() === 404 && !file_exists($file), 'deleted map cannot report a successful edit');
 		echo "Atomic configuration write and locking regression PASS\n";
 	} finally {

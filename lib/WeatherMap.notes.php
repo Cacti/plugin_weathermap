@@ -91,7 +91,7 @@ function wm_sharp_notes($map) {
 	// Follow draw order; later nodes only block annotations they overlap.
 	foreach ($layers as $items) {
 		foreach ($items ?? [] as $node) {
-			if ($node instanceof WeatherMapNode && $node->name !== 'DEFAULT' && $node->get_hint('editor_note', '0') === '1' && $node->labelangle == 0 && $node->iconfile === '' && $node->zorder < 1000 && $node->labelbgcolour == [-1,-1,-1] && $node->labeloutlinecolour == [-1,-1,-1] && $node->labelfontshadowcolour == [-1,-1,-1] && isset($map->fonts[$node->labelfont]) && $map->fonts[$node->labelfont]->type === 'truetype') {
+			if ($node instanceof WeatherMapNode && $node->name !== 'DEFAULT' && is_numeric($node->x) && is_numeric($node->y) && $node->get_hint('editor_note', '0') === '1' && $node->labelangle == 0 && $node->iconfile === '' && $node->zorder < 1000 && $node->labelbgcolour == [-1,-1,-1] && $node->labeloutlinecolour == [-1,-1,-1] && $node->labelfontshadowcolour == [-1,-1,-1] && isset($map->fonts[$node->labelfont]) && $map->fonts[$node->labelfont]->type === 'truetype') {
 				$notes[] = $node;
 			} elseif ($node instanceof WeatherMapNode && !is_null($node->x)) {
 				$notes = array_values(array_filter($notes, function ($note) use ($node) {

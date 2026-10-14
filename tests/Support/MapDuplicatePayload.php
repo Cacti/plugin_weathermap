@@ -98,6 +98,8 @@ function sql_save($payload, $table) {
 
 /** Ignore expected registration failure notices in this schema-only fixture. */
 function raise_message($id, $text = '', $level = 0) {}
+/** Capture server-only clone diagnostics in this fixture. */
+function cacti_log($text, ...$args) { $GLOBALS['clone_log'][] = $text; }
 /** Return the untranslated fixture string. */
 function __($text, ...$args) { return $text; }
 define('MESSAGE_LEVEL_ERROR', 3);

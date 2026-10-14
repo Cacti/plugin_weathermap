@@ -45,6 +45,12 @@ namespace {
 	try {
 		$file = $dir . '/map.conf';
 		file_put_contents($file, "WIDTH 400\nHEIGHT 200\nFONTDEFINE 100 docs/example/Vera.ttf 9\nNODE label\n LABEL Readable note\n LABELFONT 100\n LABELBGCOLOR none\n LABELOUTLINECOLOR none\n LABELFONTSHADOWCOLOR none\n POSITION 150 100\n SET editor_note 1\n");
+		$template = $dir . '/template.conf';
+		file_put_contents($template, "WIDTH 400\nHEIGHT 200\nFONTDEFINE 100 docs/example/Vera.ttf 9\nNODE noteTemplate\n LABEL Never rendered\n LABELFONT 100\n LABELBGCOLOR none\n LABELOUTLINECOLOR none\n LABELFONTSHADOWCOLOR none\n SET editor_note 1\n");
+		$templateMap = new \WeatherMap; $templateMap->ReadConfig($template); $templateMap->stamptext = ''; $templateMap->title = '';
+		$GLOBALS['note_allocations'] = 0; $GLOBALS['note_fail_at'] = 0;
+		$templateOutput = $dir . '/template.png'; $templateMap->DrawMap($templateOutput);
+		if (getimagesize($templateOutput)[0] !== 400 || wm_sharp_notes($templateMap) !== []) throw new \RuntimeException('unpositioned marked template must not render or allocate doubled map');
 		foreach ([1, 2, 0] as $failure) {
 			$GLOBALS['note_allocations'] = 0; $GLOBALS['note_fail_at'] = $failure;
 			$map = new \WeatherMap; $map->ReadConfig($file); $map->stamptext = '';

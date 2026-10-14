@@ -1,4 +1,13 @@
 <?php
+/** Submit the page revision expected by production mutation routes. */
+function wm_fixture_revision($file, $callback) {
+	if (!array_key_exists('config_revision', $GLOBALS['__test_nfilter_request'] ?? []) && is_file($file)) {
+		$map = new \WeatherMap; $map->ReadConfig($file);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies);
+	}
+	return $callback();
+}
+
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group, Howard Jones                   |
@@ -207,7 +216,7 @@ try {
 		} else note_assert(!wm_editor_save_note($again, $bad), 'reject ' . $key);
 	}
 	$GLOBALS['__test_nfilter_request'] = ['param' => $name];
-	deleteNode($file);
+	wm_fixture_revision($file, fn () => deleteNode($file));
 	$deleted = new WeatherMap;
 	$deleted->ReadConfig($file);
 	note_assert(!isset($deleted->nodes[$name]), 'delete persists');
