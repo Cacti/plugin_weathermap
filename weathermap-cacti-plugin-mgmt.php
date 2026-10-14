@@ -2032,16 +2032,20 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 				FROM weathermap_settings
 				WHERE mapid = ?", [$newid, $id]) === false) throw new RuntimeException(__('Could not register the new map.', 'weathermap'));
 		} catch (Throwable $error) {
-			// Only this attempt's records and successfully reserved file may be removed.
-			try {
-				if ($newid) {
-					if (db_execute_prepared('DELETE FROM weathermap_auth WHERE mapid = ?', [$newid]) === false) cacti_log('Weathermap clone cleanup incomplete: weathermap_auth record removal failed for map ' . $newid, false, 'WEATHERMAP');
-					if (db_execute_prepared('DELETE FROM weathermap_settings WHERE mapid = ?', [$newid]) === false) cacti_log('Weathermap clone cleanup incomplete: weathermap_settings record removal failed for map ' . $newid, false, 'WEATHERMAP');
-					if (db_execute_prepared('DELETE FROM weathermap_maps WHERE id = ?', [$newid]) === false) cacti_log('Weathermap clone cleanup incomplete: weathermap_maps record removal failed for map ' . $newid, false, 'WEATHERMAP');
+			// Keep a recoverable config whenever removal of its registration is uncertain.
+			$mapRowRemoved = !$newid;
+			if ($newid) {
+				foreach (['weathermap_auth' => 'mapid', 'weathermap_settings' => 'mapid', 'weathermap_maps' => 'id'] as $table => $column) {
+					try {
+						$removed = db_execute_prepared("DELETE FROM $table WHERE $column = ?", [$newid]) !== false;
+						if ($table === 'weathermap_maps') $mapRowRemoved = $removed;
+						if (!$removed) cacti_log('Weathermap clone cleanup incomplete: ' . $table . ' record removal failed for map ' . $newid, false, 'WEATHERMAP');
+					} catch (Throwable $cleanupError) {
+						cacti_log('Weathermap clone cleanup incomplete: ' . $table . ': ' . $cleanupError->getMessage(), false, 'WEATHERMAP');
+					}
 				}
-			} catch (Throwable $cleanupError) {
-				cacti_log('Weathermap clone cleanup failed: ' . $cleanupError->getMessage(), false, 'WEATHERMAP');
-			} finally { if ($created) unlink($newfile); }
+			}
+			if ($created && $mapRowRemoved && !@unlink($newfile)) cacti_log('Weathermap clone cleanup incomplete: config removal failed: ' . $newfile, false, 'WEATHERMAP');
 			cacti_log('Weathermap map clone failed: ' . $error->getMessage(), false, 'WEATHERMAP');
 			raise_message('map_message', __('Could not create the map copy. Please try again.', 'weathermap'), MESSAGE_LEVEL_ERROR);
 			return;

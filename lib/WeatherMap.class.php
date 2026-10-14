@@ -344,6 +344,8 @@ class WeatherMap extends WeatherMapBase {
 	var $configfile;
 	var $config_revision = null;
 	var $config_dependencies = [];
+	/** @var array Loaded root paths, physical targets and revisions. */
+	var $config_root_identity = [];
 	var $editor_config_revision = null;
 	/** @var mixed */
 	var $imagefile;
@@ -2450,7 +2452,7 @@ class WeatherMap extends WeatherMapBase {
 	 */
 	function ReadConfig($input, $is_include = false) {
 		global $config, $weathermap_error_suppress;
-		if (!$is_include) { $this->config_revision = null; $this->config_dependencies = []; }
+		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; } }
 
 		$curnode    = null;
 		$curlink    = null;
@@ -2478,6 +2480,8 @@ class WeatherMap extends WeatherMapBase {
 			wm_debug('ReadConfig Detected that this is a config filename.');
 
 			$filename = $input;
+			$rootLogicalPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+			$rootPhysicalPath = realpath($filename);
 
 			if ($is_include) {
 				$dependencyLogicalPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
@@ -2513,7 +2517,10 @@ class WeatherMap extends WeatherMapBase {
 
 					fclose($fd);
 					$loadedRevision = hash_final($revision);
-					if (!$is_include) $this->config_revision = $loadedRevision;
+					if (!$is_include) {
+						$this->config_revision = $loadedRevision;
+						$this->config_root_identity[$rootLogicalPath] = ['target' => $rootPhysicalPath, 'revision' => $loadedRevision];
+					}
 					else {
 						$this->config_dependencies[$dependencyPath] = $loadedRevision;
 						if ($dependencyLogicalPath !== $dependencyPath) $this->config_dependencies[$dependencyLogicalPath] = ['target' => $dependencyPath, 'revision' => $loadedRevision];
@@ -3869,14 +3876,21 @@ class WeatherMap extends WeatherMapBase {
 
 			$sameFile = \WeathermapConfig\sameFile($filename, $this->configfile);
 			$dependencies = $this->config_dependencies;
+			foreach ($this->config_root_identity as $logical => $state) {
+				$dependencies[$logical] = $state;
+				if ($logical !== $state['target']) $dependencies[$state['target']] = $state['revision'];
+			}
 			if (!$sameFile && $this->configfile !== '' && is_string($this->config_revision)) {
 				$logicalSource = (realpath(dirname($this->configfile)) ?: dirname($this->configfile)) . '/' . basename($this->configfile);
 				$physicalSource = realpath($this->configfile) ?: $logicalSource;
-				$dependencies[$physicalSource] = $this->config_revision;
-				if ($logicalSource !== $physicalSource) $dependencies[$logicalSource] = ['target' => $physicalSource, 'revision' => $this->config_revision];
+				if (!isset($dependencies[$physicalSource])) $dependencies[$physicalSource] = $this->config_revision;
+				if ($logicalSource !== $physicalSource && !isset($dependencies[$logicalSource])) $dependencies[$logicalSource] = ['target' => $physicalSource, 'revision' => $this->config_revision];
 			}
 			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $dependencies);
 			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
+			if ($saved) foreach ($this->config_root_identity as $logical => $state) {
+				if (realpath($filename) === $state['target']) $this->config_root_identity[$logical]['revision'] = hash('sha256', $contents);
+			}
 			return $saved;
 		} else {
 			wm_warn("Couldn't open config file $filename for writing");
