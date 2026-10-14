@@ -2449,6 +2449,7 @@ class WeatherMap extends WeatherMapBase {
 	 * @return bool
 	 */
 	function ReadConfig($input, $is_include = false) {
+		require_once __DIR__ . '/WeatherMap.config.php';
 		global $config, $weathermap_error_suppress;
 		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; } }
 
@@ -2477,12 +2478,12 @@ class WeatherMap extends WeatherMapBase {
 		} else {
 			wm_debug('ReadConfig Detected that this is a config filename.');
 
-			$filename = $input;
-			$rootLogicalPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+			$filename = \WeathermapConfig\logicalPath($input);
+			$rootLogicalPath = \WeathermapConfig\logicalPath($filename);
 			$rootPhysicalPath = realpath($filename);
 
 			if ($is_include) {
-				$dependencyLogicalPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+				$dependencyLogicalPath = \WeathermapConfig\logicalPath($filename);
 				$dependencyPath = realpath($filename) ?: $dependencyLogicalPath;
 				if (!array_key_exists($dependencyPath, $this->config_dependencies)) $this->config_dependencies[$dependencyPath] = null;
 				wm_debug('ReadConfig Detected that this is an INCLUDED config filename.');
@@ -3879,7 +3880,7 @@ class WeatherMap extends WeatherMapBase {
 				if ($logical !== $state['target']) $dependencies[$state['target']] = $state['revision'];
 			}
 			if (!$sameFile && $this->configfile !== '' && is_string($this->config_revision)) {
-				$logicalSource = (realpath(dirname($this->configfile)) ?: dirname($this->configfile)) . '/' . basename($this->configfile);
+				$logicalSource = \WeathermapConfig\logicalPath($this->configfile);
 				$physicalSource = realpath($this->configfile) ?: $logicalSource;
 				if (!isset($dependencies[$physicalSource])) $dependencies[$physicalSource] = $this->config_revision;
 				if ($logicalSource !== $physicalSource && !isset($dependencies[$logicalSource])) $dependencies[$logicalSource] = ['target' => $physicalSource, 'revision' => $this->config_revision];

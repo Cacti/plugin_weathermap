@@ -155,7 +155,7 @@ function wm_fixture_revision($file, $callback) {
 	function colour_atomic_assert($condition, $message) {
 		if (!$condition) throw new \RuntimeException($message);
 	}
-	$dir = sys_get_temp_dir() . '/wm-colour-atomic-' . bin2hex(random_bytes(5));
+	$dir = (realpath(sys_get_temp_dir()) ?: sys_get_temp_dir()) . '/wm-colour-atomic-' . bin2hex(random_bytes(5));
 	mkdir($dir);
 	$file = $dir . '/map.conf';
 	$initial = "WIDTH 600\nHEIGHT 300\nNODE A\n POSITION 10 10\nNODE B\n POSITION 50 50\nLINK AB\n NODES A B\n";
@@ -496,6 +496,34 @@ function wm_fixture_revision($file, $callback) {
 		unlink($conflictAlias); unlink($conflictA); unlink($conflictB); unlink($conflictDir . '/.weathermap-config.lock'); rmdir($conflictDir);
 		$GLOBALS['__test_nfilter_request'] = [];
 
+		colour_atomic_assert(\WeathermapConfig\logicalPath('') === '', 'empty logical path remains empty');
+		colour_atomic_assert(\WeathermapConfig\logicalPath('relative.conf') === getcwd() . DIRECTORY_SEPARATOR . 'relative.conf', 'relative logical paths become absolute');
+		foreach (['C:/maps/map.conf', 'C:\\maps\\map.conf', '\\\\server\\share\\map.conf'] as $absolute) colour_atomic_assert(\WeathermapConfig\logicalPath($absolute) === $absolute, 'Windows absolute aliases are retained');
+		$parentA = $dir . '/parent-a'; $parentB = $dir . '/parent-b'; $parentAlias = $dir . '/parent-alias';
+		mkdir($parentA); mkdir($parentB); symlink($parentA, $parentAlias);
+		$parentBytes = "WIDTH 100\nHEIGHT 100\nTITLE Parent alias\n";
+		foreach ([$parentA, $parentB] as $parent) { file_put_contents($parent . '/map.conf', $parentBytes); file_put_contents($parent . '/include.conf', "TITLE Identical include\n"); }
+		$parentMap = new \WeatherMap; $oldDirectory = getcwd();
+		try { chdir($dir); $parentMap->ReadConfig('parent-alias/map.conf'); } finally { chdir($oldDirectory); }
+		colour_atomic_assert(array_key_exists($parentAlias . '/map.conf', $parentMap->config_root_identity) && $parentMap->configfile === $parentAlias . '/map.conf', 'root keeps absolute logical path and unresolved directory alias');
+		$parentToken = \WeathermapConfig\snapshotRevision($parentMap->config_revision, $parentMap->config_dependencies, $parentMap->config_root_identity);
+		unlink($parentAlias); symlink($parentB, $parentAlias);
+		$parentMap->title = 'Stale parent write';
+		colour_atomic_assert(!$parentMap->WriteConfig($parentAlias . '/map.conf') && file_get_contents($parentA . '/map.conf') === $parentBytes && file_get_contents($parentB . '/map.conf') === $parentBytes, 'retargeted parent alias rejects root writes without changing either file');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision'=>$parentToken]; http_response_code(200);
+		colour_atomic_assert(!wm_editor_read_config(new \WeatherMap, $parentAlias . '/map.conf', true) && http_response_code() === 409, 'retargeted directory alias invalidates rendered root token');
+		$GLOBALS['__test_nfilter_request'] = [];
+		$freshParent = new \WeatherMap; $freshParent->ReadConfig($parentAlias . '/map.conf');
+		colour_atomic_assert($freshParent->WriteConfig($dir . '/parent-copy.conf', true), 'fresh parent alias can be copied');
+		file_put_contents($includeRoot, "WIDTH 100\nHEIGHT 100\nINCLUDE " . $parentAlias . "/include.conf\n");
+		$parentInclude = new \WeatherMap; $parentInclude->ReadConfig($includeRoot);
+		colour_atomic_assert(isset($parentInclude->config_dependencies[$parentAlias . '/include.conf']), 'included files retain unresolved directory alias');
+		unlink($parentAlias); symlink($parentA, $parentAlias);
+		colour_atomic_assert(!$parentInclude->WriteConfig($includeRoot), 'retargeted INCLUDE directory alias is detected with identical bytes');
+		$freshParentInclude = new \WeatherMap; $freshParentInclude->ReadConfig($includeRoot); colour_atomic_assert($freshParentInclude->WriteConfig($includeRoot), 'fresh INCLUDE alias snapshot saves');
+		unlink($parentAlias);
+		foreach ([$parentA, $parentB] as $parent) { unlink($parent . '/map.conf'); unlink($parent . '/include.conf'); if (is_file($parent . '/.weathermap-config.lock')) unlink($parent . '/.weathermap-config.lock'); rmdir($parent); }
+
 		$oldLocale = setlocale(LC_NUMERIC, 0);
 		$commaLocale = setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR', 'de_DE.UTF-8');
 		try {
@@ -512,9 +540,10 @@ function wm_fixture_revision($file, $callback) {
 		echo "Colour concurrent configuration regression PASS\n";
 	} finally {
 		$GLOBALS['config_fault'] = '';
-		foreach (glob($dir . '/*') as $path) unlink($path);
-		foreach (glob($dir . '/.wm-config-*') as $path) unlink($path);
-		if (is_file($dir . '/.weathermap-config.lock')) unlink($dir . '/.weathermap-config.lock');
+		$cleanup = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
+		foreach ($cleanup as $entry) {
+			if ($entry->isDir() && !$entry->isLink()) rmdir($entry->getPathname()); else unlink($entry->getPathname());
+		}
 		rmdir($dir);
 	}
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-15 00:01+1030\n"
+"POT-Creation-Date: 2026-10-15 01:30+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -296,6 +296,22 @@ msgstr ""
 
 #: lib/editor.inc.php weathermap-cacti-plugin-editor.php
 msgid "Link Border Colour"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
 msgstr ""
 
 #: lib/editor.inc.php weathermap-cacti-plugin-editor.php
@@ -1219,10 +1235,6 @@ msgid "Internal Name"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Label"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
 msgid "Icon Filename"
 msgstr ""
 
@@ -1572,18 +1584,6 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "From (usually %)"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Scale"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "To (usually %)"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php

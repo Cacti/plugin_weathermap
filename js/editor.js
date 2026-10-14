@@ -1814,11 +1814,11 @@ function wmColourRequest(action, extra, callback, errorId) {
 function wmAssetScaleRow(row) {
 	var tr = $('<tr>').appendTo('#wm-scale-rows');
 	['scale', 'bottom', 'top'].forEach(function(key) {
-		$('<td>').append($('<input>').attr('type', key === 'scale' ? 'text' : 'number').attr('step', 'any').attr('maxlength', key === 'scale' ? 1024 : null).addClass('wm-range-' + key).val(row[key])).appendTo(tr);
+		$('<td>').append($('<input>').attr('type', key === 'scale' ? 'text' : 'number').attr('step', 'any').attr('maxlength', key === 'scale' ? 1024 : null).attr('aria-label', {scale: wmEditorText.rangeScale, bottom: wmEditorText.rangeFrom, top: wmEditorText.rangeTo}[key]).addClass('wm-range-' + key).val(row[key])).appendTo(tr);
 	});
 	$('<td>').append(wmAssetColour(row.colour, false, false, false, wmEditorText.rangeColour)).appendTo(tr);
 	$('<td>').append(wmAssetColour(row.end || '', true, false, true, wmEditorText.gradientColour)).appendTo(tr);
-	$('<td>').append($('<input type="text" class="wm-range-tag">').val(row.tag || '')).appendTo(tr);
+	$('<td>').append($('<input type="text" class="wm-range-tag">').attr('aria-label', wmEditorText.rangeLabel).val(row.tag || '')).appendTo(tr);
 	$('<td>').append($('<button type="button" class="ui-button wm-asset-delete">').text(wmEditorText.colourText2).attr('aria-label', wmEditorText.colourText7).on('click', function() { tr.remove(); })).appendTo(tr);
 }
 function wmColourRefreshMap() {

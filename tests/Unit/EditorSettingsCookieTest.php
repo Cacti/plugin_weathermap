@@ -37,7 +37,7 @@ final class EditorSettingsCookieTest extends TestCase {
 		require $plugin . '/lib/WeatherMap.class.php';
 		require $plugin . '/lib/editor.inc.php';
 		require $plugin . '/lib/editor.actions.php';
-		$file = tempnam(sys_get_temp_dir(), 'wmsettings');
+		$file = tempnam((realpath(sys_get_temp_dir()) ?: sys_get_temp_dir()), 'wmsettings');
 		file_put_contents($file, "WIDTH 100\nHEIGHT 100\n");
 		try {
 			foreach ([[1,1,10,'1:1:10'], [0,1,5,'0:1:5'], [0,0,'NO','0:0:0']] as [$via,$relative,$grid,$expected]) {

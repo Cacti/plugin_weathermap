@@ -50,7 +50,7 @@ function assets_assert($value, $message) {
 		throw new RuntimeException($message);
 	}
 }
-$dir = sys_get_temp_dir() . '/wm-assets-' . bin2hex(random_bytes(4));
+$dir = (realpath(sys_get_temp_dir()) ?: sys_get_temp_dir()) . '/wm-assets-' . bin2hex(random_bytes(4));
 mkdir($dir);
 try {
 	$file = $dir . '/map.conf';
