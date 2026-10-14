@@ -502,6 +502,7 @@ function setMapProperties($mapfile) {
 			http_response_code(400);
 			return;
 		}
+		if (strtolower($background_colour) !== sprintf('#%02x%02x%02x', $map->colours['DEFAULT']['BG']['red1'], $map->colours['DEFAULT']['BG']['green1'], $map->colours['DEFAULT']['BG']['blue1'])) $map->colour_overrides['background'] = true;
 		foreach (['red1', 'green1', 'blue1'] as $i => $channel) {
 			$map->colours['DEFAULT']['BG'][$channel] = hexdec(substr($background_colour, 1 + 2 * $i, 2));
 		}
@@ -1045,7 +1046,10 @@ function deleteNode($mapfile) {
 }
 
 /**
- * @param  mixed $mapfile
+ * Clone a selected node into its owning map with a placement offset.
+ *
+ * @param string $mapfile Validated editor map path.
+ *
  * @return void
  */
 function cloneNode($mapfile) {
@@ -1078,7 +1082,7 @@ function cloneNode($mapfile) {
 		$node->name = $newnodename;
 		$node->x += 30;
 		$node->y += 30;
-		$node->defined_in = $mapfile;
+		$node->defined_in = $map->configfile;
 
 		$map->nodes[$newnodename] = $node;
 

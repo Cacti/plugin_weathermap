@@ -486,6 +486,7 @@ class WeatherMap extends WeatherMapBase {
 	var $included_files = [];
 	// Root directives retain their portable spelling; included_files tracks loaded paths.
 	var $include_directives = [];
+	var $colour_overrides = [];
 	/** @var ?array */
 	var $usage_stats    = [];
 	/** @var array */
@@ -520,6 +521,7 @@ class WeatherMap extends WeatherMapBase {
 			'postprocessclasses' => [],
 			'included_files'     => [],
 			'include_directives' => [],
+			'colour_overrides'   => [],
 			'context'            => '',
 			'dumpconfig'         => false,
 			'rrdtool_check'      => '',
@@ -2457,7 +2459,7 @@ class WeatherMap extends WeatherMapBase {
 	function ReadConfig($input, $is_include = false) {
 		require_once __DIR__ . '/WeatherMap.config.php';
 		global $config, $weathermap_error_suppress;
-		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; $this->included_scale_names = []; $this->included_files = []; $this->include_directives = []; $this->has_includes = false; } }
+		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; $this->included_scale_names = []; $this->included_files = []; $this->include_directives = []; $this->has_includes = false; $this->colour_overrides = []; } }
 
 		$curnode    = null;
 		$curlink    = null;
@@ -2538,7 +2540,12 @@ class WeatherMap extends WeatherMapBase {
 		$objectlinecount = 0;
 		$curobj          = null;
 
+		$rootIncludeSeen = $filename === '{text insert}' && $this->has_includes;
 		foreach ($lines as $buffer) {
+			if (!$is_include && $rootIncludeSeen) {
+				if (preg_match('/^\s*BGCOLOR\s+/i', $buffer)) $this->colour_overrides['background'] = true;
+				if ($last_seen === 'GLOBAL' && preg_match('/^\s*SET\s+traffic_pulse\s+/i', $buffer)) $this->colour_overrides['pulse'] = true;
+			}
 			$linematched = 0;
 
 			$linecount++;
@@ -2883,6 +2890,7 @@ class WeatherMap extends WeatherMapBase {
 
 				if ($last_seen == 'GLOBAL' && preg_match('/^\s*INCLUDE\s+(.*)\s*$/i', $buffer, $matches)) {
 					if (!$is_include) {
+						$rootIncludeSeen = true;
 						$this->include_directives[] = $matches[1];
 						$this->has_includes = true;
 					}
@@ -3153,6 +3161,8 @@ class WeatherMap extends WeatherMapBase {
 						$this->colours[$matches[1]][$key]['red2']   = (int) ($matches[7]);
 						$this->colours[$matches[1]][$key]['green2'] = (int) ($matches[8]);
 						$this->colours[$matches[1]][$key]['blue2']  = (int) ($matches[9]);
+					} else {
+						unset($this->colours[$matches[1]][$key]['red2'], $this->colours[$matches[1]][$key]['green2'], $this->colours[$matches[1]][$key]['blue2']);
 					}
 
 					if (! isset($this->numscales[$matches[1]])) {
@@ -3397,7 +3407,7 @@ class WeatherMap extends WeatherMapBase {
 		wm_debug('------------------------------------------');
 
 		// load some default colouring, otherwise it all goes wrong
-		if ($scalesseen == 0) {
+		if (!$is_include && !array_filter($this->colours['DEFAULT'], function ($row) { return empty($row['special']); })) {
 			wm_debug('Adding default SCALE colour set (no SCALE lines seen).');
 
 			$defaults = [
@@ -3424,7 +3434,7 @@ class WeatherMap extends WeatherMapBase {
 			wm_debug("Already have $scalesseen scales, no defaults added.");
 		}
 
-		$this->numscales['DEFAULT'] = $scalesseen;
+		$this->numscales['DEFAULT'] = cacti_count(array_filter($this->colours['DEFAULT'], function ($row) { return empty($row['special']); }));
 		$this->configfile           = $filename;
 
 		if ($this->has_overlibs && $this->htmlstyle == 'static') {
@@ -3823,6 +3833,10 @@ class WeatherMap extends WeatherMapBase {
 				foreach ($this->include_directives as $ifile) {
 					$output .= "INCLUDE $ifile\n";
 				}
+				// Effective editor settings must survive directives in shared files.
+				$bg = $this->colours['DEFAULT']['BG'];
+				if (!empty($this->colour_overrides['background'])) $output .= $bg['red1'] < 0 ? "BGCOLOR none\n" : sprintf("BGCOLOR %d %d %d\n", $bg['red1'], $bg['green1'], $bg['blue1']);
+				if (!empty($this->colour_overrides['pulse']) && array_key_exists('traffic_pulse', $this->hints)) $output .= 'SET traffic_pulse ' . $this->hints['traffic_pulse'] . "\n";
 			}
 
 			$output .= "\n# End of global section\n\n";

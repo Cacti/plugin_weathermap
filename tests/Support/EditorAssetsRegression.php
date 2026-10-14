@@ -206,6 +206,71 @@ try {
 	// A subsequent root read clears inherited provenance.
 	$included->ReadConfig($file);
 	assets_assert($included->included_scale_names === [], 'root load resets shared scale names');
+	// Only the outermost read synthesises Classic, after all explicit scales are known.
+	$template = $dir . '/template.conf'; $deep = $dir . '/deep.conf'; $presetFile = $dir . '/preset.conf';
+	file_put_contents($deep, "NODE shared_template\n LABEL Template\n");
+	file_put_contents($template, "INCLUDE $deep\n");
+	file_put_contents($presetFile, "WIDTH 100\nHEIGHT 100\nINCLUDE $template\n");
+	$presetMap = new WeatherMap; $presetMap->ReadConfig($presetFile);
+	assets_assert($presetMap->numscales['DEFAULT'] === 9 && $presetMap->included_scale_names === [], 'template-only nested includes receive outer Classic fallback without locking it');
+	$signals = wm_asset_colour_data($presetMap);
+	$signals['rows'] = [['scale'=>'DEFAULT','bottom'=>0,'top'=>0,'colour'=>'#666666'], ['scale'=>'DEFAULT','bottom'=>0,'top'=>80,'colour'=>'#008000'], ['scale'=>'DEFAULT','bottom'=>80,'top'=>100,'colour'=>'#cc0000']];
+	wm_asset_save_colours($presetMap, $signals); assets_assert($presetMap->WriteConfig($presetFile), 'preset with template-only includes saves');
+	$presetReload = new WeatherMap; $presetReload->ReadConfig($presetFile);
+	assets_assert($presetReload->numscales['DEFAULT'] === 3 && array_column(wm_asset_colour_data($presetReload)['rows'], 'colour') === ['#666666', '#008000', '#cc0000'], 'preset survives nested include reload without synthesized Classic ranges');
+	// A solid override must also discard a previously parsed gradient of the same range.
+	file_put_contents($deep, "SCALE 0 100 1 2 3\n");
+	file_put_contents($presetFile, "SCALE 0 100 10 20 30 40 50 60\nINCLUDE $template\n");
+	$solidReload = new WeatherMap; $solidReload->ReadConfig($presetFile);
+	assets_assert(!isset($solidReload->colours['DEFAULT']['0_100']['red2']) && $solidReload->numscales['DEFAULT'] === 1, 'included solid range clears old gradient and counts effective ranges');
+	// Local background/pulse controls override shared values only after includes.
+	file_put_contents($deep, "BGCOLOR 10 20 30\nSET traffic_pulse 0\n"); $sharedSettingsBytes = file_get_contents($deep);
+	file_put_contents($presetFile, "WIDTH 100\nHEIGHT 100\nINCLUDE $template\n");
+	$inheritingMap = new WeatherMap; $inheritingMap->ReadConfig($presetFile);
+	wm_asset_save_colours($inheritingMap, wm_asset_colour_data($inheritingMap));
+	assets_assert($inheritingMap->WriteConfig($presetFile), 'unchanged inherited settings save');
+	file_put_contents($deep, "BGCOLOR 50 60 70\nSET traffic_pulse 1\n");
+	$inheritingReload = new WeatherMap; $inheritingReload->ReadConfig($presetFile);
+	assets_assert(wm_asset_colour_data($inheritingReload)['background'] === '#323c46' && wm_asset_colour_data($inheritingReload)['pulse'] === true, 'unchanged settings keep inheriting future shared changes');
+	file_put_contents($deep, $sharedSettingsBytes);
+	$settingsMap = new WeatherMap; $settingsMap->ReadConfig($presetFile);
+	$settings = wm_asset_colour_data($settingsMap); $settings['background'] = '#aabbcc'; $settings['pulse'] = true;
+	wm_asset_save_colours($settingsMap, $settings); assets_assert($settingsMap->WriteConfig($presetFile), 'shared settings save');
+	$settingsReload = new WeatherMap; $settingsReload->ReadConfig($presetFile); $settings = wm_asset_colour_data($settingsReload);
+	assets_assert($settings['background'] === '#aabbcc' && $settings['pulse'] === true && file_get_contents($deep) === $sharedSettingsBytes, 'local background and pulse survive include reload without changing shared source');
+	$settings['pulse'] = false; wm_asset_save_colours($settingsReload, $settings); assets_assert($settingsReload->WriteConfig($presetFile), 'pulse can be disabled again');
+	$GLOBALS['__test_nfilter_request'] = ['map_title'=>'Local background', 'map_legend'=>'Traffic', 'map_stamp'=>'Created', 'map_htmlfile'=>'test.html', 'map_pngfile'=>'test.png', 'map_width'=>'100', 'map_height'=>'100', 'map_bgfile'=>'--NONE--', 'map_background_sizing'=>'fit', 'map_linkdefaultwidth'=>'7', 'map_linkdefaultbwin'=>'100M', 'map_linkdefaultbwout'=>'100M', 'map_background_colour'=>'#ffffff'];
+	http_response_code(200); wm_fixture_revision($presetFile, fn () => setMapProperties($presetFile));
+	$propertiesReload = new WeatherMap; $propertiesReload->ReadConfig($presetFile);
+	assets_assert(http_response_code() === 200 && wm_asset_colour_data($propertiesReload)['background'] === '#ffffff' && wm_asset_colour_data($propertiesReload)['pulse'] === false, 'Map Properties background survives included settings and preserves pulse');
+	file_put_contents($presetFile, "WIDTH 100\nHEIGHT 100\nINCLUDE $template\nSET traffic_pulse 1\nNODE Local\n POSITION 20 20\nBGCOLOR 200 210 220\n");
+	$explicitMap = new WeatherMap; $explicitMap->ReadConfig($presetFile);
+	assets_assert($explicitMap->WriteConfig($presetFile), 'existing explicit overrides save');
+	$explicitReload = new WeatherMap; $explicitReload->ReadConfig($presetFile);
+	assets_assert(wm_asset_colour_data($explicitReload)['background'] === '#c8d2dc' && wm_asset_colour_data($explicitReload)['pulse'] === true, 'existing local directives retain precedence, including background after node declarations');
+	$propertiesReload = $explicitReload;
+	// Ambiguous labels must fail before mutation; explicit gradients and none remain valid.
+	$labelData = wm_asset_colour_data($propertiesReload); $labelBefore = $propertiesReload->colours;
+	foreach (['1 2 3 Mbps', ' 1 2 3Mbps', '123 4 5'] as $ambiguous) {
+		$invalidLabel = $labelData; $invalidLabel['rows'][0]['tag'] = $ambiguous; $invalidLabel['rows'][0]['end'] = '';
+		try { wm_asset_save_colours($propertiesReload, $invalidLabel); throw new RuntimeException('ambiguous solid label accepted'); } catch (InvalidArgumentException $expected) {}
+		assets_assert($propertiesReload->colours === $labelBefore, 'ambiguous label rejection is atomic');
+	}
+	foreach ([['#0000ff', '', 'Traffic 1 2 3 Mbps'], ['none', '', '1 2 3 Mbps'], ['#0000ff', '#ffffff', '1 2 3 Mbps']] as [$fill, $end, $tag]) {
+		$validLabel = $labelData; $validLabel['rows'][0]['colour'] = $fill; $validLabel['rows'][0]['end'] = $end; $validLabel['rows'][0]['tag'] = $tag;
+		wm_asset_save_colours($propertiesReload, $validLabel); assets_assert($propertiesReload->WriteConfig($presetFile), 'unambiguous label saves');
+		$labelReload = new WeatherMap; $labelReload->ReadConfig($presetFile); $row = wm_asset_colour_data($labelReload)['rows'][0];
+		assets_assert($row['colour'] === $fill && $row['end'] === $end && $row['tag'] === $tag, 'label and gradient survive roundtrip');
+	}
+	// Normal editor controllers use a relative map name: clone ownership must be absolute.
+	$cloneRelative = 'configs/clone-test-' . bin2hex(random_bytes(4)) . '.conf';
+	try {
+		file_put_contents($cloneRelative, "WIDTH 100\nHEIGHT 100\nNODE A\n LABEL Original\n POSITION 10 20\n");
+		$GLOBALS['__test_nfilter_request'] = ['param'=>'A']; http_response_code(200);
+		wm_fixture_revision($cloneRelative, fn () => cloneNode($cloneRelative));
+		$cloneReload = new WeatherMap; $cloneReload->ReadConfig($cloneRelative);
+		assets_assert(http_response_code() === 200 && isset($cloneReload->nodes['A_copy']) && (int)$cloneReload->nodes['A_copy']->x === 40 && (int)$cloneReload->nodes['A_copy']->y === 50, 'relative controller clone is serialized and reloads at its offset: ' . json_encode([http_response_code(), array_keys($cloneReload->nodes), $cloneReload->nodes['A_copy']->x ?? null, $cloneReload->nodes['A_copy']->y ?? null]));
+	} finally { unlink($cloneRelative); }
 	echo "Editor assets regression PASS\n";
 } finally {
 	foreach (glob($dir . '/*') as $path) unlink($path);

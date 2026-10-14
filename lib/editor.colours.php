@@ -87,6 +87,7 @@ function wm_asset_save_colours($map, $data) {
 		$rgb = wm_asset_rgb($row['colour'] ?? null);
 		$tag = $row['tag'] ?? '';
 		if (!is_string($tag) || strlen($tag) > 200 || preg_match('/[\x00-\x1f\x7f]/', $tag)) throw new InvalidArgumentException(__('Invalid scale label.', 'weathermap'));
+		if ($rgb[0] >= 0 && ($row['end'] ?? '') === '' && preg_match('/^\s*\d+\s+\d+\s+\d+/', $tag)) throw new InvalidArgumentException(__('A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour.', 'weathermap'));
 		$bottom = round((float)$row['bottom'], 6);
 		$top = round((float)$row['top'], 6);
 		$serialize = function($value) use ($map) {
@@ -129,6 +130,8 @@ function wm_asset_save_colours($map, $data) {
 		}
 	}
 	foreach ($map->included_scale_names as $name => $unused) $scales[$name] = $map->colours[$name];
+	if ($background !== array_map('intval', [$map->colours['DEFAULT']['BG']['red1'], $map->colours['DEFAULT']['BG']['green1'], $map->colours['DEFAULT']['BG']['blue1']])) $map->colour_overrides['background'] = true;
+	if (array_key_exists('pulse', $data) && $data['pulse'] !== ($map->get_hint('traffic_pulse', '1') === '1')) $map->colour_overrides['pulse'] = true;
 	$scales['DEFAULT']['BG']['red1'] = $background[0];
 	$scales['DEFAULT']['BG']['green1'] = $background[1];
 	$scales['DEFAULT']['BG']['blue1'] = $background[2];
