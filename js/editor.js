@@ -1829,6 +1829,7 @@ function wmDecodeEditorUrl(value) {
 }
 function wmAssetRequest(action, extra, callback, errorId) {
 	var values = {action: action, mapname: $('#mapname').val()};
+	if (action !== 'image_data' && typeof WMConfigRevision !== 'undefined') values.config_revision = WMConfigRevision;
 	if (typeof csrfMagicToken !== 'undefined') values.__csrf_magic = csrfMagicToken;
 	$.ajax({url: editor_url, type: action === 'image_data' ? 'GET' : 'POST', dataType: 'json', data: $.extend(values, extra),
 		success: callback, error: function(xhr) { $('#' + errorId).text(xhr.responseJSON && xhr.responseJSON.error || wmEditorText.imageText3); }});
@@ -1879,6 +1880,7 @@ function wmOpenImages() {
 		var data = new FormData();
 		data.append('action', 'upload_image'); data.append('mapname', $('#mapname').val());
 		data.append('image_kind', kind); data.append('image_file', file);
+		if (typeof WMConfigRevision !== 'undefined') data.append('config_revision', WMConfigRevision);
 		if (typeof csrfMagicToken !== 'undefined') data.append('__csrf_magic', csrfMagicToken);
 		button.prop('disabled', true);
 		$.ajax({url: editor_url, type: 'POST', data: data, dataType: 'json', contentType: false, processData: false,

@@ -1209,6 +1209,16 @@ function wm_editor_assets($mapfile, $action) {
 	header('Content-Type: application/json');
 	try {
 		if ($action !== 'image_data' && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') throw new InvalidArgumentException(__('Use POST to save changes.', 'weathermap'));
+		if ($action !== 'image_data') {
+			$map = new WeatherMap;
+			$map->context = 'editor';
+			if (!wm_editor_read_config($map, $mapfile, true)) {
+				echo json_encode(['error' => http_response_code() === 409
+					? __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap')
+					: __('Cannot read the map configuration.', 'weathermap')]);
+				return;
+			}
+		}
 		if ($action === 'image_data') {
 			$result = ['images' => wm_asset_image_list()];
 		} elseif ($action === 'upload_image') {

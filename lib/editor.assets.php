@@ -180,6 +180,7 @@ function wm_asset_image_list($references = null) {
 			$path = $dir . '/' . $name;
 			if (!is_file($path) || is_link($path) || !is_readable($path) || !preg_match('/\.(png|gif|jpe?g)$/iD', $name)) continue;
 			$size = @getimagesize($path);
+			if (!$size || !in_array($size[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) continue;
 			$users = wm_asset_image_users($name, $kind, $references);
 			$result[] = ['width' => $size ? $size[0] : null, 'height' => $size ? $size[1] : null, 'users' => $users, 'kind' => $kind, 'name' => $name, 'url' => 'images/' . $kind . '/' . rawurlencode($name), 'deletable' => !$users && (bool) preg_match('/^[A-Za-z0-9_.-]+\.(png|gif|jpe?g)$/iD', $name) && strpos($name, '..') === false];
 		}

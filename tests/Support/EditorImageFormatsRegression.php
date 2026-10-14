@@ -22,6 +22,9 @@
  +-------------------------------------------------------------------------+
 */
 require dirname(__DIR__) . "/bootstrap-unit.php";
+chdir(dirname(__DIR__, 2));
+require dirname(__DIR__, 2) . "/setup.php";
+require dirname(__DIR__, 2) . "/lib/WeatherMap.class.php";
 require dirname(__DIR__, 2) . '/lib/editor.assets.php';
 require dirname(__DIR__, 2) . '/lib/editor.actions.php';
 require dirname(__DIR__, 2) . '/lib/editor.inc.php';
@@ -37,6 +40,16 @@ function image_format_assert($value, $message) {
 	if (!$value) {
 		throw new RuntimeException($message);
 	}
+}
+/**
+ * Supply the real loaded snapshot for valid image mutation fixtures.
+ *
+ * @param string $file Configuration path.
+ * @return void
+ */
+function image_format_revision($file) {
+	$map = new WeatherMap; $map->ReadConfig($file);
+	$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity);
 }
 $root = dirname(__DIR__, 2);
 $temporary = $root . '/tests/wm-image-formats-' . bin2hex(random_bytes(4));
@@ -83,9 +96,9 @@ try {
 	$GLOBALS['publication_fail'] = false;
 	$published = publication_store_image('objects', $uploadSource, 'publication.png'); $created[] = wm_asset_image_path('objects', $published);
 	image_format_assert(getimagesize(end($created))[0] === 12 && (fileperms(end($created)) & 0777) === 0644 && glob($root . '/images/objects/.wm-upload-*') === [], 'successful upload publishes complete permitted image and removes staging file');
-	file_put_contents($config, "ICON images/objects/core-router.png\n# router.png is merely a comment\n");
+	file_put_contents($config, "NODE Fixture\n ICON images/objects/core-router.png\n# router.png is merely a comment\n");
 	image_format_assert(wm_asset_image_users('router.png', 'objects') === [], 'substring and comment do not count as references');
-	file_put_contents($config, "ICON images/objects/ROUTER.PNG\n");
+	file_put_contents($config, "NODE Fixture\n ICON images/objects/ROUTER.PNG\n");
 	image_format_assert(wm_asset_image_users('router.png', 'objects') !== [], 'case-insensitive paths protect in-use images');
 	image_format_assert(wm_asset_normalize_path('images\\objects\\Router.PNG', 'C:\\Cacti\\plugins\\weathermap') === 'C:/Cacti/plugins/weathermap/images/objects/Router.PNG', 'Windows relative path canonicalised');
 	image_format_assert(wm_asset_normalize_path('D:\\assets\\router.png', 'C:/Cacti') === 'D:/assets/router.png', 'Windows absolute drive path retained');
@@ -93,12 +106,12 @@ try {
 	$jpegPath = $root . '/images/backgrounds/format-reload-' . bin2hex(random_bytes(4)) . '.jpeg';
 	copy($created[3], $jpegPath); $created[] = $jpegPath;
 	image_format_assert(in_array('images/backgrounds/' . basename($jpegPath), get_imagelist('backgrounds'), true), 'existing JPEG background survives selector reload');
-	file_put_contents($config, "ICON /outside/router.png\n");
+	file_put_contents($config, "NODE Fixture\n ICON /outside/router.png\n");
 	image_format_assert(wm_asset_image_users('router.png', 'objects') === [], 'complete paths distinguish external images');
-	file_put_contents($config, "ICON 32 32 images/objects/updown_{node:this:bandwidth_in}.png\n");
+	file_put_contents($config, "NODE Fixture\n ICON 32 32 images/objects/updown_{node:this:bandwidth_in}.png\n");
 	image_format_assert(in_array(basename($config), wm_asset_image_users('updown_0.png', 'objects'), true), 'templated icon cannot be deleted');
 	image_format_assert(wm_asset_image_users('updown_0.png', 'backgrounds') === [], 'library kinds are distinct');
-	file_put_contents($config, "ICON images/objects/" . basename($created[0]) . "\n");
+	file_put_contents($config, "NODE Fixture\n ICON images/objects/" . basename($created[0]) . "\n");
 	$listed = array_values(array_filter(wm_asset_image_list(), function($item) use ($created) { return $item['kind'] === 'objects' && $item['name'] === basename($created[0]); }));
 	image_format_assert($listed[0]['width'] === 12 && $listed[0]['height'] === 8 && !$listed[0]['deletable'] && $listed[0]['users'], 'dimensions and usage disable referenced image deletion');
 	image_format_assert(wm_editor_sanitize_file('images/backgrounds/legacy.JPG', ['png', 'jpg', 'gif', 'jpeg']) === 'images/backgrounds/legacy.JPG', 'uppercase background save retains path');
@@ -149,7 +162,10 @@ try {
 	$_SERVER['REQUEST_METHOD'] = 'POST';
 	$_FILES['image_file'] = ['error' => UPLOAD_ERR_OK, 'tmp_name' => $source, 'name' => 'must-not-persist.png'];
 	$GLOBALS['__test_nfilter_request'] = ['image_kind' => 'objects'];
-	ob_start(); wm_editor_assets($config, 'upload_image'); $response = json_decode(ob_get_clean(), true);
+	$oldSuppress = $GLOBALS['weathermap_error_suppress'] ?? [];
+	$GLOBALS['weathermap_error_suppress'] = ['']; // The deliberately broken INCLUDE emits an untagged warning.
+	ob_start(); image_format_revision($config); wm_editor_assets($config, 'upload_image'); $response = json_decode(ob_get_clean(), true);
+	$GLOBALS['weathermap_error_suppress'] = $oldSuppress;
 	image_format_assert(str_contains($response['error'], 'Cannot check configuration references'), 'configuration failure precedes upload persistence');
 	image_format_assert(glob($root . '/images/objects/must-not-persist-*') === [], 'reference error cannot create an uploaded image');
 	unlink($broken); unset($_FILES['image_file']);
@@ -160,27 +176,48 @@ try {
 	image_format_assert(isset($response['images']), 'library JSON returned');
 	$deletePath = $created[0]; $deleteName = basename($deletePath);
 	$GLOBALS['__test_nfilter_request'] = ['image_kind' => 'objects', 'image_name' => $deleteName];
-	ob_start(); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
+	ob_start(); image_format_revision($config); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
 	image_format_assert(isset($response['error']) && is_file($deletePath), 'GET cannot delete an image');
 	$_SERVER['REQUEST_METHOD'] = 'POST';
-	file_put_contents($config, "ICON images/objects/" . $deleteName . "\n");
-	ob_start(); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
+	file_put_contents($config, "NODE Fixture\n ICON images/objects/" . $deleteName . "\n");
+	ob_start(); image_format_revision($config); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
 	image_format_assert(isset($response['error']) && is_file($deletePath), 'referenced image cannot be deleted');
 	file_put_contents($config, "# no image reference\n");
 
 	$externalDir = $temporary . '/reference-source'; mkdir($externalDir); $externalFile = $externalDir . '/map.conf'; file_put_contents($externalFile, "# External source\n");
 	$externalAlias = $root . '/configs/alias-' . bin2hex(random_bytes(4)) . '.conf'; symlink($externalFile, $externalAlias); $created[] = $externalAlias;
 	$externalLock = \WeathermapConfig\acquire($externalDir);
-	ob_start(); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
+	ob_start(); image_format_revision($config); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
 	image_format_assert(http_response_code() === 500 && isset($response['error']) && is_file($deletePath), 'image deletion cannot bypass a physical configuration mutex');
 	\WeathermapConfig\release($externalLock);
 	file_put_contents($externalFile, "ICON images/objects/" . $deleteName . "\n");
-	ob_start(); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
+	ob_start(); image_format_revision($config); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
 	image_format_assert(isset($response['error']) && is_file($deletePath), 'external symlink references remain protected after acquiring shared locks');
 	unlink($externalAlias); unlink($externalFile); unlink($externalDir . '/.weathermap-config.lock'); rmdir($externalDir);
 
-	ob_start(); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
+	ob_start(); image_format_revision($config); wm_editor_assets($config, 'delete_image'); $response = json_decode(ob_get_clean(), true);
 	image_format_assert(isset($response['images']) && !is_file($deletePath), 'delete removes the actual server file');
+	// Content detection, not a filename suffix, decides what selectors can render.
+	foreach (['objects', 'backgrounds'] as $kind) {
+		foreach (['broken'=>'not an image', 'unsupported'=>"BM" . pack('VvvV', 58, 0, 0, 54) . pack('VllvvVVllVV', 40, 1, 1, 1, 24, 0, 4, 0, 0, 0, 0) . "\0\0\0\0"] as $name => $bytes) {
+			$fake = $root . '/images/' . $kind . '/test-' . $name . '-' . bin2hex(random_bytes(4)) . '.png';
+			file_put_contents($fake, $bytes); $created[] = $fake;
+			if ($name === 'unsupported') image_format_assert(getimagesize($fake)[2] === IMAGETYPE_BMP, 'fixture really detects an unsupported raster');
+			image_format_assert(!array_filter(wm_asset_image_list(), fn ($item) => $item['kind'] === $kind && $item['name'] === basename($fake)), 'unsupported or invalid image omitted from library');
+		}
+	}
+	// Stale, missing and nonexistent map tokens fail before upload validation or deletion.
+	$protected = $created[1];
+	$protectedBytes = file_get_contents($protected);
+	foreach (['upload_image', 'delete_image'] as $action) {
+		foreach (['missing', 'stale', 'absent-map'] as $failure) {
+			$GLOBALS['__test_nfilter_request'] = ['image_kind'=>'backgrounds','image_name'=>basename($protected)];
+			if ($failure !== 'missing') $GLOBALS['__test_nfilter_request']['config_revision'] = str_repeat('0',64);
+			http_response_code(200); ob_start(); wm_editor_assets($failure === 'absent-map' ? $config . '.missing' : $config, $action); $blocked = json_decode(ob_get_clean(), true);
+			image_format_assert(http_response_code() === ($failure === 'absent-map' ? 404 : 409) && isset($blocked['error']), 'image mutation rejects ' . $failure);
+			image_format_assert(file_get_contents($protected) === $protectedBytes, 'rejected mutation preserves library file');
+		}
+	}
 	echo "Editor image formats regression PASS\n";
 } finally {
 	foreach ($created as $path) if (is_file($path)) unlink($path);
