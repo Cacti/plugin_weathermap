@@ -344,6 +344,7 @@ class WeatherMap extends WeatherMapBase {
 	var $configfile;
 	var $config_revision = null;
 	var $config_dependencies = [];
+	var $included_scale_names = [];
 	/** @var array Loaded root paths, physical targets and revisions. */
 	var $config_root_identity = [];
 	var $config_managed_assets = [];
@@ -485,6 +486,9 @@ class WeatherMap extends WeatherMapBase {
 	var $plugins        = [];
 	/** @var array */
 	var $included_files = [];
+	// Root directives retain their portable spelling; included_files tracks loaded paths.
+	var $include_directives = [];
+	var $colour_overrides = [];
 	/** @var ?array */
 	var $usage_stats    = [];
 	/** @var array */
@@ -518,6 +522,8 @@ class WeatherMap extends WeatherMapBase {
 			'preprocessclasses'  => [],
 			'postprocessclasses' => [],
 			'included_files'     => [],
+			'include_directives' => [],
+			'colour_overrides'   => [],
 			'context'            => '',
 			'dumpconfig'         => false,
 			'rrdtool_check'      => '',
@@ -2492,8 +2498,9 @@ class WeatherMap extends WeatherMapBase {
 	 * @return bool
 	 */
 	function ReadConfig($input, $is_include = false) {
+		require_once __DIR__ . '/WeatherMap.config.php';
 		global $config, $weathermap_error_suppress;
-		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; } }
+		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; $this->included_scale_names = []; $this->included_files = []; $this->include_directives = []; $this->has_includes = false; $this->colour_overrides = []; } }
 
 		$curnode    = null;
 		$curlink    = null;
@@ -2520,12 +2527,12 @@ class WeatherMap extends WeatherMapBase {
 		} else {
 			wm_debug('ReadConfig Detected that this is a config filename.');
 
-			$filename = $input;
-			$rootLogicalPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+			$filename = \WeathermapConfig\logicalPath($input);
+			$rootLogicalPath = \WeathermapConfig\logicalPath($filename);
 			$rootPhysicalPath = realpath($filename);
 
 			if ($is_include) {
-				$dependencyLogicalPath = (realpath(dirname($filename)) ?: dirname($filename)) . '/' . basename($filename);
+				$dependencyLogicalPath = \WeathermapConfig\logicalPath($filename);
 				$dependencyPath = realpath($filename) ?: $dependencyLogicalPath;
 				if (!array_key_exists($dependencyPath, $this->config_dependencies)) $this->config_dependencies[$dependencyPath] = null;
 				wm_debug('ReadConfig Detected that this is an INCLUDED config filename.');
@@ -2574,6 +2581,7 @@ class WeatherMap extends WeatherMapBase {
 		$objectlinecount = 0;
 		$curobj          = null;
 
+		$rootIncludeSeen = $filename === '{text insert}' && $this->has_includes;
 		foreach ($lines as $buffer) {
 			$linematched = 0;
 
@@ -2918,6 +2926,11 @@ class WeatherMap extends WeatherMapBase {
 				}
 
 				if ($last_seen == 'GLOBAL' && preg_match('/^\s*INCLUDE\s+(.*)\s*$/i', $buffer, $matches)) {
+					if (!$is_include) {
+						$rootIncludeSeen = true;
+						$this->include_directives[] = $matches[1];
+						$this->has_includes = true;
+					}
 					if (file_exists($matches[1])) {
 						wm_debug("Including '{$matches[1]}'");
 
@@ -2992,6 +3005,7 @@ class WeatherMap extends WeatherMapBase {
 
 				if (preg_match('/^\s*SET\s+(\S+)\s+(.*)\s*$/i', $buffer, $matches)) {
 					$curobj->add_hint($matches[1], trim($matches[2]));
+					if ($curobj === $this && $matches[1] === 'traffic_pulse') $this->colour_overrides['pulse'] = !$is_include && $rootIncludeSeen;
 
 					if ($curobj->my_type() == 'map' && substr($matches[1], 0, 7) == 'nowarn_') {
 						$weathermap_error_suppress[$matches[1]] = 1;
@@ -3003,6 +3017,7 @@ class WeatherMap extends WeatherMapBase {
 				// allow setting a variable to ''
 				if (preg_match('/^\s*SET\s+(\S+)\s*$/i', $buffer, $matches)) {
 					$curobj->add_hint($matches[1],'');
+					if ($curobj === $this && $matches[1] === 'traffic_pulse') $this->colour_overrides['pulse'] = !$is_include && $rootIncludeSeen;
 
 					if ($curobj->my_type() == 'map' && substr($matches[1], 0, 7) == 'nowarn_') {
 						$weathermap_error_suppress[$matches[1]] = 1;
@@ -3156,6 +3171,8 @@ class WeatherMap extends WeatherMapBase {
 						$matches[1] = trim($matches[1]);
 					}
 
+					if ($is_include) $this->included_scale_names[$matches[1]] = true;
+
 					$key = $matches[2] . '_' . $matches[3];
 
 					$this->colours[$matches[1]][$key]['key'] = $key;
@@ -3183,6 +3200,8 @@ class WeatherMap extends WeatherMapBase {
 						$this->colours[$matches[1]][$key]['red2']   = (int) ($matches[7]);
 						$this->colours[$matches[1]][$key]['green2'] = (int) ($matches[8]);
 						$this->colours[$matches[1]][$key]['blue2']  = (int) ($matches[9]);
+					} else {
+						unset($this->colours[$matches[1]][$key]['red2'], $this->colours[$matches[1]][$key]['green2'], $this->colours[$matches[1]][$key]['blue2']);
 					}
 
 					if (! isset($this->numscales[$matches[1]])) {
@@ -3299,6 +3318,7 @@ class WeatherMap extends WeatherMapBase {
 					// "Found colour line for $key\n";
 					if (isset($matches[3], $matches[4], $matches[5])) {
 						// this is a regular colour setting thing
+						if ($key === 'BG') $this->colour_overrides['background'] = !$is_include && $rootIncludeSeen;
 						$this->colours['DEFAULT'][$key]['red1']    = $matches[3];
 						$this->colours['DEFAULT'][$key]['green1']  = $matches[4];
 						$this->colours['DEFAULT'][$key]['blue1']   = $matches[5];
@@ -3427,7 +3447,7 @@ class WeatherMap extends WeatherMapBase {
 		wm_debug('------------------------------------------');
 
 		// load some default colouring, otherwise it all goes wrong
-		if ($scalesseen == 0) {
+		if (!$is_include && !array_filter($this->colours['DEFAULT'], function ($row) { return empty($row['special']); })) {
 			wm_debug('Adding default SCALE colour set (no SCALE lines seen).');
 
 			$defaults = [
@@ -3454,7 +3474,9 @@ class WeatherMap extends WeatherMapBase {
 			wm_debug("Already have $scalesseen scales, no defaults added.");
 		}
 
-		$this->numscales['DEFAULT'] = $scalesseen;
+		foreach ($this->colours as $scaleName => $scaleRows) {
+			$this->numscales[$scaleName] = cacti_count(array_filter($scaleRows, function ($row) { return empty($row['special']); }));
+		}
 		$this->configfile           = $filename;
 
 		if ($this->has_overlibs && $this->htmlstyle == 'static') {
@@ -3814,6 +3836,9 @@ class WeatherMap extends WeatherMapBase {
 							$top = str_replace(localeconv()['decimal_point'], '.', nice_bandwidth($colour['top'], $this->kilo));
 						}
 
+						// Shared scales are read-only: retain the parser's original bound tokens.
+						if (isset($this->included_scale_names[$scalename])) [$bottom, $top] = explode('_', $colour['key'], 2);
+
 						$tag = ($colour['tag'] ?? '');
 
 						if (($colour['red1'] == -1) && ($colour['green1'] == -1) && ($colour['blue1'] == -1)) {
@@ -3851,9 +3876,13 @@ class WeatherMap extends WeatherMapBase {
 			if ($this->has_includes) {
 				$output .= "\n# Included files\n";
 
-				foreach ($this->included_files as $ifile) {
+				foreach ($this->include_directives as $ifile) {
 					$output .= "INCLUDE $ifile\n";
 				}
+				// Effective editor settings must survive directives in shared files.
+				$bg = $this->colours['DEFAULT']['BG'];
+				if (!empty($this->colour_overrides['background'])) $output .= $bg['red1'] < 0 ? "BGCOLOR none\n" : sprintf("BGCOLOR %d %d %d\n", $bg['red1'], $bg['green1'], $bg['blue1']);
+				if (!empty($this->colour_overrides['pulse']) && array_key_exists('traffic_pulse', $this->hints)) $output .= 'SET traffic_pulse ' . $this->hints['traffic_pulse'] . "\n";
 			}
 
 			$output .= "\n# End of global section\n\n";
@@ -3937,7 +3966,7 @@ class WeatherMap extends WeatherMapBase {
 				if ($logical !== $state['target']) $dependencies[$state['target']] = $state['revision'];
 			}
 			if (!$sameFile && $this->configfile !== '' && is_string($this->config_revision)) {
-				$logicalSource = (realpath(dirname($this->configfile)) ?: dirname($this->configfile)) . '/' . basename($this->configfile);
+				$logicalSource = \WeathermapConfig\logicalPath($this->configfile);
 				$physicalSource = realpath($this->configfile) ?: $logicalSource;
 				if (!isset($dependencies[$physicalSource])) $dependencies[$physicalSource] = $this->config_revision;
 				if ($logicalSource !== $physicalSource && !isset($dependencies[$logicalSource])) $dependencies[$logicalSource] = ['target' => $physicalSource, 'revision' => $this->config_revision];
@@ -4692,12 +4721,14 @@ class WeatherMap extends WeatherMapBase {
 			$html .= "\t<body>" . PHP_EOL;
 		}
 
-		$html .= "\t\t<div class='weathermapimage'>" . PHP_EOL;
+		require_once __DIR__ . "/WeatherMap.animation.php";
+		$traffic = htmlspecialchars(json_encode(wm_traffic_animation_data($this), JSON_INVALID_UTF8_SUBSTITUTE), ENT_QUOTES, "UTF-8");
+		$html .= "\t\t<div class='weathermapimage' data-wm-traffic='" . $traffic . "'>" . PHP_EOL;
 
 		if ($this->imageuri != '') {
 			$html .= sprintf(
 				"\t\t\t<center><img id='wmapimage' src='%s' width='%d' height='%d' border='0' usemap='#%s'",
-				$this->imageuri,
+				htmlspecialchars($this->imageuri, ENT_QUOTES, 'UTF-8'),
 				$this->width,
 				$this->height,
 				$imagemapname
@@ -4707,7 +4738,7 @@ class WeatherMap extends WeatherMapBase {
 		} else {
 			$html .= sprintf(
 				"\t\t\t<center><img id='wmapimage' src='%s' width='%d' height='%d' border='0' usemap='#%s'",
-				$this->imagefile,
+				htmlspecialchars($this->imagefile, ENT_QUOTES, 'UTF-8'),
 				$this->width,
 				$this->height,
 				$imagemapname

@@ -43,6 +43,8 @@
 require_once('HTML_ImageMap.class.php');
 
 class WeatherMapLink extends WeatherMapItem {
+	/** Render-only arrow coordinates; never written to the map configuration. */
+	var $traffic_glow_points = [];
 	/** @var mixed */
 	var $owner;
 	/** @var mixed */
@@ -453,6 +455,7 @@ class WeatherMapLink extends WeatherMapItem {
 	 * @return void
 	 */
 	function Draw($image, &$map) {
+		$this->traffic_glow_points = [];
 		// Get the positions of the end-points
 		$x1 = $map->nodes[$this->a->name]->x;
 		$y1 = $map->nodes[$this->a->name]->y;

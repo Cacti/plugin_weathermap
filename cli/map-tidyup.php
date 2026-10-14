@@ -129,7 +129,10 @@ $map->ReadConfig($inputfile);
 // adjust node offsets so that links come from correct side of nodes, and ideally still
 // from underneath them (e.g. NE80 not NE)
 
-$map->WriteConfig($outputfile);
+if (!$map->WriteConfig($outputfile)) {
+	fwrite(STDERR, "Could not write configuration to " . $outputfile . PHP_EOL);
+	exit(1);
+}
 
 print 'Wrote new config to ' . $outputfile . PHP_EOL;
 

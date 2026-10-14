@@ -1,0 +1,571 @@
+<?php
+
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group, Howard Jones                   |
+ |                                                                         |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
+ |                                                                         |
+ | This program is distributed in the hope that it will be useful,         |
+ | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
+ | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
+ | GNU General Public License for more details.                            |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
+ +-------------------------------------------------------------------------+
+ | http://www.cacti.net/                                                   |
+ +-------------------------------------------------------------------------+
+*/
+
+namespace WeathermapConfig {
+
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $path
+	 * @param string $mode
+	 * @return resource|false
+	 */
+	function fopen($path, $mode) {
+		$fault = $GLOBALS['config_fault'] ?? '';
+		if (($fault === 'lock-open' && str_ends_with($path, '.lock')) || ($fault === 'lock-read' && $mode === 'c+b') || ($fault === 'temp-open' && $mode === 'wb')) return false;
+		return \fopen($path, $mode);
+	}
+
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param resource $stream
+	 * @param int $mode
+	 * @return bool
+	 */
+	function flock($stream, $mode) {
+		if (($GLOBALS['config_fault'] ?? '') === 'lock' && $mode === LOCK_EX) return false;
+		if (($mode & ~LOCK_NB) === LOCK_EX && isset($GLOBALS['config_before_lock'])) ($GLOBALS['config_before_lock'])();
+		return \flock($stream, $mode);
+	}
+
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $dir
+	 * @param string $prefix
+	 * @return string|false
+	 */
+	function tempnam($dir, $prefix) {
+		return ($GLOBALS['config_fault'] ?? '') === 'temp-name' ? false : \tempnam($dir, $prefix);
+	}
+
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param resource $stream
+	 * @param string $bytes
+	 * @return int|false
+	 */
+	function fwrite($stream, $bytes) {
+		$fault = $GLOBALS['config_fault'] ?? '';
+		if ($fault === 'write-false') return false;
+		if ($fault === 'write-zero') return 0;
+		return \fwrite($stream, $fault === 'short-write' ? substr($bytes, 0, 2) : $bytes);
+	}
+
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param resource $stream
+	 * @return bool
+	 */
+	function fflush($stream) {
+		return ($GLOBALS['config_fault'] ?? '') !== 'flush' && \fflush($stream);
+	}
+
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param resource $stream
+	 * @return bool
+	 */
+	function fclose($stream) {
+		$temp = strpos(stream_get_meta_data($stream)['uri'], '.wm-config-') !== false;
+		$closed = \fclose($stream);
+		return !(($GLOBALS['config_fault'] ?? '') === 'close' && $temp) && $closed;
+	}
+
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $path
+	 * @param int $group
+	 * @return bool
+	 */
+	function chgrp($path, $group) {
+		return ($GLOBALS['config_fault'] ?? '') !== 'group' && \chgrp($path, $group);
+	}
+
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $path
+	 * @param int $mode
+	 * @return bool
+	 */
+	function chmod($path, $mode) {
+		return ($GLOBALS['config_fault'] ?? '') !== 'mode' && \chmod($path, $mode);
+	}
+
+	/**
+	 * Simulate filesystem faults for an isolated atomic-write regression.
+	 *
+	 * @param string $source
+	 * @param string $target
+	 * @return bool
+	 */
+	function rename($source, $target) {
+		return ($GLOBALS['config_fault'] ?? '') !== 'rename' && \rename($source, $target);
+	}
+}
+namespace {
+/** Submit the page revision expected by production mutation routes. */
+function wm_fixture_revision($file, $callback) {
+	if (!array_key_exists('config_revision', $GLOBALS['__test_nfilter_request'] ?? []) && is_file($file)) {
+		$map = new \WeatherMap; $map->ReadConfig($file);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity);
+	}
+	return $callback();
+}
+
+	require dirname(__DIR__) . '/bootstrap-unit.php';
+	$plugin = dirname(__DIR__, 2);
+	chdir($plugin);
+	require $plugin . '/setup.php';
+	require $plugin . '/lib/WeatherMap.class.php';
+	require $plugin . '/lib/WeatherMap.config.php';
+	require $plugin . '/lib/editor.inc.php';
+	require $plugin . '/lib/editor.colours.php';
+	require $plugin . '/lib/editor.actions.php';
+
+	/** Assert a persistence or concurrent endpoint result in this isolated process. */
+	function colour_atomic_assert($condition, $message) {
+		if (!$condition) throw new \RuntimeException($message);
+	}
+	$dir = (realpath(sys_get_temp_dir()) ?: sys_get_temp_dir()) . '/wm-colour-atomic-' . bin2hex(random_bytes(5));
+	mkdir($dir);
+	$file = $dir . '/map.conf';
+	$initial = "WIDTH 600\nHEIGHT 300\nNODE A\n POSITION 10 10\nNODE B\n POSITION 50 50\nLINK AB\n NODES A B\n";
+	file_put_contents($file, $initial);
+	try {
+		foreach (array_filter(['lock-open', 'lock', 'temp-name', 'temp-open', 'write-false', 'write-zero', 'flush', 'close', 'group', 'mode', 'rename'], fn ($fault) => PHP_OS_FAMILY !== 'Windows' || $fault !== 'group') as $fault) {
+			$GLOBALS['config_fault'] = $fault;
+			colour_atomic_assert(!\WeathermapConfig\atomicWrite($file, 'Replacement'), 'I/O failure reported');
+			colour_atomic_assert(file_get_contents($file) === $initial, 'I/O failure retains original');
+		}
+		$GLOBALS['config_fault'] = 'short-write';
+		colour_atomic_assert(\WeathermapConfig\atomicWrite($file, $initial), 'partial chunks completed');
+		$GLOBALS['config_fault'] = PHP_OS_FAMILY === 'Windows' ? '' : 'lock-read';
+		colour_atomic_assert(\WeathermapConfig\atomicWrite($file, $initial), 'read-only lock stream supported');
+		$GLOBALS['config_fault'] = '';
+		colour_atomic_assert(!\WeathermapConfig\atomicWrite('invalid://map', 'x'), 'unsupported stream rejected');
+		colour_atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/missing/map', 'x'), 'missing destination directory rejected');
+		colour_atomic_assert(!\WeathermapConfig\atomicWrite($dir, 'x'), 'directory target rejected');
+		colour_atomic_assert(!\WeathermapConfig\acquire($dir . '/missing'), 'missing lock directory rejected');
+		colour_atomic_assert(!\WeathermapConfig\atomicWrite($dir . '/absent.conf', 'x', true), 'deleted map not recreated');
+		colour_atomic_assert(!\WeathermapConfig\atomicWrite($file, 'x', false, null, true), 'create-only existing file rejected');
+		$link = $dir . '/link.conf';
+		if (@symlink($file, $link)) {
+			colour_atomic_assert(\WeathermapConfig\atomicWrite($link, $initial), 'symlink target maintained');
+			unlink($link);
+		}
+		$wrong = \fopen($file, 'rb');
+		colour_atomic_assert(!\WeathermapConfig\atomicWrite($file, $initial, true, null, false, $wrong), 'unrelated held mutex rejected');
+		\fclose($wrong);
+		$templates = $dir . '/templates.conf';
+		file_put_contents($templates, "NODE templateNode\n LABEL Template\nNODE A\n POSITION 10 10\nNODE B\n POSITION 50 50\nLINK templateLink\n WIDTH 8\nLINK trafficLink\n NODES A B\n");
+		$templateMap = new \WeatherMap;
+		$templateMap->ReadConfig($templates);
+		colour_atomic_assert($templateMap->WriteConfig($templates), 'atomic save serializes template nodes and links');
+		$templateReload = new \WeatherMap;
+		$templateReload->ReadConfig($templates);
+		colour_atomic_assert(isset($templateReload->nodes['templateNode'], $templateReload->links['templateLink'], $templateReload->links['trafficLink']), 'templates and traffic objects survive atomic persistence');
+		$first = new \WeatherMap;
+		$second = new \WeatherMap;
+		$first->ReadConfig($file);
+		$second->ReadConfig($file);
+		$first->title = 'Winner';
+		$second->title = 'Stale';
+		colour_atomic_assert($first->WriteConfig($file), 'engine atomic write');
+		$winner = file_get_contents($file);
+		colour_atomic_assert(!$second->WriteConfig($file) && file_get_contents($file) === $winner, 'engine CAS rejects stale readers');
+		$map = new \WeatherMap;
+		$map->ReadConfig($file);
+		$data = wm_asset_colour_data($map);
+		$revision = hash_file('sha256', $file);
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		if (function_exists('pcntl_fork')) {
+			$lock = \WeathermapConfig\acquire($dir);
+			$children = [];
+			for ($i = 0; $i < 2; $i++) {
+				$child = pcntl_fork();
+				if ($child === 0) {
+					\fclose($lock);
+					$GLOBALS['config_before_lock'] = function () use ($dir, $i) {
+						file_put_contents($dir . '/ready-' . $i, 'ready');
+					};
+					$payload = $data;
+					$payload['outline'] = $i === 0 ? '#0000ff' : '#cc0000';
+					$GLOBALS['__test_nfilter_request'] = ['config_revision' => $revision, 'colours_json' => json_encode($payload)];
+					http_response_code(200);
+					ob_start();
+					wm_editor_colours($file, 'set_map_colours');
+					$response = json_decode(ob_get_clean(), true);
+					file_put_contents($dir . '/result-' . $i, json_encode(['status' => http_response_code(), 'response' => $response]));
+					exit(0);
+				}
+				$children[] = $child;
+			}
+			for ($wait = 0; $wait < 200 && cacti_count(glob($dir . '/ready-*')) < 2; $wait++) usleep(10000);
+			\WeathermapConfig\release($lock);
+			foreach ($children as $child) pcntl_waitpid($child, $status);
+			$results = [json_decode(file_get_contents($dir . '/result-0'), true), json_decode(file_get_contents($dir . '/result-1'), true)];
+			$statuses = array_column($results, 'status');
+			sort($statuses);
+			colour_atomic_assert($statuses === [200, 409], 'two concurrent colour requests produce exactly one save and one stale response');
+			$saved = new \WeatherMap;
+			$saved->ReadConfig($file);
+			$outline = wm_asset_colour_data($saved)['outline'];
+			$winning = $results[0]['status'] === 200 ? 0 : 1;
+			colour_atomic_assert($outline === ($winning === 0 ? '#0000ff' : '#cc0000'), 'second request cannot overwrite winning colour');
+		} else {
+			$GLOBALS['__test_nfilter_request'] = ['config_revision' => $revision, 'colours_json' => json_encode($data)];
+			ob_start();
+			wm_editor_colours($file, 'set_map_colours');
+			ob_end_clean();
+			colour_atomic_assert(http_response_code() === 200, 'locked endpoint succeeds');
+		}
+
+		// Real raw node/link saves must not re-check their own pre-save page token.
+		$rawFile = $dir . '/raw.conf';
+		$rawConfig = "WIDTH 300\nHEIGHT 200\nNODE A\n LABEL A\n POSITION 10 10\nNODE B\n LABEL B\n POSITION 50 50\nLINK AB\n NODES A B\n";
+		foreach (['node', 'link'] as $kind) {
+			file_put_contents($rawFile, $rawConfig);
+			$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $rawFile), 'node_name' => 'A', 'link_name' => 'AB', 'item_configtext' => $kind === 'node' ? "NODE A\n LABEL Updated\n POSITION 10 10\n" : "LINK AB\n NODES A B\n WIDTH 12\n"];
+			http_response_code(200);
+			if ($kind === 'node') wm_fixture_revision($rawFile, fn () => setNodeConfig($rawFile));
+			else wm_fixture_revision($rawFile, fn () => setLinkConfig($rawFile));
+			colour_atomic_assert(http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'raw ' . $kind . ' edit saves without false conflict');
+			file_put_contents($rawFile, $rawConfig);
+			http_response_code(200);
+			$controller = file_get_contents($plugin . '/weathermap-cacti-plugin-editor.php');
+			$caseStart = strpos($controller, "case 'set_" . $kind . "_config':");
+			$caseEnd = strpos($controller, "case '", $caseStart + 5);
+			$dispatch = substr($controller, strpos($controller, ':', $caseStart) + 1, $caseEnd - strpos($controller, ':', $caseStart) - 1);
+			$mapfile = $rawFile;
+			$terminated = false;
+			try {
+				eval(str_replace('exit();', 'throw new \\RuntimeException("request-finished");', $dispatch));
+			} catch (\RuntimeException $error) {
+				if ($error->getMessage() !== 'request-finished') throw $error;
+				$terminated = true;
+			}
+			colour_atomic_assert($terminated && http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'controller ends successful raw ' . $kind . ' save before rendering with old token');
+		}
+		$GLOBALS['__test_nfilter_request'] = ['map_background_colour' => '#bad'];
+		$beforeInvalid = file_get_contents($file);
+		http_response_code(200);
+		wm_fixture_revision($file, fn () => setMapProperties($file));
+		colour_atomic_assert(http_response_code() === 400 && file_get_contents($file) === $beforeInvalid, 'invalid background is a client error without persistence');
+		$management = file_get_contents($plugin . '/weathermap-cacti-plugin-mgmt.php');
+		eval(str_replace(['__DIR__', 'function newMap('], [var_export($plugin, true), 'function colourManagementCreate('], substr($management, strpos($management, 'function newMap('))));
+		$GLOBALS['weathermap_confdir'] = $dir;
+		$messages = [];
+		$GLOBALS['__test_raise_message'] = function ($id, $text, $level) use (&$messages) {
+			$messages[] = [$text, $level];
+		};
+		$GLOBALS['config_fault'] = 'rename';
+		colourManagementCreate('failed-create.conf');
+		colour_atomic_assert(!is_file($dir . '/failed-create.conf') && end($messages)[1] === MESSAGE_LEVEL_ERROR, 'management reports failed persistence instead of creation success');
+		$GLOBALS['config_fault'] = '';
+		unset($GLOBALS['__test_raise_message']);
+
+		// Run the actual CLI programs in an isolated Cacti tree with stubbed services.
+		$cliRoot = $dir . '/cacti';
+		mkdir($cliRoot);
+		mkdir($cliRoot . '/include');
+		mkdir($cliRoot . '/plugins');
+		mkdir($cliRoot . '/plugins/weathermap');
+		mkdir($cliRoot . '/plugins/weathermap/cli');
+		symlink($plugin . '/lib', $cliRoot . '/plugins/weathermap/lib');
+		foreach (['map-tidyup.php', 'cacti-integrate.php', 'convert-to-dsstats.php'] as $cli) copy($plugin . '/cli/' . $cli, $cliRoot . '/plugins/weathermap/cli/' . $cli);
+		$bootstrap = '<?php require ' . var_export($plugin . '/tests/bootstrap-unit.php', true) . '; require ' . var_export($plugin . '/setup.php', true) . '; $config["base_path"] = ' . var_export($cliRoot, true) . ';';
+		file_put_contents($cliRoot . '/include/cli_check.php', $bootstrap);
+		$prepend = $dir . '/coverage-prepend.php';
+		file_put_contents($prepend, '<?php if (function_exists("xdebug_start_code_coverage")) { xdebug_start_code_coverage(); register_shutdown_function(function () { file_put_contents(getenv("WM_CLI_COVERAGE_FILE"), json_encode(xdebug_get_code_coverage())); }); }');
+		file_put_contents($dir . '/cli-input.conf', "WIDTH 100\nHEIGHT 100\n");
+		$GLOBALS['colour_cli_coverage'] = [];
+		foreach (['map-tidyup.php', 'cacti-integrate.php', 'convert-to-dsstats.php'] as $cli) {
+			$coverageFile = $dir . '/' . $cli . '.json';
+			putenv('WM_CLI_COVERAGE_FILE=' . $coverageFile);
+			$command = escapeshellarg(PHP_BINARY) . ' -d auto_prepend_file=' . escapeshellarg($prepend) . ' ' . escapeshellarg($cliRoot . '/plugins/weathermap/cli/' . $cli) . ' --input=' . escapeshellarg($dir . '/cli-input.conf') . ' --output=' . escapeshellarg($dir . '/missing/output.conf') . ' 2>&1';
+			chdir($cliRoot . '/plugins/weathermap/cli');
+			$cliOutput = [];
+			exec($command, $cliOutput, $exitCode);
+			chdir($plugin);
+			colour_atomic_assert($exitCode === 1 && !str_contains(implode("\n", $cliOutput), 'Wrote') && str_contains(implode("\n", $cliOutput), 'Could not write configuration'), 'actual CLI reports failed persistence: ' . $cli . ' ' . implode("\n", $cliOutput));
+			if (is_file($coverageFile)) {
+				$raw = json_decode(file_get_contents($coverageFile), true);
+				$raw[$plugin . '/cli/' . $cli] = $raw[$cliRoot . '/plugins/weathermap/cli/' . $cli] ?? [];
+				unset($raw[$cliRoot . '/plugins/weathermap/cli/' . $cli]);
+				$GLOBALS['colour_cli_coverage'][] = $raw;
+			}
+		}
+		foreach (glob($cliRoot . '/plugins/weathermap/cli/*') as $cliFile) unlink($cliFile);
+		rmdir($cliRoot . '/plugins/weathermap/cli');
+		unlink($cliRoot . '/plugins/weathermap/lib');
+		rmdir($cliRoot . '/plugins/weathermap');
+		rmdir($cliRoot . '/plugins');
+		unlink($cliRoot . '/include/cli_check.php');
+		rmdir($cliRoot . '/include');
+		rmdir($cliRoot);
+
+		// Normal editor mutations also expose persistence conflicts and suppress title-cache side effects.
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'map_title' => 'Attempted'];
+		$GLOBALS['__test_db_calls'] = [];
+		$GLOBALS['config_before_lock'] = function () use ($file) {
+			file_put_contents($file, "TITLE Concurrent\n");
+			unset($GLOBALS['config_before_lock']);
+		};
+		http_response_code(200);
+		wm_fixture_revision($file, fn () => setMapProperties($file));
+		colour_atomic_assert(http_response_code() === 409 && file_get_contents($file) === "TITLE Concurrent\n" && $GLOBALS['__test_db_calls'] === [], 'normal editor CAS conflict is visible and does not update title cache');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'colours_json' => json_encode($data)];
+		foreach (['lock', 'rename'] as $fault) {
+			$GLOBALS['config_fault'] = $fault;
+			http_response_code(200);
+			ob_start();
+			wm_editor_colours($file, 'set_map_colours');
+			ob_end_clean();
+			colour_atomic_assert(http_response_code() === 500, 'operational endpoint failures return server error');
+		}
+		$GLOBALS['config_fault'] = '';
+		$GLOBALS['__test_nfilter_request']['colours_json'] = 'invalid';
+		http_response_code(200);
+		ob_start();
+		wm_editor_colours($file, 'set_map_colours');
+		ob_end_clean();
+		colour_atomic_assert(http_response_code() === 400, 'invalid payload remains client error');
+
+		$includeFile = $dir . '/included.conf'; $includeRoot = $dir . '/include-root.conf';
+		file_put_contents($includeFile, "TITLE Included old\n");
+		$includeConfig = "WIDTH 600\nHEIGHT 300\nINCLUDE " . $includeFile . "\n";
+		file_put_contents($includeRoot, $includeConfig);
+		$dependent = new \WeatherMap; $dependent->ReadConfig($includeRoot);
+		$token = \WeathermapConfig\snapshotRevision($dependent->config_revision, $dependent->config_dependencies, $dependent->config_root_identity);
+		file_put_contents($includeFile, "TITLE Included winner\n"); $dependent->title = 'Stale edit';
+		colour_atomic_assert(!$dependent->WriteConfig($includeRoot) && file_get_contents($includeRoot) === $includeConfig, 'included file changes reject stale root persistence');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => $token]; http_response_code(200);
+		colour_atomic_assert(!wm_editor_read_config(new \WeatherMap, $includeRoot) && http_response_code() === 409, 'included-file changes invalidate loaded editor page token');
+		$GLOBALS['__test_nfilter_request'] = []; $fresh = new \WeatherMap; $fresh->ReadConfig($includeRoot);
+		colour_atomic_assert($fresh->WriteConfig($includeRoot), 'unchanged included dependency can be saved');
+		colour_atomic_assert(!\WeathermapConfig\dependenciesMatch([$includeFile => null]), 'unread included dependency rejected');
+		$outside = $dir . '/dependency-directory'; mkdir($outside); $outsideFile = $outside . '/outside.conf'; file_put_contents($outsideFile, "TITLE Outside\n");
+		file_put_contents($includeRoot, "WIDTH 600\nHEIGHT 300\nINCLUDE " . $outsideFile . "\n");
+		$externalMap = new \WeatherMap; $externalMap->ReadConfig($includeRoot); $busy = \WeathermapConfig\acquire($outside);
+		colour_atomic_assert(!$externalMap->WriteConfig($includeRoot), 'busy dependency directory rejects save without deadlock');
+		\WeathermapConfig\release($busy);
+		colour_atomic_assert($externalMap->WriteConfig($includeRoot), 'external dependency save succeeds after mutex release');
+		unlink($outside . '/.weathermap-config.lock'); chmod($outside, 0555);
+		colour_atomic_assert($externalMap->WriteConfig($includeRoot), 'read-only included dependency needs no new lock file');
+		chmod($outside, 0755); unlink($outsideFile); rmdir($outside);
+
+		class UnreadColourMap extends \WeatherMap { function ReadConfig($input, $is_include = false) { $this->config_revision = null; return true; } }
+		$actions = file_get_contents($plugin . '/lib/editor.actions.php'); $start = strpos($actions, 'function wm_editor_colours('); $end = strpos($actions, "\n/**", $start); if ($end === false) $end = strlen($actions);
+		eval(str_replace(['__DIR__', 'function wm_editor_colours(', 'new WeatherMap'], [var_export($plugin . '/lib', true), 'function unreadColourEndpoint(', 'new UnreadColourMap'], substr($actions, $start, $end - $start)));
+		$GLOBALS['__test_nfilter_request'] = []; http_response_code(200); ob_start(); unreadColourEndpoint($file, 'colour_data'); $error = json_decode(ob_get_clean(), true);
+		colour_atomic_assert(http_response_code() === 500 && isset($error['error']) && !isset($error['colours']), 'unread colour config returns an error instead of default colours');
+
+		$targetDir = $dir . '/alias-target'; mkdir($targetDir); $targetFile = $targetDir . '/map.conf'; file_put_contents($targetFile, $initial);
+		$alias = $dir . '/alias.conf'; symlink($targetFile, $alias); $targetLock = \WeathermapConfig\acquire($targetDir);
+		colour_atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Alias change', true, hash('sha256', $initial)) && file_get_contents($targetFile) === $initial, 'physical target mutex blocks an alias writer');
+		\WeathermapConfig\release($targetLock); colour_atomic_assert(\WeathermapConfig\atomicWrite($alias, $initial, true, hash('sha256', $initial)), 'alias write succeeds after shared target lock release');
+
+		$lockCalls = 0;
+		$GLOBALS['config_before_lock'] = function () use (&$lockCalls, $targetFile) {
+			if (++$lockCalls === 2) file_put_contents($targetFile, 'Direct writer winner');
+		};
+		try {
+			colour_atomic_assert(!\WeathermapConfig\atomicWrite($alias, 'Stale alias edit', true, hash('sha256', $initial)) && file_get_contents($targetFile) === 'Direct writer winner', 'alias revision is checked after physical target lock acquisition');
+		} finally { unset($GLOBALS['config_before_lock']); }
+		file_put_contents($targetFile, "TITLE Physical include\n");
+		file_put_contents($includeRoot, "WIDTH 600\nHEIGHT 300\nINCLUDE " . $alias . "\n");
+		$aliasMap = new \WeatherMap; $aliasMap->ReadConfig($includeRoot);
+		colour_atomic_assert(array_key_exists(realpath($targetFile), $aliasMap->config_dependencies), 'symlink include snapshot records physical filename');
+		$targetLock = \WeathermapConfig\acquire($targetDir);
+		colour_atomic_assert(!$aliasMap->WriteConfig($includeRoot), 'symlink include cannot bypass physical dependency mutex');
+		\WeathermapConfig\release($targetLock);
+		colour_atomic_assert($aliasMap->WriteConfig($includeRoot), 'symlink include save succeeds after dependency mutex release');
+		unlink($alias); unlink($targetFile); unlink($targetDir . '/.weathermap-config.lock'); rmdir($targetDir);
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'colours_json' => ['x']];
+		http_response_code(200); ob_start(); wm_editor_colours($file, 'set_map_colours'); ob_end_clean();
+		colour_atomic_assert(http_response_code() === 400, 'non-string colours_json is a client error');
+		foreach (['0', 0, false, null, []] as $badEnd) {
+			$badData = $data; $badData['rows'][0]['end'] = $badEnd;
+			$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'colours_json' => json_encode($badData)];
+			http_response_code(200); ob_start(); wm_editor_colours($file, 'set_map_colours'); ob_end_clean();
+			colour_atomic_assert(http_response_code() === 400, 'unsupported gradient value is rejected');
+		}
+
+		$GLOBALS['__test_nfilter_request'] = [];
+		colour_atomic_assert(wm_editor_read_config(new \WeatherMap, $file), 'read/render paths accept absent page revisions');
+		foreach ([null, '', [], 'invalid'] as $missingRevision) {
+			$GLOBALS['__test_nfilter_request'] = ['config_revision' => $missingRevision]; http_response_code(200);
+			colour_atomic_assert(!wm_editor_read_config(new \WeatherMap, $file, true) && http_response_code() === 409, 'mutation requires valid nonempty loaded revision');
+		}
+		$GLOBALS['__test_nfilter_request'] = []; $beforeMissingRevision = file_get_contents($file); http_response_code(200);
+		moveNode($file, 0);
+		colour_atomic_assert(http_response_code() === 409 && file_get_contents($file) === $beforeMissingRevision, 'missing mutation token cannot alter configuration');
+		$revisionMap = new \WeatherMap; $revisionMap->ReadConfig($file);
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => \WeathermapConfig\snapshotRevision($revisionMap->config_revision, $revisionMap->config_dependencies, $revisionMap->config_root_identity)];
+		colour_atomic_assert(wm_editor_read_config(new \WeatherMap, $file, true), 'matching mutation revision remains accepted');
+		$GLOBALS['__test_nfilter_request'] = [];
+
+		$aliasSource = $dir . '/source-alias.conf'; symlink($file, $aliasSource);
+		$aliasLoaded = new \WeatherMap; $aliasLoaded->ReadConfig($aliasSource);
+		file_put_contents($file, "TITLE New direct winner\n");
+		colour_atomic_assert(!$aliasLoaded->WriteConfig($file) && file_get_contents($file) === "TITLE New direct winner\n", 'canonical destination identity preserves CAS across source alias');
+		file_put_contents($file, $initial);
+		$copySource = new \WeatherMap; $copySource->ReadConfig($file);
+		file_put_contents($file, "TITLE New copy source winner\n");
+		colour_atomic_assert(!$copySource->WriteConfig($dir . '/stale-source-copy.conf', true) && !is_file($dir . '/stale-source-copy.conf'), 'create-only copy validates source root revision');
+		file_put_contents($file, $initial); $copySource = new \WeatherMap; $copySource->ReadConfig($file); unlink($file);
+		colour_atomic_assert(!$copySource->WriteConfig($dir . '/deleted-source-copy.conf', true), 'deleted source cannot be copied from stale memory');
+		file_put_contents($file, $initial); $copySource = new \WeatherMap; $copySource->ReadConfig($aliasSource);
+		colour_atomic_assert($copySource->WriteConfig($dir . '/fresh-alias-copy.conf', true), 'unchanged alias source copies with logical and physical dependencies');
+		unlink($aliasSource);
+		$retargetA = $dir . '/retarget-a.conf'; $retargetB = $dir . '/retarget-b.conf'; $retargetAlias = $dir . '/retarget-alias.conf';
+		file_put_contents($retargetA, "TITLE Same include bytes\n"); file_put_contents($retargetB, "TITLE Same include bytes\n"); symlink($retargetA, $retargetAlias);
+		file_put_contents($includeRoot, "WIDTH 600\nHEIGHT 300\nINCLUDE " . $retargetAlias . "\n");
+		$retargetMap = new \WeatherMap; $retargetMap->ReadConfig($includeRoot); unlink($retargetAlias); symlink($retargetB, $retargetAlias); clearstatcache();
+		colour_atomic_assert(!$retargetMap->WriteConfig($includeRoot), 'retargeted INCLUDE is rejected even when replacement bytes are identical');
+		$retargetMap = new \WeatherMap; $retargetMap->ReadConfig($includeRoot); colour_atomic_assert($retargetMap->WriteConfig($includeRoot), 'freshly loaded retargeted INCLUDE succeeds');
+		unlink($retargetAlias); unlink($retargetA); unlink($retargetB);
+
+		$rootA = $dir . '/root-a.conf'; $rootB = $dir . '/root-b.conf'; $rootAlias = $dir . '/root-alias.conf';
+		$rootBytes = "WIDTH 100\nHEIGHT 100\nTITLE Identical roots\n";
+		file_put_contents($rootA, $rootBytes); file_put_contents($rootB, $rootBytes); symlink($rootA, $rootAlias);
+		$rootMap = new \WeatherMap; $rootMap->ReadConfig($rootAlias);
+		$rootToken = \WeathermapConfig\snapshotRevision($rootMap->config_revision, $rootMap->config_dependencies, $rootMap->config_root_identity);
+		unlink($rootAlias); symlink($rootB, $rootAlias); clearstatcache(true, $rootAlias);
+		$rootMap->title = 'Unexpected write';
+		colour_atomic_assert(!$rootMap->WriteConfig($rootAlias) && file_get_contents($rootA) === $rootBytes && file_get_contents($rootB) === $rootBytes, 'root retargeting cannot overwrite another identical-content file');
+		http_response_code(200);
+		colour_atomic_assert(!wm_editor_write_config($rootMap, $rootAlias) && http_response_code() === 409, 'commit-time root retarget conflicts return HTTP 409');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision'=>$rootToken]; http_response_code(200);
+		colour_atomic_assert(!wm_editor_read_config(new \WeatherMap, $rootAlias, true) && http_response_code() === 409, 'rendered page revision binds root alias identity before mutation dispatch');
+		$GLOBALS['__test_nfilter_request'] = [];
+		$freshRoot = new \WeatherMap; $freshRoot->ReadConfig($rootAlias); $freshRoot->title = 'Fresh root save';
+		colour_atomic_assert($freshRoot->WriteConfig($rootAlias), 'freshly loaded root alias saves');
+		$freshRoot->title = 'Second root save'; colour_atomic_assert($freshRoot->WriteConfig($rootAlias), 'successful saves refresh root identity revisions');
+		$freshRoot->ReadConfig("TITLE Fragment save\n");
+		colour_atomic_assert($freshRoot->config_root_identity !== [], 'raw fragments retain captured root identity');
+		unlink($rootAlias); unlink($rootA); unlink($rootB);
+
+		$conflictDir = $dir . '/colour-conflict-targets'; mkdir($conflictDir);
+		$conflictA = $conflictDir . '/a.conf'; $conflictB = $conflictDir . '/b.conf'; $conflictAlias = $dir . '/colour-conflict.conf';
+		file_put_contents($conflictA, $initial); file_put_contents($conflictB, $initial); symlink($conflictA, $conflictAlias);
+		$colourSnapshot = new \WeatherMap; $colourSnapshot->ReadConfig($conflictAlias);
+		$GLOBALS['__test_nfilter_request'] = ['config_revision'=>\WeathermapConfig\snapshotRevision($colourSnapshot->config_revision, $colourSnapshot->config_dependencies, $colourSnapshot->config_root_identity), 'colours_json'=>json_encode($data)];
+		$conflictLocks = 0;
+		$GLOBALS['config_before_lock'] = function () use (&$conflictLocks, $conflictAlias, $conflictB) {
+			if (++$conflictLocks === 2) { unlink($conflictAlias); symlink($conflictB, $conflictAlias); clearstatcache(true, $conflictAlias); }
+		};
+		try {
+			http_response_code(200); ob_start(); wm_editor_colours($conflictAlias, 'set_map_colours'); $conflictReply = json_decode(ob_get_clean(), true);
+			colour_atomic_assert($conflictLocks === 2 && http_response_code() === 409 && str_contains($conflictReply['error'], 'Reload'), 'colour endpoint classifies identical-byte root retarget during commit as reload conflict');
+			colour_atomic_assert(file_get_contents($conflictA) === $initial && file_get_contents($conflictB) === $initial, 'colour root-retarget conflict preserves both target files');
+		} finally { unset($GLOBALS['config_before_lock']); }
+		$colourSnapshot = new \WeatherMap; $colourSnapshot->ReadConfig($conflictAlias);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($colourSnapshot->config_revision, $colourSnapshot->config_dependencies, $colourSnapshot->config_root_identity);
+		http_response_code(200); ob_start(); wm_editor_colours($conflictAlias, 'set_map_colours'); $freshReply = json_decode(ob_get_clean(), true);
+		colour_atomic_assert(http_response_code() === 200 && isset($freshReply['revision']), 'fresh colour snapshot saves after root retarget reload');
+		unlink($conflictAlias); unlink($conflictA); unlink($conflictB); unlink($conflictDir . '/.weathermap-config.lock'); rmdir($conflictDir);
+		$GLOBALS['__test_nfilter_request'] = [];
+
+		colour_atomic_assert(\WeathermapConfig\logicalPath('') === '', 'empty logical path remains empty');
+		colour_atomic_assert(\WeathermapConfig\logicalPath('relative.conf') === getcwd() . DIRECTORY_SEPARATOR . 'relative.conf', 'relative logical paths become absolute');
+		foreach (['C:/maps/map.conf', 'C:\\maps\\map.conf', '\\\\server\\share\\map.conf'] as $absolute) colour_atomic_assert(\WeathermapConfig\logicalPath($absolute) === $absolute, 'Windows absolute aliases are retained');
+		$parentA = $dir . '/parent-a'; $parentB = $dir . '/parent-b'; $parentAlias = $dir . '/parent-alias';
+		mkdir($parentA); mkdir($parentB); symlink($parentA, $parentAlias);
+		$parentBytes = "WIDTH 100\nHEIGHT 100\nTITLE Parent alias\n";
+		foreach ([$parentA, $parentB] as $parent) { file_put_contents($parent . '/map.conf', $parentBytes); file_put_contents($parent . '/include.conf', "TITLE Identical include\n"); }
+		$parentMap = new \WeatherMap; $oldDirectory = getcwd();
+		try { chdir($dir); $parentMap->ReadConfig('parent-alias/map.conf'); } finally { chdir($oldDirectory); }
+		colour_atomic_assert(array_key_exists($parentAlias . '/map.conf', $parentMap->config_root_identity) && $parentMap->configfile === $parentAlias . '/map.conf', 'root keeps absolute logical path and unresolved directory alias');
+		$parentToken = \WeathermapConfig\snapshotRevision($parentMap->config_revision, $parentMap->config_dependencies, $parentMap->config_root_identity);
+		unlink($parentAlias); symlink($parentB, $parentAlias);
+		$parentMap->title = 'Stale parent write';
+		colour_atomic_assert(!$parentMap->WriteConfig($parentAlias . '/map.conf') && file_get_contents($parentA . '/map.conf') === $parentBytes && file_get_contents($parentB . '/map.conf') === $parentBytes, 'retargeted parent alias rejects root writes without changing either file');
+		$GLOBALS['__test_nfilter_request'] = ['config_revision'=>$parentToken]; http_response_code(200);
+		colour_atomic_assert(!wm_editor_read_config(new \WeatherMap, $parentAlias . '/map.conf', true) && http_response_code() === 409, 'retargeted directory alias invalidates rendered root token');
+		$GLOBALS['__test_nfilter_request'] = [];
+		$freshParent = new \WeatherMap; $freshParent->ReadConfig($parentAlias . '/map.conf');
+		colour_atomic_assert($freshParent->WriteConfig($dir . '/parent-copy.conf', true), 'fresh parent alias can be copied');
+		file_put_contents($includeRoot, "WIDTH 100\nHEIGHT 100\nINCLUDE " . $parentAlias . "/include.conf\n");
+		$parentInclude = new \WeatherMap; $parentInclude->ReadConfig($includeRoot);
+		colour_atomic_assert(isset($parentInclude->config_dependencies[$parentAlias . '/include.conf']), 'included files retain unresolved directory alias');
+		unlink($parentAlias); symlink($parentA, $parentAlias);
+		colour_atomic_assert(!$parentInclude->WriteConfig($includeRoot), 'retargeted INCLUDE directory alias is detected with identical bytes');
+		$freshParentInclude = new \WeatherMap; $freshParentInclude->ReadConfig($includeRoot); colour_atomic_assert($freshParentInclude->WriteConfig($includeRoot), 'fresh INCLUDE alias snapshot saves');
+		unlink($parentAlias);
+		foreach ([$parentA, $parentB] as $parent) { unlink($parent . '/map.conf'); unlink($parent . '/include.conf'); if (is_file($parent . '/.weathermap-config.lock')) unlink($parent . '/.weathermap-config.lock'); rmdir($parent); }
+
+		// Saving preserves root INCLUDE spelling and does not flatten nested includes.
+		$portable = $dir . '/portable'; $copied = $dir . '/portable-copy';
+		mkdir($portable); mkdir($copied);
+		$absoluteInclude = $dir . '/absolute.conf'; file_put_contents($absoluteInclude, "SCALE Absolute 0 100 1 2 3\n");
+		file_put_contents($portable . '/nested.conf', "SCALE Nested 0 100 10 20 30\n");
+		file_put_contents($portable . '/shared.conf', "INCLUDE nested.conf\nSCALE Shared 0 100 30 40 50\n");
+		file_put_contents($portable . '/main.conf', "WIDTH 100\nHEIGHT 100\nINCLUDE shared.conf\nINCLUDE $absoluteInclude\n");
+		$portableMap = new \WeatherMap; chdir($portable); $portableMap->ReadConfig('main.conf'); chdir($plugin);
+		colour_atomic_assert($portableMap->include_directives === ['shared.conf', $absoluteInclude] && count($portableMap->included_files) === 3, 'root directive paths separated from all loaded include identities');
+		colour_atomic_assert(isset($portableMap->config_dependencies[$portable . '/shared.conf'], $portableMap->config_dependencies[$portable . '/nested.conf']), 'relative includes still acquire absolute dependency snapshots');
+		colour_atomic_assert($portableMap->WriteConfig($portable . '/main.conf'), 'portable map saves after working directory changes');
+		$portableText = file_get_contents($portable . '/main.conf');
+		colour_atomic_assert(str_contains($portableText, "INCLUDE shared.conf\n") && str_contains($portableText, "INCLUDE $absoluteInclude\n") && !str_contains($portableText, 'INCLUDE ' . $portable . '/') && !str_contains($portableText, 'INCLUDE nested.conf'), 'serialization preserves relative and absolute directives without flattening nested files');
+		colour_atomic_assert($portableMap->WriteConfig($copied . '/main.conf', true), 'portable map copy saves');
+		foreach (['shared.conf', 'nested.conf'] as $part) copy($portable . '/' . $part, $copied . '/' . $part);
+		$copiedMap = new \WeatherMap; chdir($copied); $copiedMap->ReadConfig('main.conf');
+		colour_atomic_assert(isset($copiedMap->colours['Shared'], $copiedMap->colours['Nested'], $copiedMap->colours['Absolute']) && isset($copiedMap->config_dependencies[$copied . '/shared.conf']) && !isset($copiedMap->config_dependencies[$portable . '/shared.conf']), 'copied map loads includes at the new installation');
+		colour_atomic_assert($copiedMap->WriteConfig('main.conf'), 'second roundtrip remains portable');
+		chdir($plugin);
+		colour_atomic_assert(substr_count(file_get_contents($copied . '/main.conf'), 'INCLUDE ') === 2, 'repeated saves retain only root directives');
+		$copiedMap->ReadConfig($dir . '/cli-input.conf');
+		colour_atomic_assert($copiedMap->include_directives === [] && $copiedMap->included_files === [] && !$copiedMap->has_includes, 'fresh root load clears include serialization and identity state');
+		$oldLocale = setlocale(LC_NUMERIC, 0);
+		$commaLocale = setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR', 'de_DE.UTF-8');
+		try {
+			$decimalData = $data; $decimalData['rows'] = [['scale' => 'DEFAULT', 'bottom' => 1.5, 'top' => 2.5, 'colour' => '#ff0000', 'end' => '', 'tag' => 'Fractional']];
+			$decimalData['rows'][] = ['scale' => 'large', 'bottom' => 1500, 'top' => 2500, 'colour' => '#00ff00', 'end' => '', 'tag' => 'Large'];
+			$decimalMap = new \WeatherMap; $decimalMap->ReadConfig($file); wm_asset_save_colours($decimalMap, $decimalData);
+			colour_atomic_assert($decimalMap->WriteConfig($dir . '/decimal.conf'), 'fractional scales save under alternate locale');
+			$decimalText = file_get_contents($dir . '/decimal.conf'); colour_atomic_assert(str_contains($decimalText, '1.5') && str_contains($decimalText, '2.5') && !str_contains($decimalText, '1,5'), 'scale serialization uses dot decimal independently of locale');
+			$decimalReload = new \WeatherMap; $decimalReload->ReadConfig($dir . '/decimal.conf'); colour_atomic_assert($decimalReload->colours['DEFAULT']['1.5_2.5']['bottom'] === 1.5, 'fractional scale reparses correctly');
+		} finally { setlocale(LC_NUMERIC, $oldLocale); }
+		$probe = \WeathermapConfig\acquire($dir, false);
+		colour_atomic_assert(is_resource($probe), 'endpoint always releases mutex');
+		\WeathermapConfig\release($probe);
+		echo "Colour concurrent configuration regression PASS\n";
+	} finally {
+		$GLOBALS['config_fault'] = '';
+		$cleanup = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
+		foreach ($cleanup as $entry) {
+			if ($entry->isDir() && !$entry->isLink()) rmdir($entry->getPathname()); else unlink($entry->getPathname());
+		}
+		rmdir($dir);
+	}
+}

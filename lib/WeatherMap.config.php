@@ -25,6 +25,19 @@
 namespace WeathermapConfig;
 
 /**
+ * Make a path absolute without resolving any file or directory symlink.
+ *
+ * @param string $filename Original filesystem path.
+ *
+ * @return string Absolute logical path retaining alias components.
+ */
+function logicalPath($filename) {
+	if ($filename === '') return '';
+	if ($filename[0] === '/' || $filename[0] === '\\' || preg_match('~^[A-Za-z]:[/\\\\]~', $filename)) return $filename;
+	return getcwd() . DIRECTORY_SEPARATOR . $filename;
+}
+
+/**
  * Acquire a persistent directory lock shared by config writers and deletion.
  *
  * @param string|null $directory Destination directory; null selects plugin configs.
@@ -94,6 +107,7 @@ function sameFile($left, $right) {
  * @return bool Whether all dependencies still match.
  */
 function dependenciesMatch($dependencies) {
+	clearstatcache(true);
 	foreach ($dependencies as $path => $revision) {
 		clearstatcache(true, $path);
 		if (is_array($revision)) {
@@ -137,7 +151,11 @@ function snapshotRevision($root, $dependencies, $rootIdentity = []) {
 function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision = null, $createOnly = false, $heldLock = null, $dependencies = [], $validate = null) {
 	if (strpos($filename, '://') !== false) return false;
 	$lockDirectory = dirname($filename);
-	if (is_link($filename)) $filename = realpath($filename);
+	clearstatcache(true);
+	$resolved = realpath($filename);
+	if (is_link($filename) && $resolved === false) return false;
+	$directory = realpath(dirname($filename));
+	$filename = $resolved !== false ? $resolved : ($directory !== false ? $directory . '/' . basename($filename) : false);
 	if ($filename === false || !is_dir(dirname($filename)) || !is_writable(dirname($filename))) return false;
 	if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
 	$existed = file_exists($filename);
@@ -156,7 +174,7 @@ function atomicWrite($filename, $contents, $mustExist = false, $expectedRevision
 		if ($mustExist && !is_file($filename)) return false;
 		if (file_exists($filename) && (!is_file($filename) || !is_writable($filename))) return false;
 		// Additional directories use nonblocking locks so opposing include graphs cannot deadlock.
-		$directories = array_unique(array_merge([dirname($filename)], array_map('dirname', array_keys($dependencies))));
+		$directories = array_unique(array_map(function ($directory) { return realpath($directory) ?: $directory; }, array_merge([dirname($filename)], array_map('dirname', array_keys($dependencies)))));
 		sort($directories);
 		foreach ($directories as $directory) {
 			if (realpath($directory) === realpath($lockDirectory)) continue;

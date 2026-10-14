@@ -359,6 +359,26 @@ body#mainView .ui-dialog textarea.ui-state-default {
 #dlgImages > .dlgBody { display: block; width: 100%; box-sizing: border-box; }
 #dlgImages .wm-editor-section { float: none; }
 
+/* Colour and image libraries. */
+#wm-scale-rows input { width: 85px; box-sizing: border-box; }
+#wm-scale-rows .wm-range-tag { width: 110px; }
+.wm-asset-colour { display: inline-flex; flex-direction: column; gap: 4px; }
+.wm-asset-colour select { max-width: 180px; }
+.wm-asset-colour summary { font-size: 0.9em; cursor: pointer; }
+.wm-asset-delete { color: #c62828 !important; background: #fff !important; border: 1px solid #c62828 !important; font-size: 20px; }
+
+.wm-asset-swatches { display: flex; gap: 4px; }
+.wm-asset-swatches button { width: 20px; height: 20px; border: 1px solid currentColor; cursor: pointer; padding: 0; }
+
+#wm-traffic-preview { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.wm-traffic-band { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; }
+.wm-traffic-swatch { width: 55px; height: 22px; border: 1px solid #777; }
+#wm-traffic-advanced > summary { cursor: pointer; margin: 14px 0; }
+
+#wm-colours-error:not(:empty) { color: inherit; border-left: 3px solid #c62828; padding-left: 8px; font-weight: bold; }
+
+#dlgColours > .dlgBody { display: block; }
+
 /* Searchable node icon gallery; keep backgrounds on their existing selector. */
 body#mainView .wm-icon-source { display: none; }
 body#mainView .wm-icon-picker { width: 320px; max-width: 100%; }

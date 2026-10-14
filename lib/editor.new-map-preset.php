@@ -31,6 +31,7 @@
  */
 function wm_new_map_preset($map) {
 	$map->add_hint('background_sizing', 'fit');
+	$map->add_hint('traffic_pulse', '1');
 	$map->width                               = 1400;
 	$map->height                              = 750;
 	$map->htmlstyle                           = 'overlib';

@@ -121,3 +121,9 @@ button.wm-cycle-control.fas { font-family: "Font Awesome 5 Free"; font-weight: 9
 
 /* Keep gallery headings readable against the theme title bar. */
 .cactiTableTitleRow.wm-gallery-heading { color: var(--text-color-highlight, #fff); }
+
+.wm-traffic-glow { position: absolute; pointer-events: none; overflow: visible; }
+.wm-traffic-pulse { opacity: .25; animation: wm-traffic-pulse 2.5s ease-in-out infinite; }
+@keyframes wm-traffic-pulse { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
+.wm-glow-paused .wm-traffic-pulse { animation: none; opacity: .65; }
+@media (prefers-reduced-motion: reduce) { .wm-traffic-pulse { animation: none; opacity: .65; } }

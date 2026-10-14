@@ -252,7 +252,7 @@ function wm_comment_update_default($map, $field, $new) {
 	}
 
 	foreach ($map->links as $name => $link) {
-		if ($name === ':: DEFAULT ::') {
+		if ($name === ':: DEFAULT ::' || ($name !== 'DEFAULT' && $link->defined_in !== $map->configfile)) {
 			continue;
 		}
 
