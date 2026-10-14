@@ -344,6 +344,7 @@ class WeatherMap extends WeatherMapBase {
 	var $configfile;
 	var $config_revision = null;
 	var $config_dependencies = [];
+	var $included_scale_names = [];
 	/** @var array Loaded root paths, physical targets and revisions. */
 	var $config_root_identity = [];
 	var $editor_config_revision = null;
@@ -2453,7 +2454,7 @@ class WeatherMap extends WeatherMapBase {
 	function ReadConfig($input, $is_include = false) {
 		require_once __DIR__ . '/WeatherMap.config.php';
 		global $config, $weathermap_error_suppress;
-		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; } }
+		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; $this->included_scale_names = []; } }
 
 		$curnode    = null;
 		$curlink    = null;
@@ -3115,6 +3116,8 @@ class WeatherMap extends WeatherMapBase {
 					} else {
 						$matches[1] = trim($matches[1]);
 					}
+
+					if ($is_include) $this->included_scale_names[$matches[1]] = true;
 
 					$key = $matches[2] . '_' . $matches[3];
 

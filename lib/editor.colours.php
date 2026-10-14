@@ -61,7 +61,7 @@ function wm_asset_colour_data($map) {
 	}
 	$bg = $map->colours['DEFAULT']['BG'];
 	return ['background' => wm_asset_hex([$bg['red1'], $bg['green1'], $bg['blue1']]),
-		'outline' => wm_asset_hex($map->links['DEFAULT']->outlinecolour), 'pulse' => $map->get_hint('traffic_pulse', '1') === '1', 'rows' => $rows];
+		'outline' => wm_asset_hex($map->links['DEFAULT']->outlinecolour), 'pulse' => $map->get_hint('traffic_pulse', '1') === '1', 'rows' => $rows, 'locked_scales' => array_keys($map->included_scale_names)];
 }
 /**
  * Validate all submitted settings before applying them to the map.
@@ -104,6 +104,21 @@ function wm_asset_save_colours($map, $data) {
 		}
 		$scales[$name][$key] = $entry;
 	}
+	// A shared scale cannot be edited here: retained INCLUDE directives reload it
+	// after root scale serialization. Compare the complete scale, including deletions.
+	$currentRows = wm_asset_colour_data($map)['rows'];
+	foreach ($map->included_scale_names as $name => $unused) {
+		$signature = function($items) use ($name) {
+			$result = [];
+			foreach ($items as $row) if (($row['scale'] ?? '') === $name) {
+				$result[] = json_encode([(float)($row['bottom'] ?? 0), (float)($row['top'] ?? 0),
+					strtolower((string)($row['colour'] ?? '')), strtolower((string)($row['end'] ?? '')), $row['tag'] ?? '']);
+			}
+			sort($result, SORT_STRING);
+			return $result;
+		};
+		if ($signature($rows) !== $signature($currentRows)) throw new InvalidArgumentException(__('Scale %s is defined in an included configuration and is read-only here. Edit its source file instead.', $name, 'weathermap'));
+	}
 	if (empty($scales['DEFAULT'])) throw new InvalidArgumentException(__('Keep at least one DEFAULT traffic range.', 'weathermap'));
 	foreach ($map->colours as $name => $colours) foreach ($colours as $key => $row) if (!empty($row['special'])) $scales[$name][$key] = $row;
 	// Keep scales referenced by map objects rather than silently replacing them with defaults.
@@ -113,6 +128,7 @@ function wm_asset_save_colours($map, $data) {
 			if ($name !== 'none' && isset($map->colours[$name]) && empty(array_filter($scales[$name] ?? [], function($r) { return empty($r['special']); }))) throw new InvalidArgumentException(__('A map object still uses scale %s.', $name, 'weathermap'));
 		}
 	}
+	foreach ($map->included_scale_names as $name => $unused) $scales[$name] = $map->colours[$name];
 	$scales['DEFAULT']['BG']['red1'] = $background[0];
 	$scales['DEFAULT']['BG']['green1'] = $background[1];
 	$scales['DEFAULT']['BG']['blue1'] = $background[2];

@@ -1026,6 +1026,7 @@ function getEditorJs() {
 		'staleError' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap'),
 		'backgroundColour' => __('Map Background Colour', 'weathermap'),
 		'borderColour' => __('Link Border Colour', 'weathermap'),
+		'includedScaleHelp' => __('Scales from included configurations are read-only here. Edit their source files to change them.', 'weathermap'),
 		'rangeScale' => __('Scale', 'weathermap'),
 		'rangeFrom' => __('From (usually %)', 'weathermap'),
 		'rangeTo' => __('To (usually %)', 'weathermap'),

@@ -28,6 +28,24 @@ const enter=$.Event('keydown',{key:'Enter'});$('#dlgColours').append($('#wm-scal
 const payload=JSON.parse(request.data.colours_json);assert.equal(payload.outline,'#0000ff');assert.equal(payload.pulse,false);assert.equal(payload.rows.find(r=>r.scale===named.scale).tag,'Cold');assert.equal('background' in payload,false);
 let refreshed=false;w.hide_all_dialogs=()=>{};w.wmReloadEditor=()=>refreshed=true;request.success({revision:'b'.repeat(64)});assert.equal(w.wmColourRevision,'b'.repeat(64));assert.equal(refreshed,true,'colour save reloads all editor controls');
 request.error({responseJSON:{error:'Invalid range'}});assert.equal($('#wm-colours-error').text(),'Invalid range');
+// Shared scales are visible, explained, and protected; local scales remain editable.
+w.wmEditorText.includedScaleHelp='Shared scales are read-only';
+w.wmOpenColours();request.success({revision:'c'.repeat(64),colours:{outline:'#000000',pulse:true,rows,locked_scales:['DEFAULT']}});
+assert.equal($('#wm-traffic-preset').prop('disabled'),true);
+assert.equal($('#wm-included-scale-help').text(),'Shared scales are read-only');
+const locked=$('#wm-scale-rows tr').first();
+assert.ok(locked.find('input,select,button').toArray().every(el=>el.disabled));
+assert.equal($('#wm-scale-rows tr').last().find('input').first().prop('disabled'),false);
+const beforeShared=JSON.stringify(w.wmAssetScaleRows());
+$('#wm-traffic-preset').val('signals').trigger('change');assert.equal(JSON.stringify(w.wmAssetScaleRows()),beforeShared,'preset cannot replace shared DEFAULT');
+$('#wm-scale-add').trigger('click');assert.equal($('#wm-scale-rows tr').last().find('.wm-range-scale').val(),'Custom','new row avoids locked DEFAULT');
+w.wmOpenColours();request.success({revision:'d'.repeat(64),colours:{outline:'#000000',pulse:true,rows,locked_scales:[named.scale]}});
+assert.equal($('#wm-traffic-preset').prop('disabled'),false,'root-owned DEFAULT presets remain editable');
+$('#wm-traffic-preset').val('signals').trigger('change');
+assert.ok($('#wm-scale-rows tr').filter((i,tr)=>$(tr).find('.wm-range-scale').val()===named.scale).find('input,select,button').toArray().every(el=>el.disabled),'named shared scale stays locked after preset');
+w.wmOpenColours();request.success({revision:'e'.repeat(64),colours:{outline:'#000000',pulse:true,rows}});
+assert.equal($('#wm-included-scale-help').length,0,'shared help clears on map without includes');
+assert.equal($('#wm-traffic-preset').prop('disabled'),false);
 // Cancel leaves the named background value untouched; submitting commits it.
 $('body').append('<input name="map_background_colour" id="map_background_colour" value="#ffffff"><input id="action"><div id="wm-map-background-colour"></div><div id="dlgMapProperties"></div><input id="map_title">');
 w.mapmode=()=>{};w.hide_all_dialogs=()=>{};w.show_dialog=()=>{};

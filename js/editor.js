@@ -1858,6 +1858,7 @@ function wmAssetColour(value, allowEmpty, swatches, solid, label) {
 	return box;
 }
 var wmColourRevision = null;
+var wmLockedScales = [];
 function wmColourRequest(action, extra, callback, errorId) {
 	var values = {action: action, mapname: $('#mapname').val()};
 	if (action === 'set_map_colours') values.config_revision = wmColourRevision;
@@ -1874,6 +1875,7 @@ function wmAssetScaleRow(row) {
 	$('<td>').append(wmAssetColour(row.end || '', true, false, true, wmEditorText.gradientColour)).appendTo(tr);
 	$('<td>').append($('<input type="text" class="wm-range-tag">').attr('aria-label', wmEditorText.rangeLabel).val(row.tag || '')).appendTo(tr);
 	$('<td>').append($('<button type="button" class="ui-button wm-asset-delete">').text(wmEditorText.colourText2).attr('aria-label', wmEditorText.colourText7).on('click', function() { tr.remove(); })).appendTo(tr);
+	if (wmLockedScales.indexOf(row.scale) !== -1) tr.find('input, select, button').prop('disabled', true);
 }
 function wmColourRefreshMap() {
 	wmReloadEditor();
@@ -1929,9 +1931,14 @@ function wmOpenColours() {
 	wmColourRequest('colour_data', {}, function(data) {
 		$('#wm-traffic-pulse').prop('checked', data.colours.pulse === true);
 		$('#wm-outline-colour').empty().append(wmAssetColour(data.colours.outline, false, true, false, wmEditorText.borderColour));
+		wmLockedScales = data.colours.locked_scales || [];
 		$('#wm-scale-rows').empty(); data.colours.rows.forEach(wmAssetScaleRow);
+		$('#wm-included-scale-help').remove();
+		if (wmLockedScales.length) $('<p id="wm-included-scale-help">').text(wmEditorText.includedScaleHelp).insertBefore('#wm-traffic-advanced');
+		$('#wm-traffic-preset').prop('disabled', wmLockedScales.indexOf('DEFAULT') !== -1);
         $('#wm-traffic-advanced').prop('open', false);
         $('#wm-traffic-preset').val(wmTrafficPresetMatch(data.colours.rows)).off('change selectmenuchange').on('change selectmenuchange', function() {
+            if (wmLockedScales.indexOf('DEFAULT') !== -1) return;
             $('#wm-traffic-advanced').prop('open', this.value === 'custom');
             if (this.value !== 'custom') {
                 var rows = wmTrafficPresetRows(this.value, wmAssetScaleRows());
@@ -1953,7 +1960,7 @@ function wmOpenColours() {
 			wmColourRequest('set_map_colours', {colours_json: JSON.stringify({outline: $('#wm-outline-colour .wm-colour-value').val(), pulse: $('#wm-traffic-pulse').prop('checked'), rows: rows})}, function() { hide_all_dialogs(); wmColourRefreshMap(); }, 'wm-colours-error');
 		});
 	}, 'wm-colours-error');
-	$('#wm-scale-add').off('click').on('click', function() { wmAssetScaleRow({scale: 'DEFAULT', bottom: 0, top: 100, colour: '#0000ff'}); $('#wm-traffic-preset').val('custom').selectmenu('refresh'); wmTrafficPreview(); });
+	$('#wm-scale-add').off('click').on('click', function() { wmAssetScaleRow({scale: wmLockedScales.indexOf('DEFAULT') !== -1 ? 'Custom' : 'DEFAULT', bottom: 0, top: 100, colour: '#0000ff'}); $('#wm-traffic-preset').val('custom').selectmenu('refresh'); wmTrafficPreview(); });
 }
 
 // Notes are ordinary label-only nodes, with a small editor-specific style form.

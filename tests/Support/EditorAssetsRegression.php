@@ -166,6 +166,46 @@ try {
 	unset($GLOBALS['__test_nfilter_request']['config_revision']);
 	$saved->DrawMap($dir . '/map.png');
 	assets_assert(is_file($dir . '/map.png'), 'render after save');
+	$shared = $dir . '/shared.conf';
+	$root = $dir . '/included.conf';
+	file_put_contents($shared, "SCALE 0 100 10 20 30 40 50 60 Shared\nSCALE Shared 0 100 0 0 255\n");
+	file_put_contents($root, "INCLUDE $shared\nSCALE Local 0 100 255 0 0\n");
+	$included = new WeatherMap; $included->ReadConfig($root);
+	$inheritedData = wm_asset_colour_data($included);
+	assets_assert($inheritedData['locked_scales'] === ['DEFAULT', 'Shared'], 'included scale names exposed as read-only');
+	$beforeIncluded = $included->colours;
+	foreach (['colour', 'end', 'tag', 'bottom', 'top', 'delete', 'rename', 'preset', 'append'] as $change) {
+		$attempt = $inheritedData;
+		if ($change === 'delete') array_shift($attempt['rows']);
+		elseif ($change === 'rename') $attempt['rows'][0]['scale'] = 'Renamed';
+		elseif ($change === 'preset') $attempt['rows'] = [['scale'=>'DEFAULT','bottom'=>0,'top'=>50,'colour'=>'#00ff00']];
+		elseif ($change === 'append') $attempt['rows'][] = ['scale'=>'Shared','bottom'=>100,'top'=>200,'colour'=>'#00ff00'];
+		else $attempt['rows'][0][$change] = ['colour'=>'#ff0000','end'=>'#0000ff','tag'=>'Edited','bottom'=>1,'top'=>99][$change];
+		try { wm_asset_save_colours($included, $attempt); throw new RuntimeException('accepted included scale ' . $change); } catch (InvalidArgumentException $expected) {
+			assets_assert(str_contains($expected->getMessage(), 'read-only'), 'shared scale validation explains restriction');
+		}
+		assets_assert($included->colours === $beforeIncluded, 'rejected shared scale edit leaves map unchanged');
+	}
+	// Endpoint rejection also leaves both source files byte-for-byte unchanged.
+	$rootBytes = file_get_contents($root); $sharedBytes = file_get_contents($shared);
+	$GLOBALS['__test_nfilter_request'] = ['config_revision'=>\WeathermapConfig\snapshotRevision($included->config_revision, $included->config_dependencies, $included->config_root_identity), 'colours_json'=>json_encode($attempt)];
+	ob_start(); wm_editor_colours($root, 'set_map_colours'); $denied = json_decode(ob_get_clean(), true);
+	assets_assert(http_response_code() === 400 && isset($denied['error']) && file_get_contents($root) === $rootBytes && file_get_contents($shared) === $sharedBytes, 'endpoint rejects shared scale changes without writing');
+	$editable = $inheritedData;
+	foreach ($editable['rows'] as &$row) {
+		$row['bottom'] = (string)$row['bottom']; $row['top'] = (string)$row['top'];
+		$row['colour'] = strtoupper($row['colour']);
+		if ($row['scale'] === 'Local') $row['colour'] = '#008000';
+	}
+	unset($row); $editable['rows'] = array_reverse($editable['rows']); $editable['pulse'] = false;
+	wm_asset_save_colours($included, $editable);
+	assets_assert($included->colours['DEFAULT'] === $beforeIncluded['DEFAULT'] && $included->colours['Shared'] === $beforeIncluded['Shared'], 'unchanged shared scales retain exact entries');
+	assets_assert($included->WriteConfig($root), 'local edits with shared scales save');
+	$reloaded = new WeatherMap; $reloaded->ReadConfig($root);
+	assets_assert($reloaded->colours['Local']['0_100']['green1'] === 128 && wm_asset_colour_data($reloaded)['pulse'] === false && file_get_contents($shared) === $sharedBytes, 'local scale and pulse edits survive reload without editing include');
+	// A subsequent root read clears inherited provenance.
+	$included->ReadConfig($file);
+	assets_assert($included->included_scale_names === [], 'root load resets shared scale names');
 	echo "Editor assets regression PASS\n";
 } finally {
 	foreach (glob($dir . '/*') as $path) unlink($path);
