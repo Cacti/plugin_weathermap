@@ -41,7 +41,7 @@ final class EditorSettingsCookieTest extends TestCase {
 		file_put_contents($file, "WIDTH 100\nHEIGHT 100\n");
 		try {
 			foreach ([[1,1,10,'1:1:10'], [0,1,5,'0:1:5'], [0,0,'NO','0:0:0']] as [$via,$relative,$grid,$expected]) {
-				$GLOBALS['__test_nfilter_request'] = ['editorsettings_showvias'=>$via, 'editorsettings_showrelative'=>$relative, 'editorsettings_gridsnap'=>$grid];
+				$GLOBALS['__test_nfilter_request'] = ['config_revision'=>hash_file('sha256', $file), 'editorsettings_showvias'=>$via, 'editorsettings_showrelative'=>$relative, 'editorsettings_gridsnap'=>$grid];
 				$GLOBALS['__test_request'] = $GLOBALS['__test_nfilter_request'];
 				editorSettings($file);
 				self::assertSame($expected, $GLOBALS['wm_test_cookies']['wmeditor']);

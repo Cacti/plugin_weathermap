@@ -132,6 +132,15 @@ namespace WeathermapConfig {
 	}
 }
 namespace {
+/** Submit the page revision expected by production mutation routes. */
+function wm_fixture_revision($file, $callback) {
+	if (!array_key_exists('config_revision', $GLOBALS['__test_nfilter_request'] ?? []) && is_file($file)) {
+		$map = new \WeatherMap; $map->ReadConfig($file);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies);
+	}
+	return $callback();
+}
+
 	require dirname(__DIR__) . '/bootstrap-unit.php';
 	$plugin = dirname(__DIR__, 2);
 	chdir($plugin);
@@ -247,8 +256,8 @@ namespace {
 			file_put_contents($rawFile, $rawConfig);
 			$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $rawFile), 'node_name' => 'A', 'link_name' => 'AB', 'item_configtext' => $kind === 'node' ? "NODE A\n LABEL Updated\n POSITION 10 10\n" : "LINK AB\n NODES A B\n WIDTH 12\n"];
 			http_response_code(200);
-			if ($kind === 'node') setNodeConfig($rawFile);
-			else setLinkConfig($rawFile);
+			if ($kind === 'node') wm_fixture_revision($rawFile, fn () => setNodeConfig($rawFile));
+			else wm_fixture_revision($rawFile, fn () => setLinkConfig($rawFile));
 			colour_atomic_assert(http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'raw ' . $kind . ' edit saves without false conflict');
 			file_put_contents($rawFile, $rawConfig);
 			http_response_code(200);
@@ -269,7 +278,7 @@ namespace {
 		$GLOBALS['__test_nfilter_request'] = ['map_background_colour' => '#bad'];
 		$beforeInvalid = file_get_contents($file);
 		http_response_code(200);
-		setMapProperties($file);
+		wm_fixture_revision($file, fn () => setMapProperties($file));
 		colour_atomic_assert(http_response_code() === 400 && file_get_contents($file) === $beforeInvalid, 'invalid background is a client error without persistence');
 		$management = file_get_contents($plugin . '/weathermap-cacti-plugin-mgmt.php');
 		eval(str_replace(['__DIR__', 'function newMap('], [var_export($plugin, true), 'function colourManagementCreate('], substr($management, strpos($management, 'function newMap('))));
@@ -332,7 +341,7 @@ namespace {
 			unset($GLOBALS['config_before_lock']);
 		};
 		http_response_code(200);
-		setMapProperties($file);
+		wm_fixture_revision($file, fn () => setMapProperties($file));
 		colour_atomic_assert(http_response_code() === 409 && file_get_contents($file) === "TITLE Concurrent\n" && $GLOBALS['__test_db_calls'] === [], 'normal editor CAS conflict is visible and does not update title cache');
 		$GLOBALS['__test_nfilter_request'] = ['config_revision' => hash_file('sha256', $file), 'colours_json' => json_encode($data)];
 		foreach (['lock', 'rename'] as $fault) {
@@ -410,6 +419,20 @@ namespace {
 			http_response_code(200); ob_start(); wm_editor_colours($file, 'set_map_colours'); ob_end_clean();
 			colour_atomic_assert(http_response_code() === 400, 'unsupported gradient value is rejected');
 		}
+
+		$GLOBALS['__test_nfilter_request'] = [];
+		colour_atomic_assert(wm_editor_read_config(new \WeatherMap, $file), 'read/render paths accept absent page revisions');
+		foreach ([null, '', [], 'invalid'] as $missingRevision) {
+			$GLOBALS['__test_nfilter_request'] = ['config_revision' => $missingRevision]; http_response_code(200);
+			colour_atomic_assert(!wm_editor_read_config(new \WeatherMap, $file, true) && http_response_code() === 409, 'mutation requires valid nonempty loaded revision');
+		}
+		$GLOBALS['__test_nfilter_request'] = []; $beforeMissingRevision = file_get_contents($file); http_response_code(200);
+		moveNode($file, 0);
+		colour_atomic_assert(http_response_code() === 409 && file_get_contents($file) === $beforeMissingRevision, 'missing mutation token cannot alter configuration');
+		$revisionMap = new \WeatherMap; $revisionMap->ReadConfig($file);
+		$GLOBALS['__test_nfilter_request'] = ['config_revision' => \WeathermapConfig\snapshotRevision($revisionMap->config_revision, $revisionMap->config_dependencies)];
+		colour_atomic_assert(wm_editor_read_config(new \WeatherMap, $file, true), 'matching mutation revision remains accepted');
+		$GLOBALS['__test_nfilter_request'] = [];
 
 		$oldLocale = setlocale(LC_NUMERIC, 0);
 		$commaLocale = setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR', 'de_DE.UTF-8');

@@ -81,7 +81,7 @@ function wm_asset_save_colours($map, $data) {
 	$scales = [];
 	foreach ($rows as $row) {
 		$name = $row['scale'] ?? '';
-		if (!is_string($name) || !preg_match('/^[A-Za-z][A-Za-z0-9_]*$/D', $name)) throw new InvalidArgumentException(__('Invalid scale name.', 'weathermap'));
+		if (!is_string($name) || strlen($name) > 1024 || !preg_match('/^[A-Za-z][A-Za-z0-9_]*$/D', $name)) throw new InvalidArgumentException(__('Invalid scale name.', 'weathermap'));
 		foreach (['bottom', 'top'] as $key) if (!isset($row[$key]) || !is_numeric($row[$key]) || !is_finite((float)$row[$key]) || abs((float)$row[$key]) > 1e15) throw new InvalidArgumentException(__('Invalid scale range.', 'weathermap'));
 		if ($row['bottom'] > $row['top']) throw new InvalidArgumentException(__('Range start must be no greater than its end.', 'weathermap'));
 		$rgb = wm_asset_rgb($row['colour'] ?? null);

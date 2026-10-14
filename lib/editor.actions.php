@@ -55,9 +55,10 @@ require_once __DIR__ . '/WeatherMap.config.php';
  *
  * @param WeatherMap $map Engine receiving the configuration.
  * @param string $mapfile Configuration path.
+ * @param bool $requireRevision Require the loaded page token for mutation paths.
  * @return bool Whether the map was loaded.
  */
-function wm_editor_read_config($map, $mapfile) {
+function wm_editor_read_config($map, $mapfile, $requireRevision = false) {
 	if (!is_file($mapfile) || !is_readable($mapfile)) {
 		http_response_code(404);
 		return false;
@@ -71,7 +72,7 @@ function wm_editor_read_config($map, $mapfile) {
 		return false;
 	}
 	$revision = get_nfilter_request_var('config_revision');
-	if ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies), $revision))) {
+	if (($requireRevision && (!is_string($revision) || $revision === '')) || ($revision !== null && $revision !== '' && (!is_string($revision) || !hash_equals(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies), $revision)))) {
 		http_response_code(409);
 		return false;
 	}
@@ -274,7 +275,7 @@ function setNodeConfig($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$node_name   = get_nfilter_request_var('node_name');
 	$node_config = get_nfilter_request_var('item_configtext');
@@ -296,7 +297,7 @@ function setLinkConfig($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$link_name   = get_nfilter_request_var('link_name');
 	$link_config = get_nfilter_request_var('item_configtext');
@@ -318,7 +319,7 @@ function setNodeProperties($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$node_name     = get_nfilter_request_var('node_name');
 	$new_node_name = get_nfilter_request_var('node_new_name');
@@ -407,7 +408,7 @@ function setLinkProperties($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$link_name = get_nfilter_request_var('link_name');
 
@@ -488,7 +489,7 @@ function setMapProperties($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	// Omitted by older clients: keep the existing background.
 	$background_colour = get_nfilter_request_var('map_background_colour');
@@ -585,7 +586,7 @@ function setMapStyle($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	if (wm_editor_validate_one_of(get_nfilter_request_var('mapstyle_htmlstyle'), ['static', 'overlib'], false)) {
 		$map->htmlstyle = strtolower(get_nfilter_request_var('mapstyle_htmlstyle'));
@@ -622,7 +623,7 @@ function addLink($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$a = get_nfilter_request_var('param');
 	$b = get_nfilter_request_var('param2');
@@ -673,7 +674,7 @@ function placeLegend($mapfile, $grid_snap_value) {
 
 	$scalename = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$map->keyx[$scalename] = $x;
 	$map->keyy[$scalename] = $y;
@@ -694,7 +695,7 @@ function placeStamp($mapfile, $grid_snap_value) {
 	$x = snap(intval(get_nfilter_request_var('x')), $grid_snap_value);
 	$y = snap(intval(get_nfilter_request_var('y')), $grid_snap_value);
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$map->timex = $x;
 	$map->timey = $y;
@@ -716,7 +717,7 @@ function viaLink($mapfile) {
 
 	$link_name = wm_editor_sanitize_name(get_nfilter_request_var('link_name'));
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	if (isset($map->links[$link_name])) {
 		$map->links[$link_name]->vialist = [[0 =>$x, 1=>$y]];
@@ -739,7 +740,7 @@ function moveNode($mapfile, $grid_snap_value) {
 
 	$node_name = wm_editor_sanitize_name(get_nfilter_request_var('node_name'));
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	if (isset($map->nodes[$node_name])) {
 		// This is a complicated bit. Find out if this node is involved in any
@@ -846,7 +847,7 @@ function linkTidy($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
@@ -869,7 +870,7 @@ function reTidy($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	// draw a map and throw it away, to calculate all the bounding boxes
 	$map->DrawMap('null');
@@ -887,7 +888,7 @@ function reTidyAll($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	// draw a map and throw it away, to calculate all the bounding boxes
 	$map->DrawMap('null');
@@ -905,7 +906,7 @@ function unTidy($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	// draw a map and throw it away, to calculate all the bounding boxes
 	$map->DrawMap('null');
@@ -923,7 +924,7 @@ function deleteLink($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 	$log    = 'delete link ' . $target;
@@ -948,7 +949,7 @@ function addNode($mapfile, $grid_snap_value) {
 	$x = snap(intval(get_nfilter_request_var('x')), $grid_snap_value);
 	$y = snap(intval(get_nfilter_request_var('y')), $grid_snap_value);
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$newnodename = sprintf('node%05d', time() % 10000);
 
@@ -992,7 +993,7 @@ function editorSettings($mapfile) {
 	$map->context = 'editor';
 
 	// have to do this, otherwise the editor will be unresponsive afterwards - not actually going to change anything!
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$use_overlay          = (isset_request_var('editorsettings_showvias') ? intval(get_nfilter_request_var('editorsettings_showvias')) : false);
 	$use_relative_overlay = (isset_request_var('editorsettings_showrelative') ? intval(get_nfilter_request_var('editorsettings_showrelative')) : false);
@@ -1011,7 +1012,7 @@ function deleteNode($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
@@ -1041,7 +1042,7 @@ function cloneNode($mapfile) {
 
 	$map->context = 'editor';
 
-	if (!wm_editor_read_config($map, $mapfile)) return;
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
 	$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 

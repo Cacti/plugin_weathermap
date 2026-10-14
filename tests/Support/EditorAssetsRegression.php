@@ -1,4 +1,13 @@
 <?php
+/** Submit the page revision expected by production mutation routes. */
+function wm_fixture_revision($file, $callback) {
+	if (!array_key_exists('config_revision', $GLOBALS['__test_nfilter_request'] ?? []) && is_file($file)) {
+		$map = new \WeatherMap; $map->ReadConfig($file);
+		$GLOBALS['__test_nfilter_request']['config_revision'] = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies);
+	}
+	return $callback();
+}
+
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group, Howard Jones                   |
@@ -93,6 +102,13 @@ try {
 	$map->WriteConfig($file);
 	$negativeMap = new WeatherMap; $negativeMap->ReadConfig($file);
 	assets_assert($negativeMap->colours['Temperature_1']['-20_-1']['bottom'] === -20.0, 'negative custom scale survives engine reload');
+	foreach ([1025, 5000] as $nameLength) {
+		$oversized = $data; $oversized['rows'][0]['scale'] = str_repeat('A', $nameLength);
+		try { wm_asset_save_colours($map, $oversized); throw new RuntimeException('accepted oversized scale name'); } catch (InvalidArgumentException $expected) {}
+	}
+	$bounded = $data; $bounded['rows'][] = ['scale'=>str_repeat('A',1024), 'bottom'=>-1e15, 'top'=>1e15, 'colour'=>'#008000','end'=>'#ffffff','tag'=>str_repeat('L',200)];
+	wm_asset_save_colours($map,$bounded); $map->WriteConfig($file); $boundedMap = new WeatherMap; $boundedMap->ReadConfig($file);
+	assets_assert(isset($boundedMap->colours[str_repeat('A',1024)]), 'maximum scale name and directive fields survive parser roundtrip');
 	$longName = 'Scale' . str_repeat('A', 70);
 	$longScale = $data;
 	$longScale['rows'][] = ['scale' => $longName, 'bottom' => 0, 'top' => 50, 'colour' => '#008000'];
@@ -117,16 +133,16 @@ try {
 		assets_assert($map->colours === $before, 'invalid request is atomic');
 	}
 	$GLOBALS['__test_nfilter_request'] = ['map_title' => 'Background test', 'map_legend' => 'Traffic', 'map_stamp' => 'Created', 'map_htmlfile' => 'test.html', 'map_pngfile' => 'test.png', 'map_width' => '600', 'map_height' => '300', 'map_bgfile' => '--NONE--', 'map_background_sizing' => 'fit', 'map_linkdefaultwidth' => '7', 'map_linkdefaultbwin' => '100M', 'map_linkdefaultbwout' => '100M', 'map_background_colour' => '#112233'];
-	setMapProperties($file);
+	wm_fixture_revision($file, fn () => setMapProperties($file));
 	$props = new WeatherMap; $props->ReadConfig($file);
 	assets_assert(wm_asset_colour_data($props)['background'] === '#112233', 'map properties saves background');
 	unset($GLOBALS['__test_nfilter_request']['map_background_colour']);
-	setMapProperties($file);
+	wm_fixture_revision($file, fn () => setMapProperties($file));
 	$props = new WeatherMap; $props->ReadConfig($file);
 	assets_assert(wm_asset_colour_data($props)['background'] === '#112233', 'older properties client preserves background');
 	$before_file = file_get_contents($file);
 	$GLOBALS['__test_nfilter_request']['map_background_colour'] = '#invalid';
-	setMapProperties($file);
+	wm_fixture_revision($file, fn () => setMapProperties($file));
 	assets_assert(file_get_contents($file) === $before_file, 'invalid background does not write');
 	$GLOBALS['__test_nfilter_request'] = [];
 	ob_start(); wm_editor_colours($file, 'colour_data'); $loadedColours = json_decode(ob_get_clean(), true);

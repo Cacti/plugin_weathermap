@@ -1807,14 +1807,14 @@ var wmColourRevision = null;
 function wmColourRequest(action, extra, callback, errorId) {
 	var values = {action: action, mapname: $('#mapname').val()};
 	if (action === 'set_map_colours') values.config_revision = wmColourRevision;
-	if (typeof csrfMagicToken !== 'undefined') values.__csrf_magic = csrfMagicToken;
+	if (action === 'set_map_colours' && typeof csrfMagicToken !== 'undefined') values.__csrf_magic = csrfMagicToken;
 	$.ajax({url: editor_url, type: action === 'colour_data' ? 'GET' : 'POST', dataType: 'json', data: $.extend(values, extra),
 		success: function(data) { if (data.revision) wmColourRevision = data.revision; callback(data); }, error: function(xhr) { $('#' + errorId).text(xhr.status === 409 && wmEditorText.staleError || xhr.responseJSON && xhr.responseJSON.error || wmEditorText.colourText4); }});
 }
 function wmAssetScaleRow(row) {
 	var tr = $('<tr>').appendTo('#wm-scale-rows');
 	['scale', 'bottom', 'top'].forEach(function(key) {
-		$('<td>').append($('<input>').attr('type', key === 'scale' ? 'text' : 'number').attr('step', 'any').addClass('wm-range-' + key).val(row[key])).appendTo(tr);
+		$('<td>').append($('<input>').attr('type', key === 'scale' ? 'text' : 'number').attr('step', 'any').attr('maxlength', key === 'scale' ? 1024 : null).addClass('wm-range-' + key).val(row[key])).appendTo(tr);
 	});
 	$('<td>').append(wmAssetColour(row.colour, false, false, false, wmEditorText.rangeColour)).appendTo(tr);
 	$('<td>').append(wmAssetColour(row.end || '', true, false, true, wmEditorText.gradientColour)).appendTo(tr);
