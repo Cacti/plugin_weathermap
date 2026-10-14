@@ -247,7 +247,7 @@ try {
 	$explicitMap = new WeatherMap; $explicitMap->ReadConfig($presetFile);
 	assets_assert($explicitMap->WriteConfig($presetFile), 'existing explicit overrides save');
 	$explicitReload = new WeatherMap; $explicitReload->ReadConfig($presetFile);
-	assets_assert(wm_asset_colour_data($explicitReload)['background'] === '#c8d2dc' && wm_asset_colour_data($explicitReload)['pulse'] === true, 'existing local directives retain precedence, including background after node declarations');
+	assets_assert(wm_asset_colour_data($explicitReload)['background'] === '#c8d2dc' && wm_asset_colour_data($explicitReload)['pulse'] === true, 'existing local directives retain precedence, including background after node declarations: ' . json_encode([$explicitMap->colour_overrides, $explicitReload->colour_overrides, wm_asset_colour_data($explicitReload)['background'], wm_asset_colour_data($explicitReload)['pulse']]));
 	$propertiesReload = $explicitReload;
 	// Ambiguous labels must fail before mutation; explicit gradients and none remain valid.
 	$labelData = wm_asset_colour_data($propertiesReload); $labelBefore = $propertiesReload->colours;
@@ -300,6 +300,51 @@ try {
 	wm_asset_save_colours($styleReload, $precise); assets_assert($styleReload->WriteConfig($styleRoot), 'representable fractional and bandwidth-unit ranges save');
 	$precisionReload = new WeatherMap; $precisionReload->ReadConfig($styleRoot);
 	assets_assert($precisionReload->colours['DEFAULT']['0.000001_0.123456']['bottom'] === 0.000001 && $precisionReload->colours['DEFAULT']['0.000001_0.123456']['top'] === 0.123456 && $precisionReload->colours['ExactUnits']['1.5K_2.5K']['bottom'] === 1500.0, 'accepted bounds retain their exact numeric meaning after reload');
+	// Read-only rows bypass editable formatting only after matching the loaded snapshot.
+	$readOnlyFile = $dir . '/read-only.inc'; $readOnlyRoot = $dir . '/read-only.conf';
+	$readOnlyBytes = "BGCOLOR 4 5 6\nSCALE 1n 2n 0 0 255\nSCALE Shared 0.1234567 0.2234567 0 0 255\nSCALE Tiny 1n 2n 0 0 255\n";
+	file_put_contents($readOnlyFile, $readOnlyBytes);
+	file_put_contents($readOnlyRoot, "WIDTH 100\nHEIGHT 100\nINCLUDE $readOnlyFile\n");
+	$readOnlyMap = new WeatherMap; $readOnlyMap->ReadConfig($readOnlyRoot);
+	$readOnlyData = wm_asset_colour_data($readOnlyMap); unset($readOnlyData['background']);
+	$readOnlyData['pulse'] = false; $readOnlyData['outline'] = '#0000ff';
+	wm_asset_save_colours($readOnlyMap, $readOnlyData);
+	assets_assert(empty($readOnlyMap->colour_overrides['background']), 'omitted background does not manufacture an override from RGB strings');
+	assets_assert($readOnlyMap->WriteConfig($readOnlyRoot), 'unrelated pulse and border changes save with precise read-only scales');
+	$readOnlyReload = new WeatherMap; $readOnlyReload->ReadConfig($readOnlyRoot);
+	assets_assert(array_keys(array_filter($readOnlyReload->colours['DEFAULT'], fn ($r) => empty($r['special']))) === ['1n_2n'] && isset($readOnlyReload->colours['Shared']['0.1234567_0.2234567']) && $readOnlyReload->colours['Shared']['0.1234567_0.2234567']['bottom'] === 0.1234567 && $readOnlyReload->numscales['Shared'] === 1 && isset($readOnlyReload->colours['Tiny']['1n_2n']), 'shared source tokens survive without rounded duplicate ranges');
+	assets_assert(wm_asset_colour_data($readOnlyReload)['pulse'] === false && $readOnlyReload->links['DEFAULT']->outlinecolour == [0,0,255] && file_get_contents($readOnlyFile) === $readOnlyBytes, 'unrelated edits persist without modifying shared source');
+	$beforeReadOnly = $readOnlyReload->colours;
+	foreach ([['bottom',0.1234568], ['bottom',[]], ['end',[]], ['tag',[]]] as [$field,$value]) {
+		$invalid = wm_asset_colour_data($readOnlyReload); $invalid['rows'][1][$field] = $value;
+		try { wm_asset_save_colours($readOnlyReload, $invalid); throw new RuntimeException('changed or malformed read-only row accepted'); } catch (InvalidArgumentException $expected) {}
+		assets_assert($readOnlyReload->colours === $beforeReadOnly, 'read-only equality validation rejects mutations atomically');
+	}
+	$endpointData = wm_asset_colour_data($readOnlyReload); unset($endpointData['background']); $endpointData['outline'] = '#800080';
+	$GLOBALS['__test_nfilter_request'] = ['config_revision'=>\WeathermapConfig\snapshotRevision($readOnlyReload->config_revision, $readOnlyReload->config_dependencies, $readOnlyReload->config_root_identity), 'colours_json'=>json_encode($endpointData)];
+	http_response_code(200); ob_start(); wm_editor_colours($readOnlyRoot, 'set_map_colours'); $readOnlyResponse = json_decode(ob_get_clean(), true);
+	assets_assert(http_response_code() === 200 && isset($readOnlyResponse['colours']), 'colour endpoint accepts unchanged read-only bounds');
+	file_put_contents($readOnlyFile, str_replace('BGCOLOR 4 5 6', 'BGCOLOR 7 8 9', $readOnlyBytes));
+	$backgroundReload = new WeatherMap; $backgroundReload->ReadConfig($readOnlyRoot);
+	assets_assert(wm_asset_colour_data($backgroundReload)['background'] === '#070809', 'omitted background keeps following future include updates');
+	// Flags describe the winning directive, not any earlier root setting.
+	$firstInclude = $dir . '/first.inc'; $lastInclude = $dir . '/last.inc'; $orderedRoot = $dir . '/ordered.conf';
+	file_put_contents($firstInclude, "BGCOLOR 10 20 30\nSET traffic_pulse 1\n");
+	file_put_contents($lastInclude, "BGCOLOR 40 50 60\nSET traffic_pulse 1\n");
+	file_put_contents($orderedRoot, "INCLUDE $firstInclude\nBGCOLOR 1 2 3\nSET traffic_pulse 0\nINCLUDE $lastInclude\n");
+	$orderedMap = new WeatherMap; $orderedMap->ReadConfig($orderedRoot);
+	assets_assert(empty($orderedMap->colour_overrides['background']) && empty($orderedMap->colour_overrides['pulse']), 'later included settings clear earlier root override flags');
+	$orderedData = wm_asset_colour_data($orderedMap); unset($orderedData['background']); $orderedData['outline'] = '#0000ff';
+	wm_asset_save_colours($orderedMap, $orderedData); assets_assert($orderedMap->WriteConfig($orderedRoot), 'unrelated save preserves effective inheritance');
+	file_put_contents($lastInclude, "BGCOLOR 70 80 90\nSET traffic_pulse 0\n");
+	$orderedReload = new WeatherMap; $orderedReload->ReadConfig($orderedRoot);
+	assets_assert(wm_asset_colour_data($orderedReload)['background'] === '#46505a' && wm_asset_colour_data($orderedReload)['pulse'] === false, 'later include remains authoritative after an unrelated save');
+	file_put_contents($lastInclude, "# no background or pulse directive\n");
+	file_put_contents($orderedRoot, "INCLUDE $firstInclude\nBGCOLOR 1 2 3\nSET traffic_pulse 0\nINCLUDE $lastInclude\n");
+	$stillLocal = new WeatherMap; $stillLocal->ReadConfig($orderedRoot);
+	assets_assert(!empty($stillLocal->colour_overrides['background']) && !empty($stillLocal->colour_overrides['pulse']) && $stillLocal->WriteConfig($orderedRoot), 'include without matching settings does not clear local overrides');
+	$stillLocalReload = new WeatherMap; $stillLocalReload->ReadConfig($orderedRoot);
+	assets_assert(wm_asset_colour_data($stillLocalReload)['background'] === '#010203' && wm_asset_colour_data($stillLocalReload)['pulse'] === false, 'winning root settings retain precedence');
 	echo "Editor assets regression PASS\n";
 } finally {
 	foreach (glob($dir . '/*') as $path) unlink($path);

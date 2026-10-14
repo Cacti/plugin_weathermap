@@ -2542,10 +2542,6 @@ class WeatherMap extends WeatherMapBase {
 
 		$rootIncludeSeen = $filename === '{text insert}' && $this->has_includes;
 		foreach ($lines as $buffer) {
-			if (!$is_include && $rootIncludeSeen) {
-				if (preg_match('/^\s*BGCOLOR\s+/i', $buffer)) $this->colour_overrides['background'] = true;
-				if ($last_seen === 'GLOBAL' && preg_match('/^\s*SET\s+traffic_pulse\s+/i', $buffer)) $this->colour_overrides['pulse'] = true;
-			}
 			$linematched = 0;
 
 			$linecount++;
@@ -2968,6 +2964,7 @@ class WeatherMap extends WeatherMapBase {
 
 				if (preg_match('/^\s*SET\s+(\S+)\s+(.*)\s*$/i', $buffer, $matches)) {
 					$curobj->add_hint($matches[1], trim($matches[2]));
+					if ($curobj === $this && $matches[1] === 'traffic_pulse') $this->colour_overrides['pulse'] = !$is_include && $rootIncludeSeen;
 
 					if ($curobj->my_type() == 'map' && substr($matches[1], 0, 7) == 'nowarn_') {
 						$weathermap_error_suppress[$matches[1]] = 1;
@@ -2979,6 +2976,7 @@ class WeatherMap extends WeatherMapBase {
 				// allow setting a variable to ''
 				if (preg_match('/^\s*SET\s+(\S+)\s*$/i', $buffer, $matches)) {
 					$curobj->add_hint($matches[1],'');
+					if ($curobj === $this && $matches[1] === 'traffic_pulse') $this->colour_overrides['pulse'] = !$is_include && $rootIncludeSeen;
 
 					if ($curobj->my_type() == 'map' && substr($matches[1], 0, 7) == 'nowarn_') {
 						$weathermap_error_suppress[$matches[1]] = 1;
@@ -3279,6 +3277,7 @@ class WeatherMap extends WeatherMapBase {
 					// "Found colour line for $key\n";
 					if (isset($matches[3], $matches[4], $matches[5])) {
 						// this is a regular colour setting thing
+						if ($key === 'BG') $this->colour_overrides['background'] = !$is_include && $rootIncludeSeen;
 						$this->colours['DEFAULT'][$key]['red1']    = $matches[3];
 						$this->colours['DEFAULT'][$key]['green1']  = $matches[4];
 						$this->colours['DEFAULT'][$key]['blue1']   = $matches[5];
@@ -3434,7 +3433,9 @@ class WeatherMap extends WeatherMapBase {
 			wm_debug("Already have $scalesseen scales, no defaults added.");
 		}
 
-		$this->numscales['DEFAULT'] = cacti_count(array_filter($this->colours['DEFAULT'], function ($row) { return empty($row['special']); }));
+		foreach ($this->colours as $scaleName => $scaleRows) {
+			$this->numscales[$scaleName] = cacti_count(array_filter($scaleRows, function ($row) { return empty($row['special']); }));
+		}
 		$this->configfile           = $filename;
 
 		if ($this->has_overlibs && $this->htmlstyle == 'static') {
@@ -3792,6 +3793,9 @@ class WeatherMap extends WeatherMapBase {
 						if ($top > 1000) {
 							$top = str_replace(localeconv()['decimal_point'], '.', nice_bandwidth($colour['top'], $this->kilo));
 						}
+
+						// Shared scales are read-only: retain the parser's original bound tokens.
+						if (isset($this->included_scale_names[$scalename])) [$bottom, $top] = explode('_', $colour['key'], 2);
 
 						$tag = ($colour['tag'] ?? '');
 
