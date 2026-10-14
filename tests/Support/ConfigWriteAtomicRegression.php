@@ -667,6 +667,16 @@ function wm_fixture_revision($file, $callback) {
 			atomic_assert($terminated && http_response_code() === 200 && file_get_contents($rawFile) !== $rawConfig, 'controller ends successful raw ' . $kind . ' save before rendering with old token');
 
 		}
+		// All note mutations retain the 409 chosen for a save arriving after request read.
+		foreach (['move', 'delete', 'properties'] as $operation) {
+			file_put_contents($file, $original);
+			$newer = "TITLE Concurrent writer\n" . $original;
+			$GLOBALS['config_before_lock'] = function() use ($file,$newer) { unset($GLOBALS['config_before_lock']); file_put_contents($file,$newer); };
+			$GLOBALS['__test_nfilter_request'] = ['config_revision'=>hash_file('sha256',$file),'node_name'=>'note1','param'=>'note1','x'=>70,'y'=>80,'note_name'=>'note1','note_text'=>'Changed','note_font'=>'3','note_colour'=>'#000000','note_x'=>50,'note_y'=>50,'note_align'=>'left'];
+			http_response_code(200);
+			if($operation==='move')wm_fixture_revision($file, fn () => moveNode($file,0));elseif($operation==='delete')wm_fixture_revision($file, fn () => deleteNode($file));else wm_fixture_revision($file, fn () => setNoteProperties($file,0));
+			atomic_assert(http_response_code()===409 && file_get_contents($file)===$newer,'note ' . $operation . ' preserves concurrent-edit response');
+		}
 		// Registration failure must retain a mutex through the callback and remove its reservation.
 		file_put_contents($plugin . '/configs/' . $duplicateSource, "TITLE Source\n");
 		$GLOBALS['__test_db_fetch_row_prepared'] = fn () => ['configfile' => $duplicateSource, 'titlecache' => 'Source', 'group_id' => 1, 'active' => 'on', 'thumb_height' => 10, 'thumb_width' => 10, 'schedule' => '', 'archiving' => ''];

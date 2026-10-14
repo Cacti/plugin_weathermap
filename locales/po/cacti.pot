@@ -368,6 +368,27 @@ msgid "No interface selected"
 msgstr ""
 
 #: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr ""
+
+#: lib/editor.inc.php
 #, php-format
 msgid "Current graph: %s"
 msgstr ""
@@ -1103,6 +1124,10 @@ msgid "Add<br>Link"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
 msgid "Position<br>Legend"
 msgstr ""
 
@@ -1183,6 +1208,78 @@ msgid "See config"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
 msgid "Node Properties"
 msgstr ""
 
@@ -1220,10 +1317,6 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
 msgid "Edit"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Save"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1959,6 +2052,10 @@ msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
 msgid "(No Title)"
+msgstr ""
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php

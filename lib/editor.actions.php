@@ -160,6 +160,7 @@ function getMapJavaScript($mapfile, $map = null) {
 
 	print $map->asJS();
 	print 'var WMConfigRevision = ' . json_encode(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity)) . ';';
+	print 'var WMNotes = ' . json_encode(wm_editor_note_data($map), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';';
 }
 
 /**
@@ -1236,4 +1237,26 @@ function wm_editor_assets($mapfile, $action) {
 		http_response_code($error instanceof InvalidArgumentException ? 400 : 500);
 		echo json_encode(['error' => $error->getMessage()]);
 	}
+}
+/**
+ * Save a note through the authenticated editor request path.
+ *
+ * @param string $mapfile Validated configuration path.
+ * @param int $grid_snap_value Placement grid spacing.
+ *
+ * @return void
+ */
+function setNoteProperties($mapfile, $grid_snap_value) {
+	$map = new WeatherMap;
+	$map->context = 'editor';
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
+	$values = [];
+	foreach (['name', 'text', 'font', 'colour', 'x', 'y', 'align'] as $field) {
+		$values[$field] = get_nfilter_request_var('note_' . $field);
+	}
+	if (!wm_editor_save_note($map, $values, $grid_snap_value)) {
+		http_response_code(400);
+		return;
+	}
+	wm_editor_write_config($map, $mapfile);
 }

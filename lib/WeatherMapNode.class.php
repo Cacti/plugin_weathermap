@@ -168,6 +168,7 @@ class WeatherMapNode extends WeatherMapItem {
 	var $relative_to;
 	/** @var mixed */
 	var $zorder;
+	var $render_note_hidpi = false;
 	/** @var mixed */
 	var $template;
 	/** @var mixed */
@@ -357,6 +358,18 @@ class WeatherMapNode extends WeatherMapItem {
 			}
 
 			[$strwidth, $strheight] = $map->myimagestringsize($this->labelfont, $this->proclabel);
+			$noteLines = null;
+			if ($this->get_hint('editor_note', '0') === '1' && $this->labelangle == 0) {
+				$noteLines = explode("\n", $this->proclabel);
+				$strwidth = 0;
+				foreach ($noteLines as $line) {
+					[$lineWidth] = $map->myimagestringsize($this->labelfont, $line);
+					$strwidth = max($strwidth, $lineWidth);
+				}
+				[, $noteLineHeight] = $map->myimagestringsize($this->labelfont, 'Ag');
+				$noteLineHeight = max(1, ceil($noteLineHeight));
+				$strheight = cacti_count($noteLines) * $noteLineHeight;
+			}
 
 			if ($this->labelangle == 90 || $this->labelangle == 270) {
 				$boxwidth  = ($strheight * $padfactor) + $padding;
@@ -775,7 +788,20 @@ class WeatherMapNode extends WeatherMapItem {
 				}
 			}
 
-			$map->myimagestring($node_im, $this->labelfont, $txt_x, $txt_y, $this->proclabel, $txcol->gdallocate($node_im),$this->labelangle);
+			if ($noteLines !== null && $this->render_note_hidpi && isset($map->fonts[$this->labelfont]) && $map->fonts[$this->labelfont]->type === 'truetype') {
+				// The editor draws this text at display resolution after composing the map.
+			} elseif ($noteLines !== null) {
+				$lineY = $txt_y - $strheight + $noteLineHeight;
+				foreach ($noteLines as $line) {
+					[$lineWidth] = $map->myimagestringsize($this->labelfont, $line);
+					$alignment = $this->get_hint('editor_note_align', 'left');
+					$lineX = $txt_x + ($alignment === 'right' ? $strwidth - $lineWidth : ($alignment === 'centre' ? ($strwidth - $lineWidth) / 2 : 0));
+					$map->myimagestring($node_im, $this->labelfont, (int)round($lineX), $lineY, $line, $txcol->gdallocate($node_im));
+					$lineY += $noteLineHeight;
+				}
+			} else {
+				$map->myimagestring($node_im, $this->labelfont, $txt_x, $txt_y, $this->proclabel, $txcol->gdallocate($node_im),$this->labelangle);
+			}
 			// $map->myimagestring($node_im, $this->labelfont, $txt_x, $txt_y, $this->proclabel, $txcol->gdallocate($node_im),90);
 		}
 
