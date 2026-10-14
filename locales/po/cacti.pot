@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.7\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-15 00:01+1030\n"
+"POT-Creation-Date: 2026-10-15 09:32+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -17,6 +17,92 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr ""
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr ""
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr ""
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr ""
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr ""
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr ""
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr ""
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr ""
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr ""
 
 #: lib/editor.comment-style.php
 #, php-format
@@ -177,6 +263,119 @@ msgid "Click on the map where you would like to add a new node."
 msgstr ""
 
 #: lib/editor.inc.php
+msgid "No gradient"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr ""
+
+#: lib/editor.inc.php
 msgid "Search icons…"
 msgstr ""
 
@@ -199,14 +398,6 @@ msgstr ""
 
 #: lib/editor.inc.php
 msgid "No matching icons"
-msgstr ""
-
-#: lib/editor.inc.php
-msgid "This map has changed since you opened it. Reload the editor before saving your changes."
-msgstr ""
-
-#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
-msgid "Unable to save changes. Please try again."
 msgstr ""
 
 #: lib/editor.inc.php
@@ -1102,47 +1293,7 @@ msgid "Font"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Colour"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
 msgid "Note colour"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Black"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Blue"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Green"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Grey"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Orange"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Purple"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Red"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "White"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Custom colour"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1155,10 +1306,6 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "Internal Name"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Label"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1253,6 +1400,10 @@ msgstr ""
 msgid "Map Properties"
 msgstr ""
 
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr ""
+
 #: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
 msgid "Map Title"
 msgstr ""
@@ -1262,7 +1413,31 @@ msgid "Legend Text"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Background Image Filename"
+msgid "Timestamp Text"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1282,15 +1457,19 @@ msgid "Use image size"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Timestamp Text"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "Default Link Width"
+msgid "Map Size"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "pixels"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Defaults"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1306,11 +1485,7 @@ msgid "bit/sec out"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Map Size"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "This dialog controls overall Map Properties.  Supported by the Editor are the following: Title, Legend Text, Background Image, Timestamp Text, Default Link Width, Default Link Bandwidth, and Map Size.  There are several additional Map defaults possible.  But in this version of the Editor, we are only supporting those included."
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default width and bandwidth for links. Map dimensions and link width are measured in pixels."
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1370,10 +1545,6 @@ msgid "Node Font"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
-msgid "Link Defaults"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
 msgid "Link Labels"
 msgstr ""
 
@@ -1383,10 +1554,6 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "Percentage"
-msgstr ""
-
-#: weathermap-cacti-plugin-editor.php
-msgid "None"
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1419,6 +1586,82 @@ msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
 msgid "Link Hover Height (pixels)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
 msgstr ""
 
 #: weathermap-cacti-plugin-editor.php
@@ -1881,16 +2124,8 @@ msgid "(No Title)"
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php
-msgid "Could not lock map configurations."
-msgstr ""
-
-#: weathermap-cacti-plugin-mgmt.php
 #, php-format
 msgid "The new Map with the name %s was unable to locate the config file %s to copy"
-msgstr ""
-
-#: weathermap-cacti-plugin-mgmt.php
-msgid "Could not save the map configuration."
 msgstr ""
 
 #: weathermap-cacti-plugin-mgmt.php

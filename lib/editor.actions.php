@@ -400,7 +400,7 @@ function setNodeProperties($mapfile) {
 		$map->nodes[$new_node_name]->iconfile = $iconfile;
 	}
 
-	wm_editor_write_config($map, $mapfile);
+	if (!wm_editor_write_config($map, $mapfile)) return;
 }
 
 /**
@@ -480,7 +480,7 @@ function setLinkProperties($mapfile) {
 
 		// $map->links[$link_name]->SetBandwidth($bwin,$bwout);
 
-		wm_editor_write_config($map, $mapfile);
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 
@@ -495,6 +495,18 @@ function setMapProperties($mapfile) {
 
 	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
+	// Omitted by older clients: keep the existing background.
+	$background_colour = get_nfilter_request_var('map_background_colour');
+	if ($background_colour !== null && $background_colour !== '') {
+		if (!is_string($background_colour) || !preg_match('/^#[0-9a-f]{6}$/iD', $background_colour)) {
+			http_response_code(400);
+			return;
+		}
+		if (strtolower($background_colour) !== sprintf('#%02x%02x%02x', $map->colours['DEFAULT']['BG']['red1'], $map->colours['DEFAULT']['BG']['green1'], $map->colours['DEFAULT']['BG']['blue1'])) $map->colour_overrides['background'] = true;
+		foreach (['red1', 'green1', 'blue1'] as $i => $channel) {
+			$map->colours['DEFAULT']['BG'][$channel] = hexdec(substr($background_colour, 1 + 2 * $i, 2));
+		}
+	}
 	$map->title              = wm_editor_sanitize_string(get_nfilter_request_var('map_title'));
 	$map->keytext['DEFAULT'] = wm_editor_sanitize_string(get_nfilter_request_var('map_legend'));
 	$map->stamptext          = wm_editor_sanitize_string(get_nfilter_request_var('map_stamp'));
@@ -603,7 +615,7 @@ function setMapStyle($mapfile) {
 	wm_comment_update_default($map, 'bwfont', wm_comment_resolve_font($map, get_nfilter_request_var('mapstyle_linkfont')));
 	wm_comment_apply_style($map, get_nfilter_request_var('mapstyle_commentfont'), get_nfilter_request_var('mapstyle_commentcolour'));
 
-	wm_editor_write_config($map, $mapfile);
+	if (!wm_editor_write_config($map, $mapfile)) return;
 }
 
 /**
@@ -647,7 +659,7 @@ function addLink($mapfile) {
 		$map->links[$newlinkname] = $newlink;
 		array_push($map->seen_zlayers[$newlink->zorder], $newlink);
 
-		wm_editor_write_config($map, $mapfile);
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 
@@ -671,7 +683,7 @@ function placeLegend($mapfile, $grid_snap_value) {
 	$map->keyx[$scalename] = $x;
 	$map->keyy[$scalename] = $y;
 
-	wm_editor_write_config($map, $mapfile);
+	if (!wm_editor_write_config($map, $mapfile)) return;
 }
 
 /**
@@ -692,7 +704,7 @@ function placeStamp($mapfile, $grid_snap_value) {
 	$map->timex = $x;
 	$map->timey = $y;
 
-	wm_editor_write_config($map, $mapfile);
+	if (!wm_editor_write_config($map, $mapfile)) return;
 }
 
 /**
@@ -713,7 +725,7 @@ function viaLink($mapfile) {
 
 	if (isset($map->links[$link_name])) {
 		$map->links[$link_name]->vialist = [[0 =>$x, 1=>$y]];
-		wm_editor_write_config($map, $mapfile);
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 
@@ -830,7 +842,7 @@ function moveNode($mapfile, $grid_snap_value) {
 		$map->nodes[$node_name]->x = $x;
 		$map->nodes[$node_name]->y = $y;
 
-		wm_editor_write_config($map, $mapfile);
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 
@@ -853,7 +865,7 @@ function linkTidy($mapfile) {
 
 		tidy_link($map, $target);
 
-		wm_editor_write_config($map, $mapfile);
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 
@@ -872,7 +884,7 @@ function reTidy($mapfile) {
 	$map->DrawMap('null');
 	retidy_links($map);
 
-	wm_editor_write_config($map, $mapfile);
+	if (!wm_editor_write_config($map, $mapfile)) return;
 }
 
 /**
@@ -890,7 +902,7 @@ function reTidyAll($mapfile) {
 	$map->DrawMap('null');
 	retidy_links($map,true);
 
-	wm_editor_write_config($map, $mapfile);
+	if (!wm_editor_write_config($map, $mapfile)) return;
 }
 
 /**
@@ -908,7 +920,7 @@ function unTidy($mapfile) {
 	$map->DrawMap('null');
 	untidy_links($map);
 
-	wm_editor_write_config($map, $mapfile);
+	if (!wm_editor_write_config($map, $mapfile)) return;
 }
 
 /**
@@ -928,7 +940,7 @@ function deleteLink($mapfile) {
 	if (isset($map->links[$target])) {
 		unset($map->links[$target]);
 
-		wm_editor_write_config($map, $mapfile);
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 
@@ -974,7 +986,7 @@ function addNode($mapfile, $grid_snap_value) {
 	$map->nodes[$node->name] = $node;
 	$log                     = "added a node called $newnodename at $x,$y to $mapfile";
 
-	wm_editor_write_config($map, $mapfile);
+	if (!wm_editor_write_config($map, $mapfile)) return;
 }
 
 /**
@@ -1029,12 +1041,15 @@ function deleteNode($mapfile) {
 
 		unset($map->nodes[$target]);
 
-		wm_editor_write_config($map, $mapfile);
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 
 /**
- * @param  mixed $mapfile
+ * Clone a selected node into its owning map with a placement offset.
+ *
+ * @param string $mapfile Validated editor map path.
+ *
  * @return void
  */
 function cloneNode($mapfile) {
@@ -1067,13 +1082,13 @@ function cloneNode($mapfile) {
 		$node->name = $newnodename;
 		$node->x += 30;
 		$node->y += 30;
-		$node->defined_in = $mapfile;
+		$node->defined_in = $map->configfile;
 
 		$map->nodes[$newnodename] = $node;
 
 		array_push($map->seen_zlayers[$node->zorder], $node);
 
-		wm_editor_write_config($map, $mapfile);
+		if (!wm_editor_write_config($map, $mapfile)) return;
 	}
 }
 
@@ -1183,6 +1198,57 @@ function getImageURL($mapname, $selected) {
 	$imageurl .= '&unique=' . time();
 
 	return $imageurl;
+}
+
+/**
+ * Read or save editor colour settings and emit a JSON response.
+ *
+ * @param string $mapfile The validated map configuration path.
+ * @param string $action The requested colour operation.
+ *
+ * @return void Errors are returned as JSON with the appropriate HTTP status.
+ */
+function wm_editor_colours($mapfile, $action) {
+	header('Content-Type: application/json');
+	$lock = false;
+	try {
+		if ($action !== 'colour_data' && ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') throw new InvalidArgumentException(__('Use POST to save changes.', 'weathermap'));
+		require_once __DIR__ . '/WeatherMap.config.php';
+		$lock = \WeathermapConfig\acquire(dirname($mapfile));
+		if (!$lock) throw new RuntimeException(__('Could not lock map configurations.', 'weathermap'));
+		$map = new WeatherMap;
+		$map->context = 'editor';
+		if (!$map->ReadConfig($mapfile) || !is_string($map->config_revision)) throw new RuntimeException(__('Cannot read the map configuration.', 'weathermap'));
+		$currentRevision = \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity);
+		$revision = get_nfilter_request_var('config_revision');
+		if (($action === 'set_map_colours' || ($revision !== null && $revision !== '')) && (!is_string($revision) || !hash_equals($currentRevision, $revision))) {
+			http_response_code(409);
+			echo json_encode(['error' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap')]);
+			return;
+		}
+		if ($action === 'set_map_colours') {
+			$payload = get_nfilter_request_var('colours_json');
+			if (!is_string($payload)) throw new InvalidArgumentException(__('Invalid colour settings.', 'weathermap'));
+			$data = json_decode($payload, true);
+			if (!is_array($data)) throw new InvalidArgumentException(__('Invalid colour settings.', 'weathermap'));
+			wm_asset_save_colours($map, $data);
+			if (!$map->WriteConfig($mapfile, false, $map->config_revision, $lock)) {
+				$current = @hash_file('sha256', $mapfile);
+				if ($current !== $map->config_revision || !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity))) {
+					http_response_code(409);
+					echo json_encode(['error' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap')]);
+					return;
+				}
+				throw new RuntimeException(__('Could not save the map configuration.', 'weathermap'));
+			}
+		}
+		echo json_encode(['colours' => wm_asset_colour_data($map), 'revision' => \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity)]);
+	} catch (Throwable $error) {
+		http_response_code($error instanceof InvalidArgumentException ? 400 : 500);
+		echo json_encode(['error' => $error->getMessage()]);
+	} finally {
+		if ($lock) \WeathermapConfig\release($lock);
+	}
 }
 
 /**

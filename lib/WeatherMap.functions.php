@@ -1428,6 +1428,8 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 				wm_debug("Not drawing $linkname ($dir) fill because there is no fill colour");
 			}
 
+			$map->links[$linkname]->traffic_glow_points[$dir] = array_map('intval', $finalpoints);
+
 			$areaname = 'LINK:L' . $map->links[$linkname]->id . ":$dir";
 
 			$map->imap->addArea('Polygon', $areaname, '', $finalpoints);
@@ -1588,6 +1590,9 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 		} else {
 			wm_debug("Not drawing $linkname ($dir) fill because there is no fill colour");
 		}
+
+		// GD truncates curved polygon coordinates; clickable areas round them instead.
+		$map->links[$linkname]->traffic_glow_points[$dir] = array_map('intval', $there_points);
 
 		$areaname = 'LINK:L' . $map->links[$linkname]->id . ":$dir";
 

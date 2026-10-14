@@ -53,12 +53,37 @@ var WMcycler = {
         }
     },
     forceReload: function (that) {
-        var d = new Date(),
-            newurl = $(that).find('img').attr("src");
-
-        newurl = newurl.replace(/time=\d+/, "time=" + d.getTime());
-
-        $(that).find('img').attr("src", newurl);
+        var holder = $(that);
+        if (holder.find('.weathermapimage[data-wm-traffic]').length) {
+            // Refresh the generated image, hotspots and glow metadata as one snapshot.
+            if (holder.data('wm-refreshing')) return;
+            holder.data('wm-refreshing', true);
+            $.ajax({
+                url: 'weathermap-cacti-plugin.php',
+                data: {action: 'viewmap', id: holder.attr('id').replace(/^mapholder_/, ''), header: 'false'},
+                dataType: 'html',
+                cache: false,
+                success: function(html) {
+                    if (!holder[0].isConnected) return;
+                    var page = $('<div>').append($.parseHTML(html, document, false));
+                    var replacement = page.find('.weathermapimage');
+                    var current = holder.find('.weathermapimage').first();
+                    var oldName = current.find('img[usemap]').attr('usemap');
+                    var newName = replacement.find('img[usemap]').attr('usemap');
+                    var oldMap = holder.find('map').filter(function() { return '#' + this.name === oldName; });
+                    var newMap = page.find('map').filter(function() { return '#' + this.name === newName; });
+                    if (replacement.length === 1 && oldMap.length === 1 && newMap.length === 1) {
+                        oldMap.replaceWith(newMap);
+                        current.replaceWith(replacement);
+                    }
+                },
+                complete: function() { holder.removeData('wm-refreshing'); }
+            });
+            return;
+        }
+        var d = new Date(), newurl = holder.find('img').attr('src');
+        newurl = newurl.replace(/time=\d+/, 'time=' + d.getTime());
+        holder.find('img').attr('src', newurl);
     },
 
     // change to the next (or previous) map, reset the countdown, update the bar

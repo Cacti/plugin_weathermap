@@ -425,7 +425,10 @@ foreach ($map->links as $link) {
 	}
 }
 
-$map->WriteConfig($outputmapfile);
+if (!$map->WriteConfig($outputmapfile)) {
+	fwrite(STDERR, "Could not write configuration to " . $outputmapfile . PHP_EOL);
+	exit(1);
+}
 
 print 'Wrote config to ' . $outputmapfile . PHP_EOL;
 

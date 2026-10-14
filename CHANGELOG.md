@@ -16,6 +16,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* Add traffic colour presets and optional high-load link pulsing
+
+* Fix Safari rendering of high-traffic link glows using native SVG filters
 * Make configuration saves and repairs atomic; coordinate writes, registration and deletion with destination-directory locks and report failed editor saves
 
 * Add editable map notes with alignment and sharp text at logical map dimensions

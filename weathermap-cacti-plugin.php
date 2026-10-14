@@ -203,11 +203,8 @@ switch (get_request_var('action')) {
 
 					print '';
 
-					print wm_liveview_image_html($map, $id);
-					print $map->imap->subHTML('LEGEND:');
-					print $map->imap->subHTML('TIMESTAMP');
-					print $map->imap->subHTML('NODE:');
-					print $map->imap->subHTML('LINK:');
+					$map->imageuri = '?action=liveviewimage&id=' . rawurlencode((string)$id);
+					print $map->MakeHTML('weathermap_live_imap');
 
 					chdir($orig_cwd);
 

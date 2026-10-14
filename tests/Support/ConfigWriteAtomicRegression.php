@@ -154,7 +154,7 @@ function wm_fixture_revision($file, $callback) {
 	function atomic_assert($condition, $message) {
 		if (!$condition) throw new \RuntimeException($message);
 	}
-	$dir = sys_get_temp_dir() . '/wm-atomic-' . bin2hex(random_bytes(5));
+	$dir = realpath(sys_get_temp_dir()) . '/wm-atomic-' . bin2hex(random_bytes(5));
 	mkdir($dir);
 	$file = $dir . '/map.conf';
 	$bitmap = imagecreatetruecolor(2, 2); ob_start(); imagepng($bitmap); $validAsset = ob_get_clean(); imagedestroy($bitmap);
