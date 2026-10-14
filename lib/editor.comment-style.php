@@ -117,7 +117,7 @@ function wm_style_font_options($map, $current) {
 		foreach ($bundled as $key => $choice) {
 			$value    = $matches[$key] ?? $choice['value'];
 			$selected = isset($matches[$key]) && $current == $matches[$key];
-			$out .= '<option value="' . html_escape((string)$value) . '"' . ($selected ? ' selected' : '') . '>' . html_escape($choice['label']) . '</option>';
+			$out .= '<option value="' . html_escape((string)$value) . '"' . ($selected ? ' selected' : '') . ($choice['value'] === 'bundled:Vera.ttf:9' ? ' data-wm-note-default="1"' : '') . '>' . html_escape($choice['label']) . '</option>';
 		}
 		$out .= '</optgroup>';
 	}

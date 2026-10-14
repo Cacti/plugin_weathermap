@@ -135,7 +135,10 @@ function newMapCopy($mapfile) {
 		$sourcemap = $mapdir . '/' . $sourcemapname;
 
 		if (file_exists($sourcemap) && is_readable($sourcemap)) {
-			if (!$map->ReadConfig($sourcemap) || !is_string($map->config_revision)) { http_response_code(404); return false; }
+			if (!$map->ReadConfig($sourcemap) || !is_string($map->config_revision)) {
+				http_response_code(404);
+				return false;
+			}
 			return wm_editor_write_config($map, $mapfile, true);
 		}
 	}
@@ -144,7 +147,8 @@ function newMapCopy($mapfile) {
 }
 
 /**
- * @param  mixed $mapfile
+ * @param mixed $mapfile Configuration path.
+ * @param WeatherMap|null $map Loaded control snapshot, or null for a standalone response.
  * @return void
  */
 function getMapJavaScript($mapfile, $map = null) {
@@ -153,8 +157,10 @@ function getMapJavaScript($mapfile, $map = null) {
 		$map->context = 'editor';
 		if (!wm_editor_read_config($map, $mapfile)) return;
 	}
+
 	print $map->asJS();
 	print 'var WMConfigRevision = ' . json_encode(\WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity)) . ';';
+	print 'var WMNotes = ' . json_encode(wm_editor_note_data($map), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';';
 }
 
 /**
@@ -284,7 +290,6 @@ function setNodeConfig($mapfile) {
 		$map->nodes[$node_name]->config_override = $node_config;
 
 		if (!wm_editor_write_config($map, $mapfile)) return;
-
 	}
 }
 
@@ -306,7 +311,6 @@ function setLinkConfig($mapfile) {
 		$map->links[$link_name]->config_override = $link_config;
 
 		if (!wm_editor_write_config($map, $mapfile)) return;
-
 	}
 }
 
@@ -574,7 +578,6 @@ function setMapProperties($mapfile) {
 		SET titlecache = ?
 		WHERE configfile = ?',
 		[$map->title, basename($mapfile)]);
-
 }
 
 /**
@@ -742,6 +745,10 @@ function moveNode($mapfile, $grid_snap_value) {
 
 	if (!wm_editor_read_config($map, $mapfile, true)) return;
 
+	if (!isset($map->nodes[$node_name])) {
+		http_response_code(404);
+		return;
+	}
 	if (isset($map->nodes[$node_name])) {
 		// This is a complicated bit. Find out if this node is involved in any
 		// links that have VIAs. If it is, we want to rotate those VIA points
@@ -1016,6 +1023,10 @@ function deleteNode($mapfile) {
 
 	$target = wm_editor_sanitize_name(get_nfilter_request_var('param'));
 
+	if (!isset($map->nodes[$target])) {
+		http_response_code(404);
+		return;
+	}
 	if (isset($map->nodes[$target])) {
 		$log = 'delete node ' . $target;
 
@@ -1234,4 +1245,27 @@ function wm_editor_colours($mapfile, $action) {
 	} finally {
 		if ($lock) \WeathermapConfig\release($lock);
 	}
+}
+
+/**
+ * Save a note through the authenticated editor request path.
+ *
+ * @param string $mapfile Validated configuration path.
+ * @param int $grid_snap_value Placement grid spacing.
+ *
+ * @return void
+ */
+function setNoteProperties($mapfile, $grid_snap_value) {
+	$map = new WeatherMap;
+	$map->context = 'editor';
+	if (!wm_editor_read_config($map, $mapfile, true)) return;
+	$values = [];
+	foreach (['name', 'text', 'font', 'colour', 'x', 'y', 'align'] as $field) {
+		$values[$field] = get_nfilter_request_var('note_' . $field);
+	}
+	if (!wm_editor_save_note($map, $values, $grid_snap_value)) {
+		http_response_code(400);
+		return;
+	}
+	wm_editor_write_config($map, $mapfile);
 }

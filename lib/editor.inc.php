@@ -41,6 +41,7 @@
 */
 
 require_once __DIR__ . '/editor.comment-style.php';
+require_once __DIR__ . '/editor.notes.php';
 
 /** editor.inc.php
  *
@@ -1039,6 +1040,8 @@ function getEditorJs() {
 		'iconMatchCount' => __('Matching icons: %s', '%s', 'weathermap'),
 		'iconNoMatches' => __('No matching icons', 'weathermap'),
 
+		'staleError' => __('This map has changed since you opened it. Reload the editor before saving your changes.', 'weathermap'),
+		'saveError' => __('Unable to save changes. Please try again.', 'weathermap'),
 		'currentInterface'     => __('Current interface', 'weathermap'),
 		'advanced'             => __('Advanced settings', 'weathermap'),
 		'hideAdvanced'         => __('Hide advanced settings', 'weathermap'),
@@ -1046,6 +1049,12 @@ function getEditorJs() {
 		'changeInterface'      => __('Change interface', 'weathermap'),
 		'searchInterface'      => __('Search device or interface', 'weathermap'),
 		'noInterface'          => __('No interface selected', 'weathermap'),
+		'addNoteHelp' => __('Click on the map where you would like to add a note.', 'weathermap'),
+		'noteTitle' => __('Note', 'weathermap'),
+		'noteDeleteTitle' => __('Delete Note Confirmation', 'weathermap'),
+		'noteDeleteAction' => __('Delete Note', 'weathermap'),
+		'noteDelete' => __('Delete note "%s"?', '%s', 'weathermap'),
+		'noteError' => __('Unable to save changes. Please try again.', 'weathermap'),
 		'currentGraph'         => __('Current graph: %s', '%s', 'weathermap'),
 		'customConfig'         => __('Custom configuration — details under Advanced', 'weathermap'),
 		'chooseInterface'      => __('Choose an interface below', 'weathermap'),
