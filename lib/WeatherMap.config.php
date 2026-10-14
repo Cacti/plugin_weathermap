@@ -26,7 +26,9 @@ namespace WeathermapConfig;
 
 /**
  * Make a path absolute without resolving any file or directory symlink.
+ *
  * @param string $filename Original filesystem path.
+ *
  * @return string Absolute logical path retaining alias components.
  */
 function logicalPath($filename) {

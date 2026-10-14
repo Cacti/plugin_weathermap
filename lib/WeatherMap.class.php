@@ -484,6 +484,8 @@ class WeatherMap extends WeatherMapBase {
 	var $plugins        = [];
 	/** @var array */
 	var $included_files = [];
+	// Root directives retain their portable spelling; included_files tracks loaded paths.
+	var $include_directives = [];
 	/** @var ?array */
 	var $usage_stats    = [];
 	/** @var array */
@@ -517,6 +519,7 @@ class WeatherMap extends WeatherMapBase {
 			'preprocessclasses'  => [],
 			'postprocessclasses' => [],
 			'included_files'     => [],
+			'include_directives' => [],
 			'context'            => '',
 			'dumpconfig'         => false,
 			'rrdtool_check'      => '',
@@ -2454,7 +2457,7 @@ class WeatherMap extends WeatherMapBase {
 	function ReadConfig($input, $is_include = false) {
 		require_once __DIR__ . '/WeatherMap.config.php';
 		global $config, $weathermap_error_suppress;
-		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; $this->included_scale_names = []; } }
+		if (!$is_include) { $this->config_revision = null; if (strpos($input, "\n") === false && strpos($input, "\r") === false) { $this->config_dependencies = []; $this->config_root_identity = []; $this->included_scale_names = []; $this->included_files = []; $this->include_directives = []; $this->has_includes = false; } }
 
 		$curnode    = null;
 		$curlink    = null;
@@ -2879,6 +2882,10 @@ class WeatherMap extends WeatherMapBase {
 				}
 
 				if ($last_seen == 'GLOBAL' && preg_match('/^\s*INCLUDE\s+(.*)\s*$/i', $buffer, $matches)) {
+					if (!$is_include) {
+						$this->include_directives[] = $matches[1];
+						$this->has_includes = true;
+					}
 					if (file_exists($matches[1])) {
 						wm_debug("Including '{$matches[1]}'");
 
@@ -3813,7 +3820,7 @@ class WeatherMap extends WeatherMapBase {
 			if ($this->has_includes) {
 				$output .= "\n# Included files\n";
 
-				foreach ($this->included_files as $ifile) {
+				foreach ($this->include_directives as $ifile) {
 					$output .= "INCLUDE $ifile\n";
 				}
 			}

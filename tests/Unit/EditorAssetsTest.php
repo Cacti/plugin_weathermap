@@ -26,6 +26,11 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
 final class EditorAssetsTest extends TestCase {
+	/**
+	 * Verify colour edits, validation, shared scales and persistence through the real engine.
+	 *
+	 * @return void
+	 */
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testRealEngineRegression(): void {

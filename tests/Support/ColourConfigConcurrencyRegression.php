@@ -524,6 +524,28 @@ function wm_fixture_revision($file, $callback) {
 		unlink($parentAlias);
 		foreach ([$parentA, $parentB] as $parent) { unlink($parent . '/map.conf'); unlink($parent . '/include.conf'); if (is_file($parent . '/.weathermap-config.lock')) unlink($parent . '/.weathermap-config.lock'); rmdir($parent); }
 
+		// Saving preserves root INCLUDE spelling and does not flatten nested includes.
+		$portable = $dir . '/portable'; $copied = $dir . '/portable-copy';
+		mkdir($portable); mkdir($copied);
+		$absoluteInclude = $dir . '/absolute.conf'; file_put_contents($absoluteInclude, "SCALE Absolute 0 100 1 2 3\n");
+		file_put_contents($portable . '/nested.conf', "SCALE Nested 0 100 10 20 30\n");
+		file_put_contents($portable . '/shared.conf', "INCLUDE nested.conf\nSCALE Shared 0 100 30 40 50\n");
+		file_put_contents($portable . '/main.conf', "WIDTH 100\nHEIGHT 100\nINCLUDE shared.conf\nINCLUDE $absoluteInclude\n");
+		$portableMap = new \WeatherMap; chdir($portable); $portableMap->ReadConfig('main.conf'); chdir($plugin);
+		colour_atomic_assert($portableMap->include_directives === ['shared.conf', $absoluteInclude] && count($portableMap->included_files) === 3, 'root directive paths separated from all loaded include identities');
+		colour_atomic_assert(isset($portableMap->config_dependencies[$portable . '/shared.conf'], $portableMap->config_dependencies[$portable . '/nested.conf']), 'relative includes still acquire absolute dependency snapshots');
+		colour_atomic_assert($portableMap->WriteConfig($portable . '/main.conf'), 'portable map saves after working directory changes');
+		$portableText = file_get_contents($portable . '/main.conf');
+		colour_atomic_assert(str_contains($portableText, "INCLUDE shared.conf\n") && str_contains($portableText, "INCLUDE $absoluteInclude\n") && !str_contains($portableText, 'INCLUDE ' . $portable . '/') && !str_contains($portableText, 'INCLUDE nested.conf'), 'serialization preserves relative and absolute directives without flattening nested files');
+		colour_atomic_assert($portableMap->WriteConfig($copied . '/main.conf', true), 'portable map copy saves');
+		foreach (['shared.conf', 'nested.conf'] as $part) copy($portable . '/' . $part, $copied . '/' . $part);
+		$copiedMap = new \WeatherMap; chdir($copied); $copiedMap->ReadConfig('main.conf');
+		colour_atomic_assert(isset($copiedMap->colours['Shared'], $copiedMap->colours['Nested'], $copiedMap->colours['Absolute']) && isset($copiedMap->config_dependencies[$copied . '/shared.conf']) && !isset($copiedMap->config_dependencies[$portable . '/shared.conf']), 'copied map loads includes at the new installation');
+		colour_atomic_assert($copiedMap->WriteConfig('main.conf'), 'second roundtrip remains portable');
+		chdir($plugin);
+		colour_atomic_assert(substr_count(file_get_contents($copied . '/main.conf'), 'INCLUDE ') === 2, 'repeated saves retain only root directives');
+		$copiedMap->ReadConfig($dir . '/cli-input.conf');
+		colour_atomic_assert($copiedMap->include_directives === [] && $copiedMap->included_files === [] && !$copiedMap->has_includes, 'fresh root load clears include serialization and identity state');
 		$oldLocale = setlocale(LC_NUMERIC, 0);
 		$commaLocale = setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR', 'de_DE.UTF-8');
 		try {

@@ -26,6 +26,11 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
 final class TrafficAnimationTest extends TestCase {
+	/**
+	 * Verify traffic glow thresholds, geometry and rendering through the real engine.
+	 *
+	 * @return void
+	 */
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testRealEngineRegression(): void {
