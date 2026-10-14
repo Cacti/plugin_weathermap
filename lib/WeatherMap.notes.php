@@ -69,7 +69,7 @@ function wm_note_font_id($map, $id) {
 		if (!in_array($signature, ["\x00\x01\x00\x00", 'OTTO', 'ttcf', 'true', 'typ1'], true)) return 3;
 		set_error_handler(function () { return true; }, E_WARNING);
 		try { $bounds = imagettfbbox($font->size, 0, $file, 'Wm'); } catch (Throwable $error) { return 3; } finally { restore_error_handler(); }
-		if (!is_array($bounds) || count($bounds) !== 8) return 3;
+		if (!is_array($bounds) || cacti_count($bounds) !== 8) return 3;
 	}
 	return $id;
 }

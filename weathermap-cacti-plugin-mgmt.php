@@ -2035,9 +2035,9 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 			// Only this attempt's records and successfully reserved file may be removed.
 			try {
 				if ($newid) {
-					db_execute_prepared('DELETE FROM weathermap_auth WHERE mapid = ?', [$newid]);
-					db_execute_prepared('DELETE FROM weathermap_settings WHERE mapid = ?', [$newid]);
-					db_execute_prepared('DELETE FROM weathermap_maps WHERE id = ?', [$newid]);
+					if (db_execute_prepared('DELETE FROM weathermap_auth WHERE mapid = ?', [$newid]) === false) cacti_log('Weathermap clone cleanup incomplete: weathermap_auth record removal failed for map ' . $newid, false, 'WEATHERMAP');
+					if (db_execute_prepared('DELETE FROM weathermap_settings WHERE mapid = ?', [$newid]) === false) cacti_log('Weathermap clone cleanup incomplete: weathermap_settings record removal failed for map ' . $newid, false, 'WEATHERMAP');
+					if (db_execute_prepared('DELETE FROM weathermap_maps WHERE id = ?', [$newid]) === false) cacti_log('Weathermap clone cleanup incomplete: weathermap_maps record removal failed for map ' . $newid, false, 'WEATHERMAP');
 				}
 			} catch (Throwable $cleanupError) {
 				cacti_log('Weathermap clone cleanup failed: ' . $cleanupError->getMessage(), false, 'WEATHERMAP');

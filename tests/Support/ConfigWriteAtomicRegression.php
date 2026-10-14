@@ -337,6 +337,27 @@ function wm_fixture_revision($file, $callback) {
 		atomic_assert(wm_editor_read_config(new \WeatherMap, $file, true), 'matching mutation revision remains accepted');
 		$GLOBALS['__test_nfilter_request'] = [];
 
+		$aliasSource = $dir . '/source-alias.conf'; symlink($file, $aliasSource);
+		$aliasLoaded = new \WeatherMap; $aliasLoaded->ReadConfig($aliasSource);
+		file_put_contents($file, "TITLE New direct winner\n");
+		atomic_assert(!$aliasLoaded->WriteConfig($file) && file_get_contents($file) === "TITLE New direct winner\n", 'canonical destination identity preserves CAS across source alias');
+		file_put_contents($file, $original);
+		$copySource = new \WeatherMap; $copySource->ReadConfig($file);
+		file_put_contents($file, "TITLE New copy source winner\n");
+		atomic_assert(!$copySource->WriteConfig($dir . '/stale-source-copy.conf', true) && !is_file($dir . '/stale-source-copy.conf'), 'create-only copy validates source root revision');
+		file_put_contents($file, $original); $copySource = new \WeatherMap; $copySource->ReadConfig($file); unlink($file);
+		atomic_assert(!$copySource->WriteConfig($dir . '/deleted-source-copy.conf', true), 'deleted source cannot be copied from stale memory');
+		file_put_contents($file, $original); $copySource = new \WeatherMap; $copySource->ReadConfig($aliasSource);
+		atomic_assert($copySource->WriteConfig($dir . '/fresh-alias-copy.conf', true), 'unchanged alias source copies with logical and physical dependencies');
+		unlink($aliasSource);
+		$retargetA = $dir . '/retarget-a.conf'; $retargetB = $dir . '/retarget-b.conf'; $retargetAlias = $dir . '/retarget-alias.conf';
+		file_put_contents($retargetA, "TITLE Same include bytes\n"); file_put_contents($retargetB, "TITLE Same include bytes\n"); symlink($retargetA, $retargetAlias);
+		file_put_contents($includeRoot, "WIDTH 600\nHEIGHT 300\nINCLUDE " . $retargetAlias . "\n");
+		$retargetMap = new \WeatherMap; $retargetMap->ReadConfig($includeRoot); unlink($retargetAlias); symlink($retargetB, $retargetAlias); clearstatcache();
+		atomic_assert(!$retargetMap->WriteConfig($includeRoot), 'retargeted INCLUDE is rejected even when replacement bytes are identical');
+		$retargetMap = new \WeatherMap; $retargetMap->ReadConfig($includeRoot); atomic_assert($retargetMap->WriteConfig($includeRoot), 'freshly loaded retargeted INCLUDE succeeds');
+		unlink($retargetAlias); unlink($retargetA); unlink($retargetB);
+
 		$numericLocale = setlocale(LC_NUMERIC, 0); setlocale(LC_NUMERIC, 'fr_FR.UTF-8', 'fr_FR.utf8', 'fr_FR');
 		try {
 			$largeScale = new \WeatherMap; $largeScale->ReadConfig("SCALE large 1500 2500 0 255 0\n");
@@ -589,7 +610,7 @@ function wm_fixture_revision($file, $callback) {
 		$GLOBALS['__test_db_fetch_cell'] = fn () => 0;
 		$GLOBALS['weathermap_confdir'] = $plugin . '/configs';
 		try {
-			foreach (['false', 'throw', 'auth-false', 'settings-false', 'auth-throw', 'settings-throw'] as $failure) {
+			foreach (['false', 'throw', 'auth-false', 'settings-false', 'auth-throw', 'settings-throw', 'cleanup-false'] as $failure) {
 				$GLOBALS['__test_sql_save'] = function($record) use ($plugin, $failure) {
 					atomic_assert(is_file($plugin . '/configs/' . $record['configfile']), 'reserved file exists during registration');
 					if (function_exists('pcntl_fork')) {
@@ -605,11 +626,13 @@ function wm_fixture_revision($file, $callback) {
 					$GLOBALS['__test_db_calls'][] = ['sql' => $sql, 'params' => $params];
 					if (str_starts_with($sql,'INSERT')) atomic_assert(!str_contains($sql, '987') && $params === [987,1], 'clone IDs are bound as prepared parameters');
 					if ((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-throw') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-throw')) throw new RuntimeException('insert failed');
+					if ($failure === 'cleanup-false') return false;
 					return !((str_contains($sql, 'INSERT INTO weathermap_auth') && $failure === 'auth-false') || (str_contains($sql, 'INSERT INTO weathermap_settings') && $failure === 'settings-false'));
 				};
 				$cloneMessages = []; $GLOBALS['__test_raise_message'] = function ($id, $text) use (&$cloneMessages) { $cloneMessages[] = $text; };
 				$GLOBALS['__test_cacti_log'] = [];
 				map_duplicate(1, 'Clone', 'clone');
+				if ($failure === 'cleanup-false') atomic_assert(cacti_count(array_filter($GLOBALS['__test_cacti_log'], fn ($message) => str_contains($message, 'cleanup incomplete'))) === 3, 'all failed cleanup DELETE results are logged');
 				unset($GLOBALS['__test_raise_message']);
 				atomic_assert($cloneMessages === ['Could not create the map copy. Please try again.'] && $GLOBALS['__test_cacti_log'] !== [], 'clone failures show only generic guidance and log original diagnostics');
 				atomic_assert(!is_file($plugin . '/configs/clone.conf'), 'failed registration removes its own reserved configuration');
