@@ -1499,9 +1499,10 @@ function wmPromoteLinkTrafficHover(graphId) {
 	var traffic = extras.find(function(entry) {
 		return wmLocalGraphIds(entry, ['graph_image.php']).includes(String(graphId));
 	});
+	if (!traffic) return;
 	if (main) extras.unshift(main);
 	$('#wm-link-extra-hover').val(extras.join('\n'));
-	wmSetLinkPrimaryHover(traffic || wmLinkCompactHoverUrl(new URL('../../', window.location.href).pathname + 'graph_image.php?local_graph_id=' + graphId));
+	wmSetLinkPrimaryHover(traffic);
 }
 function wmSetLinkExtraHover(value, replace) {
 	var field = $('#wm-link-extra-hover');
