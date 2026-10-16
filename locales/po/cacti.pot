@@ -1,17 +1,17 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR The Cacti Group
-# This file is distributed under the same license as the Cacti package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti 1.7\n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-15 10:19+1030\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-16 23:17+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Cacti Developers <developers@cacti.net>\n"
-"Language-Team: Cacti Developers <developers@cacti.net>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2683,4 +2683,16 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "Paused"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
 msgstr ""

@@ -166,6 +166,7 @@ class WeatherMapLink extends WeatherMapItem {
 	var $commentfontcolour;
 	/** @var mixed */
 	var $commentstyle;
+	var $commentcurve;
 	/** @var mixed */
 	var $bwfontcolour;
 
@@ -204,6 +205,7 @@ class WeatherMapLink extends WeatherMapItem {
 			'commentoffset_out'     => 5,
 			'commentoffset_in'      => 95,
 			'commentstyle'          => 'edge',
+			'commentcurve'          => 1,
 			'arrowstyle'            => 'classic',
 			'viastyle'              => 'curved',
 			'usescale'              => 'DEFAULT',
@@ -308,6 +310,116 @@ class WeatherMapLink extends WeatherMapItem {
 	}
 
 	/**
+	 * Draw a comment along the sampled link spine. Return false before drawing
+	 * anything when the font or geometry requires the ordinary straight label.
+	 */
+	function DrawCurvedComment($image, $comment, $colour, $width, $percent) {
+		$font = $this->owner->fonts[$this->commentfont] ?? null;
+		if (!$font || $font->type !== 'truetype' || strpbrk($comment, "\r\n") !== false) {
+			return false;
+		}
+		$glyphs = [];
+		if (!preg_match_all('/\X/u', $comment, $matches) || count($matches[0]) > 512) {
+			return false;
+		}
+		// Rebuild distances, discarding repeated VIA points to avoid zero tangents.
+		$points = [];
+		$total = 0.0;
+		foreach ($this->curvepoints as $point) {
+			if ($points) {
+				$last = $points[count($points) - 1];
+				$step = hypot($point[0] - $last[0], $point[1] - $last[1]);
+				if ($step < 0.001) {
+					continue;
+				}
+				$total += $step;
+			}
+			$points[] = [$point[0], $point[1], $total];
+		}
+		if (count($points) < 2 || $total < 1) {
+			return false;
+		}
+		$at = static function ($distance) use ($points, $total) {
+			$distance = max(0, min($total, $distance));
+			for ($i = 1; $i < count($points); $i++) {
+				if ($distance <= $points[$i][2]) {
+					$a = $points[$i - 1];
+					$b = $points[$i];
+					$t = ($distance - $a[2]) / ($b[2] - $a[2]);
+					return [$a[0] + $t * ($b[0] - $a[0]), $a[1] + $t * ($b[1] - $a[1])];
+				}
+			}
+			return array_slice($points[count($points) - 1], 0, 2);
+		};
+		$file = wm_font_file($font->file);
+		// A trailing marker includes space advances, which a glyph's ink box omits.
+		$marker = imagettfbbox($font->size, 0, $file, '|');
+		if ($marker === false) {
+			return false;
+		}
+		$prefix = '';
+		$length = 0.0;
+		foreach ($matches[0] as $glyph) {
+			$prefix .= $glyph;
+			$box = imagettfbbox($font->size, 0, $file, $prefix . '|');
+			if ($box === false) {
+				return false;
+			}
+			$next = $box[2] - $marker[2];
+			$advance = $next - $length;
+			if ($advance <= 0) {
+				return false;
+			}
+			$glyphs[] = [$glyph, $length, $advance];
+			$length = $next;
+		}
+		if ($length > $total || $length < 1) {
+			return false;
+		}
+		$anchor = max(0, min($total, $total * $percent / 100));
+		$a = $at($anchor - 1);
+		$b = $at($anchor + 1);
+		$reverse = $b[0] < $a[0];
+		$sign = $reverse ? -1 : 1;
+		$anchor += $sign * (int)$this->get_hint('comment_nudgealong');
+		$anchor = $reverse ? max($length, min($total, $anchor)) : max(0, min($total - $length, $anchor));
+		[, $height] = $this->owner->myimagestringsize($this->commentfont, $comment);
+		$offset = (int)$this->get_hint('comment_nudgeout');
+		$offset += $this->commentstyle === 'center' ? -$height / 2 : $width + 4;
+		$layout = [];
+		$previous = null;
+		foreach ($glyphs as [$glyph, $start, $advance]) {
+			$distance = $anchor + $sign * ($start + $advance / 2);
+			$p = $at($distance);
+			$a = $at($distance - max(1, $advance / 2));
+			$b = $at($distance + max(1, $advance / 2));
+			$dx = ($b[0] - $a[0]) * $sign;
+			$dy = ($b[1] - $a[1]) * $sign;
+			$norm = hypot($dx, $dy);
+			if ($norm < 0.001) {
+				return false;
+			}
+			$dx /= $norm;
+			$dy /= $norm;
+			// Keep the whole word upright; reject abrupt bends between letters.
+			if ($dx < -0.05 || ($previous && $dx * $previous[0] + $dy * $previous[1] < cos(deg2rad(35)))) {
+				return false;
+			}
+			$x = $p[0] + $dy * $offset;
+			$y = $p[1] - $dx * $offset;
+			if ($previous && hypot($x - $previous[2], $y - $previous[3]) < 0.65 * ($advance + $previous[4]) / 2) {
+				return false;
+			}
+			$layout[] = [$x - $dx * $advance / 2, $y - $dy * $advance / 2, $glyph, rad2deg(atan2(-$dy, $dx))];
+			$previous = [$dx, $dy, $x, $y, $advance];
+		}
+		foreach ($layout as [$x, $y, $glyph, $angle]) {
+			$this->owner->myimagestring($image, $this->commentfont, $x, $y, $glyph, $colour, $angle);
+		}
+		return true;
+	}
+
+	/**
 	 * image = GD image references
 	 * col = array of Colour objects
 	 * widths = array of link widths
@@ -350,6 +462,10 @@ class WeatherMapLink extends WeatherMapItem {
 
 			if ($comment != '') {
 				// print "\n\n----------------------------------------------------------------\nComment $dir for ".$this->name."\n";
+
+				if ($this->commentcurve && $this->DrawCurvedComment($image, $comment, $col[$dir], $widths[$dir], $commentpos[$dir])) {
+					continue;
+				}
 
 				[$textlength, $textheight] = $this->owner->myimagestringsize($this->commentfont, $comment);
 
@@ -714,6 +830,7 @@ class WeatherMapLink extends WeatherMapItem {
 				['splitpos',          'SPLITPOS',         CONFIG_TYPE_LITERAL],
 				['duplex',            'DUPLEX',           CONFIG_TYPE_LITERAL],
 				['commentstyle',      'COMMENTSTYLE',     CONFIG_TYPE_LITERAL],
+				['commentcurve',      'COMMENTCURVE',     CONFIG_TYPE_LITERAL],
 				['labelboxstyle',     'BWSTYLE',          CONFIG_TYPE_LITERAL],
 			//	['usescale',        'USESCALE',       CONFIG_TYPE_LITERAL],
 
