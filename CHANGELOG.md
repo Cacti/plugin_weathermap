@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* feature: Bundle transparent 96px access-point, NAS, server, printer, CCTV recorder, UPS and CCTV camera node icons
+
 * Add traffic colour presets and optional high-load link pulsing
 
 * Fix Safari rendering of high-traffic link glows using native SVG filters

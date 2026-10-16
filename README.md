@@ -12,12 +12,15 @@ See CHANGELOG.md for the most recent updates, listed by version.
 
 See COPYING for the license under which php-weathermap is released.
 
-## Bundled building icons
+## Bundled node icons
 
 The node icon library in `images/objects/` includes modern corporate building,
-branch office, hospital, clinic, data centre and warehouse icons. These
-transparent PNGs are 96 × 96 pixels and can be selected from the editor's node
+branch office, hospital, clinic, data centre, warehouse and wireless access-point
+(`AP.png`) icons, plus NAS (`NAS.png`), server (`Server.png`), printer
+(`Printer.png`), CCTV recorder (`CCTV-NVR.png`), UPS (`UPS.png`) and CCTV camera
+(`CCTV-Camera.png`) icons. These transparent PNGs are 96 × 96 pixels and can be selected from the editor's node
 icon picker without uploading additional files.
+
 
 ## Compatibility
 
