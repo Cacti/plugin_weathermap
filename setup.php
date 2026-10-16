@@ -72,6 +72,7 @@ if (!defined('WM_COPYRIGHT_YEARS')) {
  * @return void
  */
 function plugin_weathermap_install() {
+	api_plugin_register_hook('weathermap', 'rrd_graph_graph_options', 'weathermap_hover_graph_options', 'setup.php');
 	api_plugin_register_hook('weathermap', 'config_arrays',   'weathermap_config_arrays',   'setup.php');
 	api_plugin_register_hook('weathermap', 'config_settings', 'weathermap_config_settings', 'setup.php');
 
@@ -91,6 +92,22 @@ function plugin_weathermap_install() {
 	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-editor.php', 'Edit Weathermaps', 1);
 
 	weathermap_setup_table();
+}
+
+/** Render only explicitly marked, compact Weathermap previews at double density. */
+function weathermap_hover_graph_options($graph) {
+	if (get_current_page() !== 'graph_image.php' || get_nfilter_request_var('wm_hidpi') !== '2') {
+		return $graph;
+	}
+	$width = get_filter_request_var('graph_width');
+	$height = get_filter_request_var('graph_height');
+	if ($width < 1 || $width > 1000 || $height < 1 || $height > 400 || !is_array($graph) || !isset($graph['graph_opts'])) {
+		return $graph;
+	}
+	if (!preg_match('/(?:^|\s)--zoom(?:=|\s)/', $graph['graph_opts'])) {
+		$graph['graph_opts'] .= '--zoom 2' . RRD_NL;
+	}
+	return $graph;
 }
 
 /**
@@ -185,6 +202,11 @@ function plugin_weathermap_upgrade() {
 
 	if (!in_array(get_current_page(), $files, true) && strpos(get_current_page(), 'weathermap-cacti') === false) {
 		return null;
+	}
+
+	// Also register for existing installations running the same development version.
+	if (!db_fetch_cell("SELECT id FROM plugin_hooks WHERE name = 'weathermap' AND hook = 'rrd_graph_graph_options' AND `function` = 'weathermap_hover_graph_options'")) {
+	api_plugin_register_hook('weathermap', 'rrd_graph_graph_options', 'weathermap_hover_graph_options', 'setup.php', true);
 	}
 
 	include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');

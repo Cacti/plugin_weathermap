@@ -1,0 +1,20 @@
+<?php
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\TestCase;
+final class HoverDensityOptionsTest extends TestCase {
+ #[RunInSeparateProcess]
+ #[PreserveGlobalState(false)]
+ public function testOnlyMarkedCompactGraphRequestsAreScaled(): void {
+  require __DIR__.'/../../setup.php';
+  if(!defined('RRD_NL'))define('RRD_NL',"\n");
+  $graph=['graph_opts'=>"--width=300\n",'graph_defs'=>'keep'];
+  $request=['wm_hidpi'=>'2','graph_width'=>300,'graph_height'=>100];
+  test_set_current_page('graph_image.php');$GLOBALS['__test_nfilter_request']=$request;
+  $scaled=weathermap_hover_graph_options($graph);self::assertSame($graph['graph_opts']."--zoom 2\n",$scaled['graph_opts']);self::assertSame('keep',$scaled['graph_defs']);
+  self::assertSame($scaled,weathermap_hover_graph_options($scaled));
+  foreach([['wm_hidpi'=>'3'],['wm_hidpi'=>['2']],['graph_width'=>0],['graph_width'=>1001],['graph_height'=>0],['graph_height'=>401]] as $override){$GLOBALS['__test_nfilter_request']=array_merge($request,$override);self::assertSame($graph,weathermap_hover_graph_options($graph));}
+  $GLOBALS['__test_nfilter_request']=$request;test_set_current_page('graph.php');self::assertSame($graph,weathermap_hover_graph_options($graph));
+  test_set_current_page('graph_image.php');self::assertSame([],weathermap_hover_graph_options([]));self::assertSame(null,weathermap_hover_graph_options(null));
+ }
+}
