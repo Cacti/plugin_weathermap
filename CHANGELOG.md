@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* feature: Make Cacti hover previews independently clickable and sharper on high-density displays; hide generated clone captions and preserve popup pointer/keyboard interaction
+* feature#312: Make Cacti hover previews independently clickable and sharper on high-density displays; hide generated clone captions and preserve popup pointer/keyboard interaction
 
 * Add traffic colour presets and optional high-load link pulsing
 
