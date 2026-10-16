@@ -16,7 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* feature: Simplify link interface/source/hover workflows, limit the form to two previews, add node display-name positioning, move comment colours to Manage Colours and clarify raw-edit controls
+* feature#311: Simplify link interface/source/hover workflows, limit the form to two previews, add node display-name positioning, move comment colours to Manage Colours and clarify raw-edit controls
 
 * Add traffic colour presets and optional high-load link pulsing
 
