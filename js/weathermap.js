@@ -138,7 +138,11 @@ function initWeatherMapView() {
 	}).each(function() { wmInteractiveHover($(this)); });
 
 	waitForFinalEvent(function() {
-		$('.cactiGraphContentArea').removeClass('cactiGraphContentArea').addClass('wm_scroll');
+		// Cacti reuses this area during AJAX navigation. Keep its layout class
+		// and enable plugin scrolling only while Weathermap content is present.
+		$('.cactiGraphContentArea').each(function() {
+			$(this).toggleClass('wm_scroll', $(this).find('.weathermapimage, .wm_gallery, .all_map_holder').length > 0);
+		});
 	});
 }
 $(initWeatherMapView);
