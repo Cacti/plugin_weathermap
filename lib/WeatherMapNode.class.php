@@ -1112,6 +1112,9 @@ class WeatherMapNode extends WeatherMapItem {
 		$js .= 'oy:' . $this->original_y . ', ';
 		$js .= 'relative_to:' . js_escape($this->relative_to) . ', ';
 		$js .= 'label:' . js_escape($this->label) . ', ';
+		$js .= 'labeloffset:' . js_escape($this->labeloffset) . ', ';
+		$js .= 'labeloffsetx:' . (int)$this->labeloffsetx . ', ';
+		$js .= 'labeloffsety:' . (int)$this->labeloffsety . ', ';
 		$js .= 'name:' . js_escape($this->name) . ', ';
 		$js .= 'infourl:' . js_escape($this->infourl[IN]) . ', ';
 		$js .= 'overlibcaption:' . js_escape($this->overlibcaption[IN]) . ', ';
@@ -1150,6 +1153,9 @@ class WeatherMapNode extends WeatherMapItem {
 
 		if ($complete) {
 			$js .= '"label":' . js_escape($this->label) . ', ';
+			$js .= '"labeloffset":' . js_escape($this->labeloffset) . ', ';
+			$js .= '"labeloffsetx":' . (int)$this->labeloffsetx . ', ';
+			$js .= '"labeloffsety":' . (int)$this->labeloffsety . ', ';
 			$js .= '"infourl":' . js_escape($this->infourl[IN]) . ', ';
 			$js .= '"overliburl":' . js_escape(join(' ', $this->overliburl[IN])) . ', ';
 			$js .= '"overlibcaption":' . js_escape($this->overlibcaption[IN]) . ', ';

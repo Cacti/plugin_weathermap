@@ -1,17 +1,17 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR The Cacti Group
-# This file is distributed under the same license as the Cacti package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti 1.7\n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-15 10:19+1030\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-16 23:17+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Cacti Developers <developers@cacti.net>\n"
-"Language-Team: Cacti Developers <developers@cacti.net>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -224,7 +224,7 @@ msgstr ""
 msgid "Current custom colour (%s)"
 msgstr ""
 
-#: lib/editor.comment-style.php
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
 msgid "Link Comment Colour"
 msgstr ""
 
@@ -2683,4 +2683,234 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "Paused"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Traffic interface"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Custom sources and URLs override the automatic interface setup. Leave these unchanged for a normal traffic link."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr ""
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for combining measured sources, changing the click destination and entering custom hover image URLs. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
 msgstr ""

@@ -381,6 +381,13 @@ function setNodeProperties($mapfile) {
 
 	// by this point, and renaming has been done, and new_node_name will always be the right name
 	$map->nodes[$new_node_name]->label       = wm_editor_sanitize_string(get_nfilter_request_var('node_label'));
+	// Leave existing custom offsets intact unless a supported position is selected.
+	$labelposition = get_nfilter_request_var('node_labelposition');
+	if (in_array($labelposition, ['N60', 'C', 'S60'], true)) {
+		$map->nodes[$new_node_name]->labeloffset = $labelposition;
+		$map->nodes[$new_node_name]->labeloffsetx = 0;
+		$map->nodes[$new_node_name]->labeloffsety = 0;
+	}
 	$map->nodes[$new_node_name]->infourl[IN] = wm_editor_sanitize_url(get_nfilter_request_var('node_infourl'));
 
 	$urls = preg_split('/\s+/', trim(get_nfilter_request_var('node_hover')), -1, PREG_SPLIT_NO_EMPTY);
@@ -613,7 +620,7 @@ function setMapStyle($mapfile) {
 	handle_inheritance($map, $inheritables);
 
 	wm_comment_update_default($map, 'bwfont', wm_comment_resolve_font($map, get_nfilter_request_var('mapstyle_linkfont')));
-	wm_comment_apply_style($map, get_nfilter_request_var('mapstyle_commentfont'), get_nfilter_request_var('mapstyle_commentcolour'));
+	wm_comment_apply_style($map, get_nfilter_request_var('mapstyle_commentfont'), null);
 
 	if (!wm_editor_write_config($map, $mapfile)) return;
 }

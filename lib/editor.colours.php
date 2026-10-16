@@ -61,6 +61,8 @@ function wm_asset_colour_data($map) {
 	}
 	$bg = $map->colours['DEFAULT']['BG'];
 	return ['background' => wm_asset_hex([$bg['red1'], $bg['green1'], $bg['blue1']]),
+		'commentcolour' => $map->links['DEFAULT']->commentfontcolour == [-3, -3, -3] ? 'contrast' : implode(' ', $map->links['DEFAULT']->commentfontcolour),
+		'commentchoices' => wm_comment_colour_choices(),
 		'outline' => wm_asset_hex($map->links['DEFAULT']->outlinecolour), 'pulse' => $map->get_hint('traffic_pulse', '1') === '1', 'rows' => $rows, 'locked_scales' => array_keys($map->included_scale_names)];
 }
 /**
@@ -75,6 +77,8 @@ function wm_asset_save_colours($map, $data) {
 	if (array_key_exists('pulse', $data) && !is_bool($data['pulse'])) throw new InvalidArgumentException(__('Invalid pulse setting.', 'weathermap'));
 	$background = array_key_exists('background', $data) ? wm_asset_rgb($data['background']) : [$map->colours['DEFAULT']['BG']['red1'], $map->colours['DEFAULT']['BG']['green1'], $map->colours['DEFAULT']['BG']['blue1']];
 	$outline = wm_asset_rgb($data['outline'] ?? null);
+	$commentcolour = array_key_exists('commentcolour', $data) ? wm_comment_resolve_colour($data['commentcolour']) : null;
+	if (array_key_exists('commentcolour', $data) && $commentcolour === null) throw new InvalidArgumentException(__('Choose a valid colour.', 'weathermap'));
 	if ($background[0] < 0) throw new InvalidArgumentException(__('The background needs a solid colour.', 'weathermap'));
 	$rows = $data['rows'] ?? null;
 	if (!is_array($rows) || cacti_count($rows) < 1 || cacti_count($rows) > 200) throw new InvalidArgumentException(__('Keep between 1 and 200 scale rows.', 'weathermap'));
@@ -145,5 +149,6 @@ function wm_asset_save_colours($map, $data) {
 	$map->colours = $scales;
 	foreach ($scales as $name => $colours) $map->numscales[$name] = cacti_count(array_filter($colours, function($r) { return empty($r['special']); }));
 	wm_comment_update_default($map, 'outlinecolour', $outline);
+	if ($commentcolour !== null) wm_comment_update_default($map, 'commentfontcolour', $commentcolour);
 	if (array_key_exists('pulse', $data)) $map->add_hint('traffic_pulse', $data['pulse'] ? '1' : '0');
 }
