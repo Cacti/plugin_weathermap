@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+-issue#310: Run the bandwidth engine test from the plugin directory
+
 * feature#310: Default implicit link capacities to 1000M in both directions, while preserving explicitly configured capacities
 
 * Add traffic colour presets and optional high-load link pulsing

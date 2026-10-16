@@ -4,6 +4,7 @@ final class DefaultLinkBandwidthTest extends TestCase {
  #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
  #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
  public function testNewMapsAndInheritedLinksUseGigabitCapacity(): void {
+  chdir(dirname(__DIR__,2));
   require_once dirname(__DIR__,2).'/lib/WeatherMap.class.php';
   $map=new WeatherMap();$link=new WeatherMapLink();$link->Reset($map);
   foreach([$map->links['DEFAULT'],$link] as $item){
