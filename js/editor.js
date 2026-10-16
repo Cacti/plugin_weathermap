@@ -802,7 +802,7 @@ function wmResetActionHelp() {
 
 function mapmode(m) {
 	var placing = m == 'xy' || ['add_link', 'add_link2'].indexOf($('#action').val()) !== -1;
-	$('#existingdata, .mapData').toggleClass('wm-placement-mode', placing);
+	$('#existingdata, .mapData').toggleClass('wm-placement-mode', placing).css('cursor', '');
 	$('#tb_help').toggleClass('wm-action-help', placing);
 	if (!placing) wmResetActionHelp();
 	if (m == 'xy') {

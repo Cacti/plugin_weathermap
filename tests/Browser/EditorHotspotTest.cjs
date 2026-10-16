@@ -13,4 +13,13 @@ $('#existingdata').trigger($.Event('click',{clientX:90,clientY:70}));assert.equa
 w.attach_click_events();$('#NODE\\:N1\\:0').off('click').on('click',()=>hits++);
 $('#existingdata').trigger($.Event('click',{clientX:90,clientY:70}));assert.equal(hits,2,'reattaching handlers must not double-dispatch');
 $('#existingdata').trigger($.Event('click',{clientX:90,clientY:70,target:$('#NODE\\:N1\\:0')[0]}));assert.equal(hits,2,'native area clicks must not dispatch twice');
+$('#existingdata').trigger($.Event('mousemove',{clientX:90,clientY:70}));
+assert.equal(image.style.cursor,'pointer');
+$('#action').val('add_link');w.mapmode('existing');
+assert.equal(image.style.cursor,'','Entering placement clears an existing inline pointer');
+$('#existingdata').trigger($.Event('mousemove',{clientX:90,clientY:70}));
+assert.equal(image.style.cursor,'','Placement keeps stylesheet crosshair active');
+$('#action').val('');w.mapmode('existing');
+$('#existingdata').trigger($.Event('mousemove',{clientX:90,clientY:70}));
+assert.equal(image.style.cursor,'pointer','Normal hotspot feedback returns after placement');
 dom.window.close();console.log('PASS: scrolled and scaled image clicks select existing hotspots without duplicate native events.');
