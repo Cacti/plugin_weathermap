@@ -14,56 +14,38 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- develop ---
+--- 2.0-dev ---
 
-* Add traffic colour presets and optional high-load link pulsing
-
-* Fix Safari rendering of high-traffic link glows using native SVG filters
-* Make configuration saves and repairs atomic; coordinate writes, registration and deletion with destination-directory locks and report failed editor saves
-
-* Add separate icon and background image upload and management libraries
-* Add editable map notes with alignment and sharp text at logical map dimensions
-* Fix editor placement reset, destructive action controls and theme contrast
-* Reduce gallery preview cards by 20% while preserving generated thumbnail resolution
-* Add a searchable node icon picker and bundled enterprise site icons
-
+* feature#302: Add traffic colour presets and optional high-load link pulsing
+* issue#302: Fix Safari rendering of high-traffic link glows using native SVG filters
+* issue#303: Make configuration saves and repairs atomic; coordinate writes, registration and deletion with destination-directory locks and report failed editor saves
+* feature#303: Add separate icon and background image upload and management libraries
+* feature#301: Add editable map notes with alignment and sharp text at logical map dimensions
+* issue#300: Fix editor placement reset, destructive action controls and theme contrast
+* feature#305: Reduce gallery preview cards by 20% while preserving generated thumbnail resolution
+* feature#304: Add a searchable node icon picker and bundled enterprise site icons
+* dev: Update plugin version identification to 2.0
 * issue#299: Keep editor picker results open when browsing and allow changing an existing selection
-
 * feature#298: Fit or stretch background images within the map canvas
-
 * feature#297: Allow setting a map title when creating configuration files
-
 * feature#296: Delete unused configuration files with confirmation and protect registered maps
-
 * feature#295: Use a readable landscape preset for new blank maps
-
 * feature#294: Expose bundled fonts and link comment colours in Map Style
-
 * feature#293: Default new graph assignments to Time Graph View
-
 * feature#292: Generate sharper gallery thumbnails by default without enlarging small maps
-
 * issue#291: Improve map selector placement and themed viewer controls
-
 * issue#290: Match editor toolbar colours to Cacti themes and keep pickers visible
-
 * issue#289: Load viewer helpers explicitly before rendering maps
-
 * issue#288: Preserve dynamic editor labels and cycle countdowns
-
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
-
 * feature#279: Show larger responsive map preview cards with separated borders and centered titles
-
 * issue#196: Restore cycle countdown, persistent fullscreen exit and reload fallback
-
 * issue#276: Preserve query separators when saving node and link click URLs
 * feature#276: Simplify node and link editing with readable names, common controls, searchable interface assignment, advanced controls, and clear deletion warnings
 * issue#277: Allow map duplication when the debug column is absent while preserving its default when present
 * issue#151: Keep standalone editor controls visible and use theme-aware dialog contrast
 * issue#275: Load permitted editor picker results in bounded pages, search interface descriptions, and encode graph search terms
 * issue#274: Fit hover popups to their graph content and close them immediately when leaving map links, preserving graph proportions and meaningful captions
-
 * refactor: On Cacti 1.2.32 and above, defer the editor's jQuery UI dialog (`ui.dialog`) styling to the core theme CSS; the plugin's `.ui-dialog-title`/`.ui-dialog-buttonset` font overrides have been split out of `css/editor.css` into a separate `css/editor-ui-dialog-legacy.css` that is only loaded on earlier Cacti releases
 * refactor: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
 * feature: Add a root `manifest.json` file manifest plus an upgrade-time `weathermap_prune_files()` that removes tombstoned and dev-only paths while protecting whitelisted user data (`configs/`, `output/`) and `.git*`, backed by a `tests/bin/validate-manifest.php` CI gate that fails on manifest drift
