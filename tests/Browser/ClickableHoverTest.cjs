@@ -1,9 +1,9 @@
 const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 (async()=>{
- const dom=new JSDOM('<map name="test"><area shape="rect" coords="0,0,100,100" href="/cacti/graph.php?local_graph_id=108"></map>',{url:'https://cacti.example/cacti/plugins/weathermap/view.php',runScripts:'outside-only',pretendToBeVisual:true});
+ const dom=new JSDOM('<button id="outside">Outside</button><map name="test" data-wm-hover-density="2"><area shape="rect" coords="0,0,100,100" href="/cacti/graph.php?local_graph_id=108"></map>',{url:'https://cacti.example/cacti/plugins/weathermap/view.php',runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window,$=jquery(w);w.$=w.jQuery=$;
  w.eval(fs.readFileSync(path.join(process.env.CACTI_JS_DIR,'jquery-ui.js'),'utf8'));
- $('area').attr('data-hover',Buffer.from('<div><img src="/cacti/graph_image.php?local_graph_id=108"><br><img src="/cacti/graph_image.php?local_graph_id=159"></div>').toString('base64'));
+ $('area').attr('data-hover',Buffer.from('<div><img src="/cacti/graph_image.php?local_graph_id=108&amp;graph_width=300&amp;graph_height=100"><br><img src="/cacti/graph_image.php?local_graph_id=159"></div>').toString('base64'));
  w.eval(fs.readFileSync(path.join(__dirname,'../../js/weathermap.js'),'utf8'));
  await new Promise(r=>$(r));await new Promise(r=>setImmediate(r));
  const area=$('area'),map=$('map'),instance=map.tooltip('instance');
@@ -12,6 +12,7 @@ const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),
  open();let tip=$('.ui-tooltip');
  assert.equal(tip.length,1);assert.equal(tip.css('pointer-events'),'auto');
  assert.equal(tip.find('a').length,2);
+ assert.match(tip.find('img').first().attr('srcset'),/action=zoom.* 2x$/,'Local-capable maps enable cache-safe density');
  assert.equal(tip.find('a').eq(1).attr('href'),'/cacti/graph.php?rra_id=all&local_graph_id=159');
  assert.equal(area.attr('href'),'/cacti/graph.php?local_graph_id=108');
  area.trigger($.Event('mouseleave',{relatedTarget:tip[0]}));
@@ -24,6 +25,19 @@ const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),
  assert.equal($('.ui-tooltip').length,1,'Keyboard focus keeps previews open');
  tip.find('a').trigger($.Event('keydown',{key:'Escape'}));
  assert.equal($('.ui-tooltip').length,0,'Escape closes focused preview');
+ $('#outside')[0].focus();area[0].focus();tip=$('.ui-tooltip');
+ area[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));
+ assert.equal(w.document.activeElement,tip.find('a')[0],'ArrowDown enters the popup from the focused hotspot');
+ tip.trigger('mouseenter');
+ $('#outside')[0].focus();await delay();
+ assert.equal($('.ui-tooltip').length,1,'Leaving keyboard focus does not erase pointer presence');
+ tip.trigger('mouseleave');await delay();
+ assert.equal($('.ui-tooltip').length,0);
+ area[0].blur();area[0].focus();tip=$('.ui-tooltip');
+ area[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));
+ tip.find('a')[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
+ assert.equal(w.document.activeElement,area[0],'Escape returns focus to the originating hotspot');
+ await delay();assert.equal($('.ui-tooltip').length,0,'Returning focus must not reopen the popup');
  open();area.trigger('mouseleave');await delay();
  assert.equal($('.ui-tooltip').length,0,'Ordinary mouse leave closes without sticking');
  // Switching quickly between hotspots must not leave the first area marked open.
@@ -51,5 +65,8 @@ const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),
  }
  // Reinitialising after AJAX must not wrap close repeatedly.
  const close=instance.close;w.initWeatherMapView();assert.equal(instance.close,close);
+ map.attr('data-wm-hover-density','1');open();
+ assert.equal($('.ui-tooltip img').first().attr('srcset'),undefined,'Delegated map keeps ordinary preview dimensions');
+ instance.close($.Event('keyup',{currentTarget:area[0]}));
  console.log('PASS: real jQuery UI graph links, pointer transfer, focus, Escape and cleanup');w.close();
 })().catch(e=>{console.error(e);process.exitCode=1});

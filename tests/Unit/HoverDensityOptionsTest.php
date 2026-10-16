@@ -3,6 +3,20 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 final class HoverDensityOptionsTest extends TestCase {
+ public function testDensityCapabilityMatchesCactiLocalRenderingPath(): void {
+  require_once __DIR__.'/../../setup.php';
+  $oldConfig=$GLOBALS['config'];$oldOptions=$GLOBALS['__test_config_options'] ?? [];
+  try {
+   foreach([[1,0,true],[2,0,false],[2,1,true],[2,2,true]] as [$poller,$storage,$expected]) {
+    $GLOBALS['config']['poller_id']=$poller;$GLOBALS['__test_config_options']['storage_location']=$storage;
+    $html='<map name="test"><area href="/cacti/graph.php?local_graph_id=1"></map>';
+    $marked=weathermap_hover_density_metadata($html);
+    self::assertStringContainsString('data-wm-hover-density="'.($expected?'2':'1').'"',$marked);
+    self::assertSame($marked,weathermap_hover_density_metadata($marked));
+    self::assertStringContainsString('data-wm-hover-density="'.($expected?'2':'1').'"',weathermap_map_graph_links($html,'abc'));
+   }
+  } finally {$GLOBALS['config']=$oldConfig;$GLOBALS['__test_config_options']=$oldOptions;}
+ }
  #[RunInSeparateProcess]
  #[PreserveGlobalState(false)]
  public function testOnlyMarkedCompactGraphRequestsAreScaled(): void {

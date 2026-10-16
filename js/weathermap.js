@@ -14,13 +14,15 @@ function wmHoverGraphDestination(source) {
 }
 
 // Density descriptors keep the preview's CSS size and text proportions unchanged.
-function wmSharpHoverGraph(image) {
+function wmSharpHoverGraph(image, supported) {
  var original = image.attr('src');
- if (!wmHoverGraphDestination(original) || image.attr('srcset')) return;
+ if (!supported || !wmHoverGraphDestination(original) || image.attr('srcset')) return;
  var url = new URL(original, window.location.href);
  if (url.searchParams.has('image_format') && url.searchParams.get('image_format').toLowerCase() !== 'png') return;
  var width = url.searchParams.get('graph_width'), height = url.searchParams.get('graph_height');
  if (!/^[1-9][0-9]*$/.test(width || '') || Number(width) > 1000 || !/^[1-9][0-9]*$/.test(height || '') || Number(height) > 400) return;
+ // Boost's image cache omits the density flag from its key; zoom bypasses reads and writes.
+ url.searchParams.set('action', 'zoom');
  url.searchParams.set('wm_hidpi', '2');
  url.searchParams.set('image_format', 'png');
  image.one('error.wmHiDpi', function() { $(this).removeAttr('srcset'); });
@@ -30,6 +32,7 @@ function wmSharpHoverGraph(image) {
 function wmInteractiveHover(map) {
  var instance = map.tooltip('instance');
  if (!instance || typeof instance.close !== 'function' || instance.wmInteractiveHover) return;
+ map.find('area[data-hover]').attr({tabindex: '0', 'aria-keyshortcuts': 'ArrowDown'});
  var state = instance.wmInteractiveHover = {timer: null, close: instance.close};
  instance.close = function(event) {
   clearTimeout(state.timer);
@@ -80,16 +83,26 @@ function initWeatherMapView() {
 			if (instance && instance.wmInteractiveHover) {
 				var state = instance.wmInteractiveHover;
 				clearTimeout(state.timer);
-				area.off('.wmGraphHover').on('mouseenter.wmGraphHover', function() { clearTimeout(state.timer); });
+				area.off('.wmGraphHover').on('mouseenter.wmGraphHover', function() { clearTimeout(state.timer); })
+					.on('keydown.wmGraphHover', function(e) {
+						if (e.key !== 'ArrowDown') return;
+						var first = ui.tooltip.find('a').first()[0];
+						if (first) { e.preventDefault(); clearTimeout(state.timer); first.focus(); }
+					});
 				ui.tooltip.on('mouseenter.wmGraphHover focusin.wmGraphHover', function(e) {
 					clearTimeout(state.timer);
 					if (e.type === 'mouseenter') $(this).data('wm-pointer-inside', true);
 				}).on('mouseleave.wmGraphHover focusout.wmGraphHover', function(e) {
-					$(this).data('wm-pointer-inside', false);
+					if (e.type === 'mouseleave') $(this).data('wm-pointer-inside', false);
 					if (e.relatedTarget && this.contains(e.relatedTarget)) return;
 					instance.close($.Event(e.type, {currentTarget:area[0], relatedTarget:e.relatedTarget}));
 				}).on('keydown.wmGraphHover', function(e) {
-					if (e.key === 'Escape') state.close.call(instance, $.Event('keyup', {currentTarget:area[0]}));
+					if (e.key === 'Escape') {
+						e.preventDefault();
+						// Focus the still-open hotspot first so focusin does not create a new popup.
+						area[0].focus();
+						state.close.call(instance, $.Event('keyup', {currentTarget:area[0]}));
+					}
 				});
 			}
 			ui.tooltip.position({
@@ -125,8 +138,9 @@ function initWeatherMapView() {
 				display: 'block', width: 'auto', height: 'auto',
 				maxWidth: Math.min((parseInt(width, 10) || 800) * 1.1, window.innerWidth - 48) + 'px'
 			});
+			var densitySupported = $(this).closest('map').attr('data-wm-hover-density') === '2';
 			object.find('img').each(function() {
-				wmSharpHoverGraph($(this));
+				wmSharpHoverGraph($(this), densitySupported);
 				var destination = wmHoverGraphDestination($(this).attr('src'));
 				if (!destination || $(this).closest('a').length) return;
 				var label = $(this).attr('alt') || 'Open graph ' + new URL(destination, window.location.href).searchParams.get('local_graph_id');

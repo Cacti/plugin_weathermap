@@ -1528,6 +1528,23 @@ function weathermap_rmtree(string $dir): bool {
 }
 
 /**
+ * Advertise density support only where graph_image.php renders on this collector.
+ *
+ * @param string $html Map HTML for the current viewer request.
+ *
+ * @return string Map HTML with a per-map rendering capability flag.
+ */
+function weathermap_hover_density_metadata($html) {
+	global $config;
+
+	$supported = ($config['poller_id'] ?? 0) == 1 || read_config_option('storage_location');
+	return preg_replace_callback('/<map\b[^>]*>/i', function ($match) use ($supported) {
+		$tag = preg_replace('/\sdata-wm-hover-density=(?:"[^"]*"|\'[^\']*\')/i', '', $match[0]);
+		return substr($tag, 0, -1) . ' data-wm-hover-density="' . ($supported ? '2' : '1') . '">';
+	}, $html) ?? $html;
+}
+
+/**
  * Add the originating map to local graph links without changing graph selection.
  *
  * @param string $html    Generated map HTML.
@@ -1537,6 +1554,8 @@ function weathermap_rmtree(string $dir): bool {
  */
 function weathermap_map_graph_links($html, $maphash) {
 	global $config;
+
+	$html = weathermap_hover_density_metadata($html);
 
 	return preg_replace_callback('/href=([\"\'])(.*?)\1/i', function ($match) use ($config, $maphash) {
 		$url   = html_entity_decode($match[2], ENT_QUOTES, 'UTF-8');

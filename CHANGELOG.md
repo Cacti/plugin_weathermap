@@ -16,6 +16,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+-issue#312: Avoid Boost density cache collisions and preserve original previews on delegated collectors
+-issue#312: Support keyboard entry and return for hover graphs and keep pointer state independent
+
 -issue: Keep traffic glows visible through transparent node icon padding
 
 * issue#312: Preserve Cacti graph-tree layout when navigating away from Weathermap
