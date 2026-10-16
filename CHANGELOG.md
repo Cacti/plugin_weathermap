@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+-issue#309: Preserve endpoint alignment and nudge direction for curved comments
+
 * feature#309: Add default-on COMMENTCURVE and a Map Style option for comments following link curves, with straight-text fallbacks
 
 * Add traffic colour presets and optional high-load link pulsing

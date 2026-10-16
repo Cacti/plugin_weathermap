@@ -42,6 +42,33 @@ final class CurvedLinkCommentTest extends TestCase {
 		self::assertTrue($link->DrawCurvedComment(null, '5G (Backup)', 0, 7, 60));
 		self::assertSame('5G (Backup)', implode('', array_column($map->drawn, 2)));
 		self::assertLessThanOrEqual(93, max(array_map('abs', array_column($map->drawn, 3))));
+		// Preserve the straight renderer's endpoint alignment and original A-to-B nudge direction.
+		$link->curvepoints = [[0, 0, 0], [1000, 0, 1000]];
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 95));
+		$end = $map->drawn;
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 50));
+		$font = $map->fonts[$link->commentfont];
+		$marker = imagettfbbox($font->size, 0, wm_font_file($font->file), '|');
+		$box = imagettfbbox($font->size, 0, wm_font_file($font->file), '5G Backup|');
+		self::assertEqualsWithDelta(950 - ($box[2] - $marker[2]), $end[0][0], 0.01);
+		// The 95% anchor is the right edge, so the entire word must end there.
+		self::assertLessThan(950, $end[0][0]);
+		self::assertGreaterThan(800, $end[0][0]);
+		$link->curvepoints = [[1000, 0, 0], [0, 0, 1000]];
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 50));
+		$before = $map->drawn[0][0];
+		$link->add_hint('comment_nudgealong', 10);
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 50));
+		self::assertEqualsWithDelta($before - 10, $map->drawn[0][0], 0.01);
+		$link->add_hint('comment_nudgealong', 2000);
+		$map->drawn = [];
+		self::assertFalse($link->DrawCurvedComment(null, '5G Backup', 0, 7, 50));
+		self::assertSame([], $map->drawn, 'Unfittable placement falls back before any glyph is drawn');
+		$link->add_hint('comment_nudgealong', 0);
 		// Unsupported fonts, multiline and short geometry fall back atomically.
 		$map->drawn = [];
 		self::assertFalse($link->DrawCurvedComment(null, "two\nlines", 0, 7, 30));

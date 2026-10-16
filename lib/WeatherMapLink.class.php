@@ -381,8 +381,13 @@ class WeatherMapLink extends WeatherMapItem {
 		$b = $at($anchor + 1);
 		$reverse = $b[0] < $a[0];
 		$sign = $reverse ? -1 : 1;
-		$anchor += $sign * (int)$this->get_hint('comment_nudgealong');
-		$anchor = $reverse ? max($length, min($total, $anchor)) : max(0, min($total - $length, $anchor));
+		// Match the straight renderer's end alignment near either endpoint.
+		if (!$reverse && $anchor + $length > $total) $anchor -= $length;
+		if ($reverse && $anchor - $length < 0) $anchor += $length;
+		// Nudges follow the original A-to-B spine, independently of text traversal.
+		$anchor += (int)$this->get_hint('comment_nudgealong');
+		$end = $anchor + $sign * $length;
+		if (min($anchor, $end) < 0 || max($anchor, $end) > $total) return false;
 		[, $height] = $this->owner->myimagestringsize($this->commentfont, $comment);
 		$offset = (int)$this->get_hint('comment_nudgeout');
 		$offset += $this->commentstyle === 'center' ? -$height / 2 : $width + 4;
