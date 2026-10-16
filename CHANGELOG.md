@@ -24,7 +24,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#300: Fix editor placement reset, destructive action controls and theme contrast
 * feature#305: Reduce gallery preview cards by 20% while preserving generated thumbnail resolution
 * feature#304: Add a searchable node icon picker and bundled enterprise site icons
-* dev: Update plugin version identification to 2.0
+* dev#314: Update plugin version identification to 2.0
 * issue#299: Keep editor picker results open when browsing and allow changing an existing selection
 * feature#298: Fit or stretch background images within the map canvas
 * feature#297: Allow setting a map title when creating configuration files
