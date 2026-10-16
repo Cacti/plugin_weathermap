@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+-issue: Keep traffic glows visible through transparent node icon padding
+
 * issue#312: Preserve Cacti graph-tree layout when navigating away from Weathermap
 * feature#312: Make Cacti hover previews independently clickable and sharper on high-density displays; hide generated clone captions and preserve popup pointer/keyboard interaction
 
