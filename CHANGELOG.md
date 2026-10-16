@@ -24,7 +24,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#300: Fix editor placement reset, destructive action controls and theme contrast
 * feature#305: Reduce gallery preview cards by 20% while preserving generated thumbnail resolution
 * feature#304: Add a searchable node icon picker and bundled enterprise site icons
-* dev#314: Update plugin version identification to 2.0
+* feature#314: Update plugin version identification to 2.0
 * issue#299: Keep editor picker results open when browsing and allow changing an existing selection
 * feature#298: Fit or stretch background images within the map canvas
 * feature#297: Allow setting a map title when creating configuration files
@@ -46,21 +46,21 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#151: Keep standalone editor controls visible and use theme-aware dialog contrast
 * issue#275: Load permitted editor picker results in bounded pages, search interface descriptions, and encode graph search terms
 * issue#274: Fit hover popups to their graph content and close them immediately when leaving map links, preserving graph proportions and meaningful captions
-* refactor: On Cacti 1.2.32 and above, defer the editor's jQuery UI dialog (`ui.dialog`) styling to the core theme CSS; the plugin's `.ui-dialog-title`/`.ui-dialog-buttonset` font overrides have been split out of `css/editor.css` into a separate `css/editor-ui-dialog-legacy.css` that is only loaded on earlier Cacti releases
-* refactor: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
+* issue: On Cacti 1.2.32 and above, defer the editor's jQuery UI dialog (`ui.dialog`) styling to the core theme CSS; the plugin's `.ui-dialog-title`/`.ui-dialog-buttonset` font overrides have been split out of `css/editor.css` into a separate `css/editor-ui-dialog-legacy.css` that is only loaded on earlier Cacti releases
+* issue: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
 * feature: Add a root `manifest.json` file manifest plus an upgrade-time `weathermap_prune_files()` that removes tombstoned and dev-only paths while protecting whitelisted user data (`configs/`, `output/`) and `.git*`, backed by a `tests/bin/validate-manifest.php` CI gate that fails on manifest drift
-* dev: Add xdebug coverage reporting to CI and enforce patch coverage of changed lines
-* types: Bring every PHP file to PHPStan level 8 with zero errors, documenting parameter, return and property types throughout the legacy rendering engine without changing runtime behaviour (docblock typing only, so no new TypeErrors on the 1.2.x-era code base)
-* bug: `upgrade_mapfiles()` reported the wrong filename (swapped `$objfile`/`$bgfile`) in the BACKGROUND/ICON "file not found on disk" warnings, and the ICON branch reused the BACKGROUND message text and log code
-* bug: `viewthumb` requests served the full-size image because the handler compared an undefined `$action` instead of `get_request_var('action')`
-* bug: the editor "Make a Copy" action (`newMapCopy()`) silently did nothing because it was missing `global $mapdir`
-* bug: `WeatherMapLink::asJSON()` and `WeatherMapNode::asJSON()` emitted the literal text `Array` for `infourl`/`overliburl`/`overlibcaption` instead of indexing the per-direction arrays the way `asJS()` does
-* bug: the poller's boost detection passed `'off'` as `read_config_option()`'s `$force` flag (a boolean), forcing an uncached database read every poll cycle
-* bug: the SNMPv3 datasource never initialised its timeout/retry/abort-count settings (its `getMapGlobals()` helper was never called); these are now read from the map hints in `ReadData()`
-* `WeatherMapBase::get_hint()` now accepts an optional default value, which the SNMPv3 datasource already expected to be honoured
-* cleanup: remove permanently-disabled and never-implemented dead code (the php-rrdtool reader stub, the dsstats reverse-conversion block, several `if (1 == 0)` debug toggles, and the no-op metafile dumper)
+* feature: Add xdebug coverage reporting to CI and enforce patch coverage of changed lines
+* issue: Bring every PHP file to PHPStan level 8 with zero errors, documenting parameter, return and property types throughout the legacy rendering engine without changing runtime behaviour (docblock typing only, so no new TypeErrors on the 1.2.x-era code base)
+* issue: `upgrade_mapfiles()` reported the wrong filename (swapped `$objfile`/`$bgfile`) in the BACKGROUND/ICON "file not found on disk" warnings, and the ICON branch reused the BACKGROUND message text and log code
+* issue: `viewthumb` requests served the full-size image because the handler compared an undefined `$action` instead of `get_request_var('action')`
+* issue: the editor "Make a Copy" action (`newMapCopy()`) silently did nothing because it was missing `global $mapdir`
+* issue: `WeatherMapLink::asJSON()` and `WeatherMapNode::asJSON()` emitted the literal text `Array` for `infourl`/`overliburl`/`overlibcaption` instead of indexing the per-direction arrays the way `asJS()` does
+* issue: the poller's boost detection passed `'off'` as `read_config_option()`'s `$force` flag (a boolean), forcing an uncached database read every poll cycle
+* issue: the SNMPv3 datasource never initialised its timeout/retry/abort-count settings (its `getMapGlobals()` helper was never called); these are now read from the map hints in `ReadData()`
+* issue: `WeatherMapBase::get_hint()` now accepts an optional default value, which the SNMPv3 datasource already expected to be honoured
+* issue: remove permanently-disabled and never-implemented dead code (the php-rrdtool reader stub, the dsstats reverse-conversion block, several `if (1 == 0)` debug toggles, and the no-op metafile dumper)
 * security: Add a version-safe CSP nonce (`plugin_weathermap_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class
-* Run the plugin unit test suite in CI, using the toolchain from the base Cacti install
+* feature: Run the plugin unit test suite in CI, using the toolchain from the base Cacti install
 
 --- 1.7 ---
 * issue#233: Rendering issues when the page includes several maps with dropdown
