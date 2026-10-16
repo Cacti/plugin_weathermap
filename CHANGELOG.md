@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* feature: Default implicit link capacities to 1000M in both directions, while preserving explicitly configured capacities
+
 * Add traffic colour presets and optional high-load link pulsing
 
 * Fix Safari rendering of high-traffic link glows using native SVG filters
