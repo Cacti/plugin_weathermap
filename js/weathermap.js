@@ -92,13 +92,21 @@ function initWeatherMapView() {
 			if (instance && instance.wmInteractiveHover) {
 				var state = instance.wmInteractiveHover;
 				clearTimeout(state.timer);
-				area.data('wm-pointer-inside', /^(?:mouseover|mouseenter)$/.test(event.originalEvent.type))
+				area.data('wm-pointer-inside', area.data('wm-pointer-inside') === true || /^(?:mouseover|mouseenter)$/.test(event.originalEvent.type))
 					.off('.wmGraphHover').on('mouseenter.wmGraphHover', function() { $(this).data('wm-pointer-inside', true); clearTimeout(state.timer); })
 					.on('mouseleave.wmGraphHover', function(e) { $(this).data('wm-pointer-inside', false); instance.close(e); })
+					.on('focusout.wmGraphHover', function(e) { instance.close(e); })
 					.on('keydown.wmGraphHover', function(e) {
 						if (e.key !== 'ArrowDown') return;
-						var first = ui.tooltip.find('a').first()[0];
-						if (first) { e.preventDefault(); clearTimeout(state.timer); first.focus(); }
+						e.preventDefault(); clearTimeout(state.timer);
+						var current = instance._find(area);
+						if (!current) {
+							state.enterTarget = this;
+							instance.open($.Event('focusin', {target:this, currentTarget:this}));
+						} else {
+							var first = current.tooltip.find('a').first()[0];
+							if (first) first.focus();
+						}
 					});
 				ui.tooltip.on('mouseenter.wmGraphHover focusin.wmGraphHover', function(e) {
 					clearTimeout(state.timer);
@@ -115,6 +123,11 @@ function initWeatherMapView() {
 						state.close.call(instance, $.Event('keyup', {currentTarget:area[0]}));
 					}
 				});
+			}
+			if (instance && instance.wmInteractiveHover && instance.wmInteractiveHover.enterTarget === area[0]) {
+				instance.wmInteractiveHover.enterTarget = null;
+				var first = ui.tooltip.find('a').first()[0];
+				if (first) first.focus();
 			}
 			ui.tooltip.position({
 				my: 'left top+5%',

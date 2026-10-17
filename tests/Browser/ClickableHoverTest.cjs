@@ -50,6 +50,21 @@ const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),
  assert.equal($('.ui-tooltip').length,1,'Hotspot pointer survives preview focus departure');
  area.trigger('mouseleave');await delay();
  assert.equal($('.ui-tooltip').length,0,'Leaving both surfaces eventually closes');
+ // A mouse-opened tooltip must schedule dismissal after subsequent hotspot blur.
+ $('#outside')[0].focus();open();area[0].focus();area.trigger('mouseleave');await delay();
+ assert.equal($('.ui-tooltip').length,1,'Hotspot focus retains the mouse-opened popup');
+ $('#outside')[0].focus();await delay();
+ assert.equal($('.ui-tooltip').length,0,'Mouse-first popup closes after subsequent blur');
+ // Escape leaves hotspot focus in place, and explicit ArrowDown can reopen it.
+ area[0].focus();tip=$('.ui-tooltip');
+ area[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));
+ tip.find('a')[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
+ assert.equal($('.ui-tooltip').length,0);
+ area[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));
+ assert.equal($('.ui-tooltip').length,1,'ArrowDown reopens without blurring the hotspot');
+ assert.equal(w.document.activeElement,$('.ui-tooltip a')[0]);
+ $('.ui-tooltip a')[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
+ $('#outside')[0].focus();await delay();
  // Switching quickly between hotspots must not leave the first area marked open.
  const other=area.clone().appendTo(map);
  open();area.trigger('mouseleave');
