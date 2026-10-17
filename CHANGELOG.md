@@ -16,9 +16,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
--issue#311: Preserve custom hover graphs when opening Link Properties
+-issue#308: Clear hotspot pointer cursors when entering placement mode
 
-* feature#311: Simplify link interface/source/hover workflows, limit the form to two previews, add node display-name positioning, move comment colours to Manage Colours and clarify raw-edit controls
+* issue#308: Refresh saved editor snapshots reliably, restore Safari node/note selection and return to properties when cancelling raw configuration edits
 
 * Add traffic colour presets and optional high-load link pulsing
 

@@ -521,7 +521,44 @@ function wmEditorReturnUrl(target) {
 	return 'weathermap-cacti-plugin.php' + (match ? '?action=viewmap&id=' + encodeURIComponent(match[1]) : '');
 }
 
+// Some WebKit layouts route image-map clicks to the image after scrolling.
+// Resolve those clicks against the same ordered, logical-coordinate regions.
+function wmEditorAreaAt(image, event) {
+	var rect = image.getBoundingClientRect();
+	if (!rect.width || !rect.height) return null;
+	var x = (event.clientX - rect.left) * Number(image.getAttribute('data-width')) / rect.width;
+	var y = (event.clientY - rect.top) * Number(image.getAttribute('data-height')) / rect.height;
+	var map = document.getElementById((image.getAttribute('usemap') || '').split('#').pop());
+	if (!map) return null;
+	return Array.from(map.querySelectorAll('area')).find(function(area) {
+		var c = area.coords.split(',').map(Number), inside = false;
+		if (!c.length || !c.every(Number.isFinite)) return false;
+		if (area.shape.toLowerCase() === 'rect' && c.length === 4) {
+			return x >= c[0] && x <= c[2] && y >= c[1] && y <= c[3];
+		}
+		if (area.shape.toLowerCase() === 'circle' && c.length === 3) {
+			return Math.pow(x - c[0], 2) + Math.pow(y - c[1], 2) <= c[2] * c[2];
+		}
+		if (area.shape.toLowerCase() === 'poly' && c.length >= 6 && c.length % 2 === 0) {
+			for (var i = 0, j = c.length - 2; i < c.length; j = i, i += 2) {
+				if ((c[i + 1] > y) !== (c[j + 1] > y) && x < (c[j] - c[i]) * (y - c[i + 1]) / (c[j + 1] - c[i + 1]) + c[i]) inside = !inside;
+			}
+		}
+		return inside;
+	}) || null;
+}
+
 function attach_click_events() {
+	$('#existingdata').off('.wmhit').on('click.wmhit', function(event) {
+		if (event.target !== this) return;
+		var area = wmEditorAreaAt(this, event);
+		if (area) {
+			event.preventDefault();
+			$(area).triggerHandler('click');
+		}
+	}).on('mousemove.wmhit', function(event) {
+		if (!$(this).hasClass('wm-placement-mode')) this.style.cursor = wmEditorAreaAt(this, event) ? 'pointer' : '';
+	});
 	$('#xycapture').off('click.wmnote').on('click.wmnote', function(event) {
 		if ($('#action').val() === 'place_note' || ($('#action').val() === 'move_node' && typeof WMNotes !== 'undefined' && WMNotes[$('#param').val()])) coord_update(event);
 	});
@@ -604,7 +641,11 @@ function attach_click_events() {
 }
 
 // used by the cancel button on each of the properties dialogs
-function cancel_op() {
+function cancel_op(event) {
+	if (event && event.currentTarget && event.currentTarget.id === 'tb_textedit_cancel') {
+		$('#dlgTextEdit').dialog('close');
+		return;
+	}
 	hide_all_dialogs();
 
 	$('#action').val('');
@@ -738,7 +779,7 @@ function wmResetActionHelp() {
 
 function mapmode(m) {
 	var placing = m == 'xy' || ['add_link', 'add_link2'].indexOf($('#action').val()) !== -1;
-	$('#existingdata, .mapData').toggleClass('wm-placement-mode', placing);
+	$('#existingdata, .mapData').toggleClass('wm-placement-mode', placing).css('cursor', '');
 	$('#tb_help').toggleClass('wm-action-help', placing);
 	if (!placing) wmResetActionHelp();
 	if (m == 'xy') {
@@ -911,11 +952,20 @@ function wmEditorReloadUrl() {
 	url.searchParams.set('action', 'nothing');
 	url.searchParams.delete('config_revision');
 	url.searchParams.delete('__csrf_magic');
+	url.hash = '';
 	return url.href;
 }
 
 function wmReloadEditor() {
-	window.location.replace(wmEditorReloadUrl());
+	var url = wmEditorReloadUrl();
+	var current = new URL(window.location.href);
+	current.hash = '';
+	// Same-document fragment navigation does not fetch a fresh map snapshot.
+	if (current.href === url) {
+		window.location.reload();
+	} else {
+		window.location.replace(url);
+	}
 }
 
 function form_submit(event) {
@@ -1057,6 +1107,8 @@ function real_position_legend(scalename) {
 }
 
 function show_itemtext(itemtype,name) {
+	var parent = itemtype === 'link' ? 'dlgLinkProperties' : 'dlgNodeProperties';
+	var returnTo = $('#' + parent).dialog('instance') && $('#' + parent).dialog('isOpen') ? parent : null;
 	mapmode('existing');
 
 	hide_all_dialogs();
@@ -1071,7 +1123,7 @@ function show_itemtext(itemtype,name) {
 		$('#action').val('set_link_config');
 	}
 
-	$('#dlgTextEdit').data('wm-config-action', $('#action').val());
+	$('#dlgTextEdit').data('wm-config-action', $('#action').val()).data('wm-config-parent', returnTo);
 	show_dialog('dlgTextEdit');
 
 	$.ajax({
@@ -1329,6 +1381,19 @@ function show_dialog(dlg) {
 		modal: false,
 		resizable: false,
 		draggable: true,
+		close: function() {
+			$('#action').val('');
+			mapmode('existing');
+			if (dlg === 'dlgTextEdit') {
+				var parent = $(this).data('wm-config-parent');
+				$(this).removeData('wm-config-parent');
+				if (parent) {
+					show_dialog(parent);
+					$('#action').val(parent === 'dlgLinkProperties' ? 'set_link_properties' : 'set_node_properties');
+					$(parent === 'dlgLinkProperties' ? '#link_edit' : '#node_edit').attr('tabindex', '-1').trigger('focus');
+				}
+			}
+		},
 		open: function() {
 			$(this).closest('.ui-dialog').addClass('wm-editor-dialog');
 			$(this).find('.ui-autocomplete-input').each(function() {
@@ -1352,6 +1417,8 @@ function hide_dialog(dlg) {
 }
 
 function hide_all_dialogs() {
+	// Navigation to another task must not reopen the configuration editor's parent.
+	$('#dlgTextEdit').removeData('wm-config-parent');
 	hide_dialog('dlgMapProperties');
 	hide_dialog('dlgMapStyle');
 	hide_dialog('dlgLinkProperties');
@@ -2400,4 +2467,9 @@ function show_note(name, x, y) {
 	show_dialog('dlgNoteProperties');
 	$('#note_font,#note_align').each(function() { if ($(this).data('ui-selectmenu')) $(this).selectmenu('refresh'); });
 	$('#note_text').trigger('focus');
+}
+
+// Allow the navigation regression to load these helpers directly under Node.js.
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = {wmEditorReloadUrl: wmEditorReloadUrl, wmReloadEditor: wmReloadEditor};
 }
