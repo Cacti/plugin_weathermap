@@ -3690,15 +3690,10 @@ class WeatherMap extends WeatherMapBase {
 		}
 	}
 
-	/**
-	 * @param string $filename
-	 * @param bool $createOnly Require a new destination.
-	 * @param string|null $expectedRevision Optional request snapshot revision.
-	 * @param resource|null $heldLock Caller-owned destination directory mutex.
-	 * @return bool
+	/** Generate the normal configuration text without writing a destination.
+	 * @return string|false
 	 */
-	function WriteConfig($filename, $createOnly = false, $expectedRevision = null, $heldLock = null) {
-		require_once __DIR__ . '/WeatherMap.config.php';
+	function ConfigText() {
 		$fd = fopen('php://temp', 'w+b');
 
 		$output = '';
@@ -3945,44 +3940,50 @@ class WeatherMap extends WeatherMapBase {
 			$contents = stream_get_contents($fd);
 			$closed = fclose($fd);
 
-			$this->config_asset_conflict = false;
-			$savedAssets = $contents !== false ? $this->ManagedImagePaths($contents) : [];
-			$sameDestination = \WeathermapConfig\sameFile($filename, $this->configfile);
-			$newAssets = ($createOnly || !$sameDestination) ? array_unique(array_merge($this->ManagedImagePaths(), $savedAssets)) : array_diff($savedAssets, $this->config_managed_assets);
-			$validate = function () use ($newAssets) {
-				foreach ($newAssets as $asset) {
-					if (preg_match('/\{[^}]+\}/', $asset)) continue;
-					if (!is_file(dirname(__DIR__) . '/' . $asset)) {
-						$this->config_asset_conflict = true;
-						return false;
-					}
-				}
-				return true;
-			};
-			$sameFile = \WeathermapConfig\sameFile($filename, $this->configfile);
-			$dependencies = $this->config_dependencies;
-			foreach ($this->config_root_identity as $logical => $state) {
-				$dependencies[$logical] = $state;
-				if ($logical !== $state['target']) $dependencies[$state['target']] = $state['revision'];
-			}
-			if (!$sameFile && $this->configfile !== '' && is_string($this->config_revision)) {
-				$logicalSource = \WeathermapConfig\logicalPath($this->configfile);
-				$physicalSource = realpath($this->configfile) ?: $logicalSource;
-				if (!isset($dependencies[$physicalSource])) $dependencies[$physicalSource] = $this->config_revision;
-				if ($logicalSource !== $physicalSource && !isset($dependencies[$logicalSource])) $dependencies[$logicalSource] = ['target' => $physicalSource, 'revision' => $this->config_revision];
-			}
-			$saved = $write_ok && $contents !== false && $closed && \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $dependencies, $validate);
-			if ($saved) $this->config_managed_assets = $savedAssets;
-			if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
-			if ($saved) foreach ($this->config_root_identity as $logical => $state) {
-				if (realpath($filename) === $state['target']) $this->config_root_identity[$logical]['revision'] = hash('sha256', $contents);
-			}
-			return $saved;
-		} else {
-			wm_warn("Couldn't open config file $filename for writing");
-
-			return (false);
+			return $write_ok && $contents !== false && $closed ? $contents : false;
 		}
+		return false;
+	}
+
+	/** Save generated configuration using the existing atomic revision checks. */
+	function WriteConfig($filename, $createOnly = false, $expectedRevision = null, $heldLock = null) {
+		require_once __DIR__ . '/WeatherMap.config.php';
+		$contents = $this->ConfigText();
+		if ($contents === false) return false;
+
+		$this->config_asset_conflict = false;
+		$savedAssets = $this->ManagedImagePaths($contents);
+		$sameDestination = \WeathermapConfig\sameFile($filename, $this->configfile);
+		$newAssets = ($createOnly || !$sameDestination) ? array_unique(array_merge($this->ManagedImagePaths(), $savedAssets)) : array_diff($savedAssets, $this->config_managed_assets);
+		$validate = function () use ($newAssets) {
+			foreach ($newAssets as $asset) {
+				if (preg_match('/\{[^}]+\}/', $asset)) continue;
+				if (!is_file(dirname(__DIR__) . '/' . $asset)) {
+					$this->config_asset_conflict = true;
+					return false;
+				}
+			}
+			return true;
+		};
+		$sameFile = \WeathermapConfig\sameFile($filename, $this->configfile);
+		$dependencies = $this->config_dependencies;
+		foreach ($this->config_root_identity as $logical => $state) {
+			$dependencies[$logical] = $state;
+			if ($logical !== $state['target']) $dependencies[$state['target']] = $state['revision'];
+		}
+		if (!$sameFile && $this->configfile !== '' && is_string($this->config_revision)) {
+			$logicalSource = \WeathermapConfig\logicalPath($this->configfile);
+			$physicalSource = realpath($this->configfile) ?: $logicalSource;
+			if (!isset($dependencies[$physicalSource])) $dependencies[$physicalSource] = $this->config_revision;
+			if ($logicalSource !== $physicalSource && !isset($dependencies[$logicalSource])) $dependencies[$logicalSource] = ['target' => $physicalSource, 'revision' => $this->config_revision];
+		}
+		$saved = \WeathermapConfig\atomicWrite($filename, $contents, $sameFile, $expectedRevision ?? ($sameFile ? $this->config_revision : null), $createOnly, $heldLock, $dependencies, $validate);
+		if ($saved) $this->config_managed_assets = $savedAssets;
+		if ($saved && $sameFile) $this->config_revision = hash('sha256', $contents);
+		if ($saved) foreach ($this->config_root_identity as $logical => $state) {
+			if (realpath($filename) === $state['target']) $this->config_root_identity[$logical]['revision'] = hash('sha256', $contents);
+		}
+		return $saved;
 	}
 
 	// pre-allocate colour slots for the colours used by the arrows

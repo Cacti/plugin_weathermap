@@ -316,8 +316,55 @@ final class EditorHistoryTest extends TestCase {
 		self::assertNotSame($large, file_get_contents($this->file));
 		self::assertSame(0, $result['undo']);
 		self::assertSame(0, $result['redo']);
-		self::assertLessThanOrEqual(8 * 1024 * 1024, strlen(serialize(json_decode(file_get_contents(WeathermapEditorHistory\storagePath()), true))));
+		self::assertLessThanOrEqual(8 * 1024 * 1024, filesize(WeathermapEditorHistory\storagePath()));
 		self::assertSame($result, $this->history('history_status'));
+	}
+
+	public function testUnchangedDialogAfterUndoPreservesOriginalBytesAndBothStacks(): void {
+		$original = file_get_contents($this->file);
+		$this->move(60);
+		$history = $this->history('undo');
+		self::assertSame($original, file_get_contents($this->file));
+		$this->request('set_node_properties', ['node_name' => 'a', 'node_new_name' => 'a', 'node_label' => 'A',
+			'node_infourl' => '', 'node_hover' => '', 'node_x' => 40, 'node_y' => 50, 'node_iconfilename' => '--NONE--']);
+		setNodeProperties($this->file);
+		self::assertSame(200, http_response_code());
+		self::assertSame($original, file_get_contents($this->file));
+		self::assertSame($history, $this->history('history_status'));
+		$this->history('redo');
+		self::assertSame(60, (int) $this->map()->nodes['a']->x);
+	}
+
+	public function testIntentionalRawFormattingEditsStillConsumeAStep(): void {
+		$original = file_get_contents($this->file);
+		$this->request('set_node_config', ['node_name' => 'a', 'item_configtext' => "NODE a\n # retain this raw comment\n LABEL A\n POSITION 40 50\n"]);
+		setNodeConfig($this->file);
+		self::assertStringContainsString('# retain this raw comment', file_get_contents($this->file));
+		self::assertSame(1, $this->history('history_status')['undo']);
+		$this->history('undo');
+		self::assertSame($original, file_get_contents($this->file));
+	}
+
+	public function testQuotaMeasuresActualJsonBytesForSlashHeavyBase64Snapshots(): void {
+		file_put_contents($this->file, file_get_contents($this->file) . str_repeat('#' . str_repeat("\xEF\xBF\xBF", 255) . "\n", 6800));
+		$snapshot = WeathermapEditorHistory\snapshot($this->map(), $this->file);
+		self::assertLessThan(8 * 1024 * 1024, strlen(serialize($snapshot)));
+		self::assertGreaterThan(8 * 1024 * 1024, strlen(json_encode($snapshot, JSON_THROW_ON_ERROR)));
+		$this->move(60);
+		self::assertSame(0, $this->history('history_status')['undo']);
+		clearstatcache(true, WeathermapEditorHistory\storagePath());
+		self::assertLessThanOrEqual(8 * 1024 * 1024, filesize(WeathermapEditorHistory\storagePath()));
+	}
+
+	public function testConfigurationRenderingFailureDoesNotWriteTheDestination(): void {
+		$map = $this->map();
+		$before = file_get_contents($this->file);
+		stream_wrapper_unregister('php');
+		try {
+			self::assertFalse(@$map->ConfigText());
+			self::assertFalse(@$map->WriteConfig($this->file));
+		} finally { stream_wrapper_restore('php'); }
+		self::assertSame($before, file_get_contents($this->file));
 	}
 
 }

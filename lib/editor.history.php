@@ -92,7 +92,7 @@ function prune() {
 	foreach ($histories as $key => $entry) {
 		if ($entry['time'] < time() - 14400) unset($histories[$key]);
 	}
-	while (count($histories) > 8 || strlen(serialize($histories)) > 8 * 1024 * 1024) array_shift($histories);
+	while (count($histories) > 8 || strlen(json_encode($histories, JSON_THROW_ON_ERROR)) > 8 * 1024 * 1024) array_shift($histories);
 	$GLOBALS['weathermap_editor_history'] = $histories;
 }
 
@@ -144,6 +144,19 @@ function remember($key, $before, $after) {
 	prune();
 }
 
+/** Compare structured output before rewriting hand-formatted root bytes. */
+function unchanged($map, $mapfile, $expectedRevision) {
+	// Intentional raw edits retain their exact textual changes, including comments.
+	if (in_array(\get_nfilter_request_var('action'), ['set_node_config', 'set_link_config'], true)) return false;
+	$loaded = new \WeatherMap;
+	$loaded->context = 'editor';
+	if (!$loaded->ReadConfig($mapfile)
+		|| ($expectedRevision !== null && $expectedRevision !== $loaded->config_revision)
+		|| !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity))) return false;
+	$original = $loaded->ConfigText();
+	return is_string($original) && $original === $map->ConfigText();
+}
+
 /** Capture history under the same directory lock as the normal atomic save. */
 function write($map, $mapfile, $createOnly, $expectedRevision, $heldLock = null) {
 	$key = key($mapfile);
@@ -156,6 +169,7 @@ function write($map, $mapfile, $createOnly, $expectedRevision, $heldLock = null)
 			return $map->WriteConfig($mapfile, false, $expectedRevision, $lock);
 		}
 		$before = snapshot($map, $mapfile);
+		if ($before !== null && unchanged($map, $mapfile, $expectedRevision)) return true;
 		if (!$map->WriteConfig($mapfile, false, $expectedRevision, $lock)) return false;
 		// Raw configuration edits may change INCLUDE dependencies. Read the saved result.
 		$saved = new \WeatherMap;
