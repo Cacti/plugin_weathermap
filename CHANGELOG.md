@@ -16,7 +16,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
-* feature#313: Bundle transparent 96px access-point, NAS, server, printer, CCTV recorder, UPS and CCTV camera node icons
+-issue#308: Clear hotspot pointer cursors when entering placement mode
+
+* issue#308: Refresh saved editor snapshots reliably, restore Safari node/note selection and return to properties when cancelling raw configuration edits
 
 * Add traffic colour presets and optional high-load link pulsing
 
