@@ -63,6 +63,21 @@ final class CurvedLinkCommentTest extends TestCase {
 		foreach ($angles as $angle) {
 			self::assertLessThanOrEqual(93, abs($angle));
 		}
+		// A gentle inward bend must follow the offset baseline instead of falling
+		// back to a single rotated label crossing the arrow at the VIA point.
+		$curveX = [100, 104, 326];
+		$curveY = [80, 369, 587];
+		$link->curvepoints = calc_curve($curveX, $curveY);
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G (Backup)', 0, 7, 40));
+		self::assertSame('5G (Backup)', implode('', array_column($map->drawn, 2)));
+		$angles = array_column($map->drawn, 3);
+		self::assertGreaterThan(3, max($angles) - min($angles));
+		$map->fonts[$link->commentfont]->size = 9;
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G (Backup)', 0, 7, 40));
+		self::assertCount(11, $map->drawn);
+		$map->fonts[$link->commentfont]->size = 13;
 		// Independently drawn glyphs must retain TrueType pair kerning.
 		$link->curvepoints = [[0, 0, 0], [1000, 0, 1000]];
 		$map->drawn = [];
@@ -72,6 +87,21 @@ final class CurvedLinkCommentTest extends TestCase {
 		$pair = imagettfbbox($font->size, 0, $file, 'AV|');
 		$single = imagettfbbox($font->size, 0, $file, 'V|');
 		self::assertEqualsWithDelta($pair[2] - $single[2], $map->drawn[1][0] - $map->drawn[0][0], 0.01);
+		// Exact U-turns have no two-sided tangent, but only nearby labels are unsafe.
+		$link->curvepoints = [[0, 50, 0], [1000, 50, 1000], [800, 50, 1200]];
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 10));
+		self::assertSame('5G Backup', implode('', array_column($map->drawn, 2)));
+		$map->drawn = [];
+		self::assertFalse($link->DrawCurvedComment(null, '5G Backup', 0, 7, 80));
+		self::assertSame([], $map->drawn, 'A label crossing a U-turn falls back atomically');
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G', 0, 7, 95));
+		$link->curvepoints = array_reverse($link->curvepoints);
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 90));
+		self::assertSame('5G Backup', implode('', array_column($map->drawn, 2)));
+
 		// A moderate inward offset can overlap wide glyphs even without reversing them.
 		$link->curvepoints = $this->quarterCircle(40, 0, 0, 1);
 		$link->add_hint('comment_nudgeout', 2); // width 7 + gap 4 + nudge 2 = 13 inward.
@@ -85,6 +115,22 @@ final class CurvedLinkCommentTest extends TestCase {
 		$map->drawn = [];
 		self::assertFalse($link->DrawCurvedComment(null, 'III', 0, 7, 10));
 		self::assertSame([], $map->drawn, 'Reverse progress falls back before drawing');
+		// A distant reversed offset must not disable a valid label interval.
+		$tightTail = $this->quarterCircle(20, 500, -20, 1);
+		$link->curvepoints = array_merge([[0, 0, 0]], $tightTail);
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 10));
+		self::assertSame('5G Backup', implode('', array_column($map->drawn, 2)));
+		// Once nudged into that reversed tail, fallback must still be atomic.
+		$link->add_hint('comment_nudgealong', 450);
+		$map->drawn = [];
+		self::assertFalse($link->DrawCurvedComment(null, 'III', 0, 7, 10));
+		self::assertSame([], $map->drawn);
+		$link->add_hint('comment_nudgealong', 0);
+		$link->curvepoints = array_reverse($link->curvepoints);
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 90));
+		self::assertSame('5G Backup', implode('', array_column($map->drawn, 2)));
 		$link->add_hint('comment_nudgeout', 0);
 		$link->curvepoints = $this->quarterCircle(220, 100, 320, -1);
 		// Reversing the spine must still produce an upright, complete label.

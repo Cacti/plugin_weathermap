@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 2.0\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-16 23:17+1030\n"
+"POT-Creation-Date: 2026-10-18 03:22+1030\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -217,6 +217,18 @@ msgstr ""
 
 #: lib/editor.comment-style.php
 msgid "Link Comment Font"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
 msgstr ""
 
 #: lib/editor.comment-style.php
@@ -2913,18 +2925,6 @@ msgid ""
 "<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
 "<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
 "<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
-msgstr ""
-
-#: lib/editor.comment-style.php
-msgid "Link Comments"
-msgstr ""
-
-#: lib/editor.comment-style.php
-msgid "Follow link curve"
-msgstr ""
-
-#: lib/editor.comment-style.php
-msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
 msgstr ""
 
 #: lib/editor.history.php

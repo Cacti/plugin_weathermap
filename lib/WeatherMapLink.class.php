@@ -339,17 +339,19 @@ class WeatherMapLink extends WeatherMapItem {
 		if (count($points) < 2 || $total < 1) {
 			return false;
 		}
-		$at = static function ($distance) use ($points, $total) {
+		$at = static function ($distance) use (&$points, &$total) {
 			$distance = max(0, min($total, $distance));
-			for ($i = 1; $i < count($points); $i++) {
-				if ($distance <= $points[$i][2]) {
-					$a = $points[$i - 1];
-					$b = $points[$i];
-					$t = ($distance - $a[2]) / ($b[2] - $a[2]);
-					return [$a[0] + $t * ($b[0] - $a[0]), $a[1] + $t * ($b[1] - $a[1])];
-				}
+			$low = 1;
+			$high = count($points) - 1;
+			while ($low < $high) {
+				$middle = intdiv($low + $high, 2);
+				if ($distance <= $points[$middle][2]) $high = $middle;
+				else $low = $middle + 1;
 			}
-			return array_slice($points[count($points) - 1], 0, 2);
+			$a = $points[$low - 1];
+			$b = $points[$low];
+			$t = ($distance - $a[2]) / ($b[2] - $a[2]);
+			return [$a[0] + $t * ($b[0] - $a[0]), $a[1] + $t * ($b[1] - $a[1])];
 		};
 		$file = wm_font_file($font->file);
 		// A trailing marker includes space advances, which a glyph's ink box omits.
@@ -383,16 +385,86 @@ class WeatherMapLink extends WeatherMapItem {
 		$b = $at($anchor + 1);
 		$reverse = $b[0] < $a[0];
 		$sign = $reverse ? -1 : 1;
-		// Match the straight renderer's end alignment near either endpoint.
-		if (!$reverse && $anchor + $length > $total) $anchor -= $length;
-		if ($reverse && $anchor - $length < 0) $anchor += $length;
-		// Nudges follow the original A-to-B spine, independently of text traversal.
-		$anchor += (int)$this->get_hint('comment_nudgealong');
-		$end = $anchor + $sign * $length;
-		if (min($anchor, $end) < 0 || max($anchor, $end) > $total) return false;
 		[, $height] = $this->owner->myimagestringsize($this->commentfont, $comment);
 		$offset = (int)$this->get_hint('comment_nudgeout');
 		$offset += $this->commentstyle === 'center' ? -$height / 2 : $width + 4;
+		// Measure text on its offset baseline. Measuring on the arrow spine
+		// compresses letters on inward bends and stretches them on outward bends.
+		$baseline = [];
+		$baselineLength = 0.0;
+		$baselineAnchor = 0.0;
+		$invalidIntervals = [];
+		// Bound undefined tangents locally even when an angled route has very
+		// long segments. Do not mark the entire approach to a U-turn invalid.
+		$extraDistances = [];
+		foreach ($points as $point) {
+			$a = $at($point[2] - 1);
+			$b = $at($point[2] + 1);
+			if (hypot($b[0] - $a[0], $b[1] - $a[1]) < 0.001) {
+				$extraDistances[] = max(0, $point[2] - 1);
+				$extraDistances[] = min($total, $point[2] + 1);
+			}
+		}
+		if ($extraDistances) {
+			$distances = array_unique(array_merge(array_column($points, 2), $extraDistances));
+			sort($distances, SORT_NUMERIC);
+			$sampled = [];
+			foreach ($distances as $distance) {
+				[$x, $y] = $at($distance);
+				$sampled[] = [$x, $y, $distance];
+			}
+			$points = $sampled;
+		}
+		$previousUndefined = false;
+		foreach ($points as $i => $point) {
+			$a = $at($point[2] - 1);
+			$b = $at($point[2] + 1);
+			$dx = $b[0] - $a[0];
+			$dy = $b[1] - $a[1];
+			$norm = hypot($dx, $dy);
+			$undefined = $norm < 0.001;
+			if ($undefined) {
+				// Use a one-sided normal for construction, never for rendering a
+				// label across this point. Both neighbouring intervals are unsafe.
+				$a = $points[max(0, $i - 1)];
+				$b = $points[$i > 0 ? $i : 1];
+				$dx = $b[0] - $a[0];
+				$dy = $b[1] - $a[1];
+				$norm = hypot($dx, $dy);
+			}
+			$x = $point[0] + $sign * $dy / $norm * $offset;
+			$y = $point[1] - $sign * $dx / $norm * $offset;
+			if ($i > 0) {
+				$last = $baseline[$i - 1];
+				// An offset beyond the local bend radius creates a cusp or reversal.
+				$step = hypot($x - $last[0], $y - $last[1]);
+				if ($undefined || $previousUndefined ||
+					($x - $last[0]) * ($point[0] - $points[$i - 1][0]) +
+					($y - $last[1]) * ($point[1] - $points[$i - 1][1]) <= 0) {
+					$invalidIntervals[] = [$baselineLength, $baselineLength + $step];
+				}
+				if ($anchor >= $points[$i - 1][2] && $anchor <= $point[2]) {
+					$baselineAnchor = $baselineLength + $step * ($anchor - $points[$i - 1][2]) / ($point[2] - $points[$i - 1][2]);
+				}
+				$baselineLength += $step;
+			}
+			$baseline[] = [$x, $y, $baselineLength];
+			$previousUndefined = $undefined;
+		}
+		// Preserve A-to-B nudge direction and endpoint alignment on the text path.
+		$points = $baseline;
+		$total = $baselineLength;
+		$anchor = $baselineAnchor;
+		if (!$reverse && $anchor + $length > $total) $anchor -= $length;
+		if ($reverse && $anchor - $length < 0) $anchor += $length;
+		$anchor += (int)$this->get_hint('comment_nudgealong');
+		$end = $anchor + $sign * $length;
+		if (min($anchor, $end) < 0 || max($anchor, $end) > $total) return false;
+		// A remote tight bend is harmless; reject only after final alignment
+		// and nudging put the label across a reversed or collapsed interval.
+		foreach ($invalidIntervals as [$from, $to]) {
+			if ($from <= max($anchor, $end) && $to >= min($anchor, $end)) return false;
+		}
 		$layout = [];
 		$previous = null;
 		foreach ($glyphs as [$glyph, $start, $advance]) {
@@ -409,15 +481,13 @@ class WeatherMapLink extends WeatherMapItem {
 			$dx /= $norm;
 			$dy /= $norm;
 			// Keep the whole word upright; reject abrupt bends between letters.
-			if ($dx < -0.05 || ($previous && $dx * $previous[0] + $dy * $previous[1] < cos(deg2rad(35)))) {
+			if ($dx < -0.05 || ($previous && $dx * $previous[0] + $dy * $previous[1] < cos(deg2rad(30)))) {
 				return false;
 			}
-			$x = $p[0] + $dy * $offset;
-			$y = $p[1] - $dx * $offset;
+			$x = $p[0];
+			$y = $p[1];
 			if ($previous && (
-				($x - $previous[2]) * ($dx + $previous[0]) + ($y - $previous[3]) * ($dy + $previous[1]) <= 0 ||
-				// Preserve kerned baseline spacing; inward compression can overlap glyphs.
-				hypot($x - $previous[2], $y - $previous[3]) + 0.01 < abs($distance - $previous[5])
+				($x - $previous[2]) * ($dx + $previous[0]) + ($y - $previous[3]) * ($dy + $previous[1]) <= 0
 			)) {
 				return false;
 			}
