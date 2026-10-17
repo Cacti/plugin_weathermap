@@ -63,6 +63,21 @@ final class CurvedLinkCommentTest extends TestCase {
 		foreach ($angles as $angle) {
 			self::assertLessThanOrEqual(93, abs($angle));
 		}
+		// A gentle inward bend must follow the offset baseline instead of falling
+		// back to a single rotated label crossing the arrow at the VIA point.
+		$curveX = [100, 104, 326];
+		$curveY = [80, 369, 587];
+		$link->curvepoints = calc_curve($curveX, $curveY);
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G (Backup)', 0, 7, 40));
+		self::assertSame('5G (Backup)', implode('', array_column($map->drawn, 2)));
+		$angles = array_column($map->drawn, 3);
+		self::assertGreaterThan(3, max($angles) - min($angles));
+		$map->fonts[$link->commentfont]->size = 9;
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G (Backup)', 0, 7, 40));
+		self::assertCount(11, $map->drawn);
+		$map->fonts[$link->commentfont]->size = 13;
 		// Independently drawn glyphs must retain TrueType pair kerning.
 		$link->curvepoints = [[0, 0, 0], [1000, 0, 1000]];
 		$map->drawn = [];

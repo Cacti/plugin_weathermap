@@ -17,7 +17,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 --- 2.0 ---
 
 * security: Add a version-safe CSP nonce (`plugin_weathermap_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class
-* issue: Render one Follow link curve control in Map Style so the setting can be cleared without a duplicate checkbox
+* issue: Render one Follow link curve control in Map Style and measure curved comments along their offset text path so gentle inward bends do not fall back to straight labels
 * issue#308: Refresh saved editor snapshots reliably, restore Safari node/note selection, clear placement cursors and return to properties when cancelling raw configuration edits
 * issue#309: Preserve endpoint alignment and nudge direction for curved link comments
 * issue#311: Preserve custom hover graphs when opening Link Properties
