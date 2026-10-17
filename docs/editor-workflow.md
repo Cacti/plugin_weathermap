@@ -48,7 +48,9 @@ Tab ownership uses Web Locks, with a SharedWorker fallback for HTTP installation
 If neither browser API is available, history stays disabled and normal editing
 continues. Changes made elsewhere invalidate it rather than overwriting someone else's
 work. Included configuration files and managed images are checked before a
-restore. Uploading or deleting library files, deleting map files, Cacti devices,
+restore, including image references inherited through INCLUDE files. Older
+snapshots without a complete image-reference list are discarded safely.
+Uploading or deleting library files, deleting map files, Cacti devices,
 graphs and personal editor preferences are outside this history.
 
 Snapshots are stored privately outside the web root, not in browser data or

@@ -405,4 +405,84 @@ final class EditorHistoryTest extends TestCase {
 		self::assertSame($original, file_get_contents($this->file));
 	}
 
+	private function saveColours(array $data): void {
+		$this->request('set_map_colours', ['colours_json' => json_encode($data)]);
+		ob_start(); wm_editor_colours($this->file, 'set_map_colours'); $response = json_decode(ob_get_clean(), true);
+		self::assertSame(200, http_response_code());
+		self::assertArrayNotHasKey('error', $response);
+	}
+
+	public function testUntouchedColoursAfterUndoKeepBytesAndRedoWithoutAnExplicitPulseHint(): void {
+		require_once 'lib/editor.colours.php';
+		file_put_contents($this->file, "SCALE DEFAULT 0 100 0 255 0 0\n" . file_get_contents($this->file));
+		$original = file_get_contents($this->file);
+		$this->move(60);
+		$history = $this->history('undo');
+		$data = wm_asset_colour_data($this->map());
+		foreach ($data['rows'] as &$row) {
+			$row['bottom'] = number_format($row['bottom'], 6, '.', '');
+			$row['top'] = number_format($row['top'], 6, '.', '');
+		}
+		unset($row);
+		$this->saveColours($data);
+		self::assertSame($original, file_get_contents($this->file));
+		self::assertSame($history, $this->history('history_status'));
+		// Numeric-looking labels remain text and must not compare loosely.
+		$data['rows'][0]['tag'] = '00';
+		$this->saveColours($data);
+		self::assertSame('00', wm_asset_colour_data($this->map())['rows'][0]['tag']);
+		self::assertSame(0, $this->history('history_status')['redo']);
+		$this->history('undo');
+		self::assertSame($original, file_get_contents($this->file));
+		$data = wm_asset_colour_data($this->map()); $data['pulse'] = false;
+		$this->saveColours($data);
+		self::assertFalse(wm_asset_colour_data($this->map())['pulse']);
+		$this->history('undo');
+		self::assertSame($original, file_get_contents($this->file));
+	}
+
+	public function testRedoCannotReintroduceADeletedImageUsedOnlyThroughAnExternalInclude(): void {
+		$asset = 'images/objects/history-include-' . bin2hex(random_bytes(6)) . '.png';
+		file_put_contents($asset, base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aX1sAAAAASUVORK5CYII='));
+		$include = $this->directory . '/external.inc';
+		file_put_contents($include, "NODE included\n LABEL Included\n ICON $asset\n POSITION 300 100\n");
+		$original = file_get_contents($this->file);
+		try {
+			$this->request('set_map_properties');
+			$map = $this->map();
+			$map->has_includes = true;
+			$map->include_directives[] = $include;
+			self::assertTrue(wm_editor_write_config($map, $this->file));
+			self::assertSame(200, http_response_code());
+			self::assertArrayHasKey('included', $this->map()->nodes);
+			self::assertStringNotContainsString($asset, file_get_contents($this->file));
+			self::assertContains($asset, WeathermapEditorHistory\snapshot($this->map(), $this->file)['assets']);
+			$this->history('undo');
+			self::assertSame($original, file_get_contents($this->file));
+			self::assertArrayNotHasKey('error', $this->history('redo'));
+			self::assertArrayHasKey('included', $this->map()->nodes);
+			$this->history('undo');
+			unlink($asset);
+			self::assertArrayHasKey('error', $this->history('redo'));
+			self::assertSame(500, http_response_code());
+			self::assertSame($original, file_get_contents($this->file));
+			self::assertSame(1, $this->history('history_status')['redo']);
+		} finally { if (is_file($asset)) unlink($asset); }
+	}
+
+	public function testOlderHistoryWithoutCompleteAssetMetadataIsDiscardedSafely(): void {
+		$this->move(60);
+		$original = file_get_contents($this->file);
+		WeathermapEditorHistory\load();
+		$key = WeathermapEditorHistory\key($this->file);
+		unset($GLOBALS['weathermap_editor_history'][$key]['undo'][0]['snapshot']['assets']);
+		WeathermapEditorHistory\persist();
+		self::assertSame(0, $this->history('history_status')['undo']);
+		self::assertSame($original, file_get_contents($this->file));
+		$this->move(80);
+		self::assertSame(1, $this->history('history_status')['undo']);
+		$this->history('undo');
+		self::assertSame($original, file_get_contents($this->file));
+	}
+
 }

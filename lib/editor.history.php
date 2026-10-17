@@ -90,10 +90,18 @@ function key($mapfile) {
 function prune() {
 	$histories = $GLOBALS['weathermap_editor_history'] ?? [];
 	foreach ($histories as $key => $entry) {
-		if ($entry['time'] < time() - 14400) unset($histories[$key]);
+		if ($entry['time'] < time() - 14400 || !hasAssetMetadata($entry)) unset($histories[$key]);
 	}
 	while (count($histories) > 8 || strlen(json_encode($histories, JSON_THROW_ON_ERROR)) > 8 * 1024 * 1024) array_shift($histories);
 	$GLOBALS['weathermap_editor_history'] = $histories;
+}
+
+/** Older snapshots cannot prove which assets their INCLUDE files reintroduce. */
+function hasAssetMetadata($entry) {
+	foreach (array_merge($entry['undo'] ?? [], $entry['redo'] ?? []) as $step) {
+		if (!is_array($step['snapshot']['assets'] ?? null)) return false;
+	}
+	return true;
 }
 
 /** Read exact root bytes and bind them to the loaded includes and path identities. */
@@ -103,6 +111,8 @@ function snapshot($map, $mapfile) {
 	return [
 		'contents' => base64_encode($contents),
 		'root' => $map->config_revision,
+		// This is the complete asset list captured at ReadConfig(), before edits.
+		'assets' => $map->config_managed_assets,
 		'dependencies' => $map->config_dependencies,
 		'identity' => $map->config_root_identity,
 		'revision' => \WeathermapConfig\snapshotRevision($map->config_revision, $map->config_dependencies, $map->config_root_identity)
@@ -152,9 +162,22 @@ function unchanged($map, $mapfile, $expectedRevision) {
 		|| ($expectedRevision !== null && $expectedRevision !== $loaded->config_revision)
 		|| !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity))) return false;
 	$action = \get_nfilter_request_var('action');
+	if ($action === 'set_map_colours') return effectiveColours($loaded) === effectiveColours($map);
 	if (in_array($action, ['set_node_config', 'set_link_config'], true)) return unchangedRaw($map, $loaded, $action);
 	$original = $loaded->ConfigText();
 	return is_string($original) && $original === $map->ConfigText();
+}
+
+/** Compare effective settings; numeric scale bounds are the only coerced values. */
+function effectiveColours($map) {
+	require_once __DIR__ . '/editor.colours.php';
+	$data = \wm_asset_colour_data($map);
+	foreach ($data['rows'] as &$row) {
+		$row['bottom'] = (float) $row['bottom'];
+		$row['top'] = (float) $row['top'];
+	}
+	unset($row);
+	return $data;
 }
 
 /** Compare exactly what fetchConfig() displayed, allowing only transport newlines. */
@@ -210,7 +233,8 @@ function restore($mapfile, $current, $target, $lock) {
 	if (!\WeathermapConfig\dependenciesMatch($target['dependencies'])) return false;
 	$contents = base64_decode($target['contents'], true);
 	if ($contents === false || hash('sha256', $contents) !== $target['root']) return false;
-	$assets = array_diff(\WeatherMap::ManagedImagePathsFromConfig($contents), \WeatherMap::ManagedImagePathsFromConfig(base64_decode($current['contents'])));
+	if (!is_array($target['assets'] ?? null) || !is_array($current['assets'] ?? null)) return false;
+	$assets = array_diff($target['assets'], $current['assets']);
 	$validate = function() use ($assets) {
 		foreach ($assets as $asset) {
 			if (!preg_match('/\{[^}]+\}/', $asset) && !is_file(dirname(__DIR__) . '/' . $asset)) return false;
