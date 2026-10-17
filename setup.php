@@ -72,6 +72,7 @@ if (!defined('WM_COPYRIGHT_YEARS')) {
  * @return void
  */
 function plugin_weathermap_install() {
+	api_plugin_register_hook('weathermap', 'rrd_graph_graph_options', 'weathermap_hover_graph_options', 'setup.php');
 	api_plugin_register_hook('weathermap', 'config_arrays',   'weathermap_config_arrays',   'setup.php');
 	api_plugin_register_hook('weathermap', 'config_settings', 'weathermap_config_settings', 'setup.php');
 
@@ -91,6 +92,60 @@ function plugin_weathermap_install() {
 	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-editor.php', 'Edit Weathermaps', 1);
 
 	weathermap_setup_table();
+}
+
+/** Split unquoted option tokens, retaining quote boundaries inside values. */
+function weathermap_graph_unquoted_tokens($options) {
+	$tokens = [];
+	$token = '';
+	$quote = null;
+	$length = strlen($options);
+	for ($i = 0; $i < $length; $i++) {
+		$char = $options[$i];
+		if ($char === "\\" && $i + 1 < $length) {
+			// RRDtool options use backslash-newline continuations between flags.
+			if ($options[$i + 1] === "\n") { $i++; continue; }
+			if ($options[$i + 1] === "\r" && $i + 2 < $length && $options[$i + 2] === "\n") { $i += 2; continue; }
+			if ($quote === null) $token .= $char . $options[$i + 1];
+			$i++;
+		} elseif ($quote !== null) {
+			if ($char === $quote) $quote = null;
+		} elseif ($char === "'" || $char === '"') {
+			$quote = $char;
+			$token .= "\0";
+		} elseif (ctype_space($char)) {
+			$tokens[] = $token;
+			$token = '';
+		} else {
+			$token .= $char;
+		}
+	}
+	$tokens[] = $token;
+	return $tokens;
+}
+
+/** Recognize zoom options without mistaking quoted graph text for flags. */
+function weathermap_graph_has_zoom($options) {
+	foreach (weathermap_graph_unquoted_tokens($options) as $token) {
+		if ($token === '--zoom' || str_starts_with($token, '--zoom=')) return true;
+	}
+	return false;
+}
+
+/** Render only explicitly marked, compact Weathermap previews at double density. */
+function weathermap_hover_graph_options($graph) {
+	if (get_current_page() !== 'graph_image.php' || get_nfilter_request_var('wm_hidpi') !== '2') {
+		return $graph;
+	}
+	$width = get_filter_request_var('graph_width');
+	$height = get_filter_request_var('graph_height');
+	if ($width < 1 || $width > 1000 || $height < 1 || $height > 400 || !is_array($graph) || !isset($graph['graph_opts'])) {
+		return $graph;
+	}
+	if (!weathermap_graph_has_zoom($graph['graph_opts'])) {
+		$graph['graph_opts'] .= '--zoom 2' . RRD_NL;
+	}
+	return $graph;
 }
 
 /**
@@ -185,6 +240,11 @@ function plugin_weathermap_upgrade() {
 
 	if (!in_array(get_current_page(), $files, true) && strpos(get_current_page(), 'weathermap-cacti') === false) {
 		return null;
+	}
+
+	// Also register for existing installations running the same development version.
+	if (!db_fetch_cell("SELECT id FROM plugin_hooks WHERE name = 'weathermap' AND hook = 'rrd_graph_graph_options' AND `function` = 'weathermap_hover_graph_options'")) {
+	api_plugin_register_hook('weathermap', 'rrd_graph_graph_options', 'weathermap_hover_graph_options', 'setup.php', true);
 	}
 
 	include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
@@ -1506,6 +1566,23 @@ function weathermap_rmtree(string $dir): bool {
 }
 
 /**
+ * Advertise density support only where graph_image.php renders on this collector.
+ *
+ * @param string $html Map HTML for the current viewer request.
+ *
+ * @return string Map HTML with a per-map rendering capability flag.
+ */
+function weathermap_hover_density_metadata($html) {
+	global $config;
+
+	$supported = ($config['poller_id'] ?? 0) == 1 || read_config_option('storage_location');
+	return preg_replace_callback('/<map\b[^>]*>/i', function ($match) use ($supported) {
+		$tag = preg_replace('/\sdata-wm-hover-density=(?:"[^"]*"|\'[^\']*\')/i', '', $match[0]);
+		return substr($tag, 0, -1) . ' data-wm-hover-density="' . ($supported ? '2' : '1') . '">';
+	}, $html) ?? $html;
+}
+
+/**
  * Add the originating map to local graph links without changing graph selection.
  *
  * @param string $html    Generated map HTML.
@@ -1515,6 +1592,8 @@ function weathermap_rmtree(string $dir): bool {
  */
 function weathermap_map_graph_links($html, $maphash) {
 	global $config;
+
+	$html = weathermap_hover_density_metadata($html);
 
 	return preg_replace_callback('/href=([\"\'])(.*?)\1/i', function ($match) use ($config, $maphash) {
 		$url   = html_entity_decode($match[2], ENT_QUOTES, 'UTF-8');
