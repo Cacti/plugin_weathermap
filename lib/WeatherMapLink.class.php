@@ -366,11 +366,13 @@ class WeatherMapLink extends WeatherMapItem {
 				return false;
 			}
 			$next = $box[2] - $marker[2];
-			$advance = $next - $length;
+			$single = imagettfbbox($font->size, 0, $file, $glyph . '|');
+			if ($single === false) return false;
+			$advance = $single[2] - $marker[2];
 			if ($advance <= 0) {
 				return false;
 			}
-			$glyphs[] = [$glyph, $length, $advance];
+			$glyphs[] = [$glyph, $next - $advance, $advance];
 			$length = $next;
 		}
 		if ($length > $total || $length < 1) {
@@ -412,7 +414,10 @@ class WeatherMapLink extends WeatherMapItem {
 			}
 			$x = $p[0] + $dy * $offset;
 			$y = $p[1] - $dx * $offset;
-			if ($previous && hypot($x - $previous[2], $y - $previous[3]) < 0.65 * ($advance + $previous[4]) / 2) {
+			if ($previous && (
+				($x - $previous[2]) * ($dx + $previous[0]) + ($y - $previous[3]) * ($dy + $previous[1]) <= 0 ||
+				hypot($x - $previous[2], $y - $previous[3]) < 0.65 * ($advance + $previous[4]) / 2
+			)) {
 				return false;
 			}
 			$layout[] = [$x - $dx * $advance / 2, $y - $dy * $advance / 2, $glyph, rad2deg(atan2(-$dy, $dx))];

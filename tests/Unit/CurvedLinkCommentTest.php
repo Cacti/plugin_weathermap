@@ -1,4 +1,26 @@
 <?php
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group, Howard Jones                   |
+ |                                                                         |
+ | This program is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
+ |                                                                         |
+ | This program is distributed in the hope that it will be useful,         |
+ | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
+ | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
+ | GNU General Public License for more details.                            |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
+ +-------------------------------------------------------------------------+
+ | http://www.cacti.net/                                                   |
+ +-------------------------------------------------------------------------+
+*/
 
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
@@ -35,6 +57,31 @@ final class CurvedLinkCommentTest extends TestCase {
 		self::assertGreaterThan(20, max($angles) - min($angles));
 		foreach ($angles as $angle) {
 			self::assertLessThanOrEqual(93, abs($angle));
+		}
+		// Independently drawn glyphs must retain TrueType pair kerning.
+		$link->curvepoints = [[0, 0, 0], [1000, 0, 1000]];
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, 'AV', 0, 7, 20));
+		$font = $map->fonts[$link->commentfont];
+		$file = wm_font_file($font->file);
+		$pair = imagettfbbox($font->size, 0, $file, 'AV|');
+		$single = imagettfbbox($font->size, 0, $file, 'V|');
+		self::assertEqualsWithDelta($pair[2] - $single[2], $map->drawn[1][0] - $map->drawn[0][0], 0.01);
+		// An inward offset beyond the bend radius reverses glyph progress.
+		$link->curvepoints = [];
+		for ($i = 0; $i <= 120; $i++) {
+			$t = $i / 120 * M_PI / 2;
+			$link->curvepoints[] = [20 * sin($t), 20 * cos($t), 20 * $t];
+		}
+		$link->add_hint('comment_nudgeout', 40);
+		$map->drawn = [];
+		self::assertFalse($link->DrawCurvedComment(null, 'III', 0, 7, 10));
+		self::assertSame([], $map->drawn, 'Reverse progress falls back before drawing');
+		$link->add_hint('comment_nudgeout', 0);
+		$link->curvepoints = [];
+		for ($i = 0; $i <= 120; $i++) {
+			$t = $i / 120 * M_PI / 2;
+			$link->curvepoints[] = [100 + 220 * sin($t), 320 - 220 * cos($t), 220 * $t];
 		}
 		// Reversing the spine must still produce an upright, complete label.
 		$link->curvepoints = array_reverse($link->curvepoints);
