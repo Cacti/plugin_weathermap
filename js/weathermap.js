@@ -43,10 +43,12 @@ function wmInteractiveHover(map) {
  map.find('area[data-hover]').attr({tabindex: '0', 'aria-keyshortcuts': 'ArrowDown'});
  var state = instance.wmInteractiveHover = {timer: null, close: instance.close};
  instance.close = function(event) {
-  clearTimeout(state.timer);
   if (event && (event.type === 'mouseleave' || event.type === 'focusout')) {
    var target = $(event.currentTarget), data = instance._find(target);
    var tip = data && data.tooltip;
+   // A late event from a closed hotspot must not cancel its successor's timer.
+   if (!tip) return;
+   clearTimeout(state.timer);
    if (tip && event.relatedTarget && (tip[0].contains(event.relatedTarget) || target[0] === event.relatedTarget)) return;
    var delayed = $.Event(event); delayed.currentTarget = target[0];
    state.timer = setTimeout(function() {
@@ -56,6 +58,7 @@ function wmInteractiveHover(map) {
    }, 300);
    return;
   }
+  clearTimeout(state.timer);
   return state.close.apply(instance, arguments);
  };
 }

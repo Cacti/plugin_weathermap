@@ -94,6 +94,41 @@ function plugin_weathermap_install() {
 	weathermap_setup_table();
 }
 
+/** Split unquoted option tokens, retaining quote boundaries inside values. */
+function weathermap_graph_unquoted_tokens($options) {
+	$tokens = [];
+	$token = '';
+	$quote = null;
+	$length = strlen($options);
+	for ($i = 0; $i < $length; $i++) {
+		$char = $options[$i];
+		if ($char === "\\" && $i + 1 < $length) {
+			if ($quote === null) $token .= $char . $options[$i + 1];
+			$i++;
+		} elseif ($quote !== null) {
+			if ($char === $quote) $quote = null;
+		} elseif ($char === "'" || $char === '"') {
+			$quote = $char;
+			$token .= "\0";
+		} elseif (ctype_space($char)) {
+			$tokens[] = $token;
+			$token = '';
+		} else {
+			$token .= $char;
+		}
+	}
+	$tokens[] = $token;
+	return $tokens;
+}
+
+/** Recognize zoom options without mistaking quoted graph text for flags. */
+function weathermap_graph_has_zoom($options) {
+	foreach (weathermap_graph_unquoted_tokens($options) as $token) {
+		if ($token === '--zoom' || str_starts_with($token, '--zoom=')) return true;
+	}
+	return false;
+}
+
 /** Render only explicitly marked, compact Weathermap previews at double density. */
 function weathermap_hover_graph_options($graph) {
 	if (get_current_page() !== 'graph_image.php' || get_nfilter_request_var('wm_hidpi') !== '2') {
@@ -104,7 +139,7 @@ function weathermap_hover_graph_options($graph) {
 	if ($width < 1 || $width > 1000 || $height < 1 || $height > 400 || !is_array($graph) || !isset($graph['graph_opts'])) {
 		return $graph;
 	}
-	if (!preg_match('/(?:^|\s)--zoom(?:=|\s)/', $graph['graph_opts'])) {
+	if (!weathermap_graph_has_zoom($graph['graph_opts'])) {
 		$graph['graph_opts'] .= '--zoom 2' . RRD_NL;
 	}
 	return $graph;

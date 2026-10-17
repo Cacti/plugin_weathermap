@@ -74,6 +74,11 @@ const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),
  other.trigger('mouseleave');open();
  assert.equal($('.ui-tooltip').length,1,'First hotspot can reopen after switching');
  instance.close($.Event('keyup',{currentTarget:area[0]}));
+ // A closed hotspot's late blur must not cancel the current popup's leave timer.
+ $('#outside')[0].focus();area[0].focus();
+ other[0].dispatchEvent(new w.MouseEvent('mouseover',{bubbles:true}));
+ other.trigger('mouseleave');$('#outside')[0].focus();await delay();
+ assert.equal($('.ui-tooltip').length,0,'Stale hotspot blur cannot leave its successor open');
  // Generated IDs stay hidden for cloned nodes, cloned endpoints and parallel links.
  for (const caption of ['node08121', 'node08121_copy', 'node08121_copy_copy',
   'node07486-node08121_copy', 'node07486_copy_copy-node08121_copya',
