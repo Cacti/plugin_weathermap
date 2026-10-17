@@ -172,11 +172,15 @@ function unchanged($map, $mapfile, $expectedRevision) {
 function effectiveColours($map) {
 	require_once __DIR__ . '/editor.colours.php';
 	$data = \wm_asset_colour_data($map);
-	foreach ($data['rows'] as &$row) {
+	$scales = [];
+	foreach ($data['rows'] as $row) {
 		$row['bottom'] = (float) $row['bottom'];
 		$row['top'] = (float) $row['top'];
+		$scales[$row['scale']][] = $row;
 	}
-	unset($row);
+	ksort($scales, SORT_STRING);
+	$data['rows'] = $scales;
+	sort($data['locked_scales'], SORT_STRING);
 	return $data;
 }
 
@@ -260,6 +264,15 @@ function step($mapfile, $current, $entry, $action, $lock) {
 	return $entry;
 }
 
+/** Keep registered-map navigation in sync with the successfully restored root. */
+function syncTitle($mapfile, $previousTitle) {
+	$restored = new \WeatherMap;
+	$restored->context = 'editor';
+	if ($restored->ReadConfig($mapfile) && $restored->title !== $previousTitle) {
+		\db_execute_prepared('UPDATE weathermap_maps SET titlecache = ? WHERE configfile = ?', [$restored->title, basename($mapfile)]);
+	}
+}
+
 /** Authenticated editor endpoint: POST plus Cacti's existing CSRF verification. */
 function handle($mapfile, $action) {
 	header('Content-Type: application/json');
@@ -289,6 +302,7 @@ function handle($mapfile, $action) {
 		}
 		if ($action !== 'history_status') {
 			$entry = step($mapfile, $current, $entry, $action, $lock);
+			syncTitle($mapfile, $map->title);
 			unset($GLOBALS['weathermap_editor_history'][$key]);
 			$GLOBALS['weathermap_editor_history'][$key] = $entry;
 			prune();

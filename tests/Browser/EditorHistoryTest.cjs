@@ -30,7 +30,12 @@ function count() {return requests.length;}
 function key(target, extra = {}) {$(target).trigger($.Event('keydown', {key: 'z', ctrlKey: true, ...extra}));}
 const startup = init($, win);
 assert.equal(count(), 0, 'history is not requested until tab ownership is established');
+assert.equal(dom.window.document.body.inert, true, 'editing is gated while tab ownership is pending');
+const earlySave = $.ajax({url: 'editor.php', type: 'POST', data: {action: 'move_node'}});
+assert.equal(earlySave.state(), 'rejected', 'a programmatic save is gated during ownership startup');
+assert.equal(count(), 0, 'no untracked mutation reaches the server');
 await startup;
+assert.notEqual(dom.window.document.body.inert, true, 'editing is restored after initialization');
 assert.equal(count(), 1);
 const initial = new URLSearchParams(requests[0].options.data);
 assert.equal(initial.get('action'), 'history_status');
@@ -99,6 +104,22 @@ await new Promise(resolve => setTimeout(resolve, 20));
 const httpReload = tab(duplicateId, null); httpReload.SharedWorker = SharedWorker;
 assert.equal(await claimHistoryId(httpReload, storageKey), duplicateId, 'HTTP reload keeps its history');
 httpDuplicate.events.get('pagehide')(); httpReload.events.get('pagehide')();
+// Failure to claim ownership must release the editor and allow ordinary saves.
+const failedDom = new JSDOM('<button id="wm-undo" disabled></button><button id="wm-redo" disabled></button>', {url: 'https://example.test/editor.php'});
+const failed$ = jquery(failedDom.window), failedRequests = [];
+failed$.ajaxTransport('+*', options => ({send(headers, complete) {failedRequests.push({options, complete});}, abort() {}}));
+const failedWin = {...win, document: failedDom.window.document, sessionStorage: failedDom.window.sessionStorage,
+ navigator: {locks: {request() {return Promise.reject(new Error('Ownership unavailable'));}}}};
+const failure = init(failed$, failedWin);
+assert.equal(failedDom.window.document.body.inert, true);
+await failure;
+assert.notEqual(failedDom.window.document.body.inert, true, 'failed ownership does not lock normal editing');
+failed$.ajax({url: 'editor.php', type: 'POST', data: {action: 'move_node'}});
+assert.equal(failedRequests.length, 1);
+assert.equal(new URLSearchParams(failedRequests[0].options.data).has('history_id'), false);
+failedRequests[0].complete(200, 'OK', {text: '{}'}, 'Content-Type: application/json');
+assert.equal(failed$('#wm-undo').attr('title'), 'Storage unavailable');
+failedDom.window.close();
 console.log('PASS: history buttons, shortcuts, tab identity, CSRF, pending saves, native text Undo, and stale-map errors.');
 dom.window.close();
 

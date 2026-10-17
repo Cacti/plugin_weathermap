@@ -485,4 +485,49 @@ final class EditorHistoryTest extends TestCase {
 		self::assertSame($original, file_get_contents($this->file));
 	}
 
+	public function testUntouchedColoursWithIncludedNamedScalePreserveRedoAndLocalRowOrderMatters(): void {
+		require_once 'lib/editor.colours.php';
+		$include = $this->directory . '/shared-scale.conf';
+		file_put_contents($include, "SCALE Shared 0 50 0 255 0 Low\nSCALE Shared 50 100 255 0 0 High\n");
+		file_put_contents($this->file, "INCLUDE $include\n" . file_get_contents($this->file));
+		$original = file_get_contents($this->file);
+		$this->move(60); $history = $this->history('undo');
+		$data = wm_asset_colour_data($this->map());
+		$this->saveColours($data);
+		self::assertSame($original, file_get_contents($this->file));
+		self::assertSame($history, $this->history('history_status'));
+		$indices = array_keys(array_filter($data['rows'], fn($row) => $row['scale'] === 'DEFAULT'));
+		[$data['rows'][$indices[0]], $data['rows'][$indices[1]]] = [$data['rows'][$indices[1]], $data['rows'][$indices[0]]];
+		$this->saveColours($data);
+		self::assertNotSame($original, file_get_contents($this->file));
+		self::assertSame(0, $this->history('history_status')['redo']);
+		$this->history('undo');
+		self::assertSame($original, file_get_contents($this->file));
+	}
+
+	public function testUndoRedoSynchronizeTheRegisteredTitleCacheOnlyWhenTitleChanges(): void {
+		file_put_contents($this->file, "TITLE Original title\n" . file_get_contents($this->file));
+		$this->request('set_map_properties', ['map_title' => 'Changed title', 'map_legend' => 'Traffic', 'map_stamp' => 'Created',
+			'map_width' => 600, 'map_height' => 300, 'map_bgfile' => '--NONE--', 'map_linkdefaultwidth' => 7,
+			'map_linkdefaultbwin' => '100M', 'map_linkdefaultbwout' => '100M']);
+		setMapProperties($this->file);
+		$GLOBALS['__test_db_calls'] = [];
+		$this->history('history_status'); self::assertSame([], $GLOBALS['__test_db_calls']);
+		$this->history('undo');
+		self::assertSame('Original title', $this->map()->title);
+		self::assertSame(['Original title', basename($this->file)], $GLOBALS['__test_db_calls'][0]['params']);
+		self::assertStringContainsString('titlecache', $GLOBALS['__test_db_calls'][0]['sql']);
+		$GLOBALS['__test_db_calls'] = [];
+		$this->history('redo');
+		self::assertSame('Changed title', $this->map()->title);
+		self::assertSame(['Changed title', basename($this->file)], $GLOBALS['__test_db_calls'][0]['params']);
+		$this->move(80); $GLOBALS['__test_db_calls'] = [];
+		$this->history('undo');
+		self::assertSame([], $GLOBALS['__test_db_calls'], 'position restores do not update the title cache');
+		$this->request('redo', ['config_revision' => str_repeat('0', 64)]);
+		ob_start(); WeathermapEditorHistory\handle($this->file, 'redo'); ob_end_clean();
+		self::assertSame(409, http_response_code());
+		self::assertSame([], $GLOBALS['__test_db_calls'], 'failed restores do not update the title cache');
+	}
+
 }

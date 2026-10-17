@@ -51,15 +51,8 @@
 
 	async function init($, win) {
 		if (!$('#wm-undo').length || typeof win.WMConfigRevision !== 'string') return;
-		var id, pending = 0, state = {undo: 0, redo: 0};
+		var id, initializing = true, pending = 0, state = {undo: 0, redo: 0};
 		var text = win.wmEditorText;
-		try {
-			var storageKey = 'weathermap-history:' + win.location.pathname;
-			id = await claimHistoryId(win, storageKey);
-		} catch (error) {
-			$('#wm-undo,#wm-redo').attr('title', text.historyStorage);
-			return;
-		}
 
 		function render() {
 			['undo', 'redo'].forEach(function(direction) {
@@ -82,14 +75,31 @@
 			var editor = new URL(win.editor_url, win.location.href);
 			if (options.type.toUpperCase() !== 'POST' || destination.href !== editor.href || options.processData === false) return;
 			var data = new URLSearchParams(options.data || '');
+			var action = data.get('action');
+			var readOnly = ['history_status', 'graphs', 'datasources', 'image_data', 'colour_data', 'delete_image'].indexOf(action) !== -1;
+			if (initializing && !readOnly) { xhr.abort(); return; }
+			if (!id) return; // Ownership failure leaves normal editing available.
 			data.set('history_id', id);
 			options.data = data.toString();
-			var action = data.get('action');
-			if (['history_status', 'graphs', 'datasources', 'image_data', 'colour_data', 'delete_image'].indexOf(action) !== -1) return;
+			if (readOnly) return;
 			pending++;
 			render();
 			xhr.always(function() { pending--; render(); });
 		});
+
+		// Prevent editing while the worker/lock owner is being established.
+		var wasInert = win.document.body.inert;
+		win.document.body.inert = true;
+		try {
+			var storageKey = 'weathermap-history:' + win.location.pathname;
+			id = await claimHistoryId(win, storageKey);
+		} catch (error) {
+			$('#wm-undo,#wm-redo').attr('title', text.historyStorage);
+			return;
+		} finally {
+			initializing = false;
+			win.document.body.inert = wasInert;
+		}
 
 		function apply(direction) {
 			if (pending || !state[direction]) return;
