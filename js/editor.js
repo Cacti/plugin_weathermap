@@ -2138,3 +2138,8 @@ function show_note(name, x, y) {
 	$('#note_font,#note_align').each(function() { if ($(this).data('ui-selectmenu')) $(this).selectmenu('refresh'); });
 	$('#note_text').trigger('focus');
 }
+
+// Allow the navigation regression to load these helpers directly under Node.js.
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = {wmEditorReloadUrl: wmEditorReloadUrl, wmReloadEditor: wmReloadEditor};
+}
