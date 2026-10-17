@@ -13,3 +13,19 @@
 .ui-dialog-title {
 	font-size: 12px !important;
 }
+
+/* Paper-plane's legacy table text otherwise stays pale inside white dialogs. */
+body#mainView[data-wm-theme="paper-plane"] .ui-dialog .ui-dialog-content {
+	background-color: #fff;
+	color: #333;
+}
+
+body#mainView[data-wm-theme="paper-plane"] .ui-dialog .cactiTable {
+	color: #333;
+}
+
+body#mainView[data-wm-theme="paper-plane"] .ui-dialog small,
+body#mainView[data-wm-theme="paper-plane"] .ui-dialog [id$="purpose"],
+body#mainView[data-wm-theme="paper-plane"] .ui-dialog div[style*="color:#555"] {
+	color: #555 !important;
+}
