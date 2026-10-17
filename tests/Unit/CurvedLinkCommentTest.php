@@ -100,6 +100,22 @@ final class CurvedLinkCommentTest extends TestCase {
 		$map->drawn = [];
 		self::assertFalse($link->DrawCurvedComment(null, 'III', 0, 7, 10));
 		self::assertSame([], $map->drawn, 'Reverse progress falls back before drawing');
+		// A distant reversed offset must not disable a valid label interval.
+		$tightTail = $this->quarterCircle(20, 500, -20, 1);
+		$link->curvepoints = array_merge([[0, 0, 0]], $tightTail);
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 10));
+		self::assertSame('5G Backup', implode('', array_column($map->drawn, 2)));
+		// Once nudged into that reversed tail, fallback must still be atomic.
+		$link->add_hint('comment_nudgealong', 450);
+		$map->drawn = [];
+		self::assertFalse($link->DrawCurvedComment(null, 'III', 0, 7, 10));
+		self::assertSame([], $map->drawn);
+		$link->add_hint('comment_nudgealong', 0);
+		$link->curvepoints = array_reverse($link->curvepoints);
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 90));
+		self::assertSame('5G Backup', implode('', array_column($map->drawn, 2)));
 		$link->add_hint('comment_nudgeout', 0);
 		$link->curvepoints = $this->quarterCircle(220, 100, 320, -1);
 		// Reversing the spine must still produce an upright, complete label.

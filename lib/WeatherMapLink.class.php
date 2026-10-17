@@ -393,6 +393,7 @@ class WeatherMapLink extends WeatherMapItem {
 		$baseline = [];
 		$baselineLength = 0.0;
 		$baselineAnchor = 0.0;
+		$invalidIntervals = [];
 		foreach ($points as $i => $point) {
 			$a = $at($point[2] - 1);
 			$b = $at($point[2] + 1);
@@ -405,9 +406,11 @@ class WeatherMapLink extends WeatherMapItem {
 			if ($i > 0) {
 				$last = $baseline[$i - 1];
 				// An offset beyond the local bend radius creates a cusp or reversal.
-				if (($x - $last[0]) * ($point[0] - $points[$i - 1][0]) +
-					($y - $last[1]) * ($point[1] - $points[$i - 1][1]) <= 0) return false;
 				$step = hypot($x - $last[0], $y - $last[1]);
+				if (($x - $last[0]) * ($point[0] - $points[$i - 1][0]) +
+					($y - $last[1]) * ($point[1] - $points[$i - 1][1]) <= 0) {
+					$invalidIntervals[] = [$baselineLength, $baselineLength + $step];
+				}
 				if ($anchor >= $points[$i - 1][2] && $anchor <= $point[2]) {
 					$baselineAnchor = $baselineLength + $step * ($anchor - $points[$i - 1][2]) / ($point[2] - $points[$i - 1][2]);
 				}
@@ -424,6 +427,11 @@ class WeatherMapLink extends WeatherMapItem {
 		$anchor += (int)$this->get_hint('comment_nudgealong');
 		$end = $anchor + $sign * $length;
 		if (min($anchor, $end) < 0 || max($anchor, $end) > $total) return false;
+		// A remote tight bend is harmless; reject only after final alignment
+		// and nudging put the label across a reversed or collapsed interval.
+		foreach ($invalidIntervals as [$from, $to]) {
+			if ($from <= max($anchor, $end) && $to >= min($anchor, $end)) return false;
+		}
 		$layout = [];
 		$previous = null;
 		foreach ($glyphs as [$glyph, $start, $advance]) {
