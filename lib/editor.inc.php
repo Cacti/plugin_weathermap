@@ -116,6 +116,26 @@ function display_graphs() {
 		}
 	}
 
+	// Fetch filenames only for graph IDs already authorised above.
+	if (get_nfilter_request_var('include_rrds') === '1' && $return) {
+		$paths = db_fetch_assoc_prepared('SELECT DISTINCT gti.local_graph_id AS id, dtd.data_source_path AS path
+			FROM graph_templates_item AS gti
+			INNER JOIN data_template_rrd AS dtr ON dtr.id = gti.task_item_id
+			INNER JOIN data_template_data AS dtd ON dtd.local_data_id = dtr.local_data_id
+			WHERE gti.local_graph_id IN (' . implode(',', array_fill(0, count($return), '?')) . ')
+			ORDER BY gti.local_graph_id, dtd.data_source_path', array_column($return, 'id'));
+		foreach ($return as &$item) {
+			$item['rrds'] = [];
+			foreach ($paths as $path) {
+				if ((int) $path['id'] === (int) $item['id'] && $path['path'] !== '') {
+					$item['rrds'][] = basename(str_replace('\\', '/', $path['path']));
+				}
+			}
+			$item['rrds'] = array_values(array_unique($item['rrds']));
+		}
+		unset($item);
+	}
+
 	print json_encode(get_nfilter_request_var('paged') == '1' ? [
 		'items'          => $return,
 		'offset'         => $offset,
@@ -1071,7 +1091,7 @@ function getEditorJs() {
 		'advanced'             => __('Advanced settings', 'weathermap'),
 		'hideAdvanced'         => __('Hide advanced settings', 'weathermap'),
 		'useInterface'         => __('Use interface', 'weathermap'),
-		'changeInterface'      => __('Change interface', 'weathermap'),
+		'changeInterface'      => __('Traffic interface', 'weathermap'),
 		'searchInterface'      => __('Search device or interface', 'weathermap'),
 		'noInterface'          => __('No interface selected', 'weathermap'),
 		'addNoteHelp' => __('Click on the map where you would like to add a note.', 'weathermap'),
@@ -1081,15 +1101,45 @@ function getEditorJs() {
 		'noteDelete' => __('Delete note "%s"?', '%s', 'weathermap'),
 		'noteError' => __('Unable to save changes. Please try again.', 'weathermap'),
 		'currentGraph'         => __('Current graph: %s', '%s', 'weathermap'),
-		'customConfig'         => __('Custom configuration — details under Advanced', 'weathermap'),
+		'customConfig'         => __('Custom configuration — see Advanced settings', 'weathermap'),
 		'chooseInterface'      => __('Choose an interface below', 'weathermap'),
 		'bandwidthIn'          => __('Bandwidth into %s', '%s', 'weathermap'),
 		'bandwidthOut'         => __('Bandwidth out of %s', '%s', 'weathermap'),
 		'graphSelected'        => __('Graph %s — data, click destination and hover graph selected. Save to apply.', '%s', 'weathermap'),
-		'linkPurpose'          => __('For a standard interface traffic link, the main controls are enough. Use Advanced to combine traffic sources, show multiple hover graphs, choose a different click destination or customise the line. Weathermap also supports other measurements, such as CPU and memory, commonly displayed on nodes.', 'weathermap'),
+		'trafficHoverHint' => __('Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL.', 'weathermap'),
+		'combinedSources' => __('Combined traffic from %s sources', '%s', 'weathermap'),
+		'sourceAdded' => __('Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply.', 'weathermap'),
+		'sourceAlreadyAdded' => __('This source is already included. Select a different source in this search box to add more.', 'weathermap'),
+		'removeSource' => __('Remove source', 'weathermap'),
+		'sourceRemoved' => __('Measured source removed. Hover and click graphs are unchanged. Save to apply.', 'weathermap'),
+		'noMeasuredSources' => __('No measured traffic sources selected.', 'weathermap'),
+		'chooseSourceFirst' => __('Choose an additional interface from the search results above, then click Add traffic source.', 'weathermap'),
+		'sourceReady' => __('Additional interface selected. Add traffic source keeps the primary interface and other sources.', 'weathermap'),
+		'primarySource' => __('Primary source — use "Use interface" at the top to change', 'weathermap'),
+		'choosePrimaryFirst' => __('Choose the primary traffic interface in the main form first.', 'weathermap'),
+		'chooseSource' => __('Add additional traffic sources', 'weathermap'),
+		'linkAdvancedHint' => __('Custom sources and URLs override the automatic interface setup. Leave these unchanged for a normal traffic link.', 'weathermap'),
+		'customSourcesChanged' => __('Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged.', 'weathermap'),
+		'extraUrlsHint' => __('One additional image URL maximum. This is the same preview managed under Additional hover graphs.', 'weathermap'),
+		'trafficSources' => __('Traffic sources', 'weathermap'),
+		'trafficSourcesHint' => __('Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes.', 'weathermap'),
+		'additionalGraph' => __('Additional graph', 'weathermap'),
+		'noGraphRrd' => __('No RRD file listed for this graph', 'weathermap'),
+		'customHoverGraph' => __('Custom hover graph', 'weathermap'),
+		'removeHoverGraph' => __('Remove graph', 'weathermap'),
+		'hoverLimit' => __('One additional graph maximum. Replace or remove it to choose another.', 'weathermap'),
+		'additionalGraphs' => __('Additional hover graphs', 'weathermap'),
+		'clickDestination' => __('Click destination', 'weathermap'),
+		'clickDestinationHint' => __('Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs.', 'weathermap'),
+		'appearance' => __('Appearance', 'weathermap'),
+		'bandwidthHint' => __('Capacity, for example 100M or 1G.', 'weathermap'),
+		'commentsHint' => __('Text along the link; the percentage sets its position.', 'weathermap'),
+		'appearanceComments' => __('Appearance and comments', 'weathermap'),
+		'linkHelp' => __('Help', 'weathermap'),
+		'linkPurpose'          => __('Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly.', 'weathermap'),
 		'browseInterface'      => __('Type a device or interface, or browse all', 'weathermap'),
 		'browseAll'            => __('Browse all', 'weathermap'),
-		'applyInterfaceHint'   => __('Select an interface, then click "Use interface" to apply it.', 'weathermap'),
+		'applyInterfaceHint' => __('Choose a primary interface, then click "Use interface". Additional sources and hover graphs are kept. Save applies changes.', 'weathermap'),
 		'lookingUp'            => __('Looking up device and interface...', 'weathermap'),
 		'customInterface'      => __('Custom or unavailable interface', 'weathermap'),
 		'unavailableInterface' => __('Interface name unavailable', 'weathermap'),
@@ -1099,7 +1149,7 @@ function getEditorJs() {
 		'hoverGraphs'          => __('Hover graphs', 'weathermap'),
 		'deleteNode'           => __('Delete Node', 'weathermap'),
 		'nodePurpose'          => __('For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID.', 'weathermap'),
-		'nodeDisplayHelp'      => __('Display name and icon: Choose what appears on the map. Position sets the X and Y coordinates; Move lets you place the node on the map.', 'weathermap'),
+		'nodeDisplayHelp'      => __('Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map.', 'weathermap'),
 		'nodeHoverHelp'        => __('Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes.', 'weathermap'),
 		'nodeAdvancedHelp'     => __('Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs.', 'weathermap'),
 		'searchGraph'          => __('Search device or graph', 'weathermap'),
@@ -1129,7 +1179,7 @@ function getEditorJs() {
 	var txtLinkActions = '<?php print __esc('Link Actions', 'weathermap'); ?>';
 	var txtMove        = '<?php print __esc('Move', 'weathermap'); ?>';
 	var txtClone       = '<?php print __esc('Clone', 'weathermap'); ?>';
-	var txtEdit        = '<?php print __esc('Edit Configuration', 'weathermap'); ?>';
+	var txtEdit        = '<?php print __esc('Edit Raw Configuration', 'weathermap'); ?>';
 	var txtDelete      = '<?php print __esc('Delete', 'weathermap'); ?>';
 	var txtVia         = '<?php print __esc('Via', 'weathermap'); ?>';
 	var txtTidy        = '<?php print __esc('Tidy', 'weathermap'); ?>';

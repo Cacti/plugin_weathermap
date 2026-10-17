@@ -84,6 +84,7 @@
         <a class="tocentry" href="#LINK_COMMENTFONT">COMMENTFONT</a>
         <a class="tocentry" href="#LINK_COMMENTPOS">COMMENTPOS</a>
         <a class="tocentry" href="#LINK_COMMENTSTYLE">COMMENTSTYLE</a>
+        <a class="tocentry" href="#LINK_COMMENTCURVE">COMMENTCURVE</a>
         <a class="tocentry" href="#LINK_DUPLEX">DUPLEX</a>
         <a class="tocentry" href="#LINK_INBWFORMAT">INBWFORMAT</a>
         <a class="tocentry" href="#LINK_INCOMMENT">INCOMMENT</a>
@@ -1710,6 +1711,16 @@ LINK secondlink
   </div>
 </div>
 
+        <div class="referenceentry">
+  <h3 id="LINK_COMMENTCURVE">COMMENTCURVE</h3>
+  <div class="definition">COMMENTCURVE 0|1</div>
+  <div class="description"><p>Use 1 to draw link comments along the link's curve,
+  including curved VIA points. The default is 1 (follow link curve); use 0 for straight comments. This requires
+  a TrueType COMMENTFONT. Text stays upright and uses COMMENTPOS and COMMENTSTYLE;
+  tight bends, multiline comments, unsupported fonts and text longer than the link
+  fall back to straight comments. In the editor, use Map Style &gt; Link Defaults
+  &gt; Follow link curve.</p></div>
+</div>
         <div class="referenceentry">
   <h3 id="LINK_COMMENTSTYLE">COMMENTSTYLE</h3>
   <div class="definition">COMMENTSTYLE edge

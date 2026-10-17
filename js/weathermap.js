@@ -1,3 +1,68 @@
+// Recognize generated endpoints separately; avoid ambiguous repetition across link names.
+function wmGeneratedHoverCaption(caption) {
+ var parts = caption.split('-');
+ return parts.length <= 2 && parts.every(function(part) {
+  return /^node[0-9]+[a-z]*$/i.test(part) || /^node[0-9]+[a-z]*(?:_copy)+[a-z]*$/i.test(part);
+ });
+}
+
+// Link local Cacti previews to their corresponding full graph, independently of INFOURL.
+function wmHoverGraphDestination(source) {
+ try {
+  var url = new URL(source, window.location.href);
+  if (url.origin !== window.location.origin || !/\/graph_image\.php$/.test(url.pathname)) return null;
+  var id = url.searchParams.get('local_graph_id');
+  if (!/^[1-9][0-9]*$/.test(id || '')) return null;
+  url.pathname = url.pathname.replace(/graph_image\.php$/, 'graph.php');
+  url.search = ''; url.hash = '';
+  url.searchParams.set('rra_id', 'all');
+  url.searchParams.set('local_graph_id', id);
+  return url.pathname + url.search;
+ } catch (error) { return null; }
+}
+
+// Density descriptors keep the preview's CSS size and text proportions unchanged.
+function wmSharpHoverGraph(image, supported) {
+ var original = image.attr('src');
+ if (!supported || !wmHoverGraphDestination(original) || image.attr('srcset')) return;
+ var url = new URL(original, window.location.href);
+ if (url.searchParams.has('image_format') && url.searchParams.get('image_format').toLowerCase() !== 'png') return;
+ var width = url.searchParams.get('graph_width'), height = url.searchParams.get('graph_height');
+ if (!/^[1-9][0-9]*$/.test(width || '') || Number(width) > 1000 || !/^[1-9][0-9]*$/.test(height || '') || Number(height) > 400) return;
+ // Boost's image cache omits the density flag from its key; zoom bypasses reads and writes.
+ url.searchParams.set('action', 'zoom');
+ url.searchParams.set('wm_hidpi', '2');
+ url.searchParams.set('image_format', 'png');
+ image.one('error.wmHiDpi', function() { $(this).removeAttr('srcset'); });
+ image.attr('srcset', url.href + ' 2x');
+}
+
+function wmInteractiveHover(map) {
+ var instance = map.tooltip('instance');
+ if (!instance || typeof instance.close !== 'function' || instance.wmInteractiveHover) return;
+ map.find('area[data-hover]').attr({tabindex: '0', 'aria-keyshortcuts': 'ArrowDown'});
+ var state = instance.wmInteractiveHover = {timer: null, close: instance.close};
+ instance.close = function(event) {
+  if (event && (event.type === 'mouseleave' || event.type === 'focusout')) {
+   var target = $(event.currentTarget), data = instance._find(target);
+   var tip = data && data.tooltip;
+   // A late event from a closed hotspot must not cancel its successor's timer.
+   if (!tip) return state.close.apply(instance, arguments);
+   clearTimeout(state.timer);
+   if (tip && event.relatedTarget && (tip[0].contains(event.relatedTarget) || target[0] === event.relatedTarget)) return;
+   var delayed = $.Event(event); delayed.currentTarget = target[0];
+   state.timer = setTimeout(function() {
+    if (target.data('wm-pointer-inside') || target[0] === document.activeElement ||
+     (tip && (tip.data('wm-pointer-inside') || tip[0].contains(document.activeElement)))) return;
+    state.close.call(instance, delayed);
+   }, 300);
+   return;
+  }
+  clearTimeout(state.timer);
+  return state.close.apply(instance, arguments);
+ };
+}
+
 function initWeatherMapView() {
 	if (typeof $.fn.tooltip === 'function') $('map').tooltip({
 		items: 'area',
@@ -15,9 +80,58 @@ function initWeatherMapView() {
 			$('.ui-helper-hidden-accessible').hide();
 
 			var id = $(ui.tooltip).attr('id');
+			$('map').each(function() {
+				var widget = $(this).tooltip('instance');
+				if (!widget || !widget.wmInteractiveHover) return;
+				clearTimeout(widget.wmInteractiveHover.timer);
+				$.each(widget.tooltips, function(otherId, item) {
+					if (otherId !== id) widget.wmInteractiveHover.close.call(widget, $.Event('mouseleave', {currentTarget:item.element[0]}));
+				});
+			});
 			$('div.ui-tooltip').not('#'+ id).remove();
 
-			ui.tooltip.css({width: 'max-content', maxWidth: 'calc(100vw - 48px)', pointerEvents: 'none'});
+			ui.tooltip.css({width: 'max-content', maxWidth: 'calc(100vw - 48px)', pointerEvents: 'auto'});
+			var area = $(event.originalEvent.target).closest('area'), instance = $(this).tooltip('instance');
+			if (instance && instance.wmInteractiveHover) {
+				var state = instance.wmInteractiveHover;
+				clearTimeout(state.timer);
+				area.data('wm-pointer-inside', area.data('wm-pointer-inside') === true || /^(?:mouseover|mouseenter)$/.test(event.originalEvent.type))
+					.off('.wmGraphHover').on('mouseenter.wmGraphHover', function() { $(this).data('wm-pointer-inside', true); clearTimeout(state.timer); })
+					.on('mouseleave.wmGraphHover', function(e) { $(this).data('wm-pointer-inside', false); instance.close(e); })
+					.on('focusout.wmGraphHover', function(e) { instance.close(e); })
+					.on('keydown.wmGraphHover', function(e) {
+						if (e.key !== 'ArrowDown') return;
+						e.preventDefault(); clearTimeout(state.timer);
+						var current = instance._find(area);
+						if (!current) {
+							state.enterTarget = this;
+							instance.open($.Event('focusin', {target:this, currentTarget:this}));
+						} else {
+							var first = current.tooltip.find('a').first()[0];
+							if (first) first.focus();
+						}
+					});
+				ui.tooltip.on('mouseenter.wmGraphHover focusin.wmGraphHover', function(e) {
+					clearTimeout(state.timer);
+					if (e.type === 'mouseenter') $(this).data('wm-pointer-inside', true);
+				}).on('mouseleave.wmGraphHover focusout.wmGraphHover', function(e) {
+					if (e.type === 'mouseleave') $(this).data('wm-pointer-inside', false);
+					if (e.relatedTarget && this.contains(e.relatedTarget)) return;
+					instance.close($.Event(e.type, {currentTarget:area[0], relatedTarget:e.relatedTarget}));
+				}).on('keydown.wmGraphHover', function(e) {
+					if (e.key === 'Escape') {
+						e.preventDefault();
+						// Focus the still-open hotspot first so focusin does not create a new popup.
+						area[0].focus();
+						state.close.call(instance, $.Event('keyup', {currentTarget:area[0]}));
+					}
+				});
+			}
+			if (instance && instance.wmInteractiveHover && instance.wmInteractiveHover.enterTarget === area[0]) {
+				instance.wmInteractiveHover.enterTarget = null;
+				var first = ui.tooltip.find('a').first()[0];
+				if (first) first.focus();
+			}
 			ui.tooltip.position({
 				my: 'left top+5%',
 				at: 'right+15 center',
@@ -43,20 +157,33 @@ function initWeatherMapView() {
 			// Fit the popup to its graphs instead of inheriting full-width table styles.
 			var caption = ($(this).attr('data-caption') || '').trim();
 			var data = $('<div>', {id: 'wm_hover'}).css({display: 'inline-block'});
-			if (caption && !/^node[0-9]+[a-z]*(?:-node[0-9]+[a-z]*)?$/i.test(caption)) {
+			// Generated node/link names can include repeated clone suffixes and collision letters.
+			if (caption && !wmGeneratedHoverCaption(caption)) {
 				$('<div>').text(caption).css({fontSize: '12px', padding: '0 0 4px'}).appendTo(data);
 			}
 			object.find('img').css({
 				display: 'block', width: 'auto', height: 'auto',
 				maxWidth: Math.min((parseInt(width, 10) || 800) * 1.1, window.innerWidth - 48) + 'px'
 			});
+			var densitySupported = $(this).closest('map').attr('data-wm-hover-density') === '2';
+			object.find('img').each(function() {
+				wmSharpHoverGraph($(this), densitySupported);
+				var destination = wmHoverGraphDestination($(this).attr('src'));
+				if (!destination || $(this).closest('a').length) return;
+				var label = $(this).attr('alt') || 'Open graph ' + new URL(destination, window.location.href).searchParams.get('local_graph_id');
+				$(this).wrap($('<a>').attr({href:destination, 'aria-label':label, title:label}));
+			});
 			$('<div>', {class: 'wmcontent'}).append(object).appendTo(data);
 			callback(data);
 		}
-	});
+	}).each(function() { wmInteractiveHover($(this)); });
 
 	waitForFinalEvent(function() {
-		$('.cactiGraphContentArea').removeClass('cactiGraphContentArea').addClass('wm_scroll');
+		// Cacti reuses this area during AJAX navigation. Keep its layout class
+		// and enable plugin scrolling only while Weathermap content is present.
+		$('.cactiGraphContentArea').each(function() {
+			$(this).toggleClass('wm_scroll', $(this).find('.weathermapimage, .wm_gallery, .all_map_holder').length > 0);
+		});
 	});
 }
 $(initWeatherMapView);

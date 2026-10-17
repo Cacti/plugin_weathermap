@@ -21,7 +21,7 @@ const {JSDOM}=require('jsdom'),jquery=require('jquery'),fs=require('node:fs'),pa
  assert.equal(active.querySelectorAll('mask polygon').length,1);assert.equal(active.querySelector('area').getAttribute('href'),'graph.php');
  assert.equal(disabled.querySelector('svg'),null);assert.equal(quiet.querySelector('svg'),null);
  $(w.document).trigger('ajaxComplete');assert.equal(active.querySelectorAll('svg').length,1);
- let tooltipCalls=0;$.fn.tooltip=function(){tooltipCalls++;return this};w.initWeatherMapView();assert.equal(tooltipCalls,1,'tooltip still initialises when UI exists');assert.equal(observers.length,1);
+ let tooltipCalls=0;$.fn.tooltip=function(options){if(options==='instance')return undefined;tooltipCalls++;return this};w.initWeatherMapView();assert.equal(tooltipCalls,1,'tooltip still initialises when UI exists');assert.equal(observers.length,1);
  media.matches=true;media.listener();assert.ok(active.querySelector('svg').classList.contains('wm-glow-paused'));
  active.remove();$(w.document).trigger('ajaxComplete');assert.ok(observers[0].disconnected);assert.equal(media.listener,null);
  console.log('Traffic glow colour, masking, reduced motion and cleanup PASS');w.close();

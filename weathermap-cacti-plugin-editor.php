@@ -316,7 +316,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ddslick.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ui-contextmenu.js'); ?>
 
-	<title><?php print __('PHP Weathermap Editor %s', $weathermap_version, 'flowview'); ?></title>
+	<title><?php print __('PHP Weathermap Editor %s', $weathermap_version, 'weathermap'); ?></title>
 </head>
 
 <?php
@@ -441,7 +441,7 @@ if ($editor_return_context === 'manage') {
 							</td>
 						</tr>
 						<tr>
-							<td><?php print __('Position', 'weathermap'); ?></td>
+							<td><?php print __('Map position (X, Y)', 'weathermap'); ?></td>
 							<td><input id='node_x' name='node_x' type='text' class='ui-state-default ui-corner-all' size='4' />,<input id='node_y' name='node_y' type='text' class='ui-state-default ui-corner-all' size='4' /></td>
 						</tr>
 						<tr>
@@ -452,6 +452,7 @@ if ($editor_return_context === 'manage') {
 							<td><?php print __('Label', 'weathermap'); ?></td>
 							<td><input id='node_label' name='node_label' type='text' class='ui-state-default ui-corner-all' /></td>
 						</tr>
+						<tr><td><label for='node_labelposition'><?php print __esc('Display name position', 'weathermap'); ?></label></td><td><select id='node_labelposition' name='node_labelposition'><option value='N60'><?php print __esc('Top', 'weathermap'); ?></option><option value='C' selected><?php print __esc('Middle', 'weathermap'); ?></option><option value='S60'><?php print __esc('Bottom', 'weathermap'); ?></option><option value='keep' hidden><?php print __esc('Custom (raw configuration)', 'weathermap'); ?></option></select></td></tr>
 						<tr>
 							<td><?php print __('Icon Filename', 'weathermap'); ?></td>
 							<td>
@@ -522,7 +523,7 @@ foreach ($graph_templates as $gt) {
 						<a class='ui-button ui-corner-all ui-widget' id='node_move'><?php print __('Move', 'weathermap'); ?></a>
 						<a class='ui-button ui-corner-all ui-widget' id='node_delete'><?php print __('Delete', 'weathermap'); ?></a>
 						<a class='ui-button ui-corner-all ui-widget' id='node_clone'><?php print __('Clone', 'weathermap'); ?></a>
-						<a class='ui-button ui-corner-all ui-widget' id='node_edit'><?php print __('Edit', 'weathermap'); ?></a>
+						<a class='ui-button ui-corner-all ui-widget' id='node_edit'><?php print __('Edit Raw Configuration', 'weathermap'); ?></a>
 						<a id='tb_node_cancel' class='wm_cancel ui-button ui-corner-all ui-widget'><?php print __('Cancel', 'weathermap'); ?></a>
 						<a id='tb_node_submit' class='wm_submit ui-button ui-corner-all ui-widget'><?php print __('Save', 'weathermap'); ?></a>
 					</div>
@@ -567,7 +568,7 @@ foreach ($graph_templates as $gt) {
 							</td>
 						</tr>
 						<tr>
-							<td><?php print __('Data Source(s)', 'weathermap'); ?></td>
+							<td><?php print __('Measured traffic source(s)', 'weathermap'); ?></td>
 							<td>
 								<textarea id='link_target' name='link_target' class='ui-state-default ui-corner-all'></textarea>
 							</td>
@@ -575,7 +576,7 @@ foreach ($graph_templates as $gt) {
 						<tr>
 							<td><?php print __('Data Source Selector', 'weathermap'); ?></td>
 							<td>
-								<input id='link_target_picker' name='link_target_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='datasources' />
+								<input aria-label='<?php print __esc('Traffic interface', 'weathermap'); ?>' id='link_target_picker' name='link_target_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='datasources' data-add-label='<?php print __esc('Add traffic source', 'weathermap'); ?>' />
 							</td>
 						</tr>
 						<tr>
@@ -583,19 +584,21 @@ foreach ($graph_templates as $gt) {
 							<td><input id='link_width' name='link_width' type='text' class='ui-state-default ui-corner-all' size='3' /> pixels</td>
 						</tr>
 						<tr>
-							<td><?php print __('Info URL(s)', 'weathermap'); ?></td>
+							<td><?php print __('Click destination URL', 'weathermap'); ?></td>
 							<td>
 								<textarea id='link_infourl' name='link_infourl' class='ui-state-default ui-corner-all'></textarea>
 							</td>
 						</tr>
+						<tr><td><label for='wm-link-primary-hover'><?php print __esc('Main hover graph URL', 'weathermap'); ?></label></td><td><input type='hidden' id='link_hover' name='link_hover' /><textarea id='wm-link-primary-hover' class='ui-state-default ui-corner-all'></textarea><small><?php print __esc('Shown first. Set by Use interface; additional graphs appear below it.', 'weathermap'); ?></small></td></tr>
+						<tr class='wm-link-section'><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Additional hover graphs', 'weathermap'); ?></div><p><?php print __esc('Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph.', 'weathermap'); ?></p></td></tr>
 						<tr>
-							<td><?php print __('Hover Graph URL(s)', 'weathermap'); ?></td>
+							<td><?php print __('Additional graph URL(s)', 'weathermap'); ?></td>
 							<td>
-								<textarea id='link_hover' name='link_hover' class='ui-state-default ui-corner-all'></textarea>
+								<textarea id='wm-link-extra-hover' class='ui-state-default ui-corner-all' aria-label='<?php print __esc('Additional hover graph URLs', 'weathermap'); ?>'></textarea>
 							</td>
 						</tr>
 						<tr>
-							<td><?php print __('Graph Template', 'weathermap'); ?></td>
+							<td><?php print __('Filter by graph type', 'weathermap'); ?></td>
 							<td>
 								<select id='link_template' name='link_template'>
 									<?php
@@ -614,9 +617,9 @@ foreach ($graph_templates as $gt) {
 							</td>
 						</tr>
 						<tr>
-							<td><?php print __('Graph Selector', 'weathermap'); ?></td>
+							<td><?php print __('Choose hover graph', 'weathermap'); ?></td>
 							<td>
-								<input id='link_picker' name='link_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='graphs' />
+								<input aria-label='<?php print __esc('Choose hover graph', 'weathermap'); ?>' id='link_picker' name='link_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='graphs' data-add-label='<?php print __esc('Add hover graph', 'weathermap'); ?>' data-replace-label='<?php print __esc('Replace hover graphs', 'weathermap'); ?>' />
 							</td>
 						</tr>
 						<tr>
@@ -651,7 +654,7 @@ foreach ($graph_templates as $gt) {
 				<div class='dlgButtons'>
 					<div class='dlgSubButtons'>
 						<a class='ui-button ui-corner-all ui-widget' id='link_delete'><?php print __('Delete Link', 'weathermap'); ?></a>
-						<a class='ui-button ui-corner-all ui-widget' id='link_edit'><?php print __('Edit', 'weathermap'); ?></a>
+						<a class='ui-button ui-corner-all ui-widget' id='link_edit'><?php print __('Edit Raw Configuration', 'weathermap'); ?></a>
 						<a class='ui-button ui-corner-all ui-widget' id='link_tidy'><?php print __('Tidy', 'weathermap'); ?></a>
 						<a class='ui-button ui-corner-all ui-widget' id='link_via'><?php print __('Via', 'weathermap'); ?></a>
 						<a id='tb_link_cancel' class='wm_cancel ui-button ui-corner-all ui-widget'><?php print __('Cancel', 'weathermap'); ?></a>
@@ -659,10 +662,15 @@ foreach ($graph_templates as $gt) {
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					<?php print __('<p><strong>Bandwidth:</strong> Set the capacity used to calculate link utilisation, for example 100M or 1G. K, M, G and T are supported. Use the same value for both directions unless their capacities differ.</p>
-<p><strong>Interface:</strong> Search by device, port or description, then select Use interface to fill the traffic source, click destination and hover graph together. Save applies the changes.</p>
-<p><strong>Comments:</strong> Add text to display along each direction of the link. The percentage controls its position along the line.</p>
-<p><strong>Advanced:</strong> Use custom data sources or combine multiple sources, choose different graphs, change the click destination, or adjust line shape. Data Source(s) controls the measured traffic; Info URL(s) controls where a click goes; Hover Graph URL(s) controls the images shown on hover.</p>', 'weathermap'); ?>
+					<?php print __('<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>
+<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>
+<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link.</p>
+<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>
+<p><strong>Advanced settings:</strong> Optional controls for combining measured sources, changing the click destination and entering custom hover image URLs. A normal traffic link usually needs no changes here.</p>
+<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>
+<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>
+<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>
+<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>', 'weathermap'); ?>
 				</div>
 			</div>
 		</div>
@@ -895,7 +903,7 @@ foreach ($styles as $id => $name) {
 			<div class='dlgBody'>
 				<p id='wm-colours-error' role='alert'></p>
 				<div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Link Appearance', 'weathermap'); ?></div>
-				<table class='cactiTable'><tr><td><?php print __esc('Link Border Colour', 'weathermap'); ?></td><td id='wm-outline-colour'></td></tr></table>
+				<table class='cactiTable'><tr><th scope='row'><?php print __esc('Link Border Colour', 'weathermap'); ?></th><td id='wm-outline-colour'></td></tr><tr><th scope='row'><label for='wm-comment-colour-select'><?php print __esc('Link Comment Colour', 'weathermap'); ?></label></th><td id='wm-comment-colour'></td></tr></table>
 				<label><input type='checkbox' id='wm-traffic-pulse'><?php print __esc(' Pulse links at 80%+', 'weathermap'); ?></label>
 				<p><?php print __esc('Links at 80% utilisation or above pulse in their traffic colour.', 'weathermap'); ?></p>
 				<div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Traffic Load Colours', 'weathermap'); ?></div>
@@ -935,7 +943,7 @@ foreach ($styles as $id => $name) {
 		<!-- Images -->
 
 		<!-- TextEdit -->
-        <div id='dlgTextEdit' class='dlgProperties' title='<?php print __esc('Edit Object Configuration', 'weathermap'); ?>'>
+        <div id='dlgTextEdit' class='dlgProperties' title='<?php print __esc('Edit Raw Configuration', 'weathermap'); ?>'>
 			<div class='cactiTable'>
 				<div class='dlgBody'>
 					<p><?php print __esc('Edit the raw configuration for this map object.', 'weathermap'); ?></p>

@@ -137,7 +137,7 @@ function wm_style_font_select($map, $name, $current) {
 	return '<select class="fontcombo" name="' . html_escape($name) . '" id="' . html_escape($name) . '">' . wm_style_font_options($map, $current) . '</select>';
 }
 /**
- * Render the link comment font and colour controls.
+ * Render the link comment font control.
  *
  * @param WeatherMap $map
  *
@@ -148,19 +148,8 @@ function wm_comment_style_fields($map) {
 	$out     = '<tr><td><label for="mapstyle_commentfont">' . html_escape(__('Link Comment Font', 'weathermap')) . '</label></td><td><select class="fontcombo" name="mapstyle_commentfont" id="mapstyle_commentfont">';
 	$out .= wm_style_font_options($map, $current);
 	$out .= '</select></td></tr>';
-	$rgb           = $map->links['DEFAULT']->commentfontcolour;
-	$currentColour = $rgb == [-3, -3, -3] ? 'contrast' : implode(' ', $rgb);
-	$colours       = wm_comment_colour_choices();
 
-	if (!isset($colours[$currentColour])) {
-		$colours[$currentColour] = __('Current custom colour (%s)', $currentColour, 'weathermap');
-	}
-	$out .= '<tr><td><label for="mapstyle_commentcolour">' . html_escape(__('Link Comment Colour', 'weathermap')) . '</label></td><td><select name="mapstyle_commentcolour" id="mapstyle_commentcolour">';
-
-	foreach ($colours as $value => $label) {
-		$out .= '<option value="' . html_escape($value) . '"' . ($value === $currentColour ? ' selected' : '') . '>' . html_escape($label) . '</option>';
-	}
-	$out .= '</select></td></tr>';
+	$out .= '<tr><td><label for="mapstyle_commentcurve">' . html_escape(__('Link Comments', 'weathermap')) . '</label></td><td><label><input type="checkbox" name="mapstyle_commentcurve" id="mapstyle_commentcurve" value="1"' . (!empty($map->links['DEFAULT']->commentcurve) ? ' checked' : '') . '> ' . html_escape(__('Follow link curve', 'weathermap')) . '</label><br><small>' . html_escape(__('Uses a TrueType font. Tight bends or text longer than the link use straight text.', 'weathermap')) . '</small></td></tr>';
 
 	return $out;
 }
@@ -270,7 +259,10 @@ function wm_comment_update_default($map, $field, $new) {
  *
  * @return void
  */
-function wm_comment_apply_style($map, $font, $colour) {
+function wm_comment_apply_style($map, $font, $colour, $curve = null) {
+	if ($curve === '0' || $curve === '1') {
+		wm_comment_update_default($map, 'commentcurve', (int)$curve);
+	}
 	wm_comment_update_default($map, 'commentfont', wm_comment_resolve_font($map, $font));
 	wm_comment_update_default($map, 'commentfontcolour', wm_comment_resolve_colour($colour));
 }

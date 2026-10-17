@@ -68,6 +68,7 @@ for (const action of ['set_node_properties','set_link_properties']) {
 w.eval(src.slice(src.indexOf('function click_execute('),src.indexOf('function show_context_help(')));
 $('#action').val('add_link');w.mapmode('existing');assert.ok($('#existingdata').hasClass('wm-placement-mode'));
 w.click_execute({},'LINK:1:0');assert.equal($('#action').val(),'');assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));assert.equal($('area').css('cursor'),'pointer');
+w.eval(src.slice(src.indexOf('function wmLinkHoverEntries('),src.indexOf('function wmLinkCompactHoverUrl(')));
 w.eval(src.slice(src.indexOf('function form_submit('),src.indexOf('function map_properties(')));
 $('body').append('<div id="dlgNodeProperties"></div><div id="dlgLinkProperties"></div>');
 let saveRequest;$.ajax=opts=>saveRequest=opts;w.editor_url='/editor';w.wmSyncLinkHoverParts=()=>{};
