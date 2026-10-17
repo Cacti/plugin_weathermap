@@ -13,7 +13,7 @@ w.infoUrlTarget='graph.php?rra_id=all&local_graph_id=';w.Nodes={};w.Links={};w.l
 const src=fs.readFileSync(root+'/js/editor.js','utf8');
 w.eval(src.slice(src.indexOf('function graphPicker()'),src.indexOf("$(document).on('unload'")));
 w.eval(src.slice(src.indexOf('// Compact link workflow;')));
-w.graphPicker();$('#link_target').val('one.rrd two.rrd');$('#link_infourl').val('/original');$('#link_hover').val('/hover');
+$('#link_target_picker').attr('aria-label','Traffic interface search');w.graphPicker();assert.equal($('#link_target_picker_input').attr('aria-label'),'Traffic interface search');$('#link_target').val('one.rrd two.rrd');$('#link_infourl').val('/original');$('#link_hover').val('/hover');
 w.compactLinkEditorBase();$('#dlgLinkProperties').dialog({width:650});$('#wm-link-advanced-button').trigger('click');
 const picker=$('#wm-link-source-picker');picker.val('Replacement');picker.autocomplete('search','Replacement');
 assert.equal($('#link_target_picker_rep').length,0);

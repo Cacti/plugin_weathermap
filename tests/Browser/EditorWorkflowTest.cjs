@@ -501,6 +501,16 @@ w.wmRrdSourceDefaults={input:'octets_in',output:'octets_out',path:'/rrd'};
 assert.equal(w.wmLinkSameTrafficSource('backup.rrd','/rrd/backup.rrd:octets_in:octets_out'),true);
 assert.equal(w.wmLinkSameTrafficSource('backup.rrd','backup.rrd:traffic_in:traffic_out'),false);
 w.wmRrdSourceDefaults={};
+// Outer multipliers participate in both add and promotion identities.
+$('#link_target').val('primary.rrd 1*'+items[1].id);
+$('#wm-link-source-picker').data('wm-choice',items[1]);w.wmApplyLinkTrafficSource();
+assert.equal($('#link_target').val(),'primary.rrd 1*'+items[1].id);
+$('#link_target_picker').data('wm-choice',items[1]);$('#wm-link-use').trigger('click');
+assert.equal($('#link_target').val(),items[1].id);
+assert.equal(w.wmLinkSameTrafficSource('2*scale:4:backup.rrd','backup.rrd'),true);
+assert.equal(w.wmLinkSameTrafficSource('-2*scale:-4:backup.rrd','backup.rrd'),true);
+assert.equal(w.wmLinkSameTrafficSource('-backup.rrd','backup.rrd'),false);
+assert.equal(w.wmLinkSameTrafficSource('2*backup.rrd','backup.rrd'),false);
 // Restore the custom click/hover setup for the independent editor assertions below.
 $('#link_infourl').val(clickBeforeSources);$('#link_hover').val(hoverBeforeSources);w.wmInitLinkHoverParts();
 // Manual expert edits remain serializable and cannot be overwritten by pending automatic lookups.

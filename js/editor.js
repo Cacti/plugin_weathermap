@@ -180,6 +180,7 @@ function graphPicker() {
 		$(this).hide();
 		$('#' + id + '_add').val($(this).attr('data-add-label') || 'Add');
 		$('#' + id + '_rep').val($(this).attr('data-replace-label') || 'Replace');
+		$('#' + id + '_input').attr('aria-label', $(this).attr('aria-label') || $(this).closest('tr').find('td:first').text());
 
 		$('#' + id + '_add').off('click').on('click', function() {
 			var hover   = 'graph_image.php?local_graph_id=';;
@@ -1528,7 +1529,10 @@ function wmSetLinkExtraHover(value, replace) {
 // Compare the effective RRD inputs without conflating custom data sources or scaling.
 function wmLinkTrafficIdentity(source) {
  var defaults = typeof wmRrdSourceDefaults === 'undefined' ? {} : wmRrdSourceDefaults;
- var file = String(source), input = defaults.input || 'traffic_in', output = defaults.output || 'traffic_out', scale = 8;
+ var file = String(source), input = defaults.input || 'traffic_in', output = defaults.output || 'traffic_out', scale = 8, multiplier = 1;
+ if (file.startsWith('-')) { multiplier = -1; file = file.slice(1); }
+ var outer = file.match(/^([0-9]+(?:\.[0-9]*)?)\*(.*)$/);
+ if (outer) { multiplier *= Number(outer[1]); file = outer[2]; }
  var ds = file.match(/^(.*\.rrd):([-a-zA-Z0-9_]+):([-a-zA-Z0-9_]+)$/);
  if (ds) { file = ds[1]; input = ds[2]; output = ds[3]; }
  file = file.replace(/^rrd:/, '');
@@ -1542,6 +1546,8 @@ function wmLinkTrafficIdentity(source) {
  }
  if (!/\.rrd$/.test(file)) return null;
  if (!/^[/.]/.test(file) && defaults.path) file = defaults.path + '/' + file;
+ scale *= multiplier;
+ if (!Number.isFinite(scale)) return null;
  return JSON.stringify([file, input, output, scale]);
 }
 function wmLinkSameTrafficSource(left, right) {
