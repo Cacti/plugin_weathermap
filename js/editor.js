@@ -1533,8 +1533,13 @@ function wmLinkTrafficIdentity(source) {
  if (ds) { file = ds[1]; input = ds[2]; output = ds[3]; }
  file = file.replace(/^rrd:/, '');
  if (file.startsWith('gauge:')) { scale = 1; file = file.slice(6); }
- var scaled = file.match(/^scale:([+-]?\d*\.?\d*):(.*)$/);
- if (scaled) { scale = Number(scaled[1]); file = scaled[2]; }
+ if (file.startsWith('scale:')) {
+  var separator = file.indexOf(':', 6), value = file.slice(6, separator);
+  if (separator < 0 || !/^[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)$/.test(value)) return null;
+  scale = Number(value);
+  if (!Number.isFinite(scale)) return null;
+  file = file.slice(separator + 1);
+ }
  if (!/\.rrd$/.test(file)) return null;
  if (!/^[/.]/.test(file) && defaults.path) file = defaults.path + '/' + file;
  return JSON.stringify([file, input, output, scale]);

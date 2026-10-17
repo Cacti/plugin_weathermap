@@ -493,6 +493,10 @@ assert.equal($('#link_target').val(),items[1].id+' custom.rrd:in:out gauge:'+ite
 assert.equal(w.wmLinkSameTrafficSource('rrd:backup.rrd:traffic_in:traffic_out','backup.rrd'),true);
 assert.equal(w.wmLinkSameTrafficSource('scale:8:backup.rrd','backup.rrd'),true);
 assert.equal(w.wmLinkSameTrafficSource('scale:2:backup.rrd','backup.rrd'),false);
+assert.equal(w.wmLinkSameTrafficSource('scale:+8.0:backup.rrd','backup.rrd'),true);
+assert.equal(w.wmLinkSameTrafficSource('scale:.5:backup.rrd','scale:0.5:backup.rrd'),true);
+assert.equal(w.wmLinkTrafficIdentity('scale:'+ '9'.repeat(20000)+'x:backup.rrd'),null);
+assert.equal(w.wmLinkTrafficIdentity('scale:'+ '9'.repeat(20000)+':backup.rrd'),null);
 w.wmRrdSourceDefaults={input:'octets_in',output:'octets_out',path:'/rrd'};
 assert.equal(w.wmLinkSameTrafficSource('backup.rrd','/rrd/backup.rrd:octets_in:octets_out'),true);
 assert.equal(w.wmLinkSameTrafficSource('backup.rrd','backup.rrd:traffic_in:traffic_out'),false);
