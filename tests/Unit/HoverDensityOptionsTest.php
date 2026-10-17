@@ -31,4 +31,17 @@ final class HoverDensityOptionsTest extends TestCase {
   $GLOBALS['__test_nfilter_request']=$request;test_set_current_page('graph.php');self::assertSame($graph,weathermap_hover_graph_options($graph));
   test_set_current_page('graph_image.php');self::assertSame([],weathermap_hover_graph_options([]));self::assertSame(null,weathermap_hover_graph_options(null));
  }
+ public function testCactiContinuationsPreserveZoomDetectionAndQuotedValues(): void {
+  require_once __DIR__.'/../../setup.php';
+  foreach ([" \\\n", " \\\r\n"] as $separator) {
+   foreach (['--zoom 2', '--zoom=2'] as $flag) {
+    self::assertTrue(weathermap_graph_has_zoom('--width=300' . $separator . $flag . $separator));
+   }
+   self::assertFalse(weathermap_graph_has_zoom('--title="Network' . $separator . '--zoom report"'));
+  }
+  self::assertFalse(weathermap_graph_has_zoom("--title=Network\\ report"));
+  self::assertSame(['tail\\'], weathermap_graph_unquoted_tokens('tail' . chr(92)));
+  self::assertFalse(weathermap_graph_has_zoom('--width=300' . chr(92) . "\r"));
+ }
+
 }

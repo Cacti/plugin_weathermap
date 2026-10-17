@@ -103,6 +103,9 @@ function weathermap_graph_unquoted_tokens($options) {
 	for ($i = 0; $i < $length; $i++) {
 		$char = $options[$i];
 		if ($char === "\\" && $i + 1 < $length) {
+			// RRDtool options use backslash-newline continuations between flags.
+			if ($options[$i + 1] === "\n") { $i++; continue; }
+			if ($options[$i + 1] === "\r" && $i + 2 < $length && $options[$i + 2] === "\n") { $i += 2; continue; }
 			if ($quote === null) $token .= $char . $options[$i + 1];
 			$i++;
 		} elseif ($quote !== null) {

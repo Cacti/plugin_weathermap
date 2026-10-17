@@ -47,7 +47,7 @@ function wmInteractiveHover(map) {
    var target = $(event.currentTarget), data = instance._find(target);
    var tip = data && data.tooltip;
    // A late event from a closed hotspot must not cancel its successor's timer.
-   if (!tip) return;
+   if (!tip) return state.close.apply(instance, arguments);
    clearTimeout(state.timer);
    if (tip && event.relatedTarget && (tip[0].contains(event.relatedTarget) || target[0] === event.relatedTarget)) return;
    var delayed = $.Event(event); delayed.currentTarget = target[0];

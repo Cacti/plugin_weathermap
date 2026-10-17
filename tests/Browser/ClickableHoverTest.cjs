@@ -79,6 +79,19 @@ const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),
  other[0].dispatchEvent(new w.MouseEvent('mouseover',{bubbles:true}));
  other.trigger('mouseleave');$('#outside')[0].focus();await delay();
  assert.equal($('.ui-tooltip').length,0,'Stale hotspot blur cannot leave its successor open');
+ // Callback-based content can arrive after the pointer or keyboard focus leaves.
+ const originalContent=instance.options.content;
+ for (const eventType of ['mouseleave','focusout']) {
+  let deliver;
+  instance.option('content',function(response){originalContent.call(this,html=>{deliver=()=>response(html);});});
+  open();assert.equal(area.data('ui-tooltip-open'),true);
+  assert.equal($('.ui-tooltip').length,0);
+  instance.close($.Event(eventType,{currentTarget:area[0]}));
+  assert.equal(area.data('ui-tooltip-open'),undefined,'Pending opens are cancelled on '+eventType);
+  deliver();await delay();
+  assert.equal($('.ui-tooltip').length,0,'Late content cannot open an abandoned popup');
+ }
+ instance.option('content',originalContent);
  // Generated IDs stay hidden for cloned nodes, cloned endpoints and parallel links.
  for (const caption of ['node08121', 'node08121_copy', 'node08121_copy_copy',
   'node07486-node08121_copy', 'node07486_copy_copy-node08121_copya',
