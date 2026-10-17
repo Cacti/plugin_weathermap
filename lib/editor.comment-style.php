@@ -149,6 +149,8 @@ function wm_comment_style_fields($map) {
 	$out .= wm_style_font_options($map, $current);
 	$out .= '</select></td></tr>';
 
+	$out .= '<tr><td><label for="mapstyle_commentcurve">' . html_escape(__('Link Comments', 'weathermap')) . '</label></td><td><label><input type="checkbox" name="mapstyle_commentcurve" id="mapstyle_commentcurve" value="1"' . (!empty($map->links['DEFAULT']->commentcurve) ? ' checked' : '') . '> ' . html_escape(__('Follow link curve', 'weathermap')) . '</label><br><small>' . html_escape(__('Uses a TrueType font. Tight bends or text longer than the link use straight text.', 'weathermap')) . '</small></td></tr>';
+
 	return $out;
 }
 /**
@@ -257,7 +259,10 @@ function wm_comment_update_default($map, $field, $new) {
  *
  * @return void
  */
-function wm_comment_apply_style($map, $font, $colour) {
+function wm_comment_apply_style($map, $font, $colour, $curve = null) {
+	if ($curve === '0' || $curve === '1') {
+		wm_comment_update_default($map, 'commentcurve', (int)$curve);
+	}
 	wm_comment_update_default($map, 'commentfont', wm_comment_resolve_font($map, $font));
 	wm_comment_update_default($map, 'commentfontcolour', wm_comment_resolve_colour($colour));
 }

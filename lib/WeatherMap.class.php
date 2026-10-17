@@ -2763,6 +2763,7 @@ class WeatherMap extends WeatherMapBase {
 					['LINK', '/^\s*OUTCOMMENT\s+(.*)\s*$/i', ['comments[OUT]'                                          => 1]],
 					['LINK', '/^\s*BWFONT\s+(\d+)\s*$/i', ['bwfont'                                                    => 1]],
 					['LINK', '/^\s*COMMENTFONT\s+(\d+)\s*$/i', ['commentfont'                                          => 1]],
+					['LINK', '/^\s*COMMENTCURVE\s+([01])\s*$/i', ['commentcurve' => 1]],
 					['LINK', '/^\s*COMMENTSTYLE\s+(edge|center)\s*$/i', ['commentstyle'                                => 1]],
 					['LINK', '/^\s*DUPLEX\s+(full|half)\s*$/i', ['duplex'                                              => 1]],
 					['LINK', '/^\s*BWSTYLE\s+(classic|angled)\s*$/i', ['labelboxstyle'                                 => 1]],

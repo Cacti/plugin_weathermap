@@ -2914,3 +2914,15 @@ msgid ""
 "<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
 "<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
 msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr ""
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr ""
