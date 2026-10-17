@@ -38,6 +38,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#275: Load permitted editor picker results in bounded pages, search interface descriptions, and encode graph search terms
 * issue#274: Fit hover popups to their graph content and close them immediately when leaving map links, preserving graph proportions and meaningful captions
 * issue: On Cacti 1.2.32 and above, defer the editor's jQuery UI dialog (`ui.dialog`) styling to the core theme CSS; the plugin's `.ui-dialog-title`/`.ui-dialog-buttonset` font overrides have been split out of `css/editor.css` into a separate `css/editor-ui-dialog-legacy.css` that is only loaded on earlier Cacti releases
+* issue: Keep editor dialog labels and help readable with the Paper-plane theme on Cacti releases earlier than 1.2.32
 * issue: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
 * issue: Bring every PHP file to PHPStan level 8 with zero errors, documenting parameter, return and property types throughout the legacy rendering engine without changing runtime behaviour (docblock typing only, so no new TypeErrors on the 1.2.x-era code base)
 * issue: `upgrade_mapfiles()` reported the wrong filename (swapped `$objfile`/`$bgfile`) in the BACKGROUND/ICON "file not found on disk" warnings, and the ICON branch reused the BACKGROUND message text and log code
