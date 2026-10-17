@@ -3,7 +3,7 @@
 // One owner per tab history, including on HTTP where Web Locks is unavailable.
 // Only opaque browser IDs live here; map snapshots remain on the server.
 var owners = new Map();
-self.onconnect = function(event) {
+function connect(event) {
 	var port = event.ports[0], owned;
 	port.onmessage = function(message) {
 		if (message.data.release) {
@@ -18,4 +18,7 @@ self.onconnect = function(event) {
 		port.postMessage({granted: granted});
 	};
 	port.start();
-};
+}
+
+if (typeof module !== 'undefined' && module.exports) module.exports = connect;
+else self.onconnect = connect;

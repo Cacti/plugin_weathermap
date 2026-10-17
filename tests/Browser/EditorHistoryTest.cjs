@@ -2,7 +2,7 @@
 const assert = require('node:assert/strict');
 const {JSDOM} = require('jsdom');
 const jquery = require('jquery');
-const fs = require('node:fs'), vm = require('node:vm');
+const connectWorker = require('../../js/editor.history.worker.js');
 const {MessageChannel} = require('node:worker_threads');
 const {webcrypto} = require('node:crypto');
 const {init, claimHistoryId} = require('../../js/editor.history.js');
@@ -83,14 +83,11 @@ reloaded.events.get('pageshow')({persisted: true});
 assert.equal(reloaded.events.get('reloaded'), true, 'back/forward restoration reacquires ownership');
 reloaded.events.get('pagehide')();
 // Exercise the actual shared worker protocol as the HTTP-compatible fallback.
-const workerContext = vm.createContext({Map});
-workerContext.self = workerContext;
-vm.runInContext(fs.readFileSync(require('node:path').join(__dirname, '../../js/editor.history.worker.js'), 'utf8'), workerContext);
 class SharedWorker {
  constructor() {
   const channel = new MessageChannel();
   this.port = channel.port2;
-  workerContext.onconnect({ports: [channel.port1]});
+  connectWorker({ports: [channel.port1]});
  }
 }
 const httpTab = tab(duplicateId, null); httpTab.SharedWorker = SharedWorker;
