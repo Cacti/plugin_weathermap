@@ -7,6 +7,7 @@ const assert = require('node:assert/strict');
  const dom = new JSDOM('<input id="mapname" value="test.conf"><input id="link_picker" class="selectmenu-ajax" data-action="graphs" data-add-label="Add hover graph" data-replace-label="Replace hover graphs" value="7"><select id="link_template"><option value="1">One</option><option value="2">Two</option></select>', {runScripts: 'outside-only', url: 'https://example.test/cacti/plugins/weathermap/editor.php'});
  const w = dom.window, $ = jquery(w);
  w.$ = $;
+ w.wmEditorText = {searchGraph: 'Search graph', noGraphRrd: 'No data source'};
  let options, requestUrl, responseItems, failure;
  $.fn.textBoxWidth = () => 200;
  $.fn.autocomplete = function(arg, term) {
@@ -14,11 +15,16 @@ const assert = require('node:assert/strict');
   if (arg === 'search') { options.source({term}, data => { responseItems = data; }); }
   return this;
  };
- $.getJSON = (url, callback) => {
+ $.getJSON = (url, values, callback) => {
+  if (typeof values === 'function') { callback = values; values = {}; }
   requestUrl = new URL(url, 'https://example.test/');
+  Object.entries(values || {}).forEach(([key, value]) => requestUrl.searchParams.set(key, value));
   const offset = Number(requestUrl.searchParams.get('offset'));
-  callback({items: [{label: 'Result', id: 115}], offset, next_offset: offset === 0 ? 100 : null, next_label: 'Next results', previous_label: 'Previous results'});
-  return {fail: fn => { failure = fn; }};
+  const response = {items: [{label: 'Result', id: 115}], offset, next_offset: offset === 0 ? 100 : null, next_label: 'Next results', previous_label: 'Previous results'};
+  if (values && values.graph_ids) response.items = String(values.graph_ids).split(',').map(id => ({id: Number(id), label: 'Graph ' + id, rrds: ['source-' + id + '.rrd']}));
+  if (callback) callback(response);
+  const result = {done: fn => { fn(response); return result; }, fail: fn => { failure = fn; return result; }};
+  return result;
  };
  vm.runInContext(fs.readFileSync(require('node:path').join(__dirname, '../../js/editor.js'), 'utf8'), dom.getInternalVMContext());
  w.initJS = () => {};
