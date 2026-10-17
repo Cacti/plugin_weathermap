@@ -103,6 +103,35 @@ try {
 	}
 	$map->imap->addArea('Polygon', 'NODE:polygon-label', '', [0, 0, 20, 0, 20, 20]);
 	animation_assert(in_array([[0,0],[20,0],[20,20]], wm_traffic_animation_data($map)['occlusions'], true), 'polygon label occlusion retained');
+	// A padded transparent icon must not cut off the halo before its visible artwork.
+	$node = $map->nodes['A'];
+	$node->image = imagecreatetruecolor(20, 20);
+	imagealphablending($node->image, false);
+	imagefill($node->image, 0, 0, imagecolorallocatealpha($node->image, 0, 0, 0, 127));
+	imagefilledrectangle($node->image, 8, 3, 11, 9, imagecolorallocatealpha($node->image, 20, 30, 40, 0));
+	imagefilledrectangle($node->image, 4, 10, 15, 15, imagecolorallocatealpha($node->image, 20, 30, 40, 0));
+	$node->centre_x = 10; $node->centre_y = 10;
+	$map->imap->addArea('Rectangle', 'NODE:N' . $node->id . ':0', '', [30, 30, 50, 50]);
+	$masked = wm_traffic_animation_data($map)['occlusions'];
+	animation_assert(!in_array([[30,30],[50,30],[50,50],[30,50]], $masked, true), 'transparent canvas rectangle does not mask glow');
+	animation_assert(in_array([[38,33],[42,33],[42,40],[46,40],[46,46],[34,46],[34,40],[38,40]], $masked, true), 'mask follows the stepped visible icon silhouette at its drawn origin');
+	imagefill($node->image, 0, 0, imagecolorallocatealpha($node->image, 0, 0, 0, 127));
+	imagefilledrectangle($node->image, 0, 0, 19, 19, imagecolorallocatealpha($node->image, 0, 0, 0, 127));
+	animation_assert(wm_traffic_node_occlusions($node) === [], 'fully transparent images do not mask glow');
+	$node->add_hint('editor_note', '1');
+	animation_assert(in_array([[30,30],[50,30],[50,50],[30,50]], wm_traffic_animation_data($map)['occlusions'], true), 'transparent sharp-note bitmap keeps the text rectangle protected');
+	$node->add_hint('editor_note', '0');
+	$node->image = imagecreate(4, 4);
+	$clear = imagecolorallocate($node->image, 255, 0, 255);
+	imagecolortransparent($node->image, $clear);
+	$ink = imagecolorallocate($node->image, 0, 0, 0);
+	imagesetpixel($node->image, 1, 0, $ink);
+	imagesetpixel($node->image, 2, 3, $ink);
+	$node->x = 40.5; $node->y = 40.5; $node->centre_x = 2; $node->centre_y = 2;
+	animation_assert(wm_traffic_node_occlusions($node) === [
+		[[39,38],[40,38],[40,39],[39,39]],
+		[[40,41],[41,41],[41,42],[40,42]],
+	], 'palette transparency, blank rows and integer drawing origin are respected');
 	$map->add_hint('traffic_pulse', '0');
 	animation_assert(wm_traffic_animation_data($map)['occlusions'] === [] && wm_traffic_animation_data($map)['regions'] === [], 'disabled map omits all glow metadata');
 	$map->add_hint('traffic_pulse', '1');
