@@ -35,7 +35,7 @@ msgid "Cannot read the map configuration."
 msgstr ""
 
 #: lib/editor.actions.php lib/editor.assets.php
-#: weathermap-cacti-plugin-mgmt.php
+#: weathermap-cacti-plugin-mgmt.php lib/editor.history.php
 msgid "Could not lock map configurations."
 msgstr ""
 
@@ -2683,4 +2683,149 @@ msgstr ""
 
 #: weathermap-cacti-plugin.php
 msgid "Paused"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr ""
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr ""
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr ""
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr ""
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr ""
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr ""
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
 msgstr ""

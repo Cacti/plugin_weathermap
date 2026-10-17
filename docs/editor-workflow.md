@@ -26,3 +26,31 @@ graph only enables **Add** and **Replace**; it does not apply it automatically.
 Delete controls are separate from Save and Cancel. Confirmation identifies the
 item by display name and explains what is removed. Deleting a node also removes
 its connected map links. Cacti devices and graphs remain.
+
+
+## Undo and Redo
+
+Use **Undo** and **Redo** at the top right of the editor toolbar to reverse or
+reapply the last two saved map changes. Each completed move, placement or saved
+dialog counts as one action. Buttons are disabled when no matching action is
+available; their tooltips identify the next action. Keyboard shortcuts are
+**Ctrl/Cmd+Z** for Undo and **Ctrl/Cmd+Shift+Z** for Redo. Text fields retain their
+normal text-editing shortcuts. Save or cancel an open dialog first.
+
+History covers map configuration changes: nodes, connected links, notes, via
+points, labels, icons, map properties, colours and raw object configuration.
+Undoing a node deletion restores its connected map links too. A new change after
+Undo clears Redo. No-op saves and failed saves do not consume a step.
+
+History belongs to the current browser tab, map and authenticated session.
+Changes made elsewhere invalidate it rather than overwriting someone else's
+work. Included configuration files and managed images are checked before a
+restore. Uploading or deleting library files, deleting map files, Cacti devices,
+graphs and personal editor preferences are outside this history.
+
+Snapshots are stored privately outside the web root, not in browser data or
+Cacti's concurrently written session rows. They expire after four hours of
+inactivity. Storage retains up to eight recently changed maps/tabs and 8 MiB per
+session; older histories are discarded when either limit is reached. Temporary
+storage must be writable by the PHP service account. No database upgrade is
+required.
