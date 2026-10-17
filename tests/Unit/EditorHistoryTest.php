@@ -286,4 +286,38 @@ final class EditorHistoryTest extends TestCase {
 		self::assertSame(0, $this->history('history_status')['undo']);
 	}
 
+	public function testSavingAfterExpiryStartsANewHistoryInsteadOfRevivingOldSteps(): void {
+		$this->move(60);
+		$this->move(70);
+		foreach ($GLOBALS['weathermap_editor_history'] as &$entry) $entry['time'] = time() - 14401;
+		unset($entry);
+		WeathermapEditorHistory\persist();
+		$before = file_get_contents($this->file);
+		$this->move(80);
+		self::assertSame(1, $this->history('history_status')['undo']);
+		$this->history('undo');
+		self::assertSame($before, file_get_contents($this->file));
+		self::assertSame(0, $this->history('history_status')['undo']);
+	}
+
+	public function testUndoPrunesAnOversizedRedoSnapshotBeforeReportingAvailableSteps(): void {
+		$before = WeathermapEditorHistory\snapshot($this->map(), $this->file);
+		// A valid large raw edit can fit on disk but exceed the encoded history budget.
+		file_put_contents($this->file, file_get_contents($this->file) . str_repeat('#' . str_repeat('x', 1022) . "\n", 7168));
+		$large = file_get_contents($this->file);
+		$this->request('set_map_properties');
+		$after = WeathermapEditorHistory\snapshot($this->map(), $this->file);
+		WeathermapEditorHistory\load();
+		WeathermapEditorHistory\remember(WeathermapEditorHistory\key($this->file), $before, $after);
+		WeathermapEditorHistory\persist();
+		self::assertSame(1, $this->history('history_status')['undo']);
+		$result = $this->history('undo');
+		self::assertSame(base64_decode($before['contents']), file_get_contents($this->file));
+		self::assertNotSame($large, file_get_contents($this->file));
+		self::assertSame(0, $result['undo']);
+		self::assertSame(0, $result['redo']);
+		self::assertLessThanOrEqual(8 * 1024 * 1024, strlen(serialize(json_decode(file_get_contents(WeathermapEditorHistory\storagePath()), true))));
+		self::assertSame($result, $this->history('history_status'));
+	}
+
 }

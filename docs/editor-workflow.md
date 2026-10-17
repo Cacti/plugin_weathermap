@@ -43,7 +43,10 @@ Undoing a node deletion restores its connected map links too. A new change after
 Undo clears Redo. No-op saves and failed saves do not consume a step.
 
 History belongs to the current browser tab, map and authenticated session.
-Changes made elsewhere invalidate it rather than overwriting someone else's
+Duplicated tabs start a separate history; reloading the same tab keeps it.
+Tab ownership uses Web Locks, with a SharedWorker fallback for HTTP installations.
+If neither browser API is available, history stays disabled and normal editing
+continues. Changes made elsewhere invalidate it rather than overwriting someone else's
 work. Included configuration files and managed images are checked before a
 restore. Uploading or deleting library files, deleting map files, Cacti devices,
 graphs and personal editor preferences are outside this history.

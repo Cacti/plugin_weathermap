@@ -5,17 +5,57 @@
 (function(root) {
 	'use strict';
 
-	function init($, win) {
+	function randomId(win) {
+		return Array.from(win.crypto.getRandomValues(new Uint8Array(16)), function(byte) { return byte.toString(16).padStart(2, '0'); }).join('');
+	}
+
+	// sessionStorage is copied when a tab is duplicated. An origin-wide lock gives
+	// each live document exclusive ownership while preserving IDs across reloads.
+	function claimHistoryId(win, storageKey) {
+		var id = win.sessionStorage.getItem(storageKey);
+		if (!/^[a-f0-9]{32}$/.test(id || '')) id = randomId(win);
+		if (!win.navigator || !win.navigator.locks) {
+			// SharedWorker also works on HTTP installations where Web Locks is absent.
+			var worker = new win.SharedWorker(new URL('js/editor.history.worker.js', new URL(win.editor_url, win.location.href)), 'weathermap-history');
+			return new Promise(function(resolve, reject) {
+				worker.onerror = reject;
+				worker.port.onmessage = function(event) {
+					if (!event.data.granted) { id = randomId(win); claim(); return; }
+					try { win.sessionStorage.setItem(storageKey, id); }
+					catch (error) { worker.port.postMessage({release: true}); worker.port.close(); reject(error); return; }
+					win.addEventListener('pagehide', function() { worker.port.postMessage({release: true}); worker.port.close(); }, {once: true});
+					win.addEventListener('pageshow', function(event) { if (event.persisted) win.location.reload(); });
+					resolve(id);
+				};
+				function claim() { worker.port.postMessage({key: storageKey + ':' + id}); }
+				worker.port.start();
+				claim();
+			});
+		}
+		return new Promise(function(resolve, reject) {
+			function claim(candidate) {
+				win.navigator.locks.request(storageKey + ':' + candidate, {ifAvailable: true}, function(lock) {
+					if (!lock) { claim(randomId(win)); return; }
+					win.sessionStorage.setItem(storageKey, candidate);
+					return new Promise(function(release) {
+						win.addEventListener('pagehide', release, {once: true});
+						// A document restored from the back/forward cache must reacquire ownership.
+						win.addEventListener('pageshow', function(event) { if (event.persisted) win.location.reload(); });
+						resolve(candidate);
+					});
+				}).catch(reject);
+			}
+			claim(id);
+		});
+	}
+
+	async function init($, win) {
 		if (!$('#wm-undo').length || typeof win.WMConfigRevision !== 'string') return;
 		var id, pending = 0, state = {undo: 0, redo: 0};
 		var text = win.wmEditorText;
 		try {
 			var storageKey = 'weathermap-history:' + win.location.pathname;
-			id = win.sessionStorage.getItem(storageKey);
-			if (!/^[a-f0-9]{32}$/.test(id || '')) {
-				id = Array.from(win.crypto.getRandomValues(new Uint8Array(16)), function(byte) { return byte.toString(16).padStart(2, '0'); }).join('');
-				win.sessionStorage.setItem(storageKey, id);
-			}
+			id = await claimHistoryId(win, storageKey);
 		} catch (error) {
 			$('#wm-undo,#wm-redo').attr('title', text.historyStorage);
 			return;
@@ -86,6 +126,6 @@
 			.fail(function() { $('#wm-undo,#wm-redo').attr('title', text.saveError); });
 	}
 
-	if (typeof module !== 'undefined' && module.exports) module.exports = {init: init};
+	if (typeof module !== 'undefined' && module.exports) module.exports = {init: init, claimHistoryId: claimHistoryId};
 	else root.jQuery(function() { init(root.jQuery, root); });
 })(typeof window !== 'undefined' ? window : globalThis);

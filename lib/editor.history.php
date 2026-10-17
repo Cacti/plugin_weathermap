@@ -129,6 +129,7 @@ function actionLabel() {
 
 /** Record only successful changes; a new action discards the redo branch. */
 function remember($key, $before, $after) {
+	prune();
 	if ($before['revision'] === $after['revision']) return;
 	$entry = $GLOBALS['weathermap_editor_history'][$key] ?? [];
 	if (($entry['current'] ?? null) !== $before['revision']) $entry = ['undo' => [], 'redo' => []];
@@ -240,6 +241,8 @@ function handle($mapfile, $action) {
 			$entry = step($mapfile, $current, $entry, $action, $lock);
 			unset($GLOBALS['weathermap_editor_history'][$key]);
 			$GLOBALS['weathermap_editor_history'][$key] = $entry;
+			prune();
+			$entry = $GLOBALS['weathermap_editor_history'][$key] ?? [];
 		}
 		persistAfterSave();
 		echo json_encode(status($entry));
