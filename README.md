@@ -1,16 +1,21 @@
-# PHP Network Weathermap 1.0
+# PHP Network Weathermap 2.0
 
-This is PHP Network Weathermap fork, version 1.0.  The PHP Weathermap was
-originally by Howard Jones (howie@thingy.com).  As Howie has scaled back his
-Cacti plugin development work, we will release this version that incorporates
-his core framework from the 0.98 version.  In future releases, we will look
-to incorporate subequent releases of the WeatherMap core.
+PHP Network Weathermap is a Cacti plugin for creating network maps that show
+traffic utilisation and other monitored data. This Cacti-maintained fork builds
+on the original PHP Network Weathermap by Howard Jones (howie@thingy.com), based
+on his 0.98 series framework.
 
-See the docs sub-directory for full HTML documentation, FAQ and example config.
+Version 2.0 adds a redesigned map editor, editable notes, curved link comments,
+traffic colour presets, optional high-load link pulsing, separate icon and
+background libraries, sharper hover graphs and two-step Undo and Redo.
 
-See CHANGELOG.md for the most recent updates, listed by version.
+See [docs/](docs/) for the HTML manual, FAQ and example configurations, and
+[the editor workflow guide](docs/editor-workflow.md) for the current node and
+link properties controls. Parts of the original HTML manual describe the older
+core interface.
 
-See COPYING for the license under which php-weathermap is released.
+See [CHANGELOG.md](CHANGELOG.md) for updates listed by version, and
+[COPYING](COPYING) for the license.
 
 ## Bundled node icons
 
@@ -24,8 +29,9 @@ icon picker without uploading additional files.
 
 ## Compatibility
 
-This version only works with Cacti 1.2.x onwards.  A re-write of the user interface
-is being made to make it more compatible with 1.2.x and 1.3.x releases.
+The plugin requires Cacti 1.2.29 or later, as specified in [INFO](INFO), and uses
+Cacti's authentication and permissions. The editor includes theme handling for
+Cacti 1.2.x and the developing 1.3.x series.
 
 ## Contribute
 
@@ -40,35 +46,26 @@ we cannot be everywhere at once. Contribute to the Cacti community by
 participating on the [Cacti Community Forums](http://forums.cacti.net).
 
 For Network Weathermap's core support, there is much more information along with
-tutorials and updates available at Howard Jone's site:
+tutorials and updates available at Howard Jones's site:
 
     http://www.network-weathermap.com/
 
 ## Important Notes
 
-This version of Weathermap only works with Cacti 1.2.x and above only.
-beta, yet non-production use at this time.
+Back up the plugin and your map configurations before upgrading.
 
-The location of backgrounds and object images has changed!  The upgrade script 
-will attempt to move these backgrounds and images to the new locations, 
-but you may have some cleanup to do especially if you customized the locations.
+Backgrounds and node icons use separate directories: `images/backgrounds/` and
+`images/objects/`. When upgrading from older versions, the upgrade script
+attempts to move images and update their configuration paths. Check customised
+image locations after upgrading, and ensure the poller account has permission
+to move the relevant files and update map configurations.
 
-WARNING: Before upgrading make ensure the poller account can move config file
-images into into the plugins various images directories.  Fail to do so 
-may result in corrupted config files.
+The old `cacti-resources` and `editor-resources` directories have been replaced
+by `js` and `css`. They are no longer used. The Overlib library dependency has
+also been removed.
 
-NOTE: The directories: `cacti-resources` and `editor-resources` have been removed
-in favor of the standard `js` and `css` folders.  You should remove these
-folders after installation.
-
-WARNING: Since previously the WeatherMap Editor had essentially no security, 
-this version will be 100% dependent on the Cacti Security model to authorize users.
-
-NOTE: The Overlib library dependency has been removed in this release.
-
-When reviewing the plugin in detail, there were so many possible enhancements
-that could be incorporated into the tool, but for now, it's really just to
-bring the Weathermap plugin fully into the Cacti 1.x and beyond.
+Editor access depends on Cacti's authentication and permissions. Review those
+permissions when upgrading from older installations.
 
 ## GitHub Documentation
 
@@ -83,12 +80,11 @@ Get involved in development of Cacti! Join the developers and community on
 
 ## Original Weathermap Plugin
 
-Howard Jones original work can still be found on GitHub at the following location.
+Howard Jones's original work can still be found on GitHub at the following location.
 
 https://github.com/howardjones/network-weathermap
 
-Howie has done extensive rework of his Weathermap API that we will look to incorporate
-in future releases of the Cacti version of the plugin.
+This fork is maintained separately from that upstream project.
 
 ## Included 3rd Party Component Software
 
