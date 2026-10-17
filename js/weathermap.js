@@ -1,3 +1,11 @@
+// Recognize generated endpoints separately; avoid ambiguous repetition across link names.
+function wmGeneratedHoverCaption(caption) {
+ var parts = caption.split('-');
+ return parts.length <= 2 && parts.every(function(part) {
+  return /^node[0-9]+[a-z]*$/i.test(part) || /^node[0-9]+[a-z]*(?:_copy)+[a-z]*$/i.test(part);
+ });
+}
+
 // Link local Cacti previews to their corresponding full graph, independently of INFOURL.
 function wmHoverGraphDestination(source) {
  try {
@@ -42,7 +50,8 @@ function wmInteractiveHover(map) {
    if (tip && event.relatedTarget && (tip[0].contains(event.relatedTarget) || target[0] === event.relatedTarget)) return;
    var delayed = $.Event(event); delayed.currentTarget = target[0];
    state.timer = setTimeout(function() {
-    if (tip && (tip.data('wm-pointer-inside') || tip[0].contains(document.activeElement))) return;
+    if (target.data('wm-pointer-inside') || target[0] === document.activeElement ||
+     (tip && (tip.data('wm-pointer-inside') || tip[0].contains(document.activeElement)))) return;
     state.close.call(instance, delayed);
    }, 300);
    return;
@@ -83,7 +92,9 @@ function initWeatherMapView() {
 			if (instance && instance.wmInteractiveHover) {
 				var state = instance.wmInteractiveHover;
 				clearTimeout(state.timer);
-				area.off('.wmGraphHover').on('mouseenter.wmGraphHover', function() { clearTimeout(state.timer); })
+				area.data('wm-pointer-inside', /^(?:mouseover|mouseenter)$/.test(event.originalEvent.type))
+					.off('.wmGraphHover').on('mouseenter.wmGraphHover', function() { $(this).data('wm-pointer-inside', true); clearTimeout(state.timer); })
+					.on('mouseleave.wmGraphHover', function(e) { $(this).data('wm-pointer-inside', false); instance.close(e); })
 					.on('keydown.wmGraphHover', function(e) {
 						if (e.key !== 'ArrowDown') return;
 						var first = ui.tooltip.find('a').first()[0];
@@ -131,7 +142,7 @@ function initWeatherMapView() {
 			var caption = ($(this).attr('data-caption') || '').trim();
 			var data = $('<div>', {id: 'wm_hover'}).css({display: 'inline-block'});
 			// Generated node/link names can include repeated clone suffixes and collision letters.
-			if (caption && !/^node[0-9]+[a-z]*(?:_copy)*(?:-node[0-9]+[a-z]*(?:_copy)*)?[a-z]*$/i.test(caption)) {
+			if (caption && !wmGeneratedHoverCaption(caption)) {
 				$('<div>').text(caption).css({fontSize: '12px', padding: '0 0 4px'}).appendTo(data);
 			}
 			object.find('img').css({

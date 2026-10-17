@@ -30,6 +30,8 @@
  * @return array|null Occlusion polygons, or null when no rendered image is available.
  */
 function wm_traffic_node_occlusions($node) {
+	// Sharp editor-note glyphs are composited later, outside the node bitmap.
+	if ($node->get_hint('editor_note', '0') === '1') return null;
 	$image = $node->image ?? null;
 	if (!($image instanceof GdImage) && !(is_resource($image) && get_resource_type($image) === 'gd')) return null;
 	$width = imagesx($image);

@@ -38,8 +38,18 @@ const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),
  tip.find('a')[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
  assert.equal(w.document.activeElement,area[0],'Escape returns focus to the originating hotspot');
  await delay();assert.equal($('.ui-tooltip').length,0,'Returning focus must not reopen the popup');
- open();area.trigger('mouseleave');await delay();
+ $('#outside')[0].focus();open();area.trigger('mouseleave');await delay();
  assert.equal($('.ui-tooltip').length,0,'Ordinary mouse leave closes without sticking');
+ // Pointer and focus on either surface independently keep the popup usable.
+ $('#outside')[0].focus();area[0].focus();tip=$('.ui-tooltip');
+ area.trigger('mouseleave');await delay();
+ assert.equal($('.ui-tooltip').length,1,'Hotspot focus survives mouse departure');
+ area[0].dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));
+ assert.equal(w.document.activeElement,tip.find('a')[0]);
+ area.trigger('mouseenter');$('#outside')[0].focus();await delay();
+ assert.equal($('.ui-tooltip').length,1,'Hotspot pointer survives preview focus departure');
+ area.trigger('mouseleave');await delay();
+ assert.equal($('.ui-tooltip').length,0,'Leaving both surfaces eventually closes');
  // Switching quickly between hotspots must not leave the first area marked open.
  const other=area.clone().appendTo(map);
  open();area.trigger('mouseleave');

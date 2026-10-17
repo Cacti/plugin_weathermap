@@ -118,6 +118,9 @@ try {
 	imagefill($node->image, 0, 0, imagecolorallocatealpha($node->image, 0, 0, 0, 127));
 	imagefilledrectangle($node->image, 0, 0, 19, 19, imagecolorallocatealpha($node->image, 0, 0, 0, 127));
 	animation_assert(wm_traffic_node_occlusions($node) === [], 'fully transparent images do not mask glow');
+	$node->add_hint('editor_note', '1');
+	animation_assert(in_array([[30,30],[50,30],[50,50],[30,50]], wm_traffic_animation_data($map)['occlusions'], true), 'transparent sharp-note bitmap keeps the text rectangle protected');
+	$node->add_hint('editor_note', '0');
 	$node->image = imagecreate(4, 4);
 	$clear = imagecolorallocate($node->image, 255, 0, 255);
 	imagecolortransparent($node->image, $clear);
