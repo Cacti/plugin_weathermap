@@ -4611,7 +4611,13 @@ class WeatherMap extends WeatherMapBase {
 	 * @return mixed
 	 */
 	function asJS() {
-		$js = '';
+		global $config;
+		$js = 'var wmRrdSourceDefaults = ' . json_encode([
+			'input' => $this->get_hint('rrd_default_in_ds'),
+			'output' => $this->get_hint('rrd_default_out_ds'),
+			'path' => $this->get_hint('rrd_default_path'),
+			'rraPath' => $config['rra_path'] ?? ''
+		], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ";\n";
 
 		$js .= "\t\t\tvar Links   = new Array();\n";
 		$js .= "\t\t\tvar LinkIDs = new Array();\n";
