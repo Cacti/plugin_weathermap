@@ -241,10 +241,10 @@ class WeatherMapLink extends WeatherMapItem {
 			// 'outcomment'          => '',
 			'zorder'                => 300,
 			'overlibcaption'        => ['', ''],
-			'max_bandwidth_in'      => 100000000,
-			'max_bandwidth_out'     => 100000000,
-			'max_bandwidth_in_cfg'  => '100M',
-			'max_bandwidth_out_cfg' => '100M'
+			'max_bandwidth_in'      => 1000000000,
+			'max_bandwidth_out'     => 1000000000,
+			'max_bandwidth_in_cfg'  => '1000M',
+			'max_bandwidth_out_cfg' => '1000M'
 		];
 
 		// $this->a_offset = 'C';
