@@ -66,9 +66,9 @@ it('KeepsTheSelectedFontWithoutDuplicateBundledOptions', function () {
 	$map->fonts[102]->file = '/missing/custom.ttf';
 	expect(wm_editor_font_label(102,$map->fonts[102]))->toContain('custom.ttf');
 	$map->links['DEFAULT']->commentfontcolour = [12, 34, 56];
-	expect(wm_comment_style_fields($map))->toContain('Current custom colour (12 34 56)','value="12 34 56" selected');
+	expect(wm_comment_style_fields($map))->not->toContain('mapstyle_commentcolour');
 	$map->links['DEFAULT']->commentfontcolour = [-3, -3, -3];
-	expect(wm_comment_style_fields($map))->toContain('value="contrast" selected');
+	expect(wm_comment_style_fields($map))->not->toContain('mapstyle_commentcolour');
 });
 it('RejectsInvalidFontSelections', function ($value) {expect(wm_comment_resolve_font(wm_style_test_map(),$value))->toBeNull(); })->with([null, 123, '999', 'bundled:../Vera.ttf:9', 'bundled:Missing.ttf:9', 'bundled:Vera.ttf:99']);
 it('ReusesExistingFontsAndAllocatesAnUnusedNumber', function () {
@@ -121,7 +121,7 @@ it('AssociatesCommentStyleLabelsWithTheirSelectors', function () {
 	$document = new DOMDocument();
 	$document->loadHTML('<table>' . wm_comment_style_fields(wm_style_test_map()) . '</table>', LIBXML_NOERROR | LIBXML_NOWARNING);
 	$xpath = new DOMXPath($document);
-	foreach (['mapstyle_commentfont' => 'Link Comment Font', 'mapstyle_commentcolour' => 'Link Comment Colour'] as $id => $text) {
+	foreach (['mapstyle_commentfont' => 'Link Comment Font'] as $id => $text) {
 		$label = $xpath->query('//label[@for="' . $id . '"]')->item(0);
 		expect($label)->not->toBeNull()->and($label->textContent)->toBe($text)
 			->and($xpath->query('//select[@id="' . $id . '"]')->length)->toBe(1);

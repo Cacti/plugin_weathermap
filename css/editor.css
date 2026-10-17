@@ -418,3 +418,163 @@ body#mainView .wm-icon-choice[aria-pressed="true"] {
  background: var(--background-lowlight, #eee);
  border-color: var(--text-color-highlight-a, #2874aa);
 }
+
+/* Link properties has one scrolling body and a persistent action row. */
+#dlgLinkProperties {
+ overflow: hidden !important;
+}
+#dlgLinkProperties > .cactiTable {
+ display: flex;
+ flex-direction: column;
+ max-height: calc(85vh - 65px);
+ min-height: 0;
+}
+#dlgLinkProperties .dlgBody {
+ display: block;
+ overflow-y: auto;
+ min-height: 0;
+ padding: 12px;
+}
+#dlgLinkProperties .dlgButtons {
+ display: block;
+ flex: 0 0 auto;
+ border-top: 1px solid var(--border-color, #888);
+}
+#dlgLinkProperties .dlgSubButtons {
+ margin: 10px;
+ white-space: normal;
+}
+#dlgLinkProperties .wm-link-group {
+ margin: 8px 0;
+ border: 1px solid var(--border-color, #888);
+ border-radius: 3px;
+}
+#dlgLinkProperties .wm-link-group > summary {
+ display: list-item;
+ list-style-position: inside;
+ height: auto !important;
+ min-height: 0;
+ line-height: 1.4;
+ margin: 0;
+ cursor: pointer;
+ padding: 8px;
+}
+#dlgLinkProperties .wm-link-group > table {
+ width: 100%;
+ table-layout: fixed;
+}
+#dlgLinkProperties .wm-link-group td:first-child {
+ width: 30%;
+}
+#dlgLinkProperties textarea {
+ box-sizing: border-box;
+ width: 100%;
+ min-width: 0;
+}
+#dlgLinkProperties .wm-link-group-hint,
+#dlgLinkProperties .wm-link-source-actions {
+ margin: 10px;
+}
+#dlgLinkProperties .dlgHelp {
+ display: block;
+ height: auto;
+ line-height: 1.4;
+ border: 0;
+}
+#dlgLinkProperties #wm-link-purpose {
+ color: inherit !important;
+ line-height: 1.4;
+}
+
+#dlgLinkProperties .wm-link-field-hint {
+ display: block;
+ margin-top: 3px;
+ font-size: 0.9em;
+ line-height: 1.3;
+ color: inherit;
+}
+#dlgLinkProperties #wm-link-help-button {
+ min-width: 2em;
+ font-weight: bold;
+}
+#dlgLinkProperties #wm-link-full-help {
+ margin: 10px 0 0;
+ padding: 8px;
+ border-top: 1px solid var(--border-color, #888);
+}
+#dlgLinkProperties #wm-link-rrd {
+ display: block;
+ overflow-wrap: anywhere;
+ color: inherit !important;
+}
+#dlgLinkProperties #wm-link-graph { display: block; margin: 8px 10px; }
+
+#dlgLinkProperties .wm-link-source-actions {
+ display: flex;
+ flex-wrap: wrap;
+ align-items: center;
+ gap: 6px;
+}
+#dlgLinkProperties #wm-link-source-picker {
+ flex: 1 1 200px;
+ min-width: 0;
+ max-width: 100%;
+ padding: 6px;
+ font: inherit;
+ box-sizing: border-box;
+}
+
+#dlgLinkProperties .wm-link-extra-item { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+#dlgLinkProperties .wm-link-extra-details { flex: 1 1 180px; min-width: 0; overflow-wrap: anywhere; }
+#dlgLinkProperties .wm-link-extra-name { font: inherit; }
+#dlgLinkProperties .wm-link-extra-rrds { display: block; margin-top: 3px; font-size: .85em; }
+#dlgLinkProperties #wm-link-hover-status { margin: 6px 0; }
+#dlgLinkProperties #wm-link-hover-status:empty { display: none; }
+#dlgLinkProperties #wm-link-hovers .wm-link-group-hint { font-size: .9em; line-height: 1.4; }
+
+#dlgLinkProperties .wm-link-source-actions { margin: 0; }
+#dlgLinkProperties #wm-link-source-status:empty { display: none; }
+
+#dlgLinkProperties .wm-link-section-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+#dlgLinkProperties .wm-link-group[hidden] { display: none !important; }
+
+#dlgLinkProperties .wm-link-source-item { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+#dlgLinkProperties .wm-link-source-item code { flex: 1 1 200px; min-width: 0; overflow-wrap: anywhere; }
+
+#dlgLinkProperties #wm-link-source-status { margin: 6px 0; padding: 6px 8px; border-left: 3px solid currentColor; font-weight: bold; }
+
+/* Keep node and link action controls the same size while retaining theme colours. */
+#dlgNodeProperties a.ui-button,
+#dlgNodeProperties button.ui-button:not(.wm-icon-choice),
+#dlgNodeProperties input[type="button"].ui-button,
+#dlgLinkProperties a.ui-button,
+#dlgLinkProperties button.ui-button,
+#dlgLinkProperties input[type="button"].ui-button {
+ font-family: inherit;
+ font-size: 11px;
+ line-height: 1.2;
+ padding: .4em 1em;
+ box-sizing: border-box;
+}
+#dlgLinkProperties .wm-link-section-buttons { align-items: center; }
+#dlgLinkProperties .wm-link-section-buttons .ui-button { margin: 0; }
+
+/* Keep the graph chooser and its actions in a predictable two-line layout. */
+#dlgLinkProperties #wm-link-hovers td { vertical-align: top; padding-top: 6px; padding-bottom: 6px; }
+#dlgLinkProperties #wm-link-hovers td:first-child { padding-top: 12px; }
+#dlgLinkProperties .wm-link-hover-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+#dlgLinkProperties .wm-link-hover-actions .ui-button { margin: 0; }
+#dlgLinkProperties #wm-link-extra-list .wm-link-extra-item { margin: 0; align-items: flex-start; }
+#dlgLinkProperties #wm-link-extra-list .wm-link-extra-details { padding-top: 6px; }
+
+#dlgNodeProperties .dlgSubButtons,
+#dlgLinkProperties .dlgSubButtons {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ align-items: center;
+ gap: 4px;
+ margin: 10px;
+}
+#dlgNodeProperties .dlgSubButtons .ui-button,
+#dlgLinkProperties .dlgSubButtons .ui-button { margin-left: 0; }
