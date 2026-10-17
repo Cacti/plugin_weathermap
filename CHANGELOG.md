@@ -53,7 +53,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * feature#311: Simplify link interface/source/hover workflows, limit the form to two previews, add node display-name positioning, move comment colours to Manage Colours and clarify raw-edit controls
 * feature#312: Make hover graphs individually clickable and sharper on high-density displays without changing their displayed size
 * feature#313: Bundle transparent 96px access-point, NAS, server, printer, CCTV recorder, UPS and CCTV camera node icons
-* feature#307: Add two-step Undo and Redo for saved map edits, with keyboard shortcuts and protection against stale restores (PR #316)
+* feature#307: Add two-step Undo and Redo per editor tab for saved node, link, note and map-setting edits, with keyboard shortcuts and protection against stale restores (PR #316)
 * feature#302: Add traffic colour presets and optional high-load link pulsing
 * feature#303: Add separate icon and background image upload and management libraries
 * feature#301: Add editable map notes with alignment and sharp text at logical map dimensions
