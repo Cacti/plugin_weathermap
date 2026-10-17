@@ -151,7 +151,6 @@ function wm_comment_style_fields($map) {
 
 	$out .= '<tr><td><label for="mapstyle_commentcurve">' . html_escape(__('Link Comments', 'weathermap')) . '</label></td><td><label><input type="checkbox" name="mapstyle_commentcurve" id="mapstyle_commentcurve" value="1"' . (!empty($map->links['DEFAULT']->commentcurve) ? ' checked' : '') . '> ' . html_escape(__('Follow link curve', 'weathermap')) . '</label><br><small>' . html_escape(__('Uses a TrueType font. Tight bends or text longer than the link use straight text.', 'weathermap')) . '</small></td></tr>';
 
-	$out .= '<tr><td><label for="mapstyle_commentcurve">' . html_escape(__('Link Comments', 'weathermap')) . '</label></td><td><label><input type="checkbox" name="mapstyle_commentcurve" id="mapstyle_commentcurve" value="1"' . (!empty($map->links['DEFAULT']->commentcurve) ? ' checked' : '') . '> ' . html_escape(__('Follow link curve', 'weathermap')) . '</label><br><small>' . html_escape(__('Uses a TrueType font. Tight bends or text longer than the link use straight text.', 'weathermap')) . '</small></td></tr>';
 
 	return $out;
 }
