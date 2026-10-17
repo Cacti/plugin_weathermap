@@ -70,7 +70,7 @@ $('#action').val('add_link');w.mapmode('existing');assert.ok($('#existingdata').
 w.click_execute({},'LINK:1:0');assert.equal($('#action').val(),'');assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));assert.equal($('area').css('cursor'),'pointer');
 w.eval(src.slice(src.indexOf('function form_submit('),src.indexOf('function map_properties(')));
 $('body').append('<div id="dlgNodeProperties"></div><div id="dlgLinkProperties"></div>');
-let saveRequest;$.ajax=opts=>saveRequest=opts;w.editor_url='/editor';
+let saveRequest;$.ajax=opts=>saveRequest=opts;w.editor_url='/editor';w.wmSyncLinkHoverParts=()=>{};
 for (const kind of ['node','link']) for (const exit of ['cancel','close']) {
  const dialog=$('#dlg'+(kind==='node'?'Node':'Link')+'Properties');dialog.dialog({modal:false});
  $('#action').val('add_link2');$('#param').val('first-endpoint');w.mapmode('existing');
@@ -82,6 +82,28 @@ for (const kind of ['node','link']) for (const exit of ['cancel','close']) {
  assert.equal(submitted.get('action'),kind==='node'?'set_node_properties':'set_link_properties');
  assert.equal(submitted.get('param'),$(kind==='node'?'#node_name':'#link_name').val());
  assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));dialog.dialog('close');
+}
+// Programmatic deletion must not turn into Save when focus returns to a property field.
+for (const kind of ['node','link']) {
+ const dialog=$('#dlg'+(kind==='node'?'Node':'Link')+'Properties');
+ dialog.append('<input class="focused-delete-test">').dialog({modal:false}).dialog('open');
+ dialog.find('input.focused-delete-test')[0].focus();
+ assert.equal($(w.document.activeElement).closest('.ui-dialog-content').attr('id'),dialog.attr('id'));
+ $('#action').val('delete_'+kind);$('#param').val(kind==='node'?'dc':'uplink');
+ w.form_submit();
+ const deletion=new URLSearchParams(saveRequest.data);
+ assert.equal(deletion.get('action'),'delete_'+kind);
+ assert.equal(deletion.get('param'),kind==='node'?'dc':'uplink');
+ dialog.dialog('close');
+}
+w.eval(src.slice(src.indexOf('function show_dialog('),src.indexOf('function hide_dialog(')));
+for (const kind of ['Node', 'Link']) {
+ const id = 'dlg' + kind + 'Properties';
+ w.show_dialog(id);
+ $('#action').val('set_' + kind.toLowerCase() + '_properties');
+ $('#' + id).dialog('close');
+ assert.equal($('#action').val(), '', 'title-bar close must allow selecting the next object');
+ assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));
 }
 dom.window.close();
 console.log('PASS: context menu cancels placement; node/link confirmations and closing restore normal map mode');
