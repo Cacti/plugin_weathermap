@@ -65,7 +65,7 @@ try {
 	note_assert(wm_note_effective_dimensions($sized) === [240, 90] && $sized->width === 120, 'postprocessor dimensions are reflected without changing original map');
 	$controller = file_get_contents($plugin . '/weathermap-cacti-plugin-editor.php');
 	$start = strpos($controller, "<input id='xycapture'"); $end = strpos($controller, "<input id='x'", $start); $markup = substr($controller, $start, $end - $start);
-	$editor_width = 200; $editor_height = 100; $imageurl = 'fixture.png'; ob_start(); eval('?>' . $markup); $renderedElements = ob_get_clean();
+	$mapfile = $file; $editor_width = 200; $editor_height = 100; $imageurl = 'fixture.png'; ob_start(); eval('?>' . $markup); $renderedElements = ob_get_clean();
 	note_assert(substr_count($renderedElements, "width='200'") === 4 && substr_count($renderedElements, "height='100'") === 4, 'editor image attributes and data coordinates use effective logical size');
 	$values = ['name' => '', 'text' => "Main site\n10.0.0.0/24", 'font' => 'bundled:Vera.ttf:11', 'colour' => '#0000ff', 'x' => '155', 'y' => '80'];
 	note_assert(wm_editor_save_note($map, $values), 'create');
