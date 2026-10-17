@@ -3,7 +3,7 @@ const { JSDOM } = require('jsdom'),
 	fs = require('fs'),
 	vm = require('vm'),
 	assert = require('node:assert/strict');
-const row = (id) => `<tr><td>${id}</td><td><input id="${id}"></td></tr>`;
+const row = (id) => `<tr><td>${id}</td><td>${id.includes("hover") ? `<textarea id="${id}"></textarea>` : `<input id="${id}">`}</td></tr>`;
 const dom = new JSDOM(
 	`<input id="mapname" value="fixture.conf"><input id="link_name" value="a-b"><div id="dlgLinkProperties"><p><span id="link_nodename1"></span><span id="link_nodename2"></span></p><table>${['viastyle', 'link_target', 'link_infourl', 'link_hover', 'wm-link-primary-hover', 'wm-link-extra-hover', 'link_template', 'link_picker', 'link_bandwidth_in', 'link_bandwidth_out', 'link_width', 'link_commentin', 'link_commentout'].map(row).join('')}<tr><td>Picker</td><td><input id="link_target_picker"><span id="link_target_picker_wrap"><input id="link_target_picker_input"><button id="link_target_picker_click"></button></span><button id="link_target_picker_add"></button><button id="link_target_picker_rep"></button></td></tr></table><div class="dlgButtons"><div class="dlgSubButtons">${['link_delete', 'link_tidy', 'link_via', 'link_edit', 'tb_link_cancel', 'tb_link_submit'].map((id) => `<a id="${id}">${id}</a>`).join('')}</div></div><div class="dlgHelp">Help</div></div>`,
 	{ url: 'https://example.test/cacti/plugins/weathermap/editor.php', runScripts: 'outside-only' }
@@ -486,6 +486,17 @@ const primaryChoice = $('#link_target_picker').data('wm-choice');
 $('#wm-link-measured-sources button').first().trigger('click');
 assert.equal($('#link_target_picker').data('wm-choice'),primaryChoice);
 assert.equal($('#link_target').val(),items[1].id+' third.rrd');
+// Promoting an explicit-default extra removes its implicit equivalent exactly once.
+$('#link_target').val('primary.rrd '+items[1].id+':traffic_in:traffic_out custom.rrd:in:out gauge:'+items[1].id);
+$('#link_target_picker').data('wm-choice',items[1]);$('#wm-link-use').trigger('click');
+assert.equal($('#link_target').val(),items[1].id+' custom.rrd:in:out gauge:'+items[1].id);
+assert.equal(w.wmLinkSameTrafficSource('rrd:backup.rrd:traffic_in:traffic_out','backup.rrd'),true);
+assert.equal(w.wmLinkSameTrafficSource('scale:8:backup.rrd','backup.rrd'),true);
+assert.equal(w.wmLinkSameTrafficSource('scale:2:backup.rrd','backup.rrd'),false);
+w.wmRrdSourceDefaults={input:'octets_in',output:'octets_out',path:'/rrd'};
+assert.equal(w.wmLinkSameTrafficSource('backup.rrd','/rrd/backup.rrd:octets_in:octets_out'),true);
+assert.equal(w.wmLinkSameTrafficSource('backup.rrd','backup.rrd:traffic_in:traffic_out'),false);
+w.wmRrdSourceDefaults={};
 // Restore the custom click/hover setup for the independent editor assertions below.
 $('#link_infourl').val(clickBeforeSources);$('#link_hover').val(hoverBeforeSources);w.wmInitLinkHoverParts();
 // Manual expert edits remain serializable and cannot be overwritten by pending automatic lookups.
@@ -539,6 +550,28 @@ w.wmRestoreLinkGraphChoice();
 $('#link_picker_input').val('New search');
 graphRequests[0].deferred.resolve({items:[{id:112,label:'Old selection'}]});
 assert.equal($('#link_picker_input').val(),'New search');
+// Opening existing properties must preserve inherited dimensions and legend preferences.
+const originalHovers='/cacti/graph_image.php?local_graph_id=112 /cacti/graph_image.php?local_graph_id=108';
+$('#link_hover').val(originalHovers);w.wmInitLinkHoverParts();
+assert.equal($('#link_hover').val(),originalHovers);
+// Promotion refreshes metadata whether the old lookup resolves before or after it.
+for(const earlier of [false,true]) {
+ $('#link_hover').val(originalHovers);w.wmInitLinkHoverParts();graphRequests.length=0;
+ w.wmRestoreLinkGraphChoice();
+ if(earlier)graphRequests[0].deferred.resolve({items:[{id:108,label:'Traffic',rrds:['traffic.rrd']}]});
+ w.wmPromoteLinkTrafficHover(108);
+ assert.equal(graphRequests.length,2,'Promotion requests the new extra metadata');
+ if(!earlier)graphRequests[0].deferred.resolve({items:[{id:108,label:'Traffic',rrds:['traffic.rrd']}]});
+ graphRequests[1].deferred.resolve({items:[{id:112,label:'CPU',rrds:['cpu.rrd']}]});
+ assert.equal($('#link_picker_input').val(),'CPU');
+ assert.equal($('#wm-link-extra-list .wm-link-extra-rrds').text(),'cpu.rrd');
+}
+$('#link_hover').val(originalHovers);w.wmInitLinkHoverParts();
+$('#link_picker').val('999');$('#link_picker_input').val('New user choice').data('wm-graph-choice',{id:999});
+graphRequests.length=0;w.wmPromoteLinkTrafficHover(108);
+graphRequests[0].deferred.resolve({items:[{id:112,label:'CPU',rrds:['cpu.rrd']}]});
+assert.equal($('#link_picker_input').val(),'New user choice','Metadata refresh preserves newer user selection');
+assert.equal($('#wm-link-extra-list .wm-link-extra-rrds').text(),'cpu.rrd');
 console.log(
 	'PASS: current interface, retained selection, explicit apply, advanced fields, action names, URL decoding and failed-request retry'
 );

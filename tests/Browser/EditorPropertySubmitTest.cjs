@@ -2,6 +2,7 @@ const {JSDOM}=require('jsdom'),jquery=require('jquery'),fs=require('node:fs'),pa
 const ids=['dlgNodeProperties','dlgLinkProperties','dlgMapProperties','dlgMapStyle'];
 const dom=new JSDOM('<form id="frmMain"><input id="action" name="action"><input id="param" name="param"><input id="node_name" name="node_name" value="A"><input id="link_name" name="link_name" value="AB"><input id="map_background_colour" name="map_background_colour">'+ids.map(id=>`<div id="${id}" class="ui-dialog-content"><input class="focus-field"></div>`).join('')+'</form><div id="wm-map-background-colour"><input class="wm-colour-value" value="#ffffff"></div>',{runScripts:'outside-only'});
 const w=dom.window,$=jquery(w);w.$=w.jQuery=$;Object.assign(w,{editor_url:'/editor',wmEditorText:{},WMNotes:{},mapmode:()=>{}});let request;$.ajax=opts=>request=opts;
+w.wmSyncLinkHoverParts=()=>{};w.wmLinkHoverEntries=value=>String(value||'').trim().split(/\s+/).filter(Boolean);
 const src=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');w.eval(src.slice(src.indexOf('function form_submit('),src.indexOf('function map_properties(')));
 for(const [button,action,param] of [['tb_node_submit','set_node_properties','A'],['tb_link_submit','set_link_properties','AB'],['tb_map_submit','set_map_properties'],['tb_mapstyle_submit','set_map_style']]) {
  $('#action').val('place_stamp');w.form_submit({currentTarget:{id:button}});const data=new URLSearchParams(request.data);assert.equal(data.get('action'),action);if(param)assert.equal(data.get('param'),param);

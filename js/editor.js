@@ -1472,7 +1472,7 @@ function wmRenderLinkExtraGraphs() {
 }
 function wmInitLinkHoverParts() {
 	if (!$('#wm-link-extra-hover').length) return;
-	var entries = wmLinkHoverEntries($('#link_hover').val()).map(wmLinkCompactHoverUrl);
+	var entries = wmLinkHoverEntries($('#link_hover').val());
 	$('#wm-link-primary-hover').val(entries.shift() || '');
 	$('#wm-link-extra-hover').val(entries.join('\n')).off('.wmHovers').on('input.wmHovers change.wmHovers', wmSyncLinkHoverParts);
 	wmSyncLinkHoverParts();
@@ -1503,6 +1503,7 @@ function wmPromoteLinkTrafficHover(graphId) {
 	if (main) extras.unshift(main);
 	$('#wm-link-extra-hover').val(extras.join('\n'));
 	wmSetLinkPrimaryHover(traffic);
+	wmRestoreLinkGraphChoice(true);
 }
 function wmSetLinkExtraHover(value, replace) {
 	var field = $('#wm-link-extra-hover');
@@ -1522,6 +1523,26 @@ function wmSetLinkExtraHover(value, replace) {
 	}
 	field.val(entries.join('\n'));
 	wmSyncLinkHoverParts();
+}
+
+// Compare the effective RRD inputs without conflating custom data sources or scaling.
+function wmLinkTrafficIdentity(source) {
+ var defaults = typeof wmRrdSourceDefaults === 'undefined' ? {} : wmRrdSourceDefaults;
+ var file = String(source), input = defaults.input || 'traffic_in', output = defaults.output || 'traffic_out', scale = 8;
+ var ds = file.match(/^(.*\.rrd):([-a-zA-Z0-9_]+):([-a-zA-Z0-9_]+)$/);
+ if (ds) { file = ds[1]; input = ds[2]; output = ds[3]; }
+ file = file.replace(/^rrd:/, '');
+ if (file.startsWith('gauge:')) { scale = 1; file = file.slice(6); }
+ var scaled = file.match(/^scale:([+-]?\d*\.?\d*):(.*)$/);
+ if (scaled) { scale = Number(scaled[1]); file = scaled[2]; }
+ if (!/\.rrd$/.test(file)) return null;
+ if (!/^[/.]/.test(file) && defaults.path) file = defaults.path + '/' + file;
+ return JSON.stringify([file, input, output, scale]);
+}
+function wmLinkSameTrafficSource(left, right) {
+ if (left === right) return true;
+ var key = wmLinkTrafficIdentity(left);
+ return key !== null && key === wmLinkTrafficIdentity(right);
 }
 
 function wmRenderLinkTrafficSources() {
@@ -1567,7 +1588,7 @@ function wmApplyLinkTrafficSource() {
   $('#wm-link-source-status').text(wmEditorText.chooseSourceFirst);
   return;
  }
- var duplicate = entries.includes(String(item.id));
+ var duplicate = entries.some(function(source) { return wmLinkSameTrafficSource(source, String(item.id)); });
  if (!duplicate) entries.push(String(item.id));
  $('#link_target').val(entries.join(' '));
  wmRenderLinkTrafficSources();
@@ -1612,22 +1633,29 @@ function wmInitLinkSourcePicker(container) {
  }).on('focus.wmSource', function() { picker.autocomplete('search', picker.data('wm-choice') ? '' : picker.val()); });
 }
 
-function wmRestoreLinkGraphChoice() {
+var wmLinkGraphRestoreGeneration = 0;
+function wmRestoreLinkGraphChoice(preserveSelection) {
  var picker = $('#link_picker_input');
  if (!picker.length) return;
- var extras = String($('#wm-link-extra-hover').val() || '');
- var link = $('#link_name').val();
- $('#link_picker').val('');
- picker.val('').attr('placeholder', wmEditorText.searchGraph);
+ var ticket = ++wmLinkGraphRestoreGeneration;
+ var extras = String($('#wm-link-extra-hover').val() || ''), link = $('#link_name').val();
+ var automatic = !picker.val() || (String($('#link_picker').val()) === String(picker.data('wm-restored-graph')) && picker.val() === picker.data('wm-restored-label'));
+ if (!preserveSelection || automatic) {
+  $('#link_picker').val('');
+  picker.val('').removeData('wm-graph-choice').removeData('wm-restored-graph').attr('placeholder', wmEditorText.searchGraph);
+ }
+ var selection = picker.val();
  var entries = wmLinkHoverEntries(extras);
  var ids = entries.length === 1 ? wmLocalGraphIds(entries[0], ['graph_image.php']) : [];
  if (ids.length !== 1) return;
  wmGetGraphSummaries(ids).done(function(items) {
-  if ($('#link_name').val() !== link || String($('#wm-link-extra-hover').val() || '') !== extras || picker.val()) return;
+  if (ticket !== wmLinkGraphRestoreGeneration || $('#link_name').val() !== link || String($('#wm-link-extra-hover').val() || '') !== extras) return;
   var item = items.find(function(item) { return String(item.id) === ids[0]; });
   if (!item) return;
-  $('#link_picker').val(String(item.id));
-  picker.val(item.label).data('wm-graph-choice', item);
+  if ((!preserveSelection || automatic) && picker.val() === selection) {
+   $('#link_picker').val(String(item.id));
+   picker.val(item.label).data('wm-graph-choice', item).data('wm-restored-graph', String(item.id)).data('wm-restored-label', item.label);
+  }
   var row = $('#wm-link-extra-list .wm-link-extra-item').filter(function() { return $(this).attr('data-hover-url') === entries[0]; });
   row.find('.wm-link-extra-name').text(item.label);
   row.find('.wm-link-extra-rrds').text((item.rrds || []).join(', ') || wmEditorText.noGraphRrd);
@@ -1742,7 +1770,7 @@ function compactLinkEditorBase() {
 				var item = $('#link_target_picker').data('wm-choice');
 				if (!item || !item.id || !(item.local_graph_id > 0)) return;
 				++wmInterfaceLookupGeneration;
-				var extras = wmLinkHoverEntries($('#link_target').val()).slice(1).filter(function(source) { return source !== String(item.id); });
+				var extras = wmLinkHoverEntries($('#link_target').val()).slice(1).filter(function(source) { return !wmLinkSameTrafficSource(source, String(item.id)); });
 				$('#link_target').val([String(item.id)].concat(extras).join(' '));
 				wmRenderLinkTrafficSources();
 				var destination = new URL(infoUrlTarget + item.local_graph_id, new URL('../../', window.location.href));
@@ -1914,7 +1942,7 @@ function compactLinkEditor() {
 			var items = data.items;
 			if (generation !== wmInterfaceLookupGeneration || (wmLinkHoverEntries($('#link_target').val())[0] || '') !== primary) return;
 			var matches = items.filter(function (item) {
-				return item.id === primary;
+				return wmLinkSameTrafficSource(item.id, primary);
 			});
 			if (!matches.length) {
 				matches = items.filter(function(item) { return item.id.split('/').pop() === file; });

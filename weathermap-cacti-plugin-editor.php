@@ -567,7 +567,7 @@ foreach ($graph_templates as $gt) {
 						<tr>
 							<td><?php print __('Data Source Selector', 'weathermap'); ?></td>
 							<td>
-								<input id='link_target_picker' name='link_target_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='datasources' data-add-label='<?php print __esc('Add traffic source', 'weathermap'); ?>' />
+								<input aria-label='<?php print __esc('Traffic interface', 'weathermap'); ?>' id='link_target_picker' name='link_target_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='datasources' data-add-label='<?php print __esc('Add traffic source', 'weathermap'); ?>' />
 							</td>
 						</tr>
 						<tr>
@@ -610,7 +610,7 @@ foreach ($graph_templates as $gt) {
 						<tr>
 							<td><?php print __('Choose hover graph', 'weathermap'); ?></td>
 							<td>
-								<input id='link_picker' name='link_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='graphs' data-add-label='<?php print __esc('Add hover graph', 'weathermap'); ?>' data-replace-label='<?php print __esc('Replace hover graphs', 'weathermap'); ?>' />
+								<input aria-label='<?php print __esc('Choose hover graph', 'weathermap'); ?>' id='link_picker' name='link_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='graphs' data-add-label='<?php print __esc('Add hover graph', 'weathermap'); ?>' data-replace-label='<?php print __esc('Replace hover graphs', 'weathermap'); ?>' />
 							</td>
 						</tr>
 						<tr>
@@ -894,7 +894,7 @@ foreach ($styles as $id => $name) {
 			<div class='dlgBody'>
 				<p id='wm-colours-error' role='alert'></p>
 				<div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Link Appearance', 'weathermap'); ?></div>
-				<table class='cactiTable'><tr><td><?php print __esc('Link Border Colour', 'weathermap'); ?></td><td id='wm-outline-colour'></td></tr><tr><td><label for='wm-comment-colour-select'><?php print __esc('Link Comment Colour', 'weathermap'); ?></label></td><td id='wm-comment-colour'></td></tr></table>
+				<table class='cactiTable'><tr><th scope='row'><?php print __esc('Link Border Colour', 'weathermap'); ?></th><td id='wm-outline-colour'></td></tr><tr><th scope='row'><label for='wm-comment-colour-select'><?php print __esc('Link Comment Colour', 'weathermap'); ?></label></th><td id='wm-comment-colour'></td></tr></table>
 				<label><input type='checkbox' id='wm-traffic-pulse'><?php print __esc(' Pulse links at 80%+', 'weathermap'); ?></label>
 				<p><?php print __esc('Links at 80% utilisation or above pulse in their traffic colour.', 'weathermap'); ?></p>
 				<div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Traffic Load Colours', 'weathermap'); ?></div>
