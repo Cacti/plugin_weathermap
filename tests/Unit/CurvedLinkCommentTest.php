@@ -27,6 +27,15 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
 final class CurvedLinkCommentTest extends TestCase {
+	private function quarterCircle(float $radius, float $x = 0, float $y = 0, int $direction = 1): array {
+		$points = [];
+		for ($i = 0; $i <= 120; $i++) {
+			$t = $i / 120 * M_PI / 2;
+			$points[] = [$x + $radius * sin($t), $y + $direction * $radius * cos($t), $radius * $t];
+		}
+		return $points;
+	}
+
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testCurvedRenderingAndConfigRoundTrip(): void {
@@ -46,11 +55,7 @@ final class CurvedLinkCommentTest extends TestCase {
 		wm_comment_apply_style($map, 'bundled:Vera.ttf:13', '0 0 255', '1');
 		$link = new WeatherMapLink();
 		$link->Reset($map);
-		$link->curvepoints = [];
-		for ($i = 0; $i <= 120; $i++) {
-			$t = $i / 120 * M_PI / 2;
-			$link->curvepoints[] = [100 + 220 * sin($t), 320 - 220 * cos($t), 220 * $t];
-		}
+		$link->curvepoints = $this->quarterCircle(220, 100, 320, -1);
 		self::assertTrue($link->DrawCurvedComment(null, '5G (Backup)', 0, 7, 20));
 		self::assertSame('5G (Backup)', implode('', array_column($map->drawn, 2)));
 		$angles = array_column($map->drawn, 3);
@@ -68,32 +73,20 @@ final class CurvedLinkCommentTest extends TestCase {
 		$single = imagettfbbox($font->size, 0, $file, 'V|');
 		self::assertEqualsWithDelta($pair[2] - $single[2], $map->drawn[1][0] - $map->drawn[0][0], 0.01);
 		// A moderate inward offset can overlap wide glyphs even without reversing them.
-		$link->curvepoints = [];
-		for ($i = 0; $i <= 120; $i++) {
-			$t = $i / 120 * M_PI / 2;
-			$link->curvepoints[] = [40 * sin($t), 40 * cos($t), 40 * $t];
-		}
+		$link->curvepoints = $this->quarterCircle(40, 0, 0, 1);
 		$link->add_hint('comment_nudgeout', 2); // width 7 + gap 4 + nudge 2 = 13 inward.
 		$map->drawn = [];
 		self::assertFalse($link->DrawCurvedComment(null, 'MM', 0, 7, 20));
 		self::assertSame([], $map->drawn, 'Compressed glyph spacing falls back atomically');
 		$link->add_hint('comment_nudgeout', 0);
 		// An inward offset beyond the bend radius reverses glyph progress.
-		$link->curvepoints = [];
-		for ($i = 0; $i <= 120; $i++) {
-			$t = $i / 120 * M_PI / 2;
-			$link->curvepoints[] = [20 * sin($t), 20 * cos($t), 20 * $t];
-		}
+		$link->curvepoints = $this->quarterCircle(20, 0, 0, 1);
 		$link->add_hint('comment_nudgeout', 40);
 		$map->drawn = [];
 		self::assertFalse($link->DrawCurvedComment(null, 'III', 0, 7, 10));
 		self::assertSame([], $map->drawn, 'Reverse progress falls back before drawing');
 		$link->add_hint('comment_nudgeout', 0);
-		$link->curvepoints = [];
-		for ($i = 0; $i <= 120; $i++) {
-			$t = $i / 120 * M_PI / 2;
-			$link->curvepoints[] = [100 + 220 * sin($t), 320 - 220 * cos($t), 220 * $t];
-		}
+		$link->curvepoints = $this->quarterCircle(220, 100, 320, -1);
 		// Reversing the spine must still produce an upright, complete label.
 		$link->curvepoints = array_reverse($link->curvepoints);
 		$map->drawn = [];
