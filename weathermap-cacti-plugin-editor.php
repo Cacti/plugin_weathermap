@@ -310,7 +310,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ddslick.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ui-contextmenu.js'); ?>
 
-	<title><?php print __('PHP Weathermap Editor %s', $weathermap_version, 'flowview'); ?></title>
+	<title><?php print __('PHP Weathermap Editor %s', $weathermap_version, 'weathermap'); ?></title>
 </head>
 
 <?php
