@@ -16,9 +16,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
--issue#310: Run the bandwidth engine test from the plugin directory
+-issue#308: Clear hotspot pointer cursors when entering placement mode
 
-* feature#310: Default implicit link capacities to 1000M in both directions, while preserving explicitly configured capacities
+* issue#308: Refresh saved editor snapshots reliably, restore Safari node/note selection and return to properties when cancelling raw configuration edits
 
 * Add traffic colour presets and optional high-load link pulsing
 
