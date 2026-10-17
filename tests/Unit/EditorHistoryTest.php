@@ -26,7 +26,7 @@ final class EditorHistoryTest extends TestCase {
 		mkdir($this->directory);
 		$this->file = $this->directory . '/map.conf';
 		file_put_contents($this->file, "# preserve original formatting\nWIDTH 600\nHEIGHT 300\nNODE a\n LABEL A\n POSITION 40 50\nNODE b\n LABEL B\n POSITION 200 100\nLINK a-b\n NODES a b\n BANDWIDTH 100M\n VIA 100 70\n");
-		session_id('wmtest' . bin2hex(random_bytes(12)));
+		session_start();
 		$_SESSION = [];
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$GLOBALS['__test_nfilter_request'] = [];
@@ -37,6 +37,7 @@ final class EditorHistoryTest extends TestCase {
 		rmdir($this->directory);
 		$history = WeathermapEditorHistory\storagePath();
 		if (is_file($history) || is_link($history)) unlink($history);
+		session_destroy();
 		chdir($this->cwd);
 	}
 
