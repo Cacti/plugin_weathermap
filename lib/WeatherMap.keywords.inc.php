@@ -757,6 +757,9 @@ $WM_config_keywords2 = [
 				['linkstyle' => 1]
 			],
 		],
+		'COMMENTCURVE' => [
+			['LINK', '/^COMMENTCURVE\s+([01])\s*$/i', ['commentcurve' => 1]],
+		],
 		'COMMENTSTYLE' => [
 			[
 				'LINK',
