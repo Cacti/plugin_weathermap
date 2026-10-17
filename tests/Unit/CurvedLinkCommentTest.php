@@ -87,6 +87,21 @@ final class CurvedLinkCommentTest extends TestCase {
 		$pair = imagettfbbox($font->size, 0, $file, 'AV|');
 		$single = imagettfbbox($font->size, 0, $file, 'V|');
 		self::assertEqualsWithDelta($pair[2] - $single[2], $map->drawn[1][0] - $map->drawn[0][0], 0.01);
+		// Exact U-turns have no two-sided tangent, but only nearby labels are unsafe.
+		$link->curvepoints = [[0, 50, 0], [1000, 50, 1000], [800, 50, 1200]];
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 10));
+		self::assertSame('5G Backup', implode('', array_column($map->drawn, 2)));
+		$map->drawn = [];
+		self::assertFalse($link->DrawCurvedComment(null, '5G Backup', 0, 7, 80));
+		self::assertSame([], $map->drawn, 'A label crossing a U-turn falls back atomically');
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G', 0, 7, 95));
+		$link->curvepoints = array_reverse($link->curvepoints);
+		$map->drawn = [];
+		self::assertTrue($link->DrawCurvedComment(null, '5G Backup', 0, 7, 90));
+		self::assertSame('5G Backup', implode('', array_column($map->drawn, 2)));
+
 		// A moderate inward offset can overlap wide glyphs even without reversing them.
 		$link->curvepoints = $this->quarterCircle(40, 0, 0, 1);
 		$link->add_hint('comment_nudgeout', 2); // width 7 + gap 4 + nudge 2 = 13 inward.

@@ -394,20 +394,52 @@ class WeatherMapLink extends WeatherMapItem {
 		$baselineLength = 0.0;
 		$baselineAnchor = 0.0;
 		$invalidIntervals = [];
+		// Bound undefined tangents locally even when an angled route has very
+		// long segments. Do not mark the entire approach to a U-turn invalid.
+		$extraDistances = [];
+		foreach ($points as $point) {
+			$a = $at($point[2] - 1);
+			$b = $at($point[2] + 1);
+			if (hypot($b[0] - $a[0], $b[1] - $a[1]) < 0.001) {
+				$extraDistances[] = max(0, $point[2] - 1);
+				$extraDistances[] = min($total, $point[2] + 1);
+			}
+		}
+		if ($extraDistances) {
+			$distances = array_unique(array_merge(array_column($points, 2), $extraDistances));
+			sort($distances, SORT_NUMERIC);
+			$sampled = [];
+			foreach ($distances as $distance) {
+				[$x, $y] = $at($distance);
+				$sampled[] = [$x, $y, $distance];
+			}
+			$points = $sampled;
+		}
+		$previousUndefined = false;
 		foreach ($points as $i => $point) {
 			$a = $at($point[2] - 1);
 			$b = $at($point[2] + 1);
 			$dx = $b[0] - $a[0];
 			$dy = $b[1] - $a[1];
 			$norm = hypot($dx, $dy);
-			if ($norm < 0.001) return false;
+			$undefined = $norm < 0.001;
+			if ($undefined) {
+				// Use a one-sided normal for construction, never for rendering a
+				// label across this point. Both neighbouring intervals are unsafe.
+				$a = $points[max(0, $i - 1)];
+				$b = $points[$i > 0 ? $i : 1];
+				$dx = $b[0] - $a[0];
+				$dy = $b[1] - $a[1];
+				$norm = hypot($dx, $dy);
+			}
 			$x = $point[0] + $sign * $dy / $norm * $offset;
 			$y = $point[1] - $sign * $dx / $norm * $offset;
 			if ($i > 0) {
 				$last = $baseline[$i - 1];
 				// An offset beyond the local bend radius creates a cusp or reversal.
 				$step = hypot($x - $last[0], $y - $last[1]);
-				if (($x - $last[0]) * ($point[0] - $points[$i - 1][0]) +
+				if ($undefined || $previousUndefined ||
+					($x - $last[0]) * ($point[0] - $points[$i - 1][0]) +
 					($y - $last[1]) * ($point[1] - $points[$i - 1][1]) <= 0) {
 					$invalidIntervals[] = [$baselineLength, $baselineLength + $step];
 				}
@@ -417,6 +449,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$baselineLength += $step;
 			}
 			$baseline[] = [$x, $y, $baselineLength];
+			$previousUndefined = $undefined;
 		}
 		// Preserve A-to-B nudge direction and endpoint alignment on the text path.
 		$points = $baseline;
