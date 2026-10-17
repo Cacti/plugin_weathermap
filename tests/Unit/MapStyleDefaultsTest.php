@@ -128,6 +128,22 @@ it('AssociatesCommentStyleLabelsWithTheirSelectors', function () {
 	}
 });
 
+it('SubmitsOneCurveSettingAndAllowsItToBeCleared', function ($enabled) {
+	$map = wm_style_test_map();
+	$map->links['DEFAULT']->commentcurve = $enabled;
+	$document = new DOMDocument();
+	$document->loadHTML('<form><table>' . wm_comment_style_fields($map) . '</table></form>', LIBXML_NOERROR | LIBXML_NOWARNING);
+	$xpath = new DOMXPath($document);
+	$controls = $xpath->query('//input[@name="mapstyle_commentcurve"]');
+	expect($controls->length)->toBe(1)
+		->and($xpath->query('//*[@id="mapstyle_commentcurve"]')->length)->toBe(1);
+	$submitted = [];
+	foreach ($controls as $control) {
+		if ($control->hasAttribute('checked')) $submitted[] = $control->getAttribute('value');
+	}
+	expect($submitted)->toBe($enabled ? ['1'] : []);
+})->with([0, 1]);
+
 it('LabelsTheTrafficFontAndAdvancedHoverDimensions', function () {
 	$source = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin-editor.php');
 	$map = wm_style_test_map();
