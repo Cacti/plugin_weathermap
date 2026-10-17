@@ -67,6 +67,17 @@ final class CurvedLinkCommentTest extends TestCase {
 		$pair = imagettfbbox($font->size, 0, $file, 'AV|');
 		$single = imagettfbbox($font->size, 0, $file, 'V|');
 		self::assertEqualsWithDelta($pair[2] - $single[2], $map->drawn[1][0] - $map->drawn[0][0], 0.01);
+		// A moderate inward offset can overlap wide glyphs even without reversing them.
+		$link->curvepoints = [];
+		for ($i = 0; $i <= 120; $i++) {
+			$t = $i / 120 * M_PI / 2;
+			$link->curvepoints[] = [40 * sin($t), 40 * cos($t), 40 * $t];
+		}
+		$link->add_hint('comment_nudgeout', 2); // width 7 + gap 4 + nudge 2 = 13 inward.
+		$map->drawn = [];
+		self::assertFalse($link->DrawCurvedComment(null, 'MM', 0, 7, 20));
+		self::assertSame([], $map->drawn, 'Compressed glyph spacing falls back atomically');
+		$link->add_hint('comment_nudgeout', 0);
 		// An inward offset beyond the bend radius reverses glyph progress.
 		$link->curvepoints = [];
 		for ($i = 0; $i <= 120; $i++) {

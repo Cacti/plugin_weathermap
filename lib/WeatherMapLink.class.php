@@ -416,12 +416,13 @@ class WeatherMapLink extends WeatherMapItem {
 			$y = $p[1] - $dx * $offset;
 			if ($previous && (
 				($x - $previous[2]) * ($dx + $previous[0]) + ($y - $previous[3]) * ($dy + $previous[1]) <= 0 ||
-				hypot($x - $previous[2], $y - $previous[3]) < 0.65 * ($advance + $previous[4]) / 2
+				// Preserve kerned baseline spacing; inward compression can overlap glyphs.
+				hypot($x - $previous[2], $y - $previous[3]) + 0.01 < abs($distance - $previous[5])
 			)) {
 				return false;
 			}
 			$layout[] = [$x - $dx * $advance / 2, $y - $dy * $advance / 2, $glyph, rad2deg(atan2(-$dy, $dx))];
-			$previous = [$dx, $dy, $x, $y, $advance];
+			$previous = [$dx, $dy, $x, $y, $advance, $distance];
 		}
 		foreach ($layout as [$x, $y, $glyph, $angle]) {
 			$this->owner->myimagestring($image, $this->commentfont, $x, $y, $glyph, $colour, $angle);
