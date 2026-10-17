@@ -146,15 +146,27 @@ function remember($key, $before, $after) {
 
 /** Compare structured output before rewriting hand-formatted root bytes. */
 function unchanged($map, $mapfile, $expectedRevision) {
-	// Intentional raw edits retain their exact textual changes, including comments.
-	if (in_array(\get_nfilter_request_var('action'), ['set_node_config', 'set_link_config'], true)) return false;
 	$loaded = new \WeatherMap;
 	$loaded->context = 'editor';
 	if (!$loaded->ReadConfig($mapfile)
 		|| ($expectedRevision !== null && $expectedRevision !== $loaded->config_revision)
 		|| !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity))) return false;
+	$action = \get_nfilter_request_var('action');
+	if (in_array($action, ['set_node_config', 'set_link_config'], true)) return unchangedRaw($map, $loaded, $action);
 	$original = $loaded->ConfigText();
 	return is_string($original) && $original === $map->ConfigText();
+}
+
+/** Compare exactly what fetchConfig() displayed, allowing only transport newlines. */
+function unchangedRaw($map, $loaded, $action) {
+	$isNode = $action === 'set_node_config';
+	$name = \get_nfilter_request_var($isNode ? 'node_name' : 'link_name');
+	$items = $isNode ? 'nodes' : 'links';
+	$original = $loaded->{$items}[$name] ?? null;
+	$edited = $map->{$items}[$name] ?? null;
+	if ($original === null || $edited === null || !is_string($edited->config_override)) return false;
+	$normalize = static fn($text) => str_replace(["\r\n", "\r"], "\n", $text);
+	return $normalize($original->WriteConfig()) === $normalize($edited->config_override);
 }
 
 /** Capture history under the same directory lock as the normal atomic save. */

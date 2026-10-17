@@ -367,4 +367,42 @@ final class EditorHistoryTest extends TestCase {
 		self::assertSame($before, file_get_contents($this->file));
 	}
 
+	public function testUntouchedRawNodeAndLinkDialogsPreserveBothStacksAndExactRootBytes(): void {
+		foreach (['node' => 'a', 'link' => 'a-b'] as $type => $name) {
+			$original = file_get_contents($this->file);
+			$this->move(60);
+			$history = $this->history('undo');
+			$this->request('fetch_config', ['item_type' => $type, 'item_name' => $name]);
+			ob_start(); fetchConfig($this->file); $dialog = ob_get_clean();
+			foreach (["\n", "\r\n", "\r"] as $newline) {
+				$this->request('set_' . $type . '_config', [$type . '_name' => $name, 'item_configtext' => str_replace("\n", $newline, $dialog)]);
+				$save = $type === 'node' ? 'setNodeConfig' : 'setLinkConfig';
+				$save($this->file);
+				self::assertSame(200, http_response_code());
+				self::assertSame($original, file_get_contents($this->file));
+				self::assertSame($history, $this->history('history_status'));
+			}
+			$this->history('redo');
+			self::assertSame(60, (int) $this->map()->nodes['a']->x);
+			$this->history('undo');
+		}
+	}
+
+	public function testIntentionalRawWhitespaceEditsStillClearRedoAndCanBeUndone(): void {
+		$this->move(60);
+		$this->history('undo');
+		$original = file_get_contents($this->file);
+		$this->request('fetch_config', ['item_type' => 'link', 'item_name' => 'a-b']);
+		ob_start(); fetchConfig($this->file); $dialog = ob_get_clean();
+		$changed = str_replace('BANDWIDTH', ' BANDWIDTH', $dialog) . "\n";
+		$this->request('set_link_config', ['link_name' => 'a-b', 'item_configtext' => $changed]);
+		setLinkConfig($this->file);
+		self::assertNotSame($original, file_get_contents($this->file));
+		$status = $this->history('history_status');
+		self::assertSame(1, $status['undo']);
+		self::assertSame(0, $status['redo']);
+		$this->history('undo');
+		self::assertSame($original, file_get_contents($this->file));
+	}
+
 }
