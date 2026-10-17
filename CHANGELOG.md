@@ -16,13 +16,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
--issue#312: Avoid Boost density cache collisions and preserve original previews on delegated collectors
--issue#312: Support keyboard entry and return for hover graphs and keep pointer state independent
+-issue#308: Clear hotspot pointer cursors when entering placement mode
 
--issue: Keep traffic glows visible through transparent node icon padding
-
-* issue#312: Preserve Cacti graph-tree layout when navigating away from Weathermap
-* feature#312: Make Cacti hover previews independently clickable and sharper on high-density displays; hide generated clone captions and preserve popup pointer/keyboard interaction
+* issue#308: Refresh saved editor snapshots reliably, restore Safari node/note selection and return to properties when cancelling raw configuration edits
 
 * Add traffic colour presets and optional high-load link pulsing
 
