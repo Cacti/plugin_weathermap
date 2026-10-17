@@ -333,7 +333,7 @@ if ($editor_return_context === 'manage') {
 	$editor_return_label = __('Return to Manage', 'weathermap');
 }
 ?>
-<body id='mainView' class='mainView' data-return-label='<?php print plugin_weathermap_escape_attr($editor_return_label); ?>' data-return-map='<?php print plugin_weathermap_escape_attr($editor_return_url); ?>'>
+<body id='mainView' class='mainView' data-wm-theme='<?php print plugin_weathermap_escape_attr($selectedTheme); ?>' data-return-label='<?php print plugin_weathermap_escape_attr($editor_return_label); ?>' data-return-map='<?php print plugin_weathermap_escape_attr($editor_return_url); ?>'>
 	<div id='toolbar' class='cactiTableTitleRow'>
 		<ul>
 			<li class='wm-history-controls'>
