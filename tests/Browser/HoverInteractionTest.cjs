@@ -4,12 +4,13 @@ const { JSDOM } = require('jsdom'),
 	vm = require('vm'),
 	assert = require('node:assert/strict');
 (async () => {
-	const dom = new JSDOM('<map><area data-caption="node0123-node0456"></map>', { runScripts: 'outside-only' }),
+	const dom = new JSDOM('<map><area data-caption="node0123-node0456"></map>', { runScripts: 'outside-only', url:'https://cacti.example/cacti/plugins/weathermap/view.php' }),
 		w = dom.window,
 		$ = jquery(w);
 	w.$ = $;
 	let opts;
 	$.fn.tooltip = function (options) {
+		if (options === 'instance') return undefined;
 		opts = options;
 		return this;
 	};
@@ -35,6 +36,12 @@ const { JSDOM } = require('jsdom'),
 	opts.content.call(area[0], (html) => (output = html));
 	assert.equal($(output).children().not('.wmcontent').text(), 'Uplink <example>');
 	assert.equal($(output).find('example').length, 0);
+	area.attr('data-hover', Buffer.from('<div><img src="/cacti/graph_image.php?local_graph_id=108&amp;graph_width=300"><img src="/cacti/graph_image.php?local_graph_id=159"><img src="https://external.example/graph_image.php?local_graph_id=9"></div>').toString('base64'));
+	opts.content.call(area[0], html => output=html);
+	assert.deepEqual($(output).find('a').map(function(){return $(this).attr('href');}).get(), ['/cacti/graph.php?rra_id=all&local_graph_id=108','/cacti/graph.php?rra_id=all&local_graph_id=159']);
+	assert.equal($(output).find('a img').length,2);
+	assert.equal(w.wmHoverGraphDestination('/cacti/graph_image.php?local_graph_id=-1'),null);
+	assert.equal(w.wmHoverGraphDestination('javascript:alert(1)'),null);
 	assert.equal(opts.show, false);
 	assert.equal(opts.hide, false);
 	const tip = $('<div class="ui-tooltip"></div>').appendTo('body');

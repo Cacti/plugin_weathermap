@@ -204,7 +204,7 @@ switch (get_request_var('action')) {
 					print '';
 
 					$map->imageuri = '?action=liveviewimage&id=' . rawurlencode((string)$id);
-					print $map->MakeHTML('weathermap_live_imap');
+					print weathermap_hover_density_metadata($map->MakeHTML('weathermap_live_imap'));
 
 					chdir($orig_cwd);
 
