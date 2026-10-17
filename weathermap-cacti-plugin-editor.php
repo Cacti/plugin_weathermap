@@ -92,7 +92,7 @@ $editor_return_context = get_nfilter_request_var('return_to') === 'manage' ? 'ma
 
 if (isset_request_var('action')) {
 	$action = wm_editor_sanitize_action(get_nfilter_request_var('action'), [
-		'graphs', 'datasources', 'newmap', 'newmapcopy', 'font_samples', 'draw',
+		'history_status', 'undo', 'redo', 'graphs', 'datasources', 'newmap', 'newmapcopy', 'font_samples', 'draw',
 		'show_config', 'fetch_config', 'set_link_config', 'set_node_config',
 		'set_note_properties', 'set_node_properties', 'set_link_properties', 'set_map_properties',
 		'set_map_style', 'image_data', 'upload_image', 'delete_image', 'colour_data', 'set_map_colours', 'add_link2', 'place_legend', 'place_stamp', 'via_link',
@@ -130,6 +130,11 @@ wm_debug("Starting Edit Run: action is $action on $mapname");
 wm_debug('==========================================================================================================');
 
 switch($action) {
+	case 'history_status':
+	case 'undo':
+	case 'redo':
+		\WeathermapEditorHistory\handle($mapfile, $action);
+		exit;
 	case 'image_data':
 	case 'upload_image':
 	case 'delete_image':
@@ -307,6 +312,7 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<?php print get_md5_include_js('include/js/jquery.colorpicker.js'); ?>
 	<?php print get_md5_include_js('include/js/js.storage.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/editor.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.history.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ddslick.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ui-contextmenu.js'); ?>
 
@@ -330,6 +336,11 @@ if ($editor_return_context === 'manage') {
 <body id='mainView' class='mainView' data-return-label='<?php print plugin_weathermap_escape_attr($editor_return_label); ?>' data-return-map='<?php print plugin_weathermap_escape_attr($editor_return_url); ?>'>
 	<div id='toolbar' class='cactiTableTitleRow'>
 		<ul>
+			<li class='wm-history-controls'>
+				<button type='button' id='wm-undo' disabled><?php print __('Undo', 'weathermap'); ?></button>
+				<button type='button' id='wm-redo' disabled><?php print __('Redo', 'weathermap'); ?></button>
+				<span id='wm-history-status' class='wm-visually-hidden' role='status' aria-live='polite'></span>
+			</li>
 			<li class='tb_active' id='tb_newfile'><?php print __('Change<br>File', 'weathermap'); ?></li>
 			<li class='tb_active' id='tb_addnode'><?php print __('Add<br>Node', 'weathermap'); ?></li>
 			<li class='tb_active' id='tb_addlink'><?php print __('Add<br>Link', 'weathermap'); ?></li>

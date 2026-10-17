@@ -41,6 +41,7 @@
 */
 
 require_once __DIR__ . '/WeatherMap.config.php';
+require_once __DIR__ . '/editor.history.php';
 
 /** editor.actions.php
  *
@@ -89,7 +90,7 @@ function wm_editor_read_config($map, $mapfile, $requireRevision = false) {
  * @return bool Whether the complete configuration was saved.
  */
 function wm_editor_write_config($map, $mapfile, $createOnly = false) {
-	if (!$map->WriteConfig($mapfile, $createOnly, $map->editor_config_revision)) {
+	if (!\WeathermapEditorHistory\write($map, $mapfile, $createOnly, $map->editor_config_revision)) {
 		$current = is_file($mapfile) ? @hash_file('sha256', $mapfile) : false;
 		$stale = $map->config_asset_conflict || !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity)) || $map->editor_config_revision !== null && $current !== false && $current !== $map->editor_config_revision;
 		http_response_code($stale ? 409 : 500);
@@ -1304,7 +1305,7 @@ function wm_editor_colours($mapfile, $action) {
 			$data = json_decode($payload, true);
 			if (!is_array($data)) throw new InvalidArgumentException(__('Invalid colour settings.', 'weathermap'));
 			wm_asset_save_colours($map, $data);
-			if (!$map->WriteConfig($mapfile, false, $map->config_revision, $lock)) {
+			if (!\WeathermapEditorHistory\write($map, $mapfile, false, $map->config_revision, $lock)) {
 				$current = @hash_file('sha256', $mapfile);
 				if ($current !== $map->config_revision || !\WeathermapConfig\dependenciesMatch(array_merge($map->config_dependencies, $map->config_root_identity))) {
 					http_response_code(409);

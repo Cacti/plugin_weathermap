@@ -1,0 +1,141 @@
+/*
+ * Copyright (C) 2004-2026 The Cacti Group.
+ * Licensed under the GNU General Public License, version 2 or later.
+ */
+(function(root) {
+	'use strict';
+
+	function randomId(win) {
+		return Array.from(win.crypto.getRandomValues(new Uint8Array(16)), function(byte) { return byte.toString(16).padStart(2, '0'); }).join('');
+	}
+
+	// sessionStorage is copied when a tab is duplicated. An origin-wide lock gives
+	// each live document exclusive ownership while preserving IDs across reloads.
+	function claimHistoryId(win, storageKey) {
+		var id = win.sessionStorage.getItem(storageKey);
+		if (!/^[a-f0-9]{32}$/.test(id || '')) id = randomId(win);
+		if (!win.navigator || !win.navigator.locks) {
+			// SharedWorker also works on HTTP installations where Web Locks is absent.
+			var worker = new win.SharedWorker(new URL('js/editor.history.worker.js', new URL(win.editor_url, win.location.href)), 'weathermap-history');
+			return new Promise(function(resolve, reject) {
+				worker.onerror = reject;
+				worker.port.onmessage = function(event) {
+					if (!event.data.granted) { id = randomId(win); claim(); return; }
+					try { win.sessionStorage.setItem(storageKey, id); }
+					catch (error) { worker.port.postMessage({release: true}); worker.port.close(); reject(error); return; }
+					win.addEventListener('pagehide', function() { worker.port.postMessage({release: true}); worker.port.close(); }, {once: true});
+					win.addEventListener('pageshow', function(event) { if (event.persisted) win.location.reload(); });
+					resolve(id);
+				};
+				function claim() { worker.port.postMessage({key: storageKey + ':' + id}); }
+				worker.port.start();
+				claim();
+			});
+		}
+		return new Promise(function(resolve, reject) {
+			function claim(candidate) {
+				win.navigator.locks.request(storageKey + ':' + candidate, {ifAvailable: true}, function(lock) {
+					if (!lock) { claim(randomId(win)); return; }
+					win.sessionStorage.setItem(storageKey, candidate);
+					return new Promise(function(release) {
+						win.addEventListener('pagehide', release, {once: true});
+						// A document restored from the back/forward cache must reacquire ownership.
+						win.addEventListener('pageshow', function(event) { if (event.persisted) win.location.reload(); });
+						resolve(candidate);
+					});
+				}).catch(reject);
+			}
+			claim(id);
+		});
+	}
+
+	async function init($, win) {
+		if (!$('#wm-undo').length || typeof win.WMConfigRevision !== 'string') return;
+		var id, initializing = true, pending = 0, state = {undo: 0, redo: 0};
+		var text = win.wmEditorText;
+
+		function render() {
+			['undo', 'redo'].forEach(function(direction) {
+				var label = direction === 'undo' ? text.historyUndo : text.historyRedo;
+				$('#wm-' + direction).prop('disabled', pending > 0 || !state[direction])
+					.attr('title', state[direction] ? label + ': ' + state[direction + 'Label'] : text.historyEmpty);
+			});
+			$('#wm-history-status').text(text.historyAvailable.replace('%s', state.undo).replace('%s', state.redo));
+		}
+
+		function request(action) {
+			var values = {action: action, mapname: $('#mapname').val(), config_revision: win.WMConfigRevision};
+			if (typeof win.csrfMagicToken !== 'undefined') values.__csrf_magic = win.csrfMagicToken;
+			return $.ajax({url: win.editor_url, type: 'POST', dataType: 'json', data: values});
+		}
+
+		// All editor save paths, including Manage Colors, receive the tab's history ID.
+		$.ajaxPrefilter(function(options, original, xhr) {
+			var destination = new URL(options.url, win.location.href);
+			var editor = new URL(win.editor_url, win.location.href);
+			if (options.type.toUpperCase() !== 'POST' || destination.href !== editor.href || options.processData === false) return;
+			var data = new URLSearchParams(options.data || '');
+			var action = data.get('action');
+			var readOnly = ['history_status', 'graphs', 'datasources', 'image_data', 'colour_data', 'delete_image'].indexOf(action) !== -1;
+			if (initializing && !readOnly) { xhr.abort(); return; }
+			if (!id) return; // Ownership failure leaves normal editing available.
+			data.set('history_id', id);
+			options.data = data.toString();
+			if (readOnly) return;
+			pending++;
+			render();
+			xhr.always(function() { pending--; render(); });
+		});
+
+		// Prevent editing while the worker/lock owner is being established.
+		var wasInert = win.document.body.inert;
+		win.document.body.inert = true;
+		try {
+			var storageKey = 'weathermap-history:' + win.location.pathname;
+			id = await claimHistoryId(win, storageKey);
+		} catch (error) {
+			$('#wm-undo,#wm-redo').attr('title', text.historyStorage);
+			return;
+		} finally {
+			initializing = false;
+			win.document.body.inert = wasInert;
+		}
+
+		function apply(direction) {
+			if (pending || !state[direction]) return;
+			if ($('.ui-dialog-content:visible').length) {
+				win.alert(text.historyDialog);
+				return;
+			}
+			request(direction).done(function() {
+				// Always fetch a new document, including when the current URL has a fragment.
+				var url = new URL(win.location.href);
+				url.searchParams.set('mapname', $('#mapname').val());
+				url.searchParams.set('action', 'nothing');
+				url.searchParams.delete('config_revision');
+				url.searchParams.delete('__csrf_magic');
+				url.hash = '';
+				if (win.location.href.split('#')[0] === url.href) win.location.reload();
+				else win.location.replace(url.href);
+			}).fail(function(xhr) {
+				state = {undo: 0, redo: 0};
+				render();
+				win.alert(xhr.responseJSON && xhr.responseJSON.error || text.saveError);
+			});
+		}
+
+		$('#wm-undo').on('click.wmhistory', function() { apply('undo'); });
+		$('#wm-redo').on('click.wmhistory', function() { apply('redo'); });
+		$(win.document).on('keydown.wmhistory', function(event) {
+			if (!(event.ctrlKey || event.metaKey) || event.altKey || event.key.toLowerCase() !== 'z') return;
+			if ($(event.target).closest('input,textarea,select,[contenteditable]:not([contenteditable="false"])').length || $('.ui-dialog-content:visible').length) return;
+			var direction = event.shiftKey ? 'redo' : 'undo';
+			if (!pending && state[direction]) { event.preventDefault(); apply(direction); }
+		});
+		request('history_status').done(function(data) { state = data; render(); })
+			.fail(function() { $('#wm-undo,#wm-redo').attr('title', text.saveError); });
+	}
+
+	if (typeof module !== 'undefined' && module.exports) module.exports = {init: init, claimHistoryId: claimHistoryId};
+	else root.jQuery(function() { init(root.jQuery, root); });
+})(typeof window !== 'undefined' ? window : globalThis);
