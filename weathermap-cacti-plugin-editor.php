@@ -359,9 +359,10 @@ if ($editor_return_context === 'manage') {
 		</ul>
 	</div>
 	<form id='frmMain' action='<?php print $editor_name ?>' method='post'>
-		<div class='mainArea'>
+		<div class='mainArea mapData'>
 			<input id='xycapture' name='xycapture' width='<?php print html_escape($editor_width); ?>' height='<?php print html_escape($editor_height); ?>' data-width='<?php print html_escape($editor_width); ?>' data-height='<?php print html_escape($editor_height); ?>' style='display:none' type='image' src='<?php print html_escape($imageurl); ?>' />
 			<img id='existingdata' name='existingdata' width='<?php print html_escape($editor_width); ?>' height='<?php print html_escape($editor_height); ?>' data-width='<?php print html_escape($editor_width); ?>' data-height='<?php print html_escape($editor_height); ?>' src='<?php print html_escape($imageurl); ?>' usemap='#weathermap_imap' />
+			<?php getMapAreaData($mapfile); ?>
 			<input id='x' name='x' type='hidden' />
 			<input id='y' name='y' type='hidden' />
 			<div class='debug' style='display:none'><p><strong><?php print __('Debug', 'weathermap'); ?></strong>
@@ -400,9 +401,6 @@ if ($editor_return_context === 'manage') {
 			<?php getMapJavaScript($mapfile, $map); ?>
 			<?php print 'var infoUrlStyle=' . intval(read_config_option('weathermap_infourl_style')) . ';'; ?>
 			</script>
-		</div>
-		<div class='mapData'>
-			<?php getMapAreaData($mapfile); ?>
 		</div>
 		<!-- End Data for overlay and selection -->
 
