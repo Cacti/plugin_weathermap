@@ -385,6 +385,7 @@ function setNodeProperties($mapfile) {
 	$labelposition = get_nfilter_request_var('node_labelposition');
 	if (in_array($labelposition, ['N60', 'C', 'S60'], true)) {
 		$map->nodes[$new_node_name]->labeloffset = $labelposition;
+		$map->nodes[$new_node_name]->add_hint('editor_label_position', $labelposition);
 		$map->nodes[$new_node_name]->labeloffsetx = 0;
 		$map->nodes[$new_node_name]->labeloffsety = 0;
 	}

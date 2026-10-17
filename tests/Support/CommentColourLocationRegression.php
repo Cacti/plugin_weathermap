@@ -31,8 +31,9 @@ try {
  file_put_contents($file,"NODE a\n POSITION 10 10\nNODE b\n POSITION 100 100\nLINK normal\n NODES a b\nLINK custom\n NODES a b\n COMMENTFONTCOLOR 255 0 0\n");
  $m=new WeatherMap();$m->ReadConfig($file);
  $m->add_hint('rrd_default_in_ds','octets_in');$m->add_hint('rrd_default_out_ds','octets_out');$m->add_hint('rrd_default_path','/rrd');
+ $GLOBALS['config']['rra_path']='/var/lib/cacti/rra';
  preg_match('/var wmRrdSourceDefaults = (.*);/', $m->asJS(), $defaults);
- colour_check(json_decode($defaults[1],true) === ['input'=>'octets_in','output'=>'octets_out','path'=>'/rrd'], 'Map RRD defaults reach source identity matching');$data=wm_asset_colour_data($m);$data['commentcolour']='12 34 56';wm_asset_save_colours($m,$data);
+ colour_check(json_decode($defaults[1],true) === ['input'=>'octets_in','output'=>'octets_out','path'=>'/rrd','rraPath'=>'/var/lib/cacti/rra'], 'Map RRD defaults reach source identity matching');$data=wm_asset_colour_data($m);$data['commentcolour']='12 34 56';wm_asset_save_colours($m,$data);
  colour_check($m->links['DEFAULT']->commentfontcolour===[12,34,56],'Default changes');
  colour_check($m->links['normal']->commentfontcolour===[12,34,56],'Matching links change');
  colour_check($m->links['custom']->commentfontcolour==[255,0,0],'Custom link retained');

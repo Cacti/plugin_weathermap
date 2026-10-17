@@ -671,10 +671,16 @@ class WeatherMapNode extends WeatherMapItem {
 			$this->labeloffsetx = 0;
 			$this->labeloffsety = 0;
 
-			[$dx, $dy] = calc_offset($this->labeloffset,
-				($icon_w + $boxwidth - 1),
-				($icon_h + $boxheight)
-			);
+			$editorPosition = $this->get_hint('editor_label_position', '');
+			if (in_array($editorPosition, ['N60', 'C', 'S60'], true) && $editorPosition === $this->labeloffset) {
+				// Editor presets use the free space inside the icon, leaving raw offsets unchanged.
+				[$dx, $dy] = calc_offset($editorPosition, max(0, $icon_w - $boxwidth), max(0, $icon_h - $boxheight));
+			} else {
+				[$dx, $dy] = calc_offset($this->labeloffset,
+					($icon_w + $boxwidth - 1),
+					($icon_h + $boxheight)
+				);
+			}
 
 			// $this->labeloffsetx = $dx;
 			// $this->labeloffsety = $dy;
@@ -1113,6 +1119,7 @@ class WeatherMapNode extends WeatherMapItem {
 		$js .= 'relative_to:' . js_escape($this->relative_to) . ', ';
 		$js .= 'label:' . js_escape($this->label) . ', ';
 		$js .= 'labeloffset:' . js_escape($this->labeloffset) . ', ';
+		$js .= 'labelposition:' . js_escape($this->get_hint('editor_label_position', '')) . ', ';
 		$js .= 'labeloffsetx:' . (int)$this->labeloffsetx . ', ';
 		$js .= 'labeloffsety:' . (int)$this->labeloffsety . ', ';
 		$js .= 'name:' . js_escape($this->name) . ', ';
@@ -1154,6 +1161,7 @@ class WeatherMapNode extends WeatherMapItem {
 		if ($complete) {
 			$js .= '"label":' . js_escape($this->label) . ', ';
 			$js .= '"labeloffset":' . js_escape($this->labeloffset) . ', ';
+			$js .= '"labelposition":' . js_escape($this->get_hint('editor_label_position', '')) . ', ';
 			$js .= '"labeloffsetx":' . (int)$this->labeloffsetx . ', ';
 			$js .= '"labeloffsety":' . (int)$this->labeloffsety . ', ';
 			$js .= '"infourl":' . js_escape($this->infourl[IN]) . ', ';

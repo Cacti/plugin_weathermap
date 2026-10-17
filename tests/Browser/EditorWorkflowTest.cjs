@@ -511,6 +511,18 @@ assert.equal(w.wmLinkSameTrafficSource('2*scale:4:backup.rrd','backup.rrd'),true
 assert.equal(w.wmLinkSameTrafficSource('-2*scale:-4:backup.rrd','backup.rrd'),true);
 assert.equal(w.wmLinkSameTrafficSource('-backup.rrd','backup.rrd'),false);
 assert.equal(w.wmLinkSameTrafficSource('2*backup.rrd','backup.rrd'),false);
+// Without a map-specific default, relative sources resolve under Cacti's RRA directory.
+w.wmRrdSourceDefaults={rraPath:'/var/lib/cacti/rra'};
+const relativeChoice={id:'backup.rrd',local_graph_id:42,label:'Backup'};
+$('#link_target').val('primary.rrd /var/lib/cacti/rra/backup.rrd');
+$('#wm-link-source-picker').data('wm-choice',relativeChoice);w.wmApplyLinkTrafficSource();
+assert.equal($('#link_target').val(),'primary.rrd /var/lib/cacti/rra/backup.rrd');
+$('#link_target_picker').data('wm-choice',relativeChoice);$('#wm-link-use').trigger('click');
+assert.equal($('#link_target').val(),'backup.rrd');
+w.wmRrdSourceDefaults={path:'custom',rraPath:'/var/lib/cacti/rra'};
+assert.equal(w.wmLinkSameTrafficSource('backup.rrd','/var/lib/cacti/rra/custom/backup.rrd'),true);
+assert.equal(w.wmLinkSameTrafficSource('./backup.rrd','/var/lib/cacti/rra/./backup.rrd'),true);
+w.wmRrdSourceDefaults={};
 // Restore the custom click/hover setup for the independent editor assertions below.
 $('#link_infourl').val(clickBeforeSources);$('#link_hover').val(hoverBeforeSources);w.wmInitLinkHoverParts();
 // Manual expert edits remain serializable and cannot be overwritten by pending automatic lookups.

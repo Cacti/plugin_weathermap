@@ -1094,7 +1094,7 @@ function show_itemtext(itemtype,name) {
 function wmPrimeNodeLabelPosition(node) {
  var offset = String(node.labeloffset || '').toUpperCase();
  var position = (!offset || offset === 'C') && !Number(node.labeloffsetx || 0) && !Number(node.labeloffsety || 0) ? 'C' :
-  (['N60', 'S60'].includes(offset) && !Number(node.labeloffsetx || 0) && !Number(node.labeloffsety || 0) ? offset : 'keep');
+  (['N60', 'S60'].includes(offset) && node.labelposition === offset && !Number(node.labeloffsetx || 0) && !Number(node.labeloffsety || 0) ? offset : 'keep');
  $('#node_labelposition option[value="keep"]').prop('hidden', position !== 'keep');
  $('#node_labelposition').val(position).trigger('change.select2');
  if ($('#node_labelposition').data('ui-selectmenu')) $('#node_labelposition').selectmenu('refresh');
@@ -1546,6 +1546,8 @@ function wmLinkTrafficIdentity(source) {
  }
  if (!/\.rrd$/.test(file)) return null;
  if (!/^[/.]/.test(file) && defaults.path) file = defaults.path + '/' + file;
+ if (!file.startsWith('/') && defaults.rraPath) file = defaults.rraPath + '/' + file;
+ file = (file.startsWith('/') ? '/' : '') + file.split('/').filter(function(part) { return part !== '' && part !== '.'; }).join('/');
  scale *= multiplier;
  if (!Number.isFinite(scale)) return null;
  return JSON.stringify([file, input, output, scale]);
