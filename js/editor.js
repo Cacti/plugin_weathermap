@@ -1395,7 +1395,7 @@ function show_dialog(dlg) {
 				if (parent) {
 					show_dialog(parent);
 					$('#action').val(parent === 'dlgLinkProperties' ? 'set_link_properties' : 'set_node_properties');
-					$(parent === 'dlgLinkProperties' ? '#link_edit' : '#node_edit').trigger('focus');
+					$(parent === 'dlgLinkProperties' ? '#link_edit' : '#node_edit').attr('tabindex', '-1').trigger('focus');
 				}
 			}
 		},

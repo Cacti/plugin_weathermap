@@ -1,5 +1,5 @@
 const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'), path=require('node:path'), assert=require('node:assert/strict');
-const dom=new JSDOM('<input id="action"><input id="mapname" value="test.conf"><div id="dlgLinkProperties"><input id="unsaved" value="draft"><button id="link_edit">Edit</button></div><div id="dlgNodeProperties"><button id="node_edit">Edit</button></div><div id="dlgTextEdit"><textarea id="item_configtext"></textarea><button id="tb_textedit_cancel">Cancel</button></div>',{runScripts:'outside-only',pretendToBeVisual:true});
+const dom=new JSDOM('<input id="action"><input id="mapname" value="test.conf"><div id="dlgLinkProperties"><input id="unsaved" value="draft"><a id="link_edit">Edit</a></div><div id="dlgNodeProperties"><a id="node_edit">Edit</a></div><div id="dlgTextEdit"><textarea id="item_configtext"></textarea><button id="tb_textedit_cancel">Cancel</button></div>',{runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,$=jquery(w);w.$=w.jQuery=$;
 w.eval(fs.readFileSync(path.join(process.env.CACTI_JS_DIR,'jquery-ui.js'),'utf8'));
 const source=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');
