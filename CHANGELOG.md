@@ -14,75 +14,64 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- develop ---
+--- 2.0 ---
 
--issue#308: Clear hotspot pointer cursors when entering placement mode
-
-* issue#308: Refresh saved editor snapshots reliably, restore Safari node/note selection and return to properties when cancelling raw configuration edits
-
-* Add traffic colour presets and optional high-load link pulsing
-
-* Fix Safari rendering of high-traffic link glows using native SVG filters
-* Make configuration saves and repairs atomic; coordinate writes, registration and deletion with destination-directory locks and report failed editor saves
-
-* Add separate icon and background image upload and management libraries
-* Add editable map notes with alignment and sharp text at logical map dimensions
-* Fix editor placement reset, destructive action controls and theme contrast
-* Reduce gallery preview cards by 20% while preserving generated thumbnail resolution
-* Add a searchable node icon picker and bundled enterprise site icons
-
+* security: Add a version-safe CSP nonce (`plugin_weathermap_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class
+* issue#308: Refresh saved editor snapshots reliably, restore Safari node/note selection, clear placement cursors and return to properties when cancelling raw configuration edits
+* issue#309: Preserve endpoint alignment and nudge direction for curved link comments
+* issue#311: Preserve custom hover graphs when opening Link Properties
+* issue#312: Preserve Cacti graph-tree layout when navigating away from Weathermap; prevent Boost density-cache collisions and keep delegated collectors on ordinary previews
+* issue#312: Keep traffic glows visible through transparent node icon padding and improve pointer/keyboard hover navigation
+* issue#302: Fix Safari rendering of high-traffic link glows using native SVG filters
+* issue#303: Make configuration saves and repairs atomic; coordinate writes, registration and deletion with destination-directory locks and report failed editor saves
+* issue#300: Fix editor placement reset, destructive action controls and theme contrast
 * issue#299: Keep editor picker results open when browsing and allow changing an existing selection
-
-* feature#298: Fit or stretch background images within the map canvas
-
-* feature#297: Allow setting a map title when creating configuration files
-
-* feature#296: Delete unused configuration files with confirmation and protect registered maps
-
-* feature#295: Use a readable landscape preset for new blank maps
-
-* feature#294: Expose bundled fonts and link comment colours in Map Style
-
-* feature#293: Default new graph assignments to Time Graph View
-
-* feature#292: Generate sharper gallery thumbnails by default without enlarging small maps
-
 * issue#291: Improve map selector placement and themed viewer controls
-
 * issue#290: Match editor toolbar colours to Cacti themes and keep pickers visible
-
 * issue#289: Load viewer helpers explicitly before rendering maps
-
 * issue#288: Preserve dynamic editor labels and cycle countdowns
-
 * issue#278: Preserve map and editor navigation context across graph, viewer and management pages
-
-* feature#279: Show larger responsive map preview cards with separated borders and centered titles
-
 * issue#196: Restore cycle countdown, persistent fullscreen exit and reload fallback
-
 * issue#276: Preserve query separators when saving node and link click URLs
-* feature#276: Simplify node and link editing with readable names, common controls, searchable interface assignment, advanced controls, and clear deletion warnings
 * issue#277: Allow map duplication when the debug column is absent while preserving its default when present
 * issue#151: Keep standalone editor controls visible and use theme-aware dialog contrast
 * issue#275: Load permitted editor picker results in bounded pages, search interface descriptions, and encode graph search terms
 * issue#274: Fit hover popups to their graph content and close them immediately when leaving map links, preserving graph proportions and meaningful captions
-
-* refactor: On Cacti 1.2.32 and above, defer the editor's jQuery UI dialog (`ui.dialog`) styling to the core theme CSS; the plugin's `.ui-dialog-title`/`.ui-dialog-buttonset` font overrides have been split out of `css/editor.css` into a separate `css/editor-ui-dialog-legacy.css` that is only loaded on earlier Cacti releases
-* refactor: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
+* issue: On Cacti 1.2.32 and above, defer the editor's jQuery UI dialog (`ui.dialog`) styling to the core theme CSS; the plugin's `.ui-dialog-title`/`.ui-dialog-buttonset` font overrides have been split out of `css/editor.css` into a separate `css/editor-ui-dialog-legacy.css` that is only loaded on earlier Cacti releases
+* issue: Relocate the plugin's database schema provisioning (`weathermap_setup_table()`) out of `setup.php` into a dedicated `includes/database.php` module (function move only, no behaviour change)
+* issue: Bring every PHP file to PHPStan level 8 with zero errors, documenting parameter, return and property types throughout the legacy rendering engine without changing runtime behaviour (docblock typing only, so no new TypeErrors on the 1.2.x-era code base)
+* issue: `upgrade_mapfiles()` reported the wrong filename (swapped `$objfile`/`$bgfile`) in the BACKGROUND/ICON "file not found on disk" warnings, and the ICON branch reused the BACKGROUND message text and log code
+* issue: `viewthumb` requests served the full-size image because the handler compared an undefined `$action` instead of `get_request_var('action')`
+* issue: the editor "Make a Copy" action (`newMapCopy()`) silently did nothing because it was missing `global $mapdir`
+* issue: `WeatherMapLink::asJSON()` and `WeatherMapNode::asJSON()` emitted the literal text `Array` for `infourl`/`overliburl`/`overlibcaption` instead of indexing the per-direction arrays the way `asJS()` does
+* issue: the poller's boost detection passed `'off'` as `read_config_option()`'s `$force` flag (a boolean), forcing an uncached database read every poll cycle
+* issue: the SNMPv3 datasource never initialised its timeout/retry/abort-count settings (its `getMapGlobals()` helper was never called); these are now read from the map hints in `ReadData()`
+* issue: `WeatherMapBase::get_hint()` now accepts an optional default value, which the SNMPv3 datasource already expected to be honoured
+* issue: remove permanently-disabled and never-implemented dead code (the php-rrdtool reader stub, the dsstats reverse-conversion block, several `if (1 == 0)` debug toggles, and the no-op metafile dumper)
+* feature#309: Add default-on COMMENTCURVE and a Map Style option for comments following link curves, with straight-text fallbacks
+* feature#310: Default implicit link capacities to 1000M in both directions while preserving explicitly configured capacities
+* feature#311: Simplify link interface/source/hover workflows, limit the form to two previews, add node display-name positioning, move comment colours to Manage Colours and clarify raw-edit controls
+* feature#312: Make hover graphs individually clickable and sharper on high-density displays without changing their displayed size
+* feature#313: Bundle transparent 96px access-point, NAS, server, printer, CCTV recorder, UPS and CCTV camera node icons
+* feature#307: Add two-step Undo and Redo for saved map edits, with keyboard shortcuts and protection against stale restores (PR #316)
+* feature#302: Add traffic colour presets and optional high-load link pulsing
+* feature#303: Add separate icon and background image upload and management libraries
+* feature#301: Add editable map notes with alignment and sharp text at logical map dimensions
+* feature#305: Reduce gallery preview cards by 20% while preserving generated thumbnail resolution
+* feature#304: Add a searchable node icon picker and bundled enterprise site icons
+* feature#314: Update plugin version identification to 2.0
+* feature#298: Fit or stretch background images within the map canvas
+* feature#297: Allow setting a map title when creating configuration files
+* feature#296: Delete unused configuration files with confirmation and protect registered maps
+* feature#295: Use a readable landscape preset for new blank maps
+* feature#294: Expose bundled fonts and link comment colours in Map Style
+* feature#293: Default new graph assignments to Time Graph View
+* feature#292: Generate sharper gallery thumbnails by default without enlarging small maps
+* feature#279: Show larger responsive map preview cards with separated borders and centered titles
+* feature#276: Simplify node and link editing with readable names, common controls, searchable interface assignment, advanced controls, and clear deletion warnings
 * feature: Add a root `manifest.json` file manifest plus an upgrade-time `weathermap_prune_files()` that removes tombstoned and dev-only paths while protecting whitelisted user data (`configs/`, `output/`) and `.git*`, backed by a `tests/bin/validate-manifest.php` CI gate that fails on manifest drift
-* dev: Add xdebug coverage reporting to CI and enforce patch coverage of changed lines
-* types: Bring every PHP file to PHPStan level 8 with zero errors, documenting parameter, return and property types throughout the legacy rendering engine without changing runtime behaviour (docblock typing only, so no new TypeErrors on the 1.2.x-era code base)
-* bug: `upgrade_mapfiles()` reported the wrong filename (swapped `$objfile`/`$bgfile`) in the BACKGROUND/ICON "file not found on disk" warnings, and the ICON branch reused the BACKGROUND message text and log code
-* bug: `viewthumb` requests served the full-size image because the handler compared an undefined `$action` instead of `get_request_var('action')`
-* bug: the editor "Make a Copy" action (`newMapCopy()`) silently did nothing because it was missing `global $mapdir`
-* bug: `WeatherMapLink::asJSON()` and `WeatherMapNode::asJSON()` emitted the literal text `Array` for `infourl`/`overliburl`/`overlibcaption` instead of indexing the per-direction arrays the way `asJS()` does
-* bug: the poller's boost detection passed `'off'` as `read_config_option()`'s `$force` flag (a boolean), forcing an uncached database read every poll cycle
-* bug: the SNMPv3 datasource never initialised its timeout/retry/abort-count settings (its `getMapGlobals()` helper was never called); these are now read from the map hints in `ReadData()`
-* `WeatherMapBase::get_hint()` now accepts an optional default value, which the SNMPv3 datasource already expected to be honoured
-* cleanup: remove permanently-disabled and never-implemented dead code (the php-rrdtool reader stub, the dsstats reverse-conversion block, several `if (1 == 0)` debug toggles, and the no-op metafile dumper)
-* security: Add a version-safe CSP nonce (`plugin_weathermap_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class
-* Run the plugin unit test suite in CI, using the toolchain from the base Cacti install
+* feature: Add xdebug coverage reporting to CI and enforce patch coverage of changed lines
+* feature: Run the plugin unit test suite in CI, using the toolchain from the base Cacti install
 
 --- 1.7 ---
 * issue#233: Rendering issues when the page includes several maps with dropdown
