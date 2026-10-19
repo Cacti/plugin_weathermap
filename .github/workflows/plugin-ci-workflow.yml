@@ -31,6 +31,9 @@ on:
       - main
       - develop
 
+permissions:
+  contents: read
+
 env:
   # Branch or tag of Cacti/cacti to check out for both jobs below. 1.2.x is
   # the stable release line and has no Composer dev-dependencies or lint
@@ -38,10 +41,14 @@ env:
   # `if: env.CACTI != '1.2.x'` or install what they need explicitly. Set
   # this to 'develop' to test against Cacti's Composer-managed tree instead.
   CACTI: 1.2.x
-  COMPOSER_ALLOW_SUPERUSER: 1
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   integration-test:
+    timeout-minutes: 45
     runs-on: ${{ matrix.os }}
     
     strategy:
@@ -52,7 +59,7 @@ jobs:
     
     services:
       mariadb:
-        image: mariadb:11.8
+        image: mariadb:11.8@sha256:6422478cb8e159f080fb1d8ccf65101e26fe51385787fde7d16c3b165a331f15
         env:
           MYSQL_ROOT_PASSWORD: cactiroot
           MYSQL_DATABASE: cacti
@@ -72,6 +79,7 @@ jobs:
     - name: Checkout Cacti
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
+        persist-credentials: false
         repository: Cacti/cacti
         ref: ${{ env.CACTI }}
         path: cacti
@@ -79,6 +87,7 @@ jobs:
     - name: Checkout Weathermap Plugin
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
+        persist-credentials: false
         path: cacti/plugins/weathermap
         # patch-coverage.php diffs against the base branch below.
         fetch-depth: 0
@@ -87,6 +96,7 @@ jobs:
       uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
       with:
         php-version: ${{ matrix.php }}
+        tools: composer:2.10.3
         extensions: intl, mysql, gd, ldap, gmp, xml, curl, json, mbstring
         ini-values: "post_max_size=256M, max_execution_time=60, date.timezone=America/New_York"
         coverage: xdebug
@@ -137,33 +147,25 @@ jobs:
         mysql "$MYSQL_AUTH_USR" cacti < ${{ github.workspace }}/cacti/cacti.sql
         mysql "$MYSQL_AUTH_USR" -e "INSERT INTO settings (name, value) VALUES ('path_php_binary', '/usr/bin/php')" cacti
     
-    - name: Validate composer files
-      run: |
-        cd ${{ github.workspace }}/cacti
-        if [ -f composer.json ]; then
-          composer validate --strict || true
-        fi
-    
-    # 1.2.x declares no dev dependencies of its own, so require Pest
-    # explicitly rather than assuming Cacti's composer.json provides it.
-    # Not run with sudo so the vendor tree stays owned by the runner user,
-    # which Pest itself needs later to write its result cache.
-    - name: Install Composer Dependencies
-      run: |
-        cd ${{ github.workspace }}/cacti
-        if [ -f composer.json ]; then
-          sudo composer config --no-plugins allow-plugins.pestphp/pest-plugin true
-          sudo composer require --no-progress --no-interaction "pestphp/pest:^3" "pestphp/pest-plugin-drift:^3.0"
-          sudo rm -f composer.lock
-          sudo composer install --dev --no-progress
-        fi
-    
-    - name: Restore vendor ownership for Pest
-      run: |
-        if [ -d ${{ github.workspace }}/cacti/include/vendor ]; then
-          sudo chown -R runner:runner ${{ github.workspace }}/cacti/include/vendor ${{ github.workspace }}/cacti/composer.lock
-        fi
-    
+    # Core's release archives exclude .github and tests. Fetch these paths
+    # through Git at the immutable helper revision instead of an Action archive.
+    - name: Checkout shared CI tooling
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        repository: Cacti/cacti
+        ref: f3ff777992875740e4665fedfe2eff8335f5b894
+        persist-credentials: false
+        path: ci-tools
+        sparse-checkout: |
+          .github/actions/setup-plugin-dependencies
+          tests/tools/plugin-harness
+
+    - name: Install locked Cacti and plugin test dependencies
+      uses: ./ci-tools/.github/actions/setup-plugin-dependencies
+      with:
+        cacti-directory: cacti
+        install-core-dev: 'false'
+
     - name: Create Cacti config.php
       run: |
         cat ${{ github.workspace }}/cacti/include/config.php.dist | \
@@ -203,7 +205,7 @@ jobs:
     - name: Run Pest Unit Tests
       run: |
         cd ${{ github.workspace }}/cacti
-        include/vendor/bin/pest --configuration=plugins/weathermap/phpunit.xml \
+        "$CACTI_PEST_BIN" --configuration=plugins/weathermap/phpunit.xml \
           --coverage-clover=plugins/weathermap/coverage/clover.xml
 
     # Whole-file coverage is meaningless here: most of the plugin only runs
