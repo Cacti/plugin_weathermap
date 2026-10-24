@@ -440,6 +440,8 @@ function setLinkProperties($mapfile) {
 		$map->links[$link_name]->commentoffset_in  = intval(get_nfilter_request_var('link_commentposin'));
 		$map->links[$link_name]->commentoffset_out = intval(get_nfilter_request_var('link_commentposout'));
 
+		wm_link_apply_overrides($map, $map->links[$link_name], get_nfilter_request_var('link_commentstyle'), get_nfilter_request_var('link_labelposmode'), get_nfilter_request_var('link_labelposin'), get_nfilter_request_var('link_labelposout'));
+
 		$targets         = preg_split('/\s+/', trim(get_nfilter_request_var('link_target')), -1, PREG_SPLIT_NO_EMPTY) ?: [];
 		$new_target_list = [];
 
@@ -539,16 +541,6 @@ function setMapProperties($mapfile) {
 	}
 
 
-	$inheritables = [
-		['link', 'width', 'map_linkdefaultwidth', 'float']
-	];
-
-	handle_inheritance($map, $inheritables);
-
-	$map->links['DEFAULT']->width = intval(get_nfilter_request_var('map_linkdefaultwidth'));
-
-	$map->links['DEFAULT']->add_note('my_width', get_filter_request_var('map_linkdefaultwidth'));
-
 	$bwin  = get_nfilter_request_var('map_linkdefaultbwin');
 	$bwout = get_nfilter_request_var('map_linkdefaultbwout');
 
@@ -621,8 +613,13 @@ function setMapStyle($mapfile) {
 
 	handle_inheritance($map, $inheritables);
 
+	$width = get_nfilter_request_var('mapstyle_defaultwidth');
+	if (is_scalar($width) && is_numeric($width) && (float)$width > 0 && is_finite((float)$width)) {
+		wm_comment_update_default($map, 'width', (float)$width);
+	}
+	wm_link_apply_default_positions($map, get_nfilter_request_var('mapstyle_labelposin'), get_nfilter_request_var('mapstyle_labelposout'));
 	wm_comment_update_default($map, 'bwfont', wm_comment_resolve_font($map, get_nfilter_request_var('mapstyle_linkfont')));
-	wm_comment_apply_style($map, get_nfilter_request_var('mapstyle_commentfont'), null, isset_request_var('mapstyle_commentcurve') ? get_nfilter_request_var('mapstyle_commentcurve') : '0');
+	wm_comment_apply_style($map, get_nfilter_request_var('mapstyle_commentfont'), null, isset_request_var('mapstyle_commentcurve') ? get_nfilter_request_var('mapstyle_commentcurve') : '0', get_nfilter_request_var('mapstyle_commentstyle'));
 
 	if (!wm_editor_write_config($map, $mapfile)) return;
 }

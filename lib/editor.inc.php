@@ -1118,7 +1118,7 @@ function getEditorJs() {
 		'primarySource' => __('Primary source — use "Use interface" at the top to change', 'weathermap'),
 		'choosePrimaryFirst' => __('Choose the primary traffic interface in the main form first.', 'weathermap'),
 		'chooseSource' => __('Add additional traffic sources', 'weathermap'),
-		'linkAdvancedHint' => __('Custom sources and URLs override the automatic interface setup. Leave these unchanged for a normal traffic link.', 'weathermap'),
+		'linkAdvancedHint' => __('Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link.', 'weathermap'),
 		'customSourcesChanged' => __('Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged.', 'weathermap'),
 		'extraUrlsHint' => __('One additional image URL maximum. This is the same preview managed under Additional hover graphs.', 'weathermap'),
 		'trafficSources' => __('Traffic sources', 'weathermap'),
