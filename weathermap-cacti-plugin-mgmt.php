@@ -792,6 +792,7 @@ function wm_filter() {
 							<input type='button' id='wm_map_settings' value='<?php print __esc('Map Settings', 'weathermap'); ?>' title='<?php print __esc('Cacti Weathermap Map Settings', 'weathermap'); ?>'>
 							<input type='button' id='wm_settings' value='<?php print __esc('Settings', 'weathermap'); ?>' title='<?php print __esc('Cacti Weathermap Settings', 'weathermap'); ?>'>
 							<input type='button' id='wm_rebuild' value='<?php print __esc('Rebuild All', 'weathermap'); ?>' title='<?php print __esc('Rebuild all maps now in background', 'weathermap'); ?>'>
+							<a id='wm_docs' class='ui-button ui-corner-all ui-widget' href='docs/index.html' target='_blank' rel='noopener' title='<?php print __esc('Local Documentation', 'weathermap'); ?>'><?php print __esc('Docs', 'weathermap'); ?></a>
 						</span>
 					</td>
 				</tr>

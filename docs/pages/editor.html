@@ -1,135 +1,433 @@
-<!DOCTYPE html> 
-<html lang = "en" xml:lang = "en" xmlns = "http://www.w3.org/1999/xhtml"> 
- <head> 
- <link rel = "stylesheet" type = "text/css" media = "screen" href = "../../vendor/bootstrap/css/bootstrap.min.css" /> 
- <link rel = "stylesheet" type = "text/css" href = "../manual.css" /> 
- <title>PHP Weathermap v0.98a - The Map Editor</title> 
- </head> 
-
- <body> 
- <nav class="navbar navbar-default" role="navigation"> 
-<div class="navbar navbar-inverse navbar-fixed-top"> 
- <div class="container"> 
- <div class="navbar-header" id="nav"> 
- <a class="navbar-brand" href="http://www.network-weathermap.com/">Weathermap 
- v0.98a</a> 
- <ul class="nav navbar-nav"> 
- <li><a href="main.html">Contents</a></li> 
- <li><a href="main.html#installation">Installation</a></li> 
- <li><a href="main.html#basics">Basics</a></li> 
- <li><a href="faq.html">FAQ</a></li> 
- <li><a href="main.html#example">Sample Map</a></li> 
- <li><a href="cli-reference.html">CLI Reference</a></li> 
- <li><a href="config-reference.html">Config Reference</a></li> 
- <li><a href="advanced.html">Advanced</a></li> 
- <li><a href="editor.html">Editor</a></li> 
- <li><a href="cacti-plugin.html">Cacti Plugin</a></li> 
- <li><a href="http://www.network-weathermap.com/">Website</a></li> 
- </ul> 
- </div> 
- </div> 
-</div> 
-</nav> <sdiv id="content"> 
- <sdiv id="content2" class="wrapper"> 
-
-
-<div class="container"> 
-
-<div id = "header"> 
- <h1>PHP Weathermap v0.98a </h1> 
-
- <h4>Copyright &copy; 2005-2019 Howard Jones, 
- <tt><a href = "mailto:howie@thingy.com">howie@thingy.com</a></tt>. (<a 
- href = "http://www.network-weathermap.com/">Website</a>)</h4> 
-</div> 
- <h2 id = "editor">The Map Editor</h2> 
-
- <p class = "notebox"><b>Note:</b> This section is basically unaltered from 
- the v0.7 manual. The editor hasn't really changed since then, except to fix 
- some bugs, and work with the new config directives 
- - that is to say, it won't edit them, but nor will it remove/damage them. 
- It's still true to say that the editor is the easiest way to initially lay 
- out your map, and pick your <a href="config-reference.html#LINK_TARGET">TARGETs</a> if you use Cacti, but after that, some 
- hand-editing will help with cosmetics. 
- </p> 
-
- <p>New in version 0.7, there is a partially-complete interactive editor 
- included. In this release, it allows for visual layout of nodes and links, 
- modification of most parameters, and some integration with Cacti for picking 
- data-sources. 
- <strong>It is not integrated into Cacti's management pages, OR access 
- control.</strong> </p> 
-
- <p>To use the editor, you need to make a few extra considerations beyond 
- those needed by the command-line weathermap software, as detailed in the 
- <a href = "main.html#install_standaloneeditor">Installation Guide</a>. 
- </p> 
-
- <p> 
- Once you have all that taken care of, put a copy of one of your 
- configuration files into the configs directory you just created, and then go 
- to: <tt>http://www.your.web.server/cacti/php-weathermap/editor.php</tt> (or 
- whereever you put it). You should get a menu to either create a map, or open 
- the ones you just put in that directory. 
- </p> 
-
- <p> 
- Hopefully, the actual editor is fairly self-explanatory. 
-
- <ul> 
- <li>You can click on any existing node or link to get it's properties 
- and change them. </li><li>You can delete a node or link from the 
- properties box. For nodes, you can move them from the properties box 
- too. </li><li>You can move the key or timestamp by clicking on them, 
- also. </li><li>If you set up the Cacti-related options in the 
- editor-config.php file, then you should also see an additional option to 
- pick a data source directly from Cacti, in the Link Properties 
- box.</li><li> To create a new node, choose the 'Add Node' button at the 
- top and then click on the map where you want the node to be.</li><li> To 
- create a new link, choose the 'Add Link' button then click on the two 
- nodes to link together, in turn. There are separate buttons at the top 
- for changing various global parameters. </li> 
-
- <li>There is no save 
- - Every change is written back to the configuration file immediately. 
- Make a backup copy if you feel the need to.</li> 
- </ul> 
- </p> 
-
- <p> 
- There are a number of things <i>not</i> editable in the editor currently: 
-
- <ul> 
- <li>background images and icons 
- - it's intended that the editor will allow you to upload image files to 
- the server, which will then appear in a list where appropriate.</li> 
-
- <li>colours 
- - there's no way to pick colours currently, either for the map elements 
- or for the scale.</li> 
-
- <li>defaults 
- - the editor lags behind the current command-line software here. It 
- generates 'old-style' global options for some features where the correct 
- thing to do is make changes to the DEFAULT link and node definitions. 
- Similarly, there is no per-node or per-link adjustment of things like 
- font, label style or label offset.</li> 
-
- <li><a href="config-reference.html#NODE_NODE">NODE</a> TARGETs</li> 
-
- <li>Multiple SCALEs</li> 
-
- <li>Curves</li> 
-
- <li>Link offsets or Label offsets</li> 
- </ul> 
-
- Luckily, the editor shouldn't damage any of these things that you put into 
- the configuration file by hand, so it's safe to do some work in the editor 
- where it's quicker or more intuitive, and then fine-tune the file by hand. 
- </p> 
-
- </div> 
- </sdiv> 
-</body> 
-</html> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Using the map editor — Network Weathermap 2.0</title>
+  <link rel="stylesheet" href="../manual.css?v=d7053b1ca317">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="manual-header">
+    <a class="brand" href="../index.html">Network Weathermap <span>2.0</span></a>
+    <p>Cacti plugin manual</p>
+  </header>
+  <div class="manual-layout">
+    <nav class="manual-nav" aria-label="Manual sections">
+      <a href="main.html">Start here</a><a aria-current="page" href=
+      "editor.html">Editor</a><a href="cacti-plugin.html">Viewing & management</a><a href=
+      "appearance.html">Appearance & images</a><a href=
+      "install-cacti.html">Installation</a><a href="upgrading.html">Upgrading</a><a href=
+      "faq.html">Troubleshooting</a><a href="config-reference.html">Configuration</a><a href=
+      "targets.html">Data sources</a><a href="advanced.html">Advanced</a><a href=
+      "cli-reference.html">Command line</a><a href="changes.html">Changes</a><a href=
+      "errorcodes.html">Error codes</a>
+    </nav>
+    <main id="content">
+      <h1 id="editor">Using the map editor</h1>
+      <p class="lead">Start by placing nodes and connecting them with links. For a traffic link,
+      choose an interface and set its capacity in Link Properties. Use Additional hover graphs when
+      you want another preview, or Advanced settings when you need custom measurements or URLs.</p>
+      <nav class="on-page" aria-label="On this page">
+        <a href="#toolbar">Toolbar</a> · <a href="#nodes">Nodes</a> · <a href="#links">Links</a> ·
+        <a href="#hover">Hover graphs</a> · <a href="#combining">Combining sources</a> · <a href=
+        "#notes">Notes</a> · <a href="#history">Undo/Redo</a>
+      </nav>
+      <section id="open">
+        <h2>Opening, saving and placement</h2>
+        <p>Enter from <strong>Edit Map</strong> in the viewer or map management. Return to
+        Map/Manage keeps the navigation context. Choose a toolbar placement action, then click the
+        canvas or requested endpoints. Save or cancel any open dialog before another action. Use
+        Editor Settings for grid snapping and editing overlays; these are personal editor
+        preferences, not map appearance settings.</p>
+        <p>A successful action saves the configuration and refreshes the editor snapshot.
+        Poller-generated viewer output is separate. If a save reports an error, address it before
+        relying on the preview. If another tab or administrator has changed the map, reopen it
+        before editing further. Undo is useful for recent mistakes, but keep backups for
+        recovery.</p>
+      </section>
+      <section id="toolbar">
+        <h2>The editor toolbar</h2>
+        <p>The green bar contains the editing actions. Choose a placement action, then follow the
+        instruction shown in the bar. Click an existing object to open its properties.</p>
+        <figure class="manual-figure manual-screenshot" id="editor-overview-example">
+          <a href="../images/editor-overview-2.0.png" target="_blank" rel="noopener" aria-label=
+          "Open the editor toolbar and example map screenshot at full size"><img src=
+          "../images/editor-overview-2.0.png" alt=
+          "The complete green editor toolbar above an example map, with Undo and Redo at the far right"
+          loading="lazy" width="3850" height="942"></a>
+          <figcaption>
+            The complete toolbar above a generic example map. Undo and Redo are at the far right.
+            Select the image to read the toolbar at full size; every control is explained below.
+            Traffic labels are hidden in this example to keep the layout clear.
+          </figcaption>
+        </figure>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Control</th>
+                <th scope="col">What it does</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Return to Map / Return to Manage</th>
+                <td>Leave the editor and return to the map viewer or management page, depending on
+                where you opened it.</td>
+              </tr>
+              <tr>
+                <th scope="row">Add Node</th>
+                <td>
+                  Choose this action, then click the canvas to place a node. Click the new node to
+                  choose its name and icon. See <a href="#nodes">Node properties</a>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Add Link</th>
+                <td>
+                  Click the first existing node, then the second, to connect them. Open <a href=
+                  "#links">Link Properties</a> to assign the traffic interface and capacity.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Add Note</th>
+                <td>
+                  Click the canvas to place editable text. Set its wording, alignment and
+                  appearance in <a href="#notes">Note Properties</a>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Position Legend</th>
+                <td>Click the canvas to move the default traffic-colour legend. Click an existing
+                legend to reposition that particular legend.</td>
+              </tr>
+              <tr>
+                <th scope="row">Position Timestamp</th>
+                <td>Click the canvas to move the map generation timestamp. Its wording and
+                appearance are separate map settings.</td>
+              </tr>
+              <tr>
+                <th scope="row">Map Properties</th>
+                <td>
+                  Set the map title, canvas dimensions and background image, including its sizing
+                  mode. See <a href="appearance.html#properties">Map Properties and
+                  backgrounds</a>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Map Style</th>
+                <td>
+                  Set this map’s default fonts, node labels, link appearance and legend style.
+                  Link Appearance Defaults includes Follow link curve. See <a href="appearance.html#style">Map
+                  Style</a>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Manage Colors</th>
+                <td>
+                  Set this map’s traffic colours, colour presets, background, outlines and comment
+                  colours. Link Appearance also controls high-load pulsing. See <a href=
+                  "appearance.html#colours">Manage Colors</a>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Manage Images</th>
+                <td>
+                  Upload and manage node icons and background images in separate libraries.
+                  Uploading makes an image available; choose it in Node Properties or Map
+                  Properties to use it. See <a href="appearance.html#images">Image libraries</a>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Editor Settings</th>
+                <td>Choose grid snapping and overlays for via points and relative node positions.
+                These are personal editing preferences; Map Style controls the map’s
+                appearance.</td>
+              </tr>
+              <tr>
+                <th scope="row">Position</th>
+                <td>Shows the pointer’s map coordinates to help with placement. This is a readout,
+                not a button.</td>
+              </tr>
+              <tr>
+                <th scope="row">Help text</th>
+                <td>The message beside the controls explains the next click for the selected
+                action. Follow it when placing objects or connecting nodes.</td>
+              </tr>
+              <tr>
+                <th scope="row">Undo / Redo</th>
+                <td>
+                  Move backwards or forwards through the last two saved map changes. An unavailable
+                  action is greyed out. See <a href="#history">Undo and Redo</a> for limits and
+                  protection against newer changes.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="manual-figure manual-screenshot" id="editor-canvas-example">
+          <a href="../images/editor-canvas-2.0.png" target="_blank" rel="noopener" aria-label=
+          "Open the example map canvas close-up at full size"><img src=
+          "../images/editor-canvas-2.0.png" alt=
+          "A closer view of the example canvas with three nodes, curved links, comments and a note"
+          loading="lazy" width="1600" height="862"></a>
+          <figcaption>
+            A closer view of the same example canvas, showing the nodes, link comments and an
+            independent text note.
+          </figcaption>
+        </figure>
+      </section>
+      <section id="nodes">
+        <h2>Node properties</h2>
+        <p>Click a node to edit its <strong>Display name</strong>, searchable <strong>Icon</strong>
+        and <strong>Display name position</strong>. The label can sit above, over the centre or
+        below the icon. <strong>Map position</strong> is the node's X/Y coordinate from the
+        canvas's top-left corner, not the label position.</p>
+        <p><strong>Move</strong> places the node at a new point; <strong>Clone</strong> creates a
+        separate node. Open Advanced settings to see the internal ID or configure a custom click
+        destination and hover graphs. CPU or memory graphs belong naturally on device nodes, but an
+        extra link preview can also show them. Choosing a graph is separate from applying
+        Add/Replace.</p>
+        <p>The right-click menu provides move, raw configuration and deletion actions.
+        <strong>Delete Node</strong> removes that map node and its connected map links. It does not
+        delete the Cacti device, RRD data or graphs.</p>
+      </section>
+      <figure class="manual-figure manual-screenshot" id="node-properties-example">
+        <a href="../images/editor-node-properties-2.0.png" target="_blank" rel="noopener"
+        aria-label="Open Node Properties screenshot at full size"><img src=
+        "../images/editor-node-properties-2.0.png" alt=
+        "Node Properties with label position below a router icon" loading="lazy" width="1214"
+        height="765"></a>
+        <figcaption>
+          Node Properties in 2.0. Display name position moves the label; Map position moves the
+          whole node.
+        </figcaption>
+      </figure>
+      <section id="links">
+        <h2>Link properties: the main form</h2>
+        <ol>
+          <li><strong>Current interface</strong> identifies the applied graph and its RRD source.
+          An internal graph ID identifies a Cacti graph, not a bandwidth value. A custom source may
+          not resolve to a friendly interface.</li>
+          <li><strong>Bandwidth</strong> sets capacity into/out of the first endpoint. Use
+          different values for asymmetric services. The checkbox copies the IN capacity to OUT. It
+          does not change the measured data.</li>
+          <li><strong>Traffic interface</strong> searches the available interface sources. Choose a
+          result and click <strong>Use interface</strong> to update the primary measurement,
+          map-link click destination and main traffic hover graph together. Additional measured
+          sources and extra hover previews are retained. Save applies changes.</li>
+          <li><strong>Via Style</strong> chooses curved or angled bends. <strong>Link
+          Width</strong> controls arrow thickness. Tidy adjusts routing; Via lets you place a
+          bend.</li>
+          <li><strong>IN Comment / OUT Comment</strong> adds text along each direction. The
+          percentage sets the position along the link; it is not a traffic percentage. Fonts and
+          following curves are configured under Map Style; comment colours are under Manage
+          Colors. <strong>Comment Style</strong> chooses Edge, Centre or Use map default for this link.</li>
+        </ol>
+        <p><strong>Browse all</strong> opens the picker without a search term. Results load in
+        pages of up to 100 with Next/Previous controls. Search matches a phrase in the data-source
+        name, interface index or description. Device and port discovery depends on the names and
+        cached metadata in your Cacti installation; this is not a multi-word query language or an
+        aggregate-graph generator. Graph permissions still apply.</p>
+        <p>For a normal link, choose a standard interface traffic graph. An interface Errors graph
+        measures errors, not traffic: assigning one does not convert it into bandwidth. Check the
+        title, description, RRD and underlying data type when results look similar.</p>
+      </section>
+      <figure class="manual-figure manual-screenshot" id="link-properties-example">
+        <a href="../images/editor-link-properties-2.0.png?v=72892a10f09d" target="_blank" rel="noopener" aria-label="Open Link Properties screenshot at full size"><img src="../images/editor-link-properties-2.0.png?v=72892a10f09d" alt="Link Properties for Core router to Access switch, with Comment Style set to Use map default" loading="lazy" width="1216" height="1109"></a>
+        <figcaption>An unassigned example link. Choose an interface for live traffic. Comment Style is beside the comments; traffic-label positions are under Advanced settings.</figcaption>
+      </figure>
+      <section id="hover">
+        <h2>Additional hover graphs</h2>
+        <p>The Link Properties form manages <strong>two hover graphs in total</strong>: the main
+        traffic preview and one extra preview, such as CPU or latency. Open <strong>Additional
+        hover graphs</strong>, optionally filter by graph type, choose a graph and apply it.</p>
+        <ol>
+          <li>Click <strong>Additional hover graphs</strong> below the comment controls. Search by
+          device or graph name; use <strong>Filter by graph type</strong> to narrow the results.</li>
+          <li>Select a result, then click <strong>Add hover graph</strong>. The extra appears below
+          the picker with its graph name and available RRD filenames. A graph can use more than one
+          RRD file; that still counts as one preview.</li>
+          <li>To change the extra, select a different result and click <strong>Replace hover
+          graphs</strong>. To clear it, click <strong>Remove graph</strong> beside the listed entry.</li>
+          <li>Click <strong>Save</strong> in Link Properties to apply the changes to the map.</li>
+        </ol>
+        <p>The applied extra is listed by graph title and RRD filename where Cacti can resolve
+        them. Choosing a result in the search box does not change this list until you press Add or
+        Replace. The listed entry is the preview that will be saved. Adding a preview changes
+        neither the measured traffic nor the map-link click destination.</p>
+      <figure class="manual-figure manual-screenshot" id="link-additional-hover-example">
+        <a href="../images/editor-additional-hover-2.0.png?v=9b67e2c8d692" target="_blank" rel="noopener" aria-label="Open screenshot at full size"><img src="../images/editor-additional-hover-2.0.png?v=9b67e2c8d692" alt="Additional hover graphs expanded with a selected CPU graph, its two RRD filenames, Replace hover graphs and Remove graph controls" loading="lazy" width="1079" height="563"></a>
+        <figcaption>A CPU graph has been added as the one extra preview. Add is unavailable while that slot is occupied; Replace changes the extra and Remove clears it. The traffic preview is kept. These changes are applied to the map only when you Save Link Properties.</figcaption>
+      </figure>
+        <p>In the viewer, each recognised Cacti graph preview opens its own full graph when
+        clicked. Clicking the map link itself uses the configured click destination. Custom image
+        URLs do not necessarily have a corresponding Cacti graph to open. High-density previews
+        request more image detail without enlarging their displayed size; collector and
+        graph-rendering capabilities can require ordinary previews.</p>
+        <p>Opening Advanced settings closes the additional-graphs panel, and vice versa. The
+        two-preview limit belongs to this link form; raw configuration and older maps can contain
+        other arrangements. Do not use the form to assume that custom legacy hover lists have been
+        converted.</p>
+      </section>
+      <section id="combining">
+        <h2>Advanced settings: combine measurements</h2>
+        <p>Click <strong>Advanced settings</strong> below the comment controls. For a normal
+        traffic link, <strong>Use interface</strong> in the main form sets the source and graph URLs
+        together; you do not need to fill these fields by hand. Open Advanced when you want to
+        combine measurements, move the traffic labels or deliberately use different URLs.</p>
+        <p><strong>Current graph</strong> is the Cacti graph ID associated with the link, such as
+        108; it is not an RRD filename or a traffic reading. <strong>Internal link ID</strong>
+        identifies this link in the map configuration.</p>
+        <p>Advanced also contains Traffic Label Positions. Choose Custom positions to move the IN/OUT
+        utilisation boxes for this link, or Use map default to inherit the positions from Map Style.
+        This does not move the IN/OUT comment text. Comment Style, beside the comment controls in
+        the main form, offers Edge, Centre or Use map default.</p>
+      <figure class="manual-figure manual-screenshot" id="link-label-positions-example">
+        <a href="../images/editor-link-label-positions-2.0.png?v=3c81101aa7d1" target="_blank" rel="noopener" aria-label="Open per-link traffic label positions screenshot at full size"><img src="../images/editor-link-label-positions-2.0.png?v=3c81101aa7d1" alt="Advanced settings with Custom positions selected and IN 80% and OUT 20%" loading="lazy" width="1080" height="178"></a>
+        <figcaption>Under Link Properties → Advanced settings, this link uses custom traffic-label positions of IN 80% and OUT 20%. Choose Use map default to return to inheritance; the standard map defaults are 75% and 25%.</figcaption>
+      </figure>
+        <p>Extra measured sources add traffic to the link total; they do not add lines to a Cacti
+        graph. The primary source is changed with <strong>Use interface</strong> in the main form.
+        <strong>Remove source</strong> removes an extra source only.</p>
+      <figure class="manual-figure manual-screenshot" id="link-advanced-sources-example">
+        <a href="../images/editor-advanced-sources-2.0.png?v=8a3946a13da0" target="_blank" rel="noopener" aria-label="Open screenshot at full size"><img src="../images/editor-advanced-sources-2.0.png?v=8a3946a13da0" alt="Advanced traffic-label positions and source list showing a primary Core router RRD and an additional Access switch RRD with Remove source" loading="lazy" width="1076" height="707"></a>
+        <figcaption>The first measured source is primary and has no Remove source button. Change it using Use interface in the main form. The second is an additional source and can be removed here. The RRD names in this example are illustrative; select real interfaces from your Cacti installation.</figcaption>
+      </figure>
+        <p>To add a source, search under <strong>Add additional traffic sources</strong>, select
+        a result and click <strong>Add traffic source</strong>. Check that it appears in the list,
+        then Save. Selecting a search result alone does not add it. The editable text below the
+        list is the raw measured-source list (<code>TARGET</code>); it is for custom data-source
+        syntax, not hover image URLs. Removing an extra changes the map total after Save, without
+        deleting the Cacti interface, graph or RRD file.</p>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Action</th>
+                <th scope="col">Map reading</th>
+                <th scope="col">Hover/click graphs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Add another measured source</td>
+                <td>Adds its IN and OUT readings to the respective totals</td>
+                <td>Unchanged</td>
+              </tr>
+              <tr>
+                <td>Add a hover graph</td>
+                <td>Unchanged</td>
+                <td>Adds the extra preview</td>
+              </tr>
+              <tr>
+                <td>Use interface</td>
+                <td>Changes the primary source; retains extra sources</td>
+                <td>Changes main traffic preview and click destination; retains extra preview</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>For example, 200M IN on one source plus 100M IN on another gives 300M IN. At 1G capacity
+        this is 30%. Set a capacity that makes sense for the combined service. This is useful for
+        parallel circuits or a logical bundle. A main circuit and standby backup are often clearer
+        as separate links.</p>
+        <p>No combined Cacti graph is created. If users need historical totals, create a matching
+        aggregate graph in Cacti separately, then set its click destination and hover image URLs.
+        The form does not infer which aggregate graph matches your sources.</p>
+      </section>
+      <section id="urls">
+        <h2>Advanced settings: URLs and custom data</h2>
+        <p><strong>Click destination URL</strong> controls where clicking the map link goes.
+        <strong>Main hover graph URL</strong> is the first preview, normally supplied by Use
+        interface. <strong>Additional graph URL(s)</strong> represents the same extra preview
+        managed by Additional hover graphs. These fields accept URLs, not RRD paths. Leave them
+        alone for a standard interface link; use them for a deliberate custom graph or page.</p>
+      <figure class="manual-figure manual-screenshot" id="link-advanced-urls-example">
+        <a href="../images/editor-advanced-urls-2.0.png?v=9aec8bc46c36" target="_blank" rel="noopener" aria-label="Open screenshot at full size"><img src="../images/editor-advanced-urls-2.0.png?v=9aec8bc46c36" alt="Advanced click destination, main hover graph and additional graph URL fields" loading="lazy" width="1076" height="547"></a>
+        <figcaption>These fields control navigation and previews, independently of the measured sources above. The click destination is a graph page; the hover fields are image URLs. The additional URL is the same extra preview shown in the Additional hover graphs panel.</figcaption>
+      </figure>
+        <p>When copying a Cacti URL, use <code>graph.php</code> for a full graph page and
+        <code>graph_image.php</code> for the image shown on hover. The
+        <code>local_graph_id</code> must identify the graph you intend to show; the numbers in the
+        screenshot are examples from this installation. Changing a URL does not make that graph
+        measure the combined sources. If you need a historical total, create the matching
+        aggregate graph in Cacti first. Click Save after editing these fields.</p>
+        <p>Custom measurements require appropriate TARGET syntax and units. A non-traffic RRD may
+        need explicit data-source names and the <code>gauge:</code> prefix. See <a href=
+        "targets.html">data sources</a>. Changing an image or graph URL does not change TARGET or
+        capacity.</p>
+      </section>
+      <section id="notes">
+        <h2>Map notes</h2>
+        <p>Choose <strong>Add Note</strong>, click the canvas, enter text and save. Notes support
+        multiple lines, left/centre/right alignment, font, colour and coordinates. Click an
+        existing note to edit or move it. Alignment controls the text within the note; it is
+        separate from a node's display-name position.</p>
+        <p>Notes use logical map coordinates and TrueType text rendering. Their configuration is
+        represented by label-only nodes with editor-note metadata; the legacy <code>NOTES</code>
+        directive is popup text and is a different feature. Use the note dialog rather than
+        manually changing its internal metadata.</p>
+      </section>
+      <figure class="manual-figure manual-screenshot" id="note-properties-example">
+        <a href="../images/editor-note-properties-2.0.png" target="_blank" rel="noopener"
+        aria-label=
+        "Open Note dialog with multiline text, alignment, font, colour and position screenshot at full size">
+        <img src="../images/editor-note-properties-2.0.png" alt=
+        "Note dialog with multiline text, alignment, font, colour and position" loading="lazy"
+        width="1214" height="755"></a>
+        <figcaption>
+          Edit a visible map note in this dialog. Text alignment and Map position serve different
+          purposes; editing the note does not change a traffic measurement.
+        </figcaption>
+      </figure>
+      <section id="history">
+        <h2>Undo and Redo</h2>
+        <p>Use the toolbar buttons or <strong>Ctrl/Cmd+Z</strong> and
+        <strong>Ctrl/Cmd+Shift+Z</strong> after closing the current dialog. The last two saved map
+        changes can be reversed and reapplied. Text fields retain normal text-editing shortcuts.
+        Disabled controls mean no corresponding action is available.</p>
+        <p>History covers saved configuration changes: node/link/note creation and deletion,
+        movement, via points, properties, styles, colours and raw object edits. Undoing a node
+        deletion also restores its connected links. A new change after Undo clears Redo; no-op or
+        failed saves do not consume a step.</p>
+        <p>History belongs to a map, browser tab and authenticated session. Reloading the same tab
+        retains it; duplicate tabs have independent histories. External edits invalidate stale
+        history instead of overwriting them. Included configurations and managed image references
+        are checked before restoration. History is temporary, expires after four hours of
+        inactivity, and is not a backup.</p>
+        <p>Uploads and library-file deletion, deleting configuration files, Cacti devices/graphs
+        and personal editor preferences are outside Undo/Redo. Private server temporary storage
+        must be writable. If the browser cannot coordinate history safely between tabs,
+        editing remains available but Undo/Redo is disabled. See <a href=
+        "faq.html#history">history troubleshooting</a>.</p>
+      </section>
+      <section id="raw">
+        <h2>Raw configuration and deletion</h2>
+        <p><strong>Edit Raw Configuration</strong> opens the underlying syntax for the selected
+        object. It is also available in node/link right-click menus. Use it for settings beyond the
+        form, with the <a href="config-reference.html">configuration reference</a> nearby. Cancel
+        returns to properties without applying those raw edits. Check the saved result and any
+        warnings after editing syntax directly.</p>
+        <p>The editor rewrites configuration from the settings it has read. Hand-written
+        <code>#</code> comments and original spacing are not preserved in a saved file. Keep a copy
+        of an annotated configuration before editing it; visible map notes and IN/OUT link comments
+        are separate settings and are saved.</p>
+        <p><strong>Delete Link</strong> removes the selected map line. Delete Node also removes its
+        connected lines. Both require confirmation and leave Cacti data intact. Deleting the
+        configuration file is a separate management operation and has no editor Undo.</p>
+      </section>
+      <footer>
+        <p>Network Weathermap 2.0, maintained by The Cacti Group. Based on the original PHP Network
+        Weathermap and manual by Howard Jones, © 2005–2019; Cacti fork contributions © 2022–2026
+        The Cacti Group and contributors.</p>
+        <p><a href="https://github.com/Cacti/plugin_weathermap">Project</a> · <a href=
+        "https://github.com/Cacti/plugin_weathermap/issues">Report a problem</a> · <a href=
+        "https://forums.cacti.net/">Cacti forums</a> · <a href="../../LICENSE">License</a> ·
+        <a href="../../COPYING">Additional license notices</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

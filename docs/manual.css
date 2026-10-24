@@ -1,137 +1,68 @@
-@font-face {font-family: 'PT Sans';
-	src: url('fonts/pts55f_w.eot');
-	src: local('PT Sans'), url('fonts/PTS55F_W.woff') format('woff'),url('fonts/PTS55F-webfont.ttf') format('truetype'), url('fonts/PTS55F_W.svg#PTSans-Regular') format('svg');}
+/* Self-contained manual: no Cacti/vendor or remote stylesheet dependency. */
+:root { color-scheme: light dark; --paper:#fff; --ink:#242a25; --muted:#515b52; --line:#d3dcd1; --soft:#f3f6f1; --link:#285a20; --header:#29451e; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+a { color:var(--link); text-underline-offset:3px; overflow-wrap:anywhere; }
+a:hover { text-decoration-thickness:2px; }
+a:focus-visible, summary:focus-visible { outline:3px solid #bf8b16; outline-offset:4px; }
+.skip-link { position:absolute; left:1rem; top:-5rem; z-index:2; background:var(--paper); padding:.7rem; }
+.skip-link:focus { top:1rem; }
+.manual-header { background:var(--header); color:#fff; padding:1.35rem max(1.25rem,calc((100vw - 1440px)/2)); border-bottom:4px solid #83a66a; }
+.manual-header .brand { color:#fff; font-size:1.55rem; font-weight:700; text-decoration:none; }
+.brand span { font-size:.9em; font-weight:500; }
+.manual-header p { margin:.2rem 0 0; color:#e0eadb; }
+.manual-layout { max-width:1440px; margin:auto; display:grid; grid-template-columns:240px minmax(0,1fr); }
+.manual-nav { padding:2rem 1.15rem; border-right:1px solid var(--line); align-self:start; position:sticky; top:0; max-height:100vh; overflow:auto; }
+.manual-nav a { display:block; padding:.48rem .7rem; border-radius:4px; font-size:.94rem; text-decoration:none; }
+.manual-nav a:hover,.manual-nav a[aria-current] { background:var(--soft); font-weight:600; }
+main { min-width:0; padding:2rem clamp(1.2rem,4vw,4rem) 3rem; }
+h1 { font-size:clamp(1.8rem,3vw,2.45rem); line-height:1.2; margin:0 0 1.15rem; letter-spacing:-.025em; }
+h2 { font-size:1.4rem; line-height:1.3; margin:2rem 0 .7rem; }
+h3 { font-size:1.14rem; margin:1.6rem 0 .5rem; }
+h4 { font-size:1rem; }
+p,ul,ol,dl { margin:.75rem 0 1.15rem; }
+li { margin:.4rem 0; }
+section { scroll-margin-top:1rem; }
+.lead { font-size:1.15rem; color:var(--muted); max-width:70ch; }
+.on-page { padding:.8rem 1rem; border:1px solid var(--line); background:var(--soft); border-radius:5px; }
+.guide-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.1rem; margin:1.7rem 0; }
+.guide-grid section { border:1px solid var(--line); border-radius:6px; padding:1.2rem; }
+.guide-grid h2 { margin:0 0 .7rem; font-size:1.2rem; }
+code,tt,pre { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.9em; }
+code,tt { overflow-wrap:anywhere; }
+pre,.shell { background:var(--soft); border:1px solid var(--line); border-radius:5px; padding:1rem; overflow:auto; white-space:pre; line-height:1.5; }
+pre code { font-size:1em; overflow-wrap:normal; }
+.table-scroll { overflow-x:auto; margin:1rem 0; }
+table { border-collapse:collapse; width:100%; font-size:.94rem; margin:1rem 0; }
+th,td { padding:.65rem .8rem; border:1px solid var(--line); vertical-align:top; text-align:left; overflow-wrap:anywhere; }
+th { background:var(--soft); font-weight:650; }
+.notice { background:var(--soft); border-left:4px solid #729a53; padding:1rem 1.15rem; margin:1rem 0 1.5rem; }
+footer { border-top:1px solid var(--line); margin-top:3rem; padding-top:1.1rem; color:var(--muted); font-size:.83rem; }
+img { max-width:100%; height:auto; }
+.tocentry { display:inline-block; margin:.15rem .45rem .15rem 0; }
+dt { font-weight:650; margin-top:1.2rem; }
+dd { margin-left:1rem; }
+.configsection { border-bottom:1px solid var(--line); padding-bottom:.4rem; }
+details { border:1px solid var(--line); border-radius:5px; padding:1rem; margin:1rem 0; }
+summary { cursor:pointer; font-weight:650; }
+@media (max-width:800px) { .manual-layout { display:block; } .manual-nav { position:static; max-height:none; border:0; border-bottom:1px solid var(--line); padding:.8rem; display:flex; flex-wrap:wrap; gap:.15rem; } .manual-nav a { font-size:.85rem; padding:.35rem .5rem; } main { padding:1.5rem 1rem 2rem; } .guide-grid { grid-template-columns:1fr; } }
+@media (prefers-color-scheme:dark) { :root { --paper:#171c18; --ink:#e0e7de; --muted:#b3c0b0; --line:#3e4b3b; --soft:#242e23; --link:#b1d99a; --header:#20351a; } }
+@media print { :root { --paper:#fff; --ink:#000; --muted:#333; --line:#bbb; --soft:#f5f5f5; --link:#000; } .manual-header { background:none; color:#000; padding:0; border:0; } .manual-header .brand,.manual-header p { color:#000; } .manual-nav,.skip-link { display:none; } .manual-layout { display:block; } main { padding:0; } body { font-size:11pt; } pre { white-space:pre-wrap; } h2,h3 { break-after:avoid; } table,pre { break-inside:avoid; } }
 
-@font-face {font-family: 'PT Sans';
-	font-style: italic;
-	src: url('fonts/pts56f_w.eot');
-	src: local('PT Sans Italic'), url('fonts/PTS56F_W.woff') format('woff'),url('fonts/PTS56F-webfont.ttf') format('truetype'), url('fonts/PTS56F_W.svg#PTSans-Italic') format('svg');}
+.manual-figure { margin:1.5rem 0; }
+.manual-figure img { display:block; max-width:100%; border:1px solid var(--line); border-radius:5px; }
+.manual-figure figcaption { max-width:75ch; margin-top:.55rem; font-size:.9rem; color:var(--muted, #52604e); }
 
-@font-face {font-family: 'PT Sans';
-	src: url('fonts/pts75f_w.eot');
-	font-style: normal;
-	font-weight: bold;
-	src: local('PT Sans Bold'), url('fonts/PTS75F_W.woff') format('woff'),url('fonts/PTS75F-webfont.ttf') format('truetype'), url('fonts/PTS75F_W.svg#PTSans-Bold') format('svg');}
+.definition { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.9em; background:var(--soft); border-left:3px solid var(--line); padding:.45rem .75rem; margin:.4rem 0; overflow-wrap:anywhere; }
 
-@font-face {font-family: 'PT Sans';
-	font-style: italic;
-	font-weight: bold;
-	src: url('fonts/pts76f_w.eot');
-	src: local('PT Sans Bold Italic'), url('fonts/PTS76F_W.woff') format('woff'),url('fonts/PTS76F-webfont.ttf') format('truetype'), url('fonts/PTS76F_W.svg#PTSans-BoldItalic') format('svg');}
+/* Compact screenshots keep the guide readable; originals open at full size. */
+.manual-screenshot { max-width:600px; }
+.manual-screenshot > a { display:block; width:fit-content; max-width:100%; }
+.manual-screenshot img { width:auto; max-height:520px; }
 
-.tocentry { padding-right: 1em; }
-
-body {
-	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-	font-size: 15px;
-	min-width: 960px;
-}
-
-.wrapper {
-	margin: auto;
-	width: 940px;
-	padding: 0 10px;
-clear: both;
-	}
-
-figure {   margin-bottom: 1.5em;
-  padding-left: 1.5em;
-   }
-   
-.changes dl { padding-left: 1.5em; }
-
-.definition { 
-	padding-left: 1.5em;
-	overflow: hidden;
-	margin-bottom: 1em;
-	border-radius: 3px;
-	background: #ffffff;
-	background: -moz-linear-gradient(top,  #ffffff 0%, #e5e5e5 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5));
-	background: -webkit-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%);
-	background: -o-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%);
-	background: -ms-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%);
-	background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
- }
- 
-.examples blockquote { border: none;}
-blockquote.example { border: none;}
-
-tt.clioption { font-weight: bold; font-size: 105%; white-space: nowrap; }
-#content { margin-top: 1em; }
-
-#nav {
-		width:100%;
-		overflow:hidden;
-		/* (en|de) Bugfix:IE - collapsing horizontal margins */
-		position:relative;
-		line-height:1em;
-		background: #222;
-
-}
-
-	#nav ul {
-		margin:0;
-		padding: 0.5em 1.5em;
-		/* (en|de) Bugfix:IE - Doubled Float Margin Bug */
-		display:inline;
-		float:left; /* LTR */
-	}
-
-#nav ul li {
-		/* (en|de) Bugfix:IE - Doubled Float Margin Bug */
-		display:inline;
-		float:left; /* LTR */
-		font-size:1.0em;
-		line-height:1em;
-		list-style-type:none;
-		margin: 0 .25em 0 0;
-		padding:0;
-}
-
-#nav ul li a,
-	#nav ul li strong {
-		background:transparent;
-		color:#aaa;
-		display:block;
-		font-size:1em;
-		line-height: 2em;
-		padding: 0 0.5em;
-		font-weight:normal;
-		text-decoration:none;
-		text-shadow: 0 1px 1px rgba(0,0,0,.5);
-		width:auto;
-	}
-
-	#nav ul li a:focus,
-	#nav ul li a:hover,
-	#nav ul li a:active  {
-		color: #ccc;
-		background:#666;
-		background: rgba(255,255,255,.25);
-		-webkit-border-radius: 0.2em;
-		-moz-border-radius: 0.2em;
-		border-radius: 0.2em;
-		text-decoration:none;
-		outline: 0 none;
-	}
-	
-		#nav ul li.active {
-		background:#666;
-		background: rgba(255,255,255,.3);
-		-webkit-border-radius: 0.2em;
-		-moz-border-radius: 0.2em;
-		border-radius: 0.2em;
-		color: #fff;
-	}
-
-	#nav ul li.active strong,
-	#nav ul li.active a:focus,
-	#nav ul li.active a:hover,
-	#nav ul li.active a:active {
-		background:transparent;
-		color:#fff;
-		text-decoration:none;
-	}
+/* Keep complete example lines readable; narrow screens scroll the table. */
+.config-summary { min-width:42rem; }
+.config-summary th:first-child,.config-summary td:first-child { width:42%; min-width:19rem; }
+.config-summary td:first-child a { overflow-wrap:normal; }
+.config-summary code { white-space:nowrap; overflow-wrap:normal; }
+@media print { .config-summary { min-width:0; } .config-summary th:first-child,.config-summary td:first-child { min-width:0; } .config-summary code { white-space:normal; } }

@@ -1007,7 +1007,7 @@ function weathermap_tabs($current_tab) {
  * @return string The map heading with management shortcuts when authorized.
  */
 function weathermap_map_title_controls($maptitle, $map) {
-	$heading = '<strong>' . $maptitle . '</strong>';
+	$heading = '<a class="wm-docs-link linkOverDark" href="docs/index.html" target="_blank" rel="noopener">[' . __esc('Docs', 'weathermap') . ']</a><strong>' . $maptitle . '</strong>';
 
 	if (!is_array($map) || !isset($map['id'], $map['configfile']) || !is_string($map['configfile']) || !api_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
 		return $heading;

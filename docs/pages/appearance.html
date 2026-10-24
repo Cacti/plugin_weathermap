@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Appearance and image libraries — Network Weathermap 2.0</title>
+  <link rel="stylesheet" href="../manual.css?v=d7053b1ca317">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="manual-header">
+    <a class="brand" href="../index.html">Network Weathermap <span>2.0</span></a>
+    <p>Cacti plugin manual</p>
+  </header>
+  <div class="manual-layout">
+    <nav class="manual-nav" aria-label="Manual sections">
+      <a href="main.html">Start here</a><a href="editor.html">Editor</a><a href=
+      "cacti-plugin.html">Viewing & management</a><a aria-current="page" href=
+      "appearance.html">Appearance & images</a><a href=
+      "install-cacti.html">Installation</a><a href="upgrading.html">Upgrading</a><a href=
+      "faq.html">Troubleshooting</a><a href="config-reference.html">Configuration</a><a href=
+      "targets.html">Data sources</a><a href="advanced.html">Advanced</a><a href=
+      "cli-reference.html">Command line</a><a href="changes.html">Changes</a><a href=
+      "errorcodes.html">Error codes</a>
+    </nav>
+    <main id="content">
+      <h1>Appearance and image libraries</h1>
+      <p class="lead">Appearance settings belong to the current map unless described as a shared
+      library or Cacti-wide preference. Changing one map's colours does not recolour every map.
+      Select a screenshot to open it at full size.</p>
+      <section id="properties">
+        <h2>Map Properties and backgrounds</h2>
+        <p>Set the title, canvas width/height and background in Map Properties. A new blank map
+        starts at 1400 × 750 pixels; change these dimensions to suit your layout. Node positions,
+        notes and via points use coordinates within this canvas.</p>
+        <p>Map Properties also holds the default IN/OUT link bandwidth for this map. New
+        links inherit that capacity. Default link width is in Map Style. The initial capacity is 1000M in both directions; 1G means
+        the same thing with the default KILO 1000. An existing link with its own capacity keeps
+        that value when you change the defaults.</p>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Background sizing</th>
+                <th scope="col">Effect</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Use image size</td>
+                <td>Uses the background image dimensions, retaining legacy image-sized map
+                behaviour.</td>
+              </tr>
+              <tr>
+                <td>Fit to map</td>
+                <td>Scales the image proportionally to fit inside the configured canvas. Unused
+                space keeps the map background colour.</td>
+              </tr>
+              <tr>
+                <td>Stretch to map</td>
+                <td>Fills the configured canvas in both directions; can distort the image.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Upload a background through Manage Images, then select it in Map Properties to apply it
+        to the map. Review object placement after changing canvas size or background mode.</p>
+      </section>
+      <figure class="manual-figure manual-screenshot" id="map-properties-example">
+        <a href="../images/editor-map-properties-2.0.png?v=708e7571497d" target="_blank" rel="noopener" aria-label="Open Map Properties screenshot at full size"><img src="../images/editor-map-properties-2.0.png?v=708e7571497d" alt="Map Properties with background and canvas controls and Default Link Capacity" loading="lazy" width="1216" height="1098"></a>
+        <figcaption>Map Properties keeps capacity separate from appearance. Default link width, comment style and traffic-label positions are in Map Style.</figcaption>
+      </figure>
+      <section id="style">
+        <h2>Map Style, fonts and comments</h2>
+        <p>Link Appearance Defaults includes link width, Comment Style and Traffic Label Positions.
+        Edge places comments beside the link; Centre places them over the arrow. Traffic label
+        positions move the IN/OUT utilisation boxes along the route: 0% is the first node and
+        100% is the second. These positions are separate from comment positions.</p>
+        <p>To change one link, open Link Properties. Comment Style is beside the comment controls;
+        Traffic Label Positions is under Advanced settings. Choose Use map default to restore
+        inheritance. Links using a named configuration template inherit that template's settings.</p>
+        <p>Map Style controls the current map's defaults for nodes, links, labels and legends. Link
+        Appearance Defaults includes <strong>Follow link curve</strong>, enabled by default. This affects
+        comment text, not the numeric traffic labels. It requires a TrueType font; choose a bundled
+        font and size in Map Style. Very tight bends, unsafe geometry or text that will not fit use
+        straight text. Turning the option off deliberately uses straight comments.</p>
+        <p>Via Style still determines the link route. A curved route without a bend near the
+        comment may produce almost straight text. Shorten long comments, move their percentage
+        position or adjust the via points if a fallback is unsuitable. Fonts must be readable by
+        both editor and poller accounts; bundled fonts avoid machine-specific paths.</p>
+        <p>Defaults affect objects inheriting those values. Explicit per-object overrides and
+        included templates may retain their own settings. Do not assume changing a default forcibly
+        overwrites every custom object.</p>
+      </section>
+      <figure class="manual-figure manual-screenshot" id="map-style-example">
+        <a href="../images/editor-map-style-2.0.png?v=a768a5611ba4" target="_blank" rel="noopener" aria-label="Open Map Style screenshot at full size"><img src="../images/editor-map-style-2.0.png?v=a768a5611ba4" alt="Map Style showing Link Appearance Defaults, default width, traffic-label positions and comment style" loading="lazy" width="1216" height="1385"></a>
+        <figcaption>Map-wide link appearance defaults. Traffic labels start at IN 75% and OUT 25%; individual links can override these positions and the comment style.</figcaption>
+      </figure>
+      <section id="colours">
+        <h2>Manage Colors and high-load pulsing</h2>
+        <p>Manage Colors edits the map background, link outline, link-comment colours and traffic
+        scales, with presets and custom ranges. It applies to this map. An included shared scale
+        may be locked in the form; edit its source configuration deliberately if you want to affect
+        every map that includes it.</p>
+        <p>To change the traffic colours, open <strong>Manage Colors</strong> and choose a
+        <strong>Colour preset</strong> under Traffic Load Colours. For example, Green / Amber / Red
+        gives a familiar progression as utilisation rises. Review the preview, then Save. The
+        preset replaces the DEFAULT traffic scale for this map; other named scales are kept.</p>
+        <p>For your own ranges, open Advanced settings. Each row has a scale name, From/To limits,
+        a colour, an optional Gradient End colour and an optional legend label. Traffic scales
+        normally use percentages. A colour change is a visual cue, not a Cacti threshold alarm.
+        Check the link capacity so those percentages mean what you expect.</p>
+        <p>Optional high-load pulsing is a viewer effect for each link direction at <strong>80%
+        utilisation or above</strong>. The saved map's values drive it; it does not sample the
+        network live or change RRD data. Browser reduced-motion settings and background-tab
+        behaviour can suppress animation. Static image exports do not animate.</p>
+      </section>
+      <figure class="manual-figure manual-screenshot" id="manage-colors-example">
+        <a href="../images/editor-manage-colors-2.0.png" target="_blank" rel="noopener" aria-label=
+        "Open Manage Colors screenshot at full size"><img src=
+        "../images/editor-manage-colors-2.0.png" alt=
+        "Manage Colors showing link appearance, the 80 percent pulse option and a traffic colour preset"
+        loading="lazy" width="2214" height="1173"></a>
+        <figcaption>
+          Manage Colors applies to the current map. Pulsing uses the measured utilisation in each
+          direction.
+        </figcaption>
+      </figure>
+      <section id="pulse">
+        <h2>Enable or disable link pulsing</h2>
+        <ol>
+          <li>Open the map in the editor and choose <strong>Manage Colors</strong>.</li>
+          <li>Under <strong>Link Appearance</strong>, set <strong>Pulse links at 80%+</strong> and
+          save.</li>
+          <li>Return to the normal map viewer after the next managed render. The editor canvas is a
+          design preview; it does not show this animated viewer effect.</li>
+        </ol>
+        <p>In raw configuration, put the setting in the <strong>global section, before the first
+        NODE or LINK</strong>:</p>
+        <pre><code># Enable the high-load viewer effect (the default).
+SET traffic_pulse 1</code></pre>
+        <p>Use <code>SET traffic_pulse 0</code> to disable it for this map. If a management Map
+        Setting defines the same hint, that override takes precedence: see <a href=
+        "cacti-plugin.html#settings">settings inheritance</a>.</p>
+        <p>The 80% threshold is evaluated separately for each direction. Colour presets change the
+        traffic colours; they do not change this threshold. Set BANDWIDTH correctly: 900M on a 1G
+        direction is 90%, while 900M on a 10G direction is only 9%.</p>
+        <figure class="manual-figure manual-screenshot" id="pulse-example">
+          <a href="../images/reference-traffic-pulse-2.0.svg" target="_blank" rel="noopener"
+          aria-label="Open animated pulse illustration at full size"><img src=
+          "../images/reference-traffic-pulse-2.0.svg" width="660" height="180" alt=
+          "Animated example: the red 90 percent inbound arrow pulses; the 20 percent outbound arrow does not"
+          loading="lazy"></a>
+          <figcaption>
+            Illustrated viewer effect using fixed example data, the renderer's arrow shapes and the
+            viewer's glow timing. Only the 90% direction pulses. Reduced-motion preferences show a
+            steady halo. <a href="../example/traffic-pulse-2.0.conf">Runnable example
+            configuration</a>.
+          </figcaption>
+        </figure>
+        <p>A screenshot or exported PNG cannot capture the pulsing motion. No animation usually
+        means pulsing is disabled, the last rendered utilisation is below 80%, or
+        reduced-motion/background-tab handling has paused it. Check the viewer's output timestamp
+        as well as the link capacity.</p>
+      </section>
+      <section id="images">
+        <h2>Upload and manage images</h2>
+        <p>Open <strong>Manage Images</strong> and choose the <strong>node icon</strong> or
+        <strong>background</strong> library. Upload PNG, JPEG or GIF files up to 5 MB and four
+        million pixels. Server upload limits can be lower. SVG is not accepted by the upload form.
+        Transparent PNG works well for node icons. Choose a file, then press <strong>Upload Node
+        Icon</strong> or <strong>Upload Background</strong>. Uploads save immediately; there is no
+        later Save step in this dialog. GIF uploads keep only the first frame.</p>
+        <p>The libraries are stored in <code>images/objects/</code> and
+        <code>images/backgrounds/</code>. Uploads receive safe unique filenames and are
+        decoded/re-encoded before storage. The PHP web account needs write access to the relevant
+        library. The poller also needs read access. Avoid granting write access to the entire
+        plugin.</p>
+        <p>Select an uploaded icon in Node Properties, or select a background in Map Properties.
+        The icon picker is searchable.</p>
+        <p>The manager lists configuration references and prevents deletion of referenced images,
+        including checked INCLUDE references. Remove assignments and save before deleting an unused
+        image. A failed reference check blocks deletion; do not bypass it by deleting files
+        directly. Upload/delete operations affect shared files and are outside map Undo/Redo.</p>
+      </section>
+      <section id="labels">
+        <h2>Labels, notes and previews</h2>
+        <p>Node display-name positioning places the label above, centred over or below its icon.
+        Map notes are independent text objects. Gallery thumbnails are generated at higher
+        resolution than their display size, while cards remain compact. Hover graph sharpening is
+        separate from map-image rendering and does not require enlarging every Cacti graph
+        template.</p>
+        <p>See <a href="editor.html#nodes">node controls</a>, <a href="editor.html#notes">notes</a>
+        and <a href="editor.html#hover">hover graphs</a> for their workflows.</p>
+      </section>
+      <footer>
+        <p>Network Weathermap 2.0, maintained by The Cacti Group. Based on the original PHP Network
+        Weathermap and manual by Howard Jones, © 2005–2019; Cacti fork contributions © 2022–2026
+        The Cacti Group and contributors.</p>
+        <p><a href="https://github.com/Cacti/plugin_weathermap">Project</a> · <a href=
+        "https://github.com/Cacti/plugin_weathermap/issues">Report a problem</a> · <a href=
+        "https://forums.cacti.net/">Cacti forums</a> · <a href="../../LICENSE">License</a> ·
+        <a href="../../COPYING">Additional license notices</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
