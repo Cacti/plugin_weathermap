@@ -1,117 +1,132 @@
 <!DOCTYPE html>
-<html lang = "en" xml:lang = "en" xmlns = "http://www.w3.org/1999/xhtml">
-    <head>
-        <link rel = "stylesheet" type = "text/css" media = "screen" href = "../../vendor/bootstrap/css/bootstrap.min.css" />        
-        <link rel = "stylesheet" type = "text/css" href = "../manual.css" />
-        <title>PHP Weathermap v0.98a - Command-line option Reference</title>
-    </head>
-
-    <body>
-            <nav class="navbar navbar-default" role="navigation">
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<div class="navbar-header" id="nav">
-			<a class="navbar-brand" href="http://www.network-weathermap.com/">Weathermap
-                v0.98a</a>
-			<ul class="nav navbar-nav">
-				<li><a href="main.html">Contents</a></li>
-				<li><a href="main.html#installation">Installation</a></li>
-				<li><a href="main.html#basics">Basics</a></li>
-				<li><a href="faq.html">FAQ</a></li>
-				<li><a href="main.html#example">Sample Map</a></li>
-				<li><a href="cli-reference.html">CLI Reference</a></li>
-				<li><a href="config-reference.html">Config Reference</a></li>
-				<li><a href="advanced.html">Advanced</a></li>
-				<li><a href="editor.html">Editor</a></li>
-				<li><a href="cacti-plugin.html">Cacti Plugin</a></li>
-				<li><a href="http://www.network-weathermap.com/">Website</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
-</nav>    <sdiv id="content">
-    <sdiv id="content2" class="wrapper">
-
-
-<div class="container">
-
-<div id = "header">
-    <h1>PHP Weathermap v0.98a </h1>
-
-    <h4>Copyright &copy; 2005-2019 Howard Jones,
-    <tt><a href = "mailto:howie@thingy.com">howie@thingy.com</a></tt>. (<a
-        href = "http://www.network-weathermap.com/">Website</a>)</h4>
-</div>
-
-            <div id = "enclose">
-                <h2>Command-line options Reference</h2>The unix
-                <tt>man</tt>-style specification for weathermap is:
-
-                <div class = "shell">
-                    <tt>./weathermap [--config <i>configfile</i>] [--output
-                    <i>pngfile</i>] [--htmloutput <i>htmlfile</i>] [--image-uri
-                    <i>URI</i>] [--debug] [--dumpafter] [--dumpconfig
-                    <i>newconfigfile</i>] [--sizedebug] [--define var=value] [--no-warn={errorcodes}</tt>
-                </div>As you can see,
-                <i>all</i> the parameters are optional! By default the script will look
-                for a configuration file called
-                <tt>weathermap.conf</tt>, and produce a PNG image file called
-                <tt>weathermap.png</tt>.
-				
-				<h2>Options</h2>
-                <p><tt class="clioption">--output</tt> is used to specify the name of the PNG file that is
-                created. This can also now be specified inside the configuration file,
-                instead.</p>
-
-                <p><tt class="clioption">--config</tt> is used to specify the name of the configuration
-                file that is read.</p>
-
-                <p><tt class="clioption">--debug</tt> enables a lot of chatty debug output that may be
-                useful in the event of a problem. In case
-                <tt class="clioption">--debug</tt> isn't verbose enough for you,
-                <tt class="clioption">--dumpafter</tt> dumps the whole of the internal structure used by
-                weathermap at the end of a run. Note that particularly with PHP 4.x,
-                it's possible that this will never end, as the way that references to
-                objects are handled has changed between PHP 4 and PHP 5.</p>
-
-                <p><tt class="clioption">--dumpconfig</tt> writes out a new configuration file after
-                reading in the specified one. This is useful when migrating older
-                configuration files, as it will remove extra stuff made redundant by the
-                newer <a href = "#REF_DEFAULTS">'default link and node'</a> style of
-                configuration. Obviously, you should be careful not to overwrite your
-                existing configuration files!</p>
-
-                <p><tt class="clioption">--sizedebug</tt> simply tells weathermap to draw the links with
-                the<i>maximum</i> bandwidth shown, not the current. It only works if
-                BWLABEL is set to 'bits', but it is useful for checking you have the
-                right sized links once you have finished your map.</p>
-
-                <p><tt class="clioption">--define</tt> allows you to define additional internal variables
-                for this run. It is equivalent to a
-                <a href = "config-reference.html#GLOBAL_SET">SET</a> line in the global
-                section of the map configuration file.</p>
-
-                <p><tt class="clioption">--nowarn</tt> allows you to disable specific warnings by
-                providing a list of the WMARNxxx codes for them. You shouldn't need to do this, but if you (for example)
-                have an interface that can physically go above the BANDWIDTH you have set for it, you can use
-                this to disable the 'clipped to 100%' warning that you would get.</p>
-
-                <p><tt class="clioption">--htmloutput</tt> specifies the name for an HTML file to be
-                generated to go with the PNG image file. This HTML can include imagemap
-                and DHTML features to make your weathermap interactive to different
-                degrees. This is governed by the
-                <tt class="clioption"><a href = "config-reference.html#GLOBAL_HTMLSTYLE">HTMLSTYLE</a></tt>
-                global setting, and <tt class="clioption">INFOURL</tt> and
-                <tt class="clioption">OVERLIBGRAPH</tt> settings in NODE and LINK definitions. This can
-                also now be specified inside the configuration file, instead.</p>
-
-                <p><tt class="clioption">--image-uri</tt> specifies the URI used in an HTML file
-                generated. If you are generating HTML in a different directory from the
-                one the image is created, then weathermap will probably get the &lt;img
-                src=""&gt; tag wrong. This option allows you to override the contents of
-                the src attribute, if you know better.</p>
-            </div>
-	</div>
-	</sdiv>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Command-line reference — Network Weathermap 2.0</title>
+  <link rel="stylesheet" href="../manual.css?v=d7053b1ca317">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="manual-header">
+    <a class="brand" href="../index.html">Network Weathermap <span>2.0</span></a>
+    <p>Cacti plugin manual</p>
+  </header>
+  <div class="manual-layout">
+    <nav class="manual-nav" aria-label="Manual sections">
+      <a href="main.html">Start here</a><a href="editor.html">Editor</a><a href=
+      "cacti-plugin.html">Viewing & management</a><a href="appearance.html">Appearance &
+      images</a><a href="install-cacti.html">Installation</a><a href=
+      "upgrading.html">Upgrading</a><a href="faq.html">Troubleshooting</a><a href=
+      "config-reference.html">Configuration</a><a href="targets.html">Data sources</a><a href=
+      "advanced.html">Advanced</a><a aria-current="page" href="cli-reference.html">Command
+      line</a><a href="changes.html">Changes</a><a href="errorcodes.html">Error codes</a>
+    </nav>
+    <main id="content">
+      <h1>Command-line reference</h1>
+      <p>The legacy wrapper's accepted options below are taken from its actual option parser. Run
+      it from the plugin directory inside Cacti; see <a href="install-cli.html">requirements and
+      limitations</a>. The default RRDtool path in the wrapper is <code>/usr/bin/rrdtool</code>;
+      verify it for your installation.</p>
+      <pre><code>cd /path/to/cacti/plugins/weathermap
+php weathermap --config configs/example.conf --output /tmp/example.png --htmloutput /tmp/example.html</code></pre>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Option</th>
+              <th scope="col">Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>--config=FILE</td>
+              <td>Read a map configuration; default weathermap.conf.</td>
+            </tr>
+            <tr>
+              <td>--output=FILE</td>
+              <td>Choose the image output path; configured output/default applies when
+              omitted.</td>
+            </tr>
+            <tr>
+              <td>--htmloutput=FILE</td>
+              <td>Write an accompanying HTML page.</td>
+            </tr>
+            <tr>
+              <td>--image-uri=URI</td>
+              <td>Override the image URI referenced by generated HTML.</td>
+            </tr>
+            <tr>
+              <td>--define=NAME=VALUE</td>
+              <td>Set a map hint for this run, equivalent to a global SET.</td>
+            </tr>
+            <tr>
+              <td>--debug / --uberdebug</td>
+              <td>Enable diagnostics; uberdebug removes normal debug suppression.</td>
+            </tr>
+            <tr>
+              <td>--stats</td>
+              <td>Print collected processing statistics.</td>
+            </tr>
+            <tr>
+              <td>--dumpafter</td>
+              <td>Dump internal map state for diagnosis; output may be large and include sensitive
+              configuration.</td>
+            </tr>
+            <tr>
+              <td>--dumpconfig=FILE</td>
+              <td>Serialize the loaded configuration to another file. Back up first and inspect
+              changes; do not overwrite the source casually.</td>
+            </tr>
+            <tr>
+              <td>--sizedebug / --no-data</td>
+              <td>Skip live data reading. Both options use the same branch in this wrapper; they
+              are useful for checking layout without polling sources.</td>
+            </tr>
+            <tr>
+              <td>--randomdata</td>
+              <td>Generate random example readings; not monitoring data.</td>
+            </tr>
+            <tr>
+              <td>--bulge</td>
+              <td>Enable width modulation for the run.</td>
+            </tr>
+            <tr>
+              <td>--no-warn=CODE,CODE</td>
+              <td>Suppress selected warning codes, for example WMWARNxx. Correct real faults before
+              suppressing warnings.</td>
+            </tr>
+            <tr>
+              <td>--help / --version</td>
+              <td>Show usage or the wrapper version string. Some legacy wrapper text can lag the
+              plugin INFO version.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <section id="output">
+        <h2>Output and permissions</h2>
+        <p>Run under an account with the required read/write access. Configuration may specify
+        IMAGEOUTPUTFILE, HTMLOUTPUTFILE and HTMLSTYLE; command-line overrides are useful for
+        isolated tests. Do not run a second periodic rendering job alongside ordinary Cacti polling
+        without coordinating schedules.</p>
+        <p><code>HTMLSTYLE static</code> produces an image map with click links. <code>HTMLSTYLE
+        overlib</code> also emits hover metadata. The integrated Cacti viewer supplies the
+        JavaScript that displays those previews. The legacy command-line HTML wrapper still
+        references <code>overlib.js</code>, which is no longer bundled, so its exported page is not
+        a complete standalone hover viewer. Use the Cacti viewer for supported interactive maps;
+        changing HTMLSTYLE alone does not make an exported page equivalent.</p>
+      </section>
+      <footer>
+        <p>Network Weathermap 2.0, maintained by The Cacti Group. Based on the original PHP Network
+        Weathermap and manual by Howard Jones, © 2005–2019; Cacti fork contributions © 2022–2026
+        The Cacti Group and contributors.</p>
+        <p><a href="https://github.com/Cacti/plugin_weathermap">Project</a> · <a href=
+        "https://github.com/Cacti/plugin_weathermap/issues">Report a problem</a> · <a href=
+        "https://forums.cacti.net/">Cacti forums</a> · <a href="../../LICENSE">License</a> ·
+        <a href="../../COPYING">Additional license notices</a></p>
+      </footer>
+    </main>
+  </div>
 </body>
 </html>

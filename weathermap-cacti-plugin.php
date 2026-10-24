@@ -44,6 +44,7 @@ $guest_account  = true;
 
 include_once('../../include/auth.php');
 require_once __DIR__ . '/setup.php';
+require_once __DIR__ . '/lib/viewer.controls.php';
 
 global $config;
 include_once($config['base_path'] . '/plugins/weathermap/lib/WeatherMap.class.php');
@@ -998,30 +999,6 @@ function weathermap_tabs($current_tab) {
 		return false;
 	}
 }
-/**
- * Build the same escaped map heading and authorized shortcuts in each view.
- *
- * @param string $maptitle HTML-escaped heading.
- * @param array<string, mixed>|bool $map Map metadata, or false when unavailable.
- *
- * @return string The map heading with management shortcuts when authorized.
- */
-function weathermap_map_title_controls($maptitle, $map) {
-	$heading = '<strong>' . $maptitle . '</strong>';
-
-	if (!is_array($map) || !isset($map['id'], $map['configfile']) || !is_string($map['configfile']) || !api_user_realm_auth('weathermap-cacti-plugin-mgmt.php')) {
-		return $heading;
-	}
-	$id = (int) $map['id'];
-	$heading .= ' [ <a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php">' . __esc('Manage Weathermaps', 'weathermap') . '</a> | ';
-	$heading .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=map_settings&id=' . $id . '">' . __esc('Map Settings', 'weathermap') . '</a> | ';
-	$heading .= '<a class="pic linkOverDark" href="weathermap-cacti-plugin-mgmt.php?action=perms_edit&id=' . $id . '">' . __esc('Map Permissions', 'weathermap') . '</a> | ';
-	$heading .= '<a class="wm-edit-map" href="' . html_escape('weathermap-cacti-plugin-editor.php?action=nothing&mapname=' . rawurlencode($map['configfile'])) . '">' . __esc('Edit Map', 'weathermap') . '</a> ]';
-
-	return $heading;
-}
-
-
 /**
  * Render translated, keyboard-accessible cycle controls.
  *

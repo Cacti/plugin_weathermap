@@ -9,10 +9,9 @@ Version 2.0 adds a redesigned map editor, editable notes, curved link comments,
 traffic colour presets, optional high-load link pulsing, separate icon and
 background libraries, sharper hover graphs and two-step Undo and Redo.
 
-See [docs/](docs/) for the HTML manual, FAQ and example configurations, and
-[the editor workflow guide](docs/editor-workflow.md) for the current node and
-link properties controls. Parts of the original HTML manual describe the older
-core interface.
+See [the 2.0 manual](docs/index.html) for installation, upgrades, editor workflows,
+image libraries, troubleshooting and the configuration/data-source reference.
+[The editor workflow guide](docs/editor-workflow.md) links to the detailed manual.
 
 See [CHANGELOG.md](CHANGELOG.md) for updates listed by version, and
 [COPYING](COPYING) for the license.
@@ -102,7 +101,8 @@ This fork is maintained separately from that upstream project.
 
   See: http://www.bitstream.com/font_rendering/products/dev_fonts/vera.html
 
-* The manual uses the Kube CSS Framework and ParaType's PT Sans font.
+* Historical documentation assets include the Kube CSS Framework and ParaType's
+  PT Sans font. The current manual uses a self-contained stylesheet and system fonts.
 
   See: http://imperavi.com/kube/
   See: http://www.fontsquirrel.com/fonts/PT-Sans

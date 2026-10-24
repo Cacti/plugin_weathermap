@@ -1,72 +1,89 @@
 <!DOCTYPE html>
-<html lang = "en" xml:lang = "en" xmlns = "http://www.w3.org/1999/xhtml">
-    <head>
-        <link rel = "stylesheet" type = "text/css" media = "screen" href = "../../vendor/bootstrap/css/bootstrap.min.css" />        
-        <link rel = "stylesheet" type = "text/css" href = "../manual.css" />
-        <title>PHP Weathermap v0.98a - Upgrading</title>
-    </head>
-
-    <body>
-            <nav class="navbar navbar-default" role="navigation">
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<div class="navbar-header" id="nav">
-			<a class="navbar-brand" href="http://www.network-weathermap.com/">Weathermap
-                v0.98a</a>
-			<ul class="nav navbar-nav">
-				<li><a href="main.html">Contents</a></li>
-				<li><a href="main.html#installation">Installation</a></li>
-				<li><a href="main.html#basics">Basics</a></li>
-				<li><a href="faq.html">FAQ</a></li>
-				<li><a href="main.html#example">Sample Map</a></li>
-				<li><a href="cli-reference.html">CLI Reference</a></li>
-				<li><a href="config-reference.html">Config Reference</a></li>
-				<li><a href="advanced.html">Advanced</a></li>
-				<li><a href="editor.html">Editor</a></li>
-				<li><a href="cacti-plugin.html">Cacti Plugin</a></li>
-				<li><a href="http://www.network-weathermap.com/">Website</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
-</nav>    <sdiv id="content">
-    <sdiv id="content2" class="wrapper">
-
-
-<div class="container">
-
-<div id = "header">
-    <h1>PHP Weathermap v0.98a </h1>
-
-    <h4>Copyright &copy; 2005-2019 Howard Jones,
-    <tt><a href = "mailto:howie@thingy.com">howie@thingy.com</a></tt>. (<a
-        href = "http://www.network-weathermap.com/">Website</a>)</h4>
-</div>
-
-            <h2>Upgrading From Previous Versions</h2>
-
-            <p><strong>Make a backup of your working weathermap directory before you do
-            this!</strong> Just in case you <em>do</em> need to roll back.</p>
-
-            <p>You should be able to upgrade from any previous version by simply
-            unpacking the new one over the top. The files that will need to be changed
-            afterwards are the same ones you edited when you first installed:
-
-            <ul>
-                <li>If you use the editor, then copy your editor-config.php out of the
-                way, copy the new editor-config.php-dist over the top of the in-place
-                editor-config.php and then make the same changes you made in your
-                original install (cacti path and URI).
-                <b>This is especially important when upgrading to 0.92</b></li>
-
-                <li>If you use the command-line tool, you will need to put the path to
-                rrdtool back in, around line 30 of the 'weathermap' file.</li>
-            </ul></p>
-
-            <p>Any necessary database updates for Cacti users should be taken care of
-            automatically.</p>
-
-	</div>
-	</sdiv>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upgrading to 2.0 — Network Weathermap 2.0</title>
+  <link rel="stylesheet" href="../manual.css?v=d7053b1ca317">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="manual-header">
+    <a class="brand" href="../index.html">Network Weathermap <span>2.0</span></a>
+    <p>Cacti plugin manual</p>
+  </header>
+  <div class="manual-layout">
+    <nav class="manual-nav" aria-label="Manual sections">
+      <a href="main.html">Start here</a><a href="editor.html">Editor</a><a href=
+      "cacti-plugin.html">Viewing & management</a><a href="appearance.html">Appearance &
+      images</a><a href="install-cacti.html">Installation</a><a aria-current="page" href=
+      "upgrading.html">Upgrading</a><a href="faq.html">Troubleshooting</a><a href=
+      "config-reference.html">Configuration</a><a href="targets.html">Data sources</a><a href=
+      "advanced.html">Advanced</a><a href="cli-reference.html">Command line</a><a href=
+      "changes.html">Changes</a><a href="errorcodes.html">Error codes</a>
+    </nav>
+    <main id="content">
+      <h1>Upgrading to 2.0</h1>
+      <p class="lead">An upgrade replaces application files; it should preserve your maps, images
+      and monitoring data. Prepare a recoverable backup before replacing anything.</p>
+      <section id="backup">
+        <h2>Before upgrading</h2>
+        <ol>
+          <li>Record your Cacti, PHP, RRDtool and Weathermap versions and the release/commit you
+          plan to install. A develop checkout may contain changes after a release tag.</li>
+          <li>Back up the entire plugin directory, including configs, output, uploaded images,
+          custom fonts, INCLUDE files outside that directory and local modifications. Back up
+          Cacti's database using your normal procedure. Keep backups outside the web root.</li>
+          <li>Check Cacti compatibility and release notes. Coordinate the update with
+          administrators so no one edits maps while files are replaced or migrations run.</li>
+          <li>Compare local code changes before overwriting them. Preserve custom data, but do not
+          copy old application code back over the new release.</li>
+        </ol>
+      </section>
+      <section id="replace">
+        <h2>Install and migrate</h2>
+        <p>Replace the plugin's application files with the selected official release, preserving
+        user configuration and assets. The plugin's upgrade path performs schema/configuration work
+        and removes known obsolete application paths through its packaged manifest; it is not a
+        backup of arbitrary local modifications.</p>
+        <p>Older background/icon paths may be migrated into <code>images/backgrounds/</code> and
+        <code>images/objects/</code>, with configuration references updated. Ensure the relevant
+        accounts can perform migration, and inspect customised paths and INCLUDE files afterward.
+        Do not move images by hand without updating every reference.</p>
+        <p>The old cacti-resources/editor-resources and OverLib dependency are no longer the
+        current UI implementation. Do not restore old editor-config.php instructions. Current
+        editor access uses Cacti authentication and permissions.</p>
+      </section>
+      <section id="verify">
+        <h2>After upgrading</h2>
+        <ul>
+          <li>Verify the installed version and enablement in Plugin Management; review logs for
+          migration errors.</li>
+          <li>Refresh the browser so JavaScript and CSS match the new PHP files.</li>
+          <li>Check representative maps, custom images/fonts, included templates, graph links and
+          hover previews.</li>
+          <li>Test one save and Undo/Redo on a disposable map. Confirm rendering under the poller
+          account.</li>
+          <li>Check view-only and management accounts and group/map permissions.</li>
+          <li>Verify asymmetric bandwidth and explicitly set capacities. Existing explicit values
+          are retained; 1000M is the implicit default.</li>
+          <li>Review curved comment positioning and font availability. Straight fallback at unsafe
+          bends is intentional.</li>
+        </ul>
+        <p>If rollback is necessary, restore a consistent plugin and database backup as appropriate
+        to the migrations performed. Do not mix arbitrary old PHP files with new JavaScript. Report
+        failures with versions and relevant logs.</p>
+      </section>
+      <footer>
+        <p>Network Weathermap 2.0, maintained by The Cacti Group. Based on the original PHP Network
+        Weathermap and manual by Howard Jones, © 2005–2019; Cacti fork contributions © 2022–2026
+        The Cacti Group and contributors.</p>
+        <p><a href="https://github.com/Cacti/plugin_weathermap">Project</a> · <a href=
+        "https://github.com/Cacti/plugin_weathermap/issues">Report a problem</a> · <a href=
+        "https://forums.cacti.net/">Cacti forums</a> · <a href="../../LICENSE">License</a> ·
+        <a href="../../COPYING">Additional license notices</a></p>
+      </footer>
+    </main>
+  </div>
 </body>
 </html>

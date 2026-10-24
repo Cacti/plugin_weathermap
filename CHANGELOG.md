@@ -18,6 +18,12 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * dev: Pin the CI database image and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
 
+--- 2.0.1 ---
+
+* issue#322: Refresh the bundled manual with current installation, upgrade, editor, image management and troubleshooting guides; retain the configuration and data-source references and repair documentation links
+* issue#322: Update editor and map-management screenshots, including map creation, management, the viewer, hover graphs and Advanced settings; use compact previews with full-size links and refresh cached documentation assets
+* feature#322: Add themed Docs access from the map heading and a Docs button after Rebuild All in map management, opening the bundled manual in a new tab
+
 --- 2.0 ---
 
 * security: Add a version-safe CSP nonce (`plugin_weathermap_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class
