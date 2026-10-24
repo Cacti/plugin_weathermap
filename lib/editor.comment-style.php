@@ -137,7 +137,7 @@ function wm_style_font_select($map, $name, $current) {
 	return '<select class="fontcombo" name="' . html_escape($name) . '" id="' . html_escape($name) . '">' . wm_style_font_options($map, $current) . '</select>';
 }
 /**
- * Render the link comment font control.
+ * Render the link comment font, placement and curve controls.
  *
  * @param WeatherMap $map
  *
@@ -148,6 +148,11 @@ function wm_comment_style_fields($map) {
 	$out     = '<tr><td><label for="mapstyle_commentfont">' . html_escape(__('Link Comment Font', 'weathermap')) . '</label></td><td><select class="fontcombo" name="mapstyle_commentfont" id="mapstyle_commentfont">';
 	$out .= wm_style_font_options($map, $current);
 	$out .= '</select></td></tr>';
+	$out .= '<tr><td><label for="mapstyle_commentstyle">' . html_escape(__('Link Comment Style', 'weathermap')) . '</label></td><td><select name="mapstyle_commentstyle" id="mapstyle_commentstyle">';
+	foreach (['edge' => __('Edge', 'weathermap'), 'center' => __('Centre', 'weathermap')] as $value => $label) {
+		$out .= '<option value="' . $value . '"' . ($map->links['DEFAULT']->commentstyle === $value ? ' selected' : '') . '>' . html_escape($label) . '</option>';
+	}
+	$out .= '</select><br><small>' . html_escape(__('Edge places comments beside the link; Centre places them over the arrow.', 'weathermap')) . '</small></td></tr>';
 
 	$out .= '<tr><td><label for="mapstyle_commentcurve">' . html_escape(__('Link Comments', 'weathermap')) . '</label></td><td><label><input type="checkbox" name="mapstyle_commentcurve" id="mapstyle_commentcurve" value="1"' . (!empty($map->links['DEFAULT']->commentcurve) ? ' checked' : '') . '> ' . html_escape(__('Follow link curve', 'weathermap')) . '</label><br><small>' . html_escape(__('Uses a TrueType font. Tight bends or text longer than the link use straight text.', 'weathermap')) . '</small></td></tr>';
 
@@ -246,6 +251,10 @@ function wm_comment_update_default($map, $field, $new) {
 			continue;
 		}
 
+		if ($name !== 'DEFAULT' && $field === 'commentstyle' && !empty($link->hints['editor_commentstyle_override'])) {
+			continue;
+		}
+
 		if ($old == $link->$field) {
 			$link->$field = $new;
 		}
@@ -257,13 +266,87 @@ function wm_comment_update_default($map, $field, $new) {
  * @param WeatherMap $map
  * @param mixed      $font
  * @param mixed      $colour
+ * @param mixed      $curve
+ * @param mixed      $style
  *
  * @return void
  */
-function wm_comment_apply_style($map, $font, $colour, $curve = null) {
+function wm_comment_apply_style($map, $font, $colour, $curve = null, $style = null) {
+	if (in_array($style, ['edge', 'center'], true)) {
+		wm_comment_update_default($map, 'commentstyle', $style);
+	}
 	if ($curve === '0' || $curve === '1') {
 		wm_comment_update_default($map, 'commentcurve', (int)$curve);
 	}
 	wm_comment_update_default($map, 'commentfont', wm_comment_resolve_font($map, $font));
 	wm_comment_update_default($map, 'commentfontcolour', wm_comment_resolve_colour($colour));
+}
+
+/** Render the map-wide traffic-label positions. */
+function wm_link_position_fields($map) {
+	$link = $map->links['DEFAULT'];
+	return '<tr><td>' . html_escape(__('Traffic Label Positions', 'weathermap')) . '</td><td>' . wm_link_position_inputs('mapstyle', $link->labeloffset_in, $link->labeloffset_out) . '<br><small>' . html_escape(__('Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments.', 'weathermap')) . '</small></td></tr>';
+}
+
+/** Render labelled IN/OUT percentage inputs without rounding custom values. */
+function wm_link_position_inputs($prefix, $in, $out) {
+	$html = '';
+	foreach (['in' => $in, 'out' => $out] as $direction => $value) {
+		$id = $prefix . '_labelpos' . $direction;
+		$label = $direction === 'in' ? __('IN', 'weathermap') : __('OUT', 'weathermap');
+		$html .= '<label for="' . $id . '">' . html_escape($label) . '</label> <input class="ui-state-default ui-corner-all" type="number" min="0" max="100" step="1" name="' . $id . '" id="' . $id . '" value="' . (int)$value . '" style="width: 5em;">% ';
+	}
+	return $html;
+}
+
+/** Render per-link controls; the editor moves the position row into Advanced. */
+function wm_link_override_fields() {
+	$html = '<tr><td><label for="link_commentstyle">' . html_escape(__('Comment Style', 'weathermap')) . '</label></td><td><select id="link_commentstyle" name="link_commentstyle">';
+	foreach (['default' => __('Use map default', 'weathermap'), 'edge' => __('Edge', 'weathermap'), 'center' => __('Centre', 'weathermap')] as $value => $label) {
+		$html .= '<option value="' . $value . '">' . html_escape($label) . '</option>';
+	}
+	$html .= '</select><br><small>' . html_escape(__('Edge places comments beside the link; Centre places them over the arrow.', 'weathermap')) . '</small></td></tr>';
+	$html .= '<tr><td><label for="link_labelposmode">' . html_escape(__('Traffic Label Positions', 'weathermap')) . '</label></td><td><select id="link_labelposmode" name="link_labelposmode"><option value="default">' . html_escape(__('Use map default', 'weathermap')) . '</option><option value="custom">' . html_escape(__('Custom positions', 'weathermap')) . '</option></select><br>' . wm_link_position_inputs('link', 75, 25) . '<br><small>' . html_escape(__('Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments.', 'weathermap')) . '</small></td></tr>';
+	return $html;
+}
+
+/** Only whole percentages accepted by BWLABELPOS are valid. */
+function wm_link_valid_position($value) {
+	return (is_int($value) || is_string($value)) && preg_match('/^\d{1,3}$/D', (string)$value) && (int)$value <= 100;
+}
+
+/** Update matching root defaults as a pair, preserving custom or included links. */
+function wm_link_apply_default_positions($map, $in, $out) {
+	if (!wm_link_valid_position($in) || !wm_link_valid_position($out)) return;
+	$oldIn = $map->links['DEFAULT']->labeloffset_in;
+	$oldOut = $map->links['DEFAULT']->labeloffset_out;
+	foreach ($map->links as $name => $link) {
+		if ($name === ':: DEFAULT ::' || ($name !== 'DEFAULT' && ($link->defined_in !== $map->configfile || !empty($link->hints['editor_labelpos_override'])))) continue;
+		if ($link->labeloffset_in == $oldIn && $link->labeloffset_out == $oldOut) {
+			$link->labeloffset_in = (int)$in;
+			$link->labeloffset_out = (int)$out;
+		}
+	}
+}
+
+/** Apply validated per-link overrides, or restore the inherited template values. */
+function wm_link_apply_overrides($map, $link, $style, $mode, $in, $out) {
+	// Named templates retain their inheritance when restoring defaults.
+	$base = $map->links[$link->template];
+	if ($style === 'default') {
+		$link->commentstyle = $base->commentstyle;
+		unset($link->hints['editor_commentstyle_override']);
+	} elseif (in_array($style, ['edge', 'center'], true)) {
+		$link->commentstyle = $style;
+		$link->add_hint('editor_commentstyle_override', '1');
+	}
+	if ($mode === 'default') {
+		$link->labeloffset_in = $base->labeloffset_in;
+		$link->labeloffset_out = $base->labeloffset_out;
+		unset($link->hints['editor_labelpos_override']);
+	} elseif ($mode === 'custom' && wm_link_valid_position($in) && wm_link_valid_position($out)) {
+		$link->labeloffset_in = (int)$in;
+		$link->labeloffset_out = (int)$out;
+		$link->add_hint('editor_labelpos_override', '1');
+	}
 }

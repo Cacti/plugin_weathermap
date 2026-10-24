@@ -18,6 +18,12 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 * dev: Pin the CI database image and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
 
+--- 2.0.1 ---
+
+* feature#321: Group default link width and appearance controls under Link Appearance Defaults in Map Style, and clarify Default Link Capacity in Map Properties
+* feature#321: Add Edge and Centre comment styles to Map Style, with an individual override and Use map default option in Link Properties
+* feature#321: Add IN/OUT traffic-label positions to Map Style and per-link Advanced settings, with 75%/25% defaults and an option to restore inheritance; keep traffic-label and comment positions separate
+
 --- 2.0 ---
 
 * security: Add a version-safe CSP nonce (`plugin_weathermap_csp_nonce()`) to every inline `<script>` tag so pages stay compatible with Cacti's Content-Security-Policy nonce enforcement, while falling back cleanly on older Cacti releases that lack the `CactiSecureHeaders` class

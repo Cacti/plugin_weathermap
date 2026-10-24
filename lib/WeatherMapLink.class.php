@@ -935,7 +935,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$keyword = $param[1];
 
 				// $output .= "# For $keyword: ".$this->$field." vs ".$dd->$field."\n";
-				if ($this->$field != $dd->$field) {
+				if ($this->$field != $dd->$field || ($field === 'commentstyle' && !empty($this->hints['editor_commentstyle_override']))) {
 					if ($param[2] == CONFIG_TYPE_COLOR) {
 						$output .= TAB . "$keyword " . render_colour($this->$field) . EOL;
 					} elseif ($param[2] == CONFIG_TYPE_LITERAL) {
@@ -1027,7 +1027,7 @@ class WeatherMapLink extends WeatherMapItem {
 			$comparison  = $dd->labeloffset_in;
 			$comparison2 = $dd->labeloffset_out;
 
-			if ($this->labeloffset_in != $comparison || $this->labeloffset_out != $comparison2) {
+			if ($this->labeloffset_in != $comparison || $this->labeloffset_out != $comparison2 || !empty($this->hints['editor_labelpos_override'])) {
 				$output .= TAB . 'BWLABELPOS ' . $this->labeloffset_in . ' ' . $this->labeloffset_out . EOL;
 			}
 
@@ -1157,6 +1157,12 @@ class WeatherMapLink extends WeatherMapItem {
 		$js .= 'overlibheight:"' . $this->overlibheight . '", ';
 		$js .= 'overlibcaption:' . js_escape($this->overlibcaption[IN]) . ', ';
 
+		$base = $this->owner->links[$this->template];
+		$customStyle = !empty($this->hints['editor_commentstyle_override']) || $this->commentstyle !== $base->commentstyle;
+		$customPositions = !empty($this->hints['editor_labelpos_override']) || $this->labeloffset_in != $base->labeloffset_in || $this->labeloffset_out != $base->labeloffset_out;
+		$js .= 'commentstylechoice:' . js_escape($customStyle ? $this->commentstyle : 'default') . ', ';
+		$js .= 'labelposmode:' . js_escape($customPositions ? 'custom' : 'default') . ', ';
+		$js .= 'labelposin:' . (float)$this->labeloffset_in . ', labelposout:' . (float)$this->labeloffset_out . ', ';
 		$js .= 'commentin:' . js_escape($this->comments[IN]) . ', ';
 		$js .= 'commentposin:' . intval($this->commentoffset_in) . ', ';
 
