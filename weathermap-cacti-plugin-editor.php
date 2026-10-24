@@ -824,7 +824,7 @@ foreach ($styles as $id => $name) {
 						<div class='cactiTableTitleRow wm-editor-section'><?php print __('Link Appearance Defaults', 'weathermap'); ?></div>
 						</td></tr>
 						<tr>
-							<td><?php print __('Default Link Width', 'weathermap'); ?></td>
+							<td><label for='mapstyle_defaultwidth'><?php print __('Default Link Width', 'weathermap'); ?></label></td>
 							<td><input id='mapstyle_defaultwidth' name='mapstyle_defaultwidth' type='text' class='ui-state-default ui-corner-all' size='6' value='<?php print html_escape($map->links['DEFAULT']->width) ?>' /> <?php print __('pixels', 'weathermap'); ?></td>
 						</tr>
 						<tr>
