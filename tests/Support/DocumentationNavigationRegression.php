@@ -5,10 +5,7 @@ function api_user_realm_auth($realm) {
 	return $GLOBALS['docs_manage_allowed'];
 }
 
-$source = file_get_contents(__DIR__ . '/../../weathermap-cacti-plugin.php');
-$start = strpos($source, 'function weathermap_map_title_controls(');
-$end = strpos($source, '/**', $start);
-eval(substr($source, $start, $end - $start));
+require __DIR__ . '/../../lib/viewer.controls.php';
 
 foreach ([false, true] as $allowed) {
 	$GLOBALS['docs_manage_allowed'] = $allowed;

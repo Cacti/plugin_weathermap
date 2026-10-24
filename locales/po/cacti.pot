@@ -3072,6 +3072,6 @@ msgstr ""
 msgid "Undo and Redo require browser session storage."
 msgstr ""
 
-#: weathermap-cacti-plugin.php weathermap-cacti-plugin-mgmt.php
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
 msgid "Docs"
 msgstr ""
