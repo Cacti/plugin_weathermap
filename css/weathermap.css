@@ -100,6 +100,10 @@ body#wm_fullscreen { font-family: sans-serif; margin: 0; border: 0; padding: 0; 
 
 .tableHeader .wm-edit-map { color: inherit; }
 
+/* The heading already supplies the active Cacti theme colours. */
+.wm-docs-link { float: right; margin-inline-start: 1em; color: inherit !important; }
+.wm-docs-link:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
 .wm-gallery-cards { padding: 12px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
 .wm-map-card { margin: 0; width: 384px; max-width: 100%; box-sizing: border-box; border: 1px solid var(--border-color, #999); border-radius: 5px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,.12); }
 
