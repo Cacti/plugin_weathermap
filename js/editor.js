@@ -353,7 +353,84 @@ $(function() {
 	initJS();
 });
 
+/** wmApplyEditorTheme - The standalone map editor only loads a theme's
+ *  jquery-ui.css and main.css, not Cacti's page loader. editor.css is written
+ *  against the standard Cacti colour variables (--background,
+ *  --background-content, --text-color-lighter, --border-color), but only the
+ *  Midwinter theme actually defines them, so every other theme fell back to the
+ *  hard-coded light values and dark themes rendered light form controls. Here
+ *  we read the active theme's real form-field colours and publish those
+ *  variables on the editor root, so the existing editor.css rules theme
+ *  correctly for any current or future theme without a per-theme stylesheet. */
+function wmApplyEditorTheme() {
+	var root = document.getElementById('mainView');
+
+	if (!root || typeof window.getComputedStyle !== 'function') {
+		return;
+	}
+
+	// Probe a plain text input that editor.css does not override, so we read the
+	// theme's genuine field colours rather than editor.css fallback colours.
+	var probe = document.createElement('div');
+	probe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;visibility:hidden;pointer-events:none';
+
+	var input = document.createElement('input');
+	input.type = 'text';
+	probe.appendChild(input);
+	document.body.appendChild(probe);
+
+	var style   = window.getComputedStyle(input);
+	var surface = style.backgroundColor;
+	var text    = style.color;
+	var border  = style.borderTopColor;
+
+	document.body.removeChild(probe);
+
+	var usable = function(colour) {
+		return colour && colour !== 'transparent' &&
+			colour.replace(/\s+/g, '') !== 'rgba(0,0,0,0)';
+	};
+
+	if (usable(surface)) {
+		root.style.setProperty('--background', surface);
+		root.style.setProperty('--background-content', surface);
+	}
+
+	if (usable(text)) {
+		root.style.setProperty('--text-color-lighter', text);
+	}
+
+	if (usable(border)) {
+		root.style.setProperty('--border-color', border);
+	}
+}
+
+/** wmTwoLineLabel - Render a toolbar label on two lines without an HTML string,
+ *  keeping all but the final word together on the first line. The toolbar
+ *  buttons are capped narrow, so a plain multi-word label (e.g. the dynamic
+ *  "Return to Map"/"Return to Manage") otherwise wrapped onto three lines. */
+function wmTwoLineLabel($el, text) {
+	var words = String(text).split(/\s+/).filter(function(word) {
+		return word.length > 0;
+	});
+
+	$el.empty();
+
+	if (words.length > 1) {
+		var last = words.pop();
+		$el.append(document.createTextNode(words.join('\u00a0')));
+		$el.append(document.createElement('br'));
+		$el.append(document.createTextNode(last));
+	} else {
+		$el.text(text);
+	}
+
+	return $el;
+}
+
 function initJS() {
+	wmApplyEditorTheme();
+
 	// if the xycapture element is there, then we are in the main edit screen
 	if ($('#xycapture').length) {
 		if ($('#tb_help').data('idle-help') === undefined) $('#tb_help').data('idle-help', $('#tb_help').text());
@@ -567,7 +644,7 @@ function attach_click_events() {
 	$("area[id^='TIMES']").attr('href', '#').off('click').on('click', position_timestamp);
 	$("area[id^='LEGEN']").attr('href', '#').off('click').on('click', position_legend);
 
-	$('#tb_newfile').text($('body').attr('data-return-label') || 'Return to Map').off('click').on('click', function() {
+	wmTwoLineLabel($('#tb_newfile'), $('body').attr('data-return-label') || 'Return to Map').off('click').on('click', function() {
 		window.location.assign(wmEditorReturnUrl($('body').attr('data-return-map')));
 	});
 
