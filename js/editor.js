@@ -173,13 +173,13 @@ function graphPicker() {
 		dialogForm    += "<input type='text' class='ui-state-default ui-corner-all' id='" + id + "_input' value='" + title + "'>";
 		dialogForm    += "</span>";
 		dialogForm    += "</span>&nbsp;";
-		dialogForm    += "<input id='" + id + "_add' type='button' class='ui-button ui-corner-all ui-widget' value='Add' />&nbsp;";
-		if (id !== 'link_target_picker') dialogForm    += "<input id='" + id + "_rep' type='button' class='ui-button ui-corner-all ui-widget' value='Replace'/>";
+		dialogForm    += "<button id='" + id + "_add' type='button' class='ui-button ui-corner-all ui-widget'>Add</button>&nbsp;";
+		if (id !== 'link_target_picker') dialogForm    += "<button id='" + id + "_rep' type='button' class='ui-button ui-corner-all ui-widget'>Replace</button>";
 
 		$(this).after(dialogForm);
 		$(this).hide();
-		$('#' + id + '_add').val($(this).attr('data-add-label') || 'Add');
-		$('#' + id + '_rep').val($(this).attr('data-replace-label') || 'Replace');
+		$('#' + id + '_add').text($(this).attr('data-add-label') || 'Add');
+		$('#' + id + '_rep').text($(this).attr('data-replace-label') || 'Replace');
 		$('#' + id + '_input').attr('aria-label', $(this).attr('aria-label') || $(this).closest('tr').find('td:first').text());
 
 		$('#' + id + '_add').off('click').on('click', function() {

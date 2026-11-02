@@ -357,6 +357,41 @@ switch (get_request_var('action')) {
 }
 
 /**
+ * Builds the Cancel/Continue button bar shown on the bulk-action
+ * confirmation page. Only the Continue submit button's tooltip differs
+ * between actions, so the already-localized title text is supplied by
+ * the caller.
+ *
+ * @param string $continue_title The escaped title/tooltip for the
+ *                               Continue submit button.
+ *
+ * @return string The HTML for the Cancel and Continue buttons.
+ */
+function weathermap_action_save_buttons($continue_title) {
+	return "<button type='button' class='ui-button ui-corner-all ui-widget' id='wm_cancel'>" . __esc('Cancel') . '</button>&nbsp;' .
+		"<button type='submit' class='ui-button ui-corner-all ui-widget' title='" . $continue_title . "'>" . __esc('Continue') . '</button>';
+}
+
+/**
+ * Builds the confirmation table row shared by the simple bulk actions
+ * (delete/disable/enable/rebuild), which differ only in their prompt
+ * text. The caller supplies the already-localized message.
+ *
+ * @param string $message The localized confirmation prompt.
+ * @param string $list    The <li> markup listing the affected maps.
+ *
+ * @return string The confirmation table row HTML.
+ */
+function weathermap_action_confirm_row($message, $list) {
+	return "<tr>
+				<td class='topBoxAlt'>
+					<p>" . $message . "</p>
+					<div class='itemlist'><ul>$list</ul></div>
+				</td>
+			</tr>";
+}
+
+/**
  * Handles all bulk-action form submissions for the map/permissions
  * lists: applying per-map user/group permission checkbox changes
  * ('associate_perms'), and (via the shared 'selected_items' bulk-action
@@ -513,14 +548,9 @@ function weathermap_form_actions() {
 
 	if (isset($array)) {
 		if (get_nfilter_request_var('drp_action') === '1') { // delete
-			print "	<tr>
-					<td class='topBoxAlt'>
-						<p>" . __n('Click \'Continue\' to delete the following Weather Map.', 'Click \'Continue\' to delete following Weather Maps.', cacti_sizeof($array)) . "</p>
-						<div class='itemlist'><ul>$list</ul></div>
-					</td>
-				</tr>\n";
+			print weathermap_action_confirm_row(__n('Click \'Continue\' to delete the following Weather Map.', 'Click \'Continue\' to delete following Weather Maps.', cacti_sizeof($array)), $list);
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Delete Weather Map', 'Delete Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Delete Weather Map', 'Delete Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '2') { // duplicate
 			print "<tr>
 				<td class='topBoxAlt'>
@@ -540,34 +570,19 @@ function weathermap_form_actions() {
 				</td>
 			</tr>';
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Duplicate Weather Map', 'Duplicate Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Duplicate Weather Map', 'Duplicate Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '3') { // disable
-			print "<tr>
-				<td class='topBoxAlt'>
-					<p>" . __n('Click \'Continue\' to disable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
-					<div class='itemlist'><ul>$list</ul></div>
-				</td>
-			</tr>";
+			print weathermap_action_confirm_row(__n('Click \'Continue\' to disable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)), $list);
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Disable Weather Map', 'Disable Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Disable Weather Map', 'Disable Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '4') { // enable
-			print "<tr>
-				<td class='topBoxAlt'>
-					<p>" . __n('Click \'Continue\' to enable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
-					<div class='itemlist'><ul>$list</ul></div>
-				</td>
-			</tr>";
+			print weathermap_action_confirm_row(__n('Click \'Continue\' to enable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)), $list);
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Enable Weather Map', 'Enable Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Enable Weather Map', 'Enable Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '7') { // run now
-			print "<tr>
-				<td class='topBoxAlt'>
-					<p>" . __n('Click \'Continue\' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
-					<div class='itemlist'><ul>$list</ul></div>
-				</td>
-			</tr>";
+			print weathermap_action_confirm_row(__n('Click \'Continue\' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)), $list);
 
-			$save_html = "<input type='button' class='ui-button ui-corner-all ui-widget' value='" . __esc('Cancel') . "' id='wm_cancel'>&nbsp;<input type='submit' class='ui-button ui-corner-all ui-widget' value='" . __esc('Continue') . "' title='" . __esc_n('Rebuild Weather Map', 'Rebuild Weather Maps', cacti_sizeof($array)) . "'>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Rebuild Weather Map', 'Rebuild Weather Maps', cacti_sizeof($array)));
 		}
 	} else {
 		raise_message(40);
@@ -786,12 +801,12 @@ function wm_filter() {
 					</td>
 					<td>
 						<span>
-							<input type='button' class='ui-button ui-corner-all ui-widget' value='<?php print __esc_x('Button: use filter settings', 'Go', 'weathermap'); ?>' id='refresh'>
-							<input type='button' class='ui-button ui-corner-all ui-widget' value='<?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap'); ?>' id='clear'>
-							<input type='button' id='wm_group_settings' value='<?php print __esc('Group Settings', 'weathermap'); ?>'>
-							<input type='button' id='wm_map_settings' value='<?php print __esc('Map Settings', 'weathermap'); ?>' title='<?php print __esc('Cacti Weathermap Map Settings', 'weathermap'); ?>'>
-							<input type='button' id='wm_settings' value='<?php print __esc('Settings', 'weathermap'); ?>' title='<?php print __esc('Cacti Weathermap Settings', 'weathermap'); ?>'>
-							<input type='button' id='wm_rebuild' value='<?php print __esc('Rebuild All', 'weathermap'); ?>' title='<?php print __esc('Rebuild all maps now in background', 'weathermap'); ?>'>
+							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh1'><?php print __esc_x('Button: use filter settings', 'Go', 'weathermap'); ?></button>
+							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear1'><?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap'); ?></button>
+							<button type='button' id='wm_group_settings'><?php print __esc('Group Settings', 'weathermap'); ?></button>
+							<button type='button' id='wm_map_settings' title='<?php print __esc('Cacti Weathermap Map Settings', 'weathermap'); ?>'><?php print __esc('Map Settings', 'weathermap'); ?></button>
+							<button type='button' id='wm_settings' title='<?php print __esc('Cacti Weathermap Settings', 'weathermap'); ?>'><?php print __esc('Settings', 'weathermap'); ?></button>
+							<button type='button' id='wm_rebuild' title='<?php print __esc('Rebuild all maps now in background', 'weathermap'); ?>'><?php print __esc('Rebuild All', 'weathermap'); ?></button>
 							<a id='wm_docs' class='ui-button ui-corner-all ui-widget' href='docs/index.html' target='_blank' rel='noopener' title='<?php print __esc('Local Documentation', 'weathermap'); ?>'><?php print __esc('Docs', 'weathermap'); ?></a>
 						</span>
 					</td>
@@ -813,11 +828,12 @@ function wm_filter() {
 			}
 
 			$(function() {
-				$('#refresh').on('click', function() {
+				$('#refresh1').on('click', function(event) {
+					event.preventDefault();
 					applyFilter();
 				});
 
-				$('#clear').on('click', function() {
+				$('#clear1').on('click', function() {
 					clearFilter();
 				});
 
@@ -1342,8 +1358,8 @@ function addmap_filter() {
 					</td>
 					<td>
 						<span>
-							<input type='button' class='ui-button ui-corner-all ui-widget' id='refresh' value='<?php print __esc('Go', 'weathermap'); ?>' title='<?php print __esc('Set/Refresh Filters', 'weathermap'); ?>'>
-							<input type='button' class='ui-button ui-corner-all ui-widget' id='clear' value='<?php print __esc('Clear', 'weathermap'); ?>' title='<?php print __esc('Clear Filters', 'weathermap'); ?>'>
+							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh2' title='<?php print __esc('Set/Refresh Filters', 'weathermap'); ?>'><?php print __esc('Go', 'weathermap'); ?></button>
+							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear2' title='<?php print __esc('Clear Filters', 'weathermap'); ?>'><?php print __esc('Clear', 'weathermap'); ?></button>
 						</span>
 					</td>
 				</tr>
@@ -1382,16 +1398,16 @@ function addmap_filter() {
 									FROM weathermap_maps
 									ORDER BY configfile');
 
-	if (cacti_sizeof($maps)) {
-		foreach ($maps as $map) {
-			print "<option value='{$map['configfile']}'>" . html_escape($map['configfile']) . '</option>';
-		}
-	}
-	?>
+								if (cacti_sizeof($maps)) {
+									foreach ($maps as $map) {
+										print "<option value='{$map['configfile']}'>" . html_escape($map['configfile']) . '</option>';
+									}
+								}
+								?>
 							</select>
 						</td>
 						<td>
-							<input type='submit' value='<?php print __('Create', 'weathermaps'); ?>'>
+							<button type='submit'><?php print __('Create', 'weathermaps'); ?></button>
 						</td>
 					</tr>
 				</table>
@@ -1412,7 +1428,8 @@ function addmap_filter() {
 			}
 
 			$(function() {
-				$('#refresh').on('click', function() {
+				$('#refresh2').on('click', function(event) {
+					event.preventDefault();
 					applyFilter();
 				});
 
@@ -1420,7 +1437,7 @@ function addmap_filter() {
 					applyFilter();
 				});
 
-				$('#clear').on('click', function() {
+				$('#clear2').on('click', function() {
 					clearFilter();
 				});
 
@@ -2242,8 +2259,8 @@ function perms_filter($id) {
 					</td>
 					<td>
 						<span>
-							<input type='button' class='ui-button ui-corner-all ui-widget' value='<?php print __esc_x('Button: use filter settings', 'Go', 'weathermap'); ?>' id='refresh'>
-							<input type='button' class='ui-button ui-corner-all ui-widget' value='<?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap'); ?>' id='clear'>
+							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh3'><?php print __esc_x('Button: use filter settings', 'Go', 'weathermap'); ?></button>
+							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear3'><?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap'); ?></button>
 							<input type='hidden' value='<?php print $id; ?>' id='mapid'>
 						</span>
 					</td>
@@ -2270,11 +2287,12 @@ function perms_filter($id) {
 			}
 
 			$(function() {
-				$('#refresh').on('click', function() {
+				$('#refresh3').on('click', function(event) {
+					event.preventDefault();
 					applyFilter();
 				});
 
-				$('#clear').on('click', function() {
+				$('#clear3').on('click', function() {
 					clearFilter();
 				});
 
@@ -3125,7 +3143,7 @@ function weathermap_chgroup($id) {
 	}
 
 	print '</select>';
-	print '<input type="submit" value="' . __esc('Change Group', 'weathermap') . '"/>';
+	print '<button type="submit">' . __esc('Change Group', 'weathermap') . '</button>';
 	print '</td>';
 	print '</tr>';
 	print '<tr><td></td></tr>';
@@ -3182,9 +3200,9 @@ function weathermap_group_form($id = 0) {
 
 	if ($id > 0) {
 		print '<input type="hidden" name="id" value="' . $id . ' />';
-		print __('Group Name:', 'weathermap') . '<input type=submit value="' . __esc('Update', 'weathermap') . '"/>';
+		print __('Group Name:', 'weathermap') . '<button type="submit">' . __esc('Update', 'weathermap') . '</button>';
 	} else {
-		print '<input type="submit" value="' . __esc('Add', 'weathermap') . '"/>';
+		print '<button type="submit">' . __esc('Add', 'weathermap') . '</button>';
 	}
 
 	form_end();
@@ -3293,8 +3311,8 @@ function weathermap_group_editor() {
 				<br><br>
 				<div class='right'>
       				<input type='hidden' name='rid' id='rid' value=''>
-					<input type='button' id='cancel' value='" . __esc('Cancel', 'weathermap') . "'>
-					<input type='submit' id='rename' value='" . __esc('Rename', 'weathermap') . "'>
+					<button type='button' id='cancel'>" . __esc('Cancel', 'weathermap') . "</button>
+					<button type='submit' id='rename'>" . __esc('Rename', 'weathermap') . "</button>
 				</div>
 			</fieldset>
 		</form>
