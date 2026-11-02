@@ -121,7 +121,11 @@ jobs:
     
     - name: Setup Permissions
       run: |
-        sudo chown -R www-data:runner ${{ github.workspace }}/cacti
+        # Composer runs as the runner user in a later step and calls touch()
+        # while generating the fixture autoloader. utime() only succeeds for the
+        # file owner, so the runner user must own the tree here; www-data keeps
+        # group access. Ownership is handed back to www-data before polling.
+        sudo chown -R runner:www-data ${{ github.workspace }}/cacti
         sudo find ${{ github.workspace }}/cacti -type d -exec chmod 775 {} \;
         sudo find ${{ github.workspace }}/cacti -type f -exec chmod 664 {} \;
         sudo chmod +x ${{ github.workspace }}/cacti/cmd.php
