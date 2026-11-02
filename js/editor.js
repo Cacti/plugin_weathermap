@@ -356,16 +356,27 @@ $(function() {
 /** wmApplyEditorTheme - The standalone map editor only loads a theme's
  *  jquery-ui.css and main.css, not Cacti's page loader. editor.css is written
  *  against the standard Cacti colour variables (--background,
- *  --background-content, --text-color-lighter, --border-color), but only the
+ *  --background-content, --text-color-lighter, --border-color). Only the
  *  Midwinter theme actually defines them, so every other theme fell back to the
- *  hard-coded light values and dark themes rendered light form controls. Here
- *  we read the active theme's real form-field colours and publish those
- *  variables on the editor root, so the existing editor.css rules theme
- *  correctly for any current or future theme without a per-theme stylesheet. */
+ *  hard-coded light values and dark themes rendered light form controls.
+ *
+ *  When the active theme already defines those variables we leave them alone so
+ *  the theme keeps full control of the editor. Otherwise we read the theme's
+ *  genuine form-field colours and publish them. The field surface and border go
+ *  onto the standard variables, but the field text colour is published as a
+ *  separate --wm-field-text so it only recolours the form controls; the dialog
+ *  hint text keeps inheriting the dialog foreground, which stays readable on
+ *  themes (such as Dark) whose fields and dialogs use different colours. */
 function wmApplyEditorTheme() {
 	var root = document.getElementById('mainView');
 
 	if (!root || typeof window.getComputedStyle !== 'function') {
+		return;
+	}
+
+	// If the theme already supplies the Cacti palette (Midwinter), it themes the
+	// editor itself; don't overwrite its carefully chosen light/dark values.
+	if (window.getComputedStyle(root).getPropertyValue('--text-color-lighter').trim() !== '') {
 		return;
 	}
 
@@ -397,7 +408,9 @@ function wmApplyEditorTheme() {
 	}
 
 	if (usable(text)) {
-		root.style.setProperty('--text-color-lighter', text);
+		// A control-only variable, so dialog hint text is left to inherit the
+		// readable dialog foreground instead of the field text colour.
+		root.style.setProperty('--wm-field-text', text);
 	}
 
 	if (usable(border)) {
