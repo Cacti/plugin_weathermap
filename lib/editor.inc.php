@@ -426,7 +426,7 @@ function show_editor_startpage() {
 
 	print '<input name="action" type="hidden" value="newmap">';
 
-	print '<input type="submit" value="' . __('Create', 'weathermap') . '">';
+	print '<button type="submit">' . __('Create', 'weathermap') . '</button>';
 
 	print '<p><small>' . __('Note: filenames must end in .conf and contain no path separators or control characters', 'weathermap') . '</small></p>';
 	print '</form>';
@@ -502,7 +502,7 @@ function show_editor_startpage() {
 	}
 
 	print '</select>';
-	print '<input type="submit" value="Create Copy">';
+	print '<button type="submit">Create Copy</button>';
 	print '</form>';
 	print 'OR<br />';
 	print 'Open An Existing Map (looking in ' . html_escape($mapdir) . '):<ul class="filelist">';
