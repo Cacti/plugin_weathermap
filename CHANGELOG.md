@@ -16,6 +16,8 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* bug: Theme the standalone map editor from the active Cacti theme's own form-control colours (textboxes, textareas, selects, ddslick dropdowns and buttons) so dark themes such as Deepness no longer render light, unthemed controls; the editor reads the theme's colours at runtime instead of relying on variables only the Midwinter theme defines, so no per-theme editor stylesheet is required
+* bug: Keep the editor toolbar "Return to Map"/"Return to Manage" button on two lines instead of wrapping onto three
 * dev: Pin the CI database image and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
 
 --- 2.0.1 ---
