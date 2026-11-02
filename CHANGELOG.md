@@ -20,6 +20,9 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- 2.0.1 ---
 
+* issue#322: Refresh the bundled manual with current installation, upgrade, editor, image management and troubleshooting guides; retain the configuration and data-source references and repair documentation links
+* issue#322: Update editor and map-management screenshots, including map creation, management, the viewer, hover graphs and Advanced settings; use compact previews with full-size links and refresh cached documentation assets
+* feature#322: Add themed Docs access from the map heading and a Docs button after Rebuild All in map management, opening the bundled manual in a new tab
 * feature#321: Group default link width and appearance controls under Link Appearance Defaults in Map Style, and clarify Default Link Capacity in Map Properties
 * feature#321: Add Edge and Centre comment styles to Map Style, with an individual override and Use map default option in Link Properties
 * feature#321: Add IN/OUT traffic-label positions to Map Style and per-link Advanced settings, with 75%/25% defaults and an option to restore inheritance; keep traffic-label and comment positions separate
