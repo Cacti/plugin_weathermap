@@ -357,6 +357,22 @@ switch (get_request_var('action')) {
 }
 
 /**
+ * Builds the Cancel/Continue button bar shown on the bulk-action
+ * confirmation page. Only the Continue submit button's tooltip differs
+ * between actions, so the already-localized title text is supplied by
+ * the caller.
+ *
+ * @param string $continue_title The escaped title/tooltip for the
+ *                               Continue submit button.
+ *
+ * @return string The HTML for the Cancel and Continue buttons.
+ */
+function weathermap_action_save_buttons($continue_title) {
+	return "<button type='button' class='ui-button ui-corner-all ui-widget' id='wm_cancel'>" . __esc('Cancel') . '</button>&nbsp;' .
+		"<button type='submit' class='ui-button ui-corner-all ui-widget' title='" . $continue_title . "'>" . __esc('Continue') . '</button>';
+}
+
+/**
  * Handles all bulk-action form submissions for the map/permissions
  * lists: applying per-map user/group permission checkbox changes
  * ('associate_perms'), and (via the shared 'selected_items' bulk-action
@@ -520,7 +536,7 @@ function weathermap_form_actions() {
 					</td>
 				</tr>\n";
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' id='wm_cancel'>" . __esc('Cancel') . "</button>&nbsp;<button type='submit' class='ui-button ui-corner-all ui-widget' title='" . __esc_n('Delete Weather Map', 'Delete Weather Maps', cacti_sizeof($array)) . "'>" . __esc('Continue') . "</button>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Delete Weather Map', 'Delete Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '2') { // duplicate
 			print "<tr>
 				<td class='topBoxAlt'>
@@ -540,7 +556,7 @@ function weathermap_form_actions() {
 				</td>
 			</tr>';
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' id='wm_cancel'>" . __esc('Cancel') . "</button>&nbsp;<button type='submit' class='ui-button ui-corner-all ui-widget' title='" . __esc_n('Duplicate Weather Map', 'Duplicate Weather Maps', cacti_sizeof($array)) . "'>" . __esc('Continue') . "</button>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Duplicate Weather Map', 'Duplicate Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '3') { // disable
 			print "<tr>
 				<td class='topBoxAlt'>
@@ -549,7 +565,7 @@ function weathermap_form_actions() {
 				</td>
 			</tr>";
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' id='wm_cancel'>" . __esc('Cancel') . "</button>&nbsp;<button type='submit' class='ui-button ui-corner-all ui-widget' title='" . __esc_n('Disable Weather Map', 'Disable Weather Maps', cacti_sizeof($array)) . "'>" . __esc('Continue') . "</button>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Disable Weather Map', 'Disable Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '4') { // enable
 			print "<tr>
 				<td class='topBoxAlt'>
@@ -558,7 +574,7 @@ function weathermap_form_actions() {
 				</td>
 			</tr>";
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' id='wm_cancel'>" . __esc('Cancel') . "</button>&nbsp;<button type='submit' class='ui-button ui-corner-all ui-widget' title='" . __esc_n('Enable Weather Map', 'Enable Weather Maps', cacti_sizeof($array)) . "'>" . __esc('Continue') . "</button>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Enable Weather Map', 'Enable Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '7') { // run now
 			print "<tr>
 				<td class='topBoxAlt'>
@@ -567,7 +583,7 @@ function weathermap_form_actions() {
 				</td>
 			</tr>";
 
-			$save_html = "<button type='button' class='ui-button ui-corner-all ui-widget' id='wm_cancel'>" . __esc('Cancel') . "</button>&nbsp;<button type='submit' class='ui-button ui-corner-all ui-widget' title='" . __esc_n('Rebuild Weather Map', 'Rebuild Weather Maps', cacti_sizeof($array)) . "'>" . __esc('Continue') . "</button>";
+			$save_html = weathermap_action_save_buttons(__esc_n('Rebuild Weather Map', 'Rebuild Weather Maps', cacti_sizeof($array)));
 		}
 	} else {
 		raise_message(40);
