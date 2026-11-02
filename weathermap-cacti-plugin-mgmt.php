@@ -373,6 +373,25 @@ function weathermap_action_save_buttons($continue_title) {
 }
 
 /**
+ * Builds the confirmation table row shared by the simple bulk actions
+ * (delete/disable/enable/rebuild), which differ only in their prompt
+ * text. The caller supplies the already-localized message.
+ *
+ * @param string $message The localized confirmation prompt.
+ * @param string $list    The <li> markup listing the affected maps.
+ *
+ * @return string The confirmation table row HTML.
+ */
+function weathermap_action_confirm_row($message, $list) {
+	return "<tr>
+				<td class='topBoxAlt'>
+					<p>" . $message . "</p>
+					<div class='itemlist'><ul>$list</ul></div>
+				</td>
+			</tr>";
+}
+
+/**
  * Handles all bulk-action form submissions for the map/permissions
  * lists: applying per-map user/group permission checkbox changes
  * ('associate_perms'), and (via the shared 'selected_items' bulk-action
@@ -529,12 +548,7 @@ function weathermap_form_actions() {
 
 	if (isset($array)) {
 		if (get_nfilter_request_var('drp_action') === '1') { // delete
-			print "	<tr>
-					<td class='topBoxAlt'>
-						<p>" . __n('Click \'Continue\' to delete the following Weather Map.', 'Click \'Continue\' to delete following Weather Maps.', cacti_sizeof($array)) . "</p>
-						<div class='itemlist'><ul>$list</ul></div>
-					</td>
-				</tr>\n";
+			print weathermap_action_confirm_row(__n('Click \'Continue\' to delete the following Weather Map.', 'Click \'Continue\' to delete following Weather Maps.', cacti_sizeof($array)), $list);
 
 			$save_html = weathermap_action_save_buttons(__esc_n('Delete Weather Map', 'Delete Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '2') { // duplicate
@@ -558,30 +572,15 @@ function weathermap_form_actions() {
 
 			$save_html = weathermap_action_save_buttons(__esc_n('Duplicate Weather Map', 'Duplicate Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '3') { // disable
-			print "<tr>
-				<td class='topBoxAlt'>
-					<p>" . __n('Click \'Continue\' to disable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
-					<div class='itemlist'><ul>$list</ul></div>
-				</td>
-			</tr>";
+			print weathermap_action_confirm_row(__n('Click \'Continue\' to disable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)), $list);
 
 			$save_html = weathermap_action_save_buttons(__esc_n('Disable Weather Map', 'Disable Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '4') { // enable
-			print "<tr>
-				<td class='topBoxAlt'>
-					<p>" . __n('Click \'Continue\' to enable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
-					<div class='itemlist'><ul>$list</ul></div>
-				</td>
-			</tr>";
+			print weathermap_action_confirm_row(__n('Click \'Continue\' to enable the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)), $list);
 
 			$save_html = weathermap_action_save_buttons(__esc_n('Enable Weather Map', 'Enable Weather Maps', cacti_sizeof($array)));
 		} elseif (get_nfilter_request_var('drp_action') === '7') { // run now
-			print "<tr>
-				<td class='topBoxAlt'>
-					<p>" . __n('Click \'Continue\' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)) . "</p>
-					<div class='itemlist'><ul>$list</ul></div>
-				</td>
-			</tr>";
+			print weathermap_action_confirm_row(__n('Click \'Continue\' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map.', 'Click \'Continue\' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps.', cacti_sizeof($array)), $list);
 
 			$save_html = weathermap_action_save_buttons(__esc_n('Rebuild Weather Map', 'Rebuild Weather Maps', cacti_sizeof($array)));
 		}
