@@ -786,8 +786,8 @@ function wm_filter() {
 					</td>
 					<td>
 						<span>
-							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh'><?php print __esc_x('Button: use filter settings', 'Go', 'weathermap'); ?></button>
-							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear'><?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap'); ?></button>
+							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh1'><?php print __esc_x('Button: use filter settings', 'Go', 'weathermap'); ?></button>
+							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear1'><?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap'); ?></button>
 							<button type='button' id='wm_group_settings'><?php print __esc('Group Settings', 'weathermap'); ?></button>
 							<button type='button' id='wm_map_settings' title='<?php print __esc('Cacti Weathermap Map Settings', 'weathermap'); ?>'><?php print __esc('Map Settings', 'weathermap'); ?></button>
 							<button type='button' id='wm_settings' title='<?php print __esc('Cacti Weathermap Settings', 'weathermap'); ?>'><?php print __esc('Settings', 'weathermap'); ?></button>
@@ -813,12 +813,12 @@ function wm_filter() {
 			}
 
 			$(function() {
-				$('#refresh').on('click', function(event) {
+				$('#refresh1').on('click', function(event) {
 					event.preventDefault();
 					applyFilter();
 				});
 
-				$('#clear').on('click', function() {
+				$('#clear1').on('click', function() {
 					clearFilter();
 				});
 
@@ -1343,8 +1343,8 @@ function addmap_filter() {
 					</td>
 					<td>
 						<span>
-							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh' title='<?php print __esc('Set/Refresh Filters', 'weathermap'); ?>'><?php print __esc('Go', 'weathermap'); ?></button>
-							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear' title='<?php print __esc('Clear Filters', 'weathermap'); ?>'><?php print __esc('Clear', 'weathermap'); ?></button>
+							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh2' title='<?php print __esc('Set/Refresh Filters', 'weathermap'); ?>'><?php print __esc('Go', 'weathermap'); ?></button>
+							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear2' title='<?php print __esc('Clear Filters', 'weathermap'); ?>'><?php print __esc('Clear', 'weathermap'); ?></button>
 						</span>
 					</td>
 				</tr>
@@ -1383,12 +1383,12 @@ function addmap_filter() {
 									FROM weathermap_maps
 									ORDER BY configfile');
 
-	if (cacti_sizeof($maps)) {
-		foreach ($maps as $map) {
-			print "<option value='{$map['configfile']}'>" . html_escape($map['configfile']) . '</option>';
-		}
-	}
-	?>
+								if (cacti_sizeof($maps)) {
+									foreach ($maps as $map) {
+										print "<option value='{$map['configfile']}'>" . html_escape($map['configfile']) . '</option>';
+									}
+								}
+								?>
 							</select>
 						</td>
 						<td>
@@ -1413,7 +1413,7 @@ function addmap_filter() {
 			}
 
 			$(function() {
-				$('#refresh').on('click', function(event) {
+				$('#refresh2').on('click', function(event) {
 					event.preventDefault();
 					applyFilter();
 				});
@@ -1422,7 +1422,7 @@ function addmap_filter() {
 					applyFilter();
 				});
 
-				$('#clear').on('click', function() {
+				$('#clear2').on('click', function() {
 					clearFilter();
 				});
 
@@ -2244,8 +2244,8 @@ function perms_filter($id) {
 					</td>
 					<td>
 						<span>
-							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh'><?php print __esc_x('Button: use filter settings', 'Go', 'weathermap'); ?></button>
-							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear'><?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap'); ?></button>
+							<button type='submit' class='ui-button ui-corner-all ui-widget' id='refresh3'><?php print __esc_x('Button: use filter settings', 'Go', 'weathermap'); ?></button>
+							<button type='button' class='ui-button ui-corner-all ui-widget' id='clear3'><?php print __esc_x('Button: reset filter settings', 'Clear', 'weathermap'); ?></button>
 							<input type='hidden' value='<?php print $id; ?>' id='mapid'>
 						</span>
 					</td>
@@ -2272,12 +2272,12 @@ function perms_filter($id) {
 			}
 
 			$(function() {
-				$('#refresh').on('click', function(event) {
+				$('#refresh3').on('click', function(event) {
 					event.preventDefault();
 					applyFilter();
 				});
 
-				$('#clear').on('click', function() {
+				$('#clear3').on('click', function() {
 					clearFilter();
 				});
 
