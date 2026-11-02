@@ -288,6 +288,10 @@ msgid "Note: filenames must end in .conf and contain no path separators or contr
 msgstr ""
 
 #: lib/editor.inc.php
+msgid "Create Copy"
+msgstr ""
+
+#: lib/editor.inc.php
 msgid "Ok"
 msgstr ""
 
