@@ -1312,6 +1312,11 @@ function prime_link_form(name) {
 		$('#link_hover').val(wmDecodeEditorUrl(mylink.overliburl));
 		$('#viastyle').val(mylink.viastyle);
 
+		$('#link_commentstyle').val(mylink.commentstylechoice);
+		$('#link_labelposmode').val(mylink.labelposmode);
+		$('#link_labelposin').val(mylink.labelposin);
+		$('#link_labelposout').val(mylink.labelposout);
+		$('#link_labelposmode').trigger('change');
 		$('#link_commentin').val(mylink.commentin);
 		$('#link_commentout').val(mylink.commentout);
 		$('#link_commentposin').val(mylink.commentposin);
@@ -1768,6 +1773,9 @@ function wmBuildLinkSections() {
   dlg.find(fields).closest('tr').appendTo(table);
   return panel;
  }
+ $('#link_labelposmode').on('change.wmPositions', function() {
+  $('#link_labelposin,#link_labelposout').prop('disabled', $(this).val() !== 'custom');
+ });
  var hovers = group('wm-link-hovers', wmEditorText.additionalGraphs, '#link_template,#link_picker');
  dlg.find('.wm-link-section p').addClass('wm-link-group-hint').prependTo(hovers);
  dlg.find('.wm-link-section').remove();
@@ -1777,7 +1785,8 @@ function wmBuildLinkSections() {
  wmRenderLinkExtraGraphs();
  $('#link_target_picker_rep').remove();
  var advanced = group('wm-link-advanced', wmEditorText.advanced,
-  '#link_target,#link_infourl,#wm-link-primary-hover,#wm-link-extra-hover', wmEditorText.linkAdvancedHint);
+  '#link_labelposmode,#link_target,#link_infourl,#wm-link-primary-hover,#wm-link-extra-hover', wmEditorText.linkAdvancedHint);
+ $('#link_labelposmode').closest('tr').prependTo(advanced.find('table'));
  var sourceRow = $('<tr></tr>').insertBefore($('#link_target').closest('tr'));
  $('<td></td>').text(wmEditorText.chooseSource).appendTo(sourceRow);
  var sourceActions = $('<div class="wm-link-source-actions"></div>').appendTo($('<td></td>').appendTo(sourceRow))
@@ -1800,7 +1809,7 @@ function wmBuildLinkSections() {
   ++wmInterfaceLookupGeneration;
   wmSyncLinkHoverParts();
  });
- dlg.find('#viastyle,#link_width,#link_commentin,#link_commentout').closest('tr')
+ dlg.find('#viastyle,#link_width,#link_commentin,#link_commentout,#link_commentstyle').closest('tr')
   .insertAfter($('#link_target_picker').closest('tr'));
  $('#link_edit').appendTo(controls);
  var help = dlg.find('.dlgHelp').attr('id', 'wm-link-full-help').insertAfter(sections).hide();

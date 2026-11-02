@@ -622,6 +622,7 @@ foreach ($graph_templates as $gt) {
 								<input aria-label='<?php print __esc('Choose hover graph', 'weathermap'); ?>' id='link_picker' name='link_picker' type='text' class='selectmenu-ajax ui-state-default ui-corner-all' data-action='graphs' data-add-label='<?php print __esc('Add hover graph', 'weathermap'); ?>' data-replace-label='<?php print __esc('Replace hover graphs', 'weathermap'); ?>' />
 							</td>
 						</tr>
+						<?php print wm_link_override_fields(); ?>
 						<tr>
 							<td><?php print __('IN Comment', 'weathermap'); ?></td>
 							<td>
@@ -664,9 +665,9 @@ foreach ($graph_templates as $gt) {
 				<div class='dlgHelp'>
 					<?php print __('<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>
 <p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>
-<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link.</p>
+<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>
 <p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>
-<p><strong>Advanced settings:</strong> Optional controls for combining measured sources, changing the click destination and entering custom hover image URLs. A normal traffic link usually needs no changes here.</p>
+<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>
 <p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>
 <p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>
 <p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>
@@ -745,11 +746,8 @@ if (cacti_count($backgd_list) == 0) {
 								<input id='map_height' name='map_height' type='text' class='ui-state-default ui-corner-all' size='5' value='<?php print html_escape($map->height) ?>' /> <?php print __('pixels', 'weathermap'); ?>
 							</td>
 						</tr>
-						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Link Defaults', 'weathermap'); ?></div></td></tr>
-						<tr>
-							<td><?php print __('Default Link Width', 'weathermap'); ?></td>
-							<td><input id='map_linkdefaultwidth' name='map_linkdefaultwidth' type='text' class='ui-state-default ui-corner-all' size='6' value='<?php print html_escape($map->links['DEFAULT']->width) ?>' /> <?php print __('pixels', 'weathermap'); ?></td>
-						</tr>
+						<tr><td colspan='2'><div class='cactiTableTitleRow wm-editor-section'><?php print __esc('Default Link Capacity', 'weathermap'); ?></div></td></tr>
+
 						<tr>
 							<td><?php print __('Default Link Bandwidth', 'weathermap'); ?></td>
 							<td>
@@ -766,7 +764,7 @@ if (cacti_count($backgd_list) == 0) {
 					</div>
 				</div>
 				<div class='dlgHelp'>
-					<?php print __('Set the map’s title, legend, timestamp, background and canvas size, plus the default width and bandwidth for links. Map dimensions and link width are measured in pixels.', 'weathermap'); ?>
+					<?php print __('Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style.', 'weathermap'); ?>
 				</div>
 			</div>
 		</div>
@@ -823,8 +821,12 @@ foreach ($styles as $id => $name) {
 
 
 						<tr><td colspan='2'>
-						<div class='cactiTableTitleRow wm-editor-section'><?php print __('Link Defaults', 'weathermap'); ?></div>
+						<div class='cactiTableTitleRow wm-editor-section'><?php print __('Link Appearance Defaults', 'weathermap'); ?></div>
 						</td></tr>
+						<tr>
+							<td><label for='mapstyle_defaultwidth'><?php print __('Default Link Width', 'weathermap'); ?></label></td>
+							<td><input id='mapstyle_defaultwidth' name='mapstyle_defaultwidth' type='text' class='ui-state-default ui-corner-all' size='6' value='<?php print html_escape($map->links['DEFAULT']->width) ?>' /> <?php print __('pixels', 'weathermap'); ?></td>
+						</tr>
 						<tr>
 							<td><?php print __('Link Labels', 'weathermap'); ?></td>
 							<td>
@@ -848,7 +850,10 @@ foreach ($styles as $id => $name) {
 							<td><label for='mapstyle_linkfont'><?php print __esc('Traffic Label Font', 'weathermap'); ?></label></td>
 							<td><?php print wm_style_font_select($map, 'mapstyle_linkfont', $map->links['DEFAULT']->bwfont); ?></td>
 						</tr>
+
+						<?php print wm_link_position_fields($map); ?>
 						<?php print wm_comment_style_fields($map); ?>
+
 
 
 					</table>

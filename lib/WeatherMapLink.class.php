@@ -307,6 +307,8 @@ class WeatherMapLink extends WeatherMapItem {
 				$this->$fld = $source->$fld;
 			}
 		}
+		// These describe this link's explicit editor choices, not inherited settings.
+		unset($this->hints['editor_commentstyle_override'], $this->hints['editor_labelpos_override']);
 	}
 
 	/**
@@ -935,7 +937,7 @@ class WeatherMapLink extends WeatherMapItem {
 				$keyword = $param[1];
 
 				// $output .= "# For $keyword: ".$this->$field." vs ".$dd->$field."\n";
-				if ($this->$field != $dd->$field) {
+				if ($this->$field != $dd->$field || ($field === 'commentstyle' && !empty($this->hints['editor_commentstyle_override']))) {
 					if ($param[2] == CONFIG_TYPE_COLOR) {
 						$output .= TAB . "$keyword " . render_colour($this->$field) . EOL;
 					} elseif ($param[2] == CONFIG_TYPE_LITERAL) {
@@ -1027,7 +1029,7 @@ class WeatherMapLink extends WeatherMapItem {
 			$comparison  = $dd->labeloffset_in;
 			$comparison2 = $dd->labeloffset_out;
 
-			if ($this->labeloffset_in != $comparison || $this->labeloffset_out != $comparison2) {
+			if ($this->labeloffset_in != $comparison || $this->labeloffset_out != $comparison2 || !empty($this->hints['editor_labelpos_override'])) {
 				$output .= TAB . 'BWLABELPOS ' . $this->labeloffset_in . ' ' . $this->labeloffset_out . EOL;
 			}
 
@@ -1107,7 +1109,7 @@ class WeatherMapLink extends WeatherMapItem {
 			foreach ($this->hints as $hintname=>$hint) {
 				// all hints for DEFAULT node are for writing
 				// only changed ones, or unique ones, otherwise
-				if (($this->name == 'DEFAULT') || (isset($dd->hints[$hintname]) && $dd->hints[$hintname] != $hint) || (!isset($dd->hints[$hintname]))) {
+				if (in_array($hintname, ['editor_commentstyle_override', 'editor_labelpos_override'], true) || ($this->name == 'DEFAULT') || (isset($dd->hints[$hintname]) && $dd->hints[$hintname] != $hint) || (!isset($dd->hints[$hintname]))) {
 					$output .= TAB . "SET $hintname $hint" . EOL;
 				}
 			}
@@ -1157,6 +1159,12 @@ class WeatherMapLink extends WeatherMapItem {
 		$js .= 'overlibheight:"' . $this->overlibheight . '", ';
 		$js .= 'overlibcaption:' . js_escape($this->overlibcaption[IN]) . ', ';
 
+		$base = $this->owner->links[$this->template];
+		$customStyle = !empty($this->hints['editor_commentstyle_override']) || $this->commentstyle !== $base->commentstyle;
+		$customPositions = !empty($this->hints['editor_labelpos_override']) || $this->labeloffset_in != $base->labeloffset_in || $this->labeloffset_out != $base->labeloffset_out;
+		$js .= 'commentstylechoice:' . js_escape($customStyle ? $this->commentstyle : 'default') . ', ';
+		$js .= 'labelposmode:' . js_escape($customPositions ? 'custom' : 'default') . ', ';
+		$js .= 'labelposin:' . (float)$this->labeloffset_in . ', labelposout:' . (float)$this->labeloffset_out . ', ';
 		$js .= 'commentin:' . js_escape($this->comments[IN]) . ', ';
 		$js .= 'commentposin:' . intval($this->commentoffset_in) . ', ';
 

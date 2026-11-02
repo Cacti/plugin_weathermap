@@ -39,9 +39,9 @@ function wm_style_test_map() {
 	$builtin           = new WMFont();
 	$builtin->type     = 'GD builtin';
 	$builtin->gdnumber = 2;
-	$default           = (object)['defined_in'=>'/fixture/map.conf', 'bwfont'=> 100, 'commentfont'=> 100, 'commentfontcolour'=>['0', '0', '255']];
+	$default           = (object)['defined_in'=>'/fixture/map.conf', 'bwfont'=> 100, 'commentfont'=> 100, 'commentfontcolour'=>['0', '0', '255'], 'commentstyle'=>'edge'];
 
-	return (object)['configfile'=>'/fixture/map.conf', 'fonts'=>[2=>$builtin, 100=>$font], 'links'=>[':: DEFAULT ::'=>clone $default, 'DEFAULT'=>clone $default, 'ordinary'=>clone $default, 'custom'=>(object)['defined_in'=>'/fixture/map.conf', 'bwfont'=>2, 'commentfont'=>2, 'commentfontcolour'=>[255, 0, 0]]]];
+	return (object)['configfile'=>'/fixture/map.conf', 'fonts'=>[2=>$builtin, 100=>$font], 'links'=>[':: DEFAULT ::'=>clone $default, 'DEFAULT'=>clone $default, 'ordinary'=>clone $default, 'custom'=>(object)['defined_in'=>'/fixture/map.conf', 'bwfont'=>2, 'commentfont'=>2, 'commentfontcolour'=>[255, 0, 0], 'commentstyle'=>'center']]];
 }
 it('UpdatesMatchingDefaultsAndPreservesDifferentStyles', function () {
 	$map = wm_style_test_map();
@@ -121,7 +121,7 @@ it('AssociatesCommentStyleLabelsWithTheirSelectors', function () {
 	$document = new DOMDocument();
 	$document->loadHTML('<table>' . wm_comment_style_fields(wm_style_test_map()) . '</table>', LIBXML_NOERROR | LIBXML_NOWARNING);
 	$xpath = new DOMXPath($document);
-	foreach (['mapstyle_commentfont' => 'Link Comment Font'] as $id => $text) {
+	foreach (['mapstyle_commentfont' => 'Link Comment Font', 'mapstyle_commentstyle' => 'Link Comment Style'] as $id => $text) {
 		$label = $xpath->query('//label[@for="' . $id . '"]')->item(0);
 		expect($label)->not->toBeNull()->and($label->textContent)->toBe($text)
 			->and($xpath->query('//select[@id="' . $id . '"]')->length)->toBe(1);
@@ -191,3 +191,37 @@ it('EscapesTranslatedAdvancedInstructionsBeforeRendering', function () {
 	}
 	expect(substr_count($html, '&lt;img'))->toBe(2)->and($html)->not->toContain('<img');
 });
+
+
+it('SelectsTheConfiguredCommentPlacement', function ($style) {
+ $map = wm_style_test_map();
+ $map->links['DEFAULT']->commentstyle = $style;
+ $doc = new DOMDocument();
+ $doc->loadHTML('<table>' . wm_comment_style_fields($map) . '</table>', LIBXML_NOERROR | LIBXML_NOWARNING);
+ $xp = new DOMXPath($doc);
+ $selected = $xp->query('//select[@name="mapstyle_commentstyle"]/option[@selected]');
+ expect($selected->length)->toBe(1)->and($selected[0]->getAttribute('value'))->toBe($style);
+})->with(['edge', 'center']);
+
+it('UpdatesDefaultCommentPlacementWithoutChangingCustomOrIncludedLinks', function () {
+ $map = wm_style_test_map();
+ $map->links['included'] = clone $map->links['ordinary'];
+ $map->links['included']->defined_in = '/fixture/shared.conf';
+ wm_comment_apply_style($map, null, null, null, 'center');
+ expect($map->links['DEFAULT']->commentstyle)->toBe('center')
+  ->and($map->links['ordinary']->commentstyle)->toBe('center')
+  ->and($map->links['custom']->commentstyle)->toBe('center')
+  ->and($map->links['included']->commentstyle)->toBe('edge')
+  ->and($map->links[':: DEFAULT ::']->commentstyle)->toBe('edge');
+ $map->links['custom']->commentstyle = 'edge';
+ wm_comment_apply_style($map, null, null, null, 'edge');
+ expect($map->links['ordinary']->commentstyle)->toBe('edge')
+  ->and($map->links['custom']->commentstyle)->toBe('edge');
+});
+
+it('IgnoresMissingOrInvalidCommentPlacement', function ($style) {
+ $map = wm_style_test_map();
+ $before = serialize($map);
+ wm_comment_apply_style($map, null, null, null, $style);
+ expect(serialize($map))->toBe($before);
+})->with([[null], [''], ['centre'], ['invalid'], ['EDGE'], [1], [['edge']]]);
