@@ -502,7 +502,7 @@ function show_editor_startpage() {
 	}
 
 	print '</select>';
-	print '<button type="submit">Create Copy</button>';
+	print '<button type="submit">' . __('Create Copy', 'weathermap') . '</button>';
 	print '</form>';
 	print 'OR<br />';
 	print 'Open An Existing Map (looking in ' . html_escape($mapdir) . '):<ul class="filelist">';
