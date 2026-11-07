@@ -50,12 +50,23 @@ jobs:
   integration-test:
     timeout-minutes: 45
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     
     strategy:
       fail-fast: false
       matrix:
         php: ['8.2', '8.3', '8.4']
         os: [ubuntu-latest]
+        experimental: [false]
+        include:
+          # PHP 8.5 and 8.6 run as non-blocking (experimental) legs because
+          # their packages can lag on the runners and in Ondřej Surý's PPA.
+          - php: '8.5'
+            os: ubuntu-latest
+            experimental: true
+          - php: '8.6'
+            os: ubuntu-latest
+            experimental: true
     
     services:
       mariadb:
@@ -93,6 +104,7 @@ jobs:
         fetch-depth: 0
     
     - name: Install PHP ${{ matrix.php }}
+      if: matrix.php != '8.6'
       uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
       with:
         php-version: ${{ matrix.php }}
@@ -101,6 +113,41 @@ jobs:
         ini-values: "post_max_size=256M, max_execution_time=60, date.timezone=America/New_York"
         coverage: xdebug
     
+    # PHP 8.6 is still pre-release. shivammathur/setup-php ships a nightly
+    # 8.6.0-dev build whose bundled extensions are ABI-skewed against their own
+    # core (undefined symbol: smart_str_ferealloc / _safe_femalloc), so every
+    # extension fails to load and the CLI install dies. Ondřej Surý's PPA
+    # provides a coherent 8.6 RC build, so this experimental leg provisions the
+    # CLI from there instead.
+    - name: Install PHP 8.6 toolchain from Ondřej Surý's PPA
+      if: matrix.php == '8.6'
+      run: |
+        set -euo pipefail
+        sudo add-apt-repository -y ppa:ondrej/php
+        sudo apt-get update
+        sudo apt-get install -y \
+          php8.6-cli php8.6-common \
+          php8.6-intl php8.6-mysql php8.6-gd php8.6-ldap \
+          php8.6-gmp php8.6-xml php8.6-curl php8.6-mbstring \
+          php8.6-snmp php8.6-sqlite3
+        # Make the Ondřej 8.6 CLI the default `php` so composer and the tests
+        # run under the same ABI-coherent build.
+        sudo update-alternatives --install /usr/bin/php php /usr/bin/php8.6 86
+        sudo update-alternatives --set php /usr/bin/php8.6
+        # Mirror the ini values the other legs receive via setup-php.
+        printf '%s\n' \
+          'post_max_size=256M' \
+          'max_execution_time=60' \
+          'date.timezone=America/New_York' \
+          | sudo tee /etc/php/8.6/cli/conf.d/99-cacti-ci.ini >/dev/null
+        # setup-php normally provides Composer; it is skipped for this leg, so
+        # make sure a Composer binary is available for the dependency steps.
+        if ! command -v composer >/dev/null 2>&1; then
+          sudo apt-get install -y composer
+        fi
+        php -v
+        composer --version
+
     - name: Check PHP version
       run: php -v
 
@@ -216,7 +263,9 @@ jobs:
     # inside a live Cacti. What is enforceable is that a change covers the
     # lines it adds.
     - name: Enforce coverage of changed lines
-      if: github.event_name == 'pull_request'
+      # PHP 8.6 installs from the Ondřej PPA, which has no matching xdebug
+      # build yet, so there is no coverage driver on that experimental leg.
+      if: github.event_name == 'pull_request' && matrix.php != '8.6'
       env:
         BASE_REF: ${{ github.event.pull_request.base.sha }}
       run: |
