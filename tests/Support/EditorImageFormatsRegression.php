@@ -104,7 +104,7 @@ try {
 			image_format_assert(in_array(basename($config), wm_asset_image_users($name), true), 'reference protection applies to every format');
 		}
 	}
-	$uploadSource = $temporary . '/publication.png'; $bitmap = imagecreatetruecolor(12, 8); imagepng($bitmap, $uploadSource); imagedestroy($bitmap);
+	$uploadSource = $temporary . '/publication.png'; $bitmap = imagecreatetruecolor(12, 8); imagepng($bitmap, $uploadSource);
 	$storeSource = file_get_contents($root . '/lib/editor.assets.php'); $start = strpos($storeSource, 'function wm_asset_store_image(');
 	$instrumented = substr($storeSource, $start);
 	$instrumented = str_replace(['function wm_asset_store_image(', "'imagepng'"], ['function publication_store_image(', "'publication_encode'"], $instrumented);

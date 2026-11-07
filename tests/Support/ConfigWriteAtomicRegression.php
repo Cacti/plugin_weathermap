@@ -157,7 +157,7 @@ function wm_fixture_revision($file, $callback) {
 	$dir = realpath(sys_get_temp_dir()) . '/wm-atomic-' . bin2hex(random_bytes(5));
 	mkdir($dir);
 	$file = $dir . '/map.conf';
-	$bitmap = imagecreatetruecolor(2, 2); ob_start(); imagepng($bitmap); $validAsset = ob_get_clean(); imagedestroy($bitmap);
+	$bitmap = imagecreatetruecolor(2, 2); ob_start(); imagepng($bitmap); $validAsset = ob_get_clean();
 	$original = "WIDTH 600\nHEIGHT 300\nNODE note1\n LABEL Original\n POSITION 50 50\n SET editor_note 1\n";
 	file_put_contents($file, $original);
 	try {

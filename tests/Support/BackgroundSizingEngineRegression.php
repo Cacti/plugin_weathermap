@@ -80,7 +80,6 @@ try {
 		wm_engine_assert([imagesx($image), imagesy($image)] === $size,$mode . ' canvas');
 		$pixel = imagecolorsforindex($image,imagecolorat($image,60,1));
 		wm_engine_assert(($pixel['red'] === 255 && $pixel['green'] === 0) === ($mode !== 'fit'),$mode . ' fit proportions');
-		imagedestroy($image);
 	}
 
 	foreach (['fit' => [120, 120], 'stretch' => [120, 120], 'image' => [200, 100], 'invalid' => [200, 100]] as $mode => $size) {
@@ -102,7 +101,6 @@ try {
 		wm_engine_assert([imagesx($image), imagesy($image)] === $size, $mode . ' post-processor canvas');
 		$pixel = imagecolorsforindex($image, imagecolorat($image, 60, 1));
 		wm_engine_assert(($pixel['red'] === 255 && $pixel['green'] === 0) === ($mode !== 'fit'), $mode . ' post-processor proportions');
-		imagedestroy($image);
 	}
 
 	print "PASS\n";

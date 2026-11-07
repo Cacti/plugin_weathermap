@@ -4318,7 +4318,6 @@ class WeatherMap extends WeatherMapBase {
 				$image = wm_note_display_image($this, $sharpNotes, $noteImages[0]);
 				if ($noteForeground !== null) {
 					imagecopyresampled($image, $noteForeground, 0, 0, 0, 0, imagesx($image), imagesy($image), $this->width, $this->height);
-					imagedestroy($noteForeground);
 				}
 				$this->image = $image;
 			}

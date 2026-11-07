@@ -261,7 +261,7 @@ function wm_asset_store_image($kind, $source, $original_name) {
 	$path = wm_asset_image_path($kind, $name);
 	$temporary = @tempnam($dir, '.wm-upload-');
 	$handle = $temporary !== false ? @fopen($temporary, 'wb') : false;
-	if (!$handle) { if ($temporary !== false) unlink($temporary); imagedestroy($image); throw new RuntimeException(__('Could not reserve an image filename.', 'weathermap')); }
+	if (!$handle) { if ($temporary !== false) unlink($temporary); throw new RuntimeException(__('Could not reserve an image filename.', 'weathermap')); }
 	try {
 		// Keep encoded bytes outside the library until flush, close and permissions succeed.
 		$encoded = $size[2] === IMAGETYPE_JPEG ? $encode($image, $handle, 90) : $encode($image, $handle);
@@ -271,7 +271,6 @@ function wm_asset_store_image($kind, $source, $original_name) {
 		if (!$written || !$closed || !chmod($temporary, 0644) || !@link($temporary, $path)) throw new RuntimeException(__('Could not save the image.', 'weathermap'));
 	} finally {
 		if (is_resource($handle)) fclose($handle);
-		imagedestroy($image);
 		unlink($temporary);
 	}
 	return $name;

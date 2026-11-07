@@ -58,7 +58,6 @@ final class BackgroundSizingEngineTest extends TestCase {
 				$image = imagecreatefrompng($thumbnail);
 				self::assertSame([$expected_width, $expected_height], [imagesx($image), imagesy($image)]);
 				self::assertSame([$expected_width, $expected_height], [$map->thumb_width, $map->thumb_height]);
-				imagedestroy($image);
 			}
 		} finally {
 			ob_end_clean();

@@ -55,7 +55,6 @@ final class BundledFontWorkingDirectoryTest extends TestCase {
 			$colour = imagecolorallocate($image, 255, 255, 255);
 			$map->myimagestring($image, 100, 5, 25, 'Font from CLI', $colour);
 			self::assertGreaterThan(0, array_sum(array_map(fn ($x) => imagecolorat($image, $x, 20), range(5, 140))));
-			imagedestroy($image);
 			$map->WriteConfig($file);
 			self::assertStringContainsString('FONTDEFINE 100 docs/example/Vera.ttf 9', file_get_contents($file));
 			chdir($plugin);

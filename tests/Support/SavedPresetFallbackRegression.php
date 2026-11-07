@@ -59,7 +59,6 @@ try {
 	if (imagesx($image) !== 200 || imagesy($image) !== 100) {
 		throw new RuntimeException('Fallback map did not render');
 	}
-	imagedestroy($image);
 	if ($coverageFile !== null && function_exists('xdebug_get_code_coverage')) {
 		file_put_contents($coverageFile, json_encode(xdebug_get_code_coverage(), JSON_THROW_ON_ERROR));
 		xdebug_stop_code_coverage();

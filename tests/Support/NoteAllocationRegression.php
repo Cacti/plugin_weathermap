@@ -61,7 +61,6 @@ namespace {
 				for ($y = 90 * $scale; $y < 110 * $scale; $y++) if ((imagecolorat($image, $x, $y) & 0xffffff) === 0) $ink++;
 			}
 			if (!$ink) throw new \RuntimeException('fallback must retain readable note glyphs');
-			imagedestroy($image);
 		}
 		require_once 'lib/editor.inc.php'; require_once 'lib/editor.notes.php';
 		foreach (['missing', 'invalid', 'unreadable', 'truncated'] as $fontCase) {
@@ -76,7 +75,7 @@ namespace {
 			if ($map->nodes['label']->labelfont !== 3 || getimagesize($output)[0] !== 400) throw new \RuntimeException('loaded invalid font must fall back before drawing');
 			$image = imagecreatefrompng($output); $ink = 0;
 			for ($x = 95; $x < 205; $x++) for ($y = 85; $y < 115; $y++) if ((imagecolorat($image, $x, $y) & 0xffffff) === 0) $ink++;
-			if (!$ink) throw new \RuntimeException('invalid loaded font must retain readable glyphs'); imagedestroy($image);
+			if (!$ink) throw new \RuntimeException('invalid loaded font must retain readable glyphs');
 			$values = ['name'=>'label','text'=>'Saved fallback','font'=>'100','colour'=>'#000000','x'=>150,'y'=>100,'align'=>'left'];
 			if (!wm_editor_save_note($map,$values,0) || $map->nodes['label']->labelfont !== 3) throw new \RuntimeException('submitted invalid registered font must fall back');
 			if ($fontCase === 'unreadable') chmod($fontPath,0600);
