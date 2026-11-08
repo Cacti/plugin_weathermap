@@ -51,7 +51,7 @@ try {
 	$map->WriteConfig($file);
 	$map->ReadConfig($file);
 
-	$background = $directory . '/large-background.png'; $bitmap = imagecreatetruecolor(200, 100); imagepng($bitmap, $background); imagedestroy($bitmap);
+	$background = $directory . '/large-background.png'; $bitmap = imagecreatetruecolor(200, 100); imagepng($bitmap, $background);
 	$sized = new WeatherMap; $sized->width = 120; $sized->height = 120; $sized->background = $background; $sized->add_hint('background_sizing', 'image');
 	note_assert(wm_note_effective_dimensions($sized) === [200, 100] && $sized->width === 120 && $sized->height === 120, 'background dimensions are effective while configured dimensions remain unchanged');
 	$backgroundValues = ['name' => '', 'text' => 'Inside background', 'font' => '3', 'colour' => '#000000', 'x' => 150, 'y' => 80];
@@ -171,14 +171,13 @@ try {
 		foreach ([0,8,16] as $shift) $maxDifference = max($maxDifference, abs((($left >> $shift) & 255) - (($right >> $shift) & 255)));
 	}
 	note_assert($maxDifference <= 2, 'furniture antialiasing is not composited twice');
-	imagedestroy($reference); imagedestroy($expected); imagedestroy($actual);
 	$foreground = clone $node; $foreground->name = 'foreground'; $foreground->label = 'Foreground';
 	$foreground->x = 500; $foreground->y = 225; $foreground->zorder = 1001; $foreground->add_hint('editor_note', '0');
 	$foreground->labelfont = 5; $foreground->labelfontcolour = [255,0,0]; $foreground->labelbgcolour = [255,0,0]; $foreground->labeloutlinecolour = [255,0,0];
 	$saved->nodes['foreground'] = $foreground; $saved->seen_zlayers[1001][] = $foreground;
 	$saved->DrawMap($directory . '/foreground.png'); $actual = imagecreatefrompng($directory . '/foreground.png');
 	for ($x = 990; $x <= 1010; $x++) for ($y = 442; $y <= 450; $y++) note_assert((imagecolorat($actual, $x, $y) & 0xffffff) === 0xff0000, 'higher node stays above title furniture');
-	imagedestroy($actual); unset($saved->nodes['foreground'], $saved->seen_zlayers[1001]); $saved->title = $previousTitle;
+	unset($saved->nodes['foreground'], $saved->seen_zlayers[1001]); $saved->title = $previousTitle;
 	wm_comment_resolve_font($saved, 'bundled:Vera.ttf:9');
 	$fontOptions = wm_style_font_options($saved, 3);
 	note_assert(preg_match('/<option value="[0-9]+" data-wm-note-default="1"/', $fontOptions) === 1, 'registered Vera 9 exposes a stable default marker');

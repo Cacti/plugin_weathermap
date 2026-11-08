@@ -122,7 +122,6 @@ function wm_note_prepare_images($map) {
 	if ($display === false) return false;
 	$foreground = \WeathermapNotes\allocate($map->width, $map->height);
 	if ($foreground === false) {
-		imagedestroy($display);
 		return false;
 	}
 	return [$display, $foreground];

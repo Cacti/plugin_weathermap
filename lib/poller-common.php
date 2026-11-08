@@ -125,7 +125,6 @@ function weathermap_read_raster($path) {
 	set_error_handler(function () { return true; }, E_WARNING);
 	try { $image = imagecreatefromstring($contents); } finally { restore_error_handler(); }
 	if ($image === false) return false;
-	imagedestroy($image);
 	return $contents;
 }
 
