@@ -325,7 +325,7 @@ jobs:
     - name: Run Cacti Poller
       run: |
         cd ${{ github.workspace }}/cacti
-        sudo -u www-data php poller.php --poller=1 --force --debug
+        sudo runuser -u www-data -g runner -- php poller.php --poller=1 --force --debug
         if ! grep -q "SYSTEM STATS" log/cacti.log; then
           echo "Cacti poller did not finish successfully"
           cat log/cacti.log
