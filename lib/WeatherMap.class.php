@@ -942,7 +942,7 @@ class WeatherMap extends WeatherMapBase {
 				}
 			}
 
-			$input .= '&random=' . rand(0, 65535);
+			$input .= '&random=' . random_int(0, 65535);
 		}
 
 		$context_description = strtolower($context->my_type());
@@ -1061,8 +1061,10 @@ class WeatherMap extends WeatherMapBase {
 	 */
 	function RandomData() {
 		foreach ($this->links as $link) {
-			$this->links[$link->name]->bandwidth_in  = rand(0, $link->max_bandwidth_in);
-			$this->links[$link->name]->bandwidth_out = rand(0, $link->max_bandwidth_out);
+			$max_in  = (int) $link->max_bandwidth_in;
+			$max_out = (int) $link->max_bandwidth_out;
+			$this->links[$link->name]->bandwidth_in  = random_int(0, $max_in);
+			$this->links[$link->name]->bandwidth_out = random_int(0, $max_out);
 		}
 	}
 

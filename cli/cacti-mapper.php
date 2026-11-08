@@ -286,8 +286,8 @@ if (cacti_sizeof($interfaces)) {
 		if (cacti_sizeof($members) > 2) {
 			print "Create LAN NODE called $network and add LINKs from these NODEs to it:" . PHP_EOL;
 
-			$x = rand(0, $width);
-			$y = rand(0, $height);
+			$x = random_int(0, $width);
+			$y = random_int(0, $height);
 
 			$lan_key = preg_replace('/[.\/]/', '_', $network);
 
@@ -325,8 +325,8 @@ print "Trimmed $count networks with only one member interface" . PHP_EOL;
 
 if (cacti_sizeof($nodes_seen)) {
 	foreach ($nodes_seen as $h => $c) {
-		$x = rand(0, $width);
-		$y = rand(0, $height);
+		$x = random_int(0, $width);
+		$y = random_int(0, $height);
 
 		$node_config .= "NODE node_$h" . PHP_EOL;
 		$node_config .= "\tSET cacti_id $h" . PHP_EOL;

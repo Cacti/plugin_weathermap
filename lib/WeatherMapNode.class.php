@@ -827,7 +827,7 @@ class WeatherMapNode extends WeatherMapItem {
 	 * @return void
 	 */
 	function update_cache($cachedir,$mapname) {
-		$cachename = $cachedir . '/node_' . md5($mapname . '/' . $this->name) . '.png';
+		$cachename = $cachedir . '/node_' . hash('sha256', $mapname . '/' . $this->name) . '.png';
 
 		// save this image to a cache, for the editor
 		imagepng($this->image,$cachename);

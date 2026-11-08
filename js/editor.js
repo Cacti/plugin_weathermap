@@ -483,7 +483,8 @@ function initJS() {
  *  without any wrapping. */
 $.fn.textBoxWidth = function() {
 	var org = $(this);
-	var html = $('<span style="display:none;white-space:nowrap;position:absolute;width:auto;left:-9999px">' + (org.val() || org.text()) + '</span>');
+	var html = $('<span style="display:none;white-space:nowrap;position:absolute;width:auto;left:-9999px">');
+	html.text(org.val() || org.text());
 	html.css('font-family', org.css('font-family'));
 	html.css('font-weight', org.css('font-weight'));
 	html.css('font-size',   org.css('font-size'));
@@ -1315,6 +1316,22 @@ function show_node(name) {
 	}
 }
 
+function wmEditorImageSrc(value) {
+	if (typeof value !== 'string') return '';
+	var match = /^images\/(objects|backgrounds)\/([^/?#\\]+)$/.exec(value);
+	if (!match) return '';
+	var filename;
+	try { filename = decodeURIComponent(match[2]); } catch (error) { return ''; }
+	if (!filename || filename === '.' || filename === '..' || /[\/\\]/.test(filename) || !/\.(png|gif|jpe?g)$/i.test(filename)) return '';
+	try {
+		var image = new URL(value, document.baseURI);
+		var directory = new URL('images/' + match[1] + '/', document.baseURI);
+		return image.origin === directory.origin && image.pathname.indexOf(directory.pathname) === 0 ? image.href : '';
+	} catch (error) {
+		return '';
+	}
+}
+
 function wmNodeIconPicker() {
 	var select = $('#node_iconfilename');
 	if (select.hasClass('dd-container')) {
@@ -1333,8 +1350,13 @@ function wmNodeIconPicker() {
 		return option.text.replace(/\.(png|gif|jpe?g)$/i, '').replace(/[-_]+/g, ' ');
 	}
 	function content(target, option) {
-		var src = $(option).attr('data-imagesrc');
-		if (src) $('<img alt="">').attr('src', src).appendTo(target);
+		var src = wmEditorImageSrc($(option).attr('data-imagesrc'));
+		if (src) {
+			var image = document.createElement('img');
+			image.alt = '';
+			image.src = src;
+			target.append(image);
+		}
 		$('<span>').text(title(option)).appendTo(target);
 	}
 	function updateSelection() {
@@ -2337,7 +2359,14 @@ function wmAssetImages(images) {
 	$('#wm-images-objects, #wm-images-backgrounds').empty();
 	images.forEach(function(item) {
 		var card = $('<div class="wm-image-card">').appendTo('#wm-images-' + item.kind);
-		$('<img>').attr({src: item.url, alt: item.name, loading: 'lazy'}).appendTo(card);
+		var src = wmEditorImageSrc(item.url);
+		if (src) {
+			var image = document.createElement('img');
+			image.src = src;
+			image.alt = item.name;
+			image.loading = 'lazy';
+			card.append(image);
+		}
 		$('<span>').text(item.name).appendTo(card);
 		if (item.width && item.height) $('<span>').text(item.width + ' × ' + item.height + ' px').appendTo(card);
 		$('<span>').text(item.users && item.users.length ? wmEditorText.imageUsed.replace('%s', item.users.join(', ')) : wmEditorText.imageUnused).appendTo(card);
