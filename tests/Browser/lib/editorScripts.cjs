@@ -1,5 +1,7 @@
 // Evaluate whole editor scripts in a jsdom window, in the order the editor page
 // includes them, so tests do not depend on where a function sits inside a file.
+// The loader returns the real initJS() and suppresses its DOM-ready run, so a
+// check can stub dependencies first and then invoke page setup explicitly.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
