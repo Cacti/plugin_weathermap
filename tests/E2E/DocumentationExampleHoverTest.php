@@ -146,21 +146,8 @@ final class DocumentationExampleHoverTest extends TestCase {
 		$map->rrdtool = PHP_BINARY;
 		chdir($plugin . '/docs/example');
 
-		// Newer libpng warns about the sRGB profile embedded in the example's
-		// icon. That is a property of the shipped image, not of the engine, so
-		// only that message is ignored; any other warning still fails the test.
-		set_error_handler(static function ($errno, $message) {
-			return strpos($message, 'libpng warning: iCCP:') !== false;
-		}, E_WARNING);
-
-		try {
-			if (!$map->ReadConfig('example.conf')) {
-				throw new RuntimeException('Cannot parse docs/example/example.conf');
-			}
-		} catch (Throwable $e) {
-			restore_error_handler();
-
-			throw $e;
+		if (!$map->ReadConfig('example.conf')) {
+			throw new RuntimeException('Cannot parse docs/example/example.conf');
 		}
 
 		// DrawMap picks the image writer from the extension, so the temporary file needs .png.
@@ -171,8 +158,6 @@ final class DocumentationExampleHoverTest extends TestCase {
 		try {
 			$map->DrawMap($output);
 		} finally {
-			restore_error_handler();
-
 			if (is_file($output)) {
 				unlink($output);
 			}
