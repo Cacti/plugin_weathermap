@@ -23,7 +23,6 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#335: Retire the bundled overLIB library from the documentation example and the CLI HTML wrapper
 * issue#334: Render the editor's dynamic option lists through an always-escaping attribute helper
 * issue#332: Run the jsdom browser tests in CI with locked dependencies, and keep image-map hotspots focusable under current jsdom
-* feature#338: Version the editor node cache file names and remove files left by other versions
 * bug: Render editor text and image paths as data, escape backslashes and line breaks in the legacy example helper, and use a CSPRNG for random values
 * bug: Select the narrowest matching scale range, preserve collinear route reversals, and keep link position calculations within path endpoints
 * dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification
