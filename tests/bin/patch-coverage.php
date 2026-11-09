@@ -189,6 +189,10 @@ $unmeasured_allowlist = [
 	// collides with the datasource test harness's WeatherMapDataSource stub. The
 	// editor save/delete workflow is covered by the Browser/E2E suites instead.
 	'lib/editor.actions.php',
+	// CLI mapper: top-level Cacti bootstrap and network discovery that cannot
+	// load in the isolated unit process. The random_int() substitutions are
+	// the same pattern covered on WeatherMap::RandomData() and ProcessString().
+	'cli/cacti-mapper.php',
 ];
 $unmeasured            = array_values(array_diff(array_keys($changed), array_keys($measured)));
 $unexpected_unmeasured = array_values(array_diff($unmeasured, $unmeasured_allowlist));

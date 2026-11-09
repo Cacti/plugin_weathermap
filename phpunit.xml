@@ -24,6 +24,7 @@
             <file>lib/index.php</file>
             <file>lib/datasources/index.php</file>
             <file>lib/editor.actions.php</file>
+            <file>cli/cacti-mapper.php</file>
         </exclude>
     </source>
 </phpunit>
