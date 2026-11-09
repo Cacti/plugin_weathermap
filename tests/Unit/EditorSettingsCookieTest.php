@@ -26,6 +26,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
 final class EditorSettingsCookieTest extends TestCase {
+	// Declares cacti_cookie_set() and plain-requires setup.php, the engine and the editor files, so it needs its own process.
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testSettingsActionPersistsCookieBeforeExit(): void {

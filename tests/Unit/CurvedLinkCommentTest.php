@@ -36,6 +36,7 @@ final class CurvedLinkCommentTest extends TestCase {
 		return $points;
 	}
 
+	// Declares plugin_weathermap_numeric_version() before the engine loads; setup.php declares it too, so this cannot share a process.
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testCurvedRenderingAndConfigRoundTrip(): void {

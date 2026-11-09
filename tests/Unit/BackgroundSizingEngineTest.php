@@ -27,6 +27,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
 final class BackgroundSizingEngineTest extends TestCase {
+	// The Support script declares top-level functions and plain-requires setup.php and the engine, so it can run once per process.
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testPersistsAndRendersBackgroundSizing(): void {
