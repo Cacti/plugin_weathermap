@@ -10,7 +10,7 @@ const $ = jquery(w);
 w.$ = w.jQuery = $;
 w.eval(fs.readFileSync(path.join(process.env.CACTI_JS_DIR, 'jquery-ui.js'),'utf8'));
 $('head').append($('<style>').text(fs.readFileSync(path.join(__dirname,'../../css/editor.css'),'utf8')));
-require('./editorScripts.cjs').loadEditorScripts(w);
+require('./lib/editorScripts.cjs').loadEditorScripts(w);
 const realFormSubmit=w.form_submit;
 Object.assign(w,{Links:{uplink:{a:'dc',b:'office'}},delNodePrompt:'Delete %s from this map?',delNodeConnected:'Connected links to remove: %s.',delNodeKeepDevice:'The Cacti device and its graphs will remain.',delNodeTitle:'Delete Node Confirmation',txtCancel:'Cancel',txtDelNode:'Delete Node',delLinkTitle:'Delete Link Confirmation',txtDelLink:'Delete Link',wmEditorText:{deleteLinkPrompt:'Remove %1$s to %2$s?',keepLinkNodes:'Nodes remain.'},wmNodeDisplayName:n=>n==='dc'?'Datacentre':n});
 $('#action').val('move_node');w.mapmode('xy');

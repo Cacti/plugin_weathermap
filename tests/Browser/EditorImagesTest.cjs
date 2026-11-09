@@ -9,7 +9,7 @@ const w=dom.window,$=jquery(w);w.$=w.jQuery=$;w.editor_url='/editor';w.csrfMagic
 const inc=fs.readFileSync(path.join(__dirname,'../../lib/editor.inc.php'),'utf8');w.wmEditorText={};
 for(const m of inc.matchAll(/'(imageText[0-9]+|imageUsed|imageUnused)' => __\('((?:\\.|[^'])+)'/g))w.wmEditorText[m[1]]=m[2].replace(/\\'/g,"'");
 w.wmEditorText.imageUnused='Non utilisée';
-require('./editorScripts.cjs').loadEditorScripts(w,['editor.picker.js','editor.assets.js']);
+require('./lib/editorScripts.cjs').loadEditorScripts(w,['editor.picker.js','editor.assets.js']);
 const images=[{kind:'objects',name:'hospital.png',url:'images/objects/hospital.png',width:96,height:96,users:['map.conf'],deletable:false},{kind:'backgrounds',name:'background.jpg',url:'images/backgrounds/background.jpg',width:800,height:600,users:[],deletable:true}];
 $('#node_iconfilename').append('<option value="images/icons/external.png">External icon</option>').val('images/icons/external.png');
 w.wmAssetImages(images);

@@ -1,7 +1,7 @@
 // The editor pages include every split script once, in the loader's order, and
 // the scripts work together when evaluated in that order.
 const {JSDOM} = require('jsdom'), jquery = require('jquery'), fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
-const {EDITOR_SCRIPTS, declaredFunctions, loadEditorScripts} = require('./editorScripts.cjs');
+const {EDITOR_SCRIPTS, declaredFunctions, loadEditorScripts} = require('./lib/editorScripts.cjs');
 const root = path.join(__dirname, '../..');
 
 const onDisk = fs.readdirSync(path.join(root, 'js')).filter(name => /^editor(\.[a-z]+)?\.js$/.test(name) && !name.startsWith('editor.history'));

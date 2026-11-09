@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict'), {JSDOM} = require('jsdom'), jquery = require('jquery');
 const w = new JSDOM('', {runScripts: 'outside-only'}).window;
 w.$ = w.jQuery = jquery(w);
-require('./editorScripts.cjs').loadEditorScripts(w, ['editor.js']);
+require('./lib/editorScripts.cjs').loadEditorScripts(w, ['editor.js']);
 const resolve = w.wmEditorReturnUrl, viewer = 'weathermap-cacti-plugin.php', manage = 'weathermap-cacti-plugin-mgmt.php';
 assert.equal(resolve(manage), manage);
 for (const hash of ['a'.repeat(20), 'A'.repeat(32), 'b'.repeat(64)]) {

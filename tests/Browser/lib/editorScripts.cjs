@@ -13,7 +13,7 @@ const EDITOR_SCRIPTS = ['editor.js', 'editor.dialogs.js', 'editor.picker.js', 'e
  * @returns {string} Script source.
  */
 function editorSource(name) {
-	return fs.readFileSync(path.join(__dirname, '../../js', name), 'utf8');
+	return fs.readFileSync(path.join(__dirname, '../../../js', name), 'utf8');
 }
 
 /**
@@ -55,7 +55,7 @@ function declaredFunctions(name) {
 function checkEditorScriptApi(name, expected) {
 	const {JSDOM} = require('jsdom');
 	const jquery = require('jquery');
-	const exported = require(path.join(__dirname, '../../js', name));
+	const exported = require(path.join(__dirname, '../../../js', name));
 	const declared = declaredFunctions(name);
 	assert.deepEqual(Object.keys(exported).sort(), [...expected].sort(), name + ' exports its public API');
 	assert.deepEqual([...declared].sort(), [...expected].sort(), name + ' declares no unexported top-level function');

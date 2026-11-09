@@ -7,7 +7,7 @@ w.$ = $;
 let pickerOptions;
 $.fn.textBoxWidth = () => 200;
 $.fn.autocomplete = function(options) { if (typeof options === 'object') pickerOptions = options; return this; };
-require('./editorScripts.cjs').loadEditorScripts(w);
+require('./lib/editorScripts.cjs').loadEditorScripts(w);
 w.hide_all_dialogs = () => {};
 w.initJS = () => {};
 w.graphPicker();

@@ -10,7 +10,7 @@ const $ = jquery(w);
 w.$ = w.jQuery = $;
 const cactiJs = process.env.CACTI_JS_DIR || path.join(__dirname, '../../../../include/js');
 w.eval(fs.readFileSync(path.join(cactiJs, 'jquery-ui.js'), 'utf8'));
-require('./editorScripts.cjs').loadEditorScripts(w, ['editor.js', 'editor.dialogs.js']);
+require('./lib/editorScripts.cjs').loadEditorScripts(w, ['editor.js', 'editor.dialogs.js']);
 $('#picker').autocomplete({source: ['Interface A'], appendTo: w.document.body});
 const menu = $('#picker').autocomplete('widget');
 assert.equal(menu.parent()[0], w.document.body);

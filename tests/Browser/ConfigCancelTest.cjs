@@ -2,7 +2,7 @@ const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),
 const dom=new JSDOM('<input id="action"><input id="mapname" value="test.conf"><div id="dlgLinkProperties"><input id="unsaved" value="draft"><a id="link_edit">Edit</a></div><div id="dlgNodeProperties"><a id="node_edit">Edit</a></div><div id="dlgTextEdit"><textarea id="item_configtext"></textarea><button id="tb_textedit_cancel">Cancel</button></div>',{runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,$=jquery(w);w.$=w.jQuery=$;
 w.eval(fs.readFileSync(path.join(process.env.CACTI_JS_DIR,'jquery-ui.js'),'utf8'));
-const {loadEditorScripts}=require('./editorScripts.cjs');
+const {loadEditorScripts}=require('./lib/editorScripts.cjs');
 loadEditorScripts(w,['editor.js','editor.dialogs.js']);
 w.mapmode=()=>{};w.wmResetActionHelp=()=>{};w.editor_url='/editor';$.ajax=()=>{};
 $('#tb_textedit_cancel').on('click',w.cancel_op);

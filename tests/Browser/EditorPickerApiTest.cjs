@@ -1,5 +1,5 @@
 // editor.picker.js loads on its own and exposes its API both as browser globals and CommonJS exports.
-const {checkEditorScriptApi} = require('./editorScripts.cjs');
+const {checkEditorScriptApi} = require('./lib/editorScripts.cjs');
 checkEditorScriptApi('editor.picker.js', [
 	'graphPicker',
 	'wmEditorImageSrc',

@@ -7,7 +7,7 @@ const assert=require('node:assert/strict');
 const fields=['action','param','node_name','note_name','note_text','note_x','note_y','note_colour','x','y','mapname'];
 const dom=new JSDOM('<body>'+fields.map(id=>id==='note_text'?`<textarea id="${id}" name="${id}"></textarea>`:`<input id="${id}" name="${id}">`).join('')+'<select id="note_font"><option value="bundled:Vera.ttf:9">Vera Sans — 9 pt</option></select><select id="note_align"><option>left</option><option>centre</option><option>right</option></select><div id="tb_help"></div><div id="note_advanced"></div><div id="wm-note-error"></div>'+['tb_addnote','note_clone','note_move','note_delete','note_advanced_toggle'].map(id=>`<button id="${id}"></button>`).join('')+'<button class="wm-note-colour" data-colour="#000000"></button></body>',{runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,$=jquery(w);w.$=w.jQuery=$;
-require('./editorScripts.cjs').loadEditorScripts(w,['editor.js']);
+require('./lib/editorScripts.cjs').loadEditorScripts(w,['editor.js']);
 const realDeleteNode=w.delete_node;
 let mode,shown,moved,deleted,request;
 Object.assign(w,{Nodes:{note1:{label:'Core\\nMaintenance',x:50,y:60}},WMNotes:{note1:{align:'centre',font:'bundled:Vera.ttf:9',colour:'#cc0000'}},wmEditorText:{advanced:'Advanced',hideAdvanced:'Hide',addNoteHelp:'Place a note',noteError:'Save failed'},editor_url:'/editor',hide_all_dialogs:()=>$('#action').val(''),mapmode:m=>mode=m,show_dialog:id=>shown=id,hide_dialog:()=>{},move_node:()=>moved=$('#node_name').val(),delete_node:()=>deleted=$('#node_name').val()});

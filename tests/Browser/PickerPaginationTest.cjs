@@ -24,7 +24,7 @@ const assert = require('node:assert/strict');
   const result = {done: fn => { fn(response); return result; }, fail: fn => { failure = fn; return result; }};
   return result;
  };
- require('./editorScripts.cjs').loadEditorScripts(w);
+ require('./lib/editorScripts.cjs').loadEditorScripts(w);
  w.initJS = () => {};
  w.graphPicker();
  assert.equal($('#link_picker_add').text(), 'Add hover graph');

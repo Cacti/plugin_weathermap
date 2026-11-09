@@ -32,7 +32,7 @@ $.getJSON = () => {
 	requests++;
 	return request.promise();
 };
-const {loadEditorScripts} = require('./editorScripts.cjs');
+const {loadEditorScripts} = require('./lib/editorScripts.cjs');
 const originalSource = (request, response) => response(items.filter(item => item.label.toLowerCase().includes(request.term.toLowerCase())));
 $('#link_target_picker_input').data('options', {source: originalSource, select: (event, ui) => ui.item.wmOffset !== undefined ? false : undefined});
 loadEditorScripts(w, ['editor.compact.js']);
