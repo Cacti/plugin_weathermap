@@ -49,11 +49,26 @@
  * The OUTPUTFILE / HTMLOUTPUTFILE / IMAGEOUTPUTFILE / DATAOUTPUTFILE map
  * directives name a file the poller then writes.  A map config can be authored
  * by anyone holding the "Manage Weathermap" or "Edit Weathermaps" permission,
- * so those values are not trusted: without this check a directive such as an
- * absolute path or one containing "../" lets the poller (or the "rebuild now"
- * web request) write or overwrite an arbitrary file as its own user.  The
- * target is resolved and accepted only when its parent directory is $outdir
- * itself; anything resolving outside is rejected.
+ * so those values are not trusted: without this check an absolute path or one
+ * containing "../" lets the poller (or the "rebuild now" web request) write or
+ * overwrite an arbitrary file as its own user.
+ *
+ * Accepted values:
+ *   - a file name, such as "network.prod.png" or "Core Links.HTML", written
+ *     into $outdir;
+ *   - a path whose directory resolves to $outdir itself, such as
+ *     "output/map.png" (relative to the plugin directory, which is where the
+ *     poller runs) or an absolute path into the output directory, so existing
+ *     configs that already pointed there keep working.
+ *
+ * The file name must start with a letter or digit, may contain letters,
+ * digits, spaces, dots, underscores and hyphens, and must end in one of the
+ * output extensions these directives produce (any case).  A name with a
+ * script-handler segment such as "map.php.png" is refused, because some web
+ * server configurations run a file by any of its extensions.
+ *
+ * An existing destination is refused when it is a symbolic link or has more
+ * than one hard link, since writing it would change a file outside $outdir.
  *
  * @param string $path   The raw path from the map directive.
  * @param string $outdir The plugin's output directory (absolute).
@@ -61,7 +76,7 @@
  *                       or the output directory cannot be resolved.
  */
 function weathermap_confine_output_path($path, $outdir) {
-	if (!is_string($path) || $path === '') {
+	if (!is_string($path) || $path === '' || strpos($path, "\0") !== false) {
 		return false;
 	}
 
@@ -71,27 +86,51 @@ function weathermap_confine_output_path($path, $outdir) {
 		return false;
 	}
 
-	// Accept only a bare filename of ordinary characters with a known, inert
-	// extension.  This keeps the write inside the output directory (no slash,
-	// backslash, NUL or parent reference) and also refuses:
-	//   - an executable or configuration name such as x.php or .htaccess, which
-	//     could run or disable protection if the output directory is served;
-	//   - a leading dot, so dotfiles like .htaccess cannot be written;
-	//   - a name without one of the output formats these directives produce.
-	// The regex requires an alphanumeric first character, so '.', '..' and any
-	// dotfile are rejected without a separate check.
-	if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_-]*\.(html?|png|jpe?g|gif|txt|dat|tsv)$/', $path)) {
+	$separators = DIRECTORY_SEPARATOR === '\\' ? '/\\' : '/';
+	$cut        = max(strrpos($path, '/'), DIRECTORY_SEPARATOR === '\\' ? strrpos($path, '\\') : false);
+
+	if ($cut === false) {
+		$name = $path;
+	} else {
+		$name = substr($path, $cut + 1);
+		$dir  = substr($path, 0, $cut);
+
+		// a relative directory is taken from the plugin directory, the
+		// poller's working directory and the parent of $outdir
+		$absolute = $dir !== '' && (strpos($separators, $dir[0]) !== false || preg_match('/^[A-Za-z]:/', $dir) === 1);
+		$resolved = realpath($absolute ? $dir : ($dir === '' ? DIRECTORY_SEPARATOR : dirname(rtrim($outdir, $separators)) . DIRECTORY_SEPARATOR . $dir));
+
+		if ($resolved !== $base) {
+			return false;
+		}
+	}
+
+	// The first character must be a letter or digit, so '.', '..' and
+	// dotfiles such as .htaccess are rejected without a separate check.
+	if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9 ._-]*\.(html?|png|jpe?g|gif|txt|dat|tsv)$/i', $name)) {
 		return false;
 	}
 
-	$target = $base . DIRECTORY_SEPARATOR . $path;
+	foreach (array_slice(explode('.', $name), 1, -1) as $segment) {
+		if (preg_match('/^(php\d*|pht|phtml|phar|phps|cgi|pl|py|sh|shtml|asp|aspx|jsp)$/i', $segment)) {
+			return false;
+		}
+	}
 
-	// Resolving the parent guards against a symlinked output directory whose
-	// real location sits somewhere else.
-	$parent = realpath(dirname($target));
+	$target = $base . DIRECTORY_SEPARATOR . $name;
 
-	if ($parent === false || $parent !== $base) {
+	clearstatcache(true, $target);
+
+	if (is_link($target)) {
 		return false;
+	}
+
+	if (file_exists($target)) {
+		$stat = @stat($target);
+
+		if ($stat === false || !is_file($target) || $stat['nlink'] > 1) {
+			return false;
+		}
 	}
 
 	return $target;

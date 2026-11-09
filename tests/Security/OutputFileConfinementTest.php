@@ -77,6 +77,79 @@ describe('weathermap_confine_output_path', function (): void {
 		expect(weathermap_confine_output_path(null, $this->outdir))->toBeFalse();
 	});
 
+	it('accepts ordinary names with dots, spaces and an upper-case extension', function (): void {
+		foreach (['network.prod.png', 'Core Links.html', 'MAP.PNG', 'site_a-2.JPEG'] as $name) {
+			expect(weathermap_confine_output_path($name, $this->outdir))->toBe(realpath($this->outdir) . DIRECTORY_SEPARATOR . $name);
+		}
+	});
+
+	it('rejects a name with a script-handler segment before the extension', function (): void {
+		foreach (['map.php.png', 'map.PHTML.html', 'map.php7.gif', 'map.cgi.txt'] as $name) {
+			expect(weathermap_confine_output_path($name, $this->outdir))->toBeFalse();
+		}
+	});
+
+	it('accepts a path whose directory is the output directory, relative or absolute', function (): void {
+		$expected = realpath($this->outdir) . DIRECTORY_SEPARATOR . 'map.png';
+
+		expect(weathermap_confine_output_path(basename($this->outdir) . '/map.png', $this->outdir))->toBe($expected);
+		expect(weathermap_confine_output_path($this->outdir . '/map.png', $this->outdir))->toBe($expected);
+		expect(weathermap_confine_output_path($this->outdir . '/../' . basename($this->outdir) . '/map.png', $this->outdir))->toBe($expected);
+	});
+
+	it('rejects a path into a subdirectory of the output directory', function (): void {
+		mkdir($this->outdir . '/sub');
+
+		expect(weathermap_confine_output_path('sub/map.png', $this->outdir))->toBeFalse();
+		expect(weathermap_confine_output_path($this->outdir . '/sub/map.png', $this->outdir))->toBeFalse();
+
+		rmdir($this->outdir . '/sub');
+	});
+
+	it('rejects an existing destination that is a symbolic link', function (): void {
+		$outside = tempnam(sys_get_temp_dir(), 'wm-outside');
+		symlink($outside, $this->outdir . '/map.png');
+
+		expect(weathermap_confine_output_path('map.png', $this->outdir))->toBeFalse();
+
+		unlink($this->outdir . '/map.png');
+		unlink($outside);
+	});
+
+	it('rejects an existing destination that is a dangling symbolic link', function (): void {
+		symlink(sys_get_temp_dir() . '/wm-missing-' . bin2hex(random_bytes(6)), $this->outdir . '/map.png');
+
+		expect(weathermap_confine_output_path('map.png', $this->outdir))->toBeFalse();
+
+		unlink($this->outdir . '/map.png');
+	});
+
+	it('rejects an existing destination with a second hard link', function (): void {
+		$outside = tempnam(sys_get_temp_dir(), 'wm-outside');
+		link($outside, $this->outdir . '/map.png');
+
+		expect(weathermap_confine_output_path('map.png', $this->outdir))->toBeFalse();
+
+		unlink($this->outdir . '/map.png');
+		unlink($outside);
+	});
+
+	it('rejects an existing destination that is a directory', function (): void {
+		mkdir($this->outdir . '/map.png');
+
+		expect(weathermap_confine_output_path('map.png', $this->outdir))->toBeFalse();
+
+		rmdir($this->outdir . '/map.png');
+	});
+
+	it('accepts an existing ordinary file, which the poller overwrites', function (): void {
+		file_put_contents($this->outdir . '/map.png', 'old');
+
+		expect(weathermap_confine_output_path('map.png', $this->outdir))->toBe(realpath($this->outdir) . DIRECTORY_SEPARATOR . 'map.png');
+
+		unlink($this->outdir . '/map.png');
+	});
+
 	it('returns false when the output directory does not resolve', function (): void {
 		expect(weathermap_confine_output_path('map.html', $this->outdir . '/missing'))->toBeFalse();
 	});
