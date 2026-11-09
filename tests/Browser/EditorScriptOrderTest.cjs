@@ -2,10 +2,11 @@
 // the scripts work together when evaluated in that order.
 const {JSDOM} = require('jsdom'), jquery = require('jquery'), fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const {EDITOR_SCRIPTS, declaredFunctions, loadEditorScripts} = require('./lib/editorScripts.cjs');
+const byName = (a, b) => a.localeCompare(b);
 const root = path.join(__dirname, '../..');
 
 const onDisk = fs.readdirSync(path.join(root, 'js')).filter(name => /^editor(\.[a-z]+)?\.js$/.test(name) && !name.startsWith('editor.history'));
-assert.deepEqual(onDisk.sort(), [...EDITOR_SCRIPTS].sort(), 'every editor script is in the include order');
+assert.deepEqual(onDisk.sort(byName), [...EDITOR_SCRIPTS].sort(byName), 'every editor script is in the include order');
 for (const page of ['weathermap-cacti-plugin-editor.php', 'lib/editor.inc.php']) {
 	const included = Array.from(fs.readFileSync(path.join(root, page), 'utf8').matchAll(/get_md5_include_js\('plugins\/weathermap\/js\/([^']+)'\)/g), match => match[1])
 		.filter(name => EDITOR_SCRIPTS.includes(name));

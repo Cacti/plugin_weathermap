@@ -3,6 +3,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const byName = (a, b) => a.localeCompare(b);
 
 const EDITOR_SCRIPTS = ['editor.js', 'editor.dialogs.js', 'editor.picker.js', 'editor.compact.js', 'editor.assets.js'];
 
@@ -57,8 +58,8 @@ function checkEditorScriptApi(name, expected) {
 	const jquery = require('jquery');
 	const exported = require(path.join(__dirname, '../../../js', name));
 	const declared = declaredFunctions(name);
-	assert.deepEqual(Object.keys(exported).sort(), [...expected].sort(), name + ' exports its public API');
-	assert.deepEqual([...declared].sort(), [...expected].sort(), name + ' declares no unexported top-level function');
+	assert.deepEqual(Object.keys(exported).sort(byName), [...expected].sort(byName), name + ' exports its public API');
+	assert.deepEqual([...declared].sort(byName), [...expected].sort(byName), name + ' declares no unexported top-level function');
 	const w = new JSDOM('', {runScripts: 'outside-only'}).window;
 	w.$ = w.jQuery = jquery(w);
 	w.eval(editorSource(name));

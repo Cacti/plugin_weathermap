@@ -1,4 +1,5 @@
 // Graph and node icon pickers for the map editor; loaded after editor.js.
+/* global graphOpen, graphTimer, graphClickTimer -- shared editor state declared in editor.js */
 
 /**
  * Replace each `.selectmenu-ajax` input with a searchable, paged graph

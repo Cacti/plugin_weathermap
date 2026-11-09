@@ -1,4 +1,5 @@
 // Compact link and node property editors for the map editor; loaded after editor.js.
+/* global local_graph_id -- shared editor state declared in editor.js */
 
 // Compact link workflow; custom configuration fields remain submitted unchanged.
 /**
