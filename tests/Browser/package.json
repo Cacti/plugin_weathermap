@@ -5,7 +5,7 @@
   "description": "jsdom regression checks for the Weathermap viewer and editor JavaScript",
   "license": "MIT",
   "engines": {
-    "node": ">=24"
+    "node": "^24.15.0 || >=26.0.0"
   },
   "scripts": {
     "test": "node run-tests.cjs"

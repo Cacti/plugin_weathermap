@@ -1,9 +1,11 @@
 # Browser regression checks
 
 Each `*.cjs` file here is a standalone jsdom check of the viewer or editor
-JavaScript; none needs a Cacti server. They use Node.js 24 and the exact jsdom
-and jQuery versions locked in `package-lock.json`. Several load Cacti's real
-jQuery UI from `CACTI_JS_DIR`, a Cacti core checkout's `include/js` directory.
+JavaScript; none needs a Cacti server. They need Node.js 24.15 or later on the
+24 line, or 26 and later, because the locked jsdom supports no other releases,
+and use the exact jsdom and jQuery versions locked in `package-lock.json`.
+Several load Cacti's real jQuery UI from `CACTI_JS_DIR`, a Cacti core
+checkout's `include/js` directory.
 
 Run the whole suite from this directory:
 
