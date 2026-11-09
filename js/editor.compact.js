@@ -1,9 +1,23 @@
 // Compact link and node property editors for the map editor; loaded after editor.js.
 
 // Compact link workflow; custom configuration fields remain submitted unchanged.
+/**
+ * Split a whitespace-separated hover URL list.
+ *
+ * @param {*} value Hover field value.
+ * @returns {string[]} Non-empty entries.
+ */
 function wmLinkHoverEntries(value) {
 	return String(value || '').trim().split(/\s+/).filter(Boolean);
 }
+
+/**
+ * Add compact graph defaults (no legend, 300x100) to a local graph_image.php
+ * URL; other URLs are returned unchanged.
+ *
+ * @param {string} value Hover URL.
+ * @returns {string} Path, query and hash with defaults added, or value unchanged.
+ */
 function wmLinkCompactHoverUrl(value) {
 	if (!wmLocalGraphIds(value, ['graph_image.php']).length) return value;
 	var root = new URL('../../', window.location.href);
@@ -13,6 +27,13 @@ function wmLinkCompactHoverUrl(value) {
 	});
 	return url.pathname + url.search + url.hash;
 }
+
+/**
+ * Rebuild the submitted link hover field from the primary and additional
+ * hover fields.
+ *
+ * @returns {void}
+ */
 function wmSyncLinkHoverParts() {
 	if (!$('#wm-link-extra-hover').length) return;
 	var main = $('#wm-link-primary-hover').val();
@@ -20,6 +41,13 @@ function wmSyncLinkHoverParts() {
 	$('#link_hover').val(Array.from(new Set(entries)).join(' '));
 	wmRenderLinkExtraGraphs();
 }
+
+/**
+ * List the additional link hover graphs with remove buttons and enforce the
+ * one-graph limit.
+ *
+ * @returns {void}
+ */
 function wmRenderLinkExtraGraphs() {
  var list = $('#wm-link-extra-list');
  if (!list.length) return;
@@ -50,6 +78,12 @@ function wmRenderLinkExtraGraphs() {
    });
  });
 }
+
+/**
+ * Split the saved link hover field into the primary and additional hover fields.
+ *
+ * @returns {void}
+ */
 function wmInitLinkHoverParts() {
 	if (!$('#wm-link-extra-hover').length) return;
 	var entries = wmLinkHoverEntries($('#link_hover').val());
@@ -57,6 +91,13 @@ function wmInitLinkHoverParts() {
 	$('#wm-link-extra-hover').val(entries.join('\n')).off('.wmHovers').on('input.wmHovers change.wmHovers', wmSyncLinkHoverParts);
 	wmSyncLinkHoverParts();
 }
+
+/**
+ * Set the primary link hover URL, dropping additional entries for the same graph.
+ *
+ * @param {string} value Hover URL.
+ * @returns {void}
+ */
 function wmSetLinkPrimaryHover(value) {
 	if (!$('#wm-link-extra-hover').length) {
 		$('#link_hover').val(value);
@@ -70,6 +111,14 @@ function wmSetLinkPrimaryHover(value) {
 	$('#wm-link-extra-hover').val(extras.join('\n'));
 	wmSyncLinkHoverParts();
 }
+
+/**
+ * Make the additional hover graph for the link's traffic graph the primary
+ * one, demoting the current primary.
+ *
+ * @param {(number|string)} graphId Local graph id of the traffic graph.
+ * @returns {void}
+ */
 function wmPromoteLinkTrafficHover(graphId) {
 	if (!$('#wm-link-extra-hover').length || !/^[1-9][0-9]*$/.test(String(graphId))) return;
 	var main = $('#wm-link-primary-hover').val();
@@ -85,6 +134,15 @@ function wmPromoteLinkTrafficHover(graphId) {
 	wmSetLinkPrimaryHover(traffic);
 	wmRestoreLinkGraphChoice(true);
 }
+
+/**
+ * Add or replace the additional link hover URL, ignoring duplicates and the
+ * primary graph.
+ *
+ * @param {string} value Hover URL.
+ * @param {boolean} replace Discard existing additional entries first.
+ * @returns {void}
+ */
 function wmSetLinkExtraHover(value, replace) {
 	var field = $('#wm-link-extra-hover');
 	if (!field.length) field = $('#link_hover');
@@ -105,7 +163,13 @@ function wmSetLinkExtraHover(value, replace) {
 	wmSyncLinkHoverParts();
 }
 
-// Compare the effective RRD inputs without conflating custom data sources or scaling.
+/**
+ * Normalise a link TARGET entry to its effective RRD file, data sources and
+ * scale, so comparison does not conflate custom data sources or scaling.
+ *
+ * @param {string} source TARGET entry.
+ * @returns {?string} Comparison key, or null when the entry is not a recognised RRD source.
+ */
 function wmLinkTrafficIdentity(source) {
  var defaults = typeof wmRrdSourceDefaults === 'undefined' ? {} : wmRrdSourceDefaults;
  var file = String(source), input = defaults.input || 'traffic_in', output = defaults.output || 'traffic_out', scale = 8, multiplier = 1;
@@ -131,12 +195,26 @@ function wmLinkTrafficIdentity(source) {
  if (!Number.isFinite(scale)) return null;
  return JSON.stringify([file, input, output, scale]);
 }
+
+/**
+ * Report whether two TARGET entries read the same RRD inputs.
+ *
+ * @param {string} left TARGET entry.
+ * @param {string} right TARGET entry.
+ * @returns {boolean}
+ */
 function wmLinkSameTrafficSource(left, right) {
  if (left === right) return true;
  var key = wmLinkTrafficIdentity(left);
  return key !== null && key === wmLinkTrafficIdentity(right);
 }
 
+/**
+ * List the link's measured traffic sources, with remove buttons for every
+ * source after the primary.
+ *
+ * @returns {void}
+ */
 function wmRenderLinkTrafficSources() {
  var list = $('#wm-link-measured-sources');
  if (!list.length) return;
@@ -169,6 +247,12 @@ function wmRenderLinkTrafficSources() {
  });
 }
 
+/**
+ * Append the data source chosen in the source picker to the link target,
+ * unless it is already measured.
+ *
+ * @returns {void}
+ */
 function wmApplyLinkTrafficSource() {
  var entries = wmLinkHoverEntries($('#link_target').val());
  if (!entries.length) {
@@ -186,6 +270,13 @@ function wmApplyLinkTrafficSource() {
  wmRenderLinkTrafficSources();
  $('#wm-link-source-status').text(duplicate ? wmEditorText.sourceAlreadyAdded : wmEditorText.sourceAdded);
 }
+
+/**
+ * Create the paged data source autocomplete used to add link traffic sources.
+ *
+ * @param {jQuery} container Element the picker is prepended to.
+ * @returns {void}
+ */
 function wmInitLinkSourcePicker(container) {
  var picker = $('<input type="text" id="wm-link-source-picker" class="ui-state-default ui-corner-all">')
   .attr({'aria-label': wmEditorText.chooseSource, placeholder: wmEditorText.searchInterface}).prependTo(container);
@@ -226,6 +317,14 @@ function wmInitLinkSourcePicker(container) {
 }
 
 var wmLinkGraphRestoreGeneration = 0;
+
+/**
+ * Show the saved additional hover graph in the link graph picker once its
+ * label has been looked up.
+ *
+ * @param {boolean} [preserveSelection] Keep a graph the user picked instead of the saved one.
+ * @returns {void}
+ */
 function wmRestoreLinkGraphChoice(preserveSelection) {
  var picker = $('#link_picker_input');
  if (!picker.length) return;
@@ -254,7 +353,12 @@ function wmRestoreLinkGraphChoice(preserveSelection) {
  });
 }
 
-// Keep advanced link tasks separate without duplicating submitted fields or pickers.
+/**
+ * Group the link dialog's hover and advanced fields into toggled sections,
+ * once per dialog, without duplicating submitted fields or pickers.
+ *
+ * @returns {void}
+ */
 function wmBuildLinkSections() {
  var dlg = $('#dlgLinkProperties');
  if ($('#wm-link-sections').length) return;
@@ -340,6 +444,12 @@ function wmBuildLinkSections() {
  hint('wm-link-extra-url-hint', '#wm-link-extra-hover', wmEditorText.extraUrlsHint);
 }
 
+/**
+ * Reset the compact link editor's sections, interface summary and pickers
+ * for the link being edited.
+ *
+ * @returns {void}
+ */
 function compactLinkEditorBase() {
 	wmInitLinkHoverParts();
 	var dlg = $('#dlgLinkProperties'),
@@ -435,6 +545,14 @@ function compactLinkEditorBase() {
 
 var wmInterfaceSummaries = {};
 var wmInterfaceLookupGeneration = 0;
+
+/**
+ * Fetch data sources for a batch of graph ids, caching the request per map
+ * until it fails.
+ *
+ * @param {string[]} graphIds Local graph ids.
+ * @returns {jQuery.jqXHR} Shared request.
+ */
 function wmGetInterfaceSummary(graphIds) {
 	var key = $('#mapname').val() + ':' + graphIds.join(',');
 	if (!wmInterfaceSummaries[key]) {
@@ -453,6 +571,13 @@ function wmGetInterfaceSummary(graphIds) {
 	}
 	return wmInterfaceSummaries[key];
 }
+
+/**
+ * Fetch data sources for any number of graph ids in batches of 100.
+ *
+ * @param {string[]} graphIds Local graph ids.
+ * @returns {jQuery.Promise} Resolves with {items}; rejects when every batch fails.
+ */
 function wmGetInterfaceCandidates(graphIds) {
 	var result = $.Deferred();
 	var unique = Array.from(new Set(graphIds));
@@ -472,6 +597,13 @@ function wmGetInterfaceCandidates(graphIds) {
 	next(0);
 	return result.promise();
 }
+
+/**
+ * Prepare the compact link editor and look up the interface that matches
+ * the link's primary source.
+ *
+ * @returns {void}
+ */
 function compactLinkEditor() {
 	var generation = ++wmInterfaceLookupGeneration;
 	compactLinkEditorBase();
@@ -570,6 +702,11 @@ function compactLinkEditor() {
 	}
 }
 
+/**
+ * Arrange the node dialog into main fields and a collapsed Advanced section.
+ *
+ * @returns {void}
+ */
 function compactNodeEditor() {
 	var dlg = $('#dlgNodeProperties'),
 		table = $('#node_label').closest('table');
@@ -615,6 +752,12 @@ function compactNodeEditor() {
 	$('#wm-node-toggle').attr('aria-expanded', 'false').text(wmEditorText.advanced);
 }
 
+/**
+ * Make the node hover graph picker browse on click, enable Add and Replace
+ * only after a selection, and summarise the current hover graphs.
+ *
+ * @returns {void}
+ */
 function refineNodePicker() {
 	var picker = $('#node_picker_input'),
 		buttons = $('#node_picker_add,#node_picker_rep');
@@ -669,7 +812,15 @@ function refineNodePicker() {
 			if (labels.length === 1 && !picker.val()) picker.val(labels[0].label);
 		});
 }
-// Only IDs from this installation's known graph endpoints are local candidates.
+
+/**
+ * Extract graph ids from a URL that targets one of this installation's known
+ * graph endpoints; only those IDs are local candidates.
+ *
+ * @param {string} value URL.
+ * @param {string[]} endpoints Endpoint file names relative to the Cacti root.
+ * @returns {string[]} Graph ids, or an empty array.
+ */
 function wmLocalGraphIds(value, endpoints) {
 	try {
 		var root = new URL('../../', window.location.href);
@@ -681,6 +832,14 @@ function wmLocalGraphIds(value, endpoints) {
 		return [];
 	}
 }
+
+/**
+ * Describe a node's hover entries by graph name.
+ *
+ * @param {string} hover Space-separated hover URLs.
+ * @param {Array<Object>} items Known graphs with id and label.
+ * @returns {string} Translated summary.
+ */
 function wmNodeHoverSummary(hover, items) {
 	var entries = hover.trim().split(/\s+/).filter(Boolean);
 	if (!entries.length) return wmEditorText.noHover;
@@ -691,6 +850,13 @@ function wmNodeHoverSummary(hover, items) {
 	});
 	return wmEditorText.hoverSummary.replace('%s', function() { return summary.join('; '); });
 }
+
+/**
+ * Fetch graph labels and RRD files for graph ids in batches of 100.
+ *
+ * @param {string[]} ids Local graph ids.
+ * @returns {jQuery.Promise} Resolves with the graph items; rejects when any batch fails.
+ */
 function wmGetGraphSummaries(ids) {
 	var result = $.Deferred();
 	var unique = Array.from(new Set(ids));
@@ -712,11 +878,25 @@ function wmGetGraphSummaries(ids) {
 	next(0);
 	return result.promise();
 }
+
+/**
+ * Return a node's label for display, or its name when the label is empty or
+ * the default.
+ *
+ * @param {string} name Node name.
+ * @returns {string}
+ */
 function wmNodeDisplayName(name) {
 	var node = Nodes[name];
 	var label = node ? String(node.label || '').trim() : '';
 	return label && label !== 'Node' ? label.replace(/\\n/g, ' ').replace(/\s+/g, ' ') : name;
 }
+
+/**
+ * Show the endpoint node labels and the internal link name in the link dialog.
+ *
+ * @returns {void}
+ */
 function wmFriendlyLinkNames() {
 	var link = Links[$('#link_name').val()];
 	if (!link) return;

@@ -5,10 +5,23 @@ const path = require('node:path');
 
 const EDITOR_SCRIPTS = ['editor.js', 'editor.dialogs.js', 'editor.picker.js', 'editor.compact.js', 'editor.assets.js'];
 
+/**
+ * Read one editor script from js/.
+ *
+ * @param {string} name File name inside js/.
+ * @returns {string} Script source.
+ */
 function editorSource(name) {
 	return fs.readFileSync(path.join(__dirname, '../../js', name), 'utf8');
 }
 
+/**
+ * Evaluate editor scripts in a jsdom window, in the given order.
+ *
+ * @param {Window} w jsdom window with jQuery installed.
+ * @param {string[]} [names] Files inside js/; defaults to the page's include order.
+ * @returns {?Function} The real initJS() when editor.js was loaded, otherwise null.
+ */
 function loadEditorScripts(w, names = EDITOR_SCRIPTS) {
 	for (const name of names) w.eval(editorSource(name));
 	if (!names.includes('editor.js')) return null;

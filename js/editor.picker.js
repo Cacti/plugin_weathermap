@@ -1,5 +1,11 @@
 // Graph and node icon pickers for the map editor; loaded after editor.js.
 
+/**
+ * Replace each `.selectmenu-ajax` input with a searchable, paged graph
+ * picker and its Add and Replace buttons.
+ *
+ * @returns {void}
+ */
 function graphPicker() {
 	$('.selectmenu-ajax').each(function() {
 		var id       = $(this).attr('id');
@@ -196,10 +202,16 @@ function graphPicker() {
 		});
 	});
 }
-/* Return an absolute preview URL for a relative path inside the plugin's
+
+/**
+ * Return an absolute preview URL for a relative path inside the plugin's
  * images/ tree, or '' for anything else. URL parsing resolves dot segments
  * (including percent-encoded ones) before the prefix check, so traversal out
- * of images/ and other origins or schemes are rejected. */
+ * of images/ and other origins or schemes are rejected.
+ *
+ * @param {*} value Candidate image path from an option or the image library.
+ * @returns {string} Absolute preview URL, or '' when the path is rejected.
+ */
 function wmEditorImageSrc(value) {
 	if (typeof value !== 'string' || !/^images\/[^?#\\]+\.(png|gif|jpe?g)$/i.test(value)) return '';
 	try {
@@ -211,6 +223,12 @@ function wmEditorImageSrc(value) {
 	}
 }
 
+/**
+ * Add a searchable icon grid for the node icon select; the select stays the
+ * submitted field.
+ *
+ * @returns {void}
+ */
 function wmNodeIconPicker() {
 	var select = $('#node_iconfilename');
 	if (select.hasClass('dd-container')) {

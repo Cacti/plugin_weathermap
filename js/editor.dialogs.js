@@ -1,5 +1,12 @@
 // Property dialog management for the map editor; loaded after editor.js.
 
+/**
+ * Open an editor dialog as a non-modal jQuery UI dialog. Closing the
+ * configuration editor reopens the properties dialog it was launched from.
+ *
+ * @param {string} dlg Element id of the dialog.
+ * @returns {void}
+ */
 function show_dialog(dlg) {
 	mapmode('existing');
 	wmResetActionHelp();
@@ -55,6 +62,12 @@ function show_dialog(dlg) {
 	});
 }
 
+/**
+ * Close an editor dialog if it has been opened and clear the pending action.
+ *
+ * @param {string} dlg Element id of the dialog.
+ * @returns {void}
+ */
 function hide_dialog(dlg) {
 	if ($('#'+dlg).dialog('instance')) {
 		$('#'+dlg).dialog('close');
@@ -63,6 +76,11 @@ function hide_dialog(dlg) {
 	$('#action').val('');
 }
 
+/**
+ * Close every editor dialog without restoring a configuration editor's parent.
+ *
+ * @returns {void}
+ */
 function hide_all_dialogs() {
 	// Navigation to another task must not reopen the configuration editor's parent.
 	$('#dlgTextEdit').removeData('wm-config-parent');

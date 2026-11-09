@@ -1,5 +1,15 @@
 // Image library and colour scale editors for the map editor; loaded after editor.js.
 
+/**
+ * Send an image library request, adding the map name, configuration revision
+ * and CSRF token.
+ *
+ * @param {string} action Editor action; image_data is sent as GET, others as POST.
+ * @param {Object} extra Additional request fields.
+ * @param {function(Object)} callback Success handler.
+ * @param {string} errorId Id of the element that shows errors.
+ * @returns {void}
+ */
 function wmAssetRequest(action, extra, callback, errorId) {
 	var values = {action: action, mapname: $('#mapname').val()};
 	if (action !== 'image_data' && typeof WMConfigRevision !== 'undefined') values.config_revision = WMConfigRevision;
@@ -7,6 +17,13 @@ function wmAssetRequest(action, extra, callback, errorId) {
 	$.ajax({url: editor_url, type: action === 'image_data' ? 'GET' : 'POST', dataType: 'json', data: $.extend(values, extra),
 		success: callback, error: function(xhr) { $('#' + errorId).text(xhr.responseJSON && xhr.responseJSON.error || wmEditorText.imageText3); }});
 }
+
+/**
+ * Render the image library and refresh the icon and background selects from it.
+ *
+ * @param {Array<Object>} images Library entries returned by the editor.
+ * @returns {void}
+ */
 function wmAssetImages(images) {
 	$('#wm-images-objects, #wm-images-backgrounds').empty();
 	images.forEach(function(item) {
@@ -50,6 +67,12 @@ function wmAssetImages(images) {
 	});
 	$('#dlgImages').dialog('option', {maxHeight: $(window).height() - 80, position: {my: 'center', at: 'center', of: window}});
 }
+
+/**
+ * Load the image library and bind the upload buttons.
+ *
+ * @returns {void}
+ */
 function wmOpenImages() {
 	$('#wm-images-error').empty();
 	wmAssetRequest('image_data', {}, function(data) { wmAssetImages(data.images); }, 'wm-images-error');
@@ -71,6 +94,18 @@ function wmOpenImages() {
 }
 
 var wmAssetPalette = {Black: '#000000', White: '#ffffff', Blue: '#0000ff', Red: '#cc0000', Green: '#008000', Purple: '#800080', Orange: '#b35a00', Grey: '#666666', None: 'none'};
+
+/**
+ * Build a colour control: a named colour select, optional swatches and a
+ * custom colour input.
+ *
+ * @param {string} value Current colour.
+ * @param {boolean} allowEmpty Offer a no-colour option.
+ * @param {boolean} swatches Show palette swatch buttons.
+ * @param {boolean} solid Omit the None option.
+ * @param {string} label Accessible label.
+ * @returns {jQuery} The control.
+ */
 function wmAssetColour(value, allowEmpty, swatches, solid, label) {
 	var box = $('<div class="wm-asset-colour">'), select = $('<select class="wm-colour-value">').attr('aria-label', label).appendTo(box);
 	if (allowEmpty) select.append($('<option>').val('').text(wmEditorText.colourText0));
@@ -96,6 +131,16 @@ function wmAssetColour(value, allowEmpty, swatches, solid, label) {
 }
 var wmColourRevision = null;
 var wmLockedScales = [];
+
+/**
+ * Send a colour settings request and track the revision the server returns.
+ *
+ * @param {string} action Editor action; colour_data is sent as GET, others as POST.
+ * @param {Object} extra Additional request fields.
+ * @param {function(Object)} callback Success handler.
+ * @param {string} errorId Id of the element that shows errors.
+ * @returns {void}
+ */
 function wmColourRequest(action, extra, callback, errorId) {
 	var values = {action: action, mapname: $('#mapname').val()};
 	if (action === 'set_map_colours') values.config_revision = wmColourRevision;
@@ -103,6 +148,13 @@ function wmColourRequest(action, extra, callback, errorId) {
 	$.ajax({url: editor_url, type: action === 'colour_data' ? 'GET' : 'POST', dataType: 'json', data: $.extend(values, extra),
 		success: function(data) { if (data.revision) wmColourRevision = data.revision; callback(data); }, error: function(xhr) { $('#' + errorId).text(xhr.status === 409 && wmEditorText.staleError || xhr.responseJSON && xhr.responseJSON.error || wmEditorText.colourText4); }});
 }
+
+/**
+ * Append an editable scale range row, disabled when its scale is shared.
+ *
+ * @param {Object} row Range with scale, bottom, top, colour, end and tag.
+ * @returns {void}
+ */
 function wmAssetScaleRow(row) {
 	var tr = $('<tr>').appendTo('#wm-scale-rows');
 	['scale', 'bottom', 'top'].forEach(function(key) {
@@ -114,6 +166,12 @@ function wmAssetScaleRow(row) {
 	$('<td>').append($('<button type="button" class="ui-button wm-asset-delete">').text(wmEditorText.colourText2).attr('aria-label', wmEditorText.colourText7).on('click', function() { tr.remove(); })).appendTo(tr);
 	if (wmLockedScales.indexOf(row.scale) !== -1) tr.find('input, select, button').prop('disabled', true);
 }
+
+/**
+ * Reload the editor so the map shows the saved colours.
+ *
+ * @returns {void}
+ */
 function wmColourRefreshMap() {
 	wmReloadEditor();
 }
@@ -127,6 +185,12 @@ var wmTrafficPresets = {
     sunrise: [[0, 0, '#c0c0c0'], [0, 20, '#fff0b3'], [20, 40, '#ffd166'], [40, 60, '#ffaa00'], [60, 80, '#e87500'], [80, 100, '#a63d00']],
     midwinter: [[0, 0, '#c0c0c0'], [0, 20, '#e2e8ff'], [20, 40, '#a8b9ee'], [40, 60, '#7585cc'], [60, 80, '#4e5697'], [80, 100, '#252637']]
 };
+
+/**
+ * Read the scale range rows from the colour dialog.
+ *
+ * @returns {Array<Object>} Ranges with scale, bottom, top, colour, end and tag.
+ */
 function wmAssetScaleRows() {
     var rows = [];
     $('#wm-scale-rows tr').each(function() {
@@ -135,12 +199,27 @@ function wmAssetScaleRows() {
     });
     return rows;
 }
+
+/**
+ * Replace the DEFAULT scale rows with a traffic preset, keeping other scales.
+ *
+ * @param {string} key Preset name.
+ * @param {Array<Object>} rows Current ranges.
+ * @returns {Array<Object>} New ranges, or rows unchanged when the preset is unknown.
+ */
 function wmTrafficPresetRows(key, rows) {
     if (!wmTrafficPresets[key]) return rows;
     return rows.filter(function(row) { return row.scale !== 'DEFAULT'; }).concat(wmTrafficPresets[key].map(function(band) {
         return {scale: 'DEFAULT', bottom: band[0], top: band[1], colour: band[2], end: '', tag: ''};
     }));
 }
+
+/**
+ * Name the preset that exactly matches the DEFAULT rows.
+ *
+ * @param {Array<Object>} rows Current ranges.
+ * @returns {string} Preset name, or 'custom'.
+ */
 function wmTrafficPresetMatch(rows) {
     var current = rows.filter(function(row) { return row.scale === 'DEFAULT'; });
     return Object.keys(wmTrafficPresets).find(function(key) {
@@ -150,6 +229,12 @@ function wmTrafficPresetMatch(rows) {
         });
     }) || 'custom';
 }
+
+/**
+ * Render a swatch preview of the DEFAULT scale bands.
+ *
+ * @returns {void}
+ */
 function wmTrafficPreview() {
     var preview = $('#wm-traffic-preview').empty();
     wmAssetScaleRows().filter(function(row) { return row.scale === 'DEFAULT'; }).forEach(function(row) {
@@ -163,6 +248,13 @@ function wmTrafficPreview() {
     });
     if (!preview.children().length) preview.text(wmEditorText.colourText3);
 }
+
+/**
+ * Load the map's colour settings into the colour dialog and bind its preset,
+ * edit and save controls.
+ *
+ * @returns {void}
+ */
 function wmOpenColours() {
 	$('#wm-colours-error').empty(); $('#wm-colours-save').prop('disabled', true);
 	wmColourRequest('colour_data', {}, function(data) {

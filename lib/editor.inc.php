@@ -391,6 +391,9 @@ function wm_editor_sanitize_conffile($filename) {
 }
 
 /**
+ * Render the editor start page: the editor scripts, the new map form and the
+ * list of map files.
+ *
  * @return void
  */
 function show_editor_startpage() {
