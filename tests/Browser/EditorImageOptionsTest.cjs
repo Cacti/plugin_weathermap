@@ -11,8 +11,14 @@ const w=dom.window,$=jquery(w);w.$=w.jQuery=$;w.selectedNode='images/objects/cor
 const inc=fs.readFileSync(path.join(__dirname,'../../lib/editor.inc.php'),'utf8');
 w.wmEditorText={};
 for(const match of inc.matchAll(/'(icon[A-Za-z]+)' => __\('([^']+)'/g))w.wmEditorText[match[1]]=match[2];
-const source=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');
-w.eval(source.slice(source.indexOf('function wmEditorImageSrc('),source.indexOf('function prime_link_form(')));
+// Evaluate the whole editor scripts the page includes, in page order, so the
+// check does not depend on which file declares wmEditorImageSrc(). editor.js
+// runs initJS() on DOM ready; this check needs only the picker functions.
+for(const name of ['editor.js','editor.dialogs.js','editor.picker.js','editor.compact.js','editor.assets.js']){
+	const file=path.join(__dirname,'../../js',name);
+	if(fs.existsSync(file))w.eval(fs.readFileSync(file,'utf8'));
+}
+w.initJS=()=>{};
 const base='https://example.test/cacti/plugins/weathermap/';
 const expected={
 	node_iconfilename:[
