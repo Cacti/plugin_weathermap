@@ -41,9 +41,19 @@
 */
 
 /**
- * @param mixed $userid
- * @param mixed $group_id
- * @return mixed
+ * Returns the active maps a user may view.
+ *
+ * A map is allowed when it is granted to everyone (weathermap_auth.userid = 0),
+ * directly to the user, or to an enabled user group the user belongs to.  The
+ * group branch gates on uag.enabled = 'on' so a member of a disabled group does
+ * not retain access, matching is_weathermap_allowed().
+ *
+ * @param int      $userid   The Cacti user id to evaluate.
+ * @param int|null $group_id Optional weathermap group id to limit the result to;
+ *                           callers pass a value validated by
+ *                           get_filter_request_var(), so it is an integer.
+ * @return array<int,array<string,mixed>> Rows from weathermap_maps the user may
+ *                           view, ordered by sort order.
  */
 function get_allowed_weathermaps($userid, $group_id = null) {
 	// Special Group Limiter
@@ -73,6 +83,7 @@ function get_allowed_weathermaps($userid, $group_id = null) {
 			INNER JOIN user_auth_group_members AS uagm
 			ON uag.id = uagm.group_id
 			AND uagm.user_id = ?
+			WHERE uag.enabled = 'on'
 		) AS rs
 		ON rs.mapid = wm.id
 		WHERE wm.active = 'on'
