@@ -895,7 +895,7 @@ function nbspCleanup() {
 
 // Escape embedded single quotes in text strings
 function escSglQuote(str) {
-  return str.toString().replace(/'/g,"\\'");
+  return JSON.stringify(str.toString()).slice(1, -1).replace(/'/g,"\\'").replace(/\u2028/g,"\\u2028").replace(/\u2029/g,"\\u2029");
 }
 
 // Onload handler for window onload event
