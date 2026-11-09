@@ -16,3 +16,7 @@ Run it with the same dependencies and `CACTI_JS_DIR=/path/to/cacti/include/js`.
 `EditorPickerReopeningTest.cjs` uses the same dependencies and `CACTI_JS_DIR`.
 It exercises real jQuery UI focus/blur timing, Browse all, input/arrow reopening,
 changing an existing selection and typed filtering in both link and node pickers.
+
+`DocsExampleHoverTest.cjs` loads `docs/example/example.html` with its subresources and
+checks that its hover captions work without overLIB, then feeds engine-style
+`data-hover` content through `js/weathermap.js`. It needs only jsdom and jQuery.
