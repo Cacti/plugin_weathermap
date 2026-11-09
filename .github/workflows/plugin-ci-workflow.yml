@@ -47,6 +47,46 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  # The jsdom checks need only Node and Cacti's bundled jQuery UI, not PHP,
+  # MariaDB or SNMP, so they run once in their own job instead of on every
+  # PHP leg of the integration matrix below.
+  browser-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    name: Browser (jsdom) Tests
+
+    steps:
+    - name: Checkout Cacti JavaScript
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+        repository: Cacti/cacti
+        ref: ${{ env.CACTI }}
+        path: cacti
+        sparse-checkout: |
+          include/js
+
+    - name: Checkout Weathermap Plugin
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+        path: weathermap
+
+    - name: Install Node.js
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: '24'
+
+    - name: Install locked browser test dependencies
+      working-directory: weathermap/tests/Browser
+      run: npm ci --ignore-scripts --no-audit --no-fund
+
+    - name: Run browser tests
+      working-directory: weathermap/tests/Browser
+      env:
+        CACTI_JS_DIR: ${{ github.workspace }}/cacti/include/js
+      run: npm test
+
   integration-test:
     timeout-minutes: 45
     runs-on: ${{ matrix.os }}
