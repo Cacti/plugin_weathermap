@@ -819,7 +819,36 @@ function find_distance_coords(&$pointarray,$distance) {
 	// then linearly interpolate to get a more accurate point
 	// this saves having quite so many points-per-curve
 
+	$count = count($pointarray);
+
+	if ($count == 0) {
+		return [0, 0, 0];
+	}
+
+	if ($count == 1) {
+		return [$pointarray[0][0], $pointarray[0][1], 0];
+	}
+
+	$last = $count - 1;
+
+	if ($distance <= $pointarray[0][2]) {
+		return [$pointarray[0][0], $pointarray[0][1], 0];
+	}
+
+	if ($distance >= $pointarray[$last][2]) {
+		// The angle lookup needs a valid segment index, even at the endpoint.
+		return [$pointarray[$last][0], $pointarray[$last][1], $last - 1];
+	}
+
 	$index = find_distance($pointarray, $distance);
+
+	while (($index < $last - 1) && ($pointarray[$index + 1][2] <= $pointarray[$index][2])) {
+		$index++;
+	}
+
+	if ($pointarray[$index + 1][2] <= $pointarray[$index][2]) {
+		return [$pointarray[$index][0], $pointarray[$index][1], $index];
+	}
 
 	$ratio = ($distance - $pointarray[$index][2]) / ($pointarray[$index + 1][2] - $pointarray[$index][2]);
 
@@ -837,17 +866,17 @@ function find_distance_coords(&$pointarray,$distance) {
 function find_distance_coords_angle(&$pointarray,$distance) {
 	// This is the point we need
 	[$x,$y,$index] = find_distance_coords($pointarray,$distance);
+	$max = count($pointarray) - 1;
+
+	if ($max < 1) {
+		return [$x, $y, $index, 0];
+	}
 
 	// now to find one either side of it, to get a line to find the angle of
 	$left  = $index;
 	$right = $left + 1;
-	$max   = count($pointarray) - 1;
-
-	// if we're right up against the last point, then step backwards one
-	if ($right >= $max) {
-		$left--;
-		$right--;
-	}
+	$left  = max(0, min($left, $max - 1));
+	$right = $left + 1;
 
 	// if ($left<=0) { $left = 0; }
 
@@ -860,7 +889,7 @@ function find_distance_coords_angle(&$pointarray,$distance) {
 	$dx = $x2 - $x1;
 	$dy = $y2 - $y1;
 
-	$angle = rad2deg(atan2(-$dy, $dx));
+	$angle = ($dx == 0 && $dy == 0) ? 0 : rad2deg(atan2(-$dy, $dx));
 
 	return ([$x, $y, $index, $angle]);
 }
@@ -1634,7 +1663,11 @@ function simplify_spine(&$input, $epsilon = 1e-8) {
 
 		// print "$n  $x,$y    $a";
 
-		if ($a > $epsilon) {
+		$between = (($x - $input[$n - 1][X]) * ($x - $input[$n + 1][X])
+			+ ($y - $input[$n - 1][Y]) * ($y - $input[$n + 1][Y])) <= 0;
+
+		// Collinearity is safe to remove only when the point lies between its neighbours.
+		if (($a > $epsilon) || !$between) {
 			$output[] = $input[$n];
 			// print "  KEEP";
 		} else {

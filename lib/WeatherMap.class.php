@@ -1627,6 +1627,7 @@ class WeatherMap extends WeatherMapBase {
 
 		/** @var float|int|null $matchsize */
 		$matchsize = null;
+		$matchkey  = null;
 
 		$nowarn_clipping    = intval($this->get_hint('nowarn_clipping'));
 		$nowarn_scalemisses = (!$scale_warning) || intval($this->get_hint('nowarn_scalemisses'));
@@ -1677,17 +1678,15 @@ class WeatherMap extends WeatherMapBase {
 					if (is_null($matchsize) || ($range < $matchsize)) {
 						$col       = new Colour($r, $g, $b);
 						$matchsize = $range;
+						$matchkey = $key;
+						$tag      = $colour['tag'] ?? '';
+						wm_debug("NCFPC $name $scalename $value '$tag' $key $r $g $b");
 					}
-
-					if (isset($colour['tag'])) {
-						$tag = $colour['tag'];
-					}
-
-					// ### warn(">>NCFPC TAGS $tag\n");
-					wm_debug("NCFPC $name $scalename $value '$tag' $key $r $g $b");
-
-					return ([$col, $key, $tag]);
 				}
+			}
+
+			if (!is_null($matchsize)) {
+				return [$col, $matchkey, $tag];
 			}
 		} else {
 			if ($scalename != 'none') {

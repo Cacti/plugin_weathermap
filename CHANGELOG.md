@@ -16,6 +16,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 --- develop ---
 
+* bug: Select the narrowest matching scale range, preserve collinear route reversals, and keep link position calculations within path endpoints
 * dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification
 * bug: Theme the standalone map editor from the active Cacti theme's own form-control colours (textboxes, textareas, selects, ddslick dropdowns and buttons) so dark themes such as Deepness no longer render light, unthemed controls; the editor reads the theme's colours at runtime instead of relying on variables only the Midwinter theme defines, so no per-theme editor stylesheet is required
 * bug: Keep the editor toolbar "Return to Map"/"Return to Manage" button on two lines instead of wrapping onto three
