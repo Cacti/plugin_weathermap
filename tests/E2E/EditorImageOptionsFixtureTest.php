@@ -40,8 +40,8 @@ it('renders the editor image selectors that the browser fixture pins', function 
 		$render = function ($entries, $selected = null) {
 			return implode('', array_map(fn ($entry) => wm_editor_image_option($entry, $selected), $entries));
 		};
-		$markup = '<select id="node_iconfilename">' . $render(wm_editor_image_options('objects', $used, $root)) . "</select>\n"
-			. '<select id="map_bgfile">' . $render(wm_editor_image_options('backgrounds', [], $root), 'images/backgrounds/world map.jpg') . "</select>\n";
+		$markup = '<select id="node_iconfilename" aria-label="Icon">' . $render(wm_editor_image_options('objects', $used, $root)) . "</select>\n"
+			. '<select id="map_bgfile" aria-label="Background">' . $render(wm_editor_image_options('backgrounds', [], $root), 'images/backgrounds/world map.jpg') . "</select>\n";
 	} finally {
 		wm_fixture_remove($root);
 	}
