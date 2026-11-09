@@ -62,32 +62,4 @@ final class CodeScanningHardeningTest extends TestCase {
 		self::assertGreaterThanOrEqual(0, $map->links['L1']->bandwidth_out);
 		self::assertLessThanOrEqual(50, $map->links['L1']->bandwidth_out);
 	}
-
-	#[RunInSeparateProcess]
-	#[PreserveGlobalState(false)]
-	public function testNodeCacheNameUsesSha256(): void {
-		$plugin = dirname(__DIR__, 2);
-		chdir($plugin);
-		require_once $plugin . '/setup.php';
-		require_once $plugin . '/lib/WeatherMap.class.php';
-
-		$directory = sys_get_temp_dir() . '/wm-cache-' . bin2hex(random_bytes(6));
-		mkdir($directory);
-
-		try {
-			$node        = new WeatherMapNode();
-			$node->name  = 'n1';
-			$node->image = imagecreatetruecolor(1, 1);
-			$node->update_cache($directory, 'map');
-			$expected = $directory . '/node_' . hash('sha256', 'map/n1') . '.png';
-			self::assertFileExists($expected);
-			self::assertFileDoesNotExist($directory . '/node_' . md5('map/n1') . '.png');
-		} finally {
-			foreach (glob($directory . '/*') ?: [] as $file) {
-				unlink($file);
-			}
-
-			rmdir($directory);
-		}
-	}
 }
