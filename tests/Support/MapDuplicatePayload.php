@@ -21,6 +21,13 @@ $fixture = realpath(sys_get_temp_dir()) . '/wm-duplicate-' . bin2hex(random_byte
 mkdir($fixture); mkdir($fixture . '/configs');
 symlink(dirname(__DIR__, 2) . '/lib', $fixture . '/lib');
 file_put_contents($fixture . '/configs/Original.conf', "TITLE Original Map\n");
+// map_duplicate() cleans the new title with this helper from the same file
+$clean = strpos($source, 'function map_clean_title(');
+
+if ($clean === false) {
+	throw new RuntimeException('Unable to locate the map title helper.');
+}
+eval(substr($source, $clean, strpos($source, "\n/**", $clean) - $clean));
 eval(str_replace('__DIR__', var_export($fixture, true), substr($source, $start, $end - $start)));
 
 /**

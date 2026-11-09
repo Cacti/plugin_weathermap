@@ -628,6 +628,11 @@ function wm_fixture_revision($file, $callback) {
 		}
 		$start = strpos($management, 'function map_get_next_name('); $end = strpos($management, "\n/**", $start);
 		eval(str_replace('__DIR__', var_export($plugin, true), substr($management, $start, $end - $start)));
+		if (!function_exists('map_clean_title')) {
+			// map_duplicate() cleans the new title with this helper from the same file
+			$start = strpos($management, 'function map_clean_title('); $end = strpos($management, "\n/**", $start);
+			eval(substr($management, $start, $end - $start));
+		}
 		$start = strpos($management, 'function map_duplicate('); $end = strpos($management, "\n/**", $start);
 		eval(str_replace(['__DIR__', 'unlink('], [var_export($plugin, true), 'atomic_clone_unlink('], substr($management, $start, $end - $start)));
 		$duplicateSource = 'atomic-duplicate-' . bin2hex(random_bytes(4)) . '.conf';
