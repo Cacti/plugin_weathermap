@@ -51,7 +51,8 @@ async function loadPage(file) {
 		options = value;
 		return this;
 	};
-	vm.runInContext(fs.readFileSync(path.join(__dirname, '../../js/weathermap.js'), 'utf8'), viewer.getInternalVMContext());
+	// Loads the repository's own viewer script into the test DOM, as jsdom documents.
+	vm.runInContext(fs.readFileSync(path.join(__dirname, '../../js/weathermap.js'), 'utf8'), viewer.getInternalVMContext()); // NOSONAR
 	await new Promise((resolve) => $(resolve));
 	await new Promise((resolve) => setImmediate(resolve));
 	const area = $('area');
