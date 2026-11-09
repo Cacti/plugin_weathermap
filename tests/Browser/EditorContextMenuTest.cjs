@@ -10,10 +10,8 @@ const $ = jquery(w);
 w.$ = w.jQuery = $;
 w.eval(fs.readFileSync(path.join(process.env.CACTI_JS_DIR, 'jquery-ui.js'),'utf8'));
 $('head').append($('<style>').text(fs.readFileSync(path.join(__dirname,'../../css/editor.css'),'utf8')));
-const src=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');
-w.eval(src.slice(src.indexOf('function wmResetActionHelp('),src.indexOf('function add_node(')));
-w.eval(src.slice(src.indexOf('function delete_node('),src.indexOf('function clone_node(')));
-w.eval(src.slice(src.indexOf('function delete_link('),src.indexOf('function form_submit(')));
+require('./editorScripts.cjs').loadEditorScripts(w);
+const realFormSubmit=w.form_submit;
 Object.assign(w,{Links:{uplink:{a:'dc',b:'office'}},delNodePrompt:'Delete %s from this map?',delNodeConnected:'Connected links to remove: %s.',delNodeKeepDevice:'The Cacti device and its graphs will remain.',delNodeTitle:'Delete Node Confirmation',txtCancel:'Cancel',txtDelNode:'Delete Node',delLinkTitle:'Delete Link Confirmation',txtDelLink:'Delete Link',wmEditorText:{deleteLinkPrompt:'Remove %1$s to %2$s?',keepLinkNodes:'Nodes remain.'},wmNodeDisplayName:n=>n==='dc'?'Datacentre':n});
 $('#action').val('move_node');w.mapmode('xy');
 assert.ok($('#existingdata').hasClass('wm-placement-mode'));
@@ -53,7 +51,6 @@ assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));
 let contextOptions;
 $.fn.contextmenu=function(options){contextOptions=options;return this;};
 for(const key of ['txtNodeActions','txtMove','txtClone','txtEdit','txtDelete','txtProperties','txtLinkActions','txtTidy','txtVia'])w[key]=key;
-w.eval(src.slice(src.indexOf('function initContextMenu('),src.indexOf('function contextAction(')));
 w.initContextMenu();
 const beforeOpen = contextOptions.beforeOpen;
 $('#action').val('add_link');w.mapmode('existing');
@@ -65,11 +62,9 @@ for (const action of ['set_node_properties','set_link_properties']) {
  beforeOpen.call($('map')[0],{}, {target:$('#NODE\\:1\\:0')});
  assert.equal($('#action').val(),action);
 }
-w.eval(src.slice(src.indexOf('function click_execute('),src.indexOf('function show_context_help(')));
 $('#action').val('add_link');w.mapmode('existing');assert.ok($('#existingdata').hasClass('wm-placement-mode'));
 w.click_execute({},'LINK:1:0');assert.equal($('#action').val(),'');assert.ok(!$('#existingdata').hasClass('wm-placement-mode'));assert.equal($('area').css('cursor'),'pointer');
-w.eval(src.slice(src.indexOf('function wmLinkHoverEntries('),src.indexOf('function wmLinkCompactHoverUrl(')));
-w.eval(src.slice(src.indexOf('function form_submit('),src.indexOf('function map_properties(')));
+w.form_submit=realFormSubmit;
 $('body').append('<div id="dlgNodeProperties"></div><div id="dlgLinkProperties"></div>');
 let saveRequest;$.ajax=opts=>saveRequest=opts;w.editor_url='/editor';w.wmSyncLinkHoverParts=()=>{};
 for (const kind of ['node','link']) for (const exit of ['cancel','close']) {
@@ -97,7 +92,6 @@ for (const kind of ['node','link']) {
  assert.equal(deletion.get('param'),kind==='node'?'dc':'uplink');
  dialog.dialog('close');
 }
-w.eval(src.slice(src.indexOf('function show_dialog('),src.indexOf('function hide_dialog(')));
 for (const kind of ['Node', 'Link']) {
  const id = 'dlg' + kind + 'Properties';
  w.show_dialog(id);

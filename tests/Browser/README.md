@@ -16,3 +16,8 @@ Run it with the same dependencies and `CACTI_JS_DIR=/path/to/cacti/include/js`.
 `EditorPickerReopeningTest.cjs` uses the same dependencies and `CACTI_JS_DIR`.
 It exercises real jQuery UI focus/blur timing, Browse all, input/arrow reopening,
 changing an existing selection and typed filtering in both link and node pickers.
+
+Editor checks load whole files from `js/` through `editorScripts.cjs`, in the
+order the editor page includes them, instead of slicing source by function name.
+That helper returns the real `initJS()` and suppresses its DOM-ready run, so a
+check can stub dependencies first and then invoke page setup explicitly.

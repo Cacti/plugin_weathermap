@@ -14,8 +14,7 @@ w.eval(fs.readFileSync(path.join(cactiJs,'jquery-ui.js'),'utf8'));
 const phpStrings = fs.readFileSync(path.join(__dirname,'../../lib/editor.inc.php'),'utf8');
 w.wmEditorText = Object.fromEntries(Array.from(phpStrings.matchAll(/'([a-zA-Z]+)'\s*=> __\('([^']*)', (?:'%s', )?'weathermap'\)/g), match => [match[1],match[2]]));
 w.infoUrlTarget = 'graph.php?rra_id=all&local_graph_id=';
-const editor = fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');
-w.eval(editor.slice(editor.indexOf('// Compact link workflow;')));
+require('./editorScripts.cjs').loadEditorScripts(w,['editor.compact.js']);
 const items = [
  {id:'a.rrd',local_graph_id:10,label:'Switch A — Traffic — Gi0/1 — Uplink'},
  {id:'b.rrd',local_graph_id:20,label:'Switch B — Traffic — Gi0/2 — Backup'}

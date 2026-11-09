@@ -1,9 +1,10 @@
 // Exercise real preset rendering, named-scale preservation, Custom and save payloads.
-const {JSDOM}=require('jsdom'),jquery=require('jquery'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const {JSDOM}=require('jsdom'),jquery=require('jquery'),assert=require('node:assert/strict');
 const dom=new JSDOM('<input id="mapname" value="map.conf"><div id="dlgColours"></div><div id="wm-colours-error"></div><button id="wm-colours-save"></button><input type="checkbox" id="wm-traffic-pulse"><div id="wm-outline-colour"></div><table><tbody id="wm-scale-rows"></tbody></table><details id="wm-traffic-advanced"></details><select id="wm-traffic-preset"></select><div id="wm-traffic-preview"></div><button id="wm-scale-add"></button>',{runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,$=jquery(w);w.$=w.jQuery=$;w.editor_url='/editor';w.csrfMagicToken='fixture';$.fn.dialog=function(){return this;};$.fn.selectmenu=function(command){return command==='instance'?undefined:this;};
 w.wmEditorText={rangeScale:'Échelle',rangeFrom:'Début',rangeTo:'Fin',rangeLabel:'Libellé',backgroundColour:'Map background',borderColour:'Link border',rangeColour:'Range colour',gradientColour:'Gradient end',palette:{Black:'Black',White:'White',Blue:'Bleu',Red:'Red',Green:'Green',Purple:'Purple',Orange:'Orange',Grey:'Grey',None:'None'},colourText0:'No gradient',colourText1:'Custom colour',colourText2:'Remove',colourText3:'No ranges',colourText4:'Save failed',colourText7:'Remove range',colourText8:'Custom %s'};
-const source=fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8');w.eval(source.slice(source.indexOf('var wmAssetPalette')));
+const {loadEditorScripts}=require('./editorScripts.cjs');
+loadEditorScripts(w,['editor.js','editor.assets.js']);w.editor_url='/editor';
 Object.keys(w.wmTrafficPresets).concat('custom').forEach(key=>$('#wm-traffic-preset').append($('<option>').val(key).text(key)));
 let request;$.ajax=opts=>request=opts;w.wmOpenColours();assert.equal(request.data.action,'colour_data');assert.equal(request.type,'GET');assert.equal('__csrf_magic' in request.data,false);
 const named={scale:'Temperature'+ 'A'.repeat(70),bottom:-20,top:0,colour:'#0000ff',end:'',tag:'Cold'};
@@ -51,13 +52,11 @@ $('#wm-scale-add').trigger('click');const added=$('#wm-scale-rows tr').last();as
 // Cancel leaves the named background value untouched; submitting commits it.
 $('body').append('<input name="map_background_colour" id="map_background_colour" value="#ffffff"><input id="action"><div id="wm-map-background-colour"></div><div id="dlgMapProperties"></div><input id="map_title">');
 w.mapmode=()=>{};w.hide_all_dialogs=()=>{};w.show_dialog=()=>{};
-const open=source.slice(source.indexOf('function map_properties()'),source.indexOf('function map_style()'));
-w.eval(open);w.map_properties();
+w.map_properties();
 $('#wm-map-background-colour select').val('#0000ff').trigger('change');
 assert.equal($('#map_background_colour').val(),'#ffffff','cancelled edit does not mutate saved field');
 w.map_properties();assert.equal($('#wm-map-background-colour select').val(),'#ffffff','reopening discards cancelled colour');
 $('#wm-map-background-colour select').val('#0000ff').trigger('change');
-w.eval(source.slice(source.indexOf('function form_submit('),source.indexOf('function map_properties()')));
 w.form_submit();assert.equal($('#map_background_colour').val(),'#0000ff');assert.ok(request.data.includes('map_background_colour=%230000ff'));
 let alertText;w.alert=text=>alertText=text;w.wmEditorText.saveError='Save failed';w.wmEditorText.staleError='Reload first';w.form_submit();request.error({status:409});assert.equal(alertText,'Reload first');request.error({status:500});assert.equal(alertText,'Save failed');
 dom.window.close();console.log('PASS: colour preset preview, named scales, Custom, gradients, save and errors');

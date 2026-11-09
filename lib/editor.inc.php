@@ -401,6 +401,10 @@ function show_editor_startpage() {
 	getEditorJs();
 
 	print get_md5_include_js('plugins/weathermap/js/editor.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.dialogs.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.picker.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.compact.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.assets.js');
 
 	$errormessage = '';
 
