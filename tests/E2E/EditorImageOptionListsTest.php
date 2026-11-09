@@ -23,8 +23,8 @@
 */
 
 // Render the editor's icon and background lists from real image files
-// through the editor page's own code, then parse the markup. The eval()
-// calls run only sections of this repository's editor page.
+// through the editor page's own code, then parse the markup. The included
+// files hold only sections of this repository's editor page.
 
 beforeAll(function () {
 	require_once __DIR__ . '/../../lib/editor.inc.php';
@@ -37,7 +37,7 @@ beforeAll(function () {
  * @param string $end   Text that ends the section.
  * @param bool   $block True to return the first PHP block after $start.
  *
- * @return string The code, ready for eval().
+ * @return string The code, without an opening PHP tag.
  */
 function wm_option_lists_code($start, $end, $block = false) {
 	$source = file_get_contents(__DIR__ . '/../../weathermap-cacti-plugin-editor.php');
@@ -52,6 +52,23 @@ function wm_option_lists_code($start, $end, $block = false) {
 	expect($to)->not->toBeFalse();
 
 	return substr($source, $from, $block ? $to - $from : $to - $from + strlen($end));
+}
+
+/**
+ * Write a section of the editor page to a temporary PHP file.
+ *
+ * The caller includes the file, which runs it in the caller's scope as the
+ * page would, then removes it.
+ *
+ * @param string $code Code from wm_option_lists_code().
+ *
+ * @return string The temporary file path.
+ */
+function wm_option_lists_file($code) {
+	$file = tempnam(sys_get_temp_dir(), 'wm-options-code-');
+	file_put_contents($file, "<?php\n" . $code);
+
+	return $file;
 }
 
 /**
@@ -81,9 +98,12 @@ function wm_option_lists_build(array $objects, array $backgrounds, array $used) 
 	$config['base_path'] = $base;
 	$map                 = (object) ['used_images' => $used];
 
+	$code = wm_option_lists_file(wm_option_lists_code("\$image_list   = get_imagelist('objects');", 'sort($image_list);'));
+
 	try {
-		eval(wm_option_lists_code("\$image_list   = get_imagelist('objects');", 'sort($image_list);'));
+		include $code;
 	} finally {
+		unlink($code);
 		$config['base_path'] = $saved;
 		$iterator            = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST);
 
@@ -106,9 +126,15 @@ function wm_option_lists_build(array $objects, array $backgrounds, array $used) 
  */
 function wm_option_lists_render($select, array $variables) {
 	extract($variables);
+	$code = wm_option_lists_file(wm_option_lists_code("<select id='$select' name='$select'>", '', true));
 	ob_start();
-	eval(wm_option_lists_code("<select id='$select' name='$select'>", '', true));
-	$html = ob_get_clean();
+
+	try {
+		include $code;
+	} finally {
+		$html = ob_get_clean();
+		unlink($code);
+	}
 
 	$doc = new DOMDocument();
 	libxml_use_internal_errors(true);
