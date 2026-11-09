@@ -237,14 +237,14 @@ describe('WM-BUG-READDATA-RETURN: base ReadData() stub must return a 3-element a
 		expect($time)->toBe(0);
 	});
 
-	it('source: WeatherMap.class.php base ReadData() returns [-1,-1,0]', function (): void {
-		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/WeatherMap.class.php');
+	it('source: WeatherMapDataSource.class.php base ReadData() returns [-1,-1,0]', function (): void {
+		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/WeatherMapDataSource.class.php');
 
 		expect($source)->toContain('return ([-1, -1, 0]);');
 	});
 
-	it('source: WeatherMap.class.php does NOT contain the old 2-element return stub', function (): void {
-		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/WeatherMap.class.php');
+	it('source: WeatherMapDataSource.class.php does NOT contain the old 2-element return stub', function (): void {
+		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/WeatherMapDataSource.class.php');
 
 		// The old stub comment is kept for history; the live function body must not use it.
 		// We check that no un-commented return of exactly [-1,-1] is present.
