@@ -164,7 +164,7 @@ final class NodeCacheE2ETest extends TestCase {
 		$this->writeNodeCache($map, $cachedir);
 
 		foreach (['A', 'B'] as $name) {
-			$legacy = $cachedir . '/node_' . md5($map->configfile . '/' . $name) . '.png';
+			$legacy = $cachedir . '/node_' . md5($map->configfile . '/' . $name) . '.png'; // NOSONAR: the version 1 file name
 			self::assertSame($legacy, $cachedir . '/' . wm_node_cache_name($map->configfile, $name));
 			self::assertSame(IMAGETYPE_PNG, getimagesize($legacy)[2]);
 		}

@@ -73,7 +73,8 @@ const WM_NODE_CACHE_VERSION = 1;
  */
 function wm_node_cache_hash(string $data, ?bool $md5_available = null): string {
 	if ($md5_available ?? function_exists('md5')) {
-		return md5($data);
+		// Version 1 cache names are MD5 by contract; the hash only names a file.
+		return md5($data); // NOSONAR
 	}
 
 	return substr(hash('sha256', $data), 0, 32);
