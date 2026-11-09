@@ -1,3 +1,6 @@
+// Loads docs/example/example.html with its subresources, checks that its hover
+// captions work without overLIB, then feeds engine-style data-hover content
+// through js/weathermap.js. Needs only jsdom and jQuery.
 const {JSDOM, VirtualConsole} = require('jsdom');
 const jquery = require('jquery');
 const fs = require('node:fs');
