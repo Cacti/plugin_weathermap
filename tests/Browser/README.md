@@ -21,3 +21,10 @@ Editor checks load whole files from `js/` through `editorScripts.cjs`, in the
 order the editor page includes them, instead of slicing source by function name.
 That helper returns the real `initJS()` and suppresses its DOM-ready run, so a
 check can stub dependencies first and then invoke page setup explicitly.
+
+`Editor*ApiTest.cjs` load each split editor script on its own and check that
+its CommonJS exports are exactly its top-level functions, each also a browser
+global. `EditorScriptOrderTest.cjs` checks that both editor pages include every
+editor script once in the loader's order, then loads them together and calls
+into each one. `tests/E2E/EditorScriptIncludesTest.php` renders those includes
+through the pages' PHP code and checks the order and CSP nonce.
