@@ -1316,17 +1316,16 @@ function show_node(name) {
 	}
 }
 
+/* Return an absolute preview URL for a relative path inside the plugin's
+ * images/ tree, or '' for anything else. URL parsing resolves dot segments
+ * (including percent-encoded ones) before the prefix check, so traversal out
+ * of images/ and other origins or schemes are rejected. */
 function wmEditorImageSrc(value) {
-	if (typeof value !== 'string') return '';
-	var match = /^images\/(objects|backgrounds)\/([^/?#\\]+)$/.exec(value);
-	if (!match) return '';
-	var filename;
-	try { filename = decodeURIComponent(match[2]); } catch (error) { return ''; }
-	if (!filename || filename === '.' || filename === '..' || /[\/\\]/.test(filename) || !/\.(png|gif|jpe?g)$/i.test(filename)) return '';
+	if (typeof value !== 'string' || !/^images\/[^?#\\]+\.(png|gif|jpe?g)$/i.test(value)) return '';
 	try {
 		var image = new URL(value, document.baseURI);
-		var directory = new URL('images/' + match[1] + '/', document.baseURI);
-		return image.origin === directory.origin && image.pathname.indexOf(directory.pathname) === 0 ? image.href : '';
+		var root = new URL('images/', document.baseURI);
+		return image.origin === root.origin && image.pathname.indexOf(root.pathname) === 0 ? image.href : '';
 	} catch (error) {
 		return '';
 	}

@@ -16,7 +16,10 @@ w.eval(source.slice(source.indexOf('function wmEditorImageSrc('),source.indexOf(
 assert.equal(w.wmEditorImageSrc('images/objects/hospital.png'),'https://example.test/cacti/plugins/weathermap/images/objects/hospital.png');
 assert.equal(w.wmEditorImageSrc('javascript:alert(1)'),'');
 assert.equal(w.wmEditorImageSrc('//attacker.test/image.png'),'');
-assert.equal(w.wmEditorImageSrc('images/objects/%2e%2e/secret.png'),'');
+assert.equal(w.wmEditorImageSrc('images/objects/custom folder/site.png'),'https://example.test/cacti/plugins/weathermap/images/objects/custom%20folder/site.png');
+assert.equal(w.wmEditorImageSrc('images/objects/%2e%2e/%2e%2e/setup.png'),'');
+assert.equal(w.wmEditorImageSrc('images/../../setup.png'),'');
+assert.equal(w.wmEditorImageSrc('images/objects\\..\\x.png'),'');
 assert.equal(w.wmEditorImageSrc('images/objects/payload.svg'),'');
 const payload='<img src=x onerror=alert(1)>';
 let inserted;

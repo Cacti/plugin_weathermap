@@ -469,9 +469,9 @@ if ($editor_return_context === 'manage') {
 											$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($im)));
 
 											print '<option ';
-											print 'data-description="' . $display . '" ';
-											print 'data-imagesrc="' . $im . '" ';
-											print 'value="' . html_escape($im) . '">' . $display . '</option>';
+											print 'data-description="' . html_escape($display) . '" ';
+											print 'data-imagesrc="' . html_escape($im) . '" ';
+											print 'value="' . html_escape($im) . '">' . html_escape($display) . '</option>';
 										}
 									}
 ?>
@@ -710,9 +710,9 @@ if (cacti_count($backgd_list) == 0) {
 		$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($im)));
 
 		print '<option ' . ($im == $map->background ? 'selected ' : '');
-		print 'data-description="' . $display . '" ';
-		print 'data-imagesrc="' . $im . '" ';
-		print 'value="' . html_escape($im) . '">' . $display . '</option>';
+		print 'data-description="' . html_escape($display) . '" ';
+		print 'data-imagesrc="' . html_escape($im) . '" ';
+		print 'value="' . html_escape($im) . '">' . html_escape($display) . '</option>';
 	}
 }
 ?>
