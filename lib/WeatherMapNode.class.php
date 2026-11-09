@@ -41,6 +41,7 @@
 */
 
 require_once('HTML_ImageMap.class.php');
+require_once(__DIR__ . '/node-cache.php');
 
 class WeatherMapNode extends WeatherMapItem {
 	/** @var mixed */
@@ -822,12 +823,27 @@ class WeatherMapNode extends WeatherMapItem {
 	}
 
 	/**
-	 * @param mixed $cachedir
-	 * @param mixed $mapname
+	 * Save this node's rendered image to the editor's node cache.
+	 *
+	 * The first write to a directory in each process also removes node cache
+	 * files left by other name format versions (see lib/node-cache.php).
+	 *
+	 * @param string $cachedir Directory holding the node cache.
+	 * @param string $mapname Map identifier that, with the node name, keys the cache file.
 	 * @return void
 	 */
 	function update_cache($cachedir,$mapname) {
-		$cachename = $cachedir . '/node_' . md5($mapname . '/' . $this->name) . '.png';
+		static $pruned = [];
+
+		if (!isset($pruned[$cachedir])) {
+			$pruned[$cachedir] = true;
+
+			foreach (wm_node_cache_prune($cachedir)['failed'] as $stale) {
+				wm_warn("Failed to remove stale node cache file $cachedir/$stale");
+			}
+		}
+
+		$cachename = $cachedir . '/' . wm_node_cache_name((string) $mapname, (string) $this->name);
 
 		// save this image to a cache, for the editor
 		imagepng($this->image,$cachename);
