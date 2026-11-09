@@ -43,6 +43,9 @@
 require_once __DIR__ . '/WeatherMapBase.class.php';
 
 // The 'things on the map' class. More common code (mainly variables, actually)
+/**
+ * Properties shared by the nodes and links drawn on a map.
+ */
 class WeatherMapItem extends WeatherMapBase {
 	// Declared for static analysis (dynamically populated at runtime)
 	/** @var mixed */
@@ -83,7 +86,9 @@ class WeatherMapItem extends WeatherMapBase {
 	var $config_override; // used by the editor to allow text-editing
 
 	/**
-	 * @return mixed
+	 * Return the item type name used in config output and debug messages.
+	 *
+	 * @return string
 	 */
 	function my_type() {
 		return 'ITEM';

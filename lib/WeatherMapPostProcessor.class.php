@@ -40,9 +40,14 @@
  +-------------------------------------------------------------------------+
 */
 
+/**
+ * Base class for lib/post plugins that adjust the map at the start of DrawMap(), before it is drawn.
+ */
 class WeatherMapPostProcessor {
 	/**
-	 * @param WeatherMap $map
+	 * Apply the processor to the map.
+	 *
+	 * @param  WeatherMap $map
 	 * @return bool
 	 */
 	function run(&$map) {

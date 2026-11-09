@@ -40,9 +40,14 @@
  +-------------------------------------------------------------------------+
 */
 
-// Guarded so a test or caller that already defined these can load the engine.
+/*
+ * Each define is guarded so a test or caller that already declared one can
+ * still load the engine.
+ */
 
-// parameterise the in/out stuff a bit
+/**
+ * Channel indices into the in/out value pairs, and the channel count.
+ */
 if (!defined('IN')) {
 	define('IN', 0);
 }
@@ -55,6 +60,9 @@ if (!defined('WMCHANNELS')) {
 	define('WMCHANNELS', 2);
 }
 
+/**
+ * Value types in the WriteConfig() field tables: literal text or a colour.
+ */
 if (!defined('CONFIG_TYPE_LITERAL')) {
 	define('CONFIG_TYPE_LITERAL', 0);
 }
@@ -63,7 +71,9 @@ if (!defined('CONFIG_TYPE_COLOR')) {
 	define('CONFIG_TYPE_COLOR', 1);
 }
 
-// some strings that are used in more than one place
+/**
+ * Default link label format strings for bits, unformatted values and percentages.
+ */
 if (!defined('FMT_BITS_IN')) {
 	define('FMT_BITS_IN', '{link:this:bandwidth_in:%2k}');
 }
@@ -88,7 +98,9 @@ if (!defined('FMT_PERC_OUT')) {
 	define('FMT_PERC_OUT', '{link:this:outpercent:%.2f}%');
 }
 
-// the fields within a spine triple
+/**
+ * Field indices within a link spine point: x, y and the distance along the spine.
+ */
 if (!defined('X')) {
 	define('X', 0);
 }

@@ -40,6 +40,9 @@
  +-------------------------------------------------------------------------+
 */
 
+/**
+ * A single config value and the file it was defined in.
+ */
 class WeatherMapConfigItem {
 	/** @var mixed */
 	var $defined_in;

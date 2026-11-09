@@ -42,6 +42,9 @@
 
 // template class for data sources. All data sources extend this class.
 // I really wish PHP4 would just die overnight
+/**
+ * Base class for TARGET data source plugins loaded from lib/datasources.
+ */
 class WeatherMapDataSource {
 	// Cacti Integration
 	/** @var mixed */
@@ -55,7 +58,9 @@ class WeatherMapDataSource {
 	// (if any) and bow out gracefully. Return false to signal that the plugin is not
 	// in a fit state to run at the moment.
 	/**
-	 * @param WeatherMap $map
+	 * Check plugin dependencies after the config is read; false disables the plugin.
+	 *
+	 * @param  WeatherMap $map
 	 * @return bool
 	 */
 	function Init(&$map) {
@@ -65,7 +70,9 @@ class WeatherMapDataSource {
 	// called with the TARGET string. Returns true or false, depending on whether it wants to handle this TARGET
 	// called by map->ReadData()
 	/**
-	 * @param string $targetstring
+	 * Report whether this plugin handles the given TARGET string.
+	 *
+	 * @param  string $targetstring
 	 * @return bool
 	 */
 	function Recognise($targetstring) {
@@ -78,10 +85,12 @@ class WeatherMapDataSource {
 	//   itemtype and itemname may be used as part of the target (e.g. for TSV source line)
 	// function ReadData($targetstring, $configline, $itemtype, $itemname, $map) { return ([-1,-1]); }
 	/**
-	 * @param string $targetstring
-	 * @param WeatherMap $map
-	 * @param WeatherMapItem $item
-	 * @return mixed
+	 * Read the in and out values for a target; -1 marks a value that could not be read.
+	 *
+	 * @param  string         $targetstring
+	 * @param  WeatherMap     $map
+	 * @param  WeatherMapItem $item
+	 * @return array          [in, out, data timestamp]
 	 */
 	function ReadData($targetstring, &$map, &$item) {
 		return ([-1, -1, 0]);
@@ -89,9 +98,11 @@ class WeatherMapDataSource {
 
 	// pre-register a target + context, to allow a plugin to batch up queries to a slow database, or snmp for example
 	/**
-	 * @param string $targetstring
-	 * @param WeatherMap $map
-	 * @param WeatherMapItem $item
+	 * Queue a target ahead of ReadData() so a plugin can batch slow lookups.
+	 *
+	 * @param  string         $targetstring
+	 * @param  WeatherMap     $map
+	 * @param  WeatherMapItem $item
 	 * @return void
 	 */
 	function Register($targetstring, &$map, &$item) {
@@ -99,6 +110,8 @@ class WeatherMapDataSource {
 
 	// called before ReadData, to allow plugins to DO the prefetch of targets known from Register
 	/**
+	 * Fetch the targets queued by Register() before ReadData() runs.
+	 *
 	 * @return void
 	 */
 	function Prefetch() {

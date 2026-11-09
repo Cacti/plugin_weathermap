@@ -41,9 +41,14 @@
 */
 
 // template classes for the pre- and post-processor plugins
+/**
+ * Base class for lib/pre plugins that adjust the map at the end of ReadConfig().
+ */
 class WeatherMapPreProcessor {
 	/**
-	 * @param WeatherMap $map
+	 * Apply the processor to the map.
+	 *
+	 * @param  WeatherMap $map
 	 * @return bool
 	 */
 	function run(&$map) {

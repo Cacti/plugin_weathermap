@@ -42,6 +42,9 @@
 
 // Links, Nodes and the Map object inherit from this class ultimately.
 // Just to make some common code common.
+/**
+ * Note and hint storage shared by the map, nodes and links.
+ */
 class WeatherMapBase {
 	// Declared for static analysis (dynamically populated at runtime)
 	/** @var mixed */
@@ -55,8 +58,10 @@ class WeatherMapBase {
 	var $inherit_fieldlist;
 
 	/**
-	 * @param string $name
-	 * @param mixed $value
+	 * Set a note, a value attached by a data source and available to {...} tokens.
+	 *
+	 * @param  string $name
+	 * @param  mixed  $value
 	 * @return void
 	 */
 	function add_note($name,$value) {
@@ -66,7 +71,9 @@ class WeatherMapBase {
 	}
 
 	/**
-	 * @param string $name
+	 * Return a note, or null when it is not set.
+	 *
+	 * @param  string $name
 	 * @return mixed
 	 */
 	function get_note($name) {
@@ -80,8 +87,10 @@ class WeatherMapBase {
 	}
 
 	/**
-	 * @param string $name
-	 * @param string $value
+	 * Set a hint, a SET value from the map config.
+	 *
+	 * @param  string $name
+	 * @param  string $value
 	 * @return void
 	 */
 	function add_hint($name,$value) {
@@ -92,8 +101,10 @@ class WeatherMapBase {
 	}
 
 	/**
-	 * @param string $name
-	 * @param mixed $default Value returned when the hint is not set.
+	 * Return a hint, or $default when it is not set.
+	 *
+	 * @param  string $name
+	 * @param  mixed  $default Value returned when the hint is not set.
 	 * @return mixed
 	 */
 	function get_hint($name, $default = null) {
