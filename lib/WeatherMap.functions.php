@@ -250,10 +250,18 @@ function js_escape($str, $wrap = true) {
 }
 
 /**
- * @param mixed $format
- * @param string $value
- * @param int $kilo
- * @return mixed
+ * Formats a value for a map label, title or note.
+ *
+ * Supports weathermap's own %k (SI-scaled) and %t/%T (duration) specifiers in
+ * addition to a plain printf format.  The format text comes from the map config,
+ * so a stray or unknown conversion specifier falls back to the literal text
+ * rather than raising the ArgumentCountError / ValueError that sprintf() throws
+ * under PHP 8, which would abort the poller's map loop.
+ *
+ * @param mixed  $format The format string from the map config.
+ * @param string $value  The value to format.
+ * @param int    $kilo   The divisor for %k scaling (1000 or 1024).
+ * @return string        The formatted text, or the literal format on failure.
  */
 function mysprintf($format, $value, $kilo = 1000) {
 	$output = '';
@@ -318,7 +326,22 @@ function mysprintf($format, $value, $kilo = 1000) {
 	} else {
 		wm_debug('Falling through to standard sprintf');
 
-		$output = sprintf($format, $value);
+		/* $format is label/notes/title text from the map config, so it can carry
+		 * stray or extra conversion specifiers.  Under PHP 8 sprintf() throws
+		 * (ArgumentCountError for too few arguments, ValueError for an unknown
+		 * specifier) rather than warning, and this runs inside the poller's map
+		 * loop with no handler above it, so one bad label would abort the whole
+		 * poller cycle.  Fall back to the literal text instead of crashing. */
+		try {
+			$output = @sprintf($format, $value);
+
+			if ($output === false) {
+				$output = $format;
+			}
+		} catch (\Throwable $e) {
+			wm_warn('Invalid format string in map text, using it literally: ' . $format . ' [WMFMT01]');
+			$output = $format;
+		}
 	}
 
 	return $output;
