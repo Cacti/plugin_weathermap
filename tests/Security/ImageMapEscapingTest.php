@@ -9,22 +9,7 @@
 
 require_once dirname(__DIR__, 2) . '/lib/HTML_ImageMap.class.php';
 
-/* weathermap-cacti-plugin-mgmt.php renders a page at include time, so the one
- * function under test is lifted out of it rather than including the whole page. */
-if (!function_exists('map_clean_title')) {
-	$mgmtSource = file_get_contents(dirname(__DIR__, 2) . '/weathermap-cacti-plugin-mgmt.php');
-
-	if (preg_match('/^function map_clean_title\(.*?^}/ms', $mgmtSource, $fn) !== 1) {
-		throw new RuntimeException('map_clean_title() could not be located');
-	}
-
-	/* Write to the exact path tempnam() created and reserved; appending an
-	 * extension would target a path nothing holds and leak the original. */
-	$extracted = tempnam(sys_get_temp_dir(), 'wmmgmt');
-	file_put_contents($extracted, "<?php\ndeclare(strict_types = 1);\n" . $fn[0] . "\n");
-	require_once $extracted;
-	unlink($extracted);
-}
+require_once dirname(__DIR__, 2) . '/lib/map-title.php';
 
 describe('generated image map markup', function () {
 	/* The poller writes this markup to output/<hash>.html and the plugin pages
