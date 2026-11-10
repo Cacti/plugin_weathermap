@@ -37,55 +37,31 @@ describe('weathermap_confine_output_path', function (): void {
 		}
 	});
 
-	it('rejects an executable extension', function (): void {
-		expect(weathermap_confine_output_path('evil.php', $this->outdir))->toBeFalse();
-		expect(weathermap_confine_output_path('evil.phtml', $this->outdir))->toBeFalse();
-		expect(weathermap_confine_output_path('map.html.php', $this->outdir))->toBeFalse();
-	});
-
-	it('rejects a dotfile such as .htaccess', function (): void {
-		expect(weathermap_confine_output_path('.htaccess', $this->outdir))->toBeFalse();
-	});
-
-	it('rejects a name without a supported extension', function (): void {
-		expect(weathermap_confine_output_path('index', $this->outdir))->toBeFalse();
-		expect(weathermap_confine_output_path('data.', $this->outdir))->toBeFalse();
-	});
-
-	it('rejects an absolute path', function (): void {
-		expect(weathermap_confine_output_path('/var/www/html/evil.php', $this->outdir))->toBeFalse();
-	});
-
-	it('rejects a parent-directory traversal', function (): void {
-		expect(weathermap_confine_output_path('../../evil.php', $this->outdir))->toBeFalse();
-	});
-
-	it('rejects any nested directory component', function (): void {
-		expect(weathermap_confine_output_path('sub/evil.php', $this->outdir))->toBeFalse();
-	});
-
-	it('rejects a Windows-style separator', function (): void {
-		expect(weathermap_confine_output_path('..\\evil.php', $this->outdir))->toBeFalse();
-	});
-
-	it('rejects a NUL byte', function (): void {
-		expect(weathermap_confine_output_path("map.html\0.php", $this->outdir))->toBeFalse();
-	});
-
-	it('rejects an empty or non-string value', function (): void {
-		expect(weathermap_confine_output_path('', $this->outdir))->toBeFalse();
-		expect(weathermap_confine_output_path(null, $this->outdir))->toBeFalse();
-	});
+	it('rejects a name that is not a plain output file name', function (mixed $path): void {
+		expect(weathermap_confine_output_path($path, $this->outdir))->toBeFalse();
+	})->with([
+		'an executable extension'           => ['evil.php'],
+		'a PHP handler extension'           => ['evil.phtml'],
+		'an extension after .html'          => ['map.html.php'],
+		'a dotfile such as .htaccess'       => ['.htaccess'],
+		'no extension'                      => ['index'],
+		'an empty extension'                => ['data.'],
+		'an absolute path'                  => ['/var/www/html/evil.php'],
+		'a parent-directory traversal'      => ['../../evil.php'],
+		'a nested directory component'      => ['sub/evil.php'],
+		'a Windows-style separator'         => ['..\\evil.php'],
+		'a NUL byte'                        => ["map.html\0.php"],
+		'an empty value'                    => [''],
+		'a non-string value'                => [null],
+		'a PHP segment before .png'         => ['map.php.png'],
+		'a PHTML segment before .html'      => ['map.PHTML.html'],
+		'a versioned PHP segment'           => ['map.php7.gif'],
+		'a CGI segment'                     => ['map.cgi.txt'],
+	]);
 
 	it('accepts ordinary names with dots, spaces and an upper-case extension', function (): void {
 		foreach (['network.prod.png', 'Core Links.html', 'MAP.PNG', 'site_a-2.JPEG'] as $name) {
 			expect(weathermap_confine_output_path($name, $this->outdir))->toBe(realpath($this->outdir) . DIRECTORY_SEPARATOR . $name);
-		}
-	});
-
-	it('rejects a name with a script-handler segment before the extension', function (): void {
-		foreach (['map.php.png', 'map.PHTML.html', 'map.php7.gif', 'map.cgi.txt'] as $name) {
-			expect(weathermap_confine_output_path($name, $this->outdir))->toBeFalse();
 		}
 	});
 
