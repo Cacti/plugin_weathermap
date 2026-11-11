@@ -9,13 +9,13 @@
 
 describe('data source ReadData return contract', function (): void {
 	it('base WeatherMapDataSource::ReadData() returns a 3-element [-1,-1,0] array', function (): void {
-		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/WeatherMap.class.php');
+		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/WeatherMapDataSource.class.php');
 
 		expect($source)->toContain('return ([-1, -1, 0]);');
 	});
 
 	it('does not contain the old 2-element [-1,-1] return in ReadData', function (): void {
-		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/WeatherMap.class.php');
+		$source = file_get_contents(dirname(__DIR__, 2) . '/lib/WeatherMapDataSource.class.php');
 
 		// The commented-out old signature is allowed, but no live return with only two elements.
 		$lines = explode("\n", $source);
