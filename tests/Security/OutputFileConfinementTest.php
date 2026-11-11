@@ -135,36 +135,30 @@ describe('weathermap_confine_output_path', function (): void {
 	 * output/weathermap_<id>.html through include(), and a data file holds node
 	 * and link names verbatim (which the config parser lets carry PHP), so a
 	 * data file must never be allowed to land as an includable .html. */
-	it('holds DATAOUTPUTFILE to data-only extensions', function (): void {
-		foreach (['data.txt', 'data.dat', 'data.tsv'] as $name) {
-			expect(weathermap_confine_output_path($name, $this->outdir, ['txt', 'dat', 'tsv']))
+	it('holds each directive to its own extensions', function (array $allowed, array $accepted, array $rejected): void {
+		foreach ($accepted as $name) {
+			expect(weathermap_confine_output_path($name, $this->outdir, $allowed))
 				->toBe(realpath($this->outdir) . DIRECTORY_SEPARATOR . $name);
 		}
 
-		foreach (['weathermap_1.html', 'map.htm', 'map.png', 'map.gif'] as $name) {
-			expect(weathermap_confine_output_path($name, $this->outdir, ['txt', 'dat', 'tsv']))->toBeFalse();
+		foreach ($rejected as $name) {
+			expect(weathermap_confine_output_path($name, $this->outdir, $allowed))->toBeFalse();
 		}
-	});
-
-	it('holds HTMLOUTPUTFILE to html extensions', function (): void {
-		foreach (['map.html', 'map.htm'] as $name) {
-			expect(weathermap_confine_output_path($name, $this->outdir, ['html', 'htm']))
-				->toBe(realpath($this->outdir) . DIRECTORY_SEPARATOR . $name);
-		}
-
-		foreach (['map.png', 'data.txt', 'map.dat'] as $name) {
-			expect(weathermap_confine_output_path($name, $this->outdir, ['html', 'htm']))->toBeFalse();
-		}
-	});
-
-	it('holds IMAGEOUTPUTFILE to image extensions', function (): void {
-		foreach (['map.png', 'map.jpg', 'map.jpeg', 'map.gif'] as $name) {
-			expect(weathermap_confine_output_path($name, $this->outdir, ['png', 'jpg', 'jpeg', 'gif']))
-				->toBe(realpath($this->outdir) . DIRECTORY_SEPARATOR . $name);
-		}
-
-		foreach (['weathermap_1.html', 'map.htm', 'data.txt'] as $name) {
-			expect(weathermap_confine_output_path($name, $this->outdir, ['png', 'jpg', 'jpeg', 'gif']))->toBeFalse();
-		}
-	});
+	})->with([
+		'DATAOUTPUTFILE (data only)' => [
+			['txt', 'dat', 'tsv'],
+			['data.txt', 'data.dat', 'data.tsv'],
+			['weathermap_1.html', 'map.htm', 'map.png', 'map.gif'],
+		],
+		'HTMLOUTPUTFILE (html only)' => [
+			['html', 'htm'],
+			['map.html', 'map.htm'],
+			['map.png', 'data.txt', 'map.dat'],
+		],
+		'IMAGEOUTPUTFILE (image only)' => [
+			['png', 'jpg', 'jpeg', 'gif'],
+			['map.png', 'map.jpg', 'map.jpeg', 'map.gif'],
+			['weathermap_1.html', 'map.htm', 'data.txt'],
+		],
+	]);
 });
