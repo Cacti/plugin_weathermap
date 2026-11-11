@@ -104,6 +104,26 @@ describe('generated image map markup', function () {
 		'anchor only'         => ['#here'],
 		'query with colon'    => ['graph_view.php?x=a:b'],
 	]);
+
+	/* wm_href_is_safe() guards its own inputs: a non-string href (the property
+	 * is loosely typed) and a value that is only whitespace or control
+	 * characters both resolve to unusable, so the area must fall back to
+	 * nohref rather than emit an empty or malformed href. */
+	it('rejects a non-string href value', function (mixed $url) {
+		expect(wm_href_is_safe($url))->toBeFalse();
+	})->with([
+		'null'    => [null],
+		'integer' => [42],
+		'array'   => [['http://example.com']],
+	]);
+
+	it('rejects an href that is only whitespace or control characters', function (string $url) {
+		expect(wm_href_is_safe($url))->toBeFalse();
+	})->with([
+		'spaces'          => ['    '],
+		'tabs and nl'     => ["\t\r\n"],
+		'nulls'           => ["\x00\x01"],
+	]);
 });
 
 describe('map_clean_title()', function () {

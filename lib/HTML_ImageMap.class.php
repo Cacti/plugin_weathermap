@@ -69,11 +69,7 @@ function wm_href_is_safe($url) {
 	// Decode entities the one time the browser will, so an entity-encoded
 	// scheme such as "java&#x73;cript:" or "javascript&colon;" is tested as
 	// the "javascript:" it becomes in the rendered attribute.
-	$charset = ini_get('default_charset');
-
-	if ($charset == '') {
-		$charset = 'UTF-8';
-	}
+	$charset = ini_get('default_charset') ?: 'UTF-8';
 
 	$decoded = html_entity_decode($url, ENT_QUOTES | ENT_HTML5, $charset);
 
