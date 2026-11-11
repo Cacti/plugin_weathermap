@@ -11,99 +11,87 @@ require_once dirname(__DIR__, 2) . '/lib/HTML_ImageMap.class.php';
 
 require_once dirname(__DIR__, 2) . '/lib/map-title.php';
 
+/**
+ * Build a rectangle area with the given href and render its common_html().
+ *
+ * @param  string|null $href The href to set, or null to leave the link unset.
+ * @return string      The rendered attribute fragment.
+ */
+function wm_area_html($href = null) {
+	$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
+
+	if ($href !== null) {
+		$area->href = $href;
+	}
+
+	return $area->common_html();
+}
+
 describe('generated image map markup', function () {
 	/* The poller writes this markup to output/<hash>.html and the plugin pages
 	 * bring it back with include(), so values taken from a map config have to
 	 * be escaped on the way in rather than trusted. */
 	it('escapes an href taken from the map config', function () {
-		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
-		$area->href = 'http://example.com/"><b>x</b>';
-
-		$html = $area->common_html();
+		$html = wm_area_html('http://example.com/"><b>x</b>');
 
 		expect($html)->not->toContain('"><b>');
 		expect($html)->toContain('&');
 	});
 
 	it('leaves an ordinary href usable', function () {
-		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
-		$area->href = 'http://example.com/graph.php?id=1';
-
-		expect($area->common_html())->toContain('http://example.com/graph.php?id=1');
+		expect(wm_area_html('http://example.com/graph.php?id=1'))->toContain('http://example.com/graph.php?id=1');
 	});
 
 	it('emits no PHP open tag for an href that contains one', function () {
-		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
-		$area->href = 'MARKER<?= X ?>MARKER';
-
-		expect($area->common_html())->not->toContain('<?');
+		expect(wm_area_html('MARKER<?= X ?>MARKER'))->not->toContain('<?');
 	});
 
 	it('emits nohref when no link is set', function () {
-		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
-
-		expect($area->common_html())->toContain('nohref');
+		expect(wm_area_html())->toContain('nohref');
 	});
 
 	/* html_escape() keeps an INFOURL inside the quoted attribute but leaves an
 	 * executable-scheme URL clickable, so a javascript:/data:/vbscript: link in
-	 * a map config would still run script in a viewer's session.  Those are
-	 * dropped to nohref while ordinary http(s) and relative Cacti links stay. */
-	it('drops an executable-scheme href to nohref', function (string $url) {
-		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
-		$area->href = $url;
+	 * a map config would run script in a viewer's session and must drop to
+	 * nohref, while ordinary http(s) and relative Cacti links are kept.  Cacti's
+	 * html_escape() uses double_encode = false, so entity-encoded schemes such
+	 * as java&#x73;cript: survive into the attribute and the browser decodes
+	 * them once; wm_href_is_safe() decodes first to catch those too. */
+	it('keeps safe hrefs and drops executable-scheme ones to nohref', function (string $url, bool $safe) {
+		$html = wm_area_html($url);
 
-		$html = $area->common_html();
-
-		expect($html)->toContain('nohref');
-		expect($html)->not->toContain('href="');
+		expect($html)->toContain($safe ? 'href="' : 'nohref');
+		expect($html)->not->toContain($safe ? 'nohref' : 'href="');
 	})->with([
-		'javascript scheme'            => ['javascript:alert(document.domain)'],
-		'mixed-case javascript scheme' => ['JavaScript:alert(1)'],
-		'whitespace-obfuscated scheme' => ["java\tscript:alert(1)"],
-		'leading-space scheme'         => ['  javascript:alert(1)'],
-		'data scheme'                  => ['data:text/html,<script>alert(1)</script>'],
-		'vbscript scheme'              => ['vbscript:msgbox(1)'],
-		// Cacti's html_escape() uses double_encode = false, so these entities
-		// survive into the attribute and the browser decodes them once into
-		// an executable javascript: link.  wm_href_is_safe() decodes first.
-		'hex-entity letter'            => ['java&#x73;cript:alert(1)'],
-		'decimal-entity letter'        => ['java&#115;cript:alert(1)'],
-		'named-colon entity'           => ['javascript&colon;alert(1)'],
-		'hex-entity colon'            => ['javascript&#x3a;alert(1)'],
-		'entity tab in scheme'         => ['java&#9;script:alert(1)'],
+		'javascript scheme'            => ['javascript:alert(document.domain)', false],
+		'mixed-case javascript scheme' => ['JavaScript:alert(1)', false],
+		'whitespace-obfuscated scheme' => ["java\tscript:alert(1)", false],
+		'leading-space scheme'         => ['  javascript:alert(1)', false],
+		'data scheme'                  => ['data:text/html,<script>alert(1)</script>', false],
+		'vbscript scheme'              => ['vbscript:msgbox(1)', false],
+		'hex-entity letter'            => ['java&#x73;cript:alert(1)', false],
+		'decimal-entity letter'        => ['java&#115;cript:alert(1)', false],
+		'named-colon entity'           => ['javascript&colon;alert(1)', false],
+		'hex-entity colon'             => ['javascript&#x3a;alert(1)', false],
+		'entity tab in scheme'         => ['java&#9;script:alert(1)', false],
+		'absolute http'                => ['http://example.com/graph.php?id=1', true],
+		'absolute https'               => ['https://example.com/', true],
+		'relative cacti page'          => ['graph_view.php?action=tree&node=1', true],
+		'root-relative path'           => ['/cacti/graph_view.php', true],
+		'protocol relative'            => ['//example.com/x', true],
+		'anchor only'                  => ['#here', true],
+		'query with colon'             => ['graph_view.php?x=a:b', true],
 	]);
 
 	/* Belt and braces: with the faithful html_escape() stub (double_encode =
 	 * false), confirm the rendered markup for an entity-encoded scheme carries
 	 * no href the browser could decode into javascript:, i.e. it is nohref. */
 	it('emits nohref markup that cannot decode to a javascript scheme', function () {
-		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
-		$area->href = 'java&#x73;cript:alert(1)';
-
-		$html = $area->common_html();
+		$html = wm_area_html('java&#x73;cript:alert(1)');
 
 		expect($html)->toContain('nohref');
 		expect(html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8'))->not->toContain('javascript:');
 	});
-
-	it('keeps an ordinary http(s) or relative href', function (string $url) {
-		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
-		$area->href = $url;
-
-		$html = $area->common_html();
-
-		expect($html)->toContain('href="');
-		expect($html)->not->toContain('nohref');
-	})->with([
-		'absolute http'       => ['http://example.com/graph.php?id=1'],
-		'absolute https'      => ['https://example.com/'],
-		'relative cacti page' => ['graph_view.php?action=tree&node=1'],
-		'root-relative path'  => ['/cacti/graph_view.php'],
-		'protocol relative'   => ['//example.com/x'],
-		'anchor only'         => ['#here'],
-		'query with colon'    => ['graph_view.php?x=a:b'],
-	]);
 
 	/* wm_href_is_safe() guards its own inputs: a non-string href (the property
 	 * is loosely typed) and a value that is only whitespace or control
