@@ -40,6 +40,7 @@
  +-------------------------------------------------------------------------+
 */
 
+require_once __DIR__ . '/../setup.php';
 require_once __DIR__ . '/editor.comment-style.php';
 require_once __DIR__ . '/editor.notes.php';
 
@@ -263,6 +264,58 @@ function wm_editor_sanitize_string($str) {
  */
 function wm_editor_sanitize_url($str) {
 	return str_replace(['&amp;', "\r", "\n"], ['&', '', ''], wm_editor_sanitize_string($str));
+}
+
+/**
+ * Build an HTML attribute list in which every value is escaped.
+ *
+ * Names must come from the caller, never from request or map data. A true
+ * value renders a boolean attribute; false and null omit the attribute.
+ * Values use plugin_weathermap_escape_attr() rather than html_escape(),
+ * which does not double-encode, so a value such as "&amp;" round-trips.
+ *
+ * @param array<string, scalar|null> $attributes Attribute names and values, in output order.
+ *
+ * @throws InvalidArgumentException When a name is not a plain attribute name or a value is not scalar.
+ *
+ * @return string The attributes, each with a leading space.
+ */
+function wm_editor_attributes(array $attributes) {
+	$out = '';
+
+	foreach ($attributes as $name => $value) {
+		if (!is_string($name) || !preg_match('/^[a-z][a-z0-9:-]*$/iD', $name)) {
+			throw new InvalidArgumentException('Invalid HTML attribute name');
+		}
+
+		if ($value === false || $value === null) {
+			continue;
+		}
+
+		if ($value === true) {
+			$out .= ' ' . $name;
+		} elseif (is_scalar($value)) {
+			$out .= ' ' . $name . '="' . plugin_weathermap_escape_attr((string) $value) . '"';
+		} else {
+			throw new InvalidArgumentException('Invalid value for HTML attribute ' . $name);
+		}
+	}
+
+	return $out;
+}
+
+/**
+ * Build an <option> element with escaped attributes and label.
+ *
+ * The label uses the same escaping as attribute values so it round-trips.
+ *
+ * @param string                     $label      Unescaped option text.
+ * @param array<string, scalar|null> $attributes Attributes for wm_editor_attributes().
+ *
+ * @return string The option element.
+ */
+function wm_editor_option($label, array $attributes = []) {
+	return '<option' . wm_editor_attributes($attributes) . '>' . plugin_weathermap_escape_attr((string) $label) . '</option>';
 }
 
 /**
@@ -732,10 +785,12 @@ function handle_inheritance(&$map, &$inheritables) {
 }
 
 /**
+ * Render a font selector listing the map's registered fonts.
+ *
  * @param  WeatherMap $map
  * @param  string     $name
  * @param  mixed      $current
- * @return mixed
+ * @return string
  */
 function get_fontlist(&$map,$name,$current) {
 	$output = '<select class="fontcombo" name="' . html_escape($name) . '">';
@@ -743,13 +798,7 @@ function get_fontlist(&$map,$name,$current) {
 	ksort($map->fonts);
 
 	foreach ($map->fonts as $fontnumber => $font) {
-		$output .= '<option ';
-
-		if ($current == $fontnumber) {
-			$output .= 'selected';
-		}
-
-		$output .= ' value="' . $fontnumber . '">' . html_escape(wm_editor_font_label($fontnumber, $font)) . '</option>';
+		$output .= wm_editor_option(wm_editor_font_label($fontnumber, $font), ['selected' => $current == $fontnumber, 'value' => $fontnumber]);
 	}
 
 	$output .= '</select>';
