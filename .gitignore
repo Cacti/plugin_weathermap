@@ -17,3 +17,6 @@ composer.lock
 .php-cs-fixer.cache
 /coverage/
 locales/po/*.po
+
+# Browser test dependencies installed by `npm ci` in tests/Browser
+/tests/Browser/node_modules/
