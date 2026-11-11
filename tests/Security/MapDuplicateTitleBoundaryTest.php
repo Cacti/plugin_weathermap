@@ -46,4 +46,13 @@ describe('map_duplicate title chunk-boundary guard', function (): void {
 
 		expect($result['reached'])->toBeFalse();
 	});
+
+	it('rejects a title whose source-config indentation pushes it past the boundary', function (): void {
+		// 4086 bytes clears the length pre-check, but 20 bytes of preserved
+		// leading whitespace on the source TITLE line carries the tail across
+		// the fgets chunk boundary; the post-substitution line check catches it.
+		$result = wm_run_duplicate_boundary('indent');
+
+		expect($result['reached'])->toBeFalse();
+	});
 });

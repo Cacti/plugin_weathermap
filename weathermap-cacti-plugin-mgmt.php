@@ -2055,6 +2055,21 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 			foreach ($assetMap->config_root_identity as $logical => $state) $dependencies[$logical] = $state;
 			if (!isset($dependencies[realpath($oldfile)])) $dependencies[realpath($oldfile)] = $assetMap->config_revision;
 			$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
+
+			/* The length pre-check above assumes the global TITLE sits at column
+			 * 0, as WriteConfig() emits it.  A source config can carry leading
+			 * whitespace on that line, which str_replace() preserves, so re-check
+			 * the written lines: ReadConfig() reads with fgets($fd, 4096) and
+			 * trims each chunk, so any TITLE line whose bytes reach that boundary
+			 * would be split and its tail parsed as a separate directive.  A line
+			 * is read whole only when its bytes plus the newline fit in one read
+			 * (at most 4095), i.e. the line itself is at most 4094 bytes. */
+			foreach (explode("\n", $contents) as $config_line) {
+				if (strlen($config_line) > 4094 && preg_match('/^\s*TITLE\s/i', $config_line)) {
+					throw new RuntimeException(__('Map title is too long. Use at most 4088 bytes after escaping.', 'weathermap'));
+				}
+			}
+
 			$assets = array_unique(array_merge($assetMap->ManagedImagePaths(), WeatherMap::ManagedImagePathsFromConfig($contents)));
 			$validateAssets = function () use ($assets) {
 				foreach ($assets as $asset) {

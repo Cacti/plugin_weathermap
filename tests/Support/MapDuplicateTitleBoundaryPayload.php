@@ -30,7 +30,12 @@ if ($start === false || $end === false) {
 $fixture = realpath(sys_get_temp_dir()) . '/wm-duplicate-boundary-' . bin2hex(random_bytes(5));
 mkdir($fixture); mkdir($fixture . '/configs');
 symlink(dirname(__DIR__, 2) . '/lib', $fixture . '/lib');
-file_put_contents($fixture . '/configs/Original.conf', "TITLE Original Map\n");
+
+/* An "indent" run writes the source TITLE line with leading whitespace, which
+ * str_replace() preserves, so a 4088-byte title that clears the length
+ * pre-check still pushes the written line past the fgets($fd, 4096) boundary. */
+$source_prefix = ($GLOBALS['argv'][1] ?? '') === 'indent' ? str_repeat(' ', 20) : '';
+file_put_contents($fixture . '/configs/Original.conf', $source_prefix . "TITLE Original Map\n");
 
 $GLOBALS['__newfile'] = $fixture . '/configs/Original_copy.conf';
 
@@ -39,15 +44,18 @@ eval(str_replace('__DIR__', var_export($fixture, true), substr($source, $start, 
 /**
  * Pick the duplicate title for the requested boundary case.
  *
- * @param string $mode One of max, over or inject.
+ * @param string $mode One of max, over, inject or indent.
  *
- * @return string The title used in place of the <map_title> placeholder.
+ * @return string The title used for the duplicate.
  */
 function boundary_title($mode) {
 	switch ($mode) {
 		case 'max':    return str_repeat('T', 4088);
 		case 'over':   return str_repeat('T', 4089);
 		case 'inject': return str_repeat('T', 4089) . 'INCLUDE /etc/passwd';
+		// 4088 bytes clears the length pre-check; the source indentation is what
+		// would otherwise carry the tail across the chunk boundary.
+		case 'indent': return str_repeat('T', 4069) . 'NODE InjectedNode';
 		default:       throw new RuntimeException('Unknown boundary mode: ' . $mode);
 	}
 }
