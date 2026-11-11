@@ -51,6 +51,13 @@
  * absolute paths, anchors and protocol-relative links) are allowed; anything
  * carrying another scheme is rejected so the caller can emit nohref instead.
  *
+ * The value is checked after decoding HTML entities because Cacti 1.2.x's
+ * html_escape() calls htmlspecialchars() with double_encode = false and so
+ * passes entities in the value through unchanged; the browser then decodes
+ * them once, turning "java&#x73;cript:" or "javascript&colon;" back into an
+ * executable javascript: link.  Decoding here the same single way the browser
+ * will keeps those out.
+ *
  * @param  string $url The raw href from the map config.
  * @return bool   True when the URL may be used as an href.
  */
@@ -59,9 +66,21 @@ function wm_href_is_safe($url) {
 		return false;
 	}
 
+	// Decode entities the one time the browser will, so an entity-encoded
+	// scheme such as "java&#x73;cript:" or "javascript&colon;" is tested as
+	// the "javascript:" it becomes in the rendered attribute.
+	$charset = ini_get('default_charset');
+
+	if ($charset == '') {
+		$charset = 'UTF-8';
+	}
+
+	$decoded = html_entity_decode($url, ENT_QUOTES | ENT_HTML5, $charset);
+
 	// Strip whitespace and control characters so an obfuscated scheme such
-	// as "java\tscript:" cannot slip the scheme test below.
-	$candidate = preg_replace('/[\x00-\x20\x7f]+/', '', $url);
+	// as "java\tscript:" (including its entity form "java&#9;script:") cannot
+	// slip the scheme test below.
+	$candidate = preg_replace('/[\x00-\x20\x7f]+/', '', $decoded);
 
 	if ($candidate === '' || $candidate === null) {
 		return false;

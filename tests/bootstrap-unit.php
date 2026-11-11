@@ -234,7 +234,17 @@ if (!function_exists('set_config_option')) {
 
 if (!function_exists('html_escape')) {
 	function html_escape($s) {
-		return htmlspecialchars($s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+		// Match Cacti core's html_escape(): htmlspecialchars() with
+		// double_encode = false, so entities already in the value are
+		// preserved rather than re-encoded.  Keeping the stub faithful stops
+		// it from masking entity-based escaping bypasses.
+		if ($s === null || $s === '') {
+			return '';
+		}
+
+		$s = str_replace('`', '&#96;', $s);
+
+		return htmlspecialchars($s, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
 	}
 }
 

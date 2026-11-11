@@ -64,7 +64,28 @@ describe('generated image map markup', function () {
 		'leading-space scheme'         => ['  javascript:alert(1)'],
 		'data scheme'                  => ['data:text/html,<script>alert(1)</script>'],
 		'vbscript scheme'              => ['vbscript:msgbox(1)'],
+		// Cacti's html_escape() uses double_encode = false, so these entities
+		// survive into the attribute and the browser decodes them once into
+		// an executable javascript: link.  wm_href_is_safe() decodes first.
+		'hex-entity letter'            => ['java&#x73;cript:alert(1)'],
+		'decimal-entity letter'        => ['java&#115;cript:alert(1)'],
+		'named-colon entity'           => ['javascript&colon;alert(1)'],
+		'hex-entity colon'            => ['javascript&#x3a;alert(1)'],
+		'entity tab in scheme'         => ['java&#9;script:alert(1)'],
 	]);
+
+	/* Belt and braces: with the faithful html_escape() stub (double_encode =
+	 * false), confirm the rendered markup for an entity-encoded scheme carries
+	 * no href the browser could decode into javascript:, i.e. it is nohref. */
+	it('emits nohref markup that cannot decode to a javascript scheme', function () {
+		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
+		$area->href = 'java&#x73;cript:alert(1)';
+
+		$html = $area->common_html();
+
+		expect($html)->toContain('nohref');
+		expect(html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8'))->not->toContain('javascript:');
+	});
 
 	it('keeps an ordinary http(s) or relative href', function (string $url) {
 		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
