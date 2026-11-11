@@ -1,7 +1,7 @@
-const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'), path=require('node:path'), assert=require('node:assert/strict');
+const {JSDOM}=require('jsdom'), jquery=require('jquery'), assert=require('node:assert/strict');
 const dom=new JSDOM('<input id="action"><img id="existingdata" data-width="1000" data-height="500" usemap="#weathermap_imap"><map id="weathermap_imap"><area id="NODE:N1:0" shape="rect" coords="100,50,140,80"><area id="LINK:L1:0" shape="poly" coords="200,100,300,100,250,150"></map>',{runScripts:'outside-only'});
 const w=dom.window,$=jquery(w);w.$=w.jQuery=$;
-w.eval(fs.readFileSync(path.join(__dirname,'../../js/editor.js'),'utf8'));
+require('./lib/editorScripts.cjs').loadEditorScripts(w);
 const image=$('#existingdata')[0];let rect={left:30,top:-200,width:500,height:250};image.getBoundingClientRect=()=>rect;
 assert.equal(w.wmEditorAreaAt(image,{clientX:90,clientY:-170}).id,'NODE:N1:0');
 rect={left:30,top:40,width:500,height:250};

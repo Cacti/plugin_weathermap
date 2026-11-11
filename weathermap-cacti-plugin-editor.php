@@ -303,6 +303,10 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<?php print get_md5_include_js('include/js/jquery.colorpicker.js'); ?>
 	<?php print get_md5_include_js('include/js/js.storage.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/editor.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.dialogs.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.picker.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.compact.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.assets.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/editor.history.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ddslick.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ui-contextmenu.js'); ?>

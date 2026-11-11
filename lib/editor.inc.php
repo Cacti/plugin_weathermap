@@ -444,6 +444,9 @@ function wm_editor_sanitize_conffile($filename) {
 }
 
 /**
+ * Render the editor start page: the editor scripts, the new map form and the
+ * list of map files.
+ *
  * @return void
  */
 function show_editor_startpage() {
@@ -454,6 +457,10 @@ function show_editor_startpage() {
 	getEditorJs();
 
 	print get_md5_include_js('plugins/weathermap/js/editor.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.dialogs.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.picker.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.compact.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.assets.js');
 
 	$errormessage = '';
 
