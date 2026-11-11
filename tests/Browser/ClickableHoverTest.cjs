@@ -1,6 +1,9 @@
 const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 (async()=>{
- const dom=new JSDOM('<button id="outside">Outside</button><map name="test" data-wm-hover-density="2"><area shape="rect" coords="0,0,100,100" href="/cacti/graph.php?local_graph_id=108"></map>',{url:'https://cacti.example/cacti/plugins/weathermap/view.php',runScripts:'outside-only',pretendToBeVisual:true});
+ // Browsers focus image-map hotspots, but jsdom 30.1.2+ skips any element with a
+ // display:none ancestor and its UA stylesheet hides area. Rendering the hotspot
+ // inline restores the browser's focus behaviour; the viewer never reads it.
+ const dom=new JSDOM('<style>area{display:inline}</style><button id="outside">Outside</button><map name="test" data-wm-hover-density="2"><area shape="rect" coords="0,0,100,100" href="/cacti/graph.php?local_graph_id=108"></map>',{url:'https://cacti.example/cacti/plugins/weathermap/view.php',runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window,$=jquery(w);w.$=w.jQuery=$;
  w.eval(fs.readFileSync(path.join(process.env.CACTI_JS_DIR,'jquery-ui.js'),'utf8'));
  $('area').attr('data-hover',Buffer.from('<div><img src="/cacti/graph_image.php?local_graph_id=108&amp;graph_width=300&amp;graph_height=100"><br><img src="/cacti/graph_image.php?local_graph_id=159"></div>').toString('base64'));
@@ -9,6 +12,12 @@ const {JSDOM}=require('jsdom'), jquery=require('jquery'), fs=require('node:fs'),
  const area=$('area'),map=$('map'),instance=map.tooltip('instance');
  function open(){area[0].dispatchEvent(new w.MouseEvent('mouseover',{bubbles:true}));}
  const delay=()=>new Promise(r=>w.setTimeout(r,350));
+ // Every keyboard assertion below depends on the hotspot accepting focus.
+ area[0].focus();
+ assert.equal(w.document.activeElement,area[0],'Hotspot accepts keyboard focus');
+ assert.equal($('.ui-tooltip').length,1,'Focusing the hotspot opens its popup');
+ $('#outside')[0].focus();await delay();
+ assert.equal($('.ui-tooltip').length,0,'Hotspot blur closes the keyboard-opened popup');
  open();let tip=$('.ui-tooltip');
  assert.equal(tip.length,1);assert.equal(tip.css('pointer-events'),'auto');
  assert.equal(tip.find('a').length,2);
