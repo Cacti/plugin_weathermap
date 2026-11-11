@@ -1,68 +1,63 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2022-2026 The Cacti Group, Howard Jones                    |
- | Licensed under the GNU General Public License, version 2.              |
+ | Copyright (C) 2004-2026 The Cacti Group                                 |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
  +-------------------------------------------------------------------------+
 */
 
-/* map_clean_title() strips control characters from a duplicate-map title but
- * not its length.  ReadConfig() parses the config with fgets($fd, 4096), so a
- * title long enough to push "TITLE <title>" past that chunk boundary would have
- * its overflow read as a separate directive.  map_duplicate() must reject a
- * cleaned title longer than 4088 bytes before writing the config, matching
- * newMap(). */
-function wm_run_duplicate_boundary(string $mode): array {
-	$command = escapeshellarg(PHP_BINARY) . ' '
-		. escapeshellarg(dirname(__DIR__) . '/Support/MapDuplicateTitleBoundaryPayload.php') . ' '
-		. escapeshellarg($mode);
+require_once dirname(__DIR__, 2) . '/lib/map-title.php';
 
-	$lines = [];
-	exec($command, $lines, $status);
+/* map_clean_title() strips control characters from a duplicated map title but
+ * not its length.  ReadConfig() parses the config with fgets($fd, 4096) and
+ * trims each chunk, so a title long enough to push a rewritten line past that
+ * boundary would have its tail parsed as a separate directive.
+ * map_duplicate_title_overflows_line() is the guard map_duplicate() uses to
+ * reject such a copy before it writes the config. */
+describe('map_duplicate_title_overflows_line()', function (): void {
+	$source = "WIDTH 100\nTITLE Original Map\nNODE a\n";
 
-	expect($status)->toBe(0);
-
-	return json_decode(implode("\n", $lines), true, 512, JSON_THROW_ON_ERROR);
-}
-
-describe('map_duplicate title chunk-boundary guard', function (): void {
-	it('writes a 4088-byte title that stays within one fgets chunk', function (): void {
-		$result = wm_run_duplicate_boundary('max');
-
-		expect($result['reached'])->toBeTrue();
-		// "TITLE " (6) + 4088 bytes = 4094, so "TITLE <title>\n" is 4095 bytes,
-		// the most that fits in a single fgets($fd, 4096) read.
-		expect($result['titleLineLen'])->toBe(4094);
+	it('accepts a 4088-byte title on a column-0 TITLE line', function () use ($source): void {
+		// "TITLE " (6) + 4088 = 4094, the longest line fgets($fd, 4096) still
+		// reads whole with its newline.
+		expect(map_duplicate_title_overflows_line('Original Map', str_repeat('T', 4088), $source))->toBeFalse();
 	});
 
-	it('rejects a 4089-byte title before writing the config', function (): void {
-		$result = wm_run_duplicate_boundary('over');
-
-		expect($result['reached'])->toBeFalse();
+	it('rejects a 4089-byte title on a column-0 TITLE line', function () use ($source): void {
+		expect(map_duplicate_title_overflows_line('Original Map', str_repeat('T', 4089), $source))->toBeTrue();
 	});
 
-	it('rejects an oversized title that carries an injected directive', function (): void {
-		$result = wm_run_duplicate_boundary('inject');
+	it('rejects a title whose source-config indentation pushes the line over', function (): void {
+		// 4088 bytes clears a title-only length check, but 20 bytes of preserved
+		// leading whitespace carry the rewritten line past the boundary.
+		$indented = "WIDTH 100\n" . str_repeat(' ', 20) . "TITLE Original Map\nNODE a\n";
 
-		expect($result['reached'])->toBeFalse();
+		expect(map_duplicate_title_overflows_line('Original Map', str_repeat('T', 4088), $indented))->toBeTrue();
 	});
 
-	it('rejects a title whose source-config indentation pushes it past the boundary', function (): void {
-		// 4086 bytes clears the length pre-check, but 20 bytes of preserved
-		// leading whitespace on the source TITLE line carries the tail across
-		// the fgets chunk boundary; the post-substitution line check catches it.
-		$result = wm_run_duplicate_boundary('indent');
+	it('rejects a title that overflows a non-TITLE line holding the marker', function (): void {
+		// str_replace() rewrites "TITLE <old>" inside a comment too; "# TITLE "
+		// (8) + 4088 = 4096 overflows even though the real TITLE line (4094) does
+		// not, and the split tail would parse as a directive past the '#'.
+		$commented = "# TITLE Original Map\nTITLE Original Map\nNODE a\n";
 
-		expect($result['reached'])->toBeFalse();
+		expect(map_duplicate_title_overflows_line('Original Map', str_repeat('T', 4088), $commented))->toBeTrue();
 	});
 
-	it('rejects when the title overflows a non-TITLE line that holds the marker', function (): void {
-		// str_replace() rewrites "TITLE <old>" everywhere, including inside a
-		// comment.  A 4088-byte title keeps the real TITLE line at 4094 bytes
-		// but pushes the "# TITLE " comment line to 4096, whose split tail would
-		// parse as a directive; the guard must check every rewritten line.
-		$result = wm_run_duplicate_boundary('comment');
-
-		expect($result['reached'])->toBeFalse();
+	it('leaves an ordinary short title alone', function () use ($source): void {
+		expect(map_duplicate_title_overflows_line('Original Map', 'Original Map Copy', $source))->toBeFalse();
 	});
+
+	it('does nothing when the marker is absent from the config', function (): void {
+		expect(map_duplicate_title_overflows_line('Missing Title', str_repeat('T', 5000), "WIDTH 100\nNODE a\n"))->toBeFalse();
+	});
+
+	it('returns false for non-string arguments', function (mixed $old, mixed $new, mixed $contents): void {
+		expect(map_duplicate_title_overflows_line($old, $new, $contents))->toBeFalse();
+	})->with([
+		'non-string contents' => ['Original Map', 'x', null],
+		'non-string old'      => [null, 'x', 'TITLE x'],
+		'non-string new'      => ['Original Map', ['x'], 'TITLE Original Map'],
+	]);
 });

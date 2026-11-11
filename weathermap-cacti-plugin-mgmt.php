@@ -2058,24 +2058,15 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 			 * WriteConfig() emits it, and measures the title alone.  The
 			 * substitution below is a whole-file str_replace(), so it rewrites
 			 * the title on every line that holds it -- an indented TITLE line, or
-			 * even a comment or label that happens to contain "TITLE <old>" --
-			 * and preserves whatever precedes it.  ReadConfig() reads with
-			 * fgets($fd, 4096) and trims each chunk, so any rewritten line past
-			 * that boundary would be split and its tail parsed as a separate
-			 * directive, escaping a leading '#'.  Validate every line the
-			 * substitution lengthens, not just TITLE lines: a line is read whole
-			 * only when its bytes plus the newline fit in one 4096-byte read,
-			 * i.e. the line itself is at most 4094 bytes. */
-			$title_marker = "TITLE {$map['titlecache']}";
-
-			foreach (explode("\n", $contents) as $config_line) {
-				if (strpos($config_line, $title_marker) !== false
-					&& strlen(str_replace($title_marker, "TITLE {$save['titlecache']}", $config_line)) > 4094) {
-					throw new RuntimeException(__('Map title is too long. Use at most 4088 bytes after escaping.', 'weathermap'));
-				}
+			 * even a comment or label that happens to contain "TITLE <old>".
+			 * map_duplicate_title_overflows_line() rejects the copy when any such
+			 * rewritten line would cross ReadConfig()'s fgets($fd, 4096) boundary
+			 * and have its tail parsed as a separate directive. */
+			if (map_duplicate_title_overflows_line($map['titlecache'], $save['titlecache'], $contents)) {
+				throw new RuntimeException(__('Map title is too long. Use at most 4088 bytes after escaping.', 'weathermap'));
 			}
 
-			$contents = str_replace($title_marker, "TITLE {$save['titlecache']}", $contents);
+			$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
 
 			$assets = array_unique(array_merge($assetMap->ManagedImagePaths(), WeatherMap::ManagedImagePathsFromConfig($contents)));
 			$validateAssets = function () use ($assets) {
