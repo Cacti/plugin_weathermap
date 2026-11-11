@@ -55,4 +55,14 @@ describe('map_duplicate title chunk-boundary guard', function (): void {
 
 		expect($result['reached'])->toBeFalse();
 	});
+
+	it('rejects when the title overflows a non-TITLE line that holds the marker', function (): void {
+		// str_replace() rewrites "TITLE <old>" everywhere, including inside a
+		// comment.  A 4088-byte title keeps the real TITLE line at 4094 bytes
+		// but pushes the "# TITLE " comment line to 4096, whose split tail would
+		// parse as a directive; the guard must check every rewritten line.
+		$result = wm_run_duplicate_boundary('comment');
+
+		expect($result['reached'])->toBeFalse();
+	});
 });

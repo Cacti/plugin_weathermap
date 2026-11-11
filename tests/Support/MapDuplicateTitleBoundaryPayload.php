@@ -31,11 +31,19 @@ $fixture = realpath(sys_get_temp_dir()) . '/wm-duplicate-boundary-' . bin2hex(ra
 mkdir($fixture); mkdir($fixture . '/configs');
 symlink(dirname(__DIR__, 2) . '/lib', $fixture . '/lib');
 
-/* An "indent" run writes the source TITLE line with leading whitespace, which
- * str_replace() preserves, so a 4088-byte title that clears the length
- * pre-check still pushes the written line past the fgets($fd, 4096) boundary. */
-$source_prefix = ($GLOBALS['argv'][1] ?? '') === 'indent' ? str_repeat(' ', 20) : '';
-file_put_contents($fixture . '/configs/Original.conf', $source_prefix . "TITLE Original Map\n");
+/* The source config is shaped per mode.  "indent" keeps leading whitespace on
+ * the TITLE line; "comment" also places the substituted string inside a comment
+ * line, which str_replace() rewrites too, so the guard must look past TITLE
+ * lines.  str_replace() preserves whatever precedes "TITLE <old>" on each line. */
+$mode = $GLOBALS['argv'][1] ?? '';
+
+switch ($mode) {
+	case 'indent':  $source_config = str_repeat(' ', 20) . "TITLE Original Map\n"; break;
+	case 'comment': $source_config = "# TITLE Original Map\nTITLE Original Map\n"; break;
+	default:        $source_config = "TITLE Original Map\n"; break;
+}
+
+file_put_contents($fixture . '/configs/Original.conf', $source_config);
 
 $GLOBALS['__newfile'] = $fixture . '/configs/Original_copy.conf';
 
@@ -44,7 +52,7 @@ eval(str_replace('__DIR__', var_export($fixture, true), substr($source, $start, 
 /**
  * Pick the duplicate title for the requested boundary case.
  *
- * @param string $mode One of max, over, inject or indent.
+ * @param string $mode One of max, over, inject, indent or comment.
  *
  * @return string The title used for the duplicate.
  */
@@ -56,7 +64,11 @@ function boundary_title($mode) {
 		// 4088 bytes clears the length pre-check; the source indentation is what
 		// would otherwise carry the tail across the chunk boundary.
 		case 'indent': return str_repeat('T', 4069) . 'NODE InjectedNode';
-		default:       throw new RuntimeException('Unknown boundary mode: ' . $mode);
+		// 4088 bytes clears the pre-check and keeps the real TITLE line within
+		// bounds (6 + 4088 = 4094); the "# TITLE " comment line (8 + 4088 = 4096)
+		// is what the guard must reject.
+		case 'comment': return str_repeat('T', 4088);
+		default:        throw new RuntimeException('Unknown boundary mode: ' . $mode);
 	}
 }
 
