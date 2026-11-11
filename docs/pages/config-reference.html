@@ -2506,6 +2506,25 @@ LINK DEFAULT
           <p xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">The
           equivalent command-line option takes precedence over this configuration line, if both are
           used.</p>
+          <p xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+          <a id="CACTI_OUTPUT_FILE_NAMES"></a>When the Cacti plugin writes this file, it writes only into the
+          plugin's <code>output/</code> directory. Give a file name such as <code>network.prod.png</code> or
+          <code>Core Links.html</code>, or a path whose directory is the output directory, such as
+          <code>output/network.png</code> (relative to the plugin directory) or the absolute path of the
+          output directory. A file name starts with a letter or digit, may contain letters, digits,
+          spaces, dots, underscores and hyphens, and ends in an extension appropriate to the directive,
+          in any letter case: <code>HTMLOUTPUTFILE</code> accepts <code>.html</code> or <code>.htm</code>;
+          <code>IMAGEOUTPUTFILE</code> accepts <code>.png</code>, <code>.jpg</code>, <code>.jpeg</code> or
+          <code>.gif</code>; and <code>DATAOUTPUTFILE</code> accepts only the data extensions
+          <code>.txt</code>, <code>.dat</code> or <code>.tsv</code> (so a data file, whose contents come
+          from the map, cannot be written as an includable HTML page). A name with a script extension in the
+          middle, such as <code>map.php.png</code>, is refused, as is an existing file in the output
+          directory that is a symbolic link or has a second hard link.</p>
+          <p xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">Any other value, such as a path into a
+          subdirectory or outside <code>output/</code>, is ignored and the poller logs a
+          <code>WMPOLL08</code> warning; the map itself is still drawn into <code>output/</code>. To keep a
+          second copy elsewhere, change the directive to a file name and copy or serve the file from
+          <code>output/</code>.</p>
         </div>
         <div class="changes">
           <h4>Change History</h4>
@@ -2532,8 +2551,10 @@ LINK DEFAULT
           "targets.html#wmdata">wmdata datasource plugin</a>, which allows one map to refer to data
           in another map.</p>
           <p xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">If you
-          are using the Cacti plugin, this data is always saved in the output/ directory, in
-          addition to anywhere you specify with this command.</p>
+          are using the Cacti plugin, this data is always saved in the output/ directory.</p>
+          <p xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">The Cacti plugin writes this
+          file into its output directory only; see <a href="#CACTI_OUTPUT_FILE_NAMES">the accepted names</a>
+          under HTMLOUTPUTFILE.</p>
         </div>
         <div class="changes">
           <h4>Change History</h4>
@@ -2574,6 +2595,9 @@ LINK DEFAULT
           <p xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">The
           equivalent command-line option takes precedence over this configuration line, if both are
           used.</p>
+          <p xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">The Cacti plugin writes this
+          file into its output directory only; see <a href="#CACTI_OUTPUT_FILE_NAMES">the accepted names</a>
+          under HTMLOUTPUTFILE.</p>
         </div>
         <div class="changes">
           <h4>Change History</h4>

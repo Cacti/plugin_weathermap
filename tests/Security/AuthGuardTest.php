@@ -72,3 +72,16 @@ describe('auth guard presence in weathermap', function () {
 		}
 	});
 });
+
+describe('check.php command line carve-out', function () {
+	/* The web path is covered behaviourally in CheckPageAccessTest, which drives
+	 * the page under a CGI SAPI with the realm denied.  Only the CLI carve-out is
+	 * asserted here, because it is a deliberate decision rather than a mechanism:
+	 * running the report both ways is how the two PHP configurations get
+	 * compared. */
+	it('leaves the command line run ungated', function () {
+		$source = file_get_contents(dirname(__DIR__, 2) . '/check.php');
+
+		expect($source)->toContain("if (PHP_SAPI !== 'cli') {");
+	});
+});

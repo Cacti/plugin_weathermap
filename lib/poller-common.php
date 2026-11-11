@@ -44,6 +44,114 @@
 // this is the easiest way to keep it all consistent!
 
 /**
+ * Confines a user-configured output path to the plugin's own output directory.
+ *
+ * The OUTPUTFILE / HTMLOUTPUTFILE / IMAGEOUTPUTFILE / DATAOUTPUTFILE map
+ * directives name a file the poller then writes.  A map config can be authored
+ * by anyone holding the "Manage Weathermap" or "Edit Weathermaps" permission,
+ * so those values are not trusted: without this check an absolute path or one
+ * containing "../" lets the poller (or the "rebuild now" web request) write or
+ * overwrite an arbitrary file as its own user.
+ *
+ * Accepted values:
+ *   - a file name, such as "network.prod.png" or "Core Links.HTML", written
+ *     into $outdir;
+ *   - a path whose directory resolves to $outdir itself, such as
+ *     "output/map.png" (relative to the plugin directory, which is where the
+ *     poller runs) or an absolute path into the output directory, so existing
+ *     configs that already pointed there keep working.
+ *
+ * The file name must start with a letter or digit, may contain letters,
+ * digits, spaces, dots, underscores and hyphens, and must end in one of the
+ * extensions in $allowed_exts (any case).  A name with a script-handler
+ * segment such as "map.php.png" is refused, because some web server
+ * configurations run a file by any of its extensions.
+ *
+ * Each directive passes only the extensions it legitimately produces, so a
+ * directive cannot write a file of another kind.  DATAOUTPUTFILE in particular
+ * is held to data-only extensions: the poller renders output/weathermap_<id>.html
+ * through include(), and a data file holds node and link names verbatim, which
+ * the config parser lets carry PHP, so an includable .html data file would run
+ * as code when that map is shown in the graph tree.
+ *
+ * An existing destination is refused when it is a symbolic link or has more
+ * than one hard link, since writing it would change a file outside $outdir.
+ *
+ * @param string        $path         The raw path from the map directive.
+ * @param string        $outdir       The plugin's output directory (absolute).
+ * @param array<string> $allowed_exts Lower-case extensions (no dot) this
+ *                                    directive may produce; defaults to every
+ *                                    output extension the directives support.
+ * @return string|false  The absolute path to write, or false if it is unsafe
+ *                       or the output directory cannot be resolved.
+ */
+function weathermap_confine_output_path($path, $outdir, $allowed_exts = ['html', 'htm', 'png', 'jpg', 'jpeg', 'gif', 'txt', 'dat', 'tsv']) {
+	if (!is_string($path) || $path === '' || strpos($path, "\0") !== false) {
+		return false;
+	}
+
+	$base = realpath($outdir);
+
+	if ($base === false) {
+		return false;
+	}
+
+	$separators = DIRECTORY_SEPARATOR === '\\' ? '/\\' : '/';
+	$cut        = max(strrpos($path, '/'), DIRECTORY_SEPARATOR === '\\' ? strrpos($path, '\\') : false);
+
+	if ($cut === false) {
+		$name = $path;
+	} else {
+		$name = substr($path, $cut + 1);
+		$dir  = substr($path, 0, $cut);
+
+		// a relative directory is taken from the plugin directory, the
+		// poller's working directory and the parent of $outdir
+		$absolute = $dir !== '' && (strpos($separators, $dir[0]) !== false || preg_match('/^[A-Za-z]:/', $dir) === 1);
+		$resolved = realpath($absolute ? $dir : ($dir === '' ? DIRECTORY_SEPARATOR : dirname(rtrim($outdir, $separators)) . DIRECTORY_SEPARATOR . $dir));
+
+		if ($resolved !== $base) {
+			return false;
+		}
+	}
+
+	// The first character must be a letter or digit, so '.', '..' and
+	// dotfiles such as .htaccess are rejected without a separate check.
+	if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9 ._-]*\.([A-Za-z0-9]+)$/', $name, $ext)) {
+		return false;
+	}
+
+	// Each directive only accepts the extensions it legitimately produces.
+	if (!in_array(strtolower($ext[1]), $allowed_exts, true)) {
+		return false;
+	}
+
+	foreach (array_slice(explode('.', $name), 1, -1) as $segment) {
+		if (preg_match('/^(php\d*|pht|phtml|phar|phps|cgi|pl|py|sh|shtml|asp|aspx|jsp)$/i', $segment)) {
+			return false;
+		}
+	}
+
+	$target = $base . DIRECTORY_SEPARATOR . $name;
+
+	clearstatcache(true, $target);
+
+	if (is_link($target)) {
+		return false;
+	}
+
+	if (file_exists($target)) {
+		$stat = @stat($target);
+
+		if ($stat === false || !is_file($target) || $stat['nlink'] > 1) {
+			return false;
+		}
+	}
+
+	return $target;
+}
+
+/**
  * @param string $note
  * @return void
  */
@@ -552,7 +660,13 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 
 						// if the user explicitly defined a data file, write it there too
 						if ($wmap->dataoutputfile) {
-							$wmap->WriteDataFile($wmap->dataoutputfile);
+							$safedatafile = weathermap_confine_output_path($wmap->dataoutputfile, $outdir, ['txt', 'dat', 'tsv']);
+
+							if ($safedatafile !== false) {
+								$wmap->WriteDataFile($safedatafile);
+							} else {
+								wm_warn('Ignoring DATAOUTPUTFILE outside the output directory: ' . $wmap->dataoutputfile . ' [WMPOLL08]');
+							}
 						}
 
 						// put back the configured imageuri
@@ -565,9 +679,11 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 						 * libraries once covered by overlib.js prior to 1.4.
 						 */
 						if ($wmap->htmloutputfile != '') {
-							$htmlfile = $wmap->htmloutputfile;
+							$htmlfile = weathermap_confine_output_path($wmap->htmloutputfile, $outdir, ['html', 'htm']);
 
-							if ((is_dir(dirname($htmlfile)) && is_writable(dirname($htmlfile))) || is_writable($htmlfile)) {
+							if ($htmlfile === false) {
+								wm_warn('Ignoring HTMLOUTPUTFILE outside the output directory: ' . $wmap->htmloutputfile . ' [WMPOLL08]');
+							} elseif ((is_dir(dirname($htmlfile)) && is_writable(dirname($htmlfile))) || is_writable($htmlfile)) {
 								$fd = fopen($htmlfile, 'w');
 
 								if ($fd !== false) {
@@ -589,7 +705,13 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 
 						// copy the existing image file to the configured location too
 						if ($wmap->imageoutputfile != '' && $wmap->imageoutputfile != 'weathermap.png' && file_exists($imagefile)) {
-							copy($imagefile, $wmap->imageoutputfile);
+							$safeimagefile = weathermap_confine_output_path($wmap->imageoutputfile, $outdir, ['png', 'jpg', 'jpeg', 'gif']);
+
+							if ($safeimagefile !== false) {
+								copy($imagefile, $safeimagefile);
+							} else {
+								wm_warn('Ignoring IMAGEOUTPUTFILE outside the output directory: ' . $wmap->imageoutputfile . ' [WMPOLL08]');
+							}
 						}
 
 						$processed_title = $wmap->ProcessString($wmap->title, $wmap);

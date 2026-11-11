@@ -88,7 +88,11 @@ function plugin_weathermap_install() {
 	api_plugin_register_hook('weathermap', 'poller_bottom', 'weathermap_poller_bottom', 'setup.php');
 
 	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin.php', 'View Weathermaps', 1);
-	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php', 'Manage Weathermap', 1);
+	/* check.php reports host and PHP build details, so it is gated behind Manage
+	 * Weathermap.  It is listed in the realm's file set because Cacti keys page
+	 * authorization in include/auth.php on the requesting filename: a page absent
+	 * from every realm is refused regardless of any in-page check. */
+	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php,check.php', 'Manage Weathermap', 1);
 	api_plugin_register_realm('weathermap', 'weathermap-cacti-plugin-editor.php', 'Edit Weathermaps', 1);
 
 	weathermap_setup_table();
@@ -269,6 +273,14 @@ function plugin_weathermap_upgrade() {
 		db_execute_prepared('UPDATE plugin_realms
 			SET file = ? WHERE file = ?',
 			['weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php', 'weathermap-cacti-plugin-mgmt.php']);
+
+		/* Add check.php to the Manage Weathermap realm on existing installs so
+		 * include/auth.php authorizes the now-gated report.  Runs after the step
+		 * above, so a realm still holding the two-file value is widened once more.
+		 * Idempotent: the WHERE clause no longer matches once check.php is present. */
+		db_execute_prepared('UPDATE plugin_realms
+			SET file = ? WHERE file = ?',
+			['weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php,check.php', 'weathermap-cacti-plugin-mgmt.php,weathermap-cacti-plugin-mgmt-groups.php']);
 
 		// update the plugin information
 		$info = plugin_weathermap_version();
@@ -687,7 +699,7 @@ function weathermap_tree_item_render($leaf) {
 			<td>
 				<table width='100%' cellpadding='0' cellspacing='0'>
 					<tr>
-						<td class='textHeader' nowrap><?php print $maptitle; ?></td>
+						<td class='textHeader' nowrap><?php print html_escape($maptitle); ?></td>
 					</tr>
 				</table>
 			</td>

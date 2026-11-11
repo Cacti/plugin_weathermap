@@ -47,6 +47,7 @@ global $config;
 include_once($config['library_path'] . '/rrd.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/WeatherMap.class.php');
 include_once($config['base_path'] . '/plugins/weathermap/lib/poller-common.php');
+require_once __DIR__ . '/lib/map-title.php';
 
 $weathermap_confdir = realpath(__DIR__ . '/configs');
 
@@ -771,7 +772,7 @@ function wm_filter() {
 
 	$last_stats = read_config_option('weathermap_last_stats', true);
 
-	html_start_box(__('Weather Maps [ Run Details: %s ]', $last_stats, 'weathermap'), '100%', false, 3, 'center', 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
+	html_start_box(__esc('Weather Maps [ Run Details: %s ]', $last_stats, 'weathermap'), '100%', false, 3, 'center', 'weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
 	?>
 	<tr class='even'>
 		<td>
@@ -1711,7 +1712,7 @@ function preview_config($file) {
 		header('Location: weathermap-cacti-plugin-mgmt.php?action=addmap_picker');
 		exit;
 	} else {
-		html_start_box(__('Preview of %s', $file, 'weathermap'), '100%', false, 3, 'center', '');
+		html_start_box(__esc('Preview of %s', $file, 'weathermap'), '100%', false, 3, 'center', '');
 
 		print '<tr><td class="textArea">';
 		print '<pre>';
@@ -2001,7 +2002,7 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		$save['group_id']     = $map['group_id'];
 		$save['active']       = $map['active'];
 		$save['configfile']   = $configfile;
-		$save['titlecache']   = str_replace('<map_title>', $map['titlecache'], $titlecache);
+		$save['titlecache']   = map_clean_title(str_replace('<map_title>', $map['titlecache'], $titlecache));
 		$save['imagefile']    = '';
 		$save['htmlfile']     = '';
 		$save['filehash']     = '';
@@ -2016,6 +2017,17 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		$save['archiving']    = $map['archiving'];
 		$save['duration']     = 0;
 		$save['last_runtime'] = 0;
+
+		/* ReadConfig() parses the config with fgets($fd, 4096), so a TITLE line
+		 * at or beyond that chunk size is split and its tail is read as a
+		 * separate directive.  map_clean_title() removes control characters but
+		 * not length, so reject an over-length cleaned title before the config
+		 * is written, matching newMap(), so a duplicate title cannot inject
+		 * directives across the chunk boundary. */
+		if (strlen($save['titlecache']) > 4088) {
+			raise_message('map_message', __esc('Map title is too long. Use at most 4088 bytes after escaping.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+			return;
+		}
 
 		$confdir = __DIR__ . '/configs';
 
@@ -2042,7 +2054,20 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 			$dependencies = $assetMap->config_dependencies;
 			foreach ($assetMap->config_root_identity as $logical => $state) $dependencies[$logical] = $state;
 			if (!isset($dependencies[realpath($oldfile)])) $dependencies[realpath($oldfile)] = $assetMap->config_revision;
+			/* The title pre-check assumes the global TITLE sits at column 0, as
+			 * WriteConfig() emits it, and measures the title alone.  The
+			 * substitution below is a whole-file str_replace(), so it rewrites
+			 * the title on every line that holds it -- an indented TITLE line, or
+			 * even a comment or label that happens to contain "TITLE <old>".
+			 * map_duplicate_title_overflows_line() rejects the copy when any such
+			 * rewritten line would cross ReadConfig()'s fgets($fd, 4096) boundary
+			 * and have its tail parsed as a separate directive. */
+			if (map_duplicate_title_overflows_line($map['titlecache'], $save['titlecache'], $contents)) {
+				throw new RuntimeException(__('Map title is too long. Use at most 4088 bytes after escaping.', 'weathermap'));
+			}
+
 			$contents = str_replace("TITLE {$map['titlecache']}", "TITLE {$save['titlecache']}", $contents);
+
 			$assets = array_unique(array_merge($assetMap->ManagedImagePaths(), WeatherMap::ManagedImagePathsFromConfig($contents)));
 			$validateAssets = function () use ($assets) {
 				foreach ($assets as $asset) {
@@ -2086,7 +2111,7 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		} finally {
 			\WeathermapConfig\release($lock);
 		}
-		raise_message('new_map_' . $newid, __('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
+		raise_message('new_map_' . $newid, __esc('The new Map with the name %s was created using config file %s', $save['titlecache'], $save['configfile'], 'weathermap'), MESSAGE_LEVEL_INFO);
 		weathermap_run_maps(__DIR__, true, [$newid]);
 	}
 }
@@ -2209,7 +2234,7 @@ function perms_filter($id) {
 		WHERE id = ?',
 		[$id]);
 
-	html_start_box(__('Weathermap Permissions for Map [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
+	html_start_box(__esc('Weathermap Permissions for Map [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
 	?>
 	<tr class='even'>
 		<td>
@@ -2694,7 +2719,7 @@ function weathermap_map_settings($id) {
 			WHERE id = ?',
 			[$group_id]);
 
-		$title = __('Edit Group Settings [ Group: %s ]', $groupname, 'weathermap');
+		$title = __esc('Edit Group Settings [ Group: %s ]', $groupname, 'weathermap');
 
 		$nonemsg = __('There are no per Group Settings for this Group yet. You can add some by pressing the plus sign \'+\' in the top-right.', 'weathermap');
 
@@ -2715,7 +2740,7 @@ function weathermap_map_settings($id) {
 			WHERE id = ?',
 			[$map['group_id']]);
 
-		$title = __('Edit Map Settings [ Weathermap: %s ]', $map['titlecache'], 'weathermap');
+		$title = __esc('Edit Map Settings [ Weathermap: %s ]', $map['titlecache'], 'weathermap');
 
 		$nonemsg = __('There are no per Map settings for this Map yet. You can add some by pressing the plus sign \'+\' in the top-right.', 'weathermap');
 
@@ -2972,9 +2997,9 @@ function weathermap_map_settings_form($mapid = 0, $settingid = 0) {
 	if ($mapid == 0) {
 		$title = __('Global Setting for all Maps', 'weathermap');
 	} elseif ($mapid < 0) {
-		$title = __('Group Settings [ Group: %s ]', $name, 'weathermap');
+		$title = __esc('Group Settings [ Group: %s ]', $name, 'weathermap');
 	} else {
-		$title = __('Map Setting [ Weathermap: %s ]', $name, 'weathermap');
+		$title = __esc('Map Setting [ Weathermap: %s ]', $name, 'weathermap');
 	}
 
 	form_start('weathermap-cacti-plugin-mgmt.php');
@@ -3121,7 +3146,7 @@ function weathermap_chgroup($id) {
 	print "<input type=hidden name='map_id' value='" . $id . "'>";
 	print "<input type=hidden name='action' value='chgroup_update'>";
 
-	html_start_box(__('Edit Map Group for Weathermap [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
+	html_start_box(__esc('Edit Map Group for Weathermap [ %s ]', $title, 'weathermap'), '100%', false, 3, 'center', '');
 
 	// html_header(["Group Name", ""]);
 	form_alternate_row();

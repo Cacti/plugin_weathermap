@@ -192,6 +192,10 @@ $unmeasured_allowlist = [
 	// load in the isolated unit process. The random_int() substitutions are
 	// the same pattern covered on WeatherMap::RandomData() and ProcessString().
 	'cli/cacti-mapper.php',
+	// Environment check page: runs top to bottom at load, and over the web it
+	// includes ../../include/auth.php first. CheckPageAccessTest drives its
+	// access guard through PHP's built-in server, which Clover does not measure.
+	'check.php',
 ];
 $unmeasured            = array_values(array_diff(array_keys($changed), array_keys($measured)));
 $unexpected_unmeasured = array_values(array_diff($unmeasured, $unmeasured_allowlist));

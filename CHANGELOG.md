@@ -14,8 +14,16 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- develop ---
+--- 2.1 ---
 
+* security: Require the Manage Weathermap realm to view check.php, which previously disclosed the PHP version, host name, kernel, ini paths and loaded extensions to any anonymous requester
+* security: Escape map titles, info URLs and config filenames before they are rendered on the management pages, in session messages and in the RSS feed
+* security: Confine the OUTPUTFILE, HTMLOUTPUTFILE, IMAGEOUTPUTFILE and DATAOUTPUTFILE map directives to the plugin output directory so a map config cannot make the poller write or overwrite an arbitrary file; a file name or a path into output/ is accepted, and the accepted names are listed under HTMLOUTPUTFILE in the configuration reference
+* security: Restrict each output-file directive to its own extensions so DATAOUTPUTFILE, whose contents come from the map, can no longer be written as an includable HTML page that the graph tree executes
+* security: Reject executable-scheme info URLs (javascript:, data:, vbscript:), including HTML-entity-encoded forms, in the generated image map, emitting nohref so a map link cannot run script in a viewer's session
+* security: Reject an over-length duplicated-map title (more than 4088 bytes after cleaning) so it cannot inject map-config directives across the poller's config-line read boundary, matching the new-map check
+* security: Hide maps from members of a disabled user group in the list and cycle views, matching the per-map permission check
+* security: Treat an invalid format string in a map label, title or note as literal text so it can no longer abort the poller cycle on PHP 8
 * issue#346: Split js/editor.js into dialog, picker, compact-editor and asset-library scripts so browser tests load whole files
 * issue#343: Run engine unit tests in-process where they no longer need isolation
 * issue#342: Split the engine base classes and constants out of WeatherMap.class.php so tests load only what they need

@@ -8,6 +8,8 @@
 
 chdir(dirname(__DIR__, 2));
 require dirname(__DIR__, 2) . '/lib/WeatherMap.class.php';
+// map_duplicate() cleans the new title with this helper
+require dirname(__DIR__, 2) . '/lib/map-title.php';
 
 // Run the actual function without executing the management page dispatcher.
 $source = file_get_contents(__DIR__ . '/../../weathermap-cacti-plugin-mgmt.php');
