@@ -112,9 +112,9 @@ php weathermap --config configs/example.conf --output /tmp/example.png --htmlout
         without coordinating schedules.</p>
         <p><code>HTMLSTYLE static</code> produces an image map with click links. <code>HTMLSTYLE
         overlib</code> also emits hover metadata. The integrated Cacti viewer supplies the
-        JavaScript that displays those previews. The legacy command-line HTML wrapper still
-        references <code>overlib.js</code>, which is no longer bundled, so its exported page is not
-        a complete standalone hover viewer. Use the Cacti viewer for supported interactive maps;
+        JavaScript that displays those previews. overLIB is no longer shipped, and the legacy
+        command-line HTML wrapper no longer references <code>overlib.js</code>. Its exported page
+        keeps the hover metadata but is not a complete standalone hover viewer. Use the Cacti viewer for supported interactive maps;
         changing HTMLSTYLE alone does not make an exported page equivalent.</p>
       </section>
       <footer>
