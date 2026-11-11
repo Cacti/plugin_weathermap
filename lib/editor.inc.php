@@ -700,38 +700,71 @@ function extract_with_validation($array, $paramarray, $prefix = '') {
 }
 
 /**
- * @param  mixed $imagedir
- * @return mixed
+ * List the relative configuration paths of one image library.
+ *
+ * @param  string $imagedir The objects or backgrounds library.
+ * @return string[] Paths such as images/objects/<name>, in filename order.
  */
 function get_imagelist($imagedir) {
 	global $config;
 
-	$imagelist = [];
+	require_once __DIR__ . '/editor.assets.php';
 
-	$imdir = $config['base_path'] . '/plugins/weathermap/images/' . $imagedir;
+	return array_column(wm_asset_library_images($imagedir, $config['base_path'] . '/plugins/weathermap'), 'path');
+}
 
-	if (is_dir($imdir)) {
-		$n  = 0;
-		$dh = opendir($imdir);
+/**
+ * Build editor selector entries from a library plus images the map already uses.
+ *
+ * Used paths missing from the library (for example outside images/) keep their
+ * value; their preview URL is empty unless they sit under images/.
+ *
+ * @param  string      $kind The objects or backgrounds library.
+ * @param  string[]    $used Image paths referenced by the map.
+ * @param  string|null $root Optional plugin directory; defaults to the installed plugin.
+ * @return array[] Entries {kind, name, url, path} sorted by path.
+ */
+function wm_editor_image_options($kind, $used = [], $root = null) {
+	global $config;
 
-		if ($dh) {
-			while ($file = readdir($dh)) {
-				$realfile = $imdir . '/' . $file;
-				$uri      = "images/$imagedir/$file";
+	require_once __DIR__ . '/editor.assets.php';
 
-				if (is_file($realfile) && is_readable($realfile) && (preg_match('/\.(gif|jpe?g|png)$/i', $file))) {
-					$size = @getimagesize($realfile);
-					if (!$size || !in_array($size[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) continue;
-					$imagelist[] = $uri;
-					$n++;
-				}
-			}
+	$entries = [];
+	$paths   = [];
 
-			closedir($dh);
-		}
+	foreach (wm_asset_library_images($kind, $root ?? $config['base_path'] . '/plugins/weathermap') as $image) {
+		$entries[] = ['kind' => $kind, 'name' => $image['name'], 'url' => $image['url'], 'path' => $image['path']];
+		$paths[$image['path']] = true;
 	}
 
-	return ($imagelist);
+	foreach ($used as $image) {
+		if (!is_string($image) || isset($paths[$image])) {
+			continue;
+		}
+
+		$entries[] = ['kind' => $kind, 'name' => basename($image), 'url' => wm_asset_image_url($image), 'path' => $image];
+		$paths[$image] = true;
+	}
+
+	// Same comparison as the sort() the editor applied to the plain path list.
+	usort($entries, function ($a, $b) {
+		return $a['path'] <=> $b['path'];
+	});
+
+	return $entries;
+}
+
+/**
+ * Render one selector option whose preview source is the entry's encoded URL.
+ *
+ * @param  array       $entry    Entry from wm_editor_image_options().
+ * @param  string|null $selected Path to mark selected, or null for none.
+ * @return string The option element.
+ */
+function wm_editor_image_option($entry, $selected = null) {
+	$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($entry['path'])));
+
+	return wm_editor_option($display, ['selected' => $selected !== null && $entry['path'] == $selected, 'data-description' => $display, 'data-imagesrc' => $entry['url'], 'value' => $entry['path']]);
 }
 
 /**

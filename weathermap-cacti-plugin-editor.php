@@ -274,18 +274,9 @@ wm_debug('Finished modifying');
 fixMapBackgroundAndImages($map);
 [$editor_width, $editor_height] = wm_note_effective_dimensions($map);
 
-// get the list from the images/ folder too
-$image_list   = get_imagelist('objects');
-$backgd_list  = get_imagelist('backgrounds');
-
-// append any images used in the map that aren't in the images folder
-foreach ($map->used_images as $im) {
-	if (!in_array($im, $image_list, true)) {
-		$image_list[] = $im;
-	}
-}
-
-sort($image_list);
+// get the list from the images/ folder, plus any icons the map uses from elsewhere
+$image_list   = wm_editor_image_options('objects', $map->used_images);
+$backgd_list  = wm_editor_image_options('backgrounds');
 
 cacti_cookie_set('wmeditor', ($use_overlay ? '1' : '0') . ':' . ($use_relative_overlay ? '1' : '0') . ':' . intval($grid_snap_value));
 
@@ -465,10 +456,8 @@ if ($editor_return_context === 'manage') {
 										print wm_editor_option('Label Only', ['data-description' => 'Label Only Icon', 'data-imagesrc' => '', 'value' => '--NONE--']);
 										print wm_editor_option('Special Icon (AICON)', ['data-description' => 'Special Purpose Icon', 'data-imagesrc' => '', 'value' => '--AICON--']);
 
-										foreach ($image_list as $im) {
-											$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($im)));
-
-											print wm_editor_option($display, ['data-description' => $display, 'data-imagesrc' => $im, 'value' => $im]);
+										foreach ($image_list as $image) {
+											print wm_editor_image_option($image);
 										}
 									}
 ?>
@@ -701,10 +690,8 @@ if (cacti_count($backgd_list) == 0) {
 } else {
 	print wm_editor_option(__('--NO BACKGROUND--', 'weathermap'), ['data-description' => __('Use Map Background Colour', 'weathermap'), 'data-imagesrc' => '', 'value' => '--NONE--']);
 
-	foreach ($backgd_list as $im) {
-		$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($im)));
-
-		print wm_editor_option($display, ['selected' => $im == $map->background, 'data-description' => $display, 'data-imagesrc' => $im, 'value' => $im]);
+	foreach ($backgd_list as $image) {
+		print wm_editor_image_option($image, $map->background);
 	}
 }
 ?>

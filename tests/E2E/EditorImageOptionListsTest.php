@@ -28,6 +28,7 @@
 
 beforeAll(function () {
 	require_once __DIR__ . '/../../lib/editor.inc.php';
+	require_once __DIR__ . '/../../lib/editor.assets.php';
 });
 
 /**
@@ -78,7 +79,7 @@ function wm_option_lists_file($code) {
  * @param array<int, string> $backgrounds Background image file names.
  * @param array<int, string> $used        Image paths the map already uses.
  *
- * @return array{0: array<int, string>, 1: array<int, string>}
+ * @return array{0: array<int, array>, 1: array<int, array>} Entries from wm_editor_image_options().
  */
 function wm_option_lists_build(array $objects, array $backgrounds, array $used) {
 	global $config;
@@ -98,7 +99,7 @@ function wm_option_lists_build(array $objects, array $backgrounds, array $used) 
 	$config['base_path'] = $base;
 	$map                 = (object) ['used_images' => $used];
 
-	$code = wm_option_lists_file(wm_option_lists_code("\$image_list   = get_imagelist('objects');", 'sort($image_list);'));
+	$code = wm_option_lists_file(wm_option_lists_code("\$image_list   = wm_editor_image_options('objects'", "\$backgd_list  = wm_editor_image_options('backgrounds');"));
 
 	try {
 		include $code;
@@ -195,13 +196,13 @@ it('RendersHostileIconFilenamesAsInertOptions', function (array $files) {
 		->and($options[0])->toBe(['attributes' => ['data-description' => 'Label Only Icon', 'data-imagesrc' => '', 'value' => '--NONE--'], 'text' => 'Label Only'])
 		->and($options[1])->toBe(['attributes' => ['data-description' => 'Special Purpose Icon', 'data-imagesrc' => '', 'value' => '--AICON--'], 'text' => 'Special Icon (AICON)']);
 
-	foreach ($image_list as $index => $im) {
+	foreach (array_column($image_list, 'path') as $index => $im) {
 		$label = wm_option_lists_label($im);
-		expect($options[$index + 2])->toBe(['attributes' => ['data-description' => $label, 'data-imagesrc' => $im, 'value' => $im], 'text' => $label]);
+		expect($options[$index + 2])->toBe(['attributes' => ['data-description' => $label, 'data-imagesrc' => wm_asset_image_url($im), 'value' => $im], 'text' => $label]);
 	}
 
 	foreach ($files as $file) {
-		expect($image_list)->toContain('images/objects/' . $file);
+		expect(array_column($image_list, 'path'))->toContain('images/objects/' . $file);
 	}
 })->with('hostile image names');
 
@@ -215,9 +216,9 @@ it('RendersHostileBackgroundFilenamesAndSelectsOnlyTheCurrentOne', function (arr
 	expect($options)->toHaveCount(count($backgd_list) + 1)
 		->and($options[0])->toBe(['attributes' => ['data-description' => 'Use Map Background Colour', 'data-imagesrc' => '', 'value' => '--NONE--'], 'text' => '--NO BACKGROUND--']);
 
-	foreach ($backgd_list as $index => $im) {
+	foreach (array_column($backgd_list, 'path') as $index => $im) {
 		$label    = wm_option_lists_label($im);
-		$expected = ['data-description' => $label, 'data-imagesrc' => $im, 'value' => $im];
+		$expected = ['data-description' => $label, 'data-imagesrc' => wm_asset_image_url($im), 'value' => $im];
 
 		if ($im === $current) {
 			$expected = ['selected' => 'selected'] + $expected;

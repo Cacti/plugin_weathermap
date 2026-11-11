@@ -211,6 +211,46 @@ function wm_asset_image_users($name, $kind = null, $references = null) {
 	return array_values(array_unique($users));
 }
 /**
+ * Encode a relative images/ path as the preview URL the editor JavaScript accepts.
+ *
+ * @param string $path Relative configuration path such as images/objects/<name>.
+ *
+ * @return string The per-segment rawurlencoded URL, or '' outside images/.
+ */
+function wm_asset_image_url($path) {
+	if (!is_string($path) || strpos($path, 'images/') !== 0) return '';
+	return implode('/', array_map('rawurlencode', explode('/', $path)));
+}
+/**
+ * Scan one image library with the rules shared by the selectors and the library dialog.
+ *
+ * An entry is a readable regular file (symlinks to one included) named .png, .gif, .jpg
+ * or .jpeg whose content is a PNG, JPEG or GIF raster. Symlinks are listed with
+ * managed=false so selectors keep offering them while library management refuses them.
+ *
+ * @param string $kind The objects or backgrounds library.
+ * @param string|null $root Optional plugin directory; defaults to this plugin.
+ *
+ * @return array[] Entries {kind, name, url, path, width, height, managed} in filename order.
+ */
+function wm_asset_library_images($kind, $root = null) {
+	// Raises the shared invalid-category error for anything but the two libraries.
+	if (!in_array($kind, ['objects', 'backgrounds'], true)) wm_asset_directory($kind);
+	$parent = ($root ?? dirname(__DIR__)) . '/images';
+	$dir = $parent . '/' . $kind;
+	$linkedDir = is_link($parent) || is_link($dir);
+	$images = [];
+	foreach ((is_dir($dir) ? scandir($dir) : false) ?: [] as $name) {
+		$path = $dir . '/' . $name;
+		if (!is_file($path) || !is_readable($path) || !preg_match('/\.(png|gif|jpe?g)$/iD', $name)) continue;
+		$size = @getimagesize($path);
+		if (!$size || !in_array($size[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) continue;
+		$relative = 'images/' . $kind . '/' . $name;
+		$images[] = ['kind' => $kind, 'name' => $name, 'url' => wm_asset_image_url($relative), 'path' => $relative, 'width' => $size[0], 'height' => $size[1], 'managed' => !$linkedDir && !is_link($path)];
+	}
+	return $images;
+}
+/**
  * List image metadata using one shared configuration reference index.
  *
  * @param array|null $references A precomputed index, or null to read configurations.
@@ -221,14 +261,13 @@ function wm_asset_image_list($references = null) {
 	$result = [];
 	$references = $references ?? wm_asset_image_reference_index();
 	foreach (['objects', 'backgrounds'] as $kind) {
-		$dir = wm_asset_directory($kind);
-		foreach (scandir($dir) ?: [] as $name) {
-			$path = $dir . '/' . $name;
-			if (!is_file($path) || is_link($path) || !is_readable($path) || !preg_match('/\.(png|gif|jpe?g)$/iD', $name)) continue;
-			$size = @getimagesize($path);
-			if (!$size || !in_array($size[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) continue;
+		// Rejects a symlinked library before any entry is offered for management.
+		wm_asset_directory($kind);
+		foreach (wm_asset_library_images($kind) as $image) {
+			if (!$image['managed']) continue;
+			$name = $image['name'];
 			$users = wm_asset_image_users($name, $kind, $references);
-			$result[] = ['width' => $size ? $size[0] : null, 'height' => $size ? $size[1] : null, 'users' => $users, 'kind' => $kind, 'name' => $name, 'url' => 'images/' . $kind . '/' . rawurlencode($name), 'deletable' => !$users && (bool) preg_match('/^[A-Za-z0-9_.-]+\.(png|gif|jpe?g)$/iD', $name) && strpos($name, '..') === false];
+			$result[] = ['width' => $image['width'], 'height' => $image['height'], 'users' => $users, 'kind' => $kind, 'name' => $name, 'url' => $image['url'], 'deletable' => !$users && (bool) preg_match('/^[A-Za-z0-9_.-]+\.(png|gif|jpe?g)$/iD', $name) && strpos($name, '..') === false];
 		}
 	}
 	return $result;
