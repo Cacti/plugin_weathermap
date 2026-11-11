@@ -2018,6 +2018,17 @@ function map_duplicate($id, $titlecache, $configfile = null) {
 		$save['duration']     = 0;
 		$save['last_runtime'] = 0;
 
+		/* ReadConfig() parses the config with fgets($fd, 4096), so a TITLE line
+		 * at or beyond that chunk size is split and its tail is read as a
+		 * separate directive.  map_clean_title() removes control characters but
+		 * not length, so reject an over-length cleaned title before the config
+		 * is written, matching newMap(), so a duplicate title cannot inject
+		 * directives across the chunk boundary. */
+		if (strlen($save['titlecache']) > 4088) {
+			raise_message('map_message', __esc('Map title is too long. Use at most 4088 bytes after escaping.', 'weathermap'), MESSAGE_LEVEL_ERROR);
+			return;
+		}
+
 		$confdir = __DIR__ . '/configs';
 
 		$oldfile = $confdir . '/' . $map['configfile'];
