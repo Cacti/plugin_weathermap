@@ -1,7 +1,5 @@
 const {JSDOM} = require('jsdom');
 const jquery = require('jquery');
-const fs = require('fs');
-const vm = require('vm');
 const assert = require('node:assert/strict');
 (async () => {
  const dom = new JSDOM('<input id="mapname" value="test.conf"><input id="link_picker" class="selectmenu-ajax" data-action="graphs" data-add-label="Add hover graph" data-replace-label="Replace hover graphs" value="7"><select id="link_template"><option value="1">One</option><option value="2">Two</option></select>', {runScripts: 'outside-only', url: 'https://example.test/cacti/plugins/weathermap/editor.php'});
@@ -26,7 +24,7 @@ const assert = require('node:assert/strict');
   const result = {done: fn => { fn(response); return result; }, fail: fn => { failure = fn; return result; }};
   return result;
  };
- vm.runInContext(fs.readFileSync(require('node:path').join(__dirname, '../../js/editor.js'), 'utf8'), dom.getInternalVMContext());
+ require('./lib/editorScripts.cjs').loadEditorScripts(w);
  w.initJS = () => {};
  w.graphPicker();
  assert.equal($('#link_picker_add').text(), 'Add hover graph');

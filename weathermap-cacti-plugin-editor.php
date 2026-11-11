@@ -274,18 +274,9 @@ wm_debug('Finished modifying');
 fixMapBackgroundAndImages($map);
 [$editor_width, $editor_height] = wm_note_effective_dimensions($map);
 
-// get the list from the images/ folder too
-$image_list   = get_imagelist('objects');
-$backgd_list  = get_imagelist('backgrounds');
-
-// append any images used in the map that aren't in the images folder
-foreach ($map->used_images as $im) {
-	if (!in_array($im, $image_list, true)) {
-		$image_list[] = $im;
-	}
-}
-
-sort($image_list);
+// get the list from the images/ folder, plus any icons the map uses from elsewhere
+$image_list   = wm_editor_image_options('objects', $map->used_images);
+$backgd_list  = wm_editor_image_options('backgrounds');
 
 cacti_cookie_set('wmeditor', ($use_overlay ? '1' : '0') . ':' . ($use_relative_overlay ? '1' : '0') . ':' . intval($grid_snap_value));
 
@@ -312,6 +303,10 @@ $weathermap_version = plugin_weathermap_numeric_version();
 	<?php print get_md5_include_js('include/js/jquery.colorpicker.js'); ?>
 	<?php print get_md5_include_js('include/js/js.storage.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/editor.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.dialogs.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.picker.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.compact.js'); ?>
+	<?php print get_md5_include_js('plugins/weathermap/js/editor.assets.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/editor.history.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ddslick.js'); ?>
 	<?php print get_md5_include_js('plugins/weathermap/js/jquery.ui-contextmenu.js'); ?>
@@ -459,19 +454,14 @@ if ($editor_return_context === 'manage') {
 								<select id='node_iconfilename' name='node_iconfilename'>
 									<?php
 									if (count($image_list) == 0) {
-										print '<option data-value="--NONE--">Label Only</option>';
-										print '<option data-value="--AICON--">Special Icon (AICON)></option>';
+										print wm_editor_option('Label Only', ['data-value' => '--NONE--']);
+										print wm_editor_option('Special Icon (AICON)', ['data-value' => '--AICON--']);
 									} else {
-										print '<option data-description="Label Only Icon" data-imagesrc="" value="--NONE--">Label Only</option>';
-										print '<option data-description="Special Purpose Icon" data-imagesrc="" value="--AICON--">Special Icon (AICON)</option>';
+										print wm_editor_option('Label Only', ['data-description' => 'Label Only Icon', 'data-imagesrc' => '', 'value' => '--NONE--']);
+										print wm_editor_option('Special Icon (AICON)', ['data-description' => 'Special Purpose Icon', 'data-imagesrc' => '', 'value' => '--AICON--']);
 
-										foreach ($image_list as $im) {
-											$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($im)));
-
-											print '<option ';
-											print 'data-description="' . html_escape($display) . '" ';
-											print 'data-imagesrc="' . html_escape($im) . '" ';
-											print 'value="' . html_escape($im) . '">' . html_escape($display) . '</option>';
+										foreach ($image_list as $image) {
+											print wm_editor_image_option($image);
 										}
 									}
 ?>
@@ -495,7 +485,7 @@ if ($editor_return_context === 'manage') {
 							<td>
 								<select id='node_template' name='node_template'>
 									<?php
-									print '<option value="-1"' . (get_request_var('node_template') == -1 ? 'selected' : '') . '>' . __('All', 'weathermap') . '</option>';
+									print wm_editor_option(__('All', 'weathermap'), ['value' => '-1', 'selected' => get_request_var('node_template') == -1]);
 $graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
 										FROM graph_templates AS gt
 										INNER JOIN graph_local AS gl
@@ -503,8 +493,7 @@ $graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
 										ORDER BY gt.name');
 
 foreach ($graph_templates as $gt) {
-	print '<option ' . (get_request_var('node_template') == $gt['id'] ? 'selected' : '');
-	print ' value="' . $gt['id'] . '">' . html_escape($gt['name']) . '</option>';
+	print wm_editor_option($gt['name'], ['selected' => get_request_var('node_template') == $gt['id'], 'value' => $gt['id']]);
 }
 ?>
 								</select>
@@ -602,7 +591,7 @@ foreach ($graph_templates as $gt) {
 							<td>
 								<select id='link_template' name='link_template'>
 									<?php
-print '<option value="-1"' . (get_request_var('node_template') == -1 ? 'selected' : '') . '>' . __('All', 'weathermap') . '</option>';
+print wm_editor_option(__('All', 'weathermap'), ['value' => '-1', 'selected' => get_request_var('node_template') == -1]);
 $graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
 										FROM graph_templates AS gt
 										INNER JOIN graph_local AS gl
@@ -610,8 +599,7 @@ $graph_templates = db_fetch_assoc('SELECT DISTINCT gt.id, gt.name
 										ORDER BY gt.name');
 
 foreach ($graph_templates as $gt) {
-	print '<option ' . (get_request_var('node_template') == $gt['id'] ? 'selected' : '');
-	print ' value="' . $gt['id'] . '">' . html_escape($gt['name']) . '</option>';
+	print wm_editor_option($gt['name'], ['selected' => get_request_var('node_template') == $gt['id'], 'value' => $gt['id']]);
 }
 ?>
 							</td>
@@ -702,17 +690,12 @@ foreach ($graph_templates as $gt) {
 								<select id='map_bgfile' name='map_bgfile'>
 									<?php
 if (cacti_count($backgd_list) == 0) {
-	print '<option data-value="--NONE--">' . __esc('(no images are available)', 'weathermap') . '</option>';
+	print wm_editor_option(__('(no images are available)', 'weathermap'), ['data-value' => '--NONE--']);
 } else {
-	print '<option data-description="' . __esc('Use Map Background Colour', 'weathermap') . '" data-imagesrc="" value="--NONE--">' . __esc('--NO BACKGROUND--', 'weathermap') . '</option>';
+	print wm_editor_option(__('--NO BACKGROUND--', 'weathermap'), ['data-description' => __('Use Map Background Colour', 'weathermap'), 'data-imagesrc' => '', 'value' => '--NONE--']);
 
-	foreach ($backgd_list as $im) {
-		$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($im)));
-
-		print '<option ' . ($im == $map->background ? 'selected ' : '');
-		print 'data-description="' . html_escape($display) . '" ';
-		print 'data-imagesrc="' . html_escape($im) . '" ';
-		print 'value="' . html_escape($im) . '">' . html_escape($display) . '</option>';
+	foreach ($backgd_list as $image) {
+		print wm_editor_image_option($image, $map->background);
 	}
 }
 ?>
@@ -733,7 +716,7 @@ if (cacti_count($backgd_list) == 0) {
 							$background_sizing = $map->get_hint('background_sizing', 'image');
 							if (!in_array($background_sizing, ['fit', 'stretch', 'image'], true)) { $background_sizing = 'image'; }
 							foreach (['fit' => __('Fit to map', 'weathermap'), 'stretch' => __('Stretch to map', 'weathermap'), 'image' => __('Use image size', 'weathermap')] as $value => $label) {
-								print '<option value="' . $value . '"' . ($background_sizing === $value ? ' selected' : '') . '>' . html_escape($label) . '</option>';
+								print wm_editor_option($label, ['value' => $value, 'selected' => $background_sizing === $value]);
 							}
 							?>
 							</select></td>
@@ -801,7 +784,7 @@ $styles = [
 ];
 
 foreach ($styles as $id => $name) {
-	print "<option value='$id' " . ($map->keystyle['DEFAULT'] == $id ? 'selected' : '') . '>' . $name . '</option>';
+	print wm_editor_option($name, ['value' => $id, 'selected' => $map->keystyle['DEFAULT'] == $id]);
 }
 ?>
 								</select>

@@ -31,6 +31,7 @@ final class NoteAllocationTest extends TestCase {
 	 *
 	 * @return void
 	 */
+	// The Support script shadows imagecreatetruecolor() in the WeathermapNotes namespace and declares top-level functions, so it needs its own process.
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testRealEngineRegression(): void {

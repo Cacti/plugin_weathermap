@@ -10,9 +10,7 @@ const item={id:'replacement.rrd',label:'Router — Replacement',local_graph_id:2
 $.getJSON=(url,data,cb)=>{if(typeof data==='function')cb=data;let d=$.Deferred();let result={items:[item],offset:0,next_offset:null};if(cb)cb(result);d.resolve(result);return d.promise()};
 w.wmEditorText=Object.fromEntries([...fs.readFileSync(root+'/lib/editor.inc.php','utf8').matchAll(/'([a-zA-Z]+)'\s*=> __\('([^']*)', (?:'%s', )?'weathermap'\)/g)].map(m=>[m[1],m[2]]));
 w.infoUrlTarget='graph.php?rra_id=all&local_graph_id=';w.Nodes={};w.Links={};w.local_graph_id=0;
-const src=fs.readFileSync(root+'/js/editor.js','utf8');
-w.eval(src.slice(src.indexOf('function graphPicker()'),src.indexOf("$(document).on('unload'")));
-w.eval(src.slice(src.indexOf('// Compact link workflow;')));
+require('./lib/editorScripts.cjs').loadEditorScripts(w,['editor.picker.js','editor.compact.js']);
 $('#link_target_picker').attr('aria-label','Traffic interface search');w.graphPicker();assert.equal($('#link_target_picker_input').attr('aria-label'),'Traffic interface search');$('#link_target').val('one.rrd two.rrd');$('#link_infourl').val('/original');$('#link_hover').val('/hover');
 w.compactLinkEditorBase();$('#dlgLinkProperties').dialog({width:650});$('#wm-link-advanced-button').trigger('click');
 const picker=$('#wm-link-source-picker');picker.val('Replacement');picker.autocomplete('search','Replacement');

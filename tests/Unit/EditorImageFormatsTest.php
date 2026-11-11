@@ -31,6 +31,7 @@ final class EditorImageFormatsTest extends TestCase {
 	 *
 	 * @return void
 	 */
+	// The Support script declares top-level functions and plain-requires setup.php and the engine, so it can run once per process.
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testRealEngineRegression(): void {

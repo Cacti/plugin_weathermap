@@ -21,6 +21,13 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * security: Confine the OUTPUTFILE, HTMLOUTPUTFILE, IMAGEOUTPUTFILE and DATAOUTPUTFILE map directives to the plugin output directory so a map config cannot make the poller write or overwrite an arbitrary file; a file name or a path into output/ is accepted, and the accepted names are listed under HTMLOUTPUTFILE in the configuration reference
 * security: Hide maps from members of a disabled user group in the list and cycle views, matching the per-map permission check
 * security: Treat an invalid format string in a map label, title or note as literal text so it can no longer abort the poller cycle on PHP 8
+* issue#346: Split js/editor.js into dialog, picker, compact-editor and asset-library scripts so browser tests load whole files
+* issue#343: Run engine unit tests in-process where they no longer need isolation
+* issue#342: Split the engine base classes and constants out of WeatherMap.class.php so tests load only what they need
+* issue#340: Build the editor image lists with one library scanner shared by the selectors and the image library
+* issue#335: Retire the bundled overLIB library from the documentation example and the CLI HTML wrapper
+* issue#334: Render the editor's dynamic option lists through an always-escaping attribute helper
+* issue#332: Run the jsdom browser tests in CI with locked dependencies, and keep image-map hotspots focusable under current jsdom
 * bug: Render editor text and image paths as data, escape backslashes and line breaks in the legacy example helper, and use a CSPRNG for random values
 * bug: Select the narrowest matching scale range, preserve collinear route reversals, and keep link position calculations within path endpoints
 * dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification

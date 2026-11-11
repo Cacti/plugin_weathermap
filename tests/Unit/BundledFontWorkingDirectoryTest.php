@@ -27,6 +27,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 
 final class BundledFontWorkingDirectoryTest extends TestCase {
+	// Runs from the Cacti root, and GD caches FreeType faces per process by path, so an earlier render could mask a font path regression.
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testReadsRendersAndRewritesPortableFontsFromCactiRoot(): void {

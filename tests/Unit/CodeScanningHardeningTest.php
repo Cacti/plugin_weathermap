@@ -22,44 +22,46 @@
  +-------------------------------------------------------------------------+
 */
 
-use PHPUnit\Framework\Attributes\PreserveGlobalState;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
-use PHPUnit\Framework\TestCase;
+beforeAll(function (): void {
+	$plugin = dirname(__DIR__, 2);
+	require_once $plugin . '/setup.php';
+	require_once $plugin . '/lib/WeatherMap.class.php';
+});
 
-final class CodeScanningHardeningTest extends TestCase {
-	#[RunInSeparateProcess]
-	#[PreserveGlobalState(false)]
-	public function testProcessStringAppendsCSPRNGGraphCacheBuster(): void {
-		$plugin = dirname(__DIR__, 2);
-		chdir($plugin);
-		require_once $plugin . '/setup.php';
-		require_once $plugin . '/lib/WeatherMap.class.php';
+/**
+ * Build an engine instance from the plugin directory, which it scans for plugins.
+ *
+ * @return WeatherMap
+ */
+function wm_hardening_new_map(): WeatherMap {
+	$cwd = getcwd();
+	chdir(dirname(__DIR__, 2));
 
-		$map = new WeatherMap();
-		$out = $map->ProcessString('graph_image.php?local_graph_id=1', $map);
-
-		self::assertMatchesRegularExpression('/[&?]random=\d+/', $out);
-	}
-
-	#[RunInSeparateProcess]
-	#[PreserveGlobalState(false)]
-	public function testRandomDataFillsLinkBandwidthFromCSPRNG(): void {
-		$plugin = dirname(__DIR__, 2);
-		chdir($plugin);
-		require_once $plugin . '/setup.php';
-		require_once $plugin . '/lib/WeatherMap.class.php';
-
-		$map                       = new WeatherMap();
-		$link                      = new WeatherMapLink();
-		$link->name                = 'L1';
-		$link->max_bandwidth_in    = 100;
-		$link->max_bandwidth_out   = 50;
-		$map->links['L1']          = $link;
-		$map->RandomData();
-
-		self::assertGreaterThanOrEqual(0, $map->links['L1']->bandwidth_in);
-		self::assertLessThanOrEqual(100, $map->links['L1']->bandwidth_in);
-		self::assertGreaterThanOrEqual(0, $map->links['L1']->bandwidth_out);
-		self::assertLessThanOrEqual(50, $map->links['L1']->bandwidth_out);
+	try {
+		return new WeatherMap();
+	} finally {
+		chdir($cwd);
 	}
 }
+
+it('ProcessStringAppendsCSPRNGGraphCacheBuster', function (): void {
+	$map = wm_hardening_new_map();
+	$out = $map->ProcessString('graph_image.php?local_graph_id=1', $map);
+
+	expect($out)->toMatch('/[&?]random=\d+/');
+});
+
+it('RandomDataFillsLinkBandwidthFromCSPRNG', function (): void {
+	$map                     = wm_hardening_new_map();
+	$link                    = new WeatherMapLink();
+	$link->name              = 'L1';
+	$link->max_bandwidth_in  = 100;
+	$link->max_bandwidth_out = 50;
+	$map->links['L1']        = $link;
+	$map->RandomData();
+
+	expect($map->links['L1']->bandwidth_in)->toBeGreaterThanOrEqual(0);
+	expect($map->links['L1']->bandwidth_in)->toBeLessThanOrEqual(100);
+	expect($map->links['L1']->bandwidth_out)->toBeGreaterThanOrEqual(0);
+	expect($map->links['L1']->bandwidth_out)->toBeLessThanOrEqual(50);
+});

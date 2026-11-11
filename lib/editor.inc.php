@@ -40,6 +40,7 @@
  +-------------------------------------------------------------------------+
 */
 
+require_once __DIR__ . '/../setup.php';
 require_once __DIR__ . '/editor.comment-style.php';
 require_once __DIR__ . '/editor.notes.php';
 
@@ -266,6 +267,58 @@ function wm_editor_sanitize_url($str) {
 }
 
 /**
+ * Build an HTML attribute list in which every value is escaped.
+ *
+ * Names must come from the caller, never from request or map data. A true
+ * value renders a boolean attribute; false and null omit the attribute.
+ * Values use plugin_weathermap_escape_attr() rather than html_escape(),
+ * which does not double-encode, so a value such as "&amp;" round-trips.
+ *
+ * @param array<string, scalar|null> $attributes Attribute names and values, in output order.
+ *
+ * @throws InvalidArgumentException When a name is not a plain attribute name or a value is not scalar.
+ *
+ * @return string The attributes, each with a leading space.
+ */
+function wm_editor_attributes(array $attributes) {
+	$out = '';
+
+	foreach ($attributes as $name => $value) {
+		if (!is_string($name) || !preg_match('/^[a-z][a-z0-9:-]*$/iD', $name)) {
+			throw new InvalidArgumentException('Invalid HTML attribute name');
+		}
+
+		if ($value === false || $value === null) {
+			continue;
+		}
+
+		if ($value === true) {
+			$out .= ' ' . $name;
+		} elseif (is_scalar($value)) {
+			$out .= ' ' . $name . '="' . plugin_weathermap_escape_attr((string) $value) . '"';
+		} else {
+			throw new InvalidArgumentException('Invalid value for HTML attribute ' . $name);
+		}
+	}
+
+	return $out;
+}
+
+/**
+ * Build an <option> element with escaped attributes and label.
+ *
+ * The label uses the same escaping as attribute values so it round-trips.
+ *
+ * @param string                     $label      Unescaped option text.
+ * @param array<string, scalar|null> $attributes Attributes for wm_editor_attributes().
+ *
+ * @return string The option element.
+ */
+function wm_editor_option($label, array $attributes = []) {
+	return '<option' . wm_editor_attributes($attributes) . '>' . plugin_weathermap_escape_attr((string) $label) . '</option>';
+}
+
+/**
  * @param  mixed $bw
  * @return bool
  */
@@ -391,6 +444,9 @@ function wm_editor_sanitize_conffile($filename) {
 }
 
 /**
+ * Render the editor start page: the editor scripts, the new map form and the
+ * list of map files.
+ *
  * @return void
  */
 function show_editor_startpage() {
@@ -401,6 +457,10 @@ function show_editor_startpage() {
 	getEditorJs();
 
 	print get_md5_include_js('plugins/weathermap/js/editor.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.dialogs.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.picker.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.compact.js');
+	print get_md5_include_js('plugins/weathermap/js/editor.assets.js');
 
 	$errormessage = '';
 
@@ -647,38 +707,71 @@ function extract_with_validation($array, $paramarray, $prefix = '') {
 }
 
 /**
- * @param  mixed $imagedir
- * @return mixed
+ * List the relative configuration paths of one image library.
+ *
+ * @param  string $imagedir The objects or backgrounds library.
+ * @return string[] Paths such as images/objects/<name>, in filename order.
  */
 function get_imagelist($imagedir) {
 	global $config;
 
-	$imagelist = [];
+	require_once __DIR__ . '/editor.assets.php';
 
-	$imdir = $config['base_path'] . '/plugins/weathermap/images/' . $imagedir;
+	return array_column(wm_asset_library_images($imagedir, $config['base_path'] . '/plugins/weathermap'), 'path');
+}
 
-	if (is_dir($imdir)) {
-		$n  = 0;
-		$dh = opendir($imdir);
+/**
+ * Build editor selector entries from a library plus images the map already uses.
+ *
+ * Used paths missing from the library (for example outside images/) keep their
+ * value; their preview URL is empty unless they sit under images/.
+ *
+ * @param  string      $kind The objects or backgrounds library.
+ * @param  string[]    $used Image paths referenced by the map.
+ * @param  string|null $root Optional plugin directory; defaults to the installed plugin.
+ * @return array[] Entries {kind, name, url, path} sorted by path.
+ */
+function wm_editor_image_options($kind, $used = [], $root = null) {
+	global $config;
 
-		if ($dh) {
-			while ($file = readdir($dh)) {
-				$realfile = $imdir . '/' . $file;
-				$uri      = "images/$imagedir/$file";
+	require_once __DIR__ . '/editor.assets.php';
 
-				if (is_file($realfile) && is_readable($realfile) && (preg_match('/\.(gif|jpe?g|png)$/i', $file))) {
-					$size = @getimagesize($realfile);
-					if (!$size || !in_array($size[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF], true)) continue;
-					$imagelist[] = $uri;
-					$n++;
-				}
-			}
+	$entries = [];
+	$paths   = [];
 
-			closedir($dh);
-		}
+	foreach (wm_asset_library_images($kind, $root ?? $config['base_path'] . '/plugins/weathermap') as $image) {
+		$entries[] = ['kind' => $kind, 'name' => $image['name'], 'url' => $image['url'], 'path' => $image['path']];
+		$paths[$image['path']] = true;
 	}
 
-	return ($imagelist);
+	foreach ($used as $image) {
+		if (!is_string($image) || isset($paths[$image])) {
+			continue;
+		}
+
+		$entries[] = ['kind' => $kind, 'name' => basename($image), 'url' => wm_asset_image_url($image), 'path' => $image];
+		$paths[$image] = true;
+	}
+
+	// Same comparison as the sort() the editor applied to the plain path list.
+	usort($entries, function ($a, $b) {
+		return $a['path'] <=> $b['path'];
+	});
+
+	return $entries;
+}
+
+/**
+ * Render one selector option whose preview source is the entry's encoded URL.
+ *
+ * @param  array       $entry    Entry from wm_editor_image_options().
+ * @param  string|null $selected Path to mark selected, or null for none.
+ * @return string The option element.
+ */
+function wm_editor_image_option($entry, $selected = null) {
+	$display = ucfirst(str_replace(['.png', '.gif', '.jpg'], '', basename($entry['path'])));
+
+	return wm_editor_option($display, ['selected' => $selected !== null && $entry['path'] == $selected, 'data-description' => $display, 'data-imagesrc' => $entry['url'], 'value' => $entry['path']]);
 }
 
 /**
@@ -732,10 +825,12 @@ function handle_inheritance(&$map, &$inheritables) {
 }
 
 /**
+ * Render a font selector listing the map's registered fonts.
+ *
  * @param  WeatherMap $map
  * @param  string     $name
  * @param  mixed      $current
- * @return mixed
+ * @return string
  */
 function get_fontlist(&$map,$name,$current) {
 	$output = '<select class="fontcombo" name="' . html_escape($name) . '">';
@@ -743,13 +838,7 @@ function get_fontlist(&$map,$name,$current) {
 	ksort($map->fonts);
 
 	foreach ($map->fonts as $fontnumber => $font) {
-		$output .= '<option ';
-
-		if ($current == $fontnumber) {
-			$output .= 'selected';
-		}
-
-		$output .= ' value="' . $fontnumber . '">' . html_escape(wm_editor_font_label($fontnumber, $font)) . '</option>';
+		$output .= wm_editor_option(wm_editor_font_label($fontnumber, $font), ['selected' => $current == $fontnumber, 'value' => $fontnumber]);
 	}
 
 	$output .= '</select>';

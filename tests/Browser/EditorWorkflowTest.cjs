@@ -1,7 +1,6 @@
 const { JSDOM } = require('jsdom'),
 	jquery = require('jquery'),
 	fs = require('fs'),
-	vm = require('vm'),
 	assert = require('node:assert/strict');
 const row = (id) => `<tr><td>${id}</td><td>${id.includes("hover") ? `<textarea id="${id}"></textarea>` : `<input id="${id}">`}</td></tr>`;
 const dom = new JSDOM(
@@ -33,10 +32,10 @@ $.getJSON = () => {
 	requests++;
 	return request.promise();
 };
-const editor = fs.readFileSync(require('node:path').join(__dirname, '../../js/editor.js'), 'utf8');
+const {loadEditorScripts} = require('./lib/editorScripts.cjs');
 const originalSource = (request, response) => response(items.filter(item => item.label.toLowerCase().includes(request.term.toLowerCase())));
 $('#link_target_picker_input').data('options', {source: originalSource, select: (event, ui) => ui.item.wmOffset !== undefined ? false : undefined});
-vm.runInContext(editor.slice(editor.indexOf('// Compact link workflow;')), dom.getInternalVMContext());
+loadEditorScripts(w, ['editor.compact.js']);
 $('#link_target').val('/rrd/interface.rrd');
 $('#link_infourl').val('/cacti/graph.php?rra_id=all&local_graph_id=10');
 $('#link_target_picker_input').attr('aria-describedby', 'existing-description');
@@ -125,7 +124,6 @@ w.infoUrlTarget = 'graph.php?rra_id=all&local_graph_id=';
 $('#link_target_picker').data('wm-choice', items[1]);
 $('#wm-link-use').trigger('click');
 assert.equal($('#link_infourl').val(), '/cacti/graph.php?rra_id=all&local_graph_id=20');
-assert.equal(w.wmDecodeEditorUrl('/graph?a=1&amp;b=2'), '/graph?a=1&b=2');
 w.compactLinkEditor();
 assert.equal($('#link_target_picker_input').val(), items[1].label);
 assert.equal(requests, 2);
@@ -213,9 +211,9 @@ w.txtDelNode = 'Delete';
 w.delLinkTitle = 'Translated link title';
 w.txtDelLink = 'Delete link';
 $('body').append('<input id="node_name" value="a">');
-const wholeEditor = editor.slice(0, editor.indexOf('// Compact link workflow;'));
-vm.runInContext(wholeEditor, dom.getInternalVMContext());
-w.initJS = () => {};
+loadEditorScripts(w, ['editor.js', 'editor.dialogs.js', 'editor.picker.js']);
+assert.equal(w.wmDecodeEditorUrl('/graph?a=1&amp;b=2'), '/graph?a=1&b=2');
+const editorMapmode = w.mapmode;
 w.mapmode = () => {};
 w.Nodes = {a: {label: '<Named node>'}};
 for (const count of [0, 1, 2, 5, 11]) {
@@ -366,7 +364,7 @@ for (const failOld of [false, true]) {
 $('body').append('<input id="param"><input id="action"><input id="debug"><input id="xycapture"><img id="existingdata" data-width="600" data-height="300"><div class="mapData"></div><span id="tb_help"></span>');
 $('#tb_help').data('idle-help','Idle help');
 w.setCanvasSize=()=>{};
-w.eval(editor.slice(editor.indexOf('function wmResetActionHelp()'),editor.indexOf('function setCanvasSize(')));
+w.mapmode=editorMapmode;
 for (const kind of ['node','link']) {
  for (const exit of ['cancel','close']) for (const placement of ['add_link','add_link2']) {
   $('#param').val('first-endpoint');$('#action').val(placement);w.mapmode('existing');$('#tb_help').text('Place link');
@@ -389,7 +387,6 @@ assert.equal($('#wm-link-extra-hover').val(), extrasBeforeInterfaceChange, 'Chan
 assert.equal(new URL($('#wm-link-primary-hover').val(), w.location.href).searchParams.get('local_graph_id'), '20');
 assert.equal($('#link_hover').val().split(/\s+/).length, 2);
 // Opening a newly created link must clear previews from the previously edited link.
-w.eval(editor.slice(editor.indexOf('function prime_link_form('), editor.indexOf('function show_link(')));
 w.Links.fresh = {name:'fresh', target:'', width:7, bw_in:'1000M', bw_out:'1000M', infourl:'', overliburl:'', viastyle:'curved', commentin:'', commentout:'', commentposin:95, commentposout:5, a:'a', b:'b'};
 $('#link_nodename1').text('a');$('#link_nodename2').text('b');
 assert.equal(w.prime_link_form('fresh'),true);

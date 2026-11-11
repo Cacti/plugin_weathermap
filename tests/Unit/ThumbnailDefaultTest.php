@@ -64,3 +64,28 @@ it('InitializesMissingAndNonPositiveThumbnailSizesAndPreservesPositiveValues', f
 		$GLOBALS['__test_set_config_option_calls'] = $old_calls;
 	}
 });
+
+it('ThumbnailMaximumNeverEnlargesSourceMaps', function () {
+	$plugin = dirname(__DIR__, 2);
+	$cwd    = getcwd();
+	chdir($plugin);
+	require_once $plugin . '/lib/WeatherMap.class.php';
+	$thumbnail = tempnam(sys_get_temp_dir(), 'wm-thumb-');
+	ob_start();
+
+	try {
+		foreach ([[400, 200, 400, 200], [200, 400, 200, 400], [1400, 700, 1000, 500], [700, 1400, 500, 1000]] as [$width, $height, $expected_width, $expected_height]) {
+			$map         = new WeatherMap();
+			$map->width  = $width;
+			$map->height = $height;
+			$map->DrawMap('', $thumbnail, 1000);
+			$image = imagecreatefrompng($thumbnail);
+			expect([imagesx($image), imagesy($image)])->toBe([$expected_width, $expected_height]);
+			expect([$map->thumb_width, $map->thumb_height])->toBe([$expected_width, $expected_height]);
+		}
+	} finally {
+		ob_end_clean();
+		unlink($thumbnail);
+		chdir($cwd);
+	}
+});

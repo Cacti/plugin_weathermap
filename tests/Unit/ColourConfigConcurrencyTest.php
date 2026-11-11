@@ -31,6 +31,7 @@ final class ColourConfigConcurrencyTest extends TestCase {
 	 *
 	 * @return void
 	 */
+	// The Support script shadows fopen(), rename() and other filesystem calls in the WeathermapConfig namespace and declares top-level functions, so it needs its own process.
 	#[RunInSeparateProcess]
 	#[PreserveGlobalState(false)]
 	public function testRealEngineRegression(): void {
