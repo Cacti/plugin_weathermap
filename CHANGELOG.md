@@ -14,7 +14,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 
 ## Changes
 
---- develop ---
+--- 2.1 ---
 
 * security: Require the Manage Weathermap realm to view check.php, which previously disclosed the PHP version, host name, kernel, ini paths and loaded extensions to any anonymous requester
 * security: Escape map titles, info URLs and config filenames before they are rendered on the management pages, in session messages and in the RSS feed
