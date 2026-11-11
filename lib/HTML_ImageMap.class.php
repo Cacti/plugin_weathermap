@@ -41,6 +41,43 @@
 */
 
 /**
+ * Decides whether an &lt;area&gt; href from a map config is safe to emit.
+ *
+ * INFOURL reaches this straight from the map config, which Manage and Edit
+ * Weathermap users author.  html_escape() keeps the value inside the quoted
+ * attribute, but an executable-scheme URL such as "javascript:alert(1)" is a
+ * valid attribute value that still runs script when a viewer clicks the
+ * hotspot.  Only http(s) and scheme-less links (ordinary relative Cacti URLs,
+ * absolute paths, anchors and protocol-relative links) are allowed; anything
+ * carrying another scheme is rejected so the caller can emit nohref instead.
+ *
+ * @param  string $url The raw href from the map config.
+ * @return bool   True when the URL may be used as an href.
+ */
+function wm_href_is_safe($url) {
+	if (!is_string($url)) {
+		return false;
+	}
+
+	// Strip whitespace and control characters so an obfuscated scheme such
+	// as "java\tscript:" cannot slip the scheme test below.
+	$candidate = preg_replace('/[\x00-\x20\x7f]+/', '', $url);
+
+	if ($candidate === '' || $candidate === null) {
+		return false;
+	}
+
+	// A scheme is the run of scheme characters before the first colon, taken
+	// only when no "/", "?" or "#" has appeared first (otherwise the colon
+	// belongs to a path or query, e.g. graph_view.php?x=a:b, which is relative).
+	if (preg_match('#^([A-Za-z][A-Za-z0-9+.\-]*):#', $candidate, $m)) {
+		return in_array(strtolower($m[1]), ['http', 'https'], true);
+	}
+
+	return true;
+}
+
+/**
  * A simple port of the guts of Apache's mod_imap
  * - if you have an image control in a form, it's not really defined what happens to USEMAP
  *   attributes. They are allowed in HTML 4.0 and XHTML, but some testing shows that they're
@@ -83,10 +120,12 @@ class HTML_ImageMap_Area {
 			$h .= 'class="node" ';
 		}
 
-		if ($this->href != '') {
+		if ($this->href != '' && wm_href_is_safe($this->href)) {
 			/* href carries INFOURL straight from the map config.  The poller writes this
 			 * markup to output/<hash>.html, which the plugin pages later include() as PHP,
-			 * so an unescaped value is executable and not merely injectable. */
+			 * so an unescaped value is executable and not merely injectable.  wm_href_is_safe()
+			 * also rejects executable-scheme URLs such as javascript: that html_escape() would
+			 * otherwise leave clickable, falling through to nohref for them. */
 			$h .= 'href="' . html_escape($this->href) . '" ';
 		} else {
 			$h .= 'nohref ';

@@ -101,4 +101,14 @@ final class PollerOutputConfinementTest extends TestCase {
 		// the map itself is still drawn into the output directory
 		self::assertFileExists($this->plugin . '/output/abc123.png');
 	}
+
+	public function testDataOutputFileCannotCreateAnIncludableHtml(): void {
+		// output/weathermap_<id>.html is the file the graph tree include()s, so
+		// a data file (which carries node/link names verbatim) must not be able
+		// to land there as an includable .html.
+		$this->poll("DATAOUTPUTFILE weathermap_1.html\n");
+
+		self::assertFileDoesNotExist($this->plugin . '/output/weathermap_1.html');
+		self::assertCount(1, $this->warnings());
+	}
 }

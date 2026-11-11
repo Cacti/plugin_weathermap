@@ -63,19 +63,29 @@
  *
  * The file name must start with a letter or digit, may contain letters,
  * digits, spaces, dots, underscores and hyphens, and must end in one of the
- * output extensions these directives produce (any case).  A name with a
- * script-handler segment such as "map.php.png" is refused, because some web
- * server configurations run a file by any of its extensions.
+ * extensions in $allowed_exts (any case).  A name with a script-handler
+ * segment such as "map.php.png" is refused, because some web server
+ * configurations run a file by any of its extensions.
+ *
+ * Each directive passes only the extensions it legitimately produces, so a
+ * directive cannot write a file of another kind.  DATAOUTPUTFILE in particular
+ * is held to data-only extensions: the poller renders output/weathermap_<id>.html
+ * through include(), and a data file holds node and link names verbatim, which
+ * the config parser lets carry PHP, so an includable .html data file would run
+ * as code when that map is shown in the graph tree.
  *
  * An existing destination is refused when it is a symbolic link or has more
  * than one hard link, since writing it would change a file outside $outdir.
  *
- * @param string $path   The raw path from the map directive.
- * @param string $outdir The plugin's output directory (absolute).
+ * @param string        $path         The raw path from the map directive.
+ * @param string        $outdir       The plugin's output directory (absolute).
+ * @param array<string> $allowed_exts Lower-case extensions (no dot) this
+ *                                    directive may produce; defaults to every
+ *                                    output extension the directives support.
  * @return string|false  The absolute path to write, or false if it is unsafe
  *                       or the output directory cannot be resolved.
  */
-function weathermap_confine_output_path($path, $outdir) {
+function weathermap_confine_output_path($path, $outdir, $allowed_exts = ['html', 'htm', 'png', 'jpg', 'jpeg', 'gif', 'txt', 'dat', 'tsv']) {
 	if (!is_string($path) || $path === '' || strpos($path, "\0") !== false) {
 		return false;
 	}
@@ -107,7 +117,12 @@ function weathermap_confine_output_path($path, $outdir) {
 
 	// The first character must be a letter or digit, so '.', '..' and
 	// dotfiles such as .htaccess are rejected without a separate check.
-	if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9 ._-]*\.(html?|png|jpe?g|gif|txt|dat|tsv)$/i', $name)) {
+	if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9 ._-]*\.([A-Za-z0-9]+)$/', $name, $ext)) {
+		return false;
+	}
+
+	// Each directive only accepts the extensions it legitimately produces.
+	if (!in_array(strtolower($ext[1]), $allowed_exts, true)) {
 		return false;
 	}
 
@@ -645,7 +660,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 
 						// if the user explicitly defined a data file, write it there too
 						if ($wmap->dataoutputfile) {
-							$safedatafile = weathermap_confine_output_path($wmap->dataoutputfile, $outdir);
+							$safedatafile = weathermap_confine_output_path($wmap->dataoutputfile, $outdir, ['txt', 'dat', 'tsv']);
 
 							if ($safedatafile !== false) {
 								$wmap->WriteDataFile($safedatafile);
@@ -664,7 +679,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 						 * libraries once covered by overlib.js prior to 1.4.
 						 */
 						if ($wmap->htmloutputfile != '') {
-							$htmlfile = weathermap_confine_output_path($wmap->htmloutputfile, $outdir);
+							$htmlfile = weathermap_confine_output_path($wmap->htmloutputfile, $outdir, ['html', 'htm']);
 
 							if ($htmlfile === false) {
 								wm_warn('Ignoring HTMLOUTPUTFILE outside the output directory: ' . $wmap->htmloutputfile . ' [WMPOLL08]');
@@ -690,7 +705,7 @@ function weathermap_run_maps($mydir, $force = false, $maps = []) {
 
 						// copy the existing image file to the configured location too
 						if ($wmap->imageoutputfile != '' && $wmap->imageoutputfile != 'weathermap.png' && file_exists($imagefile)) {
-							$safeimagefile = weathermap_confine_output_path($wmap->imageoutputfile, $outdir);
+							$safeimagefile = weathermap_confine_output_path($wmap->imageoutputfile, $outdir, ['png', 'jpg', 'jpeg', 'gif']);
 
 							if ($safeimagefile !== false) {
 								copy($imagefile, $safeimagefile);

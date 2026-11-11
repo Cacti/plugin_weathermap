@@ -2512,9 +2512,12 @@ LINK DEFAULT
           <code>Core Links.html</code>, or a path whose directory is the output directory, such as
           <code>output/network.png</code> (relative to the plugin directory) or the absolute path of the
           output directory. A file name starts with a letter or digit, may contain letters, digits,
-          spaces, dots, underscores and hyphens, and ends in <code>.html</code>, <code>.htm</code>,
-          <code>.png</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.gif</code>, <code>.txt</code>,
-          <code>.dat</code> or <code>.tsv</code> in any letter case. A name with a script extension in the
+          spaces, dots, underscores and hyphens, and ends in an extension appropriate to the directive,
+          in any letter case: <code>HTMLOUTPUTFILE</code> accepts <code>.html</code> or <code>.htm</code>;
+          <code>IMAGEOUTPUTFILE</code> accepts <code>.png</code>, <code>.jpg</code>, <code>.jpeg</code> or
+          <code>.gif</code>; and <code>DATAOUTPUTFILE</code> accepts only the data extensions
+          <code>.txt</code>, <code>.dat</code> or <code>.tsv</code> (so a data file, whose contents come
+          from the map, cannot be written as an includable HTML page). A name with a script extension in the
           middle, such as <code>map.php.png</code>, is refused, as is an existing file in the output
           directory that is a symbolic link or has a second hard link.</p>
           <p xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">Any other value, such as a path into a

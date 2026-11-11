@@ -44,6 +44,45 @@ describe('generated image map markup', function () {
 
 		expect($area->common_html())->toContain('nohref');
 	});
+
+	/* html_escape() keeps an INFOURL inside the quoted attribute but leaves an
+	 * executable-scheme URL clickable, so a javascript:/data:/vbscript: link in
+	 * a map config would still run script in a viewer's session.  Those are
+	 * dropped to nohref while ordinary http(s) and relative Cacti links stay. */
+	it('drops an executable-scheme href to nohref', function (string $url) {
+		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
+		$area->href = $url;
+
+		$html = $area->common_html();
+
+		expect($html)->toContain('nohref');
+		expect($html)->not->toContain('href="');
+	})->with([
+		'javascript scheme'            => ['javascript:alert(document.domain)'],
+		'mixed-case javascript scheme' => ['JavaScript:alert(1)'],
+		'whitespace-obfuscated scheme' => ["java\tscript:alert(1)"],
+		'leading-space scheme'         => ['  javascript:alert(1)'],
+		'data scheme'                  => ['data:text/html,<script>alert(1)</script>'],
+		'vbscript scheme'              => ['vbscript:msgbox(1)'],
+	]);
+
+	it('keeps an ordinary http(s) or relative href', function (string $url) {
+		$area = new HTML_ImageMap_Area_Rectangle('NODE:n1', '', [[0, 0, 10, 10]]);
+		$area->href = $url;
+
+		$html = $area->common_html();
+
+		expect($html)->toContain('href="');
+		expect($html)->not->toContain('nohref');
+	})->with([
+		'absolute http'       => ['http://example.com/graph.php?id=1'],
+		'absolute https'      => ['https://example.com/'],
+		'relative cacti page' => ['graph_view.php?action=tree&node=1'],
+		'root-relative path'  => ['/cacti/graph_view.php'],
+		'protocol relative'   => ['//example.com/x'],
+		'anchor only'         => ['#here'],
+		'query with colon'    => ['graph_view.php?x=a:b'],
+	]);
 });
 
 describe('map_clean_title()', function () {
