@@ -68,6 +68,17 @@ $perm_actions = [
 
 set_default_action();
 
+$wm_post_actions = [
+	'actions', 'enable_poller_output', 'group_update', 'groupadmin_delete', 'chgroup_update',
+	'map_settings_delete', 'save', 'perms_add_user', 'perms_delete_user', 'delete_map',
+	'deactivate_map', 'activate_map', 'move_map_up', 'move_map_down', 'move_group_up',
+	'move_group_down', 'addmap', 'dupmap', 'newmap', 'rebuildnow'
+];
+
+if (!wm_require_post($wm_post_actions, get_request_var('action'))) {
+	exit;
+}
+
 switch (get_request_var('action')) {
 	case 'actions':
 		weathermap_form_actions();
@@ -107,6 +118,7 @@ switch (get_request_var('action')) {
 		$id = -1;
 
 		top_header();
+		wm_mgmt_post_script();
 
 		$id = get_filter_request_var('id');
 
@@ -119,6 +131,7 @@ switch (get_request_var('action')) {
 		break;
 	case 'groupadmin':
 		top_header();
+		wm_mgmt_post_script();
 
 		weathermap_group_editor();
 
@@ -141,6 +154,7 @@ switch (get_request_var('action')) {
 		break;
 	case 'chgroup':
 		top_header();
+		wm_mgmt_post_script();
 		weathermap_chgroup(get_filter_request_var('id'));
 		bottom_footer();
 
@@ -169,6 +183,7 @@ switch (get_request_var('action')) {
 		break;
 	case 'map_settings_form':
 		top_header();
+		wm_mgmt_post_script();
 
 		$mapid = get_filter_request_var('mapid');
 		$id    = get_filter_request_var('id');
@@ -184,6 +199,7 @@ switch (get_request_var('action')) {
 		break;
 	case 'map_settings':
 		top_header();
+		wm_mgmt_post_script();
 		weathermap_map_settings(get_filter_request_var('id'));
 		bottom_footer();
 
@@ -206,6 +222,7 @@ switch (get_request_var('action')) {
 		break;
 	case 'perms_edit':
 		top_header();
+		wm_mgmt_post_script();
 		perms_list(get_filter_request_var('id'));
 		bottom_footer();
 
@@ -288,6 +305,7 @@ switch (get_request_var('action')) {
 		break;
 	case 'addmap_picker':
 		top_header();
+		wm_mgmt_post_script();
 
 		if (isset_request_var('show') && get_nfilter_request_var('show') == 'all') {
 			addmap_picker(true);
@@ -340,6 +358,7 @@ switch (get_request_var('action')) {
 	default:
 		// by default, just list the map setup
 		top_header();
+		wm_mgmt_post_script();
 
 		maplist();
 
@@ -542,6 +561,7 @@ function weathermap_form_actions() {
 	}
 
 	top_header();
+	wm_mgmt_post_script();
 
 	form_start('weathermap-cacti-plugin-mgmt.php', 'actions');
 
@@ -856,7 +876,7 @@ function wm_filter() {
 				});
 
 				$('#wm_rebuild').on('click', function() {
-					loadPageNoHeader(urlPath + 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php?action=rebuildnow&header=false');
+					loadPageUsingPost(urlPath + 'plugins/weathermap/weathermap-cacti-plugin-mgmt.php', {action: 'rebuildnow', header: 'false', __csrf_magic: csrfMagicToken});
 				});
 
 				$('#wm_settings').on('click', function() {
@@ -950,7 +970,7 @@ function maplist() {
 		if (!$has_global_poller_output) {
 			print '<div align="center" class="wm_warning"><p>';
 
-			print __('You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap\'s \'poller_output\' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s', '<a href="?action=enable_poller_output">', '</a>', 'weathermap');
+			print __('You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap\'s \'poller_output\' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s', '<a class="wmPostAction" href="?action=enable_poller_output">', '</a>', 'weathermap');
 
 			print '</p></div>';
 		}
@@ -1104,14 +1124,14 @@ function maplist() {
 				'</a>', $map['id']);
 
 			if ($map['active'] == 'on') {
-				$url = '<a class="pic deviceUp" title="' . __esc('Click to Deactivate', 'weathermap') . '"
+				$url = '<a class="pic deviceUp wmPostAction" title="' . __esc('Click to Deactivate', 'weathermap') . '"
                         href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=deactivate_map&id=' . $map['id']) . '">' .
 						__('Yes', 'weathermap') . '
                     </a>';
 
 				form_selectable_cell($url, $map['id'], '', 'wm_enabled');
 			} else {
-				$url = '<a class="pic deviceDown" title="' . __esc('Click to Activate', 'weathermap') . '"
+				$url = '<a class="pic deviceDown wmPostAction" title="' . __esc('Click to Activate', 'weathermap') . '"
 						href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=activate_map&id=' . $map['id']) . '">' .
 						__('No', 'weathermap') . '
 					</a>';
@@ -1136,12 +1156,12 @@ function maplist() {
 
 			form_selectable_cell($url, $map['id']);
 
-			$url  = '<a class="pic" title="' . __esc('Move Map Up', 'weathermap') . '"
+			$url  = '<a class="pic wmPostAction" title="' . __esc('Move Map Up', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_up&id=' . $map['id']) . '">
 				<i class="fa fa-caret-up moveArrow"></i>
 			</a>';
 
-			$url .= '<a class="pic" title="' . __esc('Move Map Down', 'weathermap') . '"
+			$url .= '<a class="pic wmPostAction" title="' . __esc('Move Map Down', 'weathermap') . '"
 				href="' . html_escape('weathermap-cacti-plugin-mgmt.php?action=move_map_down&id=' . $map['id']) . '">
 				<i class="fa fa-caret-down moveArrow"></i>
 			</a>';
@@ -1401,7 +1421,7 @@ function addmap_filter() {
 
 								if (cacti_sizeof($maps)) {
 									foreach ($maps as $map) {
-										print "<option value='{$map['configfile']}'>" . html_escape($map['configfile']) . '</option>';
+										print "<option value='" . html_escape($map['configfile']) . "'>" . html_escape($map['configfile']) . '</option>';
 									}
 								}
 								?>
@@ -1619,27 +1639,27 @@ function addmap_picker($show_all = false) {
 
 			if ($map['map_id'] == 0) {
 				$file   = basename($map['filename']);
-				$url    = 'weathermap-cacti-plugin-mgmt.php?action=addmap&file=' . $file;
+				$url    = html_escape('weathermap-cacti-plugin-mgmt.php?action=addmap&file=' . rawurlencode($file));
 				$tip    = __esc('Add the configuration file %s to Weathermap', $file, 'weathermap');
 				$value  = '<i class="fa fa-plus"></i>';
-				$action = "<a class='pic deviceUp' href='$url' title='$tip'>$value</a>";
+				$action = "<a class='pic deviceUp wmPostAction' href='$url' title='$tip'>$value</a>";
 			} else {
 				$file    = basename($map['filename']);
 				$newfile = map_get_next_name($file);
 
-				$url = 'weathermap-cacti-plugin-mgmt.php?' .
+				$url = html_escape('weathermap-cacti-plugin-mgmt.php?' .
 					'action=dupmap' .
-					'&mapid=' . $map['map_id'] .
-					'&file=' . $file .
-					'&title=' . $map['title'] . __(' Copy', 'weathermap');
+					'&mapid=' . (int) $map['map_id'] .
+					'&file=' . rawurlencode($file) .
+					'&title=' . rawurlencode($map['title'] . __(' Copy', 'weathermap')));
 
 				$tip    = __esc('Duplicate the configuration file %s and add to Weathermap as %s', $file, $newfile, 'weathermap');
 				$value  = '<i class="fa fa-copy"></i>';
-				$action = "<a class='pic deviceRecovering' href='$url' title='$tip'>$value</a>";
+				$action = "<a class='pic deviceRecovering wmPostAction' href='$url' title='$tip'>$value</a>";
 			}
 
 			$tip   = __esc('View the configuration file %s in a new window', $file, 'weathermap');
-			$url   = 'weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . $file;
+			$url   = html_escape('weathermap-cacti-plugin-mgmt.php?action=viewconfig&file=' . rawurlencode($file));
 			$value = '<i class="fa fa-binoculars"></i>';
 
 			$action .= "<a target='_new' href='$url' title='$tip'>$value</a>";
@@ -2803,13 +2823,13 @@ function weathermap_map_settings($id) {
 
 			form_selectable_cell($action, $n);
 
-			form_selectable_cell($setting['optname'], $n);
-			form_selectable_cell($setting['optvalue'], $n);
+			form_selectable_cell(html_escape($setting['optname']), $n);
+			form_selectable_cell(html_escape($setting['optvalue']), $n);
 
 			$tip    = __esc('Remove this definition from this Map', 'weathermap');
 			$url    = html_escape('weathermap-cacti-plugin-mgmt.php?action=map_settings_delete&mapid=' . $id . '&id=' . $setting['id']);
 			$value  = '<i class="delete deleteMarker fa fa-times"></i>';
-			$action = "<a class='pic linkEditMain' href='$url' title='$tip'>$value</a>";
+			$action = "<a class='pic wmPostAction' href='$url' title='$tip'>$value</a>";
 
 			form_selectable_cell($action, $n, '', 'right');
 
@@ -3295,13 +3315,13 @@ function weathermap_group_editor() {
 			$url     = html_escape('weathermap-cacti-plugin-mgmt.php?action=move_group_up&id=' . $group['id']);
 			$value   = '<i class="fa fa-caret-up moveArrow"></i>';
 
-			$action  = "<a class='pic' href='$url' title='$tip'>$value</a>";
+			$action  = "<a class='pic wmPostAction' href='$url' title='$tip'>$value</a>";
 
 			$tip     = __esc('Move Group Down', 'weathermap');
 			$url     = html_escape('weathermap-cacti-plugin-mgmt.php?action=move_group_down&id=' . $group['id']);
 			$value   = '<i class="fa fa-caret-down moveArrow"></i>';
 
-			$action .= "<a class='pic' href='$url' title='$tip'>$value</a>";
+			$action .= "<a class='pic wmPostAction' href='$url' title='$tip'>$value</a>";
 
 			form_selectable_cell($action, $n);
 
@@ -3309,7 +3329,7 @@ function weathermap_group_editor() {
 			$url    = html_escape('weathermap-cacti-plugin-mgmt.php?action=groupadmin_delete&id=' . $group['id']);
 			$value  = '';
 
-			$action = "<a class='pic delete deleteMarker fa fa-times' href='$url' title='$tip'>$value</a>";
+			$action = "<a class='pic delete deleteMarker fa fa-times wmPostAction' href='$url' title='$tip'>$value</a>";
 
 			form_selectable_cell($action, $n, '', 'right');
 
@@ -3360,7 +3380,12 @@ function weathermap_group_editor() {
 				if ($('#rname').val() != '') {
 					$('#rename_dialog').dialog('close');
 
-					$.get('weathermap-cacti-plugin-mgmt.php?action=group_update&id='+$('#rid').val()+'&gname='+$('#rname').val(), function() {
+					$.post('weathermap-cacti-plugin-mgmt.php', {
+						action: 'group_update',
+						id: $('#rid').val(),
+						gname: $('#rname').val(),
+						__csrf_magic: csrfMagicToken
+					}, function() {
 						loadPageNoHeader('weathermap-cacti-plugin-mgmt.php?action=groupadmin&header=false');
 					});
 				} else {
@@ -3456,6 +3481,44 @@ function weathermap_group_delete($id) {
 }
 
 /**
+ * Send links marked wmPostAction as a POST with the CSRF token. The actions
+ * they trigger change state, so the dispatcher refuses them over GET. The
+ * listener runs in the capture phase so it takes the click before Cacti's
+ * own link handler turns it into a GET page load.
+ * @return void
+ */
+function wm_mgmt_post_script() {
+	?>
+	<script type='text/javascript' <?php print plugin_weathermap_csp_nonce(); ?>>
+	if (!window.wmPostActionBound) {
+		window.wmPostActionBound = true;
+
+		document.addEventListener('click', function(event) {
+			var link = event.target.closest ? event.target.closest('a.wmPostAction') : null;
+
+			if (!link) {
+				return;
+			}
+
+			event.preventDefault();
+			event.stopPropagation();
+
+			var url  = new URL(link.getAttribute('href'), window.location.href);
+			var form = $('<form>', {method: 'post', action: url.pathname});
+
+			url.searchParams.forEach(function(value, name) {
+				form.append($('<input>', {type: 'hidden', name: name, value: value}));
+			});
+
+			form.append($('<input>', {type: 'hidden', name: '__csrf_magic', value: csrfMagicToken}));
+			form.appendTo(document.body)[0].submit();
+		}, true);
+	}
+	</script>
+	<?php
+}
+
+/**
  * Creates a new blank (or copied-from-source) map config file on disk
  * using the WeatherMap engine's own config writer, guarding against
  * overwriting an existing file. Called from the map editor's 'new map'
@@ -3486,14 +3549,11 @@ function newMap($mapfile, $sourcemapfile = '', $title = '') {
 		return;
 	}
 
-	if ($mapfile == basename($mapfile)) {
-		$mapfile = $weathermap_confdir . '/' . clean_up_name(basename($mapfile, '.conf')) . '.conf';
-	} else {
-		$mapfile = dirname($mapfile) . '/' . clean_up_name(basename($mapfile, '.conf')) . '.conf';
-	}
+	// New maps and their sources always live in the config directory.
+	$mapfile = $weathermap_confdir . '/' . clean_up_name(basename($mapfile, '.conf')) . '.conf';
 
-	if ($sourcemapfile != '' && (!file_exists($sourcemapfile) || $sourcemapfile == basename($sourcemapfile))) {
-		$sourcemapfile = $weathermap_confdir . '/' . $sourcemapfile;
+	if ($sourcemapfile != '') {
+		$sourcemapfile = $weathermap_confdir . '/' . basename($sourcemapfile);
 	}
 
 	if (file_exists($mapfile)) {

@@ -444,6 +444,18 @@ function wm_editor_sanitize_conffile($filename) {
 }
 
 /**
+ * Print the CSRF token for a form on the editor start page. The start page
+ * does not load Cacti's scripts, so the token is not added to its forms
+ * automatically, and Cacti rejects a POST that does not carry it.
+ * @return void
+ */
+function wm_editor_csrf_input() {
+	if (function_exists('csrf_get_tokens')) {
+		print '<input name="__csrf_magic" type="hidden" value="' . html_escape(csrf_get_tokens()) . '">';
+	}
+}
+
+/**
  * Render the editor start page: the editor scripts, the new map form and the
  * list of map files.
  *
@@ -481,10 +493,11 @@ function show_editor_startpage() {
 	print '<tr>';
 	print __('Do you want to:', 'weathermap') . '<p>';
 	print __('Create A New Map:', 'weathermap') . '<br>';
-	print '<form method="GET">';
+	print '<form method="POST">';
 	print __('Named:', 'weathermap') . ' <input type="text" name="mapname" size="20">';
 
 	print '<input name="action" type="hidden" value="newmap">';
+	wm_editor_csrf_input();
 
 	print '<button type="submit">' . __('Create', 'weathermap') . '</button>';
 
@@ -546,10 +559,11 @@ function show_editor_startpage() {
 	}
 
 	print 'OR<br />Create A New Map as a copy of an existing map:<br>';
-	print '<form method="GET">';
+	print '<form method="POST">';
 	print 'Named: <input type="text" name="mapname" size="20"> based on ';
 
 	print '<input name="action" type="hidden" value="newmapcopy">';
+	wm_editor_csrf_input();
 	print '<select name="sourcemap">';
 
 	if ($errorstring == '') {

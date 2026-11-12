@@ -129,6 +129,17 @@ wm_debug('======================================================================
 wm_debug("Starting Edit Run: action is $action on $mapname");
 wm_debug('==========================================================================================================');
 
+// Every action that writes the map or the editor settings must be a POST.
+if (!wm_require_post([
+	'newmap', 'newmapcopy', 'set_link_config', 'set_node_config', 'set_note_properties',
+	'set_node_properties', 'set_link_properties', 'set_map_properties', 'set_map_style',
+	'add_link2', 'place_legend', 'place_stamp', 'via_link', 'move_node', 'link_tidy',
+	'retidy', 'retidy_all', 'untidy', 'delete_link', 'add_node', 'editor_settings',
+	'delete_node', 'clone_node'
+], $action)) {
+	exit;
+}
+
 switch($action) {
 	case 'history_status':
 	case 'undo':

@@ -24,6 +24,11 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * security: Reject an over-length duplicated-map title (more than 4088 bytes after cleaning) so it cannot inject map-config directives across the poller's config-line read boundary, matching the new-map check
 * security: Hide maps from members of a disabled user group in the list and cycle views, matching the per-map permission check
 * security: Treat an invalid format string in a map label, title or note as literal text so it can no longer abort the poller cycle on PHP 8
+* security: Require POST for the management and editor actions that change maps, groups, settings or permissions, so they are covered by Cacti's CSRF check
+* security: Escape hover graph URLs, editor script data, add-map picker links, map setting values and the page title, and drop hover graphs with a script scheme
+* security: Keep new maps and their source maps inside the config directory, keep output-file directives off the names the poller and graph tree use, and print the tree view HTML instead of including it
+* security: Do not copy lines of an INCLUDE file into the log, and print a format with a width of 1000 or more, or a width taken from the value, literally
+* issue#351: Keep an unrecognised target, a zero-width or doubled-back link, the first sample of a new poller_output row and a */0 schedule from aborting the poller, and accept lists and ranges in map schedules
 * issue#346: Split js/editor.js into dialog, picker, compact-editor and asset-library scripts so browser tests load whole files
 * issue#343: Run engine unit tests in-process where they no longer need isolation
 * issue#342: Split the engine base classes and constants out of WeatherMap.class.php so tests load only what they need
