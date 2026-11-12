@@ -723,9 +723,26 @@ function imagecolorize($image, $red, $green, $blue) {
 }
 
 /**
+ * Unit normal of a direction vector, or a zero vector when the direction has
+ * no length (a zero-width arrow, or two identical spine points).
+ * @param  float|int                 $dx
+ * @param  float|int                 $dy
+ * @return array{0: float, 1: float}
+ */
+function wm_unit_normal($dx, $dy) {
+	$l = sqrt(($dx * $dx) + ($dy * $dy));
+
+	if ($l == 0) {
+		return [0.0, 0.0];
+	}
+
+	return [$dy / $l, -$dx / $l];
+}
+
+/**
  * find the point where a line from x1,y1 through x2,y2 crosses another line through x3,y3 and x4,y4
  * (the point might not be between those points, but beyond them)
- * - doesn't handle parallel lines. In our case we will never get them.
+ * - parallel lines, such as a VIA that doubles back, meet at the shared vertex.
  * - make sure we remove colinear points, or this will not be true!
  * @param mixed $x1
  * @param mixed $y1
@@ -764,6 +781,11 @@ function line_crossing($x1, $y1, $x2, $y2, $x3, $y3, $x4, $y4) {
 	$c2 = $y3 - ($slope2 * $x3);
 
 	$f = ($a1 * $b2) - ($a2 * $b1);
+
+	// Parallel lines, as when a VIA doubles back, meet at the shared vertex.
+	if ($f == 0) {
+		return [($x2 + $x3) / 2, ($y2 + $y3) / 2];
+	}
 
 	$det_inv = 1 / $f;
 
@@ -1275,10 +1297,7 @@ function draw_straight($image, &$curvepoints, $widths, $outlinecolour, $fillcolo
 
 			$adx = ($halfway_x - $pre_mid_x);
 			$ady = ($halfway_y - $pre_mid_y);
-			$ll  = sqrt(($adx * $adx) + ($ady * $ady));
-
-			$anx = $ady / $ll;
-			$any = -$adx / $ll;
+			[$anx, $any] = wm_unit_normal($adx, $ady);
 
 			$ax1 = $pre_mid_x + $widths[$dir] * $anx;
 			$ay1 = $pre_mid_y + $widths[$dir] * $any;
@@ -1591,9 +1610,7 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 
 			$dx = $curvepoints[$i + $direction][0] - $curvepoints[$i][0];
 			$dy = $curvepoints[$i + $direction][1] - $curvepoints[$i][1];
-			$l  = sqrt(($dx * $dx) + ($dy * $dy));
-			$nx = $dy / $l;
-			$ny = -$dx / $l;
+			[$nx, $ny] = wm_unit_normal($dx, $dy);
 
 			$there_points[] = $curvepoints[$i][0] + $direction * $widths[$dir] * $nx;
 			$there_points[] = $curvepoints[$i][1] + $direction * $widths[$dir] * $ny;
@@ -1606,10 +1623,7 @@ function draw_curve($image, &$curvepoints, $widths, $outlinecolour, $fillcolours
 
 		$adx = ($halfway_x - $pre_mid_x);
 		$ady = ($halfway_y - $pre_mid_y);
-		$l   = sqrt(($adx * $adx) + ($ady * $ady));
-
-		$anx = $ady / $l;
-		$any = -$adx / $l;
+		[$anx, $any] = wm_unit_normal($adx, $ady);
 
 		$there_points[] = $pre_mid_x + $direction * $widths[$dir] * $anx;
 		$there_points[] = $pre_mid_y + $direction * $widths[$dir] * $any;

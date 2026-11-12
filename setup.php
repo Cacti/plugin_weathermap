@@ -1242,6 +1242,11 @@ function weathermap_poller_output(&$rrd_update_array) {
 			$period  = $time - $required['last_time'];
 			$lastval = $required['last_value'];
 
+			// A new row has no previous sample, so its first rate is zero.
+			if (!is_numeric($lastval)) {
+				$lastval = $value;
+			}
+
 			if (empty($period)) {
 				$period = 60;
 			}
@@ -1366,12 +1371,18 @@ function weathermap_poller_bottom() {
 
 			if (!register_process_start('weathermap', 'master', 0, $timeout)) {
 				cacti_log('WARNING: Weathermap map generation process timed out.  Consider increasing the timeout in Console > Configuration > Settings > Weathermap', false, 'WEATHERMAP');
-				exit(1);
+
+				return;
 			}
 
-			weathermap_run_maps(__DIR__);
-
-			unregister_process('weathermap', 'master', 0);
+			// A map that fails must not stop the rest of the Cacti poller.
+			try {
+				weathermap_run_maps(__DIR__);
+			} catch (Throwable $e) {
+				cacti_log('ERROR: Weathermap map generation failed: ' . $e->getMessage(), false, 'WEATHERMAP');
+			} finally {
+				unregister_process('weathermap', 'master', 0);
+			}
 
 			$newcount = 1;
 		} else {

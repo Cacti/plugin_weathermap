@@ -170,24 +170,37 @@ function weathermap_memory_check($note = 'MEM') {
  * @return bool
  */
 function weathermap_cron_part($value, $checkstring) {
-	// XXX - this should really handle a few more crontab niceties like */5 or 3,5-9 but this will do for now
-	if ($checkstring == '*') {
-		return (true);
-	}
+	$value = (int) $value;
 
-	if ($checkstring == sprintf('%s', $value)) {
-		return (true);
-	}
+	// Each comma-separated item is *, N or N-M, optionally followed by /step.
+	foreach (explode(',', (string) $checkstring) as $item) {
+		if (!preg_match('/^(\*|(\d+)(?:-(\d+))?)(?:\/(\d+))?$/', trim($item), $matches)) {
+			continue;
+		}
 
-	if (preg_match('/\*\/(\d+)/', $checkstring, $matches)) {
-		$mod = $matches[1];
+		$step = isset($matches[4]) && $matches[4] !== '' ? (int) $matches[4] : 1;
 
-		if (((int) $value % (int) $mod) == 0) {
+		if ($step < 1) {
+			continue;
+		}
+
+		if ($matches[1] == '*') {
+			if ($value % $step == 0) {
+				return true;
+			}
+
+			continue;
+		}
+
+		$low  = (int) $matches[2];
+		$high = isset($matches[3]) && $matches[3] !== '' ? (int) $matches[3] : ($step > 1 ? PHP_INT_MAX : $low);
+
+		if ($value >= $low && $value <= $high && ($value - $low) % $step == 0) {
 			return true;
 		}
 	}
 
-	return (false);
+	return false;
 }
 
 /**
