@@ -110,25 +110,22 @@ describe('geometry helpers', function (): void {
 });
 
 describe('weathermap_cron_part()', function (): void {
-	it('matches the forms crontab allows', function (string $field, int $value, bool $match): void {
-		expect(weathermap_cron_part($value, $field))->toBe($match);
-	})->with([
-		'any'             => ['*', 7, true],
-		'exact'           => ['5', 5, true],
-		'exact miss'      => ['5', 6, false],
-		'step'            => ['*/15', 30, true],
-		'step miss'       => ['*/15', 31, false],
-		'list'            => ['0,15,30', 15, true],
-		'list miss'       => ['0,15,30', 20, false],
-		'range'           => ['10-20', 12, true],
-		'range miss'      => ['10-20', 21, false],
-		'range step'      => ['10-20/5', 15, true],
-		'range step miss' => ['10-20/5', 16, false],
-		'start step'      => ['5/10', 25, true],
-		'start step miss' => ['5/10', 0, false],
-		'zero step'       => ['*/0', 0, false],
-		'garbage'         => ['x*/5', 10, false],
-	]);
+	it('matches the forms crontab allows', function (): void {
+		$matches = ['*' => [7], '5' => [5], '*/15' => [30], '0,15,30' => [15], '10-20' => [12], '10-20/5' => [15], '5/10' => [25]];
+		$misses  = ['5' => [6], '*/15' => [31], '0,15,30' => [20], '10-20' => [21], '10-20/5' => [16], '5/10' => [0], '*/0' => [0], 'x*/5' => [10]];
+
+		foreach ($matches as $field => $values) {
+			foreach ($values as $value) {
+				expect(weathermap_cron_part($value, (string) $field))->toBeTrue("'$field' should match $value");
+			}
+		}
+
+		foreach ($misses as $field => $values) {
+			foreach ($values as $value) {
+				expect(weathermap_cron_part($value, (string) $field))->toBeFalse("'$field' should not match $value");
+			}
+		}
+	});
 
 	it('runs a schedule that uses lists and ranges', function (): void {
 		$time = mktime(10, 15, 0, 6, 3, 2026);
