@@ -234,16 +234,36 @@ function wm_warn($string, $notice_only = false) {
 }
 
 /**
+ * Refuse a state-changing request that did not arrive by POST. Cacti checks
+ * the CSRF token only on POST, so any other method could be forged by
+ * another site while a Weathermap administrator is logged in.
+ * @param  array<string> $actions The actions that change state.
+ * @param  string        $action  The requested action.
+ * @return bool          True when the request may proceed.
+ */
+function wm_require_post($actions, $action) {
+	if (!in_array($action, $actions, true) || ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
+		return true;
+	}
+
+	header('Allow: POST');
+	http_response_code(405);
+
+	return false;
+}
+
+/**
  * @param int|string $str
  * @param bool $wrap
  * @return mixed
  */
 function js_escape($str, $wrap = true) {
-	$str = str_replace('\\', '\\\\', (string) $str);
-	$str = str_replace('"', '\\"', $str);
+	// The result is printed inside inline <script> blocks, so markup and
+	// quote characters are hex-escaped and cannot end the block or the string.
+	$str = json_encode((string) $str, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
 
-	if ($wrap) {
-		$str = '"' . $str . '"';
+	if (!$wrap) {
+		$str = substr($str, 1, -1);
 	}
 
 	return ($str);
@@ -332,6 +352,15 @@ function mysprintf($format, $value, $kilo = 1000) {
 		 * specifier) rather than warning, and this runs inside the poller's map
 		 * loop with no handler above it, so one bad label would abort the whole
 		 * poller cycle.  Fall back to the literal text instead of crashing. */
+		// A huge width or precision allocates that many bytes, and running out
+		// of memory is a fatal error that the handler below cannot catch. A '*'
+		// takes the width from the value itself, so it is refused as well.
+		if (preg_match("/%(?:[^%a-zA-Z']|'.)*?(\\d{4,}|\\*)/s", $format)) {
+			wm_warn('Format width too large in map text, using it literally: ' . $format . ' [WMFMT01]');
+
+			return $format;
+		}
+
 		try {
 			$output = @sprintf($format, $value);
 

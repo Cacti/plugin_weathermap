@@ -3175,7 +3175,13 @@ class WeatherMap extends WeatherMapBase {
 				}
 
 				if ($linematched == 0 && trim($buffer) != '') {
-					wm_warn("Unrecognised config on line $linecount: $buffer");
+					// An INCLUDE can name any readable file, so do not copy its
+					// lines into the log.
+					if ($is_include) {
+						wm_warn("Unrecognised config on line $linecount of $filename");
+					} else {
+						wm_warn("Unrecognised config on line $linecount: $buffer");
+					}
 				}
 
 				if ($linematched > 1) {
@@ -4327,11 +4333,19 @@ class WeatherMap extends WeatherMapBase {
 						if (cacti_sizeof($myobj->overliburl[$dir]) > 0) {
 							// print "ARRAY:".is_array($link->overliburl[$dir])."\n";
 							foreach ($myobj->overliburl[$dir] as $url) {
+								$src = $this->ProcessString($url, $myobj);
+
+								// The hover markup is inserted into the viewer's page, so the
+								// URL must stay inside its attribute and use a safe scheme.
+								if (!wm_href_is_safe($src)) {
+									continue;
+								}
+
 								if ($n > 0) {
 									$data_hover .= '<br>';
 								}
 
-								$data_hover .= "<img data-height='$dheight' data-width='$dwidth' src='" . $this->ProcessString($url, $myobj) . "'>";
+								$data_hover .= "<img data-height='" . html_escape($dheight) . "' data-width='" . html_escape($dwidth) . "' src='" . html_escape($src) . "'>";
 								$n++;
 							}
 						}

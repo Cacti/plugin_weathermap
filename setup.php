@@ -344,13 +344,16 @@ function weathermap_page_title($t) {
 			$mapid = $matches[1];
 
 			if (preg_match('/^\d+$/', $mapid)) {
-				$title = db_fetch_cell_prepared('SELECT titlecache FROM weathermap_maps WHERE id = ?', [$mapid]);
+				$map = db_fetch_row_prepared('SELECT id, titlecache FROM weathermap_maps WHERE id = ?', [$mapid]);
 			} else {
-				$title = db_fetch_cell_prepared('SELECT titlecache FROM weathermap_maps WHERE filehash = ?', [$mapid]);
+				$map = db_fetch_row_prepared('SELECT id, titlecache FROM weathermap_maps WHERE filehash = ?', [$mapid]);
 			}
 
-			if ($title != '') {
-				$t .= ' > ' . $title;
+			require_once __DIR__ . '/lib/WeatherMap.functions.php';
+
+			// Core prints the title raw, and only maps the user may view are named.
+			if (cacti_sizeof($map) && $map['titlecache'] != '' && is_weathermap_allowed($map['id'], $_SESSION['sess_user_id'] ?? 0)) {
+				$t .= ' > ' . html_escape($map['titlecache']);
 			}
 		}
 
@@ -707,8 +710,9 @@ function weathermap_tree_item_render($leaf) {
 		<?php
 		print '<tr><td>';
 
-		if (file_exists($htmlfile)) {
-			include($htmlfile);
+		// The file is generated HTML; print it rather than run it as PHP.
+		if (is_file($htmlfile)) {
+			print file_get_contents($htmlfile);
 		}
 
 		print '</td></tr>';

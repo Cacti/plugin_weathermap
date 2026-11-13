@@ -126,6 +126,12 @@ function weathermap_confine_output_path($path, $outdir, $allowed_exts = ['html',
 		return false;
 	}
 
+	// The poller writes <filehash>.* for every map, and the graph tree reads
+	// weathermap_<id>.html, so a directive cannot take over those names.
+	if (preg_match('/^(weathermap_\d+\.html?|[0-9a-f]{20}(\..*)?)$/i', $name)) {
+		return false;
+	}
+
 	foreach (array_slice(explode('.', $name), 1, -1) as $segment) {
 		if (preg_match('/^(php\d*|pht|phtml|phar|phps|cgi|pl|py|sh|shtml|asp|aspx|jsp)$/i', $segment)) {
 			return false;
