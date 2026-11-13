@@ -1077,7 +1077,8 @@ class WeatherMap extends WeatherMapBase {
 							wm_debug("ReadData: New Target: $target[4]");
 
 							$targetstring = $target[0];
-							$multiply     = $target[1];
+							// An unrecognised or inactive target never gets a multiplier.
+							$multiply     = is_numeric($target[1]) ? floatval($target[1]) : 1;
 
 							$in       = 0;
 							$out      = 0;
