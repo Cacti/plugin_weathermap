@@ -28,20 +28,18 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * security: Escape hover graph URLs, editor script data, add-map picker links, map setting values and the page title, and drop hover graphs with a script scheme
 * security: Keep new maps and their source maps inside the config directory, keep output-file directives off the names the poller and graph tree use, and print the tree view HTML instead of including it
 * security: Do not copy lines of an INCLUDE file into the log, and print a format with a width of 1000 or more, or a width taken from the value, literally
-* issue#351: Keep an unrecognised target, a zero-width or doubled-back link, the first sample of a new poller_output row and a */0 schedule from aborting the poller, and accept lists and ranges in map schedules
-* issue#346: Split js/editor.js into dialog, picker, compact-editor and asset-library scripts so browser tests load whole files
-* issue#343: Run engine unit tests in-process where they no longer need isolation
-* issue#342: Split the engine base classes and constants out of WeatherMap.class.php so tests load only what they need
-* issue#340: Build the editor image lists with one library scanner shared by the selectors and the image library
-* issue#335: Retire the bundled overLIB library from the documentation example and the CLI HTML wrapper
-* issue#334: Render the editor's dynamic option lists through an always-escaping attribute helper
 * issue#332: Run the jsdom browser tests in CI with locked dependencies, and keep image-map hotspots focusable under current jsdom
-* bug: Render editor text and image paths as data, escape backslashes and line breaks in the legacy example helper, and use a CSPRNG for random values
-* bug: Select the narrowest matching scale range, preserve collinear route reversals, and keep link position calculations within path endpoints
-* dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification
-* bug: Theme the standalone map editor from the active Cacti theme's own form-control colours (textboxes, textareas, selects, ddslick dropdowns and buttons) so dark themes such as Deepness no longer render light, unthemed controls; the editor reads the theme's colours at runtime instead of relying on variables only the Midwinter theme defines, so no per-theme editor stylesheet is required
-* bug: Keep the editor toolbar "Return to Map"/"Return to Manage" button on two lines instead of wrapping onto three
-* dev: Pin the CI database image and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
+* issue#334: Render the editor's dynamic option lists through an always-escaping attribute helper
+* issue#335: Retire the bundled overLIB library from the documentation example and the CLI HTML wrapper
+* issue#340: Build the editor image lists with one library scanner shared by the selectors and the image library
+* issue#342: Split the engine base classes and constants out of WeatherMap.class.php so tests load only what they need
+* issue#343: Run engine unit tests in-process where they no longer need isolation
+* issue#346: Split js/editor.js into dialog, picker, compact-editor and asset-library scripts so browser tests load whole files
+* issue#351: Keep an unrecognised target, a zero-width or doubled-back link, the first sample of a new poller_output row and a */0 schedule from aborting the poller, and accept lists and ranges in map schedules
+* issue: Keep the editor toolbar "Return to Map"/"Return to Manage" button on two lines instead of wrapping onto three
+* issue: Render editor text and image paths as data, escape backslashes and line breaks in the legacy example helper, and use a CSPRNG for random values
+* issue: Select the narrowest matching scale range, preserve collinear route reversals, and keep link position calculations within path endpoints
+* issue: Theme the standalone map editor from the active Cacti theme's own form-control colours (textboxes, textareas, selects, ddslick dropdowns and buttons) so dark themes such as Deepness no longer render light, unthemed controls; the editor reads the theme's colours at runtime instead of relying on variables only the Midwinter theme defines, so no per-theme editor stylesheet is required
 
 --- 2.0.1 ---
 
