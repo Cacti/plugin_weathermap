@@ -43,6 +43,16 @@ final class WeathermapUpgradeTest extends TestCase {
 		self::assertEmpty($GLOBALS['__test_db_calls']);
 	}
 
+	/** Verify the missing debug column is added with a valid SET definition. */
+	public function testUpgradeAddsMissingDebugColumn(): void {
+		weathermap_setup_table();
+		$queries = array_column($GLOBALS['__test_db_calls'], 'sql');
+		self::assertContains(
+			'ALTER TABLE weathermap_maps ADD COLUMN `debug` set("on","off","once") NOT NULL DEFAULT "off" AFTER warncount',
+			$queries
+		);
+	}
+
 	/**
 	 * Verify a version drift updates the realm and version metadata.
 	 *

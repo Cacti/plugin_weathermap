@@ -145,7 +145,7 @@ function weathermap_setup_table() {
 		}
 
 		if (!db_column_exists('weathermap_maps', 'debug')) {
-			db_execute('ALTER TABLE weathermap_maps ADD COLUMN debug `debug` set("on","off","once") NOT NULL DEFAULT "off" AFTER warncount');
+			db_execute('ALTER TABLE weathermap_maps ADD COLUMN `debug` set("on","off","once") NOT NULL DEFAULT "off" AFTER warncount');
 		}
 
 		if (!db_column_exists('weathermap_maps', 'config')) {

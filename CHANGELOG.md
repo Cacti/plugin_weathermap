@@ -36,6 +36,7 @@ IMPORTANT NOTE: This version only works on CACTI 1.x++!
 * issue#343: Run engine unit tests in-process where they no longer need isolation
 * issue#346: Split js/editor.js into dialog, picker, compact-editor and asset-library scripts so browser tests load whole files
 * issue#351: Keep an unrecognised target, a zero-width or doubled-back link, the first sample of a new poller_output row and a */0 schedule from aborting the poller, and accept lists and ranges in map schedules
+* issue: Fix the database upgrade failing to add a missing debug column to weathermap_maps
 * issue: Keep the editor toolbar "Return to Map"/"Return to Manage" button on two lines instead of wrapping onto three
 * issue: Render editor text and image paths as data, escape backslashes and line breaks in the legacy example helper, and use a CSPRNG for random values
 * issue: Select the narrowest matching scale range, preserve collinear route reversals, and keep link position calculations within path endpoints
