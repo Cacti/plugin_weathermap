@@ -53,6 +53,38 @@ final class WeathermapUpgradeTest extends TestCase {
 		);
 	}
 
+	/** Recover the failed 2.1 migration without rerunning unrelated upgrades. */
+	public function testCurrentVersionRepairsMissingDebugColumn(): void {
+		$GLOBALS['__test_config_options']['weathermap_db_version'] = plugin_weathermap_numeric_version();
+		$GLOBALS['__test_table_exists']['weathermap_maps'] = true;
+		self::assertSame('2.1', plugin_weathermap_numeric_version());
+
+		weathermap_setup_table();
+		self::assertSame([
+			'ALTER TABLE weathermap_maps ADD COLUMN `debug` set("on","off","once") NOT NULL DEFAULT "off" AFTER warncount',
+		], array_column($GLOBALS['__test_db_calls'], 'sql'));
+
+		// A failed ALTER leaves the column absent: the next call must retry.
+		$GLOBALS['__test_db_calls'] = [];
+		weathermap_setup_table();
+		self::assertCount(1, $GLOBALS['__test_db_calls']);
+
+		// Once the column exists, subsequent calls must leave the schema alone.
+		$GLOBALS['__test_column_exists']['weathermap_maps']['debug'] = true;
+		$GLOBALS['__test_db_calls'] = [];
+		weathermap_setup_table();
+		self::assertEmpty($GLOBALS['__test_db_calls']);
+	}
+
+	/** A healthy current installation needs no schema writes. */
+	public function testCurrentVersionWithDebugColumnSkipsSchemaChanges(): void {
+		$GLOBALS['__test_config_options']['weathermap_db_version'] = plugin_weathermap_numeric_version();
+		$GLOBALS['__test_table_exists']['weathermap_maps'] = true;
+		$GLOBALS['__test_column_exists']['weathermap_maps']['debug'] = true;
+		weathermap_setup_table();
+		self::assertEmpty($GLOBALS['__test_db_calls']);
+	}
+
 	/**
 	 * Verify a version drift updates the realm and version metadata.
 	 *

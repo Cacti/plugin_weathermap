@@ -278,6 +278,10 @@ function weathermap_setup_table() {
 				break;
 			}
 		}
+	} elseif ($dbversion === '2.1' && !db_column_exists('weathermap_maps', 'debug')) {
+		// The original 2.1 upgrade recorded success even when ADD COLUMN failed.
+		// Repair only that omission; checking the column also permits a later retry.
+		db_execute('ALTER TABLE weathermap_maps ADD COLUMN `debug` set("on","off","once") NOT NULL DEFAULT "off" AFTER warncount');
 	}
 
 	// Normalize invalid sizes even when the schema version is already current.
