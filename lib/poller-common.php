@@ -198,8 +198,10 @@ function weathermap_cron_part($value, $checkstring) {
 			continue;
 		}
 
-		$low  = (int) $matches[2];
-		$high = isset($matches[3]) && $matches[3] !== '' ? (int) $matches[3] : ($step > 1 ? PHP_INT_MAX : $low);
+		// N/step runs from N to the end of the field, even when the step is 1.
+		$has_step = isset($matches[4]) && $matches[4] !== '';
+		$low      = (int) $matches[2];
+		$high     = isset($matches[3]) && $matches[3] !== '' ? (int) $matches[3] : ($has_step ? PHP_INT_MAX : $low);
 
 		if ($value >= $low && $value <= $high && ($value - $low) % $step == 0) {
 			return true;
