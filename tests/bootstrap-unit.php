@@ -127,7 +127,7 @@ if (!function_exists('db_index_exists')) {
 
 if (!function_exists('db_column_exists')) {
 	function db_column_exists($t, $c) {
-		return false;
+		return $GLOBALS['__test_column_exists'][$t][$c] ?? false;
 	}
 }
 
