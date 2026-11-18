@@ -1,5 +1,8 @@
 # CHANGELOG.md
 
+Documentation update (unreleased): Refresh README release/source compatibility,
+installation guidance and source-checked behavior.
+
 ## Background
 
 This version of Weathermap is a fork of the original work by Howard Jones, and brings his 0.98x version
