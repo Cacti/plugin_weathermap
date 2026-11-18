@@ -40,9 +40,12 @@ it('InitializesMissingAndNonPositiveThumbnailSizesAndPreservesPositiveValues', f
 	$old_options = $GLOBALS['__test_config_options'] ?? [];
 	$old_calls   = $GLOBALS['__test_set_config_option_calls'] ?? [];
 	$old_tables  = $GLOBALS['__test_table_exists'] ?? [];
+	$old_columns = $GLOBALS['__test_column_exists'] ?? [];
 	$old_db_calls = $GLOBALS['__test_db_calls'] ?? [];
 
 	try {
+		// A healthy current installation needs no debug-column repair.
+		$GLOBALS['__test_column_exists']['weathermap_maps']['debug'] = true;
 		foreach (['', plugin_weathermap_numeric_version()] as $version) {
 			$GLOBALS['__test_table_exists']['weathermap_maps'] = true;
 			foreach (['' => '1000', '0' => '1000', '-5' => '1000', '250' => null] as $value => $expected) {
@@ -58,6 +61,7 @@ it('InitializesMissingAndNonPositiveThumbnailSizesAndPreservesPositiveValues', f
 			}
 		}
 	} finally {
+		$GLOBALS['__test_column_exists'] = $old_columns;
 		$GLOBALS['__test_table_exists'] = $old_tables;
 		$GLOBALS['__test_db_calls'] = $old_db_calls;
 		$GLOBALS['__test_config_options']          = $old_options;
