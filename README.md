@@ -85,6 +85,27 @@ also been removed.
 Editor access depends on Cacti's authentication and permissions. Review those
 permissions when upgrading from older installations.
 
+## Permissions
+
+The plugin registers three realms: **View Weathermaps**, **Manage Weathermap**
+(the management pages and `check.php`) and **Edit Weathermaps** (the map
+editor).
+
+## Command line tools
+
+The `cli/` directory holds helper scripts for map configuration files. Run each
+with `--help` for its options:
+
+* `cacti-integrate.php` - populate TARGET, INFOURL, OVERLIBGRAPH and BANDWIDTH
+  from Cacti data (`--input`, `--output`, `--target-rrdtool`,
+  `--target-dsstats`).
+* `convert-to-dsstats.php` - convert RRDtool targets to DSStats targets, or back
+  with `--reverse` (`--input`, `--output`).
+* `map-tidyup.php` - tidy a map configuration (`--input`, `--output`).
+* `upgrade_configs.php` - upgrade map configurations (`--debug`).
+* `cacti-mapper.php`, `bristle.php` and `auto-overlib.pl` are described in
+  `cli/README`.
+
 ## GitHub Documentation
 
 Get involved in creating and editing Cacti Documentation!  Fork, change and
