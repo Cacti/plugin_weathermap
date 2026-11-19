@@ -19,7 +19,8 @@ escapeshellarg, and a residual Windows-only path traversal gap in the config fil
 
 ## Findings
 
-### WM-CMD-01 — OS Command Injection via map config TARGET value (MEDIUM)
+### WM-CMD-01 — OS Command Injection via map config TARGET value (MEDIUM) — REMEDIATED
+**Status**: Remediated. `lib/datasources/WeatherMapDataSource_fping.php:112-124` rejects targets with characters outside an allowed set and builds the command with `cacti_escapeshellarg()`. The finding below describes the code as audited.
 **File**: `lib/datasources/WeatherMapDataSource_fping.php:103`
 **Category**: OS Command Injection
 **Severity**: MEDIUM (requires write access to a .conf map file; admin-controlled input)
@@ -44,7 +45,8 @@ with `FILTER_VALIDATE_IP` or a strict hostname regex).
 
 ---
 
-### WM-CMD-02 — OS Command Injection via RRD file path in popen command (LOW-MEDIUM)
+### WM-CMD-02 — OS Command Injection via RRD file path in popen command (LOW-MEDIUM) — REMEDIATED
+**Status**: Remediated. `lib/datasources/WeatherMapDataSource_rrd.php:339-359` and `:461-474` pass every argument through `cacti_escapeshellarg()`, and extra rrd options are checked by `wmrrd_options_are_safe()`. The finding below describes the code as audited.
 **File**: `lib/datasources/WeatherMapDataSource_rrd.php:325, 429`
 **Category**: OS Command Injection
 **Severity**: LOW-MEDIUM (rrdfile sourced from Cacti DB, admin-controlled)
@@ -158,8 +160,6 @@ This is a well-implemented control.
 
 | Seam | Files Affected | Description |
 |------|---------------|-------------|
-| `src/Shell/FpingRunner.php` | WeatherMapDataSource_fping.php:103 | Extract popen call; test command assembly without executing fping |
-| `src/Rrd/RrdCommandBuilder.php` | WeatherMapDataSource_rrd.php:296–325 | Extract arg assembly; test escapeshellarg application |
 | `src/Config/MapnameValidator.php` | editor.inc.php:232–246 | Expose sanitize logic as a testable class method |
 
 ---

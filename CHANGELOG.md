@@ -1,5 +1,11 @@
 # CHANGELOG.md
 
+Documentation update (unreleased): Refresh README release/source compatibility,
+installation guidance and source-checked behavior.
+
+CI fix (unreleased): Model the existing debug column in the thumbnail-default
+test so its healthy-installation assertion does not trigger a schema repair.
+
 ## Background
 
 This version of Weathermap is a fork of the original work by Howard Jones, and brings his 0.98x version

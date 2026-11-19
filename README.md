@@ -1,20 +1,39 @@
-# PHP Network Weathermap 2.0
+# PHP Network Weathermap
 
 PHP Network Weathermap is a Cacti plugin for creating network maps that show
 traffic utilisation and other monitored data. This Cacti-maintained fork builds
 on the original PHP Network Weathermap by Howard Jones (howie@thingy.com), based
 on his 0.98 series framework.
 
-Version 2.0 adds a redesigned map editor, editable notes, curved link comments,
-traffic colour presets, optional high-load link pulsing, separate icon and
-background libraries, sharper hover graphs and two-step Undo and Redo.
+The editor supports interface assignment, editable notes, curved link comments,
+traffic colour presets, icon/background libraries, hover graphs and saved-edit
+Undo/Redo. The 2.1 release adds stricter map management and output handling,
+more resilient rendering, schedule fixes and theme-aware editor controls.
 
-See [the 2.0 manual](docs/index.html) for installation, upgrades, editor workflows,
+See [the bundled manual](https://github.com/Cacti/plugin_weathermap/blob/develop/docs/index.html) for installation, upgrades, editor workflows,
 image libraries, troubleshooting and the configuration/data-source reference.
 [The editor workflow guide](docs/editor-workflow.md) links to the detailed manual.
 
 See [CHANGELOG.md](CHANGELOG.md) for updates listed by version, and
 [COPYING](COPYING) for the license.
+
+## Versions and compatibility
+
+This README describes the `develop` source branch.
+
+| Code | Plugin version | Minimum Cacti declared in `INFO` |
+| --- | --- | --- |
+| [Source branch](https://github.com/Cacti/plugin_weathermap/blob/develop/INFO) | 2.1 | 1.2.29 |
+| [Published v2.1](https://github.com/Cacti/plugin_weathermap/releases/tag/v2.1) | 2.1 | 1.2.29 |
+
+Use the published release’s assets and tagged documentation when installing that
+package. Branch code can include later changes, even when its version number
+matches the release. Cacti’s own PHP and database requirements also apply.
+
+Install this plugin in **`<cacti-root>/plugins/weathermap`**, using the directory
+name `weathermap` rather than `plugin_weathermap`.
+
+See [CHANGELOG.md](https://github.com/Cacti/plugin_weathermap/blob/develop/CHANGELOG.md) for the version history.
 
 ## Bundled node icons
 
@@ -65,6 +84,27 @@ also been removed.
 
 Editor access depends on Cacti's authentication and permissions. Review those
 permissions when upgrading from older installations.
+
+## Permissions
+
+The plugin registers three realms: **View Weathermaps**, **Manage Weathermap**
+(the management pages and `check.php`) and **Edit Weathermaps** (the map
+editor).
+
+## Command line tools
+
+The `cli/` directory holds helper scripts for map configuration files. Run each
+with `--help` for its options:
+
+* `cacti-integrate.php` - populate TARGET, INFOURL, OVERLIBGRAPH and BANDWIDTH
+  from Cacti data (`--input`, `--output`, `--target-rrdtool`,
+  `--target-dsstats`).
+* `convert-to-dsstats.php` - convert RRDtool targets to DSStats targets, or back
+  with `--reverse` (`--input`, `--output`).
+* `map-tidyup.php` - tidy a map configuration (`--input`, `--output`).
+* `upgrade_configs.php` - upgrade map configurations (`--debug`).
+* `cacti-mapper.php`, `bristle.php` and `auto-overlib.pl` are described in
+  `cli/README`.
 
 ## GitHub Documentation
 

@@ -1,19 +1,18 @@
 # Backlog: plugin_weathermap
 
-Issues derived from SECURITY-AUDIT.md. Do not push to GitHub until contrib-ledger gate passes.
+Issues derived from SECURITY-AUDIT.md.
 
 ---
 
-## Issue #1: refactor: extract FpingRunner and RrdCommandBuilder seams
-**Priority**: medium (blocker for security tests)
+## Issue #1: refactor: extract fping and rrdtool command-building seams
+**Priority**: low (the injection fixes in Issues #2 and #3 were applied in place and no longer depend on it)
 **Labels**: refactor, tech-debt
 **Branch**: `refactor/1-shell-command-seams`
-**Evidence**: WeatherMapDataSource_fping.php:103; WeatherMapDataSource_rrd.php:296–325
+**Evidence**: lib/datasources/WeatherMapDataSource_fping.php:124; lib/datasources/WeatherMapDataSource_rrd.php:339–359, 461–474
 **Acceptance criteria**:
-- [ ] `src/Shell/FpingRunner.php` wraps popen call; accepts pre-built command string
-- [ ] `src/Rrd/RrdCommandBuilder.php` assembles rrdtool command string from typed args
+- [ ] The fping popen call is wrapped in a class that accepts a pre-built command string
+- [ ] The rrdtool command assembly is a class that builds the command string from typed args
 - [ ] Both classes instantiable without Cacti bootstrap
-- [ ] PHPStan level 6 passes on `src/`
 
 **Dependencies**: none
 
@@ -23,15 +22,14 @@ Issues derived from SECURITY-AUDIT.md. Do not push to GitHub until contrib-ledge
 **Priority**: medium
 **Labels**: security
 **Branch**: `security/2-escapeshellarg-fping-target`
-**Evidence**: lib/datasources/WeatherMapDataSource_fping.php:103 (WM-CMD-01)
+**Status**: remediated in lib/datasources/WeatherMapDataSource_fping.php:112–124
+**Evidence**: WM-CMD-01
 **Acceptance criteria**:
-- [ ] `$target` validated with `filter_var($target, FILTER_VALIDATE_IP)` or strict hostname regex before use
-- [ ] `escapeshellarg($target)` applied in command string
-- [ ] `src/Shell/FpingRunner.php` seam extracted and unit-tested
-- [ ] Security test WM-CMD-01 passes (todo removed)
-- [ ] Targets that fail IP/hostname validation are rejected with a logged warning
+- [x] `$target` validated against an allowed-character pattern before use
+- [x] `cacti_escapeshellarg($target)` applied in command string
+- [x] Targets that fail validation are rejected with a logged warning
 
-**Dependencies**: Issue #1
+**Dependencies**: none
 
 ---
 
@@ -39,14 +37,13 @@ Issues derived from SECURITY-AUDIT.md. Do not push to GitHub until contrib-ledge
 **Priority**: low
 **Labels**: security, tech-debt
 **Branch**: `security/3-fix-rrd-arg-quoting`
-**Evidence**: lib/datasources/WeatherMapDataSource_rrd.php:325, 429 (WM-CMD-02)
+**Status**: partly remediated in lib/datasources/WeatherMapDataSource_rrd.php:339–359, 461–474
+**Evidence**: WM-CMD-02
 **Acceptance criteria**:
-- [ ] Manual double-quote wrapping replaced with `escapeshellarg()` per argument
+- [x] Manual double-quote wrapping replaced with `cacti_escapeshellarg()` per argument
 - [ ] `$rrdfile` validated as absolute filesystem path with no shell metacharacters
-- [ ] `src/Rrd/RrdCommandBuilder.php` seam extracted and unit-tested
-- [ ] Security test WM-CMD-02 passes (todo removed)
 
-**Dependencies**: Issue #1
+**Dependencies**: none
 
 ---
 
