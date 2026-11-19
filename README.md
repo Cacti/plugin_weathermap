@@ -10,7 +10,7 @@ traffic colour presets, icon/background libraries, hover graphs and saved-edit
 Undo/Redo. The 2.1 release adds stricter map management and output handling,
 more resilient rendering, schedule fixes and theme-aware editor controls.
 
-See [the bundled manual](docs/index.html) for installation, upgrades, editor workflows,
+See [the bundled manual](https://github.com/Cacti/plugin_weathermap/blob/develop/docs/index.html) for installation, upgrades, editor workflows,
 image libraries, troubleshooting and the configuration/data-source reference.
 [The editor workflow guide](docs/editor-workflow.md) links to the detailed manual.
 
@@ -23,7 +23,7 @@ This README describes the `develop` source branch.
 
 | Code | Plugin version | Minimum Cacti declared in `INFO` |
 | --- | --- | --- |
-| [Source branch](INFO) | 2.1 | 1.2.29 |
+| [Source branch](https://github.com/Cacti/plugin_weathermap/blob/develop/INFO) | 2.1 | 1.2.29 |
 | [Published v2.1](https://github.com/Cacti/plugin_weathermap/releases/tag/v2.1) | 2.1 | 1.2.29 |
 
 Use the published release’s assets and tagged documentation when installing that
@@ -33,7 +33,7 @@ matches the release. Cacti’s own PHP and database requirements also apply.
 Install this plugin in **`<cacti-root>/plugins/weathermap`**, using the directory
 name `weathermap` rather than `plugin_weathermap`.
 
-See [CHANGELOG.md](CHANGELOG.md) for the version history.
+See [CHANGELOG.md](https://github.com/Cacti/plugin_weathermap/blob/develop/CHANGELOG.md) for the version history.
 
 ## Bundled node icons
 
