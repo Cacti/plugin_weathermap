@@ -41,6 +41,7 @@
 */
 
 require_once __DIR__ . '/../setup.php';
+require_once __DIR__ . '/MapnameValidator.class.php';
 require_once __DIR__ . '/editor.comment-style.php';
 require_once __DIR__ . '/editor.notes.php';
 
@@ -355,20 +356,48 @@ function wm_editor_validate_one_of($input,$valid = [],$case_sensitive = false) {
 }
 
 /**
- * @param  mixed $action
- * @param  array $valid
- * @return mixed
+ * Validate an editor action against an explicit allowlist.
+ *
+ * @param  mixed         $action Raw request action value.
+ * @param  array<string> $valid  Allowed editor action names.
+ * @return string        The matched action, or an empty string when absent or invalid.
  */
 function wm_editor_sanitize_action($action, $valid = []) {
-	if ($action === '') {
+	if (!is_string($action) || $action === '') {
 		return '';
 	}
 
-	if (!wm_editor_validate_one_of($action, $valid, true)) {
+	if (!in_array($action, $valid, true)) {
 		return '';
 	}
 
 	return $action;
+}
+
+/**
+ * Reject a non-empty editor action that failed allowlist validation.
+ *
+ * Logs a warning with control characters stripped and sets HTTP 400 when
+ * an unknown action name is supplied. Empty or absent actions stay permitted
+ * so opening the editor UI without an action continues to render.
+ *
+ * @param  mixed  $raw_action Unvalidated request value.
+ * @param  string $action     Result of wm_editor_sanitize_action().
+ * @return bool   True when execution may proceed, false when it should abort.
+ */
+function wm_editor_action_is_permitted($raw_action, $action) {
+	if ($raw_action === '' || $raw_action === null || $action !== '') {
+		return true;
+	}
+
+	$safe_raw = is_string($raw_action)
+		? (string) preg_replace('/[\x00-\x1f\x7f]/', '', $raw_action)
+		: gettype($raw_action);
+
+	http_response_code(400);
+	cacti_log('WARNING: Invalid Weathermap editor action rejected: ' . $safe_raw, false, 'WEATHERMAP');
+
+	return false;
 }
 
 // Labels for Nodes, Links and Scales shouldn't have spaces in
@@ -431,16 +460,7 @@ function wm_editor_sanitize_file($filename,$allowed_exts = []) {
  * @return string The unchanged basename, or an empty string when invalid.
  */
 function wm_editor_sanitize_conffile($filename) {
-	if (!is_string($filename) || strlen($filename) <= 5 || !str_ends_with($filename, '.conf')) {
-		return '';
-	}
-
-	// Reject path separators and controls instead of rewriting a different filename.
-	if (strpbrk($filename, '/\\') !== false || preg_match('/[\x00-\x1f\x7f]/', $filename)) {
-		return '';
-	}
-
-	return $filename;
+	return MapnameValidator::sanitize($filename);
 }
 
 /**
