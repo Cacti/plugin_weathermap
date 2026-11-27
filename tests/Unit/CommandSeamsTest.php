@@ -121,15 +121,22 @@ describe('WeatherMapRrdCommand seam and WM-CMD-02 path validation', function ():
 			->toThrow(InvalidArgumentException::class);
 	});
 
-	it('rejects invalid RRD paths in datasource methods with a logged warning', function (): void {
-		$ds   = new WeatherMapDataSource_rrd();
-		$map  = new class {
-			public string $rrdtool = '/usr/bin/true';
-			/** @var array<string, string> */
-			public array $hints = [];
-			public function get_hint(string $name): ?string {
-				return $this->hints[$name] ?? null;
-			}
+	it('rejects invalid RRD paths and wires unsafe-option warnings in both rrdtool datasource methods', function (): void {
+		$true_bin = is_executable('/usr/bin/true') ? '/usr/bin/true' : '/bin/true';
+		$makeMap  = static function (string $bin, array $hints = []): object {
+			return new class($bin, $hints) {
+				public string $rrdtool;
+				/** @var array<string, string> */
+				public array $hints;
+				/** @param array<string, string> $hints */
+				public function __construct(string $bin, array $hints) {
+					$this->rrdtool = $bin;
+					$this->hints   = $hints;
+				}
+				public function get_hint(string $name): ?string {
+					return $this->hints[$name] ?? null;
+				}
+			};
 		};
 		$item = new class {
 			public string $name = 'link1';
@@ -138,51 +145,25 @@ describe('WeatherMapRrdCommand seam and WM-CMD-02 path validation', function ():
 			}
 		};
 
+		$ds        = new WeatherMapDataSource_rrd();
 		$data      = [IN => null, OUT => null];
 		$data_time = 0;
-		$GLOBALS['__test_cacti_log'] = [];
 
+		$map = $makeMap($true_bin);
+		$GLOBALS['__test_cacti_log'] = [];
 		$ds->wmrrd_read_from_real_rrdtool('/var/rra/bad;id.rrd', 'AVERAGE', 'now-800', 'now', [IN => 'in', OUT => 'out'], $data, $map, $data_time, $item);
 		$ds->wmrrd_read_from_real_rrdtool_aggregate('relative.rrd', 'AVERAGE', 'AVERAGE', 'now-800', 'now', [IN => 'in', OUT => 'out'], $data, $map, $data_time, $item);
 
-		$logs = implode("\n", $GLOBALS['__test_cacti_log']);
-
 		expect($data[IN])->toBeNull()
 			->and($data[OUT])->toBeNull()
-			->and($logs)->toContain('[WMRRD13]');
-	});
+			->and(implode("\n", $GLOBALS['__test_cacti_log']))->toContain('[WMRRD13]');
 
-	it('wires WeatherMapRrdCommand and unsafe-option warnings in both rrdtool datasource methods', function (): void {
-		$true_bin = is_executable('/usr/bin/true') ? '/usr/bin/true' : '/bin/true';
-		$ds       = new WeatherMapDataSource_rrd();
-		$map      = new class($true_bin) {
-			public string $rrdtool;
-			/** @var array<string, string> */
-			public array $hints = ['rrd_options' => '--bad "quote"'];
-			public function __construct(string $bin) {
-				$this->rrdtool = $bin;
-			}
-			public function get_hint(string $name): ?string {
-				return $this->hints[$name] ?? null;
-			}
-		};
-		$item = new class {
-			public string $name = 'link1';
-			public function my_type(): string {
-				return 'LINK';
-			}
-		};
-
-		$data      = [IN => null, OUT => null];
-		$data_time = 0;
+		$map_with_bad_opts = $makeMap($true_bin, ['rrd_options' => '--bad "quote"']);
 		$GLOBALS['__test_cacti_log'] = [];
+		$ds->wmrrd_read_from_real_rrdtool('/var/rra/valid.rrd', 'AVERAGE', 'now-800', 'now', [IN => 'in', OUT => 'out'], $data, $map_with_bad_opts, $data_time, $item);
+		$ds->wmrrd_read_from_real_rrdtool_aggregate('/var/rra/valid.rrd', 'AVERAGE', 'AVERAGE', 'now-800', 'now', [IN => 'in', OUT => 'out'], $data, $map_with_bad_opts, $data_time, $item);
 
-		$ds->wmrrd_read_from_real_rrdtool('/var/rra/valid.rrd', 'AVERAGE', 'now-800', 'now', [IN => 'in', OUT => 'out'], $data, $map, $data_time, $item);
-		$ds->wmrrd_read_from_real_rrdtool_aggregate('/var/rra/valid.rrd', 'AVERAGE', 'AVERAGE', 'now-800', 'now', [IN => 'in', OUT => 'out'], $data, $map, $data_time, $item);
-
-		$logs = implode("\n", $GLOBALS['__test_cacti_log']);
-
-		expect($logs)->toContain('[WMRRD04]');
+		expect(implode("\n", $GLOBALS['__test_cacti_log']))->toContain('[WMRRD04]');
 	});
 });
 
