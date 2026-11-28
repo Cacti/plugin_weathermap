@@ -1,0 +1,3088 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-08 18:47-0800\n"
+"PO-Revision-Date: 2026-11-27 18:00-0800\n"
+"Last-Translator: The Cacti Group <developers@cacti.net>\n"
+"Language-Team: Somali <developers@cacti.net>\n"
+"Language: so_SO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr "Dooro fayl PNG, JPG ama GIF ah oo ilaa 5 MB ah."
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr "Isticmaal POST si aad u keydiso isbeddellada."
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr "Khariidadani way isbeddeshay tan iyo markii aad furtay. Dib u soo rar tifaftiraha ka hor intaadan keydin isbeddelladaada."
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr "Lama akhrin karo habaynta khariidadda."
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.history.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr "Lama qufuli karo habaynta khariidadda."
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr "Sawirkan weli waxaa tixraacaya habayn khariidad."
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
+msgstr "Lama tirtiri karo sawirka."
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr "Dejinta midabka ma saxna."
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr "Lama keydin karo habaynta khariidadda."
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr "Qaybta sawirka ma saxna."
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr "Xiriiriyayaasha astaanta (symbolic links) halkan laguma maamuli karo."
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr "Magaca faylka sawirka ma saxna."
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr "Lama hubin karo tixraacyada habaynta."
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr "Habayno lagu daray oo aad u badan ayaa jira si loo hubiyo."
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr "Galka sawirka lama qori karo."
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr "Dooro sawir PNG, JPG ama GIF ah oo ilaa 4 milyan oo biksel ah."
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr "Sawirka lama akhrin karin."
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr "Lama qabsan karo magac fayl sawir."
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
+msgstr "Lama keydin karo sawirka."
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr "Dooro midab sax ah."
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr "Dejinta garaaca (pulse) ma saxna."
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr "Gadaalku wuxuu u baahan yahay midab adag."
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr "Hayso inta u dhexeysa 1 ilaa 200 oo saf miisaan ah."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr "Miisaanka %s waxaa lagu qeexay habayn lagu daray waana akhri-kaliya halkan. Beddel faylkiisa asalka ah halkii."
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr "Magaca miisaanku ma saxna."
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr "Xadka miisaanku ma saxna."
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr "Bilowga xadku waa inuusan ka weynaan dhammaadkiisa."
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr "Calaamadda miisaanku ma saxna."
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr "Calaamadda midabka adag kuma bilaaban karto saddex tiro oo dhan. Ku dar eray marka hore ama dooro midabka dhammaadka ee midab-isbeddelka."
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr "Xuduudaha miisaanku waxay u baahan yihiin qiimayaal la keydin karo iyadoon la soo koobin. Isticmaal ilaa lix meelood oo jajab ah iyo cutubyo sax ah oo baaxadda gudbinta ah."
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr "Xad soo noqnoqday oo miisaan ku jira."
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr "Midab-isbeddelku wuxuu u baahan yahay laba midab."
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr "Hayso ugu yaraan hal xad socodka xogta ah oo DEFAULT ah."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr "Walax khariidad ah ayaa weli adeegsanaysa miisaanka %s."
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt (font %s)"
+msgstr "%s — %s pt (far %s)"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr "Buluug (#0000FF)"
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr "Buluug madow (#003366)"
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr "Buluug boqortooyo (#0040C0)"
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr "Cagaar-buluug (#007070)"
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr "Cagaar (#008000)"
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr "Guduud-buluug (#8000C0)"
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr "Dhuxul (#333333)"
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr "Cas (#C00000)"
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr "Madow (#000000)"
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr "Caddaan (#FFFFFF)"
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr "Isku-dheellitirnaanta otomaatigga ah ee midabka xiriirka"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt"
+msgstr "%s — %s pt"
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr "Faro la socda"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr "Farta Faallada Xiriirka"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Style"
+msgstr "Qaabka Faallada Xiriirka"
+
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr "Bartamaha"
+
+#: lib/editor.comment-style.php
+msgid "Edge"
+msgstr "Geeska"
+
+#: lib/editor.comment-style.php
+msgid "Edge places comments beside the link; Centre places them over the arrow."
+msgstr "Geesku wuxuu dhigaa faallooyinka dhinaca xiriirka; Bartamuhuna wuxuu dhigaa fallaarta dusheeda."
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr "Raac qalooca xiriirka"
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr "Faallooyinka Xiriirka"
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr "Waxay adeegsataa farta TrueType. Qaloocyada dhuuban ama qoraalka ka dheer xiriirka waxay adeegsadaan qoraal toosan."
+
+#: lib/editor.comment-style.php
+msgid "Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments."
+msgstr "Meelaha ku teedsan xiriirka: 0% waa guntinta koowaad halka 100% ay tahay tan labaad. Kuwani waxay dhaqaajiyaan calaamadaha socodka xogta, ee ma aha faallooyinka."
+
+#: lib/editor.comment-style.php
+msgid "Traffic Label Positions"
+msgstr "Meelaha Calaamadaha Socodka Xogta"
+
+#: lib/editor.comment-style.php
+msgid "IN"
+msgstr "SOO GAL"
+
+#: lib/editor.comment-style.php
+msgid "OUT"
+msgstr "BAX"
+
+#: lib/editor.comment-style.php
+msgid "Comment Style"
+msgstr "Qaabka Faallada"
+
+#: lib/editor.comment-style.php
+msgid "Use map default"
+msgstr "Isticmaal asalka khariidadda"
+
+#: lib/editor.comment-style.php
+msgid "Custom positions"
+msgstr "Meelo gaar ah"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr "Tirtir faylka habaynta %s"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr "Ma hubtaa inaad si joogto ah u tirtirto faylka habaynta \"%s\"?"
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr "Fadhi firfircoon ayaa looga baahan yahay Ka noqo iyo Dib u samee."
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr "Lama abuuri karo kaydka gaarka ah ee taariikhda khariidadda."
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr "Kaydka taariikhda khariidaddu ma aha mid gaar ah."
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr "Kaydka taariikhda khariidaddu ma saxna."
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr "Ku dar guntin"
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr "Nuqul ka samee guntinta"
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr "Tirtir guntin"
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr "Dhaqaaji guntin ama xusuusin"
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr "Ku dar xiriir"
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr "Tirtir xiriir"
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr "Dhaqaaji barta marinka xiriirka"
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr "Hagaaji xiriirka"
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr "Hagaaji dhammaan xiriirrada"
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr "Hagaaji xiriirrada"
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr "Wax ka beddel xusuusinta"
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr "Ka saar hagaajinta xiriirrada"
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr "Wax ka beddel xiriirka"
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr "Wax ka beddel guntinta"
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr "Wax ka beddel habaynta tooska ah ee xiriirka"
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr "Wax ka beddel habaynta tooska ah ee guntinta"
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr "Wax ka beddel sifooyinka khariidadda"
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr "Wax ka beddel qaabka khariidadda"
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr "Wax ka beddel midabbada khariidadda"
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr "Dhaqaaji furaha khariidadda"
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr "Dhaqaaji calaamadda waqtiga"
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr "Wax ka beddel khariidadda"
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr "Taariikh u dhiganta ma harin. Dib u soo rar tifaftiraha."
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr "Lama soo celin karo khariidaddan. Habayn ama sawir ayaa laga yaabaa inuu isbeddelay. Dib u soo rar tifaftiraha."
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr "Codsi taariikheed oo aan sax ahayn."
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr "Khariidadani way isbeddeshay. Dib u soo rar tifaftiraha ka hor intaadan isticmaalin Ka noqo ama Dib u samee."
+
+#: lib/editor.inc.php
+msgid "Next results"
+msgstr "Natiijooyinka xiga"
+
+#: lib/editor.inc.php
+msgid "Previous results"
+msgstr "Natiijooyinkii hore"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr "Ku soo dhawoow Tifaftiraha PHP Weathermap %s"
+
+#: lib/editor.inc.php
+msgid "Use the editor to manage nodes, links, notes, colours and image uploads. Edit Raw Configuration provides settings beyond the forms. See the local documentation for workflows and configuration details."
+msgstr "Isticmaal tifaftiraha si aad u maamusho guntimaha, xiriirrada, xusuusinnada, midabbada iyo sawirrada la soo geliyo. Wax ka beddel Habaynta Tooska ah waxay bixisaa dejimo ka baxsan foomamka. Eeg dukumentiyada gudaha si aad u hesho hababka shaqada iyo faahfaahinta habaynta."
+
+#: lib/editor.inc.php
+msgid "Do you want to:"
+msgstr "Ma waxaad rabtaa inaad:"
+
+#: lib/editor.inc.php
+msgid "Create A New Map:"
+msgstr "Abuurto Khariidad Cusub:"
+
+#: lib/editor.inc.php
+msgid "Named:"
+msgstr "Magaceedu yahay:"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-mgmt.php
+msgid "Create"
+msgstr "Abuur"
+
+#: lib/editor.inc.php
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
+msgstr "Xusuusin: magacyada faylashu waa inay ku dhammaadaan .conf oo aanay ku jirin kala-soocayaasha jidka ama xarfaha xakamaynta"
+
+#: lib/editor.inc.php
+msgid "Create Copy"
+msgstr "Abuur Nuqul"
+
+#: lib/editor.inc.php
+msgid "Ok"
+msgstr "Haye"
+
+#: lib/editor.inc.php
+msgid "Operation successful"
+msgstr "Hawlgalku wuu guulaystay"
+
+#: lib/editor.inc.php
+msgid "The Operation was successful.  Details are below."
+msgstr "Hawlgalku wuu guulaystay. Faahfaahinta hoos ka eeg."
+
+#: lib/editor.inc.php
+msgid "Pause"
+msgstr "Haki"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to move the node to."
+msgstr "Guji khariidadda halka aad rabto inaad u dhaqaajiso guntinta."
+
+#: lib/editor.inc.php
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Guji khariidadda barta aad rabto inaad u weeciso xiriirka."
+
+#: lib/editor.inc.php
+msgid "Click on the first node for the start of the link."
+msgstr "Guji guntinta koowaad si aad u bilowdo xiriirka."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Guji khariidadda halka aad rabto inaad dhigto calaamadda waqtiga."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the legend."
+msgstr "Guji khariidadda halka aad rabto inaad dhigto furaha khariidadda."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a new node."
+msgstr "Guji khariidadda halka aad rabto inaad ku darto guntin cusub."
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr "−"
+
+#: lib/editor.inc.php
+msgid "No images in this library yet."
+msgstr "Weli wax sawirro ah kuma jiraan maktabaddan."
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
+msgstr "Dooro PNG, JPG ama GIF si aad u soo geliso."
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr "Codsigii wuu fashilmay. Fadlan isku day mar kale."
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr "Soo gelintu way fashilantay."
+
+#: lib/editor.inc.php
+msgid "No gradient"
+msgstr "Midab-isbeddel ma jiro"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr "Midab gaar ah"
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr "Ka saar xadka"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr "Tirtir %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr "Ma laga tirtiraa sawirka \"%s\" adeegaha?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr "Sawirrada: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr "La soo geliyay %s"
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr "Calaamad Kaliya"
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr "Gadaal ma jiro"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr "Waxaa adeegsanaya: %s"
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr "Khariidad ma adeegsaneyso"
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr "Ma jiraan xuduudo DEFAULT ah. Eeg Dejinta Sare si aad u hesho miisaanno magac leh."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr "Gaar ah (%s)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr "Ka noqo"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr "Dib u samee"
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr "Ma jiraan isbeddello khariidad ah oo laga noqdo ama dib loo sameeyo."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr "Ka noqo: %s tallaabo; Dib u samee: %s tallaabo."
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr "Keydi ama jooji sanduuqa furan ka hor intaadan isticmaalin Ka noqo ama Dib u samee."
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
+msgstr "Ka noqo iyo Dib u samee waxay u baahan yihiin kaydka fadhiga ee biraawsarka."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr "Lama keydin karo isbeddellada. Fadlan isku day mar kale."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr "Midabka Gadaalka Khariidadda"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr "Midabka Xuduudda Xiriirka"
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr "Miisaannada ka yimaada habaynnada lagu daray waa akhri-kaliya halkan. Wax ka beddel faylashooda asalka ah si aad u beddesho."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr "Miisaan"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr "Laga bilaabo (badanaa %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr "Ilaa (badanaa %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr "Calaamad"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr "Midab"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr "Dhammaadka Midab-isbeddelka"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr "Madow"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr "Buluug"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr "Cagaar"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr "Cawl"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr "Midna"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr "Liimi"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr "Guduud-buluug"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr "Cas"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr "Caddaan"
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr "Raadi astaamo…"
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr "Raadi astaamaha guntinta"
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr "Astaamaha guntinta"
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr "Dooro astaan"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr "Astaamaha u dhigma: %s"
+
+#: lib/editor.inc.php
+msgid "No matching icons"
+msgstr "Ma jiraan astaamo u dhigma"
+
+#: lib/editor.inc.php
+msgid "Current interface"
+msgstr "Is-dhexgalka hadda"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Advanced settings"
+msgstr "Dejinta sare"
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr "Qari dejinta sare"
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr "Isticmaal is-dhexgalka"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Traffic interface"
+msgstr "Is-dhexgalka socodka xogta"
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr "Raadi qalab ama is-dhexgal"
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr "Lama dooran is-dhexgal"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr "Guji khariidadda halka aad rabto inaad ku darto xusuusin."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr "Xusuusin"
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr "Xaqiijinta Tirtiridda Xusuusinta"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr "Tirtir Xusuusinta"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr "Ma la tirtiraa xusuusinta \"%s\"?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr "Jaantuska hadda: %s"
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr "Habayn gaar ah — eeg Dejinta sare"
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr "Hoos ka dooro is-dhexgal"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr "Baaxadda gudbinta ee soo gasha %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr "Baaxadda gudbinta ee ka baxda %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr "Jaantuska %s — xogta, meesha gujinta iyo jaantuska dul-saarka waa la doortay. Keydi si aad u dhaqan geliso."
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr "Waxaa la muujiyaa marka hore ee dul-saarka. Isticmaal is-dhexgalka ayaa si otomaatig ah u dejiya; beddel kaliya haddii aad rabto URL horu-eegid gaar ah."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr "Wadarta socodka xogta ee ka timid %s ilo"
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr "Isha socodka xogta waxaa lagu daray wadarta khariidadda. Jaantusyada dul-saarka iyo gujintu isma beddelin. Keydi si aad u dhaqan geliso."
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr "Ishan horey ayaa loogu daray. Dooro il kale sanduuqan raadinta si aad u kordhiso."
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr "Ka saar isha"
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr "Isha la cabbiray waa laga saaray. Jaantusyada dul-saarka iyo gujintu isma beddelin. Keydi si aad u dhaqan geliso."
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr "Lama dooran wax ilo socod xog oo la cabbiray."
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr "Ka dooro is-dhexgal dheeraad ah natiijooyinka raadinta ee kore, ka dibna guji Ku dar isha socodka xogta."
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr "Is-dhexgal dheeraad ah waa la doortay. Ku dar isha socodka xogta waxay haysaa is-dhexgalka aasaasiga ah iyo ilaha kale."
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr "Isha aasaasiga ah — isticmaal \"Isticmaal is-dhexgalka\" ee kor ku yaalla si aad u beddesho"
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr "Dooro is-dhexgalka aasaasiga ah ee socodka xogta ee foomka weyn marka hore."
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr "Ku dar ilo dheeraad ah oo socodka xogta ah"
+
+#: lib/editor.inc.php
+msgid "Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link."
+msgstr "Hagaaji meelaha calaamadaha socodka xogta, ama isticmaal ilo iyo URL-yo gaar ah. Ka tag ilaha iyo URL-yada iyagoon wax laga beddelin xiriirka caadiga ah ee socodka xogta."
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr "Ilaha gaarka ah ee socodka xogta way isbeddeleen. Keydi si aad u dhaqan geliso. Jaantusyada dul-saarka iyo meesha gujintu isma beddelin."
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr "Ugu badnaan hal URL sawir oo dheeraad ah. Kani waa isla horu-eegidda lagu maamulo Jaantusyada dul-saarka ee dheeraadka ah."
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr "Ilaha socodka xogta"
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr "Ikhtiyaari: ku dar is-dhexgalo kale wadarta khariidadda. Ka beddel is-dhexgalka aasaasiga ah foomka weyn; ka saar ilaha dheeraadka ah hoos. Jaantusyada dul-saarka iyo gujintu isma beddelaan. Jaantus isku-darka u dhigma waa in si gaar ah loogu habeeyo Cacti. Keydi ayaa dhaqan gelisa isbeddellada."
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr "Jaantus dheeraad ah"
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr "Fayl RRD ah looma diiwaangelin jaantuskan"
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr "Jaantus dul-saar oo gaar ah"
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr "Ka saar jaantuska"
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr "Ugu badnaan hal jaantus dheeraad ah. Beddel ama ka saar si aad mid kale u doorato."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr "Jaantusyada dul-saarka ee dheeraadka ah"
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr "Meesha gujinta"
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr "Badanaa u daa tan inay ku xirnaato jaantuska socodka xogta. Beddel kaliya si aad u furto jaantus ama bog kale marka la gujiyo xiriirka. Tani ma beddesho socodka xogta la cabbiray ama jaantusyada dul-saarka."
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr "Muuqaalka"
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr "Awoodda, tusaale ahaan 100M ama 1G."
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr "Qoraal ku teedsan xiriirka; boqolleyda ayaa dejisa meeshiisa."
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr "Muuqaalka iyo faallooyinka"
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr "Caawimaad"
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr "Dooro is-dhexgalka socodka xogta iyo awoodda, ka dibna Keydi. Jaantusyada dul-saarka ee dheeraadka ah waxay ku daraan horu-eegid ikhtiyaari ah. Dejinta sare waxay ka kooban tahay ilo iyo URL-yo gaar ah. Wax ka beddel Habaynta Tooska ah waxay si toos ah u tafatirtaa qoraalka habaynta khariidadda."
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr "Qor qalab ama is-dhexgal, ama baar dhammaan"
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr "Baar dhammaan"
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr "Dooro is-dhexgal aasaasi ah, ka dibna guji \"Isticmaal is-dhexgalka\". Ilaha dheeraadka ah iyo jaantusyada dul-saarka waa la hayaa. Keydi ayaa dhaqan gelisa isbeddellada."
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr "Waa la raadinayaa qalabka iyo is-dhexgalka..."
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr "Is-dhexgal gaar ah ama aan la heli karin"
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr "Magaca is-dhexgalka lama heli karo"
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr "Magaca muuqda"
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr "Astaan"
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr "Nooca jaantuska"
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr "Jaantusyada dul-saarka"
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr "Tirtir Guntinta"
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr "Guntin loo adeegsado calaamad ama astaan dhammaadka xiriirka, kontaroollada waaweyn ayaa ku filan. Sare waxay ku dartaa jaantusyada dul-saarka sida CPU, xusuusta ama socodka xogta, meelaha gujinta gaarka ah iyo aqoonsiga gudaha ee guntinta."
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr "Magaca muuqda iyo astaanta: Dooro waxa ka muuqanaya khariidadda. Meesha magaca muuqda waxay dhigtaa magaca astaanta dusheeda. Meesha khariidadda (X, Y) waxay dejisaa isku-duwayaasha guntinta; Dhaqaaji waxay kuu ogolaaneysaa inaad guntinta dhigto khariidadda."
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr "Jaantusyada dul-saarka: Ku shaandhee nooca jaantuska oo raadi jaantus. Ku dar waxay ku dartaa jaantus kale; Beddel waxay beddeshaa jaantusyada dul-saarka ee jira. Keydi waxay dhaqan gelisaa isbeddelladaada."
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr "Sare: Magaca gudaha wuxuu ku aqoonsadaa guntinta habaynta khariidadda. Info URLs waxay dejiyaan meesha gujinta; Hover Graph URLs waxay dejiyaan sawirrada ka muuqda dul-saarka. Isticmaal kuwan meelo gaar ah ama jaantusyo dibadda ah."
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr "Raadi qalab ama jaantus"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr "Jaantusyada dul-saarka: %s"
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr "jaantus aan la heli karin"
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr "sawirro gaar ah"
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr "Lama habeyn wax jaantusyo dul-saar ah"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr "Aqoonsiga gudaha ee xiriirka: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr "Guntin: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr "Ma laga saaraa xiriirka u dhexeeya %1$s iyo %2$s?"
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr "Guntimaha iyo jaantusyada Cacti way sii jiri doonaan."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s from this map?"
+msgstr "Ma laga tirtiraa %s khariidaddan?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %s."
+msgstr "Xiriirrada ku xiran ee la saarayo: %s."
+
+#: lib/editor.inc.php
+msgid "The Cacti device and its graphs will remain."
+msgstr "Qalabka Cacti iyo jaantusyadiisu way sii jiri doonaan."
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "DIGNIIN: Riixitaanka 'Tirtir Guntinta' waxay tirtiri doontaa Guntintan."
+
+#: lib/editor.inc.php
+msgid "Delete Node Confirmation"
+msgstr "Xaqiijinta Tirtiridda Guntinta"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "DIGNIIN: Riixitaanka 'Tirtir Xiriirka' waxay tirtiri doontaa Xiriirkan."
+
+#: lib/editor.inc.php
+msgid "Delete Link Confirmation"
+msgstr "Xaqiijinta Tirtiridda Xiriirka"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cancel"
+msgstr "Jooji"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Link"
+msgstr "Tirtir Xiriirka"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Position"
+msgstr "Meel"
+
+#: lib/editor.inc.php
+msgid "Node Actions"
+msgstr "Ficillada Guntinta"
+
+#: lib/editor.inc.php
+msgid "Link Actions"
+msgstr "Ficillada Xiriirka"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Move"
+msgstr "Dhaqaaji"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Clone"
+msgstr "Nuqul ka samee"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr "Wax ka beddel Habaynta Tooska ah"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete"
+msgstr "Tirtir"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Via"
+msgstr "Marin"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Tidy"
+msgstr "Hagaaji"
+
+#: lib/editor.inc.php
+msgid "Properties"
+msgstr "Sifooyinka"
+
+#: lib/editor.inc.php
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Halkee ayuu Weathermap ka heli karaa xogta xiriirkan? Kani wuxuu noqon karaa fayl RRD ah, ama HTML ay ku jiraan faallooyin gaar ah (badanaa ka yimaada MRTG)."
+
+#: lib/editor.inc.php
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "Inta ay ballaaran tahay fallaarta xiriirka ee la sawirayo, iyadoo biksel ah."
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "Haddii aad isticmaaleyso qaabka HTML ee 'overlib' markaas kani waa URL-ka furmi doona marka aad gujiso xiriirka"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "Haddii aad isticmaaleyso qaabka HTML ee 'overlib' markaas kani waa URL-ka sawirka muuqan doona marka aad dul-saarto xiriirka"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the first node to the second node"
+msgstr "Baaxadda gudbinta ee ka socota guntinta koowaad ilaa guntinta labaad"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "Baaxadda gudbinta ee ka socota guntinta labaad ilaa guntinta koowaad (haddii ay kala duwan tahay)"
+
+#: lib/editor.inc.php
+msgid "The text that will appear alongside the link"
+msgstr "Qoraalka ka muuqan doona dhinaca xiriirka"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "Haddii aad isticmaaleyso qaabka HTML ee 'overlib' markaas kani waa URL-ka furmi doona marka aad gujiso guntinta"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "Haddii aad isticmaaleyso qaabka HTML ee 'overlib' markaas kani waa URL-ka sawirka muuqan doona marka aad dul-saarto guntinta"
+
+#: lib/editor.inc.php
+msgid "How far from the left to position the node, in pixels"
+msgstr "Inta ay bidixda u jirto meesha guntinta la dhigayo, iyadoo biksel ah"
+
+#: lib/editor.inc.php
+msgid "How far from the top to position the node, in pixels"
+msgstr "Inta ay dusha u jirto meesha guntinta la dhigayo, iyadoo biksel ah"
+
+#: lib/editor.inc.php
+msgid "The text that appears on the node"
+msgstr "Qoraalka ka muuqda guntinta"
+
+#: lib/editor.inc.php
+msgid "The name used for this node when defining links"
+msgstr "Magaca loo adeegsado guntintan marka la qeexayo xiriirrada"
+
+#: lib/editor.inc.php
+msgid "Change to a different file, or start creating a new one."
+msgstr "U beddel fayl kale, ama bilow abuurista mid cusub."
+
+#: lib/editor.inc.php
+msgid "Add a new node to the map"
+msgstr "Ku dar guntin cusub khariidadda"
+
+#: lib/editor.inc.php
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "Ku dar xiriir cusub khariidadda, adigoo isku xiraya laba guntin."
+
+#: lib/editor.inc.php
+msgid "Select a different map to edit, or start a new one."
+msgstr "Dooro khariidad kale si aad wax uga beddesho, ama bilow mid cusub."
+
+#: lib/editor.inc.php
+msgid "This is where help appears for links"
+msgstr "Halkan waa halka caawimaadda xiriirrada ay ka soo baxdo"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for maps"
+msgstr "Halkan waa halka caawimaadda khariidadaha ay ka soo baxdo"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for nodes"
+msgstr "Halkan waa halka caawimaadda guntimaha ay ka soo baxdo"
+
+#: lib/editor.inc.php
+msgid "or click a Node or Link to edit its properties"
+msgstr "ama guji Guntin ama Xiriir si aad wax uga beddesho sifooyinkiisa"
+
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
+msgid "Docs"
+msgstr "Dukumentiyada"
+
+#: lib/viewer.controls.php
+msgid "Manage Weathermaps"
+msgstr "Maamul Weathermap-yada"
+
+#: lib/viewer.controls.php setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Settings"
+msgstr "Dejinta Khariidadda"
+
+#: lib/viewer.controls.php
+msgid "Map Permissions"
+msgstr "Ogolaanshaha Khariidadda"
+
+#: lib/viewer.controls.php setup.php
+msgid "Edit Map"
+msgstr "Wax ka beddel Khariidadda"
+
+#: setup.php
+msgid "Weathermap"
+msgstr "Weathermap"
+
+#: setup.php weathermap-cacti-plugin.php
+msgid "Network Weathermap"
+msgstr "Weathermap-ka Shabakadda"
+
+#: setup.php
+msgid "Debug Mode"
+msgstr "Habka Khalad-saarka"
+
+#: setup.php
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr "Haddii aad rabto inaad ku aragto macluumaad faahfaahsan oo xaaladda ah diiwaankaaga Cacti ee ku saabsan habka samaynta weathermap, calaamadee sanduuqan."
+
+#: setup.php
+msgid "Info URL Style"
+msgstr "Qaabka Info URL"
+
+#: setup.php
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr "Marka aad Jaantusyo ugu darayso Guntin ama Xiriir, halkee ayaad rabtaa in gujinta loo weeciyo iyadoo la adeegsanayo Info URL? Haddii la isticmaalayo Muuqaalka Jaantuska Caadiga ah, waxaad yeelan kartaa Jaantusyo badan. Muuqaalka Garaafka Waqtiga, waxaad yeelan kartaa hal Jaantus oo keliya."
+
+#: setup.php
+msgid "Standard Graph View"
+msgstr "Muuqaalka Jaantuska Caadiga ah"
+
+#: setup.php
+msgid "Time Graph View"
+msgstr "Muuqaalka Garaafka Waqtiga"
+
+#: setup.php
+msgid "Page style"
+msgstr "Qaabka bogga"
+
+#: setup.php
+msgid "How to display multiple maps."
+msgstr "Sida loo soo bandhigo khariidado badan."
+
+#: setup.php
+msgid "Thumbnail Overview"
+msgstr "Guudmarka Sawirrada Yaryar"
+
+#: setup.php
+msgid "Full Images"
+msgstr "Sawirro Buuxa"
+
+#: setup.php
+msgid "Show Only First"
+msgstr "Muuji Kii Ugu Horreeyay Kaliya"
+
+#: setup.php
+msgid "Thumbnail Maximum Size"
+msgstr "Cabbirka Ugu Badan ee Sawirka Yar"
+
+#: setup.php
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr "Ballaca ama dhererka ugu badan ee sawirrada yaryar ee muuqaalka sawirrada yaryar, iyadoo biksel ah. Wuxuu dhaqan galaa ka dib socodsiinta poller-ka ee xiga."
+
+#: setup.php
+msgid "Hover Graph Default Width"
+msgstr "Ballaca Asalka ah ee Jaantuska Dul-saarka"
+
+#: setup.php
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Ballaca asalka ah ee Jaantusyada RRDtool ee soo baxa marka aad dul-saarto Xiriir."
+
+#: setup.php
+msgid "Hover Graph Default Height"
+msgstr "Dhererka Asalka ah ee Jaantuska Dul-saarka"
+
+#: setup.php
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Dhererka asalka ah ee Jaantusyada RRDtool ee soo baxa marka aad dul-saarto Xiriir."
+
+#: setup.php
+msgid "Hover Graph Style"
+msgstr "Qaabka Jaantuska Dul-saarka"
+
+#: setup.php
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
+msgstr "Marka la dul-saaro Xiriirrada ama Guntimaha, qaabkee Jaantus ah ayaa la soo bandhigayaa?"
+
+#: setup.php
+msgid "Thumbnail Graphs"
+msgstr "Jaantusyo Yaryar"
+
+#: setup.php
+msgid "Full Graphs"
+msgstr "Jaantusyo Buuxa"
+
+#: setup.php
+msgid "Map Processing Timeout"
+msgstr "Waqtiga Dhammaadka Habaynta Khariidadda"
+
+#: setup.php
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr "Inta waqti ah ee loo ogolaanayo ka hor intaanu dhammaan waqtiga habka joogtada ah ee samaynta khariidadda."
+
+#: setup.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d Daqiiqo"
+
+#: setup.php
+msgid "Refresh Time"
+msgstr "Waqtiga Dib-u-cusboonaysiinta"
+
+#: setup.php
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "Inta jeer ee bogga dib loo cusboonaysiinayo habka Wareegga. Otomaatig wuxuu ka dhigaa dhammaan khariidadaha la heli karo inay ku habboonaadaan 5 daqiiqo."
+
+#: setup.php
+msgid "Automatic"
+msgstr "Otomaatig"
+
+#: setup.php
+#, php-format
+msgid "%d Seconds"
+msgstr "%d Ilbiriqsi"
+
+#: setup.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d Daqiiqo"
+
+#: setup.php
+msgid "Output Format"
+msgstr "Qaabka Soo-saarka"
+
+#: setup.php
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr "Qaabkee ayaad ka doorbideysaa sawirrada khariidadda la sameeyay iyo sawirrada yaryar?"
+
+#: setup.php
+msgid "PNG (default)"
+msgstr "PNG (asal ah)"
+
+#: setup.php
+msgid "JPEG"
+msgstr "JPEG"
+
+#: setup.php
+msgid "GIF"
+msgstr "GIF"
+
+#: setup.php
+msgid "Map Rendering Interval"
+msgstr "Muddada Sawirista Khariidadda"
+
+#: setup.php
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr "Inta jeer ee aad rabto in Weathermap dib u xisaabiyo khariidadihiisa? Ha taaban tan ilaa aad garanayso waxa aad sameynayso! Waxaa inta badan u baahan dadka leh hababka poller-ka ee aan caadiga ahayn."
+
+#: setup.php
+msgid "Never (manual updates)"
+msgstr "Marna (cusboonaysiin gacanta ah)"
+
+#: setup.php
+msgid "Every Poller Cycle (default)"
+msgstr "Wareeg Kasta oo Poller ah (asal ah)"
+
+#: setup.php
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr "%d-kii Wareeg ee Poller ahba mar"
+
+#: setup.php
+msgid "Show Weathermap Help Links"
+msgstr "Muuji Xiriiriyayaasha Caawimaadda Weathermap"
+
+#: setup.php
+msgid "If checked, all Weathermap pages will include a link to documentation."
+msgstr "Haddii la calaamadeeyo, dhammaan boggaga Weathermap waxay ku jiri doonaan xiriiriye dukumentiyada ah."
+
+#: setup.php
+msgid "Show 'All' Tab"
+msgstr "Muuji Tab-ka 'Dhammaan'"
+
+#: setup.php
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr "Marka la isticmaalayo kooxo, ku dar tab-ka 'Dhammaan Khariidadaha' barta tab-yada."
+
+#: setup.php
+msgid "No (default)"
+msgstr "Maya (asal ah)"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Yes"
+msgstr "Haa"
+
+#: setup.php
+msgid "Show Map Selector"
+msgstr "Muuji Xulaha Khariidadda"
+
+#: setup.php
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr "Muuji xulaha khariidadda ee sanduuqa liiska ah muuqaalka khariidadda ee shaashadda buuxda."
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "No"
+msgstr "Maya"
+
+#: setup.php
+msgid "Yes (default)"
+msgstr "Haa (asal ah)"
+
+#: setup.php
+msgid "Quiet Logging"
+msgstr "Diiwaangelin Aamusan"
+
+#: setup.php
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr "Asal ahaan, xitaa heerka diiwaangelinta LOW, Weathermap wuxuu diiwaangeliyaa dhaqdhaqaaqa caadiga ah. Tani waxay ka dhigeysaa inuu RUNTII diiwaangeliyo khaladaadka kaliya habka LOW."
+
+#: setup.php
+msgid "Chatty (default)"
+msgstr "Hadallo badan (asal ah)"
+
+#: setup.php
+msgid "Quiet"
+msgstr "Aamusan"
+
+#: setup.php
+msgid "Weathermaps"
+msgstr "Weathermap-yada"
+
+#: setup.php
+msgid "Weathermap Groups"
+msgstr "Kooxaha Weathermap"
+
+#: setup.php
+msgid "Management"
+msgstr "Maamul"
+
+#: setup.php
+msgid "View Weathermaps"
+msgstr "Eeg Weathermap-yada"
+
+#: setup.php
+msgid "Edit Weathermaps"
+msgstr "Wax ka beddel Weathermap-yada"
+
+#: setup.php
+msgid "Manage Weathermap"
+msgstr "Maamul Weathermap"
+
+#: setup.php
+msgid "General Administration"
+msgstr "Maamulka Guud"
+
+#: setup.php
+msgid "Normal User"
+msgstr "Isticmaale Caadi ah"
+
+#: setup.php weathermap-cacti-plugin.php
+#, php-format
+msgid "Map for config file: %s"
+msgstr "Khariidadda faylka habaynta: %s"
+
+#: setup.php
+msgid "Choose which weathermap to add to the tree."
+msgstr "Dooro weathermap-ka lagu darayo geedka."
+
+#: setup.php
+msgid "Map"
+msgstr "Khariidad"
+
+#: setup.php
+msgid "How should the map be displayed?"
+msgstr "Sidee loo soo bandhigaa khariidadda?"
+
+#: setup.php
+msgid "Style"
+msgstr "Qaabka"
+
+#: setup.php
+msgid "Thumbnail"
+msgstr "Sawir yar"
+
+#: setup.php
+msgid "Full Size"
+msgstr "Cabbir Buuxa"
+
+#: setup.php
+msgid "View Map Image"
+msgstr "Eeg Sawirka Khariidadda"
+
+#: setup.php
+msgid "View Map Thumbnail"
+msgstr "Eeg Sawirka Yar ee Khariidadda"
+
+#: setup.php
+msgid "Add Map"
+msgstr "Ku Dar Khariidad"
+
+#: setup.php
+msgid "View Configuration"
+msgstr "Eeg Habaynta"
+
+#: setup.php
+msgid "Weathermap Editor"
+msgstr "Tifaftiraha Weathermap"
+
+#: setup.php
+msgid "Edit Permissions"
+msgstr "Wax ka beddel Ogolaanshaha"
+
+#: setup.php
+msgid "Map Settings Delete"
+msgstr "Tirtir Dejinta Khariidadda"
+
+#: setup.php
+msgid "Map Settings Update"
+msgstr "Cusboonaysii Dejinta Khariidadda"
+
+#: setup.php
+msgid "Map Settings Add"
+msgstr "Ku Dar Dejinta Khariidadda"
+
+#: setup.php
+msgid "Permissions Edit"
+msgstr "Wax ka beddelka Ogolaanshaha"
+
+#: setup.php
+msgid "Add User"
+msgstr "Ku Dar Isticmaale"
+
+#: setup.php
+msgid "Delete User"
+msgstr "Tirtir Isticmaalaha"
+
+#: setup.php
+msgid "Delete Map"
+msgstr "Tirtir Khariidadda"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Up"
+msgstr "Kor u Qaad Khariidadda"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Down"
+msgstr "Hoos u Dhig Kooxda"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Up"
+msgstr "Kor u Qaad Kooxda"
+
+#: setup.php
+msgid "Group Edit"
+msgstr "Wax ka beddel Kooxda"
+
+#: setup.php
+msgid "Group Update"
+msgstr "Cusboonaysii Kooxda"
+
+#: setup.php
+msgid "Activate Map"
+msgstr "Hawl-geli Khariidadda"
+
+#: setup.php
+msgid "Deactivate Map"
+msgstr "Hawl-jooji Khariidadda"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Now"
+msgstr "Dib u Dhis Hadda"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Change Group"
+msgstr "Beddel Kooxda"
+
+#: setup.php
+msgid "Group Admin"
+msgstr "Maamulka Kooxda"
+
+#: setup.php
+msgid "Group Admin Delete"
+msgstr "Tirtir Maamulka Kooxda"
+
+#: setup.php
+msgid "Manage"
+msgstr "Maamul"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr "Dejinta"
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr "Si otomaatig ah u wareeji"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "Local Documentation"
+msgstr "Dukumentiyada Gudaha"
+
+#: setup.php
+#, php-format
+msgid "This is version %s"
+msgstr "Kani waa nooca %s"
+
+#: setup.php
+msgid "Weathermap Website"
+msgstr "Bogga Webka Weathermap"
+
+#: weathermap-cacti-plugin-editor.php
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "Tifaftiraha PHP Weathermap %s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr "Ku noqo Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
+msgstr "Ku noqo Maamulka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Change<br>File"
+msgstr "Beddel<br>Faylka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Node"
+msgstr "Ku Dar<br>Guntin"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Link"
+msgstr "Ku Dar<br>Xiriir"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr "Ku Dar<br>Xusuusin"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Legend"
+msgstr "Meel Dhig<br>Furaha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Timestamp"
+msgstr "Meel Dhig<br>Waqtiga"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Properties"
+msgstr "Sifooyinka<br>Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Style"
+msgstr "Qaabka<br>Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Colors"
+msgstr "Maamul<br>Midabbada"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Images"
+msgstr "Maamul<br>Sawirrada"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Editor<br>Settings"
+msgstr "Dejinta<br>Tifaftiraha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>---, ---"
+msgstr "Meel<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
+msgstr "Dooro shay liiska ka mid ah ama midig-guji ama guji Guntin ama Xiriir si aad wax uga beddesho sifooyinkiisa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Debug"
+msgstr "Khalad-saar"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy ALL"
+msgstr "Dib u hagaaji DHAMMAAN"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy"
+msgstr "Dib u hagaaji"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Un-tidy"
+msgstr "Ka saar hagaajinta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Do Nothing"
+msgstr "Waxba Ha Samayn"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "mapfile"
+msgstr "faylka khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "action"
+msgstr "ficil"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param"
+msgstr "qodob"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param2"
+msgstr "qodob2"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "debug"
+msgstr "khalad-saar"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "See config"
+msgstr "Eeg habaynta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr "Qoraal"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr "Bidix"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr "Midig"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr "Toosinta qoraalka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr "Far"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr "Midabka xusuusinta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr "Keydi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Properties"
+msgstr "Sifooyinka Guntinta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr "Meesha khariidadda (X, Y)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Internal Name"
+msgstr "Magaca Gudaha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr "Hoos"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr "Gaar ah (habaynta tooska ah)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr "Meesha magaca muuqda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr "Dhexda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr "Ugu sarreeya"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Icon Filename"
+msgstr "Magaca Faylka Astaanta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Info URL(s)"
+msgstr "Info URL(yada)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover Graph URL(s)"
+msgstr "URL(yada) Jaantuska Dul-saarka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Template"
+msgstr "Qaab-dhismeedka Jaantuska"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "All"
+msgstr "Dhammaan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Selector"
+msgstr "Xulaha Jaantuska"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "Halkan waxaad wax uga beddeli kartaa Guntinta Weathermap. Tiirarka Meeshu waa goobta X,Y ee Khariidadda. Magaca Guduhu waa aqoonsiga gaarka ah ee la siiyo Guntinta. Calaamadda waa magaca dibadda ee Guntinta ee aad siiso isticmaalayaasha. Magaca Faylka Astaantu waa sawirka aad rabto inuu matalo Walaxda Guntinta. INFO URL waa xiriiriye aad bixin karto marka la gujiyo Guntinta Khariidadda firfircoon. URL-yada Jaantuska Dul-saarku waa URL-yo Jaantusyada Cacti ama kuwa kale oo muuqan doona marka la dul-saaro Guntinta. Xulaha Jaantusku waa caawiye lagu doorto Jaantusyada Cacti ee URL-yada Jaantuska. Waxaa jira sifooyin kale oo Guntin ah oo suurtagal ah. Si kastaba ha ahaatee, maanta waxaan taageernaa kuwa kor ku xusan oo keliya."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Properties"
+msgstr "Sifooyinka Xiriirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Into"
+msgstr "Soo galaya"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Maximum Bandwidth"
+msgstr "Baaxadda Gudbinta ee Ugu Badan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Out of"
+msgstr "Ka baxaya"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Via Style"
+msgstr "Qaabka Marinka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Curved"
+msgstr "Qaloocan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Angled"
+msgstr "Gees leh"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr "Isha/Ilaha socodka xogta ee la cabbiray"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Data Source Selector"
+msgstr "Xulaha Isha Xogta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr "Ku dar isha socodka xogta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Width"
+msgstr "Ballaca Xiriirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr "URL-ka meesha gujinta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr "URL-ka jaantuska dul-saarka ee weyn"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr "Waxaa la muujiyaa marka hore. Waxaa dejiya Isticmaal is-dhexgalka; jaantusyada dheeraadka ah waxay ka muuqdaan hoosteeda."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr "Muuji ilaa laba jaantus dul-saar ah: jaantuska weyn ee socodka xogta iyo hal dheeraad ah oo CPU, daahitaan ama horu-eegid kale ah. Beddel waxay beddeshaa kaliya jaantuska dheeraadka ah."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr "URL(yada) jaantuska dheeraadka ah"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr "URL-yada jaantuska dul-saarka ee dheeraadka ah"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr "Ku shaandhee nooca jaantuska"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr "Dooro jaantuska dul-saarka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr "Ku dar jaantuska dul-saarka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr "Beddel jaantusyada dul-saarka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "IN Comment"
+msgstr "Faallada SOO GAL"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "OUT Comment"
+msgstr "Faallada BAX"
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
+msgstr ""
+"<p><strong>Baaxadda gudbinta:</strong> Deji awoodda loo adeegsado xisaabinta isticmaalka, tusaale ahaan 100M ama 1G. K, M, G iyo T waa la taageeraa. Dooro La mid ah &quot;Soo gal&quot; marka labada jihoba ay leeyihiin awood isku mid ah.</p>\n"
+"<p><strong>Is-dhexgalka socodka xogta:</strong> Ku raadi qalab, port ama sharaxaad, ama dooro Baar dhammaan. Dooro is-dhexgal, ka dibna guji Isticmaal is-dhexgalka si aad u dejiso isha aasaasiga ah ee la cabbiray, meesha gujinta iyo jaantuska dul-saarka ee weyn. Ilaha dheeraadka ah ee la cabbiray iyo jaantusyada dul-saarka waa la hayaa.</p>\n"
+"<p><strong>Muuqaalka iyo faallooyinka:</strong> Qaabka Marinku wuxuu maamulaa qaloocyada siman ama geesaha leh; Ballaca Xiriirku wuxuu maamulaa dhumucda fallaarta. Faallada SOO GAL iyo Faallada BAX waxay ku daraan qoraal jiho kasta. Boqolleyda ayaa dejisa meesha qoraalku kaga yaallo xiriirka. Qaabka Faalladu wuxuu dhigaa faallooyinka dhinaca xiriirka (Geeska) ama fallaarta dusheeda (Bartamaha); Isticmaal asalka khariidaddu wuxuu raacaa Qaabka Khariidadda.</p>\n"
+"<p><strong>Jaantusyada dul-saarka ee dheeraadka ah:</strong> Muuji ugu badnaan laba jaantus dul-saar ah: jaantuska weyn ee socodka xogta iyo hal dheeraad ah, sida CPU, daahitaan ama is-dhexgal kale. Ku shaandhee nooca jaantuska waxay soo koobtaa doorashooyinka. Ku dar jaantuska dul-saarka waxay ku dartaa midka dheeraadka ah; Beddel jaantusyada dul-saarka way beddeshaa; Ka saar jaantuska way ka saartaa. Jaantuska weyn ee socodka xogta, socodka xogta la cabbiray iyo meesha gujinta xiriirku isma beddelaan. Daawadaha, horu-eegid kasta oo Cacti ah waxay furtaa jaantuskeeda buuxa marka la gujiyo.</p>\n"
+"<p><strong>Dejinta sare:</strong> Kontaroollo ikhtiyaari ah oo lagu dhaqaajiyo calaamadaha socodka xogta SOO GAL/BAX, lagu mideeyo ilaha la cabbiray, lagu beddelo meesha gujinta laguna geliyo URL-yada sawirrada dul-saarka ee gaarka ah. Meelaha calaamadaha socodka xogta waxay dhaqaajiyaan sanduuqyada isticmaalka iyagoo ka madax-bannaan meelaha faallooyinka. Isticmaal asalka khariidaddu wuxuu raacaa Qaabka Khariidadda. Xiriirka caadiga ah ee socodka xogta badanaa uma baahna wax isbeddel ah halkan.</p>\n"
+"<p><strong>Isku-darka ilaha socodka xogta:</strong> Ku dar isha socodka xogta waxay ku dartaa is-dhexgal kale wadarta khariidadda, si gooni ah SOO GAL iyo BAX. Ka saar isha waxay ka saartaa il dheeraad ah. Ka beddel isha aasaasiga ah adigoo isticmaalaya Isticmaal is-dhexgalka ee kor ku yaalla. Socodka xogta ee la mideeyay waxaa lala barbardhigaa baaxadda gudbinta ee la habeeyay si loo xisaabiyo isticmaalka. Jaantus Cacti oo isku-dhafan si otomaatig ah looma abuuro; ka abuur jaantus isku-dar ah oo u dhigma gudaha Cacti oo geli URL-yadiisa gujinta iyo dul-saarka haddii loo baahdo. Xiriirrada khariidadda ee kala goonida ah badanaa way ka cad yihiin xiriirrada aasaasiga ah iyo kuwa kaydka ah.</p>\n"
+"<p><strong>Ilaha iyo URL-yada gacanta ah:</strong> Sanduuqa qoraalka isha wuxuu tafatiraa liiska dhammaystiran ee ilaha la cabbiray, oo ay ku jirto isha aasaasiga ah. URL-ka meesha gujintu wuxuu maamulaa halka gujinta xiriirka khariidaddu geyso. URL-ka jaantuska dul-saarka ee weyn wuxuu dejiyaa horu-eegidda koowaad; URL(yada) jaantuska dheeraadka ah wuxuu aqbalaa hal URL sawir oo dheeraad ah. Kan dheeraadka ah waxaa sidoo kale lagu maamulaa Jaantusyada dul-saarka ee dheeraadka ah.</p>\n"
+"<p><strong>Hagaaji iyo Marin:</strong> Hagaaji wuxuu hagaajiyaa qaabka xiriirka. Marin wuxuu kuu ogolaanayaa inaad barta qalooca dhigto khariidadda.</p>\n"
+"<p><strong>Wax ka beddel Habaynta Tooska ah:</strong> Wax ka beddel qoraalka habaynta khariidadda ee hoose dejimaha ka baxsan foomkan.</p>"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Properties"
+msgstr "Sifooyinka Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr "Faahfaahinta Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Title"
+msgstr "Cinwaanka Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Text"
+msgstr "Qoraalka Furaha Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Timestamp Text"
+msgstr "Qoraalka Calaamada Waqtiga"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr "Gadaalka iyo Shiraaca"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr "Sawirka Gadaalka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr "(wax sawirro ah lama heli karo)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr "--GADAAL MA JIRO--"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr "Isticmaal Midabka Gadaalka Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
+msgstr "Waxaa la muujiyaa iyadoo aan sawir jirin, ama meelaha ay uga muuqato dhex-aragga."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr "Cabbiridda gadaalka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr "Ku habbee khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr "Ku fidi khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr "Isticmaal cabbirka sawirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Size"
+msgstr "Cabbirka Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "pixels"
+msgstr "biksel"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Capacity"
+msgstr "Awoodda Asalka ah ee Xiriirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Bandwidth"
+msgstr "Baaxadda Gudbinta ee Asalka ah ee Xiriirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec in"
+msgstr "bit/ilbiriqsi soo gal"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec out"
+msgstr "bit/ilbiriqsi bax"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style."
+msgstr "Deji cinwaanka khariidadda, furaha, calaamadda waqtiga, gadaalka iyo cabbirka shiraaca, iyo sidoo kale baaxadda gudbinta ee asalka ah ee xiriirrada. Cabbirrada khariidadda waxaa lagu cabbiraa biksel; muuqaalka asalka ah ee xiriirradu wuxuu ku jiraa Qaabka Khariidadda."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Style"
+msgstr "Qaabka Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Defaults"
+msgstr "Asalka Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "HTML Style"
+msgstr "Qaabka HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Dynamic HTML"
+msgstr "HTML Firfircoon"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Static HTML"
+msgstr "HTML Taagan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Key Style"
+msgstr "Qaabka Furaha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Classic"
+msgstr "Kalaasik"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Horizontal"
+msgstr "Jiifa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Vertical"
+msgstr "Toosan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Inverted"
+msgstr "La rogay"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Tags"
+msgstr "Sumadaha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Font"
+msgstr "Farta Furaha Khariidadda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Defaults"
+msgstr "Asalka Guntinta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Font"
+msgstr "Farta Guntinta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance Defaults"
+msgstr "Asalka Muuqaalka Xiriirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
+msgstr "Ballaca Asalka ah ee Xiriirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Labels"
+msgstr "Calaamadaha Xiriirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bits/sec"
+msgstr "Bits/ilbiriqsi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Percentage"
+msgstr "Boqolley"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Arrow Style"
+msgstr "Qaabka Fallaarta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Compact"
+msgstr "Kooban"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Label Font"
+msgstr "Farta Calaamadda Socodka Xogta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr "Cabbirrada dul-saarku waxay adeegsadaan biksel. Deji 0 si cabbirku otomaatig u noqdo. Ballacu wuxuu xaddidaa cabbirka horu-eegidda; dhererku waa tilmaan hore oo laga yaabo inaanu beddelin dhererka muuqda. URL-yada jaantusyadu waxay cayimi karaan cabbirrada sawirkooda."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr "Ballaca Dul-saarka Guntinta (biksel)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr "Dhererka Dul-saarka Guntinta (biksel)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr "Ballaca Dul-saarka Xiriirka (biksel)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
+msgstr "Dhererka Dul-saarka Xiriirka (biksel)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr "Maamul Midabbada"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr "Muuqaalka Xiriirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Comment Colour"
+msgstr "Midabka Faallada Xiriirka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr " Garaac xiriirrada marka ay gaaraan 80%+"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr "Xiriirrada gaara 80% isticmaal ama ka badan waxay ku garaacmaan midabka socodkooda xogta."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr "Midabbada Culayska Socodka Xogta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr "Midab diyaarsan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr "Gaar ah"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr "Asal ah (Kalaasik)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr "Cagaar / Jaalle-dahab / Cas"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr "Baraf Jiilaal"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr "Cagaarro Casri ah"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr "Buluugga Badweynta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr "Guduud-buluug / Liimi / Cas"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr "Jaalle-dahabka Qorrax-soo-baxa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr "Midabbadu waxay muujiyaan inta laga isticmaalayo baaxadda gudbinta ee xiriirka. Tusaale ahaan, 75% waxay ka dhigan tahay saddex rubuc awooddiisa."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr "Midabbada diyaarsan waxay beddelaan miisaanka socodka xogta ee DEFAULT marka aad Keydiso. Miisaannada kale ee magaca leh waa la hayaa."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr "Saf kasta waa xad midab ah. Laga bilaabo iyo Ilaa waa xuduudihiisa, Midab waa buuxinta, Dhammaadka Midab-isbeddelkuna wuxuu isku daraa midab kale. Calaamadda waxay ku dartaa qoraal furaha khariidadda ee ikhtiyaari ah. Magacyada miisaanku waxay kooxeeyaan xuduudaha; DEFAULT waa miisaanka caadiga ah ee socodka xogta. Miisaannada gaarka ah waxay adeegsan karaan cutubyo kale."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr "Ku dar xad"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr "Xuduudaha miisaanku waxay adeegsadaan cutubyada loo habeeyay xiriir ama guntin kasta; xiriirrada socodka xogta badanaa waxay adeegsadaan boqolley."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr "Maamul Sawirrada"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr "Astaamaha Guntinta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr "Soo Geli Astaanta Guntinta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr "Soo geli astaanta guntinta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr "Astaamaha guntinta ee jira"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr "Sawirrada Gadaalka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr "Soo Geli Gadaalka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr "Soo geli gadaalka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr "Sawirrada gadaalka ee jira"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr "Xir"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
+msgstr "Faylasha PNG, JPG/JPEG ama GIF ilaa 5 MB iyo 4 milyan oo biksel. Soo gelinta GIF waxay isticmaashaa shaxda koowaad. Soo gelinta isla markiiba waa la keydiyaa. Sawirrada ay tixraacdo habayn khariidad lama tirtiri karo."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr "Wax ka beddel habaynta tooska ah ee walaxdan khariidadda."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr "Sare: isbeddellada waxaa si toos ah loogu keydiyaa habaynta khariidadda iyadoon la hubin qoraalka habaynta. Isticmaal Sifooyinka kontaroollada caadiga ah ee wax ka beddelka."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr "Lakabyada dul-saaran"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
+msgstr "Meel-dhigidda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate"
+msgstr "Nuqul labaad"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable"
+msgstr "Hawl-jooji"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable"
+msgstr "Hawl-geli"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Grant Access"
+msgstr "Sii Gelitaanka"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Revoke Access"
+msgstr "Ka Noqo Gelitaanka"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No such file."
+msgstr "Faylkaas ma jiro."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s deleted."
+msgstr "Faylka habaynta %s waa la tirtiray."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr "Faylka habaynta %s waxaa adeegsanaysa khariidad. Ka saar khariidaddaas marka hore."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr "Lama tirtiri karo faylka habaynta."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "All Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Dhammaan Khariidadaha waxaa dib loogu dhisay %0.2f Ilbiriqsi!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Editor directory permissions are not correct!"
+msgstr "Ogolaanshaha galka tifaftiraha ma saxna!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
+msgstr "Koontada Adeegga Webku waa inay gelitaan u leedahay galka habaynta WeatherMap kaas oo aanay hadda lahayn. Sax arrintan, ka dibna dib u fur Tifaftiraha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Weathermap Permission Error"
+msgstr "Khalad Ogolaansho Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Continue"
+msgstr "Sii wad"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "%d-da Khariidadood ee la Doortay waxaa dib loogu dhisay %0.2f Ilbiriqsi!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to delete the following Weather Map."
+msgid_plural "Click 'Continue' to delete following Weather Maps."
+msgstr[0] "Guji 'Sii wad' si aad u tirtirto Khariidadda Weathermap ee soo socota."
+msgstr[1] "Guji 'Sii wad' si aad u tirtirto Khariidadaha Weathermap ee soo socda."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete Weather Map"
+msgid_plural "Delete Weather Maps"
+msgstr[0] "Tirtir Khariidadda Weathermap"
+msgstr[1] "Tirtir Khariidadaha Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Guji 'Sii wad' si aad nuqul labaad uga samayso Khariidadda Weathermap ee soo socota. Waxaad si ikhtiyaari ah u beddeli kartaa qaabka cinwaanka ee Khariidadda Weathermap ee cusub."
+msgstr[1] "Guji 'Sii wad' si aad nuqul labaad uga samayso Khariidadaha Weathermap ee soo socda. Waxaad si ikhtiyaari ah u beddeli kartaa qaabka cinwaanka ee Khariidadaha Weathermap ee cusub."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title Format:"
+msgstr "Qaabka Cinwaanka:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File Format:"
+msgstr "Qaabka Faylka Habaynta:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate Weather Map"
+msgid_plural "Duplicate Weather Maps"
+msgstr[0] "Nuqul labaad ka samee Khariidadda Weathermap"
+msgstr[1] "Nuqul labaad ka samee Khariidadaha Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Guji 'Sii wad' si aad u hawl-joojiso Khariidadda Weathermap ee soo socota. Waxaad si ikhtiyaari ah u beddeli kartaa qaabka cinwaanka ee Khariidadda Weathermap ee cusub."
+msgstr[1] "Guji 'Sii wad' si aad u hawl-joojiso Khariidadaha Weathermap ee soo socda. Waxaad si ikhtiyaari ah u beddeli kartaa qaabka cinwaanka ee Khariidadaha Weathermap ee cusub."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable Weather Map"
+msgid_plural "Disable Weather Maps"
+msgstr[0] "Hawl-jooji Khariidadda Weathermap"
+msgstr[1] "Hawl-jooji Khariidadaha Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Guji 'Sii wad' si aad u hawl-geliso Khariidadda Weathermap ee soo socota. Waxaad si ikhtiyaari ah u beddeli kartaa qaabka cinwaanka ee Khariidadda Weathermap ee cusub."
+msgstr[1] "Guji 'Sii wad' si aad u hawl-geliso Khariidadaha Weathermap ee soo socda. Waxaad si ikhtiyaari ah u beddeli kartaa qaabka cinwaanka ee Khariidadaha Weathermap ee cusub."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable Weather Map"
+msgid_plural "Enable Weather Maps"
+msgstr[0] "Hawl-geli Khariidadda Weathermap"
+msgstr[1] "Hawl-geli Khariidadaha Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Guji 'Sii wad' si aad Dib ugu Dhisto Khariidadda Weathermap ee soo socota. Waxaad si ikhtiyaari ah u beddeli kartaa qaabka cinwaanka ee Khariidadda Weathermap ee cusub."
+msgstr[1] "Guji 'Sii wad' si aad Dib ugu Dhisto Khariidadaha Weathermap ee soo socda. Waxaad si ikhtiyaari ah u beddeli kartaa qaabka cinwaanka ee Khariidadaha Weathermap ee cusub."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Weather Map"
+msgid_plural "Rebuild Weather Maps"
+msgstr[0] "Dib u Dhis Khariidadda Weathermap"
+msgstr[1] "Dib u Dhis Khariidadaha Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weather Maps [ Run Details: %s ]"
+msgstr "Khariidadaha Weathermap [ Faahfaahinta Socodka: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Search"
+msgstr "Raadi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Maps"
+msgstr "Khariidadaha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Default"
+msgstr "Asal ah"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: use filter settings"
+msgid "Go"
+msgstr "Soco"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: reset filter settings"
+msgid "Clear"
+msgstr "Nadiifi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Settings"
+msgstr "Dejinta Kooxda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Map Settings"
+msgstr "Dejinta Khariidadda Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Settings"
+msgstr "Dejinta Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild All"
+msgstr "Dib u Dhis Dhammaan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild all maps now in background"
+msgstr "Dib u dhis dhammaan khariidadaha hadda gadaal"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
+msgstr "Waxaad isticmaaleysaa plugin-ka Boost si aad u cusboonaysiiso faylasha RRD. Maadaama tani dib u dhigto qorista xogta faylasha, waxay dhibaato ku keentaa cusboonaysiinta Weathermap. Waxaad ku xallin kartaa tan adigoo adeegsanaya taageerada 'poller_output' ee Weathermap, taas oo xogta si toos ah uga soo qaadda poller-ka. %s Waxaad si guud uga hawl-gelin kartaa adigoo halkan gujinaya %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
+msgstr "Markii ugu dambeysay ee uu shaqeeyay, Weathermap MA dhammeystirin socodkiisa. Wuxuu ku fashilmay intii lagu jiray habaynta '%s'"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
+msgstr "Tani <strong>waxay saameyn kartaa</strong> plugin-yada kale ee socda inta lagu jiro hawsha poller-ka."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
+msgstr "Waa inaad midkood hawl-joojisaa Khariidaddan, ama baartaa khaladka. Sababaha suurtagalka ah waxaa ka mid ah arrimaha memory_limit. Diiwaanka waxaa laga yaabaa inuu hayo macluumaad dheeraad ah."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title"
+msgstr "Cinwaanka"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File"
+msgstr "Faylka Habaynta"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "ID"
+msgstr "Aqoonsiga"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group"
+msgstr "Koox"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enabled"
+msgstr "La hawlgeliyay"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Sort Order"
+msgstr "Kala Horreynta"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Order"
+msgstr "Kala Horreyn"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Accessible By"
+msgstr "Cidda Geli Karta"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Duration"
+msgstr "Muddadii Ugu Dambeysay"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Runtime"
+msgstr "Muddadii Shaqeynta Ugu Dambeysay"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Anyone"
+msgstr "Qof kasta"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to start editor with this file"
+msgstr "Guji si aad ugu bilowdo tifaftiraha faylkan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Check cacti.log for this Map"
+msgstr "Ka hubi cacti.log Khariidaddan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to change group"
+msgstr "Guji si aad u beddesho kooxda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Deactivate"
+msgstr "Guji si aad u Hawl-joojiso"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Activate"
+msgstr "Guji si aad u Hawl-geliso"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Specials"
+msgstr "%d Gaar ah"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Standard"
+msgstr "Caadi ah"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Down"
+msgstr "Hoos u Dhig Khariidadda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to edit permissions"
+msgstr "Guji si aad wax uga beddesho ogolaanshaha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users"
+msgstr "Ma Jiraan Isticmaalayaal"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Users"
+msgstr "Dhammaan Isticmaalayaasha"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Groups"
+msgstr "%d Kooxood"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 Group"
+msgstr "1 Koox"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Users"
+msgstr "%d Isticmaale"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 User"
+msgstr "1 Isticmaale"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Weathermaps Found"
+msgstr "Lama Helin Wax Weathermap ah"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
+msgstr "Ma jiro gal magaciisu yahay %s. Waa inaad abuurtaa, oo aad ka dhigtaa mid adeegaha webku akhrin karo. Haddii aad rabto inaad faylasha habaynta ka soo geliso gudaha Cacti, markaas waa inuu noqdaa mid adeegaha webku sidoo kale <i>qori karo</i>."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Existing Configuration Files"
+msgstr "Faylasha Habaynta ee Jira"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Num Files"
+msgstr "Tirada Faylasha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Maps"
+msgstr "Wuxuu Leeyahay Khariidado"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Go"
+msgstr "Soco"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Set/Refresh Filters"
+msgstr "Deji/Cusboonaysii Shaandheeyayaasha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear"
+msgstr "Nadiifi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear Filters"
+msgstr "Nadiifi Shaandheeyayaasha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Options"
+msgstr "Ikhtiyaarrada Abuurista"
+
+#: weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "New Map"
+msgstr "Khariidad Cusub"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name including .conf"
+msgstr "Magaca oo ay ku jirto .conf"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr "Cinwaan khariidad oo ikhtiyaari ah"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Source Map"
+msgstr "Khariidadda Isha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Empty File"
+msgstr "Fayl Madhan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Actions"
+msgstr "Ficillada"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Date"
+msgstr "Taariikhda Abuurista"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Modified"
+msgstr "Wax ka beddelkii Ugu Dambeeyay"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Size"
+msgstr "Cabbirka"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config Files"
+msgstr "Faylasha Habaynta"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Add the configuration file %s to Weathermap"
+msgstr "Ku dar faylka habaynta %s gudaha Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid " Copy"
+msgstr " Nuqul"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Duplicate the configuration file %s and add to Weathermap as %s"
+msgstr "Nuqul labaad ka samee faylka habaynta %s oo ku dar Weathermap sida %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "View the configuration file %s in a new window"
+msgstr "Ku eeg faylka habaynta %s daaqad cusub"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "NOTE: Already in use. Click duplicate to create a new file."
+msgstr "XUSUUSIN: Horey ayaa loo isticmaalayaa. Guji nuqul labaad si aad u abuurto fayl cusub."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No files were found in the configs directory."
+msgstr "Wax faylal ah lagama helin galka habaynta."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s is not in the config directory."
+msgstr "Jidka %s kuma jiro galka habaynta."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Preview of %s"
+msgstr "Horu-eegidda %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s does not appear to exist in the config directory"
+msgstr "Jidka %s uma muuqdo inuu ku jiro galka habaynta"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Path mismatch"
+msgstr "Jid aan is waafaqsanayn"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr "Faylka habaynta lama heli karo. Fadlan isku day mar kale."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "(No Title)"
+msgstr "(Cinwaan Ma Laha)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr "Khariidadda cusub ee magaceedu yahay %s way ku guuldarreysatay inay hesho faylka habaynta %s si looga koobiyeeyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr "Lama diiwaangelin karo khariidadda cusub."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr "Lama abuuri karo nuqulka khariidadda. Fadlan isku day mar kale."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
+msgstr "Khariidadda cusub ee magaceedu yahay %s waxaa lagu abuuray iyadoo la adeegsanayo faylka habaynta %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weathermap Permissions for Map [ %s ]"
+msgstr "Ogolaanshaha Weathermap ee Khariidadda [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Type"
+msgstr "Nooca"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users"
+msgstr "Isticmaalayaasha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Groups"
+msgstr "Kooxaha Isticmaalayaasha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rows"
+msgstr "Safafka"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Permissions"
+msgstr "Wuxuu Leeyahay Ogolaansho"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users or Groups"
+msgstr "Isticmaalayaasha ama Kooxaha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Account Type"
+msgstr "Nooca Koontada"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User/Group"
+msgstr "Isticmaale/Koox"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Login Realm"
+msgstr "Aagga Gelitaanka"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "UID/GID"
+msgstr "UID/GID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Full Name/Description"
+msgstr "Magaca Buuxa/Sharaxaadda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Allowed"
+msgstr "La Ogol Yahay"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User"
+msgstr "Isticmaale"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Group"
+msgstr "Koox Isticmaalayaal"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "N/A"
+msgstr "Ma khuseyso"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Local"
+msgstr "Gudaha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Web Basic"
+msgstr "Webka Aasaasiga ah"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "LDAP/AD"
+msgstr "LDAP/AD"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Not Permitted"
+msgstr "Lama Ogola"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Permitted"
+msgstr "La Ogolaaday"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users have Access to this Map"
+msgstr "Ma Jiraan Isticmaalayaal Gelitaan u Leh Khariidaddan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Settings [ All Maps ]"
+msgstr "Dejinta Guud [ Dhammaan Khariidadaha ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
+msgstr "Weli ma jiraan Dejimo loogu talagalay Dhammaan Khariidadaha. Waad ku dari kartaa adigoo riixaya calaamadda lagu daro '+' ee geeska sare ee midig, ama ka dooro hal Khariidad shaashadda maamulka si aad ugu darto Dejimo Khariidaddaas."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Group Settings [ Group: %s ]"
+msgstr "Wax ka beddel Dejinta Kooxda [ Kooxda: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Weli ma jiraan Dejimo Kooxeed oo loogu talagalay Kooxdan. Waad ku dari kartaa adigoo riixaya calaamadda lagu daro '+' ee geeska sare ee midig."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Settings [ Weathermap: %s ]"
+msgstr "Wax ka beddel Dejinta Khariidadda [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Weli ma jiraan dejimo Khariidadeed oo loogu talagalay Khariidaddan. Waad ku dari kartaa adigoo riixaya calaamadda lagu daro '+' ee geeska sare ee midig."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Usage Notes"
+msgstr "Xusuusinnada Isticmaalka"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Dhammaan Khariidadaha Kooxdan waxaa sidoo kale saameeya Dejinta Guud ee soo socota (Kooxdu way ka sarreysaa Guud, Khariidaddu way ka sarreysaa Kooxda, laakiin LABADUBA way ka sarreeyaan amarrada SET ee ku jira Faylka Habaynta Khariidadda)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Khariidaddan waxaa sidoo kale saameeya Dejinta Guud iyo tan Kooxda ee soo socota (Kooxdu way ka sarreysaa Guud, Khariidaddu way ka sarreysaa Kooxda, laakiin LABADUBA way ka sarreeyaan amarrada SET ee ku jira Faylka Habaynta Khariidadda)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Group Settings [ Group: %s ]"
+msgstr "Dejinta Kooxda [ Kooxda: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Group"
+msgstr "Koox Ma Laha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Action"
+msgstr "Ficil"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name"
+msgstr "Magac"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Value"
+msgstr "Qiime"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit this definition"
+msgstr "Wax ka beddel qeexiddan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Remove this definition from this Map"
+msgstr "Ka saar qeexiddan Khariidaddan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Group Admin"
+msgstr "Ku noqo Maamulka Kooxda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Map Admin"
+msgstr "Ku noqo Maamulka Khariidadda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Settings Found"
+msgstr "Lama Helin Wax Dejimo ah"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map ID"
+msgstr "Aqoonsiga Khariidadda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Setting ID"
+msgstr "Aqoonsiga Dejinta"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The name of the map-global SET variable"
+msgstr "Magaca doorsoomaha SET ee guud ahaan khariidadda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "What to set it to"
+msgstr "Qiimaha lagu dejinayo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
+msgstr "Wax ka beddel"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Setting for all Maps"
+msgstr "Dejinta Guud ee dhammaan Khariidadaha"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Map Setting [ Weathermap: %s ]"
+msgstr "Dejinta Khariidadda [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Group for Weathermap [ %s ]"
+msgstr "Wax ka beddel Kooxda Khariidadda ee Weathermap [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Choose an existing Group"
+msgstr "Dooro Koox hore u jirtay"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Or Create a New Group using the %s Group Management interface %s"
+msgstr "Ama Abuur Koox Cusub adigoo adeegsanaya %s bogga Maamulka Kooxda %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Adding a Group"
+msgstr "Ku darista Koox"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Editing Group: %s"
+msgstr "Wax ka beddelka Kooxda: %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name:"
+msgstr "Magaca Kooxda:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Update"
+msgstr "Cusboonaysiin"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Add"
+msgstr "Ku dar"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Map Groups"
+msgstr "Wax ka beddel Kooxaha Khariidadda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name"
+msgstr "Magaca Kooxda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename this Group"
+msgstr "Dib u magacow Kooxdan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Group Settings"
+msgstr "Wax ka beddel Dejinta Kooxda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Groups are defined"
+msgstr "Ma jiraan Kooxo la qeexay"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename Weathermap Group"
+msgstr "Dib u magacow Kooxda Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enter a new name for the Weathermap Group."
+msgstr "Geli magac cusub oo loogu talagalay Kooxda Weathermap."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "New Group Name"
+msgstr "Magaca Kooxda Cusub"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename"
+msgstr "Dib u magacow"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the last remaining Map Group."
+msgstr "Lama tirtiri karo Kooxda Khariidadda ee ugu dambeysa ee hartay."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr "Cinwaanka khariidaddu aad buu u dheer yahay. Isticmaal ugu badnaan 4088 bayt ka dib baxsi-gelinta."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The New Map File name %s already exists!"
+msgstr "Magaca Faylka Khariidadda Cusub %s horey ayuu u jiray!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Source Map File name is not readable or does not exist!"
+msgstr "Magaca Faylka Khariidadda Isha lama akhrin karo ama ma jiro!"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created from %s"
+msgstr "Faylka Khariidadda Cusub %s waxaa laga abuuray %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created."
+msgstr "Faylka Khariidadda Cusub %s waa la abuuray."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You must include a Map File name to Create"
+msgstr "Waa inaad ku dartaa magaca Faylka Khariidadda si loo Abuuro"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermap named \"%s\""
+msgstr "Weathermap-ka Shabakadda ee magaciisu yahay \"%s\""
+
+#: weathermap-cacti-plugin.php
+msgid "This map hasn't been created yet."
+msgstr "Khariidaddan weli lama abuurin."
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Maps"
+msgstr "Maamul Khariidadaha"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
+msgstr "Weathermap-yada Shabakadda [ %sSi Otomaatig ah u Wareeji%s ]"
+
+#: weathermap-cacti-plugin.php
+msgid "(thumbnail for map not created yet)"
+msgstr "(sawirka yar ee khariidadda weli lama abuurin)"
+
+#: weathermap-cacti-plugin.php
+msgid "(Live View)"
+msgstr "(Muuqaal Toos ah)"
+
+#: weathermap-cacti-plugin.php
+msgid "You Have No Maps"
+msgstr "Ma Lihid Wax Khariidado ah"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
+msgstr "Si aad khariidad ugu darto jadwalka, tag bogga %s Maamul...Weathermap-yada %s oo mid ku dar."
+
+#: weathermap-cacti-plugin.php
+msgid "Network Weathermaps"
+msgstr "Weathermap-yada Shabakadda"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
+msgstr "Waxaa la muujinayaa %s %s ee ka mid ah %s %s. Waxaa la wareejinayaa dhammaan khariidadaha la heli karo ee kooxdan."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps."
+msgstr "Waxaa la muujinayaa %s %s ee ka mid ah %s %s. Waxaa la wareejinayaa dhammaan khariidadaha la heli karo."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Powered by %s PHP Weathermap Version %s %s"
+msgstr "Waxaa ku shaqeeya %s PHP Weathermap Nooca %s %s"
+
+#: weathermap-cacti-plugin.php
+msgid "Go to the Map Management page"
+msgstr "Tag bogga Maamulka Khariidadda"
+
+#: weathermap-cacti-plugin.php
+msgid "Weathermap Management"
+msgstr "Maamulka Weathermap"
+
+#: weathermap-cacti-plugin.php
+msgid "Map to View"
+msgstr "Khariidadda la Eegayo"
+
+#: weathermap-cacti-plugin.php
+msgid "All Maps"
+msgstr "Dhammaan Khariidadaha"
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr "Jooji wareejinta"
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr "Kii hore"
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr "Haki / sii wad"
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr "Xiga"
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr "Ka bax shaashadda buuxda"
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr "Shaashad buuxda"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr "Khariidadda xigta %s ilbiriqsi"
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
+msgstr "La hakiyay"

@@ -1,0 +1,3088 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-08 18:47-0800\n"
+"PO-Revision-Date: 2026-11-27 18:00-0800\n"
+"Last-Translator: The Cacti Group <developers@cacti.net>\n"
+"Language-Team: Amharic <developers@cacti.net>\n"
+"Language: am_ET\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr "እስከ 5 MB የሆነ የPNG፣ JPG ወይም GIF ፋይል ይምረጡ።"
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr "ለውጦችን ለማስቀመጥ POST ይጠቀሙ።"
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr "ይህ ካርታ ከከፈቱት ጊዜ ጀምሮ ተቀይሯል። ለውጦችዎን ከማስቀመጥዎ በፊት አርታዒውን እንደገና ይጫኑ።"
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr "የካርታውን ውቅር ማንበብ አልተቻለም።"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.history.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr "የካርታ ውቅሮችን መቆለፍ አልተቻለም።"
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr "ይህ ምስል አሁንም በካርታ ውቅር ውስጥ ተጠቅሷል።"
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
+msgstr "ምስሉን መሰረዝ አልተቻለም።"
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr "ልክ ያልሆኑ የቀለም ቅንብሮች።"
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr "የካርታውን ውቅር ማስቀመጥ አልተቻለም።"
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr "ልክ ያልሆነ የምስል ምድብ።"
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr "ምልክታዊ አገናኞች (Symbolic links) እዚህ ሊተዳደሩ አይችሉም።"
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr "ልክ ያልሆነ የምስል ፋይል ስም።"
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr "የውቅር ማጣቀሻዎችን ማረጋገጥ አልተቻለም።"
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr "ለማረጋገጥ በጣም ብዙ የተካተቱ ውቅሮች አሉ።"
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr "የምስል ማውጫው ሊጻፍበት አይችልም።"
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr "እስከ 4 ሚሊዮን ፒክስሎች ያለው የPNG፣ JPG ወይም GIF ምስል ይምረጡ።"
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr "ምስሉን ማንበብ አልተቻለም።"
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr "የምስል ፋይል ስም መያዝ አልተቻለም።"
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
+msgstr "ምስሉን ማስቀመጥ አልተቻለም።"
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr "ትክክለኛ ቀለም ይምረጡ።"
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr "ልክ ያልሆነ የምት (pulse) ቅንብር።"
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr "ዳራው ጠንካራ (አንድ ወጥ) ቀለም ያስፈልገዋል።"
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr "በ1 እና በ200 መካከል የመለኪያ ረድፎችን ያቆዩ።"
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr "መለኪያ %s በተካተተ ውቅር ውስጥ የተገለጸ ሲሆን እዚህ ለንባብ ብቻ ነው። ይልቁንም የምንጭ ፋይሉን ያርትዑ።"
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr "ልክ ያልሆነ የመለኪያ ስም።"
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr "ልክ ያልሆነ የመለኪያ ክልል።"
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr "የክልል መጀመሪያ ከመጨረሻው መብለጥ የለበትም።"
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr "ልክ ያልሆነ የመለኪያ መለያ ጽሑፍ።"
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr "ጠንካራ የቀለም መለያ በሦስት ሙሉ ቁጥሮች መጀመር አይችልም። መጀመሪያ ቃል ያክሉ ወይም የቀለም ሽግግር መጨረሻ ቀለም ይምረጡ።"
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr "የመለኪያ ገደቦች ሳይጠጋጉ ሊቀመጡ የሚችሉ እሴቶችን ይፈልጋሉ። እስከ ስድስት የአስርዮሽ ቦታዎች እና ትክክለኛ የመተላለፊያ ይዘት አሃዶችን ይጠቀሙ።"
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr "በመለኪያ ውስጥ የተደገመ ክልል።"
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr "የቀለም ሽግግሮች ሁለት ቀለሞች ያስፈልጋቸዋል።"
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr "ቢያንስ አንድ የDEFAULT የትራፊክ ክልል ያቆዩ።"
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr "አንድ የካርታ ነገር አሁንም መለኪያ %s ን ይጠቀማል።"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt (font %s)"
+msgstr "%s — %s pt (ቅርጸ-ቁምፊ %s)"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr "ሰማያዊ (#0000FF)"
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr "ጥቁር ሰማያዊ (#003366)"
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr "ንጉሣዊ ሰማያዊ (#0040C0)"
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr "ሰማያዊ-አረንጓዴ (#007070)"
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr "አረንጓዴ (#008000)"
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr "ሐምራዊ (#8000C0)"
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr "ከሰል ግራጫ (#333333)"
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr "ቀይ (#C00000)"
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr "ጥቁር (#000000)"
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr "ነጭ (#FFFFFF)"
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr "ከአገናኝ ቀለም ጋር ራስ-ሰር ንጽጽር"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt"
+msgstr "%s — %s pt"
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr "አብረው የመጡ ቅርጸ-ቁምፊዎች"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr "የአገናኝ አስተያየት ቅርጸ-ቁምፊ"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Style"
+msgstr "የአገናኝ አስተያየት ቅጥ"
+
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr "መሃል"
+
+#: lib/editor.comment-style.php
+msgid "Edge"
+msgstr "ጠርዝ"
+
+#: lib/editor.comment-style.php
+msgid "Edge places comments beside the link; Centre places them over the arrow."
+msgstr "ጠርዝ አስተያየቶችን ከአገናኙ ጎን ያስቀምጣል፤ መሃል ደግሞ በቀስቱ ላይ ያስቀምጣቸዋል።"
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr "የአገናኝ ኩርባን ተከተል"
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr "የአገናኝ አስተያየቶች"
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr "የTrueType ቅርጸ-ቁምፊ ይጠቀማል። ጠባብ መታጠፊያዎች ወይም ከአገናኙ የሚረዝም ጽሑፍ ቀጥ ያለ ጽሑፍ ይጠቀማሉ።"
+
+#: lib/editor.comment-style.php
+msgid "Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments."
+msgstr "በአገናኙ ላይ ያሉ ቦታዎች፦ 0% የመጀመሪያው ኖድ ሲሆን 100% ሁለተኛው ነው። እነዚህ የሚያንቀሳቅሱት የትራፊክ መለያዎችን እንጂ አስተያየቶችን አይደለም።"
+
+#: lib/editor.comment-style.php
+msgid "Traffic Label Positions"
+msgstr "የትራፊክ መለያ ቦታዎች"
+
+#: lib/editor.comment-style.php
+msgid "IN"
+msgstr "ገቢ (IN)"
+
+#: lib/editor.comment-style.php
+msgid "OUT"
+msgstr "ወጪ (OUT)"
+
+#: lib/editor.comment-style.php
+msgid "Comment Style"
+msgstr "የአስተያየት ቅጥ"
+
+#: lib/editor.comment-style.php
+msgid "Use map default"
+msgstr "የካርታ ነባሪ ተጠቀም"
+
+#: lib/editor.comment-style.php
+msgid "Custom positions"
+msgstr "ብጁ ቦታዎች"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr "የውቅር ፋይል %s ሰርዝ"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr "የውቅር ፋይሉን \"%s\" በቋሚነት መሰረዝ እንደሚፈልጉ እርግጠኛ ነዎት?"
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr "ለመቀልበስ (Undo) እና ድጋሚ ለመስራት (Redo) ንቁ ክፍለ ጊዜ ያስፈልጋል።"
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr "የግል የካርታ ታሪክ ማከማቻ መፍጠር አልተቻለም።"
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr "የካርታ ታሪክ ማከማቻው የግል አይደለም።"
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr "ልክ ያልሆነ የካርታ ታሪክ ማከማቻ።"
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr "ኖድ አክል"
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr "ኖድ ቅዳ"
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr "ኖድ ሰርዝ"
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr "ኖድ ወይም ማስታወሻ አንቀሳቅስ"
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr "አገናኝ አክል"
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr "አገናኝ ሰርዝ"
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr "የአገናኝ መተላለፊያ (via) ነጥብ አንቀሳቅስ"
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr "አገናኝ አስተካክል"
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr "ሁሉንም አገናኞች አስተካክል"
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr "አገናኞችን አስተካክል"
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr "ማስታወሻ አርትዕ"
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr "የአገናኞችን ማስተካከያ አንሳ"
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr "አገናኝ አርትዕ"
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr "ኖድ አርትዕ"
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr "ጥሬ የአገናኝ ውቅር አርትዕ"
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr "ጥሬ የኖድ ውቅር አርትዕ"
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr "የካርታ ባህሪያትን አርትዕ"
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr "የካርታ ቅጥ አርትዕ"
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr "የካርታ ቀለሞችን አርትዕ"
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr "የካርታ ቁልፍን አንቀሳቅስ"
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr "የጊዜ ማህተምን አንቀሳቅስ"
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr "ካርታ አርትዕ"
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr "ምንም የሚዛመድ ታሪክ አልቀረም። አርታዒውን እንደገና ይጫኑ።"
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr "ይህን ካርታ ወደ ነበረበት መመለስ አልተቻለም። ውቅር ወይም ምስል ተቀይሮ ሊሆን ይችላል። አርታዒውን እንደገና ይጫኑ።"
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr "ልክ ያልሆነ የታሪክ ጥያቄ።"
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr "ይህ ካርታ ተቀይሯል። መቀልበስ (Undo) ወይም ድጋሚ መስራት (Redo) ከመጠቀምዎ በፊት አርታዒውን እንደገና ይጫኑ።"
+
+#: lib/editor.inc.php
+msgid "Next results"
+msgstr "ቀጣይ ውጤቶች"
+
+#: lib/editor.inc.php
+msgid "Previous results"
+msgstr "ቀዳሚ ውጤቶች"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr "ወደ PHP Weathermap %s አርታዒ እንኳን በደህና መጡ"
+
+#: lib/editor.inc.php
+msgid "Use the editor to manage nodes, links, notes, colours and image uploads. Edit Raw Configuration provides settings beyond the forms. See the local documentation for workflows and configuration details."
+msgstr "ኖዶችን፣ አገናኞችን፣ ማስታወሻዎችን፣ ቀለሞችን እና የምስል ሰቀላዎችን ለማስተዳደር አርታዒውን ይጠቀሙ። ጥሬ ውቅር አርትዕ ከቅጾቹ ባሻገር ያሉ ቅንብሮችን ይሰጣል። ለስራ ፍሰቶች እና የውቅር ዝርዝሮች አካባቢያዊ ሰነዶችን ይመልከቱ።"
+
+#: lib/editor.inc.php
+msgid "Do you want to:"
+msgstr "ምን ማድረግ ይፈልጋሉ፦"
+
+#: lib/editor.inc.php
+msgid "Create A New Map:"
+msgstr "አዲስ ካርታ ፍጠር፦"
+
+#: lib/editor.inc.php
+msgid "Named:"
+msgstr "ስም፦"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-mgmt.php
+msgid "Create"
+msgstr "ፍጠር"
+
+#: lib/editor.inc.php
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
+msgstr "ማስታወሻ፦ የፋይል ስሞች በ.conf ማለቅ አለባቸው እንዲሁም የመንገድ መለያዎችን ወይም የቁጥጥር ቁምፊዎችን መያዝ የለባቸውም"
+
+#: lib/editor.inc.php
+msgid "Create Copy"
+msgstr "ቅጂ ፍጠር"
+
+#: lib/editor.inc.php
+msgid "Ok"
+msgstr "እሺ"
+
+#: lib/editor.inc.php
+msgid "Operation successful"
+msgstr "ክንውኑ ተሳክቷል"
+
+#: lib/editor.inc.php
+msgid "The Operation was successful.  Details are below."
+msgstr "ክንውኑ ተሳክቷል። ዝርዝሮቹ ከዚህ በታች ቀርበዋል."
+
+#: lib/editor.inc.php
+msgid "Pause"
+msgstr "ለአፍታ አቁም"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to move the node to."
+msgstr "ኖዱን ወደሚፈልጉት ቦታ ለማንቀሳቀስ በካርታው ላይ ጠቅ ያድርጉ።"
+
+#: lib/editor.inc.php
+msgid "Click on the map via which point you want to redirect link."
+msgstr "አገናኙን ወደሚፈልጉት ነጥብ ለማዞር በካርታው ላይ ጠቅ ያድርጉ።"
+
+#: lib/editor.inc.php
+msgid "Click on the first node for the start of the link."
+msgstr "ለአገናኙ መጀመሪያ የመጀመሪያውን ኖድ ጠቅ ያድርጉ።"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "የጊዜ ማህተሙን ለማስቀመጥ በሚፈልጉበት የካርታው ቦታ ላይ ጠቅ ያድርጉ።"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the legend."
+msgstr "የካርታ ቁልፉን ለማስቀመጥ በሚፈልጉበት የካርታው ቦታ ላይ ጠቅ ያድርጉ።"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a new node."
+msgstr "አዲስ ኖድ ለማከል በሚፈልጉበት የካርታው ቦታ ላይ ጠቅ ያድርጉ።"
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr "−"
+
+#: lib/editor.inc.php
+msgid "No images in this library yet."
+msgstr "በዚህ ቤተ-መጽሐፍት ውስጥ ገና ምንም ምስሎች የሉም።"
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
+msgstr "ለመስቀል PNG፣ JPG ወይም GIF ይምረጡ።"
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr "ጥያቄው አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr "ሰቀላ አልተሳካም።"
+
+#: lib/editor.inc.php
+msgid "No gradient"
+msgstr "ምንም የቀለም ሽግግር የለም"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr "ብጁ ቀለም"
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr "ክልል አስወግድ"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr "%s ሰርዝ"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr "ምስሉን \"%s\" ከአገልጋዩ ይሰረዝ?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr "ምስሎች፦ %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr "%s ተሰቅሏል"
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr "መለያ ጽሑፍ ብቻ"
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr "ዳራ የለም"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr "በሚከተለው ጥቅም ላይ ውሏል፦ %s"
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr "በማንኛውም ካርታ ጥቅም ላይ አልዋለም"
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr "ምንም የDEFAULT ክልሎች የሉም። ለተሰየሙ መለኪያዎች የላቁ ቅንብሮችን ይመልከቱ።"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr "ብጁ (%s)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr "ቀልብስ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr "ድጋሚ ስራ"
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr "ለመቀልበስ ወይም ድጋሚ ለመስራት ምንም የካርታ ለውጦች የሉም።"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr "ቀልብስ፦ %s ደረጃዎች፤ ድጋሚ ስራ፦ %s ደረጃዎች።"
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr "ቀልብስ ወይም ድጋሚ ስራ ከመጠቀምዎ በፊት የተከፈተውን መገናኛ ያስቀምጡ ወይም ይቅር ይበሉ።"
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
+msgstr "ቀልብስ እና ድጋሚ ስራ የአሳሽ ክፍለ ጊዜ ማከማቻ ያስፈልጋቸዋል።"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr "ለውጦችን ማስቀመጥ አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr "የካርታ ዳራ ቀለም"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr "የአገናኝ ድንበር ቀለም"
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr "ከተካተቱ ውቅሮች የመጡ መለኪያዎች እዚህ ለንባብ ብቻ ናቸው። ለመቀየር የምንጭ ፋይሎቻቸውን ያርትዑ።"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr "መለኪያ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr "ከ (ብዙውን ጊዜ %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr "እስከ (ብዙውን ጊዜ %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr "መለያ ጽሑፍ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr "ቀለም"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr "የቀለም ሽግግር መጨረሻ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr "ጥቁር"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr "ሰማያዊ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr "አረንጓዴ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr "ግራጫ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr "ምንም"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr "ብርቱካናማ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr "ሐምራዊ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr "ቀይ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr "ነጭ"
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr "አዶዎችን ፈልግ…"
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr "የኖድ አዶዎችን ፈልግ"
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr "የኖድ አዶዎች"
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr "አዶ ይምረጡ"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr "የሚዛመዱ አዶዎች፦ %s"
+
+#: lib/editor.inc.php
+msgid "No matching icons"
+msgstr "ምንም የሚዛመዱ አዶዎች የሉም"
+
+#: lib/editor.inc.php
+msgid "Current interface"
+msgstr "የአሁኑ በይነገጽ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Advanced settings"
+msgstr "የላቁ ቅንብሮች"
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr "የላቁ ቅንብሮችን ደብቅ"
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr "በይነገጽ ተጠቀም"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Traffic interface"
+msgstr "የትራፊክ በይነገጽ"
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr "መሣሪያ ወይም በይነገጽ ፈልግ"
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr "ምንም በይነገጽ አልተመረጠም"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr "ማስታወሻ ለማከል በሚፈልጉበት የካርታው ቦታ ላይ ጠቅ ያድርጉ።"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr "ማስታወሻ"
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr "የማስታወሻ መሰረዝ ማረጋገጫ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr "ማስታወሻ ሰርዝ"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr "ማስታወሻ \"%s\" ይሰረዝ?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr "የአሁኑ ግራፍ፦ %s"
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr "ብጁ ውቅር — የላቁ ቅንብሮችን ይመልከቱ"
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr "ከዚህ በታች በይነገጽ ይምረጡ"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr "ወደ %s የሚገባ የመተላለፊያ ይዘት"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr "ከ%s የሚወጣ የመተላለፊያ ይዘት"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr "ግራፍ %s — ውሂብ፣ የጠቅታ መድረሻ እና በማንዣበብ የሚታይ ግራፍ ተመርጠዋል። ለመተግበር አስቀምጥን ይጫኑ።"
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr "በማንዣበብ ጊዜ መጀመሪያ ይታያል። በይነገጽ ተጠቀም ይህን በራስ-ሰር ያዘጋጃል፤ ለብጁ ቅድመ-እይታ URL ብቻ ይቀይሩት።"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr "ከ%s ምንጮች የተዋሃደ ትራፊክ"
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr "የትራፊክ ምንጭ ወደ ካርታው ድምር ታክሏል። በማንዣበብ እና በጠቅታ የሚታዩ ግራፎች አልተቀየሩም። ለመተግበር አስቀምጥን ይጫኑ።"
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr "ይህ ምንጭ ቀድሞውኑ ተካቷል። ተጨማሪ ለማከል በዚህ የፍለጋ ሳጥን ውስጥ የተለየ ምንጭ ይምረጡ።"
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr "ምንጭ አስወግድ"
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr "የተለካው ምንጭ ተወግዷል። በማንዣበብ እና በጠቅታ የሚታዩ ግራፎች አልተቀየሩም። ለመተግበር አስቀምጥን ይጫኑ።"
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr "ምንም የተለኩ የትራፊክ ምንጮች አልተመረጡም።"
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr "ከላይ ካሉት የፍለጋ ውጤቶች ተጨማሪ በይነገጽ ይምረጡ፣ ከዚያ የትራፊክ ምንጭ አክልን ጠቅ ያድርጉ።"
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr "ተጨማሪ በይነገጽ ተመርጧል። የትራፊክ ምንጭ አክል ዋናውን በይነገጽ እና ሌሎች ምንጮችን ይጠብቃል።"
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr "ዋና ምንጭ — ለመቀየር ከላይ ያለውን \"በይነገጽ ተጠቀም\" ይጠቀሙ"
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr "መጀመሪያ በዋናው ቅጽ ውስጥ ዋናውን የትራፊክ በይነገጽ ይምረጡ።"
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr "ተጨማሪ የትራፊክ ምንጮችን አክል"
+
+#: lib/editor.inc.php
+msgid "Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link."
+msgstr "የትራፊክ መለያ ቦታዎችን ያስተካክሉ፣ ወይም ብጁ ምንጮችን እና URLs ይጠቀሙ። ለመደበኛ የትራፊክ አገናኝ ምንጮችን እና URLs ሳይቀይሩ ይተዉ።"
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr "ብጁ የትራፊክ ምንጮች ተቀይረዋል። ለመተግበር አስቀምጥን ይጫኑ። በማንዣበብ የሚታዩ ግራፎች እና የጠቅታ መድረሻ አልተቀየሩም።"
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr "ቢበዛ አንድ ተጨማሪ የምስል URL። ይህ በተጨማሪ የማንዣበቢያ ግራፎች ስር የሚተዳደረው ተመሳሳይ ቅድመ-እይታ ነው።"
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr "የትራፊክ ምንጮች"
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr "አማራጭ፦ ሌሎች በይነገጾችን ወደ ካርታው ድምር ያክሉ። ዋናውን በይነገጽ በዋናው ቅጽ ውስጥ ይቀይሩ፤ ተጨማሪ ምንጮችን ከዚህ በታች ያስወግዱ። በማንዣበብ እና በጠቅታ የሚታዩ ግራፎች ሳይቀየሩ ይቆያሉ። ተዛማጅ ድምር ግራፍ በCacti ውስጥ ለየብቻ መዋቀር አለበት። አስቀምጥ ለውጦችን ይተገብራል።"
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr "ተጨማሪ ግራፍ"
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr "ለዚህ ግራፍ ምንም የRRD ፋይል አልተዘረዘረም"
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr "ብጁ የማንዣበቢያ ግራፍ"
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr "ግራፍ አስወግድ"
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr "ቢበዛ አንድ ተጨማሪ ግራፍ። ሌላ ለመምረጥ ይተኩት ወይም ያስወግዱት።"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr "ተጨማሪ የማንዣበቢያ ግራፎች"
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr "የጠቅታ መድረሻ"
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr "ብዙውን ጊዜ ይህን ወደ ትራፊክ ግራፉ እንደተቀናበረ ይተዉት። አገናኙን ሲጫኑ የተለየ ግራፍ ወይም ገጽ ለመክፈት ብቻ ይቀይሩት። ይህ የተለካውን ትራፊክ ወይም የማንዣበቢያ ግራፎችን አይቀይርም።"
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr "ገጽታ"
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr "አቅም፣ ለምሳሌ 100M ወይም 1G።"
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr "በአገናኙ ጎን ያለ ጽሑፍ፤ መቶኛው ቦታውን ያዘጋጃል።"
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr "ገጽታ እና አስተያየቶች"
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr "እገዛ"
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr "የትራፊክ በይነገጽ እና አቅም ይምረጡ፣ ከዚያ አስቀምጥን ይጫኑ። ተጨማሪ የማንዣበቢያ ግራፎች አማራጭ ቅድመ-እይታዎችን ያክላል። የላቁ ቅንብሮች ብጁ የትራፊክ ምንጮችን እና URLs ይይዛል። ጥሬ ውቅር አርትዕ የካርታውን አገባብ በቀጥታ ያርትዓል።"
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr "መሣሪያ ወይም በይነገጽ ይተይቡ፣ ወይም ሁሉንም ያስሱ"
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr "ሁሉንም አስስ"
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr "ዋና በይነገጽ ይምረጡ፣ ከዚያ \"በይነገጽ ተጠቀም\" የሚለውን ጠቅ ያድርጉ። ተጨማሪ ምንጮች እና የማንዣበቢያ ግራፎች ይጠበቃሉ። አስቀምጥ ለውጦችን ይተገብራል።"
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr "መሣሪያ እና በይነገጽ በመፈለግ ላይ..."
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr "ብጁ ወይም የማይገኝ በይነገጽ"
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr "የበይነገጽ ስም አይገኝም"
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr "የማሳያ ስም"
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr "አዶ"
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr "የግራፍ ዓይነት"
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr "የማንዣበቢያ ግራፎች"
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr "ኖድ ሰርዝ"
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr "በአገናኝ ጫፍ ላይ እንደ መለያ ወይም አዶ ለሚያገለግል ኖድ ዋናዎቹ መቆጣጠሪያዎች በቂ ናቸው። የላቁ ቅንብሮች እንደ CPU፣ ማህደረ ትውስታ ወይም ትራፊክ ያሉ የማንዣበቢያ ግራፎችን፣ ብጁ የጠቅታ መድረሻዎችን እና የውስጥ ኖድ መታወቂያን ያክላሉ።"
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr "የማሳያ ስም እና አዶ፦ በካርታው ላይ ምን እንደሚታይ ይምረጡ። የማሳያ ስም ቦታ ስሙን በአዶው ላይ ያስቀምጣል። የካርታ ቦታ (X, Y) የኖዱን መጋጠሚያዎች ያዘጋጃል፤ አንቀሳቅስ ኖዱን በካርታው ላይ እንዲያስቀምጡ ያስችልዎታል።"
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr "የማንዣበቢያ ግራፎች፦ በግራፍ ዓይነት ያጣሩ እና ግራፍ ይፈልጉ። አክል ሌላ ግራፍ ያካትታል፤ ተካ ነባር የማንዣበቢያ ግራፎችን ይተካል። አስቀምጥ ለውጦችዎን ይተገብራል።"
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr "የላቁ፦ የውስጥ ስሙ ኖዱን በካርታ ውቅሩ ውስጥ ይለየዋል። የመረጃ URLs የጠቅታ መድረሻውን ያዘጋጃሉ፤ የማንዣበቢያ ግራፍ URLs በማንዣበብ ጊዜ የሚታዩ ምስሎችን ያዘጋጃሉ። እነዚህን ለብጁ መድረሻዎች ወይም ለውጫዊ ግራፎች ይጠቀሙ።"
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr "መሣሪያ ወይም ግራፍ ፈልግ"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr "የማንዣበቢያ ግራፎች፦ %s"
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr "የማይገኝ ግራፍ"
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr "ብጁ ምስሎች"
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr "ምንም የማንዣበቢያ ግራፎች አልተዋቀሩም"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr "የውስጥ አገናኝ መታወቂያ፦ %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr "ኖድ፦ %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr "በ%1$s እና በ%2$s መካከል ያለውን አገናኝ ያስወግዱ?"
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr "ኖዶቹ እና የCacti ግራፎች ሳይነኩ ይቆያሉ።"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s from this map?"
+msgstr "%s ን ከዚህ ካርታ ይሰረዝ?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %s."
+msgstr "የሚወገዱ የተገናኙ አገናኞች፦ %s።"
+
+#: lib/editor.inc.php
+msgid "The Cacti device and its graphs will remain."
+msgstr "የCacti መሣሪያው እና ግራፎቹ ሳይነኩ ይቆያሉ።"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "ማስጠንቀቂያ፦ 'ኖድ ሰርዝ' ን መጫን ይህን ኖድ ይሰርዘዋል።"
+
+#: lib/editor.inc.php
+msgid "Delete Node Confirmation"
+msgstr "የኖድ መሰረዝ ማረጋገጫ"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "ማስጠንቀቂያ፦ 'አገናኝ ሰርዝ' ን መጫን ይህን አገናኝ ይሰርዘዋል።"
+
+#: lib/editor.inc.php
+msgid "Delete Link Confirmation"
+msgstr "የአገናኝ መሰረዝ ማረጋገጫ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cancel"
+msgstr "ይቅር"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Link"
+msgstr "አገናኝ ሰርዝ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Position"
+msgstr "ቦታ"
+
+#: lib/editor.inc.php
+msgid "Node Actions"
+msgstr "የኖድ ድርጊቶች"
+
+#: lib/editor.inc.php
+msgid "Link Actions"
+msgstr "የአገናኝ ድርጊቶች"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Move"
+msgstr "አንቀሳቅስ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Clone"
+msgstr "ቅዳ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr "ጥሬ ውቅር አርትዕ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete"
+msgstr "ሰርዝ"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Via"
+msgstr "መተላለፊያ (Via)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Tidy"
+msgstr "አስተካክል"
+
+#: lib/editor.inc.php
+msgid "Properties"
+msgstr "ባህሪያት"
+
+#: lib/editor.inc.php
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Weathermap ለዚህ አገናኝ ውሂብ ከየት ማግኘት አለበት? ይህ የRRD ፋይል ወይም ልዩ አስተያየቶች ያሉት HTML (በተለምዶ ከMRTG) ሊሆን ይችላል።"
+
+#: lib/editor.inc.php
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "የአገናኙ ቀስት ምን ያህል ሰፊ ሆኖ እንደሚሳል፣ በፒክስሎች።"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "የ'overlib' HTML ቅጥ የሚጠቀሙ ከሆነ ይህ አገናኙን ጠቅ ሲያደርጉ የሚከፈተው URL ነው"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "የ'overlib' HTML ቅጥ የሚጠቀሙ ከሆነ ይህ በአገናኙ ላይ ሲያንዣብቡ የሚታየው የምስል URL ነው"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the first node to the second node"
+msgstr "ከመጀመሪያው ኖድ ወደ ሁለተኛው ኖድ ያለው የመተላለፊያ ይዘት"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "ከሁለተኛው ኖድ ወደ መጀመሪያው ኖድ ያለው የመተላለፊያ ይዘት (የተለየ ከሆነ)"
+
+#: lib/editor.inc.php
+msgid "The text that will appear alongside the link"
+msgstr "ከአገናኙ ጎን የሚታየው ጽሑፍ"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "የ'overlib' HTML ቅጥ የሚጠቀሙ ከሆነ ይህ ኖዱን ጠቅ ሲያደርጉ የሚከፈተው URL ነው"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "የ'overlib' HTML ቅጥ የሚጠቀሙ ከሆነ ይህ በኖዱ ላይ ሲያንዣብቡ የሚታየው የምስል URL ነው"
+
+#: lib/editor.inc.php
+msgid "How far from the left to position the node, in pixels"
+msgstr "ኖዱን ከግራ ምን ያህል ርቆ ማስቀመጥ እንዳለበት፣ በፒክስሎች"
+
+#: lib/editor.inc.php
+msgid "How far from the top to position the node, in pixels"
+msgstr "ኖዱን ከላይ ምን ያህል ርቆ ማስቀመጥ እንዳለበት፣ በፒክስሎች"
+
+#: lib/editor.inc.php
+msgid "The text that appears on the node"
+msgstr "በኖዱ ላይ የሚታየው ጽሑፍ"
+
+#: lib/editor.inc.php
+msgid "The name used for this node when defining links"
+msgstr "አገናኞችን በሚገልጹበት ጊዜ ለዚህ ኖድ ጥቅም ላይ የሚውለው ስም"
+
+#: lib/editor.inc.php
+msgid "Change to a different file, or start creating a new one."
+msgstr "ወደ ሌላ ፋይል ይቀይሩ፣ ወይም አዲስ መፍጠር ይጀምሩ።"
+
+#: lib/editor.inc.php
+msgid "Add a new node to the map"
+msgstr "ወደ ካርታው አዲስ ኖድ አክል"
+
+#: lib/editor.inc.php
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "ሁለት ኖዶችን በማገናኘት ወደ ካርታው አዲስ አገናኝ አክል።"
+
+#: lib/editor.inc.php
+msgid "Select a different map to edit, or start a new one."
+msgstr "ለማርትዕ የተለየ ካርታ ይምረጡ፣ ወይም አዲስ መፍጠር ይጀምሩ።"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for links"
+msgstr "ለአገናኞች እገዛ የሚታየው እዚህ ነው"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for maps"
+msgstr "ለካርታዎች እገዛ የሚታየው እዚህ ነው"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for nodes"
+msgstr "ለኖዶች እገዛ የሚታየው እዚህ ነው"
+
+#: lib/editor.inc.php
+msgid "or click a Node or Link to edit its properties"
+msgstr "ወይም ባህሪያቱን ለማርትዕ ኖድ ወይም አገናኝ ጠቅ ያድርጉ"
+
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
+msgid "Docs"
+msgstr "ሰነዶች"
+
+#: lib/viewer.controls.php
+msgid "Manage Weathermaps"
+msgstr "Weathermaps ን አስተዳድር"
+
+#: lib/viewer.controls.php setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Settings"
+msgstr "የካርታ ቅንብሮች"
+
+#: lib/viewer.controls.php
+msgid "Map Permissions"
+msgstr "የካርታ ፈቃዶች"
+
+#: lib/viewer.controls.php setup.php
+msgid "Edit Map"
+msgstr "ካርታ አርትዕ"
+
+#: setup.php
+msgid "Weathermap"
+msgstr "Weathermap"
+
+#: setup.php weathermap-cacti-plugin.php
+msgid "Network Weathermap"
+msgstr "የአውታረ መረብ Weathermap"
+
+#: setup.php
+msgid "Debug Mode"
+msgstr "የማረሚያ ሁነታ"
+
+#: setup.php
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr "ስለ Weathermap የማመንጨት ሂደት ዝርዝር የሁኔታ መረጃ በCacti ምዝግብ ማስታወሻዎ ውስጥ ማየት ከፈለጉ ይህን ሳጥን ይምረጡ።"
+
+#: setup.php
+msgid "Info URL Style"
+msgstr "የመረጃ URL ቅጥ"
+
+#: setup.php
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr "ለኖድ ወይም አገናኝ ግራፎችን ሲያክሉ፣ የመረጃ URL ን በመጠቀም ወደ የትኛው የጠቅታ እይታ ማዞር ይፈልጋሉ? መደበኛ የግራፍ እይታን የሚጠቀሙ ከሆነ ብዙ ግራፎች ሊኖሩዎት ይችላሉ። ለጊዜ ግራፍ እይታ አንድ ግራፍ ብቻ ሊኖርዎት ይችላል።"
+
+#: setup.php
+msgid "Standard Graph View"
+msgstr "መደበኛ የግራፍ እይታ"
+
+#: setup.php
+msgid "Time Graph View"
+msgstr "የጊዜ ግራፍ እይታ"
+
+#: setup.php
+msgid "Page style"
+msgstr "የገጽ ቅጥ"
+
+#: setup.php
+msgid "How to display multiple maps."
+msgstr "ብዙ ካርታዎችን እንዴት ማሳየት እንደሚቻል።"
+
+#: setup.php
+msgid "Thumbnail Overview"
+msgstr "የጥፍር አክል (Thumbnail) አጠቃላይ እይታ"
+
+#: setup.php
+msgid "Full Images"
+msgstr "ሙሉ ምስሎች"
+
+#: setup.php
+msgid "Show Only First"
+msgstr "የመጀመሪያውን ብቻ አሳይ"
+
+#: setup.php
+msgid "Thumbnail Maximum Size"
+msgstr "ከፍተኛው የጥፍር አክል ምስል መጠን"
+
+#: setup.php
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr "በጥፍር አክል ምስል እይታ ውስጥ ለጥፍር አክል ምስሎች ከፍተኛው ስፋት ወይም ቁመት፣ በፒክስሎች። ከቀጣዩ የፖለር ሩጫ በኋላ ተግባራዊ ይሆናል።"
+
+#: setup.php
+msgid "Hover Graph Default Width"
+msgstr "የማንዣበቢያ ግራፍ ነባሪ ስፋት"
+
+#: setup.php
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "በአገናኝ ላይ ሲያንዣብቡ የሚታዩት የRRDtool ግራፎች ነባሪ ስፋት።"
+
+#: setup.php
+msgid "Hover Graph Default Height"
+msgstr "የማንዣበቢያ ግራፍ ነባሪ ቁመት"
+
+#: setup.php
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "በአገናኝ ላይ ሲያንዣብቡ የሚታዩት የRRDtool ግራፎች ነባሪ ቁመት።"
+
+#: setup.php
+msgid "Hover Graph Style"
+msgstr "የማንዣበቢያ ግራፍ ቅጥ"
+
+#: setup.php
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
+msgstr "በአገናኞች ወይም በኖዶች ላይ ሲያንዣብቡ ምን ዓይነት የግራፍ ቅጥ ይታይ?"
+
+#: setup.php
+msgid "Thumbnail Graphs"
+msgstr "የጥፍር አክል ግራፎች"
+
+#: setup.php
+msgid "Full Graphs"
+msgstr "ሙሉ ግራፎች"
+
+#: setup.php
+msgid "Map Processing Timeout"
+msgstr "የካርታ ማስኬጃ ጊዜ ማብቂያ"
+
+#: setup.php
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr "ወቅታዊው የካርታ ማመንጨት ሂደት ጊዜው ከማብቃቱ በፊት ምን ያህል ጊዜ መፈቀድ አለበት።"
+
+#: setup.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d ደቂቃዎች"
+
+#: setup.php
+msgid "Refresh Time"
+msgstr "የማደስ ጊዜ"
+
+#: setup.php
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "በዙር (Cycle) ሁነታ ገጹን ምን ያህል ጊዜ ማደስ እንዳለበት። ራስ-ሰር ሁሉንም የሚገኙ ካርታዎች በ5 ደቂቃ ውስጥ እንዲካተቱ ያደርጋል።"
+
+#: setup.php
+msgid "Automatic"
+msgstr "ራስ-ሰር"
+
+#: setup.php
+#, php-format
+msgid "%d Seconds"
+msgstr "%d ሰከንዶች"
+
+#: setup.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d ደቂቃ"
+
+#: setup.php
+msgid "Output Format"
+msgstr "የውጤት ቅርጸት"
+
+#: setup.php
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr "ለተፈጠሩት የካርታ ምስሎች እና ጥፍር አክል ምስሎች የትኛውን ቅርጸት ይመርጣሉ?"
+
+#: setup.php
+msgid "PNG (default)"
+msgstr "PNG (ነባሪ)"
+
+#: setup.php
+msgid "JPEG"
+msgstr "JPEG"
+
+#: setup.php
+msgid "GIF"
+msgstr "GIF"
+
+#: setup.php
+msgid "Map Rendering Interval"
+msgstr "የካርታ መሳያ የጊዜ ክፍተት"
+
+#: setup.php
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr "Weathermap ካርታዎቹን ምን ያህል ጊዜ እንደገና እንዲያሰላ ይፈልጋሉ? ምን እየሰሩ እንደሆነ ካላወቁ ይህን መንካት የለብዎትም! በዋናነት መደበኛ ያልሆነ የፖሊንግ ዝግጅት ላላቸው ሰዎች ያስፈልጋል።"
+
+#: setup.php
+msgid "Never (manual updates)"
+msgstr "ፈጽሞ (በእጅ ማዘመን)"
+
+#: setup.php
+msgid "Every Poller Cycle (default)"
+msgstr "በእያንዳንዱ የፖለር ዑደት (ነባሪ)"
+
+#: setup.php
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr "በየ %d የፖለር ዑደቶች"
+
+#: setup.php
+msgid "Show Weathermap Help Links"
+msgstr "የWeathermap እገዛ አገናኞችን አሳይ"
+
+#: setup.php
+msgid "If checked, all Weathermap pages will include a link to documentation."
+msgstr "ከተመረጠ ሁሉም የWeathermap ገጾች ወደ ሰነዶች የሚወስድ አገናኝ ያካትታሉ።"
+
+#: setup.php
+msgid "Show 'All' Tab"
+msgstr "'ሁሉም' ትር አሳይ"
+
+#: setup.php
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr "ቡድኖችን ሲጠቀሙ፣ ወደ ትር አሞሌው 'ሁሉም ካርታዎች' ትር ያክሉ።"
+
+#: setup.php
+msgid "No (default)"
+msgstr "አይ (ነባሪ)"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Yes"
+msgstr "አዎ"
+
+#: setup.php
+msgid "Show Map Selector"
+msgstr "የካርታ መምረጫ አሳይ"
+
+#: setup.php
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr "በሙሉ ማያ ገጽ ካርታ እይታ ላይ ተቆልቋይ የካርታ መምረጫ አሳይ።"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "No"
+msgstr "አይ"
+
+#: setup.php
+msgid "Yes (default)"
+msgstr "አዎ (ነባሪ)"
+
+#: setup.php
+msgid "Quiet Logging"
+msgstr "ጸጥ ያለ ምዝገባ"
+
+#: setup.php
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr "በነባሪነት፣ በLOW ደረጃ ምዝገባ ውስጥ እንኳን Weathermap መደበኛ እንቅስቃሴን ይመዘግባል። ይህ በLOW ሁነታ ስህተቶችን ብቻ እንዲመዘግብ ያደርገዋል።"
+
+#: setup.php
+msgid "Chatty (default)"
+msgstr "ዝርዝር (ነባሪ)"
+
+#: setup.php
+msgid "Quiet"
+msgstr "ጸጥ ያለ"
+
+#: setup.php
+msgid "Weathermaps"
+msgstr "Weathermaps"
+
+#: setup.php
+msgid "Weathermap Groups"
+msgstr "የWeathermap ቡድኖች"
+
+#: setup.php
+msgid "Management"
+msgstr "አስተዳደር"
+
+#: setup.php
+msgid "View Weathermaps"
+msgstr "Weathermaps ን ይመልከቱ"
+
+#: setup.php
+msgid "Edit Weathermaps"
+msgstr "Weathermaps ን አርትዕ"
+
+#: setup.php
+msgid "Manage Weathermap"
+msgstr "Weathermap አስተዳድር"
+
+#: setup.php
+msgid "General Administration"
+msgstr "አጠቃላይ አስተዳደር"
+
+#: setup.php
+msgid "Normal User"
+msgstr "መደበኛ ተጠቃሚ"
+
+#: setup.php weathermap-cacti-plugin.php
+#, php-format
+msgid "Map for config file: %s"
+msgstr "ለውቅር ፋይል ካርታ፦ %s"
+
+#: setup.php
+msgid "Choose which weathermap to add to the tree."
+msgstr "ወደ ዛፉ የትኛውን weathermap ማከል እንደሚፈልጉ ይምረጡ።"
+
+#: setup.php
+msgid "Map"
+msgstr "ካርታ"
+
+#: setup.php
+msgid "How should the map be displayed?"
+msgstr "ካርታው እንዴት መታየት አለበት?"
+
+#: setup.php
+msgid "Style"
+msgstr "ቅጥ"
+
+#: setup.php
+msgid "Thumbnail"
+msgstr "ጥፍር አክል ምስል"
+
+#: setup.php
+msgid "Full Size"
+msgstr "ሙሉ መጠን"
+
+#: setup.php
+msgid "View Map Image"
+msgstr "የካርታ ምስል ይመልከቱ"
+
+#: setup.php
+msgid "View Map Thumbnail"
+msgstr "የካርታ ጥፍር አክል ምስል ይመልከቱ"
+
+#: setup.php
+msgid "Add Map"
+msgstr "ካርታ አክል"
+
+#: setup.php
+msgid "View Configuration"
+msgstr "ውቅር ይመልከቱ"
+
+#: setup.php
+msgid "Weathermap Editor"
+msgstr "የWeathermap አርታዒ"
+
+#: setup.php
+msgid "Edit Permissions"
+msgstr "ፈቃዶችን አርትዕ"
+
+#: setup.php
+msgid "Map Settings Delete"
+msgstr "የካርታ ቅንብሮች ሰርዝ"
+
+#: setup.php
+msgid "Map Settings Update"
+msgstr "የካርታ ቅንብሮች አዘምን"
+
+#: setup.php
+msgid "Map Settings Add"
+msgstr "የካርታ ቅንብሮች አክል"
+
+#: setup.php
+msgid "Permissions Edit"
+msgstr "የፈቃዶች አርትዖት"
+
+#: setup.php
+msgid "Add User"
+msgstr "ተጠቃሚ አክል"
+
+#: setup.php
+msgid "Delete User"
+msgstr "ተጠቃሚ ሰርዝ"
+
+#: setup.php
+msgid "Delete Map"
+msgstr "ካርታ ሰርዝ"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Up"
+msgstr "ካርታን ወደ ላይ አንቀሳቅስ"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Down"
+msgstr "ቡድንን ወደ ታች አንቀሳቅስ"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Up"
+msgstr "ቡድንን ወደ ላይ አንቀሳቅስ"
+
+#: setup.php
+msgid "Group Edit"
+msgstr "የቡድን አርትዖት"
+
+#: setup.php
+msgid "Group Update"
+msgstr "የቡድን ማዘመን"
+
+#: setup.php
+msgid "Activate Map"
+msgstr "ካርታ አግብር"
+
+#: setup.php
+msgid "Deactivate Map"
+msgstr "ካርታ አቦዝን"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Now"
+msgstr "አሁን እንደገና ገንባ"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Change Group"
+msgstr "ቡድን ቀይር"
+
+#: setup.php
+msgid "Group Admin"
+msgstr "የቡድን አስተዳደር"
+
+#: setup.php
+msgid "Group Admin Delete"
+msgstr "የቡድን አስተዳደር ሰርዝ"
+
+#: setup.php
+msgid "Manage"
+msgstr "አስተዳድር"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr "ቅንብሮች"
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr "በራስ-ሰር ዙር"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "Local Documentation"
+msgstr "አካባቢያዊ ሰነዶች"
+
+#: setup.php
+#, php-format
+msgid "This is version %s"
+msgstr "ይህ ስሪት %s ነው"
+
+#: setup.php
+msgid "Weathermap Website"
+msgstr "የWeathermap ድር ጣቢያ"
+
+#: weathermap-cacti-plugin-editor.php
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "የPHP Weathermap አርታዒ %s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr "ወደ ካርታ ተመለስ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
+msgstr "ወደ አስተዳደር ተመለስ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Change<br>File"
+msgstr "ፋይል<br>ቀይር"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Node"
+msgstr "ኖድ<br>አክል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Link"
+msgstr "አገናኝ<br>አክል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr "ማስታወሻ<br>አክል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Legend"
+msgstr "የካርታ ቁልፍ<br>ቦታ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Timestamp"
+msgstr "የጊዜ ማህተም<br>ቦታ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Properties"
+msgstr "የካርታ<br>ባህሪያት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Style"
+msgstr "የካርታ<br>ቅጥ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Colors"
+msgstr "ቀለሞችን<br>አስተዳድር"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Images"
+msgstr "ምስሎችን<br>አስተዳድር"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Editor<br>Settings"
+msgstr "የአርታዒ<br>ቅንብሮች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>---, ---"
+msgstr "ቦታ<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
+msgstr "የምናሌ ንጥል ይምረጡ ወይም ባህሪያቱን ለማርትዕ በኖድ ወይም አገናኝ ላይ በቀኝ ጠቅ ያድርጉ ወይም ጠቅ ያድርጉ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Debug"
+msgstr "ማረም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy ALL"
+msgstr "ሁሉንም እንደገና አስተካክል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy"
+msgstr "እንደገና አስተካክል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Un-tidy"
+msgstr "ማስተካከያ አንሳ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Do Nothing"
+msgstr "ምንም አታድርግ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "mapfile"
+msgstr "የካርታ ፋይል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "action"
+msgstr "እርምጃ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param"
+msgstr "መለኪያ (param)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param2"
+msgstr "መለኪያ 2 (param2)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "debug"
+msgstr "ማረም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "See config"
+msgstr "ውቅር ይመልከቱ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr "ጽሑፍ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr "ግራ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr "ቀኝ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr "የጽሑፍ አሰላለፍ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr "ቅርጸ-ቁምፊ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr "የማስታወሻ ቀለም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr "አስቀምጥ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Properties"
+msgstr "የኖድ ባህሪያት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr "የካርታ ቦታ (X, Y)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Internal Name"
+msgstr "የውስጥ ስም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr "ታች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr "ብጁ (ጥሬ ውቅር)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr "የማሳያ ስም ቦታ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr "መሃል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr "ከፍተኛ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Icon Filename"
+msgstr "የአዶ ፋይል ስም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Info URL(s)"
+msgstr "የመረጃ URL(ዎች)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover Graph URL(s)"
+msgstr "የማንዣበቢያ ግራፍ URL(ዎች)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Template"
+msgstr "የግራፍ አብነት"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "All"
+msgstr "ሁሉም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Selector"
+msgstr "የግራፍ መምረጫ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "የWeathermap ኖዱን ከዚህ ማሻሻል ይችላሉ። የቦታ ዓምዶች በካርታው ላይ ያሉት የX,Y ቦታዎች ናቸው። የውስጥ ስም ለኖዱ የተሰጠው ልዩ መታወቂያ ነው። መለያ ጽሑፍ ለተጠቃሚዎች የሚያቀርቡት የኖዱ ውጫዊ ስም ነው። የአዶ ፋይል ስም የኖድ ነገሩን እንዲወክል የሚፈልጉት ምስል ነው። የመረጃ URL ንቁ የካርታ ኖድ ላይ ጠቅ ሲያደርጉ ማቅረብ የሚችሉት አገናኝ ነው። የማንዣበቢያ ግራፍ URLs በኖዱ ላይ ሲያንዣብቡ የሚታዩ የCacti ወይም ሌሎች ግራፎች URLs ናቸው። የግራፍ መምረጫው ለግራፍ URLs የCacti ግራፎችን ለመምረጥ አጋዥ ነው። ሌሎች በርካታ የኖድ ባህሪያት ሊኖሩ ይችላሉ። ይሁን እንጂ ዛሬ ከላይ የተካተቱትን ብቻ ነው የምንደግፈው።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Properties"
+msgstr "የአገናኝ ባህሪያት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Into"
+msgstr "ወደ ውስጥ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Maximum Bandwidth"
+msgstr "ከፍተኛ የመተላለፊያ ይዘት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Out of"
+msgstr "ወደ ውጭ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Via Style"
+msgstr "የመተላለፊያ (Via) ቅጥ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Curved"
+msgstr "የተጠማዘዘ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Angled"
+msgstr "ማዕዘናዊ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr "የተለካ የትራፊክ ምንጭ(ዎች)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Data Source Selector"
+msgstr "የውሂብ ምንጭ መምረጫ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr "የትራፊክ ምንጭ አክል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Width"
+msgstr "የአገናኝ ስፋት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr "የጠቅታ መድረሻ URL"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr "ዋና የማንዣበቢያ ግራፍ URL"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr "መጀመሪያ ይታያል። በበይነገጽ ተጠቀም ይቀናበራል፤ ተጨማሪ ግራፎች ከስሩ ይታያሉ።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr "እስከ ሁለት የማንዣበቢያ ግራፎችን ያሳዩ፦ ዋናው የትራፊክ ግራፍ እና አንድ ተጨማሪ የCPU፣ የመዘግየት ወይም ሌላ ቅድመ-እይታ። ተካ የሚቀይረው ተጨማሪውን ግራፍ ብቻ ነው።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr "ተጨማሪ የግራፍ URL(ዎች)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr "ተጨማሪ የማንዣበቢያ ግራፍ URLs"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr "በግራፍ ዓይነት አጣራ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr "የማንዣበቢያ ግራፍ ይምረጡ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr "የማንዣበቢያ ግራፍ አክል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr "የማንዣበቢያ ግራፎችን ተካ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "IN Comment"
+msgstr "የገቢ (IN) አስተያየት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "OUT Comment"
+msgstr "የወጪ (OUT) አስተያየት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
+msgstr ""
+"<p><strong>የመተላለፊያ ይዘት፦</strong> አጠቃቀምን ለማስላት የሚያገለግለውን አቅም ያዘጋጁ፣ ለምሳሌ 100M ወይም 1G። K፣ M፣ G እና T ይደገፋሉ። ሁለቱም አቅጣጫዎች እኩል አቅም ሲኖራቸው እንደ &quot;ገቢ&quot; ተመሳሳይ የሚለውን ይምረጡ።</p>\n"
+"<p><strong>የትራፊክ በይነገጽ፦</strong> በመሣሪያ፣ ወደብ ወይም መግለጫ ይፈልጉ፣ ወይም ሁሉንም አስስን ይምረጡ። በይነገጽ ይምረጡ፣ ከዚያ ዋናውን የተለካ ምንጭ፣ የጠቅታ መድረሻ እና ዋና የማንዣበቢያ ግራፍ ለማዘጋጀት በይነገጽ ተጠቀምን ጠቅ ያድርጉ። ተጨማሪ የተለኩ ምንጮች እና የማንዣበቢያ ግራፎች ይጠበቃሉ።</p>\n"
+"<p><strong>ገጽታ እና አስተያየቶች፦</strong> የመተላለፊያ (Via) ቅጥ የተጠማዘዙ ወይም ማዕዘናዊ መታጠፊያዎችን ይቆጣጠራል፤ የአገናኝ ስፋት የቀስት ውፍረትን ይቆጣጠራል። የገቢ (IN) አስተያየት እና የወጪ (OUT) አስተያየት በእያንዳንዱ አቅጣጫ ጽሑፍ ያክላሉ። መቶኛው በአገናኙ ላይ የጽሑፉን ቦታ ያዘጋጃል። የአስተያየት ቅጥ አስተያየቶችን ከአገናኙ ጎን (ጠርዝ) ወይም በቀስቱ ላይ (መሃል) ያስቀምጣል፤ የካርታ ነባሪ ተጠቀም የካርታ ቅጥን ይከተላል።</p>\n"
+"<p><strong>ተጨማሪ የማንዣበቢያ ግራፎች፦</strong> ቢበዛ ሁለት የማንዣበቢያ ግራፎችን ያሳዩ፦ ዋናው የትራፊክ ግራፍ እና አንድ ተጨማሪ፣ ለምሳሌ CPU፣ መዘግየት ወይም ሌላ በይነገጽ። በግራፍ ዓይነት አጣራ ምርጫዎችን ያጠባል። የማንዣበቢያ ግራፍ አክል ተጨማሪውን ያክላል፤ የማንዣበቢያ ግራፎችን ተካ ይቀይረዋል፤ ግራፍ አስወግድ ያስወግደዋል። ዋናው የትራፊክ ግራፍ፣ የተለካው ትራፊክ እና የአገናኝ ጠቅታ መድረሻ ሳይቀየሩ ይቆያሉ። በመመልከቻው ውስጥ እያንዳንዱ የCacti ቅድመ-እይታ ሲጫኑ የራሱን ሙሉ ግራፍ ይከፍታል።</p>\n"
+"<p><strong>የላቁ ቅንብሮች፦</strong> የገቢ/ወጪ (IN/OUT) ትራፊክ መለያዎችን ለማንቀሳቀስ፣ የተለኩ ምንጮችን ለማዋሃድ፣ የጠቅታ መድረሻውን ለመቀየር እና ብጁ የማንዣበቢያ ምስል URLs ለማስገባት አማራጭ መቆጣጠሪያዎች። የትራፊክ መለያ ቦታዎች የአጠቃቀም ሳጥኖቹን ከአስተያየት ቦታዎች በተናጠል በአገናኙ ላይ ያንቀሳቅሳሉ። የካርታ ነባሪ ተጠቀም የካርታ ቅጥን ይከተላል። መደበኛ የትራፊክ አገናኝ አብዛኛውን ጊዜ እዚህ ምንም ለውጥ አያስፈልገውም።</p>\n"
+"<p><strong>የትራፊክ ምንጮችን ማዋሃድ፦</strong> የትራፊክ ምንጭ አክል ለገቢ (IN) እና ለወጪ (OUT) ለየብቻ ሌላ በይነገጽ ወደ ካርታው ድምር ያክላል። ምንጭ አስወግድ ተጨማሪ ምንጭን ያስወግዳል። ዋናውን ምንጭ ከላይ ባለው በይነገጽ ተጠቀም በመጠቀም ይቀይሩ። አጠቃቀምን ለማስላት የተዋሃደው ትራፊክ ከተዋቀረው የመተላለፊያ ይዘት ጋር ይነጻጸራል። ምንም የተዋሃደ የCacti ግራፍ በራስ-ሰር አይፈጠርም፤ በCacti ውስጥ ተዛማጅ ድምር ግራፍ ይፍጠሩ እና አስፈላጊ ከሆነ የጠቅታ እና የማንዣበቢያ URLs ያስገቡ። ለዋና እና መጠባበቂያ ግንኙነቶች የተለዩ የካርታ አገናኞች ብዙውን ጊዜ የበለጠ ግልጽ ናቸው።</p>\n"
+"<p><strong>በእጅ የሚገቡ ምንጮች እና URLs፦</strong> የምንጭ ጽሑፍ ሳጥኑ ዋናውን ምንጭ ጨምሮ ሙሉውን የተለኩ ምንጮች ዝርዝር ያርትዓል። የጠቅታ መድረሻ URL የካርታ አገናኙን ሲጫኑ ወዴት እንደሚሄድ ይቆጣጠራል። ዋና የማንዣበቢያ ግራፍ URL የመጀመሪያውን ቅድመ-እይታ ያዘጋጃል፤ ተጨማሪ የግራፍ URL(ዎች) አንድ ተጨማሪ የምስል URL ይቀበላል። ይህ ተጨማሪ በተጨማሪ የማንዣበቢያ ግራፎች ስርም ይተዳደራል።</p>\n"
+"<p><strong>አስተካክል እና መተላለፊያ (Via)፦</strong> አስተካክል የአገናኙን አቀማመጥ ያስተካክላል። መተላለፊያ (Via) በካርታው ላይ የመታጠፊያ ነጥብ እንዲያስቀምጡ ያስችልዎታል።</p>\n"
+"<p><strong>ጥሬ ውቅር አርትዕ፦</strong> ከዚህ ቅጽ ባሻገር ላሉ ቅንብሮች የካርታውን ዋና አገባብ ያርትዑ።</p>"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Properties"
+msgstr "የካርታ ባህሪያት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr "የካርታ ዝርዝሮች"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Title"
+msgstr "የካርታ ርዕስ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Text"
+msgstr "የካርታ ቁልፍ ጽሑፍ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Timestamp Text"
+msgstr "የጊዜ ማህተም ጽሑፍ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr "ዳራ እና ሸራ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr "የዳራ ምስል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr "(ምንም ምስሎች አይገኙም)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr "--ዳራ የለም--"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr "የካርታ ዳራ ቀለም ተጠቀም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
+msgstr "ያለ ምስል ወይም በግልጽ አካባቢዎቹ በኩል ይታያል።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr "የዳራ መጠን አሰጣጥ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr "ከካርታው ጋር አመጣጥን"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr "ወደ ካርታው ዘርጋ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr "የምስሉን መጠን ተጠቀም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Size"
+msgstr "የካርታ መጠን"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "pixels"
+msgstr "ፒክስሎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Capacity"
+msgstr "ነባሪ የአገናኝ አቅም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Bandwidth"
+msgstr "ነባሪ የአገናኝ የመተላለፊያ ይዘት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec in"
+msgstr "ቢት/ሰከንድ ገቢ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec out"
+msgstr "ቢት/ሰከንድ ወጪ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style."
+msgstr "የካርታውን ርዕስ፣ የካርታ ቁልፍ፣ የጊዜ ማህተም፣ ዳራ እና የሸራ መጠን እንዲሁም ለአገናኞች ነባሪ የመተላለፊያ ይዘት ያዘጋጁ። የካርታ ልኬቶች በፒክስሎች ይለካሉ፤ የአገናኝ ገጽታ ነባሪዎች በካርታ ቅጥ ውስጥ ናቸው።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Style"
+msgstr "የካርታ ቅጥ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Defaults"
+msgstr "የካርታ ነባሪዎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "HTML Style"
+msgstr "የHTML ቅጥ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Dynamic HTML"
+msgstr "ተለዋዋጭ (Dynamic) HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Static HTML"
+msgstr "ቋሚ (Static) HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Key Style"
+msgstr "የቁልፍ ቅጥ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Classic"
+msgstr "ክላሲክ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Horizontal"
+msgstr "አግድም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Vertical"
+msgstr "ቀጥ ያለ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Inverted"
+msgstr "የተገለበጠ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Tags"
+msgstr "መለያዎች (Tags)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Font"
+msgstr "የካርታ ቁልፍ ቅርጸ-ቁምፊ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Defaults"
+msgstr "የኖድ ነባሪዎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Font"
+msgstr "የኖድ ቅርጸ-ቁምፊ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance Defaults"
+msgstr "የአገናኝ ገጽታ ነባሪዎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
+msgstr "ነባሪ የአገናኝ ስፋት"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Labels"
+msgstr "የአገናኝ መለያዎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bits/sec"
+msgstr "ቢትስ/ሰከንድ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Percentage"
+msgstr "መቶኛ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Arrow Style"
+msgstr "የቀስት ቅጥ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Compact"
+msgstr "የታመቀ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Label Font"
+msgstr "የትራፊክ መለያ ቅርጸ-ቁምፊ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr "የማንዣበቢያ ልኬቶች ፒክስሎችን ይጠቀማሉ። ለራስ-ሰር መጠን 0 ያስቀምጡ። ስፋት የቅድመ-እይታ መጠኑን ይገድባል፤ ቁመት የቀድሞ ፍንጭ ሲሆን የሚታየውን ቁመት ላይቀይር ይችላል። የግራፍ URLs የራሳቸውን የምስል ልኬቶች መግለጽ ይችላሉ።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr "የኖድ ማንዣበቢያ ስፋት (ፒክስሎች)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr "የኖድ ማንዣበቢያ ቁመት (ፒክስሎች)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr "የአገናኝ ማንዣበቢያ ስፋት (ፒክስሎች)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
+msgstr "የአገናኝ ማንዣበቢያ ቁመት (ፒክስሎች)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr "ቀለሞችን አስተዳድር"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr "የአገናኝ ገጽታ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Comment Colour"
+msgstr "የአገናኝ አስተያየት ቀለም"
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr " በ80%+ ላይ ያሉ አገናኞችን አምታ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr "በ80% አጠቃቀም ወይም ከዚያ በላይ ያሉ አገናኞች በትራፊክ ቀለማቸው ይመታሉ (pulse)።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr "የትራፊክ ጭነት ቀለሞች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr "የቀለም ቅድመ-ቅንብር"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr "ብጁ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr "ነባሪ (ክላሲክ)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr "አረንጓዴ / አምበር / ቀይ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr "የክረምት በረዶ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr "ዘመናዊ አረንጓዴዎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr "የውቅያኖስ ሰማያዊዎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr "ሐምራዊ / ብርቱካናማ / ቀይ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr "የፀሐይ መውጫ አምበር"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr "ቀለሞች የአንድ አገናኝ የመተላለፊያ ይዘት ምን ያህል ጥቅም ላይ እንደዋለ ያሳያሉ። ለምሳሌ፣ 75% ማለት የአቅሙ ሦስት አራተኛ ማለት ነው።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr "ቅድመ-ቅንብሮች ሲያስቀምጡ የDEFAULT ትራፊክ መለኪያውን ይተካሉ። ሌሎች የተሰየሙ መለኪያዎች ይጠበቃሉ።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr "እያንዳንዱ ረድፍ የቀለም ክልል ነው። ከ እና እስከ ገደቦቹ ናቸው፣ ቀለም መሙያው ነው፣ እና የቀለም ሽግግር መጨረሻ ወደ ሌላ ቀለም ያዋህዳል። መለያ ጽሑፍ አማራጭ የካርታ ቁልፍ ጽሑፍ ያክላል። የመለኪያ ስሞች ክልሎችን ይመድባሉ፤ DEFAULT የተለመደው የትራፊክ መለኪያ ነው። ብጁ መለኪያዎች ሌሎች አሃዶችን ሊጠቀሙ ይችላሉ።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr "ክልል አክል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr "የመለኪያ ክልሎች ለእያንዳንዱ አገናኝ ወይም ኖድ የተዋቀሩትን አሃዶች ይጠቀማሉ፤ የትራፊክ አገናኞች በተለምዶ መቶኛዎችን ይጠቀማሉ።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr "ምስሎችን አስተዳድር"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr "የኖድ አዶዎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr "የኖድ አዶ ስቀል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr "የኖድ አዶ ስቀል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr "ነባር የኖድ አዶዎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr "የዳራ ምስሎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr "ዳራ ስቀል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr "ዳራ ስቀል"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr "ነባር የዳራ ምስሎች"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr "ዝጋ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
+msgstr "እስከ 5 MB እና 4 ሚሊዮን ፒክስሎች ያላቸው የPNG፣ JPG/JPEG ወይም GIF ፋይሎች። የGIF ሰቀላዎች የመጀመሪያውን ፍሬም ይጠቀማሉ። ሰቀላዎች ወዲያውኑ ይቀመጣሉ። በካርታ ውቅር የተጠቀሱ ምስሎች ሊሰረዙ አይችሉም።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr "ለዚህ የካርታ ነገር ጥሬ ውቅሩን ያርትዑ።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr "የላቁ፦ ለውጦች ያለ አገባብ ማረጋገጫ በቀጥታ ወደ ካርታ ውቅሩ ይቀመጣሉ። ለመደበኛ የአርትዖት መቆጣጠሪያዎች ባህሪያትን ይጠቀሙ።"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr "ተደራቢዎች (Overlays)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
+msgstr "አቀማመጥ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate"
+msgstr "አባዛ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable"
+msgstr "አሰናክል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable"
+msgstr "አንቃ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Grant Access"
+msgstr "መዳረሻን ስጥ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Revoke Access"
+msgstr "መዳረሻን ሰርዝ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No such file."
+msgstr "እንዲህ ዓይነት ፋይል የለም።"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s deleted."
+msgstr "የውቅር ፋይል %s ተሰርዟል።"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr "የውቅር ፋይል %s በካርታ ጥቅም ላይ ውሏል። መጀመሪያ ያንን ካርታ ያስወግዱ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr "የውቅር ፋይሉን መሰረዝ አልተቻለም።"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "All Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "ሁሉም ካርታዎች በ%0.2f ሰከንዶች ውስጥ እንደገና ተገንብተዋል!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Editor directory permissions are not correct!"
+msgstr "የአርታዒ ማውጫ ፈቃዶች ትክክል አይደሉም!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
+msgstr "የድር አገልግሎት መለያው ወደ WeatherMap የውቅር ማውጫ መዳረሻ ሊኖረው ይገባል፣ ነገር ግን የለውም። ይህን ችግር ያስተካክሉ እና አርታዒውን እንደገና ያስጀምሩ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Weathermap Permission Error"
+msgstr "የWeathermap ፈቃድ ስህተት"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Continue"
+msgstr "ቀጥል"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "የተመረጡት %d ካርታዎች በ%0.2f ሰከንዶች ውስጥ እንደገና ተገንብተዋል!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to delete the following Weather Map."
+msgid_plural "Click 'Continue' to delete following Weather Maps."
+msgstr[0] "የሚከተለውን Weather Map ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+msgstr[1] "የሚከተሉትን Weather Maps ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete Weather Map"
+msgid_plural "Delete Weather Maps"
+msgstr[0] "Weather Map ሰርዝ"
+msgstr[1] "Weather Maps ሰርዝ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "የሚከተለውን Weather Map ለማባዛት 'ቀጥል' የሚለውን ጠቅ ያድርጉ። እንደ አማራጭ ለአዲሱ Weather Map የርዕስ ቅርጸቱን መቀየር ይችላሉ።"
+msgstr[1] "የሚከተሉትን Weather Maps ለማባዛት 'ቀጥል' የሚለውን ጠቅ ያድርጉ። እንደ አማራጭ ለአዲሶቹ Weather Maps የርዕስ ቅርጸቱን መቀየር ይችላሉ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title Format:"
+msgstr "የርዕስ ቅርጸት፦"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File Format:"
+msgstr "የውቅር ፋይል ቅርጸት፦"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate Weather Map"
+msgid_plural "Duplicate Weather Maps"
+msgstr[0] "Weather Map አባዛ"
+msgstr[1] "Weather Maps አባዛ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "የሚከተለውን Weather Map ለማሰናከል 'ቀጥል' የሚለውን ጠቅ ያድርጉ። እንደ አማራጭ ለአዲሱ Weather Map የርዕስ ቅርጸቱን መቀየር ይችላሉ።"
+msgstr[1] "የሚከተሉትን Weather Maps ለማሰናከል 'ቀጥል' የሚለውን ጠቅ ያድርጉ። እንደ አማራጭ ለአዲሶቹ Weather Maps የርዕስ ቅርጸቱን መቀየር ይችላሉ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable Weather Map"
+msgid_plural "Disable Weather Maps"
+msgstr[0] "Weather Map አሰናክል"
+msgstr[1] "Weather Maps አሰናክል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "የሚከተለውን Weather Map ለማንቃት 'ቀጥል' የሚለውን ጠቅ ያድርጉ። እንደ አማራጭ ለአዲሱ Weather Map የርዕስ ቅርጸቱን መቀየር ይችላሉ።"
+msgstr[1] "የሚከተሉትን Weather Maps ለማንቃት 'ቀጥል' የሚለውን ጠቅ ያድርጉ። እንደ አማራጭ ለአዲሶቹ Weather Maps የርዕስ ቅርጸቱን መቀየር ይችላሉ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable Weather Map"
+msgid_plural "Enable Weather Maps"
+msgstr[0] "Weather Map አንቃ"
+msgstr[1] "Weather Maps አንቃ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "የሚከተለውን Weather Map እንደገና ለመገንባት 'ቀጥል' የሚለውን ጠቅ ያድርጉ። እንደ አማራጭ ለአዲሱ Weather Map የርዕስ ቅርጸቱን መቀየር ይችላሉ።"
+msgstr[1] "የሚከተሉትን Weather Maps እንደገና ለመገንባት 'ቀጥል' የሚለውን ጠቅ ያድርጉ። እንደ አማራጭ ለአዲሶቹ Weather Maps የርዕስ ቅርጸቱን መቀየር ይችላሉ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Weather Map"
+msgid_plural "Rebuild Weather Maps"
+msgstr[0] "Weather Map እንደገና ገንባ"
+msgstr[1] "Weather Maps እንደገና ገንባ"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weather Maps [ Run Details: %s ]"
+msgstr "Weather Maps [ የሩጫ ዝርዝሮች፦ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Search"
+msgstr "ፈልግ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Maps"
+msgstr "ካርታዎች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Default"
+msgstr "ነባሪ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: use filter settings"
+msgid "Go"
+msgstr "ሂድ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: reset filter settings"
+msgid "Clear"
+msgstr "አጽዳ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Settings"
+msgstr "የቡድን ቅንብሮች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Map Settings"
+msgstr "የCacti Weathermap ካርታ ቅንብሮች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Settings"
+msgstr "የCacti Weathermap ቅንብሮች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild All"
+msgstr "ሁሉንም እንደገና ገንባ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild all maps now in background"
+msgstr "ሁሉንም ካርታዎች አሁን ከበስተጀርባ እንደገና ገንባ"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
+msgstr "የRRD ፋይሎችን ለማዘመን የBoost ተሰኪን እየተጠቀሙ ነው። ይህ ውሂብ ወደ ፋይሎቹ የሚጻፍበትን ጊዜ ስለሚያዘገይ በWeathermap ማዘመኛዎች ላይ ችግር ይፈጥራል። ውሂብን በቀጥታ ከፖለሩ የሚወስደውን የWeathermap 'poller_output' ድጋፍ በመጠቀም ይህን መፍታት ይችላሉ። %s እዚህ ጠቅ በማድረግ ያንን በአለም አቀፍ ደረጃ ማንቃት ይችላሉ %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
+msgstr "ባለፈው ጊዜ ሲሰራ Weathermap ሩጫውን አላጠናቀቀም። '%s' ን በማስኬድ ላይ ሳለ አልተሳካም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
+msgstr "ይህ በፖለር ሂደት ወቅት የሚሰሩ ሌሎች ተሰኪዎችን <strong>ነክቶ ሊሆን ይችላል</strong>።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
+msgstr "ይህን ካርታ ማሰናከል ወይም ስህተቱን መፈለግ አለብዎት። ሊሆኑ የሚችሉ ምክንያቶች የmemory_limit ችግሮችን ያካትታሉ። ምዝግብ ማስታወሻው ተጨማሪ መረጃ ሊኖረው ይችላል።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title"
+msgstr "ርዕስ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File"
+msgstr "የውቅር ፋይል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "ID"
+msgstr "መለያ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group"
+msgstr "ቡድን"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enabled"
+msgstr "ነቅቷል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Sort Order"
+msgstr "የመደርደሪያ ቅደም ተከተል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Order"
+msgstr "ቅደም ተከተል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Accessible By"
+msgstr "ሊደርሱበት የሚችሉ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Duration"
+msgstr "የመጨረሻ የቆይታ ጊዜ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Runtime"
+msgstr "የመጨረሻ የሩጫ ጊዜ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Anyone"
+msgstr "ማንኛውም ሰው"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to start editor with this file"
+msgstr "ከዚህ ፋይል ጋር አርታዒውን ለመጀመር ጠቅ ያድርጉ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Check cacti.log for this Map"
+msgstr "ለዚህ ካርታ cacti.log ን ያረጋግጡ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to change group"
+msgstr "ቡድን ለመቀየር ጠቅ ያድርጉ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Deactivate"
+msgstr "ለማቦዘን ጠቅ ያድርጉ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Activate"
+msgstr "ለማግበር ጠቅ ያድርጉ"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Specials"
+msgstr "%d ልዩዎች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Standard"
+msgstr "መደበኛ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Down"
+msgstr "ካርታን ወደ ታች አንቀሳቅስ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to edit permissions"
+msgstr "ፈቃዶችን ለማርትዕ ጠቅ ያድርጉ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users"
+msgstr "ምንም ተጠቃሚዎች የሉም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Users"
+msgstr "ሁሉም ተጠቃሚዎች"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Groups"
+msgstr "%d ቡድኖች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 Group"
+msgstr "1 ቡድን"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Users"
+msgstr "%d ተጠቃሚዎች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 User"
+msgstr "1 ተጠቃሚ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Weathermaps Found"
+msgstr "ምንም Weathermaps አልተገኙም"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
+msgstr "%s የሚባል ማውጫ የለም። መፍጠር እና በድር አገልጋዩ የሚነበብ እንዲሆን ማዘጋጀት አለብዎት። የውቅር ፋይሎችን ከCacti ውስጥ መስቀል ከፈለጉ፣ በድር አገልጋዩ <i>ሊጻፍበት የሚችል</i> መሆን አለበት።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Existing Configuration Files"
+msgstr "ነባር የውቅር ፋይሎች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Num Files"
+msgstr "የፋይሎች ብዛት"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Maps"
+msgstr "ካርታዎች አሉት"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Go"
+msgstr "ሂድ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Set/Refresh Filters"
+msgstr "ማጣሪያዎችን አዘጋጅ/አድስ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear"
+msgstr "አጽዳ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear Filters"
+msgstr "ማጣሪያዎችን አጽዳ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Options"
+msgstr "የመፍጠሪያ አማራጮች"
+
+#: weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "New Map"
+msgstr "አዲስ ካርታ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name including .conf"
+msgstr ".conf ን ጨምሮ ስም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr "አማራጭ የካርታ ርዕስ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Source Map"
+msgstr "የምንጭ ካርታ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Empty File"
+msgstr "ባዶ ፋይል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Actions"
+msgstr "ድርጊቶች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Date"
+msgstr "የተፈጠረበት ቀን"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Modified"
+msgstr "መጨረሻ የተሻሻለው"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Size"
+msgstr "መጠን"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config Files"
+msgstr "የውቅር ፋይሎች"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Add the configuration file %s to Weathermap"
+msgstr "የውቅር ፋይል %s ን ወደ Weathermap አክል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid " Copy"
+msgstr " ቅዳ"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Duplicate the configuration file %s and add to Weathermap as %s"
+msgstr "የውቅር ፋይል %s ን አባዛ እና እንደ %s ወደ Weathermap አክል"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "View the configuration file %s in a new window"
+msgstr "የውቅር ፋይል %s ን በአዲስ መስኮት ውስጥ ይመልከቱ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "NOTE: Already in use. Click duplicate to create a new file."
+msgstr "ማስታወሻ፦ ቀድሞውኑ በጥቅም ላይ ነው። አዲስ ፋይል ለመፍጠር አባዛን ጠቅ ያድርጉ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No files were found in the configs directory."
+msgstr "በconfigs ማውጫ ውስጥ ምንም ፋይሎች አልተገኙም።"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s is not in the config directory."
+msgstr "መንገዱ %s በውቅር ማውጫው ውስጥ አይደለም።"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Preview of %s"
+msgstr "የ%s ቅድመ-እይታ"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s does not appear to exist in the config directory"
+msgstr "መንገዱ %s በውቅር ማውጫው ውስጥ ያለ አይመስልም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Path mismatch"
+msgstr "የመንገድ አለመጣጣም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr "የውቅር ፋይሉ አይገኝም። እባክዎ እንደገና ይሞክሩ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "(No Title)"
+msgstr "(ርዕስ የለም)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr "%s የሚል ስም ያለው አዲሱ ካርታ የሚቀዳውን የውቅር ፋይል %s ማግኘት አልቻለም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr "አዲሱን ካርታ መመዝገብ አልተቻለም።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr "የካርታውን ቅጂ መፍጠር አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
+msgstr "%s የሚል ስም ያለው አዲሱ ካርታ የውቅር ፋይል %s ን በመጠቀም ተፈጥሯል"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weathermap Permissions for Map [ %s ]"
+msgstr "ለካርታ [ %s ] የWeathermap ፈቃዶች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Type"
+msgstr "ዓይነት"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users"
+msgstr "ተጠቃሚዎች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Groups"
+msgstr "የተጠቃሚ ቡድኖች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rows"
+msgstr "ረድፎች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Permissions"
+msgstr "ፈቃዶች አሉት"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users or Groups"
+msgstr "ተጠቃሚዎች ወይም ቡድኖች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Account Type"
+msgstr "የመለያ ዓይነት"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User/Group"
+msgstr "ተጠቃሚ/ቡድን"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Login Realm"
+msgstr "የመግቢያ ክልል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "UID/GID"
+msgstr "UID/GID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Full Name/Description"
+msgstr "ሙሉ ስም/መግለጫ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Allowed"
+msgstr "የተፈቀደ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User"
+msgstr "ተጠቃሚ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Group"
+msgstr "የተጠቃሚ ቡድን"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "N/A"
+msgstr "አይመለከትም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Local"
+msgstr "አካባቢያዊ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Web Basic"
+msgstr "መሠረታዊ ድር"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "LDAP/AD"
+msgstr "LDAP/AD"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Not Permitted"
+msgstr "አልተፈቀደም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Permitted"
+msgstr "ተፈቅዷል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users have Access to this Map"
+msgstr "ምንም ተጠቃሚዎች ወደዚህ ካርታ መዳረሻ የላቸውም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Settings [ All Maps ]"
+msgstr "አለም አቀፍ ቅንብሮች [ ሁሉም ካርታዎች ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
+msgstr "ለሁሉም ካርታዎች ገና ምንም ቅንብሮች የሉም። ከላይ በቀኝ በኩል ያለውን የመደመር ምልክት '+' በመጫን አንዳንድ ማከል ይችላሉ፣ ወይም ለዚያ ካርታ ቅንብሮችን ለማከል ከአስተዳደር ማያ ገጹ አንድ ነጠላ ካርታ ይምረጡ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Group Settings [ Group: %s ]"
+msgstr "የቡድን ቅንብሮችን አርትዕ [ ቡድን፦ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "ለዚህ ቡድን ገና ምንም የቡድን ቅንብሮች የሉም። ከላይ በቀኝ በኩል ያለውን የመደመር ምልክት '+' በመጫን አንዳንድ ማከል ይችላሉ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Settings [ Weathermap: %s ]"
+msgstr "የካርታ ቅንብሮችን አርትዕ [ Weathermap፦ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "ለዚህ ካርታ ገና ምንም የካርታ ቅንብሮች የሉም። ከላይ በቀኝ በኩል ያለውን የመደመር ምልክት '+' በመጫን አንዳንድ ማከል ይችላሉ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Usage Notes"
+msgstr "የአጠቃቀም ማስታወሻዎች"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "በዚህ ቡድን ውስጥ ያሉ ሁሉም ካርታዎች በሚከተሉት አለም አቀፍ ቅንብሮችም ተጽዕኖ ይደርስባቸዋል (ቡድን አለም አቀፍን ይሽራል፣ ካርታ ቡድንን ይሽራል፣ ነገር ግን ሁለቱም በካርታ ውቅር ፋይሉ ውስጥ ያሉትን SET ትዕዛዞች ይሽራሉ)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "ይህ ካርታ በሚከተሉት አለም አቀፍ እና የቡድን ቅንብሮችም ተጽዕኖ ይደርስበታል (ቡድን አለም አቀፍን ይሽራል፣ ካርታ ቡድንን ይሽራል፣ ነገር ግን ሁለቱም በካርታ ውቅር ፋይሉ ውስጥ ያሉትን SET ትዕዛዞች ይሽራሉ)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Group Settings [ Group: %s ]"
+msgstr "የቡድን ቅንብሮች [ ቡድን፦ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Group"
+msgstr "ቡድን የለም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Action"
+msgstr "እርምጃ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name"
+msgstr "ስም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Value"
+msgstr "እሴት"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit this definition"
+msgstr "ይህን ትርጓሜ አርትዕ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Remove this definition from this Map"
+msgstr "ይህን ትርጓሜ ከዚህ ካርታ አስወግድ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Group Admin"
+msgstr "ወደ ቡድን አስተዳደር ተመለስ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Map Admin"
+msgstr "ወደ ካርታ አስተዳደር ተመለስ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Settings Found"
+msgstr "ምንም ቅንብሮች አልተገኙም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map ID"
+msgstr "የካርታ መታወቂያ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Setting ID"
+msgstr "የቅንብር መታወቂያ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The name of the map-global SET variable"
+msgstr "የካርታ-አለም አቀፍ SET ተለዋዋጭ ስም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "What to set it to"
+msgstr "ወደ ምን እንደሚቀናበር"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
+msgstr "አርትዕ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Setting for all Maps"
+msgstr "ለሁሉም ካርታዎች አለም አቀፍ ቅንብር"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Map Setting [ Weathermap: %s ]"
+msgstr "የካርታ ቅንብር [ Weathermap፦ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Group for Weathermap [ %s ]"
+msgstr "ለWeathermap [ %s ] የካርታ ቡድን አርትዕ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Choose an existing Group"
+msgstr "ነባር ቡድን ይምረጡ"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Or Create a New Group using the %s Group Management interface %s"
+msgstr "ወይም %s የቡድን አስተዳደር በይነገጽን %s በመጠቀም አዲስ ቡድን ይፍጠሩ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Adding a Group"
+msgstr "ቡድን በማከል ላይ"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Editing Group: %s"
+msgstr "ቡድንን በማርትዕ ላይ፦ %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name:"
+msgstr "የቡድን ስም፦"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Update"
+msgstr "ማዘመን"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Add"
+msgstr "አክል"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Map Groups"
+msgstr "የካርታ ቡድኖችን አርትዕ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name"
+msgstr "የቡድን ስም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename this Group"
+msgstr "ይህን ቡድን እንደገና ሰይም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Group Settings"
+msgstr "የቡድን ቅንብሮችን አርትዕ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Groups are defined"
+msgstr "ምንም ቡድኖች አልተገለጹም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename Weathermap Group"
+msgstr "የWeathermap ቡድን እንደገና ሰይም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enter a new name for the Weathermap Group."
+msgstr "ለWeathermap ቡድን አዲስ ስም ያስገቡ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "New Group Name"
+msgstr "አዲስ የቡድን ስም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename"
+msgstr "እንደገና ሰይም"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the last remaining Map Group."
+msgstr "የመጨረሻውን የቀረ የካርታ ቡድን መሰረዝ አልተቻለም።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr "የካርታ ርዕሱ በጣም ረጅም ነው። ከማምለጫ (escaping) በኋላ ቢበዛ 4088 ባይቶችን ይጠቀሙ።"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The New Map File name %s already exists!"
+msgstr "አዲሱ የካርታ ፋይል ስም %s ቀድሞውኑ አለ!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Source Map File name is not readable or does not exist!"
+msgstr "የምንጭ ካርታ ፋይል ስሙ ሊነበብ አይችልም ወይም የለም!"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created from %s"
+msgstr "አዲስ የካርታ ፋይል %s ከ%s ተፈጥሯል"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created."
+msgstr "አዲስ የካርታ ፋይል %s ተፈጥሯል።"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You must include a Map File name to Create"
+msgstr "ለመፍጠር የካርታ ፋይል ስም ማካተት አለብዎት"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermap named \"%s\""
+msgstr "\"%s\" የተሰየመ የአውታረ መረብ Weathermap"
+
+#: weathermap-cacti-plugin.php
+msgid "This map hasn't been created yet."
+msgstr "ይህ ካርታ ገና አልተፈጠረም።"
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Maps"
+msgstr "ካርታዎችን አስተዳድር"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
+msgstr "የአውታረ መረብ Weathermaps [ %sበራስ-ሰር ዙር%s ]"
+
+#: weathermap-cacti-plugin.php
+msgid "(thumbnail for map not created yet)"
+msgstr "(ለካርታው ጥፍር አክል ምስል ገና አልተፈጠረም)"
+
+#: weathermap-cacti-plugin.php
+msgid "(Live View)"
+msgstr "(የቀጥታ እይታ)"
+
+#: weathermap-cacti-plugin.php
+msgid "You Have No Maps"
+msgstr "ምንም ካርታዎች የሉዎትም"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
+msgstr "ካርታን ወደ መርሐ ግብሩ ለማከል፣ ወደ %s አስተዳድር...Weathermaps ገጽ %s ይሂዱ እና አንድ ያክሉ።"
+
+#: weathermap-cacti-plugin.php
+msgid "Network Weathermaps"
+msgstr "የአውታረ መረብ Weathermaps"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
+msgstr "%s %s ከ %s %s በማሳየት ላይ። በዚህ ቡድን ውስጥ ያሉትን ሁሉንም የሚገኙ ካርታዎች በማዞር ላይ።"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps."
+msgstr "%s %s ከ %s %s በማሳየት ላይ። ሁሉንም የሚገኙ ካርታዎች በማዞር ላይ።"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Powered by %s PHP Weathermap Version %s %s"
+msgstr "በ%s PHP Weathermap ስሪት %s %s የተጎላበተ"
+
+#: weathermap-cacti-plugin.php
+msgid "Go to the Map Management page"
+msgstr "ወደ ካርታ አስተዳደር ገጽ ይሂዱ"
+
+#: weathermap-cacti-plugin.php
+msgid "Weathermap Management"
+msgstr "የWeathermap አስተዳደር"
+
+#: weathermap-cacti-plugin.php
+msgid "Map to View"
+msgstr "የሚታይ ካርታ"
+
+#: weathermap-cacti-plugin.php
+msgid "All Maps"
+msgstr "ሁሉም ካርታዎች"
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr "ማዞርን አቁም"
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr "ቀዳሚ"
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr "ለአፍታ አቁም / ቀጥል"
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr "ቀጣይ"
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr "ከሙሉ ማያ ገጽ ውጣ"
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr "ሙሉ ማያ ገጽ"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr "ቀጣይ ካርታ በ%s ሰ ውስጥ"
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
+msgstr "ለአፍታ ቆሟል"

@@ -1,0 +1,3088 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-08 18:47-0800\n"
+"PO-Revision-Date: 2026-11-27 18:00-0800\n"
+"Last-Translator: The Cacti Group <developers@cacti.net>\n"
+"Language-Team: Kinyarwanda <developers@cacti.net>\n"
+"Language: rw_RW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr "Hitamo dosiye ya PNG, JPG cyangwa GIF itarengeje MB 5."
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr "Koresha POST kugira ngo ubike impinduka."
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr "Iyi karita yahindutse kuva wayifungura. Ongera utangize umwanditsi mbere yo kubika impinduka zawe."
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr "Ntibishobotse gusoma igenamiterere ry'ikarita."
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.history.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr "Ntibishobotse gufunga igenamiterere ry'amakarita."
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr "Iyi shusho iracyifashishwa n'igenamiterere ry'ikarita."
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
+msgstr "Ntibishobotse gusiba ishusho."
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr "Amagenamiterere y'amabara ntiyemewe."
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr "Ntibishobotse kubika igenamiterere ry'ikarita."
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr "Icyiciro cy'ishusho ntikemewe."
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr "Amahuza y'ibimenyetso (symbolic links) ntashobora gucungirwa hano."
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr "Izina rya dosiye y'ishusho ntikemewe."
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr "Ntibishobotse kugenzura aho igenamiterere ryifashishwa."
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr "Hari igenamiterere ryinjijwe ryinshi cyane ryo kugenzura."
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr "Ububiko bw'amashusho ntibwandikwamo."
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr "Hitamo ishusho ya PNG, JPG cyangwa GIF itarengeje pikeseli miliyoni 4."
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr "Ishusho ntiyashoboye gusomwa."
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr "Ntibishobotse kubika izina rya dosiye y'ishusho."
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
+msgstr "Ntibishobotse kubika ishusho."
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr "Hitamo ibara ryemewe."
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr "Igenamiterere ryo gutera ntikemewe."
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr "Inyuma hakeneye ibara rimwe ryuzuye."
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr "Gumisha imirongo y'igipimo hagati ya 1 na 200."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr "Igipimo %s kigenwa mu igenamiterere ryinjijwe kandi gisomwa gusa hano. Hindura dosiye yacyo y'inkomoko ahubwo."
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr "Izina ry'igipimo ntikemewe."
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr "Intera y'igipimo ntikemewe."
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr "Intangiriro y'intera ntigomba kurenza iherezo ryayo."
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr "Ikirango cy'igipimo ntikemewe."
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr "Ikirango cy'ibara rimwe ntigishobora gutangirana n'imibare itatu yuzuye. Ongeraho ijambo mbere cyangwa uhitemo ibara rirangiza ihinduka ry'amabara."
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr "Imipaka y'igipimo ikeneye agaciro gashobora kubikwa katagorowe. Koresha imibare itarenze itandatu nyuma y'akitso n'ibipimo nyabyo by'ubushobozi bw'umuyoboro."
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr "Intera yasubiwemo mu gipimo."
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr "Amabara ahinduranya akeneye amabara abiri."
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr "Gumisha byibura intera imwe y'urujya n'uruza ya DEFAULT."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr "Ikintu cyo ku ikarita kiracyakoresha igipimo %s."
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt (font %s)"
+msgstr "%s — %s pt (imyandikire %s)"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr "Ubururu (#0000FF)"
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr "Ubururu bwijimye (#003366)"
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr "Ubururu bw'ibwami (#0040C0)"
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr "Ubururu buvanze n'icyatsi (#007070)"
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr "Icyatsi (#008000)"
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr "Imivubyi (#8000C0)"
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr "Ikijuju cyijimye (#333333)"
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr "Umutuku (#C00000)"
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr "Umukara (#000000)"
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr "Umweru (#FFFFFF)"
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr "Itandukaniro ryikora n'ibara ry'ihuza"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt"
+msgstr "%s — %s pt"
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr "Imyandikire ibumbiye hamwe"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr "Imyandikire y'Igitekerezo cy'Ihuza"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Style"
+msgstr "Imigaragarire y'Igitekerezo cy'Ihuza"
+
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr "Hagati"
+
+#: lib/editor.comment-style.php
+msgid "Edge"
+msgstr "Ku mpande"
+
+#: lib/editor.comment-style.php
+msgid "Edge places comments beside the link; Centre places them over the arrow."
+msgstr "Ku mpande bishyira ibitekerezo iruhande rw'ihuza; Hagati bibishyira hejuru y'umwambi."
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr "Kurikira umugozi w'ihuza"
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr "Ibitekerezo by'Ihuza"
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr "Ikoresha imyandikire ya TrueType. Amakoni afunganye cyangwa umwandiko muremure kurusha ihuza bikoresha umwandiko ugororotse."
+
+#: lib/editor.comment-style.php
+msgid "Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments."
+msgstr "Imyanya ku burebure bw'ihuza: 0% ni ipfundo rya mbere naho 100% ni irya kabiri. Ibi byimura ibirango by'urujya n'uruza, si ibitekerezo."
+
+#: lib/editor.comment-style.php
+msgid "Traffic Label Positions"
+msgstr "Imyanya y'Ibirango by'Urujya n'Uruza"
+
+#: lib/editor.comment-style.php
+msgid "IN"
+msgstr "IBYINJIRA"
+
+#: lib/editor.comment-style.php
+msgid "OUT"
+msgstr "IBISOHOKA"
+
+#: lib/editor.comment-style.php
+msgid "Comment Style"
+msgstr "Imigaragarire y'Igitekerezo"
+
+#: lib/editor.comment-style.php
+msgid "Use map default"
+msgstr "Koresha mburabuzi y'ikarita"
+
+#: lib/editor.comment-style.php
+msgid "Custom positions"
+msgstr "Imyanya yihariye"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr "Siba dosiye y'igenamiterere %s"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr "Uzi neza ko ushaka gusiba burundu dosiye y'igenamiterere \"%s\"?"
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr "Igice cy'akazi gikora kirakenewe kugira ngo ukoreshe Subiza inyuma na Subiramo."
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr "Ntibishobotse guhanga ububiko bwihariye bw'amateka y'ikarita."
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr "Ububiko bw'amateka y'ikarita si ubwihariye."
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr "Ububiko bw'amateka y'ikarita ntibwemewe."
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr "Ongeraho ipfundo"
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr "Kora kopi y'ipfundo"
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr "Siba ipfundo"
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr "Imura ipfundo cyangwa inyandiko"
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr "Ongeraho ihuza"
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr "Siba ihuza"
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr "Imura akadomo ko guhindura icyerekezo cy'ihuza"
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr "Tunganya ihuza"
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr "Tunganya amahuza yose"
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr "Tunganya amahuza"
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr "Hindura inyandiko"
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr "Kura itunganya ku mahuza"
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr "Hindura ihuza"
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr "Hindura ipfundo"
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr "Hindura igenamiterere ry'umwimerere ry'ihuza"
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr "Hindura igenamiterere ry'umwimerere ry'ipfundo"
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr "Hindura ibiranga ikarita"
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr "Hindura imigaragarire y'ikarita"
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr "Hindura amabara y'ikarita"
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr "Imura ibisobanuro by'ikarita"
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr "Imura igihe cyanditswe"
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr "Hindura ikarita"
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr "Nta mateka ahuye asigaye. Ongera utangize umwanditsi."
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr "Ntibishobotse kugarura iyi karita. Igenamiterere cyangwa ishusho ishobora kuba yarahindutse. Ongera utangize umwanditsi."
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr "Igisabwa cy'amateka ntikemewe."
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr "Iyi karita yahindutse. Ongera utangize umwanditsi mbere yo gukoresha Subiza inyuma cyangwa Subiramo."
+
+#: lib/editor.inc.php
+msgid "Next results"
+msgstr "Ibisubizo bikurikira"
+
+#: lib/editor.inc.php
+msgid "Previous results"
+msgstr "Ibisubizo bibanjirije"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr "Murakaza neza mu Mwanditsi wa PHP Weathermap %s"
+
+#: lib/editor.inc.php
+msgid "Use the editor to manage nodes, links, notes, colours and image uploads. Edit Raw Configuration provides settings beyond the forms. See the local documentation for workflows and configuration details."
+msgstr "Koresha umwanditsi kugira ngo ucunge amapfundo, amahuza, inyandiko, amabara no kohereza amashusho. Hindura Igenamiterere ry'Umwimerere bitanga amagenamiterere arenze ari mu mafishi. Reba inyandiko z'ubufasha ziri ku mashini kugira ngo umenye imikorere n'ibisobanuro by'igenamiterere."
+
+#: lib/editor.inc.php
+msgid "Do you want to:"
+msgstr "Ese urashaka:"
+
+#: lib/editor.inc.php
+msgid "Create A New Map:"
+msgstr "Guhanga Ikarita Nshya:"
+
+#: lib/editor.inc.php
+msgid "Named:"
+msgstr "Yitwa:"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-mgmt.php
+msgid "Create"
+msgstr "Hanga"
+
+#: lib/editor.inc.php
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
+msgstr "Icyitonderwa: amazina y'amadosiye agomba kurangizwa na .conf kandi ntagire utumenyetso dutandukanya inzira cyangwa inyuguti z'ubugenzuzi"
+
+#: lib/editor.inc.php
+msgid "Create Copy"
+msgstr "Hanga Kopi"
+
+#: lib/editor.inc.php
+msgid "Ok"
+msgstr "Emeza"
+
+#: lib/editor.inc.php
+msgid "Operation successful"
+msgstr "Igikorwa cyagenze neza"
+
+#: lib/editor.inc.php
+msgid "The Operation was successful.  Details are below."
+msgstr "Igikorwa cyagenze neza.  Ibisobanuro birambuye biri hasi aha."
+
+#: lib/editor.inc.php
+msgid "Pause"
+msgstr "Hagarika by'agateganyo"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to move the node to."
+msgstr "Kanda ku ikarita aho wifuza kwimurira ipfundo."
+
+#: lib/editor.inc.php
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Kanda ku ikarita ku kadomo ushaka ko ihuza rinyuramo."
+
+#: lib/editor.inc.php
+msgid "Click on the first node for the start of the link."
+msgstr "Kanda ku ipfundo rya mbere aho ihuza ritangirira."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Kanda ku ikarita aho wifuza gushyira igihe cyanditswe."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the legend."
+msgstr "Kanda ku ikarita aho wifuza gushyira ibisobanuro by'ikarita."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a new node."
+msgstr "Kanda ku ikarita aho wifuza kongera ipfundo rishya."
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr "−"
+
+#: lib/editor.inc.php
+msgid "No images in this library yet."
+msgstr "Nta mashusho araba muri iri somero."
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
+msgstr "Hitamo dosiye ya PNG, JPG cyangwa GIF yo kohereza."
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr "Igisabwa cyananiranye. Nyamuneka ongera ugerageze."
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr "Kohereza byanze."
+
+#: lib/editor.inc.php
+msgid "No gradient"
+msgstr "Nta hinduka ry'amabara"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr "Ibara ryihariye"
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr "Kuramo intera"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr "Siba %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr "Gusiba ishusho \"%s\" kuri seriveri?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr "Amashusho: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr "Yoherejwe %s"
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr "Ikirango Gusa"
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr "Nta shusho y'inyuma"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr "Ikoreshwa na: %s"
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr "Ntibikoreshwa n'ikarita"
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr "Nta ntera za DEFAULT. Reba Amagenamiterere yisumbuye ku bipimo byahawe amazina."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr "Byihariye (%s)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr "Subiza inyuma"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr "Subiramo"
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr "Nta mpinduka z'ikarita zo gusubiza inyuma cyangwa gusubiramo."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr "Subiza inyuma: intambwe %s; Subiramo: intambwe %s."
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr "Bika cyangwa uhagarike akadirishya gafunguye mbere yo gukoresha Subiza inyuma cyangwa Subiramo."
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
+msgstr "Subiza inyuma na Subiramo bisaba ububiko bw'igice cy'akazi muri mushakisha."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr "Ntibishobotse kubika impinduka. Nyamuneka ongera ugerageze."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr "Ibara ry'Inyuma ry'Ikarita"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr "Ibara ry'Imbibi z'Ihuza"
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr "Ibipimo bivuye mu igenamiterere ryinjijwe bisomwa gusa hano. Hindura amadosiye yabyo y'inkomoko kugira ngo ubihindure."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr "Igipimo"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr "Kuva (ubusanzwe %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr "Kugeza (ubusanzwe %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr "Ikirango"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr "Ibara"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr "Iherezo ry'Ihinduka ry'Ibara"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr "Umukara"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr "Ubururu"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr "Icyatsi"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr "Ikijuju"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr "Nta na kimwe"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr "Ibara ry'icunga"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr "Imivubyi"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr "Umutuku"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr "Umweru"
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr "Shakisha udushushanyo…"
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr "Shakisha udushushanyo tw'amapfundo"
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr "Udushushanyo tw'amapfundo"
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr "Hitamo agashushanyo"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr "Udushushanyo duhuye: %s"
+
+#: lib/editor.inc.php
+msgid "No matching icons"
+msgstr "Nta dushushanyo duhuye"
+
+#: lib/editor.inc.php
+msgid "Current interface"
+msgstr "Interifasi iriho"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Advanced settings"
+msgstr "Amagenamiterere yisumbuye"
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr "Hisha amagenamiterere yisumbuye"
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr "Koresha interifasi"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Traffic interface"
+msgstr "Interifasi y'urujya n'uruza"
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr "Shakisha igikoresho cyangwa interifasi"
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr "Nta nterifasi yahiswemo"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr "Kanda ku ikarita aho wifuza kongera inyandiko."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr "Inyandiko"
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr "Kwemeza Gusiba Inyandiko"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr "Siba Inyandiko"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr "Gusiba inyandiko \"%s\"?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr "Igishushanyo kiriho: %s"
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr "Igenamiterere ryihariye — reba Amagenamiterere yisumbuye"
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr "Hitamo interifasi hasi aha"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr "Ubushobozi bw'umuyoboro winjira muri %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr "Ubushobozi bw'umuyoboro usohoka muri %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr "Igishushanyo %s — amakuru, aho ujya ukanze n'igishushanyo kigaragara uhagazeho byahiswemo. Bika kugira ngo bishyirwe mu bikorwa."
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr "Kigaragara mbere iyo uhagazeho. Koresha interifasi ishyiraho ibi ku buryo bwikora; bihindure gusa kuri URL yihariye yo kureba mbere."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr "Urujya n'uruza ruhurijwe hamwe ruvuye ku masoko %s"
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr "Isoko ry'urujya n'uruza ryongewe ku giteranyo cy'ikarita. Ibishushanyo bigaragara uhagazeho n'ibyafunguwe ukanze ntibyahindutse. Bika kugira ngo bishyirwe mu bikorwa."
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr "Iri soko risanzwe ririmo. Hitamo irindi soko muri aka gasanduku ko gushakisha kugira ngo wongereho ibindi."
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr "Kuramo isoko"
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr "Isoko ryapimiwe ryakuwemo. Ibishushanyo bigaragara uhagazeho n'ibyafunguwe ukanze ntibyahindutse. Bika kugira ngo bishyirwe mu bikorwa."
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr "Nta masoko y'urujya n'uruza yapimiwe yahiswemo."
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr "Hitamo indi nterifasi ivuye mu bisubizo byo gushakisha biri haruguru, hanyuma ukande Ongeraho isoko ry'urujya n'uruza."
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr "Indi nterifasi yahiswemo. Ongeraho isoko ry'urujya n'uruza igumisha interifasi y'ibanze n'andi masoko."
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr "Isoko ry'ibanze — koresha \"Koresha interifasi\" hejuru kugira ngo uhindure"
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr "Banza uhitemo interifasi y'ibanze y'urujya n'uruza mu ifishi nkuru."
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr "Ongeraho andi masoko y'urujya n'uruza"
+
+#: lib/editor.inc.php
+msgid "Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link."
+msgstr "Tunganya imyanya y'ibirango by'urujya n'uruza, cyangwa ukoreshe amasoko na URL zihariye. Reka amasoko na URL bitahindutse ku ihuza risanzwe ry'urujya n'uruza."
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr "Amasoko y'urujya n'uruza yihariye yahinduwe. Bika kugira ngo bishyirwe mu bikorwa. Ibishushanyo bigaragara uhagazeho n'aho ujya ukanze ntibyahindutse."
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr "URL imwe gusa y'ishusho y'inyongera ntarengwa. Iyi ni imwe n'igaragara icungirwa munsi ya Ibishushanyo by'inyongera bigaragara uhagazeho."
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr "Amasoko y'urujya n'uruza"
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr "Si itegeko: ongeraho izindi nterifasi ku giteranyo cy'ikarita. Hindura interifasi y'ibanze mu ifishi nkuru; kuramo amasoko y'inyongera hasi aha. Ibishushanyo bigaragara uhagazeho n'ibyafunguwe ukanze biguma bitahindutse. Igishushanyo gihuje giteranyije kigomba kugenerwa ukwacyo muri Cacti. Bika ishyira mu bikorwa impinduka."
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr "Igishushanyo cy'inyongera"
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr "Nta dosiye ya RRD iri ku rutonde kuri iki gishushanyo"
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr "Igishushanyo cyihariye kigaragara uhagazeho"
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr "Kuramo igishushanyo"
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr "Igishushanyo kimwe gusa cy'inyongera ntarengwa. Gisimbure cyangwa ugikuremo kugira ngo uhitemo ikindi."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr "Ibishushanyo by'inyongera bigaragara uhagazeho"
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr "Aho ujya ukanze"
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr "Ubusanzwe bireke bishyizwe ku gishushanyo cy'urujya n'uruza. Bihindure gusa kugira ngo ufungure ikindi gishushanyo cyangwa ipaji iyo ukanze ku ihuza. Ibi ntibihindura urujya n'uruza rwapimwe cyangwa ibishushanyo bigaragara uhagazeho."
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr "Imigaragarire"
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr "Ubushobozi, urugero 100M cyangwa 1G."
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr "Umwandiko uri ku burebure bw'ihuza; ijanisha rigena umwanya wawo."
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr "Imigaragarire n'ibitekerezo"
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr "Ubufasha"
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr "Hitamo interifasi y'urujya n'uruza n'ubushobozi, hanyuma ukande Bika. Ibishushanyo by'inyongera bigaragara uhagazeho byongeraho ibishushanyo bitari itegeko. Amagenamiterere yisumbuye arimo amasoko y'urujya n'uruza yihariye na URL. Hindura Igenamiterere ry'Umwimerere bihindura imiterere y'ikarita mu buryo butaziguye."
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr "Andika igikoresho cyangwa interifasi, cyangwa ushakire muri byose"
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr "Shakira muri byose"
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr "Hitamo interifasi y'ibanze, hanyuma ukande \"Koresha interifasi\". Amasoko y'inyongera n'ibishushanyo bigaragara uhagazeho biragumishwa. Bika ishyira mu bikorwa impinduka."
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr "Birimo gushakisha igikoresho n'interifasi..."
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr "Interifasi yihariye cyangwa itaboneka"
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr "Izina ry'interifasi ntiriboneka"
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr "Izina rigaragara"
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr "Agashushanyo"
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr "Ubwoko bw'igishushanyo"
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr "Ibishushanyo bigaragara uhagazeho"
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr "Siba Ipfundo"
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr "Ku ipfundo rikoreshwa nk'ikirango cyangwa agashushanyo ku mpera y'ihuza, ibigenzura by'ibanze birahagije. Yisumbuye yongeraho ibishushanyo bigaragara uhagazeho nka CPU, ububiko bw'igihe gito cyangwa urujya n'uruza, aho ujya ukanze hihariye na ID y'imbere y'ipfundo."
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr "Izina rigaragara n'agashushanyo: Hitamo ikigaragara ku ikarita. Umwanya w'izina rigaragara ushyira izina hejuru y'agashushanyo. Umwanya ku ikarita (X, Y) ushyiraho imirongo ngenderwaho y'ipfundo; Imura bigufasha gushyira ipfundo ku ikarita."
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr "Ibishushanyo bigaragara uhagazeho: Yungurura ukurikije ubwoko bw'igishushanyo kandi ushakishe igishushanyo. Ongeraho ishyiramo ikindi gishushanyo; Simbura isimbura ibishushanyo bisanzwe bigaragara uhagazeho. Bika ishyira mu bikorwa impinduka zawe."
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr "Yisumbuye: Izina ry'imbere riranga ipfundo mu igenamiterere ry'ikarita. URL z'Amakuru zigena aho ujya ukanze; URL z'Ibishushanyo Bigaragara Uhagazeho zigena amashusho agaragara uhagazeho. Bikoreshe ku byerekezo byihariye cyangwa ibishushanyo byo hanze."
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr "Shakisha igikoresho cyangwa igishushanyo"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr "Ibishushanyo bigaragara uhagazeho: %s"
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr "igishushanyo kitaboneka"
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr "amashusho yihariye"
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr "Nta bishushanyo bigaragara uhagazeho byagenwe"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr "ID y'imbere y'ihuza: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr "Ipfundo: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr "Gukuraho ihuza riri hagati ya %1$s na %2$s?"
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr "Amapfundo n'ibishushanyo bya Cacti bizagumaho."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s from this map?"
+msgstr "Gusiba %s kuri iyi karita?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %s."
+msgstr "Amahuza ahujwe yo gukuraho: %s."
+
+#: lib/editor.inc.php
+msgid "The Cacti device and its graphs will remain."
+msgstr "Igikoresho cya Cacti n'ibishushanyo byacyo bizagumaho."
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "UMUBURO: Gukanda 'Siba Ipfundo' bizasiba iri Pfundo."
+
+#: lib/editor.inc.php
+msgid "Delete Node Confirmation"
+msgstr "Kwemeza Gusiba Ipfundo"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "UMUBURO: Gukanda 'Siba Ihuza' bizasiba iri Huza."
+
+#: lib/editor.inc.php
+msgid "Delete Link Confirmation"
+msgstr "Kwemeza Gusiba Ihuza"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cancel"
+msgstr "Hagarika"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Link"
+msgstr "Siba Ihuza"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Position"
+msgstr "Umwanya"
+
+#: lib/editor.inc.php
+msgid "Node Actions"
+msgstr "Ibikorwa by'Ipfundo"
+
+#: lib/editor.inc.php
+msgid "Link Actions"
+msgstr "Ibikorwa by'Ihuza"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Move"
+msgstr "Imura"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Clone"
+msgstr "Kora kopi"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr "Hindura Igenamiterere ry'Umwimerere"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete"
+msgstr "Siba"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Via"
+msgstr "Binyuze"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Tidy"
+msgstr "Tunganya"
+
+#: lib/editor.inc.php
+msgid "Properties"
+msgstr "Ibiranga"
+
+#: lib/editor.inc.php
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Weathermap igomba gukura he amakuru y'iri huza? Iyi ishobora kuba dosiye ya RRD, cyangwa HTML ifite ibitekerezo byihariye (ubusanzwe bivuye muri MRTG)."
+
+#: lib/editor.inc.php
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "Ubugari umwambi w'ihuza uzashushanywamo, muri pikeseli."
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "Niba ukoresha imigaragarire ya HTML ya 'overlib', iyi ni URL izafunguka iyo ukanze ku ihuza"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "Niba ukoresha imigaragarire ya HTML ya 'overlib', iyi ni URL y'ishusho izagaragara iyo uhagaze hejuru y'ihuza"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the first node to the second node"
+msgstr "Ubushobozi bw'umuyoboro kuva ku ipfundo rya mbere ujya ku rya kabiri"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "Ubushobozi bw'umuyoboro kuva ku ipfundo rya kabiri ujya ku rya mbere (niba bitandukanye)"
+
+#: lib/editor.inc.php
+msgid "The text that will appear alongside the link"
+msgstr "Umwandiko uzagaragara iruhande rw'ihuza"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "Niba ukoresha imigaragarire ya HTML ya 'overlib', iyi ni URL izafunguka iyo ukanze ku ipfundo"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "Niba ukoresha imigaragarire ya HTML ya 'overlib', iyi ni URL y'ishusho izagaragara iyo uhagaze hejuru y'ipfundo"
+
+#: lib/editor.inc.php
+msgid "How far from the left to position the node, in pixels"
+msgstr "Intera iri kuva ibumoso yo gushyiraho ipfundo, muri pikeseli"
+
+#: lib/editor.inc.php
+msgid "How far from the top to position the node, in pixels"
+msgstr "Intera iri kuva hejuru yo gushyiraho ipfundo, muri pikeseli"
+
+#: lib/editor.inc.php
+msgid "The text that appears on the node"
+msgstr "Umwandiko ugaragara ku ipfundo"
+
+#: lib/editor.inc.php
+msgid "The name used for this node when defining links"
+msgstr "Izina rikoreshwa kuri iri pfundo mu kugena amahuza"
+
+#: lib/editor.inc.php
+msgid "Change to a different file, or start creating a new one."
+msgstr "Hindura ujye kuri indi dosiye, cyangwa utangire guhanga inshya."
+
+#: lib/editor.inc.php
+msgid "Add a new node to the map"
+msgstr "Ongeraho ipfundo rishya ku ikarita"
+
+#: lib/editor.inc.php
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "Ongeraho ihuza rishya ku ikarita, uhuza amapfundo abiri hamwe."
+
+#: lib/editor.inc.php
+msgid "Select a different map to edit, or start a new one."
+msgstr "Hitamo indi karita yo guhindura, cyangwa utangire inshya."
+
+#: lib/editor.inc.php
+msgid "This is where help appears for links"
+msgstr "Aha ni ho ubufasha bugaragarira ku mahuza"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for maps"
+msgstr "Aha ni ho ubufasha bugaragarira ku makarita"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for nodes"
+msgstr "Aha ni ho ubufasha bugaragarira ku mapfundo"
+
+#: lib/editor.inc.php
+msgid "or click a Node or Link to edit its properties"
+msgstr "cyangwa ukande ku Ipfundo cyangwa Ihuza kugira ngo uhindure ibiranga byaryo"
+
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
+msgid "Docs"
+msgstr "Inyandiko"
+
+#: lib/viewer.controls.php
+msgid "Manage Weathermaps"
+msgstr "Cunga Amakarita ya Weathermap"
+
+#: lib/viewer.controls.php setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Settings"
+msgstr "Amagenamiterere y'Ikarita"
+
+#: lib/viewer.controls.php
+msgid "Map Permissions"
+msgstr "Uburenganzira bw'Ikarita"
+
+#: lib/viewer.controls.php setup.php
+msgid "Edit Map"
+msgstr "Hindura Ikarita"
+
+#: setup.php
+msgid "Weathermap"
+msgstr "Weathermap"
+
+#: setup.php weathermap-cacti-plugin.php
+msgid "Network Weathermap"
+msgstr "Weathermap y'Umuyoboro"
+
+#: setup.php
+msgid "Debug Mode"
+msgstr "Uburyo bwo Gukemura Amakosa"
+
+#: setup.php
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr "Niba wifuza kubona amakuru arambuye y'imiterere mu nyandiko y'ibikorwa ya Cacti yerekeye igikorwa cyo gukora ikarita ya weathermap, shira akamenyetso muri aka gasanduku."
+
+#: setup.php
+msgid "Info URL Style"
+msgstr "Imigaragarire ya URL y'Amakuru"
+
+#: setup.php
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr "Iyo wongeraho Ibishushanyo ku Ipfundo cyangwa Ihuza, ni ikihe gikorwa wifuza kwerekezwaho ukanze ukoresheje URL y'Amakuru?  Niba ukoresha Imigaragarire Isanzwe y'Ibishushanyo, ushobora kugira Ibishushanyo byinshi.  Ku Imigaragarire y'Igishushanyo cy'Igihe, ushobora kugira Igishushanyo kimwe gusa."
+
+#: setup.php
+msgid "Standard Graph View"
+msgstr "Imigaragarire Isanzwe y'Ibishushanyo"
+
+#: setup.php
+msgid "Time Graph View"
+msgstr "Imigaragarire y'igishushanyo cy'igihe"
+
+#: setup.php
+msgid "Page style"
+msgstr "Imigaragarire y'ipaji"
+
+#: setup.php
+msgid "How to display multiple maps."
+msgstr "Uburyo bwo kwerekana amakarita menshi."
+
+#: setup.php
+msgid "Thumbnail Overview"
+msgstr "Incamake y'Amashusho Matoya"
+
+#: setup.php
+msgid "Full Images"
+msgstr "Amashusho Yuzuye"
+
+#: setup.php
+msgid "Show Only First"
+msgstr "Erekana iya Mbere Gusa"
+
+#: setup.php
+msgid "Thumbnail Maximum Size"
+msgstr "Ingano Ntarengwa y'Ishusho Ntoya"
+
+#: setup.php
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr "Ubugari cyangwa uburebure ntarengwa bw'amashusho matoya mu igaragara ry'amashusho matoya, muri pikeseli. Bitangira gukora nyuma y'ikora rikurikira ry'ikusanyamakuru."
+
+#: setup.php
+msgid "Hover Graph Default Width"
+msgstr "Ubugari Mburabuzi bw'Igishushanyo Kigaragara Uhagazeho"
+
+#: setup.php
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Ubugari mburabuzi bw'Ibishushanyo bya RRDtool bigaragara iyo uhagaze hejuru y'Ihuza."
+
+#: setup.php
+msgid "Hover Graph Default Height"
+msgstr "Uburebure Mburabuzi bw'Igishushanyo Kigaragara Uhagazeho"
+
+#: setup.php
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Uburebure mburabuzi bw'Ibishushanyo bya RRDtool bigaragara iyo uhagaze hejuru y'Ihuza."
+
+#: setup.php
+msgid "Hover Graph Style"
+msgstr "Imigaragarire y'Igishushanyo Kigaragara Uhagazeho"
+
+#: setup.php
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
+msgstr "Iyo uhagaze hejuru y'Amahuza cyangwa Amapfundo, ni iyihe migaragarire y'Igishushanyo igomba kugaragara?"
+
+#: setup.php
+msgid "Thumbnail Graphs"
+msgstr "Ibishushanyo Bito"
+
+#: setup.php
+msgid "Full Graphs"
+msgstr "Ibishushanyo Byuzuye"
+
+#: setup.php
+msgid "Map Processing Timeout"
+msgstr "Igihe Ntarengwa cyo Gutunganya Ikarita"
+
+#: setup.php
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr "Igihe kingana iki kigomba kwemererwa mbere y'uko igikorwa cyo guhanga ikarita buri gihe gihagarikwa n'igihe."
+
+#: setup.php
+#, php-format
+msgid "%d Minutes"
+msgstr "Iminota %d"
+
+#: setup.php
+msgid "Refresh Time"
+msgstr "Igihe cyo Kuvugurura"
+
+#: setup.php
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "Inshuro zo kuvugurura ipaji mu buryo bwo Gusimburana. Byikora bituma amakarita yose ahari akwirwa mu minota 5."
+
+#: setup.php
+msgid "Automatic"
+msgstr "Byikora"
+
+#: setup.php
+#, php-format
+msgid "%d Seconds"
+msgstr "Amasegonda %d"
+
+#: setup.php
+#, php-format
+msgid "%d Minute"
+msgstr "Umunota %d"
+
+#: setup.php
+msgid "Output Format"
+msgstr "Imiterere y'ibisohoka"
+
+#: setup.php
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr "Ni iyihe miterere uhitamo ku mashusho y'amakarita n'amashusho matoya yakozwe?"
+
+#: setup.php
+msgid "PNG (default)"
+msgstr "PNG (mburabuzi)"
+
+#: setup.php
+msgid "JPEG"
+msgstr "JPEG"
+
+#: setup.php
+msgid "GIF"
+msgstr "GIF"
+
+#: setup.php
+msgid "Map Rendering Interval"
+msgstr "Intera yo Gushushanya Ikarita"
+
+#: setup.php
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr "Ni kangahe wifuza ko Weathermap yongera kubara amakarita yayo? Ntugomba guhindura ibi keretse uzi ibyo urimo gukora! Bikenerwa cyane cyane n'abafite uburyo budasanzwe bwo gukusanya amakuru."
+
+#: setup.php
+msgid "Never (manual updates)"
+msgstr "Nta na rimwe (kuvugurura n'intoki)"
+
+#: setup.php
+msgid "Every Poller Cycle (default)"
+msgstr "Buri Nshuro y'Ikusanyamakuru (mburabuzi)"
+
+#: setup.php
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr "Buri Nshuro %d z'Ikusanyamakuru"
+
+#: setup.php
+msgid "Show Weathermap Help Links"
+msgstr "Erekana Amahuza y'Ubufasha ya Weathermap"
+
+#: setup.php
+msgid "If checked, all Weathermap pages will include a link to documentation."
+msgstr "Niba haharimo akamenyetso, amapaji yose ya Weathermap azagaragaramo ihuza rigana ku nyandiko z'ubufasha."
+
+#: setup.php
+msgid "Show 'All' Tab"
+msgstr "Erekana Agafishi ka 'Byose'"
+
+#: setup.php
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr "Iyo ukoresha amatsinda, ongeraho agafishi ka 'Amakarita Yose' ku murongo w'udufishi."
+
+#: setup.php
+msgid "No (default)"
+msgstr "Oya (mburabuzi)"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Yes"
+msgstr "Yego"
+
+#: setup.php
+msgid "Show Map Selector"
+msgstr "Erekana Umuhitamo w'Ikarita"
+
+#: setup.php
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr "Erekana agasanduku ko guhitamo ikarita ku igaragara ry'ikarita rya mugaragaza yuzuye."
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "No"
+msgstr "Oya"
+
+#: setup.php
+msgid "Yes (default)"
+msgstr "Yego (mburabuzi)"
+
+#: setup.php
+msgid "Quiet Logging"
+msgstr "Kwandika Ibikorwa Bucece"
+
+#: setup.php
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr "Muri mburabuzi, ndetse no ku rwego rwo HASI rwo kwandika ibikorwa, Weathermap yandika ibikorwa bisanzwe. Ibi bituma yandika amakosa GUSA mu buryo bwo HASI."
+
+#: setup.php
+msgid "Chatty (default)"
+msgstr "Byinshi (mburabuzi)"
+
+#: setup.php
+msgid "Quiet"
+msgstr "Bucece"
+
+#: setup.php
+msgid "Weathermaps"
+msgstr "Amakarita ya Weathermap"
+
+#: setup.php
+msgid "Weathermap Groups"
+msgstr "Amatsinda ya Weathermap"
+
+#: setup.php
+msgid "Management"
+msgstr "Imicungire"
+
+#: setup.php
+msgid "View Weathermaps"
+msgstr "Reba Amakarita ya Weathermap"
+
+#: setup.php
+msgid "Edit Weathermaps"
+msgstr "Hindura Amakarita ya Weathermap"
+
+#: setup.php
+msgid "Manage Weathermap"
+msgstr "Cunga Weathermap"
+
+#: setup.php
+msgid "General Administration"
+msgstr "Ubuyobozi Rusange"
+
+#: setup.php
+msgid "Normal User"
+msgstr "Ukoresha Usanzwe"
+
+#: setup.php weathermap-cacti-plugin.php
+#, php-format
+msgid "Map for config file: %s"
+msgstr "Ikarita ya dosiye y'igenamiterere: %s"
+
+#: setup.php
+msgid "Choose which weathermap to add to the tree."
+msgstr "Hitamo ikarita ya weathermap yo kongeraho ku giti."
+
+#: setup.php
+msgid "Map"
+msgstr "Ikarita"
+
+#: setup.php
+msgid "How should the map be displayed?"
+msgstr "Ikarita igomba kugaragara ite?"
+
+#: setup.php
+msgid "Style"
+msgstr "Imigaragarire"
+
+#: setup.php
+msgid "Thumbnail"
+msgstr "Ishusho ntoya"
+
+#: setup.php
+msgid "Full Size"
+msgstr "Ingano Yuzuye"
+
+#: setup.php
+msgid "View Map Image"
+msgstr "Reba Ishusho y'Ikarita"
+
+#: setup.php
+msgid "View Map Thumbnail"
+msgstr "Reba Ishusho Ntoya y'Ikarita"
+
+#: setup.php
+msgid "Add Map"
+msgstr "Ongeraho Ikarita"
+
+#: setup.php
+msgid "View Configuration"
+msgstr "Reba Igenamiterere"
+
+#: setup.php
+msgid "Weathermap Editor"
+msgstr "Umwanditsi wa Weathermap"
+
+#: setup.php
+msgid "Edit Permissions"
+msgstr "Hindura Uburenganzira"
+
+#: setup.php
+msgid "Map Settings Delete"
+msgstr "Gusiba Amagenamiterere y'Ikarita"
+
+#: setup.php
+msgid "Map Settings Update"
+msgstr "Kuvugurura Amagenamiterere y'Ikarita"
+
+#: setup.php
+msgid "Map Settings Add"
+msgstr "Kongeraho Amagenamiterere y'Ikarita"
+
+#: setup.php
+msgid "Permissions Edit"
+msgstr "Guhindura Uburenganzira"
+
+#: setup.php
+msgid "Add User"
+msgstr "Ongeraho Umukoresha"
+
+#: setup.php
+msgid "Delete User"
+msgstr "Siba Umukoresha"
+
+#: setup.php
+msgid "Delete Map"
+msgstr "Siba Ikarita"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Up"
+msgstr "Zamura Ikarita Hejuru"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Down"
+msgstr "Manura Itsinda Hasi"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Up"
+msgstr "Zamura Itsinda Hejuru"
+
+#: setup.php
+msgid "Group Edit"
+msgstr "Guhindura Itsinda"
+
+#: setup.php
+msgid "Group Update"
+msgstr "Kuvugurura Itsinda"
+
+#: setup.php
+msgid "Activate Map"
+msgstr "Koresha Ikarita"
+
+#: setup.php
+msgid "Deactivate Map"
+msgstr "Hagarika Ikarita"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Now"
+msgstr "Ongera Wubake Ubu"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Change Group"
+msgstr "Hindura Itsinda"
+
+#: setup.php
+msgid "Group Admin"
+msgstr "Ubuyobozi bw'Amatsinda"
+
+#: setup.php
+msgid "Group Admin Delete"
+msgstr "Gusiba mu Buyobozi bw'Amatsinda"
+
+#: setup.php
+msgid "Manage"
+msgstr "Cunga"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr "Amagenamiterere"
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr "Simburanya ku buryo bwikora"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "Local Documentation"
+msgstr "Inyandiko z'Ubufasha ziri ku Mashini"
+
+#: setup.php
+#, php-format
+msgid "This is version %s"
+msgstr "Iyi ni verisiyo %s"
+
+#: setup.php
+msgid "Weathermap Website"
+msgstr "Urubuga rwa Weathermap"
+
+#: weathermap-cacti-plugin-editor.php
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "Umwanditsi wa PHP Weathermap %s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr "Subira ku Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
+msgstr "Subira ku Micungire"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Change<br>File"
+msgstr "Hindura<br>Dosiye"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Node"
+msgstr "Ongeraho<br>Ipfundo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Link"
+msgstr "Ongeraho<br>Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr "Ongeraho<br>Inyandiko"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Legend"
+msgstr "Shyira<br>Ibisobanuro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Timestamp"
+msgstr "Shyira<br>Igihe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Properties"
+msgstr "Ibiranga<br>Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Style"
+msgstr "Imigaragarire<br>y'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Colors"
+msgstr "Cunga<br>Amabara"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Images"
+msgstr "Cunga<br>Amashusho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Editor<br>Settings"
+msgstr "Amagenamiterere<br>y'Umwanditsi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>---, ---"
+msgstr "Umwanya<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
+msgstr "Hitamo ikintu mu bikubiyemo cyangwa ukande iburyo cyangwa ukanze ku Ipfundo cyangwa Ihuza kugira ngo uhindure ibiranga byaryo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Debug"
+msgstr "Kemura amakosa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy ALL"
+msgstr "Ongera utunganye BYOSE"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy"
+msgstr "Ongera utunganye"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Un-tidy"
+msgstr "Kura itunganya"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Do Nothing"
+msgstr "Ntacyo Ukora"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "mapfile"
+msgstr "dosiye y'ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "action"
+msgstr "igikorwa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param"
+msgstr "ikigenderwaho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param2"
+msgstr "ikigenderwaho2"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "debug"
+msgstr "kemura amakosa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "See config"
+msgstr "Reba igenamiterere"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr "Umwandiko"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr "Ibumoso"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr "Iburyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr "Itunganya ry'umwandiko"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr "Imyandikire"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr "Ibara ry'inyandiko"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr "Bika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Properties"
+msgstr "Ibiranga Ipfundo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr "Umwanya ku ikarita (X, Y)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Internal Name"
+msgstr "Izina ry'Imbere"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr "Hasi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr "Byihariye (igenamiterere ry'umwimerere)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr "Umwanya w'izina rigaragara"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr "Hagati"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr "Hejuru"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Icon Filename"
+msgstr "Izina rya Dosiye y'Agashushanyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Info URL(s)"
+msgstr "URL z'Amakuru"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover Graph URL(s)"
+msgstr "URL z'Ibishushanyo Bigaragara Uhagazeho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Template"
+msgstr "Inyandikorugero y'igishushanyo"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "All"
+msgstr "Byose"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Selector"
+msgstr "Umuhitamo w'Igishushanyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "Ushobora guhindura Ipfundo rya Weathermap uvuye hano.  Inkingi z'Umwanya ni imirongo ngenderwaho ya X,Y ku Ikarita.  Izina ry'Imbere ni ID yihariye ihabwa Ipfundo.  Ikirango ni izina ryo hanze ry'Ipfundo uha abakoresha.  Izina rya Dosiye y'Agashushanyo ni ishusho ushaka ko ihagararira Ipfundo.  INFO URL ni ihuza ushobora gutanga iyo ukanze ku Ipfundo rikora ku Ikarita.  URL z'Ibishushanyo Bigaragara Uhagazeho ni URL z'Ibishushanyo bya Cacti cyangwa ibindi bishobora kugaragara iyo uhagaze hejuru y'Ipfundo.  Umuhitamo w'Igishushanyo ni igikoresho gifasha guhitamo Ibishushanyo bya Cacti kuri URL z'Ibishushanyo.   Hari ibindi biranga byinshi by'Ipfundo bishoboka.  Ariko uyu munsi dushyigikiye gusa ibikubiye haruguru."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Properties"
+msgstr "Ibiranga Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Into"
+msgstr "Byinjira muri"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Maximum Bandwidth"
+msgstr "Ubushobozi Ntarengwa bw'Umuyoboro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Out of"
+msgstr "Bisohoka muri"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Via Style"
+msgstr "Imigaragarire ya Via"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Curved"
+msgstr "Igondamye"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Angled"
+msgstr "Ifite imfuruka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr "Amasoko y'urujya n'uruza yapimwe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Data Source Selector"
+msgstr "Umuhitamo w'Isoko ry'Amakuru"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr "Ongeraho isoko ry'urujya n'uruza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Width"
+msgstr "Ubugari bw'Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr "URL y'aho ujya ukanze"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr "URL nkuru y'igishushanyo kigaragara uhagazeho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr "Kigaragara mbere. Bigenwa na Koresha interifasi; ibishushanyo by'inyongera bigaragara munsi yacyo."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr "Erekana ibishushanyo bigera kuri bibiri bigaragara uhagazeho: igishushanyo gikuru cy'urujya n'uruza n'ikindi kimwe cya CPU, ubukererwe cyangwa ikindi. Simbura ihindura gusa igishushanyo cy'inyongera."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr "URL z'igishushanyo cy'inyongera"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr "URL z'ibishushanyo by'inyongera bigaragara uhagazeho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr "Yungurura ukurikije ubwoko bw'igishushanyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr "Hitamo igishushanyo kigaragara uhagazeho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr "Ongeraho igishushanyo kigaragara uhagazeho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr "Simbura ibishushanyo bigaragara uhagazeho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "IN Comment"
+msgstr "Igitekerezo cya IN"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "OUT Comment"
+msgstr "Igitekerezo cya OUT"
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
+msgstr ""
+"<p><strong>Ubushobozi bw'umuyoboro:</strong> Shyiraho ubushobozi bukoreshwa mu kubara ikoreshwa, urugero 100M cyangwa 1G. K, M, G na T birashyigikiwe. Hitamo Bihuye na &quot;In&quot; iyo ibyerekezo byombi bifite ubushobozi bungana.</p>\n"
+"<p><strong>Interifasi y'urujya n'uruza:</strong> Shakisha ukoresheje igikoresho, icyambu cyangwa ibisobanuro, cyangwa uhitemo Shakira muri byose. Hitamo interifasi, hanyuma ukande Koresha interifasi kugira ngo ushyireho isoko ry'ibanze ryapimwe, aho ujya ukanze n'igishushanyo gikuru kigaragara uhagazeho. Amasoko y'inyongera yapimwe n'ibishushanyo bigaragara uhagazeho biragumishwa.</p>\n"
+"<p><strong>Imigaragarire n'ibitekerezo:</strong> Imigaragarire ya Via igenzura amakoni agondamye cyangwa afite imfuruka; Ubugari bw'Ihuza bugenzura umubyimba w'umwambi. Igitekerezo cya IN n'Igitekerezo cya OUT byongeraho umwandiko kuri buri cyerekezo. Ijanisha rigena umwanya w'umwandiko ku burebure bw'ihuza. Imigaragarire y'Igitekerezo ishyira ibitekerezo iruhande rw'ihuza (Ku mpande) cyangwa hejuru y'umwambi (Hagati); Koresha mburabuzi y'ikarita ikurikiza Imigaragarire y'Ikarita.</p>\n"
+"<p><strong>Ibishushanyo by'inyongera bigaragara uhagazeho:</strong> Erekana ibishushanyo bitarenze bibiri bigaragara uhagazeho: igishushanyo gikuru cy'urujya n'uruza n'ikindi kimwe cy'inyongera, nka CPU, ubukererwe cyangwa indi nterifasi. Yungurura ukurikije ubwoko bw'igishushanyo bigabanya amahitamo. Ongeraho igishushanyo kigaragara uhagazeho yongeraho icy'inyongera; Simbura ibishushanyo bigaragara uhagazeho iragihindura; Kuramo igishushanyo iragikuramo. Igishushanyo gikuru cy'urujya n'uruza, urujya n'uruza rwapimwe n'aho ujya ukanze ku ihuza biguma bitahindutse. Mu irebero, buri gishushanyo cya Cacti gifungura igishushanyo cyacyo cyuzuye iyo gikanzweho.</p>\n"
+"<p><strong>Amagenamiterere yisumbuye:</strong> Ibigenzura bitari itegeko byo kwimura ibirango by'urujya n'uruza bya IN/OUT, guhuza amasoko yapimwe, guhindura aho ujya ukanze no kwinjiza URL zihariye z'amashusho agaragara uhagazeho. Imyanya y'ibirango by'urujya n'uruza yimura udusanduku tw'ikoreshwa ku burebure bw'ihuza, bitagendeye ku myanya y'ibitekerezo. Koresha mburabuzi y'ikarita ikurikiza Imigaragarire y'Ikarita. Ihuza risanzwe ry'urujya n'uruza ubusanzwe ntirikenera impinduka hano.</p>\n"
+"<p><strong>Guhuza amasoko y'urujya n'uruza:</strong> Ongeraho isoko ry'urujya n'uruza yongeraho indi nterifasi ku giteranyo cy'ikarita, ukwabyo kuri IN na OUT. Kuramo isoko ikuramo isoko ry'inyongera. Hindura isoko ry'ibanze ukoresheje Koresha interifasi hejuru. Urujya n'uruza ruhurijwe hamwe rugereranywa n'ubushobozi bw'umuyoboro bwagenwe kugira ngo habarwe ikoreshwa. Nta gishushanyo giteranyije cya Cacti gihangwa ku buryo bwikora; hanga igishushanyo giteranyije gihuye muri Cacti kandi winjize URL zacyo zo gukandaho no kureba uhagazeho niba bikenewe. Amahuza atandukanye ku ikarita ubusanzwe asobanutse neza ku mahuza y'ibanze n'ay'ubufasha.</p>\n"
+"<p><strong>Amasoko na URL byanditswe n'intoki:</strong> Agasanduku k'umwandiko k'isoko gahindura urutonde rwose rw'amasoko yapimwe, harimo n'isoko ry'ibanze. URL y'aho ujya ukanze igenzura aho gukanda ku ihuza ry'ikarita bikujyana. URL nkuru y'igishushanyo kigaragara uhagazeho igena igishushanyo cya mbere; URL z'igishushanyo cy'inyongera yemera URL imwe y'ishusho y'inyongera. Iyi y'inyongera nayo icungirwa munsi ya Ibishushanyo by'inyongera bigaragara uhagazeho.</p>\n"
+"<p><strong>Tunganya na Via:</strong> Tunganya igorora imiterere y'ihuza. Via igufasha gushyira akadomo ko guhindura icyerekezo ku ikarita.</p>\n"
+"<p><strong>Hindura Igenamiterere ry'Umwimerere:</strong> Hindura imiterere y'ikarita mu buryo butaziguye ku magenamiterere arenze iyi fishi.</p>"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Properties"
+msgstr "Ibiranga Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr "Ibisobanuro Birambuye by'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Title"
+msgstr "Umutwe w'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Text"
+msgstr "Umwandiko w'Ibisobanuro by'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Timestamp Text"
+msgstr "Umwandiko w'Igihe Cyanditswe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr "Inyuma n'Ikibuga cy'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr "Ishusho y'Inyuma"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr "(nta mashusho ahari)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr "--NTA SHUSHO Y'INYUMA--"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr "Koresha Ibara ry'Inyuma ry'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
+msgstr "Kigaragara nta shusho ihari, cyangwa binyuze mu bice byayo bibonerana."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr "Ingano y'ishusho y'inyuma"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr "Huza n'ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr "Kurura ikwire ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr "Koresha ingano y'ishusho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Size"
+msgstr "Ingano y'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "pixels"
+msgstr "pikeseli"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Capacity"
+msgstr "Ubushobozi Mburabuzi bw'Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Bandwidth"
+msgstr "Ubushobozi Mburabuzi bw'Umuyoboro w'Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec in"
+msgstr "bit/seg byinjira"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec out"
+msgstr "bit/seg bisohoka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style."
+msgstr "Shyiraho umutwe w'ikarita, ibisobanuro by'ikarita, igihe cyanditswe, inyuma n'ingano y'ikibuga, ndetse n'ubushobozi mburabuzi bw'umuyoboro ku mahuza. Ingano y'ikarita ipimwa muri pikeseli; imigaragarire mburabuzi y'ihuza iri muri Imigaragarire y'Ikarita."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Style"
+msgstr "Imigaragarire y'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Defaults"
+msgstr "Mburabuzi z'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "HTML Style"
+msgstr "Imigaragarire ya HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Dynamic HTML"
+msgstr "HTML Ihindagurika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Static HTML"
+msgstr "HTML Idahinduka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Key Style"
+msgstr "Imigaragarire y'Ubusobanuro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Classic"
+msgstr "Gakondo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Horizontal"
+msgstr "Itambitse"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Vertical"
+msgstr "Ihagaze"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Inverted"
+msgstr "Icuritse"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Tags"
+msgstr "Ibirango"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Font"
+msgstr "Imyandikire y'Ibisobanuro by'Ikarita"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Defaults"
+msgstr "Mburabuzi z'Ipfundo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Font"
+msgstr "Imyandikire y'Ipfundo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance Defaults"
+msgstr "Imigaragarire Mburabuzi y'Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
+msgstr "Ubugari Mburabuzi bw'Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Labels"
+msgstr "Ibirango by'Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bits/sec"
+msgstr "Bit/seg"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Percentage"
+msgstr "Ijanisha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Arrow Style"
+msgstr "Imigaragarire y'Umwambi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Compact"
+msgstr "Yegeranye"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Label Font"
+msgstr "Imyandikire y'Ikirango cy'Urujya n'Uruza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr "Ingano z'ibigaragara uhagazeho zikoresha pikeseli. Shyiraho 0 kugira ngo ingano igenwe ku buryo bwikora. Ubugari bugena umupaka w'ingano y'ishusho; uburebure ni inama ya kera kandi ishobora kutahindura uburebure bugaragara. URL z'ibishushanyo zishobora kugena ingano zazo z'ishusho."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr "Ubugari bw'Ipfundo Uhagazeho (pikeseli)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr "Uburebure bw'Ipfundo Uhagazeho (pikeseli)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr "Ubugari bw'Ihuza Uhagazeho (pikeseli)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
+msgstr "Uburebure bw'Ihuza Uhagazeho (pikeseli)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr "Cunga Amabara"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr "Imigaragarire y'Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Comment Colour"
+msgstr "Ibara ry'Igitekerezo cy'Ihuza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr " Teragura amahuza kuri 80%+"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr "Amahuza akoreshwa kuri 80% cyangwa hejuru yayo ateragura mu ibara ry'urujya n'uruza rwayo."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr "Amabara y'Umutwaro w'Urujya n'Uruza"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr "Itsinda ry'amabara riteguwe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr "Byihariye"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr "Mburabuzi (Gakondo)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr "Icyatsi / Umuhondo wijimye / Umutuku"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr "Urubura rwo mu Itumba"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr "Ibyatsi Bigezweho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr "Ubururu bw'Inyanja"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr "Imivubyi / Ibara ry'icunga / Umutuku"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr "Umuhondo w'Izuba Rirasa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr "Amabara agaragaza igice cy'ubushobozi bw'umuyoboro w'ihuza kirimo gukoreshwa. Urugero, 75% bisobanura bitatu bya kane by'ubushobozi bwaryo."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr "Amatsinda ateguwe asimbura igipimo cy'urujya n'uruza cya DEFAULT iyo ukanze Bika. Ibindi bipimo byahawe amazina biragumishwa."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr "Buri murongo ni intera y'ibara. Kuva na Kugeza ni imipaka yayo, Ibara ni ibara ryuzuzamo, naho Iherezo ry'Ihinduka ry'Ibara rihindura rigana ku rindi bara. Ikirango cyongeraho umwandiko utari itegeko mu bisobanuro by'ikarita. Amazina y'ibipimo ashyira intera mu matsinda; DEFAULT ni igipimo gisanzwe cy'urujya n'uruza. Ibipimo byihariye bishobora gukoresha izindi ngero."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr "Ongeraho intera"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr "Intera z'ibipimo zikoresha ingero zagenwe kuri buri huza cyangwa ipfundo; amahuza y'urujya n'uruza ubusanzwe akoresha ijanisha."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr "Cunga Amashusho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr "Udushushanyo tw'Amapfundo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr "Ohereza Agashushanyo k'Ipfundo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr "Ohereza agashushanyo k'ipfundo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr "Udushushanyo tw'amapfundo dusanzwe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr "Amashusho y'Inyuma"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr "Ohereza Ishusho y'Inyuma"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr "Ohereza ishusho y'inyuma"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr "Amashusho y'inyuma asanzwe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr "Funga"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
+msgstr "Amadosiye ya PNG, JPG/JPEG cyangwa GIF atarengeje MB 5 na pikeseli miliyoni 4. Amadosiye ya GIF yoherejwe akoresha ishusho ya mbere. Ibyoherejwe bibikwa ako kanya. Amashusho yifashishwa n'igenamiterere ry'ikarita ntashobora gusibwa."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr "Hindura igenamiterere ry'umwimerere ry'iki kintu cyo ku ikarita."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr "Yisumbuye: impinduka zibikwa mu buryo butaziguye mu igenamiterere ry'ikarita nta kugenzura imyandikire. Koresha Ibiranga ku bigenzura bisanzwe byo guhindura."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr "Ibishyirwa Hejuru"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
+msgstr "Ishyirwaho"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate"
+msgstr "Kora kopi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable"
+msgstr "Hagarika"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable"
+msgstr "Koresha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Grant Access"
+msgstr "Tanga uburenganzira"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Revoke Access"
+msgstr "Kuraho uburenganzira"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No such file."
+msgstr "Nta dosiye nk'iyo ihari."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s deleted."
+msgstr "Dosiye y'igenamiterere %s yasibwe."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr "Dosiye y'igenamiterere %s ikoreshwa n'ikarita. Banza ukureho iyo karita."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr "Ntibishobotse gusiba dosiye y'igenamiterere."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "All Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Amakarita Yose Yongeye Kubakwa mu Masegonda %0.2f!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Editor directory permissions are not correct!"
+msgstr "Uburenganzira bw'ububiko bw'umwanditsi ntibumeze neza!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
+msgstr "Konti ya Serivisi y'Urubuga igomba kugira uburenganzira ku bubiko bw'igenamiterere rya WeatherMap kandi ntabwo ifite.  Kosora iki kibazo, hanyuma wongere ufungure Umwanditsi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Weathermap Permission Error"
+msgstr "Ikosa ry'Uburenganzira rya Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Continue"
+msgstr "Komeza"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Amakarita %d Yahiswemo Yongeye Kubakwa mu Masegonda %0.2f!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to delete the following Weather Map."
+msgid_plural "Click 'Continue' to delete following Weather Maps."
+msgstr[0] "Kanda 'Komeza' kugira ngo usibe Ikarita ya Weathermap ikurikira."
+msgstr[1] "Kanda 'Komeza' kugira ngo usibe Amakarita ya Weathermap akurikira."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete Weather Map"
+msgid_plural "Delete Weather Maps"
+msgstr[0] "Siba Ikarita ya Weathermap"
+msgstr[1] "Siba Amakarita ya Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Kanda 'Komeza' kugira ngo ukore kopi y'Ikarita ya Weathermap ikurikira. Ushobora guhitamo guhindura imiterere y'umutwe w'Ikarita ya Weathermap nshya."
+msgstr[1] "Kanda 'Komeza' kugira ngo ukore kopi y'Amakarita ya Weathermap akurikira. Ushobora guhitamo guhindura imiterere y'umutwe w'Amakarita ya Weathermap mashya."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title Format:"
+msgstr "Imiterere y'Umutwe:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File Format:"
+msgstr "Imiterere ya Dosiye y'Igenamiterere:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate Weather Map"
+msgid_plural "Duplicate Weather Maps"
+msgstr[0] "Kora kopi y'Ikarita ya Weathermap"
+msgstr[1] "Kora kopi y'Amakarita ya Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Kanda 'Komeza' kugira ngo uhagarike Ikarita ya Weathermap ikurikira. Ushobora guhitamo guhindura imiterere y'umutwe w'Ikarita ya Weathermap nshya."
+msgstr[1] "Kanda 'Komeza' kugira ngo uhagarike Amakarita ya Weathermap akurikira. Ushobora guhitamo guhindura imiterere y'umutwe w'Amakarita ya Weathermap mashya."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable Weather Map"
+msgid_plural "Disable Weather Maps"
+msgstr[0] "Hagarika Ikarita ya Weathermap"
+msgstr[1] "Hagarika Amakarita ya Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Kanda 'Komeza' kugira ngo ukoreshe Ikarita ya Weathermap ikurikira. Ushobora guhitamo guhindura imiterere y'umutwe w'Ikarita ya Weathermap nshya."
+msgstr[1] "Kanda 'Komeza' kugira ngo ukoreshe Amakarita ya Weathermap akurikira. Ushobora guhitamo guhindura imiterere y'umutwe w'Amakarita ya Weathermap mashya."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable Weather Map"
+msgid_plural "Enable Weather Maps"
+msgstr[0] "Koresha Ikarita ya Weathermap"
+msgstr[1] "Koresha Amakarita ya Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Kanda 'Komeza' kugira ngo wongere wubake Ikarita ya Weathermap ikurikira. Ushobora guhitamo guhindura imiterere y'umutwe w'Ikarita ya Weathermap nshya."
+msgstr[1] "Kanda 'Komeza' kugira ngo wongere wubake Amakarita ya Weathermap akurikira. Ushobora guhitamo guhindura imiterere y'umutwe w'Amakarita ya Weathermap mashya."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Weather Map"
+msgid_plural "Rebuild Weather Maps"
+msgstr[0] "Ongera Wubake Ikarita ya Weathermap"
+msgstr[1] "Ongera Wubake Amakarita ya Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weather Maps [ Run Details: %s ]"
+msgstr "Amakarita ya Weathermap [ Ibisobanuro by'Ikora: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Search"
+msgstr "Shakisha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Maps"
+msgstr "Amakarita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Default"
+msgstr "Mburabuzi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: use filter settings"
+msgid "Go"
+msgstr "Komeza"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: reset filter settings"
+msgid "Clear"
+msgstr "Siba"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Settings"
+msgstr "Amagenamiterere y'Itsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Map Settings"
+msgstr "Amagenamiterere y'Ikarita ya Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Settings"
+msgstr "Amagenamiterere ya Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild All"
+msgstr "Ongera Wubake Byose"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild all maps now in background"
+msgstr "Ongera wubake amakarita yose ubu inyuma"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
+msgstr "Urimo gukoresha umugereka wa Boost kugira ngo uvugurure amadosiye ya RRD. Kuko ibi bitinza iyandikwa ry'amakuru mu madosiye, bitera ibibazo ku mavugurura ya Weathermap. Ushobora gukemura iki kibazo ukoresheje uburyo bwa 'poller_output' bwa Weathermap, bufata amakuru mu buryo butaziguye buvuye ku ikusanyamakuru. %s Ushobora gufungura ibyo ku rwego rusange ukanze hano %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
+msgstr "Ubushize ubwo yakoraga, Weathermap NTIYARANGIJE ikora ryayo. Yananiranye mu gihe yatunganyaga '%s'"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
+msgstr "Ibi <strong>bishobora</strong> kuba byagize ingaruka ku yindi migereka ikora mu gihe cy'igikorwa cy'ikusanyamakuru."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
+msgstr "Ugomba guhagarika iyi Karita, cyangwa ugashakisha ikibazo. Impamvu zishoboka zirimo ibibazo bya memory_limit. Inyandiko y'ibikorwa ishobora kuba ifite amakuru menshi."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title"
+msgstr "Umutwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File"
+msgstr "Dosiye y'Igenamiterere"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "ID"
+msgstr "ID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group"
+msgstr "Itsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enabled"
+msgstr "Byafunguwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Sort Order"
+msgstr "Urutonde rwo Gutondeka"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Order"
+msgstr "Urutonde"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Accessible By"
+msgstr "Bigerwaho Na"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Duration"
+msgstr "Igihe Byamaze Ubushize"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Runtime"
+msgstr "Igihe byamaze bikora ubushize"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Anyone"
+msgstr "Uwo ari we wese"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to start editor with this file"
+msgstr "Kanda kugira ngo utangize umwanditsi hamwe n'iyi dosiye"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Check cacti.log for this Map"
+msgstr "Reba muri cacti.log kuri iyi Karita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to change group"
+msgstr "Kanda kugira ngo uhindure itsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Deactivate"
+msgstr "Kanda kugira ngo Uhagarike"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Activate"
+msgstr "Kanda kugira ngo Ukoreshe"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Specials"
+msgstr "Ibidasanzwe %d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Standard"
+msgstr "Bisanzwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Down"
+msgstr "Manura Ikarita Hasi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to edit permissions"
+msgstr "Kanda kugira ngo uhindure uburenganzira"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users"
+msgstr "Nta Bakoresha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Users"
+msgstr "Abakoresha Bose"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Groups"
+msgstr "Amatsinda %d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 Group"
+msgstr "Itsinda 1"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Users"
+msgstr "Abakoresha %d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 User"
+msgstr "Umukoresha 1"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Weathermaps Found"
+msgstr "Nta Makarita ya Weathermap Yabonetse"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
+msgstr "Nta bubiko bwitwa %s buhari.  Ugomba kubuhanga, kandi ugashyiraho uburenganzira bwo gusomwa na seriveri y'urubuga. Niba ushaka kohereza amadosiye y'igenamiterere uvuye imbere muri Cacti, ubwo bugomba no <i>kwandikwamo</i> na seriveri y'urubuga."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Existing Configuration Files"
+msgstr "Amadosiye y'Igenamiterere Asanzwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Num Files"
+msgstr "Umubare w'Amadosiye"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Maps"
+msgstr "Ifite Amakarita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Go"
+msgstr "Komeza"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Set/Refresh Filters"
+msgstr "Gushyiraho/Kuvugurura muyunguruzi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear"
+msgstr "Siba"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear Filters"
+msgstr "Gusiba muyunguruzi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Options"
+msgstr "Amahitamo yo Guhanga"
+
+#: weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "New Map"
+msgstr "Ikarita Nshya"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name including .conf"
+msgstr "Izina ririmo .conf"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr "Umutwe w'ikarita utari itegeko"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Source Map"
+msgstr "Ikarita y'Inkomoko"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Empty File"
+msgstr "Dosiye Irimo Ubusa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Actions"
+msgstr "Ibikorwa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Date"
+msgstr "Itariki cyakoreweho"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Modified"
+msgstr "Byahinduwe ubushize"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Size"
+msgstr "Ingano"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config Files"
+msgstr "Amadosiye y'Igenamiterere"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Add the configuration file %s to Weathermap"
+msgstr "Ongeraho dosiye y'igenamiterere %s muri Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid " Copy"
+msgstr " Kora kopi"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Duplicate the configuration file %s and add to Weathermap as %s"
+msgstr "Kora kopi ya dosiye y'igenamiterere %s hanyuma uyongere muri Weathermap nka %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "View the configuration file %s in a new window"
+msgstr "Reba dosiye y'igenamiterere %s mu idirishya rishya"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "NOTE: Already in use. Click duplicate to create a new file."
+msgstr "ICYITONDERWA: Isanzwe ikoreshwa. Kanda kora kopi kugira ngo uhange dosiye nshya."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No files were found in the configs directory."
+msgstr "Nta madosiye yabonetse mu bubiko bw'amagenamiterere."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s is not in the config directory."
+msgstr "Inzira %s ntiri mu bubiko bw'igenamiterere."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Preview of %s"
+msgstr "Igaragara mbere rya %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s does not appear to exist in the config directory"
+msgstr "Inzira %s ntigaragara ko iri mu bubiko bw'igenamiterere"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Path mismatch"
+msgstr "Inzira ntizihura"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr "Dosiye y'igenamiterere ntiboneka. Nyamuneka ongera ugerageze."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "(No Title)"
+msgstr "(Nta Mutwe)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr "Ikarita nshya yitwa %s ntiyashoboye kubona dosiye y'igenamiterere %s yo gukorera kopi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr "Ntibishobotse kwandikisha ikarita nshya."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr "Ntibishobotse guhanga kopi y'ikarita. Nyamuneka ongera ugerageze."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
+msgstr "Ikarita nshya yitwa %s yahanwe hakoreshejwe dosiye y'igenamiterere %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weathermap Permissions for Map [ %s ]"
+msgstr "Uburenganzira bwa Weathermap ku Ikarita [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Type"
+msgstr "Ubwoko"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users"
+msgstr "Abakoresha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Groups"
+msgstr "Amatsinda y'abakoresha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rows"
+msgstr "Imirongo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Permissions"
+msgstr "Ifite Uburenganzira"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users or Groups"
+msgstr "Abakoresha cyangwa Amatsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Account Type"
+msgstr "Ubwoko bwa Konti"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User/Group"
+msgstr "Umukoresha/Itsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Login Realm"
+msgstr "Urwego rwo Kwinjira"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "UID/GID"
+msgstr "UID/GID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Full Name/Description"
+msgstr "Izina Ryuzuye/Ibisobanuro"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Allowed"
+msgstr "Byemewe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User"
+msgstr "Umukoresha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Group"
+msgstr "Itsinda ry'Abakoresha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "N/A"
+msgstr "Ntibihari"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Local"
+msgstr "Imbere muri sisitemu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Web Basic"
+msgstr "Web Ibanze"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "LDAP/AD"
+msgstr "LDAP/AD"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Not Permitted"
+msgstr "Ntibyemewe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Permitted"
+msgstr "Byemewe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users have Access to this Map"
+msgstr "Nta Bakoresha bafite Uburenganzira kuri iyi Karita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Settings [ All Maps ]"
+msgstr "Amagenamiterere Rusange [ Amakarita Yose ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
+msgstr "Nta Magenamiterere y'Amakarita Yose arahari. Ushobora kongeraho amwe ukanze ikimenyetso cyo guteranya '+' hejuru iburyo, cyangwa ugahitamo Ikarita imwe uvuye ku ipaji y'imicungire kugira ngo wongereho Amagenamiterere kuri iyo Karita."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Group Settings [ Group: %s ]"
+msgstr "Hindura Amagenamiterere y'Itsinda [ Itsinda: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Nta Magenamiterere yihariye y'Itsinda arahari kuri iri Tsinda. Ushobora kongeraho amwe ukanze ikimenyetso cyo guteranya '+' hejuru iburyo."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Settings [ Weathermap: %s ]"
+msgstr "Hindura Amagenamiterere y'Ikarita [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Nta magenamiterere yihariye y'Ikarita arahari kuri iyi Karita. Ushobora kongeraho amwe ukanze ikimenyetso cyo guteranya '+' hejuru iburyo."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Usage Notes"
+msgstr "Inyandiko z'Imikoreshereze"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Amakarita yose ari muri iri Tsinda nayo agirwaho ingaruka n'Amagenamiterere Rusange akurikira (Itsinda risimbura Rusange, Ikarita isimbura Itsinda, ariko BYOMBI bisimbura amategeko ya SET ari muri Dosiye y'Igenamiterere ry'Ikarita)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Iyi Karita nayo igirwaho ingaruka n'Amagenamiterere Rusange n'ay'Itsinda akurikira (Itsinda risimbura Rusange, Ikarita isimbura Itsinda, ariko BYOMBI bisimbura amategeko ya SET ari muri Dosiye y'Igenamiterere ry'Ikarita)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Group Settings [ Group: %s ]"
+msgstr "Amagenamiterere y'Itsinda [ Itsinda: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Group"
+msgstr "Nta Tsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Action"
+msgstr "Igikorwa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name"
+msgstr "Izina"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Value"
+msgstr "Agaciro"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit this definition"
+msgstr "Hindura iki gisobanuro"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Remove this definition from this Map"
+msgstr "Kura iki gisobanuro kuri iyi Karita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Group Admin"
+msgstr "Subira ku Buyobozi bw'Amatsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Map Admin"
+msgstr "Subira ku Buyobozi bw'Amakarita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Settings Found"
+msgstr "Nta Magenamiterere Yabonetse"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map ID"
+msgstr "ID y'Ikarita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Setting ID"
+msgstr "ID y'Igenamiterere"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The name of the map-global SET variable"
+msgstr "Izina ry'ikigenderwaho cya SET rusange ku ikarita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "What to set it to"
+msgstr "Agaciro igomba guhabwa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
+msgstr "Hindura"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Setting for all Maps"
+msgstr "Igenamiterere Rusange ku Makarita yose"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Map Setting [ Weathermap: %s ]"
+msgstr "Igenamiterere ry'Ikarita [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Group for Weathermap [ %s ]"
+msgstr "Hindura Itsinda ry'Ikarita kuri Weathermap [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Choose an existing Group"
+msgstr "Hitamo Itsinda risanzwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Or Create a New Group using the %s Group Management interface %s"
+msgstr "Cyangwa Uhange Itsinda Rishya ukoresheje %s imicungire y'Amatsinda %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Adding a Group"
+msgstr "Kongeraho Itsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Editing Group: %s"
+msgstr "Guhindura Itsinda: %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name:"
+msgstr "Izina ry'Itsinda:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Update"
+msgstr "Kuvugurura"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Add"
+msgstr "Ongeraho"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Map Groups"
+msgstr "Hindura Amatsinda y'Amakarita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name"
+msgstr "Izina ry'itsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename this Group"
+msgstr "Hindura izina ry'iri Tsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Group Settings"
+msgstr "Hindura Amagenamiterere y'Itsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Groups are defined"
+msgstr "Nta Matsinda yagenwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename Weathermap Group"
+msgstr "Hindura Izina ry'Itsinda rya Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enter a new name for the Weathermap Group."
+msgstr "Andika izina rishya ry'Itsinda rya Weathermap."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "New Group Name"
+msgstr "Izina Rishya ry'Itsinda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename"
+msgstr "Hindura izina"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the last remaining Map Group."
+msgstr "Ntibishobotse gusiba Itsinda ry'Amakarita rimwe rukumbi risigaye."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr "Umutwe w'ikarita ni muremure cyane. Koresha bayite zitarenze 4088 nyuma yo gushyiraho ibimenyetso."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The New Map File name %s already exists!"
+msgstr "Izina rya Dosiye y'Ikarita Nshya %s risanzwe ririho!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Source Map File name is not readable or does not exist!"
+msgstr "Izina rya Dosiye y'Ikarita y'Inkomoko ntirisomeka cyangwa ntiririho!"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created from %s"
+msgstr "Dosiye y'Ikarita Nshya %s yahanwe ivuye muri %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created."
+msgstr "Dosiye y'Ikarita Nshya %s yahanwe."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You must include a Map File name to Create"
+msgstr "Ugomba gushyiramo izina rya Dosiye y'Ikarita kugira ngo Uhange"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermap named \"%s\""
+msgstr "Weathermap y'Umuyoboro yitwa \"%s\""
+
+#: weathermap-cacti-plugin.php
+msgid "This map hasn't been created yet."
+msgstr "Iyi karita ntirahangwa."
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Maps"
+msgstr "Cunga Amakarita"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
+msgstr "Amakarita ya Weathermap [ %sSimburanya ku Buryo Bwikora%s ]"
+
+#: weathermap-cacti-plugin.php
+msgid "(thumbnail for map not created yet)"
+msgstr "(ishusho ntoya y'ikarita ntirahangwa)"
+
+#: weathermap-cacti-plugin.php
+msgid "(Live View)"
+msgstr "(Imigaragarire y'Ako Kanya)"
+
+#: weathermap-cacti-plugin.php
+msgid "You Have No Maps"
+msgstr "Nta Makarita Ufite"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
+msgstr "Kugira ngo wongereho ikarita kuri gahunda, jya ku ipaji ya %s Cunga...Weathermaps %s maze wongereho imwe."
+
+#: weathermap-cacti-plugin.php
+msgid "Network Weathermaps"
+msgstr "Amakarita ya Weathermap y'Umuyoboro"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
+msgstr "Irerekana %s %s muri %s %s. Irasimburanya amakarita yose ahari muri iri tsinda."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps."
+msgstr "Irerekana %s %s muri %s %s. Irasimburanya amakarita yose ahari."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Powered by %s PHP Weathermap Version %s %s"
+msgstr "Ikoresha %s PHP Weathermap Verisiyo %s %s"
+
+#: weathermap-cacti-plugin.php
+msgid "Go to the Map Management page"
+msgstr "Jya ku ipaji y'Imicungire y'Amakarita"
+
+#: weathermap-cacti-plugin.php
+msgid "Weathermap Management"
+msgstr "Imicungire ya Weathermap"
+
+#: weathermap-cacti-plugin.php
+msgid "Map to View"
+msgstr "Ikarita yo Kureba"
+
+#: weathermap-cacti-plugin.php
+msgid "All Maps"
+msgstr "Amakarita Yose"
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr "Hagarika gusimburanya"
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr "Ibanjirije"
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr "Hagarika by'agateganyo / komeza"
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr "Ibikurikira"
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr "Sohoka muri mugaragaza yuzuye"
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr "Mugaragaza yuzuye"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr "Ikarita ikurikira mu %ss"
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
+msgstr "Yahagaritswe by'agateganyo"

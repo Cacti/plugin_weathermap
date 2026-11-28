@@ -1,0 +1,3088 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-08 18:47-0800\n"
+"PO-Revision-Date: 2026-11-27 18:00-0800\n"
+"Last-Translator: The Cacti Group <developers@cacti.net>\n"
+"Language-Team: Georgian <https://translate.cacti.net/projects/cacti/core/ka/>\n"
+"Language: ka-GE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr "აირჩიეთ PNG, JPG ან GIF ფაილი 5 მბ-მდე."
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr "ცვლილებების შესანახად გამოიყენეთ POST."
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr "ეს რუკა შეიცვალა მისი გახსნის შემდეგ. ცვლილებების შენახვამდე განაახლეთ რედაქტორი."
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr "რუკის კონფიგურაციის წაკითხვა შეუძლებელია."
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.history.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr "რუკის კონფიგურაციების დაბლოკვა ვერ მოხერხდა."
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr "ეს სურათი კვლავ გამოიყენება რუკის კონფიგურაციაში."
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
+msgstr "სურათის წაშლა ვერ მოხერხდა."
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr "ფერების არასწორი პარამეტრები."
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr "რუკის კონფიგურაციის შენახვა ვერ მოხერხდა."
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr "სურათის არასწორი კატეგორია."
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr "სიმბოლური ბმულების მართვა აქ შეუძლებელია."
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr "სურათის ფაილის არასწორი სახელი."
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr "კონფიგურაციის მიმართვების შემოწმება შეუძლებელია."
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr "შესამოწმებლად ზედმეტად ბევრი ჩართული კონფიგურაციაა."
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr "სურათების საქაღალდე არ არის ჩაწერადი."
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr "აირჩიეთ PNG, JPG ან GIF სურათი 4 მილიონ პიქსელამდე."
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr "სურათის წაკითხვა ვერ მოხერხდა."
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr "სურათის ფაილის სახელის დაჯავშნა ვერ მოხერხდა."
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
+msgstr "სურათის შენახვა ვერ მოხერხდა."
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr "აირჩიეთ სწორი ფერი."
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr "პულსაციის არასწორი პარამეტრი."
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr "ფონს სჭირდება ერთგვაროვანი ფერი."
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr "დატოვეთ 1-დან 200-მდე სკალის მწკრივი."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr "სკალა %s განსაზღვრულია ჩართულ კონფიგურაციაში და აქ მხოლოდ წასაკითხია. ნაცვლად ამისა ჩაასწორეთ მისი საწყისი ფაილი."
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr "სკალის არასწორი სახელი."
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr "სკალის არასწორი დიაპაზონი."
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr "დიაპაზონის დასაწყისი არ უნდა აღემატებოდეს მის დასასრულს."
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr "სკალის არასწორი წარწერა."
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr "ერთგვაროვანი ფერის წარწერა არ შეიძლება იწყებოდეს სამი მთელი რიცხვით. ჯერ დაამატეთ სიტყვა ან აირჩიეთ გრადიენტის საბოლოო ფერი."
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr "სკალის საზღვრებს სჭირდება მნიშვნელობები, რომელთა შენახვაც დამრგვალების გარეშე შეიძლება. გამოიყენეთ ექვსამდე ათწილადი ნიშანი და გამტარუნარიანობის ზუსტი ერთეულები."
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr "დუბლირებული დიაპაზონი სკალაში."
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr "გრადიენტებს სჭირდება ორი ფერი."
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr "დატოვეთ ტრაფიკის მინიმუმ ერთი DEFAULT დიაპაზონი."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr "რუკის ობიექტი კვლავ იყენებს სკალას %s."
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt (font %s)"
+msgstr "%s — %s pt (შრიფტი %s)"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr "ლურჯი (#0000FF)"
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr "მუქი ლურჯი (#003366)"
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr "სამეფო ლურჯი (#0040C0)"
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr "ზღვისფერი (#007070)"
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr "მწვანე (#008000)"
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr "იისფერი (#8000C0)"
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr "ნახშირისფერი (#333333)"
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr "წითელი (#C00000)"
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr "შავი (#000000)"
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr "თეთრი (#FFFFFF)"
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr "ავტომატური კონტრასტი კავშირის ფერთან"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt"
+msgstr "%s — %s pt"
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr "ჩაშენებული შრიფტები"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr "კავშირის კომენტარის შრიფტი"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Style"
+msgstr "კავშირის კომენტარის სტილი"
+
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr "ცენტრი"
+
+#: lib/editor.comment-style.php
+msgid "Edge"
+msgstr "კიდე"
+
+#: lib/editor.comment-style.php
+msgid "Edge places comments beside the link; Centre places them over the arrow."
+msgstr "კიდე ათავსებს კომენტარებს კავშირის გვერდით; ცენტრი ათავსებს მათ ისარზე."
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr "კავშირის მრუდის გაყოლა"
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr "კავშირის კომენტარები"
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr "იყენებს TrueType შრიფტს. მკვეთრი მოხვევების ან კავშირზე გრძელი ტექსტის დროს გამოიყენება სწორი ტექსტი."
+
+#: lib/editor.comment-style.php
+msgid "Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments."
+msgstr "პოზიციები კავშირის გასწვრივ: 0% არის პირველი კვანძი და 100% — მეორე. ეს გადაადგილებს ტრაფიკის წარწერებს და არა კომენტარებს."
+
+#: lib/editor.comment-style.php
+msgid "Traffic Label Positions"
+msgstr "ტრაფიკის წარწერების პოზიციები"
+
+#: lib/editor.comment-style.php
+msgid "IN"
+msgstr "შემომავალი (IN)"
+
+#: lib/editor.comment-style.php
+msgid "OUT"
+msgstr "გამავალი (OUT)"
+
+#: lib/editor.comment-style.php
+msgid "Comment Style"
+msgstr "კომენტარის სტილი"
+
+#: lib/editor.comment-style.php
+msgid "Use map default"
+msgstr "რუკის ნაგულისხმევის გამოყენება"
+
+#: lib/editor.comment-style.php
+msgid "Custom positions"
+msgstr "მორგებული პოზიციები"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr "კონფიგურაციის ფაილის წაშლა: %s"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr "დარწმუნებული ხართ, რომ გსურთ სამუდამოდ წაშალოთ კონფიგურაციის ფაილი \"%s\"?"
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr "დაბრუნებისა (Undo) და გამეორებისთვის (Redo) საჭიროა აქტიური სესია."
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr "რუკის ისტორიის პირადი საცავის შექმნა ვერ მოხერხდა."
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr "რუკის ისტორიის საცავი არ არის პირადი."
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr "რუკის ისტორიის არასწორი საცავი."
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr "კვანძის დამატება"
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr "კვანძის კლონირება"
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr "კვანძის წაშლა"
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr "კვანძის ან შენიშვნის გადატანა"
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr "კავშირის დამატება"
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr "კავშირის წაშლა"
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr "კავშირის გარდატეხის წერტილის გადატანა"
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr "კავშირის მოწესრიგება"
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr "ყველა კავშირის მოწესრიგება"
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr "კავშირების მოწესრიგება"
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr "შენიშვნის ჩასწორება"
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr "კავშირების მოწესრიგების მოხსნა"
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr "კავშირის ჩასწორება"
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr "კვანძის ჩასწორება"
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr "კავშირის საწყისი კონფიგურაციის ჩასწორება"
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr "კვანძის საწყისი კონფიგურაციის ჩასწორება"
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr "რუკის თვისებების ჩასწორება"
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr "რუკის სტილის ჩასწორება"
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr "რუკის ფერების ჩასწორება"
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr "ლეგენდის გადატანა"
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr "დროის ნიშნულის გადატანა"
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr "რუკის ჩასწორება"
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr "შესაბამისი ისტორია აღარ არის დარჩენილი. განაახლეთ რედაქტორი."
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr "ამ რუკის აღდგენა შეუძლებელია. შესაძლოა შეიცვალა კონფიგურაცია ან სურათი. განაახლეთ რედაქტორი."
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr "ისტორიის არასწორი მოთხოვნა."
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr "ეს რუკა შეიცვალა. დაბრუნების ან გამეორების გამოყენებამდე განაახლეთ რედაქტორი."
+
+#: lib/editor.inc.php
+msgid "Next results"
+msgstr "შემდეგი შედეგები"
+
+#: lib/editor.inc.php
+msgid "Previous results"
+msgstr "წინა შედეგები"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr "კეთილი იყოს თქვენი მობრძანება PHP Weathermap %s რედაქტორში"
+
+#: lib/editor.inc.php
+msgid "Use the editor to manage nodes, links, notes, colours and image uploads. Edit Raw Configuration provides settings beyond the forms. See the local documentation for workflows and configuration details."
+msgstr "გამოიყენეთ რედაქტორი კვანძების, კავშირების, შენიშვნების, ფერების და სურათების ატვირთვის სამართავად. საწყისი კონფიგურაციის ჩასწორება იძლევა ფორმებს მიღმა არსებულ პარამეტრებს. სამუშაო პროცესებისა და კონფიგურაციის დეტალებისთვის იხილეთ ლოკალური დოკუმენტაცია."
+
+#: lib/editor.inc.php
+msgid "Do you want to:"
+msgstr "გსურთ:"
+
+#: lib/editor.inc.php
+msgid "Create A New Map:"
+msgstr "შექმნათ ახალი რუკა:"
+
+#: lib/editor.inc.php
+msgid "Named:"
+msgstr "სახელით:"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-mgmt.php
+msgid "Create"
+msgstr "შექმნა"
+
+#: lib/editor.inc.php
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
+msgstr "შენიშვნა: ფაილის სახელები უნდა მთავრდებოდეს .conf-ით და არ უნდა შეიცავდეს გზის გამყოფებს ან მართვის სიმბოლოებს"
+
+#: lib/editor.inc.php
+msgid "Create Copy"
+msgstr "ასლის შექმნა"
+
+#: lib/editor.inc.php
+msgid "Ok"
+msgstr "კარგი"
+
+#: lib/editor.inc.php
+msgid "Operation successful"
+msgstr "ოპერაცია წარმატებით დასრულდა"
+
+#: lib/editor.inc.php
+msgid "The Operation was successful.  Details are below."
+msgstr "ოპერაცია წარმატებით დასრულდა. დეტალები მოცემულია ქვემოთ."
+
+#: lib/editor.inc.php
+msgid "Pause"
+msgstr "შეჩერება"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to move the node to."
+msgstr "დააწკაპუნეთ რუკაზე იმ ადგილას, სადაც გსურთ კვანძის გადატანა."
+
+#: lib/editor.inc.php
+msgid "Click on the map via which point you want to redirect link."
+msgstr "დააწკაპუნეთ რუკაზე იმ წერტილზე, რომლის გავლითაც გსურთ კავშირის გადამისამართება."
+
+#: lib/editor.inc.php
+msgid "Click on the first node for the start of the link."
+msgstr "დააწკაპუნეთ პირველ კვანძზე კავშირის დასაწყისისთვის."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "დააწკაპუნეთ რუკაზე იმ ადგილას, სადაც გსურთ დროის ნიშნულის განთავსება."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the legend."
+msgstr "დააწკაპუნეთ რუკაზე იმ ადგილას, სადაც გსურთ ლეგენდის განთავსება."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a new node."
+msgstr "დააწკაპუნეთ რუკაზე იმ ადგილას, სადაც გსურთ ახალი კვანძის დამატება."
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr "−"
+
+#: lib/editor.inc.php
+msgid "No images in this library yet."
+msgstr "ამ ბიბლიოთეკაში სურათები ჯერ არ არის."
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
+msgstr "აირჩიეთ PNG, JPG ან GIF ასატვირთად."
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr "მოთხოვნა ვერ შესრულდა. გთხოვთ, სცადოთ ხელახლა."
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr "ატვირთვა ვერ მოხერხდა."
+
+#: lib/editor.inc.php
+msgid "No gradient"
+msgstr "გრადიენტის გარეშე"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr "მორგებული ფერი"
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr "დიაპაზონის წაშლა"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr "წაშლა: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr "წაიშალოს სურათი \"%s\" სერვერიდან?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr "სურათები: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr "ატვირთულია: %s"
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr "მხოლოდ წარწერა"
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr "ფონის გარეშე"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr "გამოიყენებს: %s"
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr "არ გამოიყენება არცერთი რუკის მიერ"
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr "DEFAULT დიაპაზონები არ არის. სახელდებული სკალებისთვის იხილეთ დამატებითი პარამეტრები."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr "მორგებული (%s)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr "დაბრუნება"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr "გამეორება"
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr "დასაბრუნებელი ან გასამეორებელი რუკის ცვლილებები არ არის."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr "დაბრუნება: %s ნაბიჯი; გამეორება: %s ნაბიჯი."
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr "დაბრუნების ან გამეორების გამოყენებამდე შეინახეთ ან გააუქმეთ გახსნილი დიალოგი."
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
+msgstr "დაბრუნებისა და გამეორებისთვის საჭიროა ბრაუზერის სესიის საცავი."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr "ცვლილებების შენახვა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr "რუკის ფონის ფერი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr "კავშირის საზღვრის ფერი"
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr "ჩართული კონფიგურაციებიდან სკალები აქ მხოლოდ წასაკითხია. მათ შესაცვლელად ჩაასწორეთ მათი საწყისი ფაილები."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr "სკალა"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr "საიდან (ჩვეულებრივ %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr "სადამდე (ჩვეულებრივ %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr "წარწერა"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr "ფერი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr "გრადიენტის დასასრული"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr "შავი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr "ლურჯი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr "მწვანე"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr "ნაცრისფერი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr "არცერთი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr "ნარინჯისფერი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr "იისფერი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr "წითელი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr "თეთრი"
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr "ხატულების ძებნა…"
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr "კვანძის ხატულების ძებნა"
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr "კვანძის ხატულები"
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr "აირჩიეთ ხატულა"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr "შესაბამისი ხატულები: %s"
+
+#: lib/editor.inc.php
+msgid "No matching icons"
+msgstr "შესაბამისი ხატულები არ არის"
+
+#: lib/editor.inc.php
+msgid "Current interface"
+msgstr "მიმდინარე ინტერფეისი"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Advanced settings"
+msgstr "დამატებითი პარამეტრები"
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr "დამატებითი პარამეტრების დამალვა"
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr "ინტერფეისის გამოყენება"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Traffic interface"
+msgstr "ტრაფიკის ინტერფეისი"
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr "მოწყობილობის ან ინტერფეისის ძებნა"
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr "ინტერფეისი არ არის არჩეული"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr "დააწკაპუნეთ რუკაზე იმ ადგილას, სადაც გსურთ შენიშვნის დამატება."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr "შენიშვნა"
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr "შენიშვნის წაშლის დადასტურება"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr "შენიშვნის წაშლა"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr "წაიშალოს შენიშვნა \"%s\"?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr "მიმდინარე გრაფიკი: %s"
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr "მორგებული კონფიგურაცია — იხილეთ დამატებითი პარამეტრები"
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr "აირჩიეთ ინტერფეისი ქვემოთ"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr "გამტარუნარიანობა %s-ში"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr "გამტარუნარიანობა %s-დან"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr "გრაფიკი %s — მონაცემები, დაწკაპუნების დანიშნულება და გადატარების გრაფიკი არჩეულია. გამოსაყენებლად შეინახეთ."
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr "გადატარებისას პირველად ნაჩვენები. ინტერფეისის გამოყენება ამას ავტომატურად აყენებს; შეცვალეთ მხოლოდ მორგებული წინასწარი ნახვის URL-ისთვის."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr "გაერთიანებული ტრაფიკი %s წყაროდან"
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr "ტრაფიკის წყარო დაემატა რუკის ჯამს. გადატარებისა და დაწკაპუნების გრაფიკები უცვლელია. გამოსაყენებლად შეინახეთ."
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr "ეს წყარო უკვე ჩართულია. მეტის დასამატებლად აირჩიეთ სხვა წყარო ამ საძიებო ველში."
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr "წყაროს ამოღება"
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr "გაზომილი წყარო ამოღებულია. გადატარებისა და დაწკაპუნების გრაფიკები უცვლელია. გამოსაყენებლად შეინახეთ."
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr "გაზომილი ტრაფიკის წყაროები არ არის არჩეული."
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr "აირჩიეთ დამატებითი ინტერფეისი ზემოთ მოცემული ძიების შედეგებიდან, შემდეგ დააწკაპუნეთ „ტრაფიკის წყაროს დამატება“-ზე."
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr "დამატებითი ინტერფეისი არჩეულია. „ტრაფიკის წყაროს დამატება“ ინარჩუნებს ძირითად ინტერფეისსა და სხვა წყაროებს."
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr "ძირითადი წყარო — შესაცვლელად გამოიყენეთ \"ინტერფეისის გამოყენება\" ზემოთ"
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr "ჯერ აირჩიეთ ძირითადი ტრაფიკის ინტერფეისი მთავარ ფორმაში."
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr "დამატებითი ტრაფიკის წყაროების დამატება"
+
+#: lib/editor.inc.php
+msgid "Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link."
+msgstr "შეცვალეთ ტრაფიკის წარწერების პოზიციები ან გამოიყენეთ მორგებული წყაროები და URL-ები. ჩვეულებრივი ტრაფიკის კავშირისთვის დატოვეთ წყაროები და URL-ები უცვლელი."
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr "მორგებული ტრაფიკის წყაროები შეიცვალა. გამოსაყენებლად შეინახეთ. გადატარების გრაფიკები და დაწკაპუნების დანიშნულება უცვლელია."
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr "მაქსიმუმ ერთი დამატებითი სურათის URL. ეს იგივე წინასწარი ნახვაა, რომელიც იმართება „დამატებითი გადატარების გრაფიკების“ განყოფილებაში."
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr "ტრაფიკის წყაროები"
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr "არასავალდებულო: დაამატეთ სხვა ინტერფეისები რუკის ჯამს. შეცვალეთ ძირითადი ინტერფეისი მთავარ ფორმაში; წაშალეთ დამატებითი წყაროები ქვემოთ. გადატარებისა და დაწკაპუნების გრაფიკები უცვლელი რჩება. შესაბამისი აგრეგირებული გრაფიკი ცალკე უნდა დაკონფიგურირდეს Cacti-ში. შენახვა გამოიყენებს ცვლილებებს."
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr "დამატებითი გრაფიკი"
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr "ამ გრაფიკისთვის RRD ფაილი არ არის მითითებული"
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr "მორგებული გადატარების გრაფიკი"
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr "გრაფიკის ამოღება"
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr "მაქსიმუმ ერთი დამატებითი გრაფიკი. სხვის ასარჩევად ჩაანაცვლეთ ან ამოიღეთ იგი."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr "დამატებითი გადატარების გრაფიკები"
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr "დაწკაპუნების დანიშნულება"
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr "ჩვეულებრივ დატოვეთ ეს დაყენებული ტრაფიკის გრაფიკზე. შეცვალეთ მხოლოდ მაშინ, თუ გსურთ კავშირზე დაწკაპუნებისას სხვა გრაფიკი ან გვერდი გაიხსნას. ეს არ ცვლის გაზომილ ტრაფიკს ან გადატარების გრაფიკებს."
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr "გარეგნობა"
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr "გამტარუნარიანობა, მაგალითად 100M ან 1G."
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr "ტექსტი კავშირის გასწვრივ; პროცენტი განსაზღვრავს მის პოზიციას."
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr "გარეგნობა და კომენტარები"
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr "დახმარება"
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr "აირჩიეთ ტრაფიკის ინტერფეისი და გამტარუნარიანობა, შემდეგ დააწკაპუნეთ შენახვაზე. დამატებითი გადატარების გრაფიკები ამატებს არასავალდებულო წინასწარ ნახვებს. დამატებითი პარამეტრები შეიცავს მორგებულ ტრაფიკის წყაროებსა და URL-ებს. საწყისი კონფიგურაციის ჩასწორება პირდაპირ არედაქტირებს რუკის სინტაქსს."
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr "აკრიფეთ მოწყობილობა ან ინტერფეისი, ან დაათვალიერეთ ყველა"
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr "ყველას დათვალიერება"
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr "აირჩიეთ ძირითადი ინტერფეისი, შემდეგ დააწკაპუნეთ \"ინტერფეისის გამოყენება\"-ზე. დამატებითი წყაროები და გადატარების გრაფიკები შენარჩუნდება. შენახვა გამოიყენებს ცვლილებებს."
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr "მიმდინარეობს მოწყობილობისა და ინტერფეისის ძებნა..."
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr "მორგებული ან მიუწვდომელი ინტერფეისი"
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr "ინტერფეისის სახელი მიუწვდომელია"
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr "საჩვენებელი სახელი"
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr "ხატულა"
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr "გრაფიკის ტიპი"
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr "გადატარების გრაფიკები"
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr "კვანძის წაშლა"
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr "კვანძისთვის, რომელიც კავშირის ბოლოში წარწერად ან ხატულად გამოიყენება, ძირითადი კონტროლები საკმარისია. დამატებითი პარამეტრები ამატებს გადატარების გრაფიკებს (როგორიცაა CPU, მეხსიერება ან ტრაფიკი), მორგებულ დაწკაპუნების დანიშნულებებს და შიდა კვანძის ID-ს."
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr "საჩვენებელი სახელი და ხატულა: აირჩიეთ რა გამოჩნდება რუკაზე. საჩვენებელი სახელის პოზიცია ათავსებს სახელს ხატულაზე. რუკის პოზიცია (X, Y) ადგენს კვანძის კოორდინატებს; გადატანა საშუალებას გაძლევთ განათავსოთ კვანძი რუკაზე."
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr "გადატარების გრაფიკები: გაფილტრეთ გრაფიკის ტიპით და მოძებნეთ გრაფიკი. დამატება ამატებს კიდევ ერთ გრაფიკს; ჩანაცვლება ცვლის არსებულ გადატარების გრაფიკებს. შენახვა გამოიყენებს თქვენს ცვლილებებს."
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr "დამატებითი: შიდა სახელი განსაზღვრავს კვანძს რუკის კონფიგურაციაში. Info URL-ები აყენებს დაწკაპუნების დანიშნულებას; გადატარების გრაფიკის URL-ები აყენებს გადატარებისას ნაჩვენებ სურათებს. გამოიყენეთ ისინი მორგებული დანიშნულებებისთვის ან გარე გრაფიკებისთვის."
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr "მოწყობილობის ან გრაფიკის ძებნა"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr "გადატარების გრაფიკები: %s"
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr "მიუწვდომელი გრაფიკი"
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr "მორგებული სურათები"
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr "გადატარების გრაფიკები არ არის კონფიგურირებული"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr "შიდა კავშირის ID: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr "კვანძი: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr "წაიშალოს კავშირი %1$s-სა და %2$s-ს შორის?"
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr "კვანძები და Cacti გრაფიკები დარჩება."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s from this map?"
+msgstr "წაიშალოს %s ამ რუკიდან?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %s."
+msgstr "წასაშლელი დაკავშირებული კავშირები: %s."
+
+#: lib/editor.inc.php
+msgid "The Cacti device and its graphs will remain."
+msgstr "Cacti მოწყობილობა და მისი გრაფიკები დარჩება."
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "გაფრთხილება: 'კვანძის წაშლა'-ზე დაჭერა წაშლის ამ კვანძს."
+
+#: lib/editor.inc.php
+msgid "Delete Node Confirmation"
+msgstr "კვანძის წაშლის დადასტურება"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "გაფრთხილება: 'კავშირის წაშლა'-ზე დაჭერა წაშლის ამ კავშირს."
+
+#: lib/editor.inc.php
+msgid "Delete Link Confirmation"
+msgstr "კავშირის წაშლის დადასტურება"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cancel"
+msgstr "გაუქმება"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Link"
+msgstr "კავშირის წაშლა"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Position"
+msgstr "პოზიცია"
+
+#: lib/editor.inc.php
+msgid "Node Actions"
+msgstr "კვანძის ქმედებები"
+
+#: lib/editor.inc.php
+msgid "Link Actions"
+msgstr "კავშირის ქმედებები"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Move"
+msgstr "გადატანა"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Clone"
+msgstr "კლონირება"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr "საწყისი კონფიგურაციის ჩასწორება"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete"
+msgstr "წაშლა"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Via"
+msgstr "გავლით (Via)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Tidy"
+msgstr "მოწესრიგება"
+
+#: lib/editor.inc.php
+msgid "Properties"
+msgstr "თვისებები"
+
+#: lib/editor.inc.php
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "საიდან უნდა მიიღოს Weathermap-მა მონაცემები ამ კავშირისთვის? ეს შეიძლება იყოს RRD ფაილი ან HTML სპეციალური კომენტარებით (ჩვეულებრივ MRTG-დან)."
+
+#: lib/editor.inc.php
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "რამდენად განიერი იქნება კავშირის ისარი, პიქსელებში."
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "თუ იყენებთ 'overlib' HTML სტილს, ეს არის URL, რომელიც გაიხსნება კავშირზე დაწკაპუნებისას"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "თუ იყენებთ 'overlib' HTML სტილს, ეს არის სურათის URL, რომელიც გამოჩნდება კავშირზე მაუსის გადატარებისას"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the first node to the second node"
+msgstr "გამტარუნარიანობა პირველი კვანძიდან მეორე კვანძამდე"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "გამტარუნარიანობა მეორე კვანძიდან პირველ კვანძამდე (თუ განსხვავებულია)"
+
+#: lib/editor.inc.php
+msgid "The text that will appear alongside the link"
+msgstr "ტექსტი, რომელიც გამოჩნდება კავშირის გასწვრივ"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "თუ იყენებთ 'overlib' HTML სტილს, ეს არის URL, რომელიც გაიხსნება კვანძზე დაწკაპუნებისას"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "თუ იყენებთ 'overlib' HTML სტილს, ეს არის სურათის URL, რომელიც გამოჩნდება კვანძზე მაუსის გადატარებისას"
+
+#: lib/editor.inc.php
+msgid "How far from the left to position the node, in pixels"
+msgstr "რამდენად შორს განთავსდეს კვანძი მარცხნიდან, პიქსელებში"
+
+#: lib/editor.inc.php
+msgid "How far from the top to position the node, in pixels"
+msgstr "რამდენად შორს განთავსდეს კვანძი ზემოდან, პიქსელებში"
+
+#: lib/editor.inc.php
+msgid "The text that appears on the node"
+msgstr "ტექსტი, რომელიც გამოჩნდება კვანძზე"
+
+#: lib/editor.inc.php
+msgid "The name used for this node when defining links"
+msgstr "სახელი, რომელიც გამოიყენება ამ კვანძისთვის კავშირების განსაზღვრისას"
+
+#: lib/editor.inc.php
+msgid "Change to a different file, or start creating a new one."
+msgstr "გადადით სხვა ფაილზე ან დაიწყეთ ახლის შექმნა."
+
+#: lib/editor.inc.php
+msgid "Add a new node to the map"
+msgstr "ახალი კვანძის დამატება რუკაზე"
+
+#: lib/editor.inc.php
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "ახალი კავშირის დამატება რუკაზე ორი კვანძის შეერთებით."
+
+#: lib/editor.inc.php
+msgid "Select a different map to edit, or start a new one."
+msgstr "აირჩიეთ სხვა რუკა ჩასასწორებლად ან დაიწყეთ ახალი."
+
+#: lib/editor.inc.php
+msgid "This is where help appears for links"
+msgstr "აქ გამოჩნდება დახმარება კავშირებისთვის"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for maps"
+msgstr "აქ გამოჩნდება დახმარება რუკებისთვის"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for nodes"
+msgstr "აქ გამოჩნდება დახმარება კვანძებისთვის"
+
+#: lib/editor.inc.php
+msgid "or click a Node or Link to edit its properties"
+msgstr "ან დააწკაპუნეთ კვანძზე ან კავშირზე მისი თვისებების ჩასასწორებლად"
+
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
+msgid "Docs"
+msgstr "დოკუმენტაცია"
+
+#: lib/viewer.controls.php
+msgid "Manage Weathermaps"
+msgstr "Weathermap-ების მართვა"
+
+#: lib/viewer.controls.php setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Settings"
+msgstr "რუკის პარამეტრები"
+
+#: lib/viewer.controls.php
+msgid "Map Permissions"
+msgstr "რუკის უფლებები"
+
+#: lib/viewer.controls.php setup.php
+msgid "Edit Map"
+msgstr "რუკის ჩასწორება"
+
+#: setup.php
+msgid "Weathermap"
+msgstr "Weathermap"
+
+#: setup.php weathermap-cacti-plugin.php
+msgid "Network Weathermap"
+msgstr "ქსელის Weathermap"
+
+#: setup.php
+msgid "Debug Mode"
+msgstr "გამართვის რეჟიმი"
+
+#: setup.php
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr "თუ გსურთ Cacti-ის ჟურნალში იხილოთ დეტალური სტატუსის ინფორმაცია Weathermap-ის გენერაციის პროცესის შესახებ, მონიშნეთ ეს ველი."
+
+#: setup.php
+msgid "Info URL Style"
+msgstr "Info URL სტილი"
+
+#: setup.php
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr "კვანძისთვის ან კავშირისთვის გრაფიკების დამატებისას, სად გსურთ გადამისამართება Info URL-ის გამოყენებით? სტანდარტული გრაფიკის ხედის გამოყენებისას შეგიძლიათ გქონდეთ მრავალი გრაფიკი. დროის გრაფიკის ხედისთვის შეგიძლიათ გქონდეთ მხოლოდ ერთი გრაფიკი."
+
+#: setup.php
+msgid "Standard Graph View"
+msgstr "სტანდარტული გრაფიკის ხედი"
+
+#: setup.php
+msgid "Time Graph View"
+msgstr "დროის გრაფიკის ხედი"
+
+#: setup.php
+msgid "Page style"
+msgstr "გვერდის სტილი"
+
+#: setup.php
+msgid "How to display multiple maps."
+msgstr "როგორ გამოჩნდეს მრავალი რუკა."
+
+#: setup.php
+msgid "Thumbnail Overview"
+msgstr "მინიატურების მიმოხილვა"
+
+#: setup.php
+msgid "Full Images"
+msgstr "სრული სურათები"
+
+#: setup.php
+msgid "Show Only First"
+msgstr "მხოლოდ პირველის ჩვენება"
+
+#: setup.php
+msgid "Thumbnail Maximum Size"
+msgstr "მინიატურის მაქსიმალური ზომა"
+
+#: setup.php
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr "მინიატურების მაქსიმალური სიგანე ან სიმაღლე მინიატურების ხედში, პიქსელებში. ძალაში შევა Poller-ის შემდეგი გაშვების შემდეგ."
+
+#: setup.php
+msgid "Hover Graph Default Width"
+msgstr "გადატარების გრაფიკის ნაგულისხმევი სიგანე"
+
+#: setup.php
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "RRDtool გრაფიკების ნაგულისხმევი სიგანე, რომლებიც ჩნდება კავშირზე გადატარებისას."
+
+#: setup.php
+msgid "Hover Graph Default Height"
+msgstr "გადატარების გრაფიკის ნაგულისხმევი სიმაღლე"
+
+#: setup.php
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "RRDtool გრაფიკების ნაგულისხმევი სიმაღლე, რომლებიც ჩნდება კავშირზე გადატარებისას."
+
+#: setup.php
+msgid "Hover Graph Style"
+msgstr "გადატარების გრაფიკის სტილი"
+
+#: setup.php
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
+msgstr "კავშირებზე ან კვანძებზე გადატარებისას, რა სტილის გრაფიკი უნდა გამოჩნდეს?"
+
+#: setup.php
+msgid "Thumbnail Graphs"
+msgstr "მინიატურული გრაფიკები"
+
+#: setup.php
+msgid "Full Graphs"
+msgstr "სრული გრაფიკები"
+
+#: setup.php
+msgid "Map Processing Timeout"
+msgstr "რუკის დამუშავების მოლოდინის დრო"
+
+#: setup.php
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr "რამდენი დრო დაეთმოს პერიოდული რუკის გენერაციის პროცესს დროის ამოწურვამდე."
+
+#: setup.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d წუთი"
+
+#: setup.php
+msgid "Refresh Time"
+msgstr "განახლების დრო"
+
+#: setup.php
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "რამდენად ხშირად განახლდეს გვერდი ციკლურ რეჟიმში. ავტომატური ყველა ხელმისაწვდომ რუკას 5 წუთში ანაწილებს."
+
+#: setup.php
+msgid "Automatic"
+msgstr "ავტომატური"
+
+#: setup.php
+#, php-format
+msgid "%d Seconds"
+msgstr "%d წამი"
+
+#: setup.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d წუთი"
+
+#: setup.php
+msgid "Output Format"
+msgstr "გამოტანის ფორმატი"
+
+#: setup.php
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr "რომელი ფორმატი გირჩევნიათ გენერირებული რუკის სურათებისა და მინიატურებისთვის?"
+
+#: setup.php
+msgid "PNG (default)"
+msgstr "PNG (ნაგულისხმევი)"
+
+#: setup.php
+msgid "JPEG"
+msgstr "JPEG"
+
+#: setup.php
+msgid "GIF"
+msgstr "GIF"
+
+#: setup.php
+msgid "Map Rendering Interval"
+msgstr "რუკის რენდერინგის ინტერვალი"
+
+#: setup.php
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr "რამდენად ხშირად გსურთ Weathermap-მა ხელახლა დათვალოს თავისი რუკები? არ შეცვალოთ ეს, თუ ზუსტად არ იცით რას აკეთებთ! იგი ძირითადად საჭიროა არასტანდარტული გამოკითხვის კონფიგურაციებისთვის."
+
+#: setup.php
+msgid "Never (manual updates)"
+msgstr "არასდროს (ხელით განახლებები)"
+
+#: setup.php
+msgid "Every Poller Cycle (default)"
+msgstr "Poller-ის ყოველ ციკლზე (ნაგულისხმევი)"
+
+#: setup.php
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr "Poller-ის ყოველ %d ციკლზე"
+
+#: setup.php
+msgid "Show Weathermap Help Links"
+msgstr "Weathermap-ის დახმარების ბმულების ჩვენება"
+
+#: setup.php
+msgid "If checked, all Weathermap pages will include a link to documentation."
+msgstr "მონიშვნის შემთხვევაში, Weathermap-ის ყველა გვერდი შეიცავს დოკუმენტაციის ბმულს."
+
+#: setup.php
+msgid "Show 'All' Tab"
+msgstr "'ყველა' ჩანართის ჩვენება"
+
+#: setup.php
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr "ჯგუფების გამოყენებისას, ჩანართების ზოლში 'ყველა რუკა' ჩანართის დამატება."
+
+#: setup.php
+msgid "No (default)"
+msgstr "არა (ნაგულისხმევი)"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Yes"
+msgstr "დიახ"
+
+#: setup.php
+msgid "Show Map Selector"
+msgstr "რუკის ამომრჩევის ჩვენება"
+
+#: setup.php
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr "რუკის ჩამოსაშლელი ამომრჩევის ჩვენება სრულეკრანიან რუკის ხედში."
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "No"
+msgstr "არა"
+
+#: setup.php
+msgid "Yes (default)"
+msgstr "დიახ (ნაგულისხმევი)"
+
+#: setup.php
+msgid "Quiet Logging"
+msgstr "ჩუმი ჟურნალირება"
+
+#: setup.php
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr "ნაგულისხმევად, LOW დონის ჟურნალირების დროსაც კი, Weathermap იწერს ჩვეულებრივ აქტივობას. ეს აიძულებს მას LOW რეჟიმში ჩაწეროს მხოლოდ შეცდომები."
+
+#: setup.php
+msgid "Chatty (default)"
+msgstr "დეტალური (ნაგულისხმევი)"
+
+#: setup.php
+msgid "Quiet"
+msgstr "ჩუმი"
+
+#: setup.php
+msgid "Weathermaps"
+msgstr "Weathermap-ები"
+
+#: setup.php
+msgid "Weathermap Groups"
+msgstr "Weathermap ჯგუფები"
+
+#: setup.php
+msgid "Management"
+msgstr "მართვა"
+
+#: setup.php
+msgid "View Weathermaps"
+msgstr "Weathermap-ების ნახვა"
+
+#: setup.php
+msgid "Edit Weathermaps"
+msgstr "Weathermap-ების ჩასწორება"
+
+#: setup.php
+msgid "Manage Weathermap"
+msgstr "Weathermap-ის მართვა"
+
+#: setup.php
+msgid "General Administration"
+msgstr "ზოგადი ადმინისტრირება"
+
+#: setup.php
+msgid "Normal User"
+msgstr "ნორმალური მომხმარებელი"
+
+#: setup.php weathermap-cacti-plugin.php
+#, php-format
+msgid "Map for config file: %s"
+msgstr "რუკა კონფიგურაციის ფაილისთვის: %s"
+
+#: setup.php
+msgid "Choose which weathermap to add to the tree."
+msgstr "აირჩიეთ რომელი Weathermap დაემატოს ხეში."
+
+#: setup.php
+msgid "Map"
+msgstr "რუკა"
+
+#: setup.php
+msgid "How should the map be displayed?"
+msgstr "როგორ უნდა გამოჩნდეს რუკა?"
+
+#: setup.php
+msgid "Style"
+msgstr "სტილი"
+
+#: setup.php
+msgid "Thumbnail"
+msgstr "მინიატურა"
+
+#: setup.php
+msgid "Full Size"
+msgstr "სრული ზომა"
+
+#: setup.php
+msgid "View Map Image"
+msgstr "რუკის სურათის ნახვა"
+
+#: setup.php
+msgid "View Map Thumbnail"
+msgstr "რუკის მინიატურის ნახვა"
+
+#: setup.php
+msgid "Add Map"
+msgstr "რუკის დამატება"
+
+#: setup.php
+msgid "View Configuration"
+msgstr "კონფიგურაციის ნახვა"
+
+#: setup.php
+msgid "Weathermap Editor"
+msgstr "Weathermap რედაქტორი"
+
+#: setup.php
+msgid "Edit Permissions"
+msgstr "უფლებების ჩასწორება"
+
+#: setup.php
+msgid "Map Settings Delete"
+msgstr "რუკის პარამეტრების წაშლა"
+
+#: setup.php
+msgid "Map Settings Update"
+msgstr "რუკის პარამეტრების განახლება"
+
+#: setup.php
+msgid "Map Settings Add"
+msgstr "რუკის პარამეტრების დამატება"
+
+#: setup.php
+msgid "Permissions Edit"
+msgstr "უფლებების ჩასწორება"
+
+#: setup.php
+msgid "Add User"
+msgstr "მომხმარებლის დამატება"
+
+#: setup.php
+msgid "Delete User"
+msgstr "მომხმარებლის წაშლა"
+
+#: setup.php
+msgid "Delete Map"
+msgstr "რუკის წაშლა"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Up"
+msgstr "რუკის ზემოთ აწევა"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Down"
+msgstr "ჯგუფის ქვემოთ ჩამოწევა"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Up"
+msgstr "ჯგუფის ზემოთ აწევა"
+
+#: setup.php
+msgid "Group Edit"
+msgstr "ჯგუფის ჩასწორება"
+
+#: setup.php
+msgid "Group Update"
+msgstr "ჯგუფის განახლება"
+
+#: setup.php
+msgid "Activate Map"
+msgstr "რუკის გააქტიურება"
+
+#: setup.php
+msgid "Deactivate Map"
+msgstr "რუკის დეაქტივაცია"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Now"
+msgstr "ახლავე თავიდან აგება"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Change Group"
+msgstr "ჯგუფის შეცვლა"
+
+#: setup.php
+msgid "Group Admin"
+msgstr "ჯგუფების ადმინისტრირება"
+
+#: setup.php
+msgid "Group Admin Delete"
+msgstr "ჯგუფის წაშლა"
+
+#: setup.php
+msgid "Manage"
+msgstr "მართვა"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr "პარამეტრები"
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr "ავტომატური ციკლი"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "Local Documentation"
+msgstr "ლოკალური დოკუმენტაცია"
+
+#: setup.php
+#, php-format
+msgid "This is version %s"
+msgstr "ეს არის ვერსია %s"
+
+#: setup.php
+msgid "Weathermap Website"
+msgstr "Weathermap-ის ვებსაიტი"
+
+#: weathermap-cacti-plugin-editor.php
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "PHP Weathermap რედაქტორი %s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr "რუკაზე დაბრუნება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
+msgstr "მართვაზე დაბრუნება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Change<br>File"
+msgstr "ფაილის<br>შეცვლა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Node"
+msgstr "კვანძის<br>დამატება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Link"
+msgstr "კავშირის<br>დამატება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr "შენიშვნის<br>დამატება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Legend"
+msgstr "ლეგენდის<br>პოზიცია"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Timestamp"
+msgstr "დროის ნიშნულის<br>პოზიცია"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Properties"
+msgstr "რუკის<br>თვისებები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Style"
+msgstr "რუკის<br>სტილი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Colors"
+msgstr "ფერების<br>მართვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Images"
+msgstr "სურათების<br>მართვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Editor<br>Settings"
+msgstr "რედაქტორის<br>პარამეტრები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>---, ---"
+msgstr "პოზიცია<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
+msgstr "აირჩიეთ მენიუს პუნქტი, ან დააწკაპუნეთ (მარცხენა ან მარჯვენა ღილაკით) კვანძზე ან კავშირზე მისი თვისებების ჩასასწორებლად"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Debug"
+msgstr "გამართვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy ALL"
+msgstr "ყველას თავიდან მოწესრიგება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy"
+msgstr "თავიდან მოწესრიგება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Un-tidy"
+msgstr "მოწესრიგების მოხსნა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Do Nothing"
+msgstr "არაფრის გაკეთება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "mapfile"
+msgstr "რუკის ფაილი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "action"
+msgstr "ქმედება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param"
+msgstr "პარამეტრი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param2"
+msgstr "პარამეტრი 2"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "debug"
+msgstr "გამართვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "See config"
+msgstr "კონფიგურაციის ნახვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr "ტექსტი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr "მარცხენა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr "მარჯვნივ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr "ტექსტის გასწორება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr "შრიფტი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr "შენიშვნის ფერი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr "შენახვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Properties"
+msgstr "კვანძის თვისებები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr "რუკის პოზიცია (X, Y)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Internal Name"
+msgstr "შიდა სახელი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr "ქვედა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr "მორგებული (საწყისი კონფიგურაცია)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr "საჩვენებელი სახელის პოზიცია"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr "შუა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr "ზედა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Icon Filename"
+msgstr "ხატულის ფაილის სახელი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Info URL(s)"
+msgstr "Info URL-ები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover Graph URL(s)"
+msgstr "გადატარების გრაფიკის URL-ები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Template"
+msgstr "გრაფიკის შაბლონი"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "All"
+msgstr "ყველა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Selector"
+msgstr "გრაფიკის ამომრჩევი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "აქედან შეგიძლიათ შეცვალოთ Weathermap კვანძი. პოზიციის სვეტები წარმოადგენს X,Y კოორდინატებს რუკაზე. შიდა სახელი არის კვანძისთვის მინიჭებული უნიკალური ID. წარწერა არის კვანძის გარე სახელი, რომელსაც მომხმარებლებს უჩვენებთ. ხატულის ფაილის სახელი არის გრაფიკული გამოსახულება კვანძის ობიექტისთვის. INFO URL არის ბმული, რომელიც იხსნება აქტიურ რუკის კვანძზე დაწკაპუნებისას. გადატარების გრაფიკის URL-ები არის Cacti-ის ან სხვა გრაფიკების URL-ები, რომლებიც გამოჩნდება კვანძზე გადატარებისას. გრაფიკის ამომრჩევი დაგეხმარებათ Cacti გრაფიკების არჩევაში. კვანძს სხვა თვისებებიც გააჩნია, თუმცა ამჟამად მხოლოდ ზემოთ ჩამოთვლილია მხარდაჭერილი."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Properties"
+msgstr "კავშირის თვისებები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Into"
+msgstr "შემომავალი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Maximum Bandwidth"
+msgstr "მაქსიმალური გამტარუნარიანობა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Out of"
+msgstr "გამავალი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Via Style"
+msgstr "გავლის (Via) სტილი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Curved"
+msgstr "მრუდი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Angled"
+msgstr "კუთხოვანი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr "გაზომილი ტრაფიკის წყარო(ები)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Data Source Selector"
+msgstr "მონაცემთა წყაროს ამომრჩევი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr "ტრაფიკის წყაროს დამატება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Width"
+msgstr "კავშირის სიგანე"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr "დაწკაპუნების დანიშნულების URL"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr "მთავარი გადატარების გრაფიკის URL"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr "ნაჩვენებია პირველად. ყენდება „ინტერფეისის გამოყენებით“; დამატებითი გრაფიკები მის ქვემოთ გამოჩნდება."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr "აჩვენეთ ორამდე გადატარების გრაფიკი: მთავარი ტრაფიკის გრაფიკი და ერთი დამატებითი CPU, შეყოვნების ან სხვა წინასწარი ნახვა. ჩანაცვლება ცვლის მხოლოდ დამატებით გრაფიკს."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr "დამატებითი გრაფიკის URL(-ები)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr "დამატებითი გადატარების გრაფიკის URL-ები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr "გრაფიკის ტიპით ფილტრაცია"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr "აირჩიეთ გადატარების გრაფიკი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr "გადატარების გრაფიკის დამატება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr "გადატარების გრაფიკების ჩანაცვლება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "IN Comment"
+msgstr "IN კომენტარი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "OUT Comment"
+msgstr "OUT კომენტარი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
+msgstr ""
+"<p><strong>გამტარუნარიანობა:</strong> მიუთითეთ ტევადობა დატვირთვის გამოსათვლელად, მაგალითად 100M ან 1G. მხარდაჭერილია K, M, G და T. აირჩიეთ „იგივე რაც შემომავალი“, როდესაც ორივე მიმართულებას თანაბარი გამტარუნარიანობა აქვს.</p>\n"
+"<p><strong>ტრაფიკის ინტერფეისი:</strong> მოძებნეთ მოწყობილობით, პორტით ან აღწერით, ან აირჩიეთ „ყველას დათვალიერება“. აირჩიეთ ინტერფეისი, შემდეგ დააწკაპუნეთ „ინტერფეისის გამოყენება“-ზე, რათა დაყენდეს ძირითადი გაზომილი წყარო, დაწკაპუნების დანიშნულება და მთავარი გადატარების გრაფიკი. დამატებითი გაზომილი წყაროები და გადატარების გრაფიკები შენარჩუნდება.</p>\n"
+"<p><strong>გარეგნობა და კომენტარები:</strong> გავლის (Via) სტილი მართავს მრუდ ან კუთხოვან მოხვევებს; კავშირის სიგანე მართავს ისრის სისქეს. IN კომენტარი და OUT კომენტარი ამატებს ტექსტს თითოეული მიმართულების გასწვრივ. პროცენტი განსაზღვრავს ტექსტის პოზიციას კავშირზე. კომენტარის სტილი ათავსებს კომენტარებს კავშირის გვერდით (კიდე) ან ისარზე (ცენტრი); „რუკის ნაგულისხმევის გამოყენება“ მიჰყვება რუკის სტილს.</p>\n"
+"<p><strong>დამატებითი გადატარების გრაფიკები:</strong> აჩვენეთ მაქსიმუმ ორი გადატარების გრაფიკი: მთავარი ტრაფიკის გრაფიკი და ერთი დამატებითი, როგორიცაა CPU, შეყოვნება ან სხვა ინტერფეისი. გრაფიკის ტიპით ფილტრაცია ავიწროებს არჩევანს. „გადატარების გრაფიკის დამატება“ ამატებს დამატებითს; „გადატარების გრაფიკების ჩანაცვლება“ ცვლის მას; „გრაფიკის ამოღება“ შლის მას. მთავარი ტრაფიკის გრაფიკი, გაზომილი ტრაფიკი და კავშირზე დაწკაპუნების დანიშნულება უცვლელი რჩება. დამთვალიერებელში თითოეული Cacti წინასწარი ნახვა დაწკაპუნებისას ხსნის საკუთარ სრულ გრაფიკს.</p>\n"
+"<p><strong>დამატებითი პარამეტრები:</strong> არასავალდებულო კონტროლები IN/OUT ტრაფიკის წარწერების გადასატანად, გაზომილი წყაროების გასაერთიანებლად, დაწკაპუნების დანიშნულების შესაცვლელად და გადატარების სურათის მორგებული URL-ების შესაყვანად. ტრაფიკის წარწერების პოზიციები გადაადგილებს დატვირთვის ველებს კავშირის გასწვრივ კომენტარების პოზიციებისგან დამოუკიდებლად. „რუკის ნაგულისხმევის გამოყენება“ მიჰყვება რუკის სტილს. ჩვეულებრივ ტრაფიკის კავშირს აქ ცვლილებები არ სჭირდება.</p>\n"
+"<p><strong>ტრაფიკის წყაროების გაერთიანება:</strong> „ტრაფიკის წყაროს დამატება“ ამატებს კიდევ ერთ ინტერფეისს რუკის ჯამში ცალ-ცალკე IN და OUT მიმართულებებისთვის. „წყაროს ამოღება“ შლის დამატებით წყაროს. ძირითადი წყარო შეცვალეთ ზემოთ მოცემული „ინტერფეისის გამოყენებით“. გაერთიანებული ტრაფიკი დარდება კონფიგურირებულ გამტარუნარიანობას დატვირთვის გამოსათვლელად. გაერთიანებული Cacti გრაფიკი ავტომატურად არ იქმნება; საჭიროების შემთხვევაში შექმენით შესაბამისი აგრეგირებული გრაფიკი Cacti-ში და შეიყვანეთ მისი დაწკაპუნებისა და გადატარების URL-ები. ძირითადი და სარეზერვო კავშირებისთვის ჩვეულებრივ უფრო მკაფიოა ცალკეული რუკის კავშირები.</p>\n"
+"<p><strong>ხელით მითითებული წყაროები და URL-ები:</strong> წყაროს ტექსტური ველი არედაქტირებს გაზომილი წყაროების სრულ სიას, ძირითადი წყაროს ჩათვლით. დაწკაპუნების დანიშნულების URL განსაზღვრავს, სად გადავა რუკის კავშირზე დაწკაპუნება. მთავარი გადატარების გრაფიკის URL აყენებს პირველ წინასწარ ნახვას; დამატებითი გრაფიკის URL(-ები) იღებს ერთ დამატებითი სურათის URL-ს. ეს დამატებითი ასევე იმართება „დამატებითი გადატარების გრაფიკების“ განყოფილებაში.</p>\n"
+"<p><strong>მოწესრიგება და Via:</strong> „მოწესრიგება“ ასწორებს კავშირის განლაგებას. „Via“ საშუალებას გაძლევთ რუკაზე მოხვევის წერტილი განათავსოთ.</p>\n"
+"<p><strong>საწყისი კონფიგურაციის ჩასწორება:</strong> ჩაასწორეთ რუკის საწყისი სინტაქსი ამ ფორმას მიღმა არსებული პარამეტრებისთვის.</p>"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Properties"
+msgstr "რუკის თვისებები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr "რუკის დეტალები"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Title"
+msgstr "რუკის სათაური"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Text"
+msgstr "ლეგენდის ტექსტი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Timestamp Text"
+msgstr "დროის ნიშნულის ტექსტი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr "ფონი და ტილო"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr "ფონის სურათი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr "(სურათები არ არის ხელმისაწვდომი)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr "--ფონის გარეშე--"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr "რუკის ფონის ფერის გამოყენება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
+msgstr "გამოჩნდება სურათის გარეშე ან მისი გამჭვირვალე უბნებიდან."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr "ფონის ზომის მორგება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr "რუკაზე მორგება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr "რუკაზე გაჭიმვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr "სურათის ზომის გამოყენება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Size"
+msgstr "რუკის ზომა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "pixels"
+msgstr "პიქსელი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Capacity"
+msgstr "კავშირის ნაგულისხმევი ტევადობა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Bandwidth"
+msgstr "კავშირის ნაგულისხმევი გამტარუნარიანობა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec in"
+msgstr "ბიტი/წმ შემომავალი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec out"
+msgstr "ბიტი/წმ გამავალი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style."
+msgstr "დააყენეთ რუკის სათაური, ლეგენდა, დროის ნიშნული, ფონი და ტილოს ზომა, ასევე კავშირების ნაგულისხმევი გამტარუნარიანობა. რუკის ზომები იზომება პიქსელებში; კავშირის გარეგნობის ნაგულისხმევი პარამეტრები მოცემულია რუკის სტილში."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Style"
+msgstr "რუკის სტილი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Defaults"
+msgstr "რუკის ნაგულისხმევი პარამეტრები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "HTML Style"
+msgstr "HTML სტილი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Dynamic HTML"
+msgstr "დინამიური HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Static HTML"
+msgstr "სტატიკური HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Key Style"
+msgstr "ლეგენდის სტილი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Classic"
+msgstr "კლასიკური"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Horizontal"
+msgstr "ჰორიზონტალური"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Vertical"
+msgstr "ვერტიკალური"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Inverted"
+msgstr "ინვერტირებული"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Tags"
+msgstr "ჭდეები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Font"
+msgstr "ლეგენდის შრიფტი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Defaults"
+msgstr "კვანძის ნაგულისხმევი პარამეტრები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Font"
+msgstr "კვანძის შრიფტი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance Defaults"
+msgstr "კავშირის გარეგნობის ნაგულისხმევი პარამეტრები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
+msgstr "კავშირის ნაგულისხმევი სიგანე"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Labels"
+msgstr "კავშირის წარწერები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bits/sec"
+msgstr "ბიტი/წმ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Percentage"
+msgstr "პროცენტი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Arrow Style"
+msgstr "ისრის სტილი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Compact"
+msgstr "კომპაქტური"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Label Font"
+msgstr "ტრაფიკის წარწერის შრიფტი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr "გადატარების ზომები იზომება პიქსელებში. ავტომატური ზომისთვის მიუთითეთ 0. სიგანე ზღუდავს წინასწარი ნახვის ზომას; სიმაღლე მოძველებული მინიშნებაა და შესაძლოა არ შეცვალოს ნაჩვენები სიმაღლე. გრაფიკის URL-ებს შეუძლიათ საკუთარი სურათის ზომების მითითება."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr "კვანძის გადატარების სიგანე (პიქსელი)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr "კვანძის გადატარების სიმაღლე (პიქსელი)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr "კავშირის გადატარების სიგანე (პიქსელი)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
+msgstr "კავშირის გადატარების სიმაღლე (პიქსელი)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr "ფერების მართვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr "კავშირის გარეგნობა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Comment Colour"
+msgstr "კავშირის კომენტარის ფერი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr " კავშირების პულსირება 80%+-ზე"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr "80% ან მეტი დატვირთვის მქონე კავშირები პულსირებს თავისი ტრაფიკის ფერში."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr "ტრაფიკის დატვირთვის ფერები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr "ფერთა პალიტრა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr "მორგებული"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr "ნაგულისხმევი (კლასიკური)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr "მწვანე / ქარვისფერი / წითელი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr "შუაზამთრის ყინული"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr "თანამედროვე მწვანე"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr "ოკეანის ლურჯი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr "იისფერი / ნარინჯისფერი / წითელი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr "განთიადის ქარვისფერი"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr "ფერები გვიჩვენებს კავშირის გამტარუნარიანობის რა ნაწილი გამოიყენება. მაგალითად, 75% ნიშნავს მისი ტევადობის სამ მეოთხედს."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr "შენახვისას პალიტრები ანაცვლებს DEFAULT ტრაფიკის სკალას. სხვა სახელდებული სკალები შენარჩუნდება."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr "თითოეული მწკრივი არის ფერის დიაპაზონი. „საიდან“ და „სადამდე“ მისი საზღვრებია, „ფერი“ არის შევსება, ხოლო „გრადიენტის დასასრული“ გადადის სხვა ფერში. „წარწერა“ ამატებს არასავალდებულო ლეგენდის ტექსტს. სკალის სახელები აჯგუფებს დიაპაზონებს; DEFAULT არის ჩვეულებრივი ტრაფიკის სკალა. მორგებულ სკალებს შეუძლიათ სხვა ერთეულების გამოყენება."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr "დიაპაზონის დამატება"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr "სკალის დიაპაზონები იყენებს თითოეული კავშირის ან კვანძისთვის კონფიგურირებულ ერთეულებს; ტრაფიკის კავშირები ჩვეულებრივ იყენებს პროცენტებს."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr "სურათების მართვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr "კვანძის ხატულები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr "კვანძის ხატულის ატვირთვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr "კვანძის ხატულის ატვირთვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr "არსებული კვანძის ხატულები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr "ფონის სურათები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr "ფონის ატვირთვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr "ფონის ატვირთვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr "არსებული ფონის სურათები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr "დახურვა"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
+msgstr "PNG, JPG/JPEG ან GIF ფაილები 5 მბ-მდე და 4 მილიონ პიქსელამდე. GIF ატვირთვები იყენებს პირველ კადრს. ატვირთვები დაუყოვნებლივ ინახება. რუკის კონფიგურაციაში გამოყენებული სურათების წაშლა შეუძლებელია."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr "ჩაასწორეთ ამ რუკის ობიექტის საწყისი კონფიგურაცია."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr "დამატებითი: ცვლილებები ინახება პირდაპირ რუკის კონფიგურაციაში სინტაქსის შემოწმების გარეშე. ჩვეულებრივი რედაქტირებისთვის გამოიყენეთ „თვისებები“."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr "გადაფარვები"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
+msgstr "განლაგება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate"
+msgstr "დუბლირება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable"
+msgstr "გათიშვა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable"
+msgstr "ჩართვა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Grant Access"
+msgstr "წვდომის მინიჭება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Revoke Access"
+msgstr "წვდომის გაუქმება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No such file."
+msgstr "ასეთი ფაილი არ არსებობს."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s deleted."
+msgstr "კონფიგურაციის ფაილი %s წაიშალა."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr "კონფიგურაციის ფაილი %s გამოიყენება რუკის მიერ. ჯერ წაშალეთ ეს რუკა."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr "კონფიგურაციის ფაილის წაშლა შეუძლებელია."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "All Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "ყველა რუკა თავიდან აიგო %0.2f წამში!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Editor directory permissions are not correct!"
+msgstr "რედაქტორის საქაღალდის უფლებები არასწორია!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
+msgstr "ვებსერვისის ანგარიშს უნდა ჰქონდეს წვდომა Weathermap-ის კონფიგურაციის საქაღალდეზე, რაც ამჟამად არ აქვს. გამოასწორეთ ეს პრობლემა და შემდეგ ხელახლა გაუშვით რედაქტორი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Weathermap Permission Error"
+msgstr "Weathermap-ის უფლებების შეცდომა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Continue"
+msgstr "გაგრძელება"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "%d არჩეული რუკა თავიდან აიგო %0.2f წამში!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to delete the following Weather Map."
+msgid_plural "Click 'Continue' to delete following Weather Maps."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ის წასაშლელად."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ების წასაშლელად."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete Weather Map"
+msgid_plural "Delete Weather Maps"
+msgstr[0] "Weather Map-ის წაშლა"
+msgstr[1] "Weather Map-ების წაშლა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ის დუბლირებისთვის. სურვილისამებრ შეგიძლიათ შეცვალოთ სათაურის ფორმატი ახალი Weather Map-ისთვის."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ების დუბლირებისთვის. სურვილისამებრ შეგიძლიათ შეცვალოთ სათაურის ფორმატი ახალი Weather Map-ებისთვის."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title Format:"
+msgstr "სათაურის ფორმატი:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File Format:"
+msgstr "კონფიგურაციის ფაილის ფორმატი:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate Weather Map"
+msgid_plural "Duplicate Weather Maps"
+msgstr[0] "Weather Map-ის დუბლირება"
+msgstr[1] "Weather Map-ების დუბლირება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ის გასათიშად. სურვილისამებრ შეგიძლიათ შეცვალოთ სათაურის ფორმატი ახალი Weather Map-ისთვის."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ების გასათიშად. სურვილისამებრ შეგიძლიათ შეცვალოთ სათაურის ფორმატი ახალი Weather Map-ებისთვის."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable Weather Map"
+msgid_plural "Disable Weather Maps"
+msgstr[0] "Weather Map-ის გათიშვა"
+msgstr[1] "Weather Map-ების გათიშვა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ის ჩასართავად. სურვილისამებრ შეგიძლიათ შეცვალოთ სათაურის ფორმატი ახალი Weather Map-ისთვის."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ების ჩასართავად. სურვილისამებრ შეგიძლიათ შეცვალოთ სათაურის ფორმატი ახალი Weather Map-ებისთვის."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable Weather Map"
+msgid_plural "Enable Weather Maps"
+msgstr[0] "Weather Map-ის ჩართვა"
+msgstr[1] "Weather Map-ების ჩართვა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ის თავიდან ასაგებად. სურვილისამებრ შეგიძლიათ შეცვალოთ სათაურის ფორმატი ახალი Weather Map-ისთვის."
+msgstr[1] "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი Weather Map-ების თავიდან ასაგებად. სურვილისამებრ შეგიძლიათ შეცვალოთ სათაურის ფორმატი ახალი Weather Map-ებისთვის."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Weather Map"
+msgid_plural "Rebuild Weather Maps"
+msgstr[0] "Weather Map-ის თავიდან აგება"
+msgstr[1] "Weather Map-ების თავიდან აგება"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weather Maps [ Run Details: %s ]"
+msgstr "Weather Map-ები [ გაშვების დეტალები: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Search"
+msgstr "ძებნა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Maps"
+msgstr "რუკები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Default"
+msgstr "ნაგულისხმევი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: use filter settings"
+msgid "Go"
+msgstr "მიდი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: reset filter settings"
+msgid "Clear"
+msgstr "გასუფთავება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Settings"
+msgstr "ჯგუფის პარამეტრები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Map Settings"
+msgstr "Cacti Weathermap რუკის პარამეტრები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Settings"
+msgstr "Cacti Weathermap პარამეტრები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild All"
+msgstr "ყველას თავიდან აგება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild all maps now in background"
+msgstr "ყველა რუკის ახლავე თავიდან აგება ფონურ რეჟიმში"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
+msgstr "თქვენ იყენებთ Boost პლაგინს RRD ფაილების გასაახლებლად. რადგან ეს აყოვნებს ფაილებში მონაცემების ჩაწერას, იწვევს პრობლემებს Weathermap-ის განახლებებში. ამის მოგვარება შეგიძლიათ Weathermap-ის 'poller_output' მხარდაჭერის გამოყენებით, რომელიც მონაცემებს პირდაპირ Poller-იდან იღებს. %s ამის გლობალურად ჩართვა შეგიძლიათ აქ დაწკაპუნებით %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
+msgstr "ბოლო გაშვებისას Weathermap-მა ვერ დაასრულა მუშაობა. შეცდომა მოხდა '%s'-ის დამუშავებისას"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
+msgstr "ამან <strong>შესაძლოა</strong> გავლენა მოახდინა სხვა პლაგინებზე, რომლებიც Poller-ის პროცესში ეშვება."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
+msgstr "თქვენ უნდა გათიშოთ ეს რუკა ან მოძებნოთ გაუმართაობის მიზეზი. შესაძლო მიზეზებს შორისაა memory_limit პრობლემები. ჟურნალში შესაძლოა მეტი ინფორმაცია იყოს."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title"
+msgstr "სათაური"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File"
+msgstr "კონფიგურაციის ფაილი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "ID"
+msgstr "ID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group"
+msgstr "ჯგუფი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enabled"
+msgstr "ჩართულია"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Sort Order"
+msgstr "დალაგების წესი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Order"
+msgstr "მიმდევრობა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Accessible By"
+msgstr "ხელმისაწვდომია"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Duration"
+msgstr "ბოლო ხანგრძლივობა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Runtime"
+msgstr "ბოლო გაშვების დრო"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Anyone"
+msgstr "ნებისმიერი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to start editor with this file"
+msgstr "დააწკაპუნეთ რედაქტორის ამ ფაილით გასაშვებად"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Check cacti.log for this Map"
+msgstr "შეამოწმეთ cacti.log ამ რუკისთვის"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to change group"
+msgstr "დააწკაპუნეთ ჯგუფის შესაცვლელად"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Deactivate"
+msgstr "დააწკაპუნეთ დეაქტივაციისთვის"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Activate"
+msgstr "დააწკაპუნეთ გასააქტიურებლად"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Specials"
+msgstr "%d სპეციალური"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Standard"
+msgstr "სტანდარტული"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Down"
+msgstr "რუკის ქვემოთ ჩამოწევა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to edit permissions"
+msgstr "დააწკაპუნეთ უფლებების ჩასასწორებლად"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users"
+msgstr "მომხმარებლების გარეშე"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Users"
+msgstr "ყველა მომხმარებელი"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Groups"
+msgstr "%d ჯგუფი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 Group"
+msgstr "1 ჯგუფი"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Users"
+msgstr "%d მომხმარებელი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 User"
+msgstr "1 მომხმარებელი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Weathermaps Found"
+msgstr "Weathermap-ები ვერ მოიძებნა"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
+msgstr "საქაღალდე სახელით %s არ არსებობს. უნდა შექმნათ იგი და მისცეთ ვებსერვერს წაკითხვის უფლება. თუ გსურთ კონფიგურაციის ფაილების ატვირთვა Cacti-დან, იგი ვებსერვერისთვის <i>ჩაწერადიც</i> უნდა იყოს."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Existing Configuration Files"
+msgstr "არსებული კონფიგურაციის ფაილები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Num Files"
+msgstr "ფაილების რაოდ."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Maps"
+msgstr "აქვს რუკები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Go"
+msgstr "მიდი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Set/Refresh Filters"
+msgstr "ფილტრების დაყენება/განახლება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear"
+msgstr "გასუფთავება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear Filters"
+msgstr "ფილტრების გასუფთავება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Options"
+msgstr "შექმნის პარამეტრები"
+
+#: weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "New Map"
+msgstr "ახალი რუკა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name including .conf"
+msgstr "სახელი .conf გაფართოებით"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr "რუკის არასავალდებულო სათაური"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Source Map"
+msgstr "საწყისი რუკა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Empty File"
+msgstr "ცარიელი ფაილი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Actions"
+msgstr "ქმედებები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Date"
+msgstr "შექმნის თარიღი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Modified"
+msgstr "ბოლო ცვლილება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Size"
+msgstr "ზომა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config Files"
+msgstr "კონფიგურაციის ფაილები"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Add the configuration file %s to Weathermap"
+msgstr "კონფიგურაციის ფაილის %s დამატება Weathermap-ში"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid " Copy"
+msgstr " ასლი"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Duplicate the configuration file %s and add to Weathermap as %s"
+msgstr "კონფიგურაციის ფაილის %s დუბლირება და Weathermap-ში დამატება როგორც %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "View the configuration file %s in a new window"
+msgstr "კონფიგურაციის ფაილის %s ნახვა ახალ ფანჯარაში"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "NOTE: Already in use. Click duplicate to create a new file."
+msgstr "შენიშვნა: უკვე გამოიყენება. ახალი ფაილის შესაქმნელად დააწკაპუნეთ დუბლირებაზე."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No files were found in the configs directory."
+msgstr "configs საქაღალდეში ფაილები ვერ მოიძებნა."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s is not in the config directory."
+msgstr "გზა %s არ არის კონფიგურაციის საქაღალდეში."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Preview of %s"
+msgstr "%s-ის წინასწარი ნახვა"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s does not appear to exist in the config directory"
+msgstr "გზა %s როგორც ჩანს არ არსებობს კონფიგურაციის საქაღალდეში"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Path mismatch"
+msgstr "გზის შეუსაბამობა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr "კონფიგურაციის ფაილი მიუწვდომელია. გთხოვთ, სცადოთ ხელახლა."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "(No Title)"
+msgstr "(სათაურის გარეშე)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr "ახალმა რუკამ სახელით %s ვერ იპოვა კონფიგურაციის ფაილი %s ასლის შესაქმნელად"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr "ახალი რუკის რეგისტრაცია ვერ მოხერხდა."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr "რუკის ასლის შექმნა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
+msgstr "ახალი რუკა სახელით %s შეიქმნა კონფიგურაციის ფაილის %s გამოყენებით"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weathermap Permissions for Map [ %s ]"
+msgstr "Weathermap-ის უფლებები რუკისთვის [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Type"
+msgstr "ტიპი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users"
+msgstr "მომხმარებლები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Groups"
+msgstr "მომხმარებლის ჯგუფები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rows"
+msgstr "მწკრივები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Permissions"
+msgstr "აქვს უფლებები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users or Groups"
+msgstr "მომხმარებლები ან ჯგუფები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Account Type"
+msgstr "ანგარიშის ტიპი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User/Group"
+msgstr "მომხმარებელი/ჯგუფი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Login Realm"
+msgstr "ავტორიზაციის არე"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "UID/GID"
+msgstr "UID/GID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Full Name/Description"
+msgstr "სრული სახელი/აღწერა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Allowed"
+msgstr "ნებადართულია"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User"
+msgstr "მომხმარებელი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Group"
+msgstr "მომხმარებლის ჯგუფი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "N/A"
+msgstr "N/A"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Local"
+msgstr "ლოკალური"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Web Basic"
+msgstr "Web-ით საბაზისო"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "LDAP/AD"
+msgstr "LDAP/AD"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Not Permitted"
+msgstr "აკრძალულია"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Permitted"
+msgstr "ნებადართულია"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users have Access to this Map"
+msgstr "არცერთ მომხმარებელს არ აქვს წვდომა ამ რუკაზე"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Settings [ All Maps ]"
+msgstr "გლობალური პარამეტრები [ ყველა რუკა ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
+msgstr "ყველა რუკისთვის პარამეტრები ჯერ არ არის. შეგიძლიათ დაამატოთ ზედა მარჯვენა კუთხეში პლუსის ნიშანზე '+' დაჭერით, ან მართვის ეკრანიდან აირჩიოთ ერთი რუკა მისთვის პარამეტრების დასამატებლად."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Group Settings [ Group: %s ]"
+msgstr "ჯგუფის პარამეტრების ჩასწორება [ ჯგუფი: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "ამ ჯგუფისთვის პარამეტრები ჯერ არ არის. შეგიძლიათ დაამატოთ ზედა მარჯვენა კუთხეში პლუსის ნიშანზე '+' დაჭერით."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Settings [ Weathermap: %s ]"
+msgstr "რუკის პარამეტრების ჩასწორება [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "ამ რუკისთვის პარამეტრები ჯერ არ არის. შეგიძლიათ დაამატოთ ზედა მარჯვენა კუთხეში პლუსის ნიშანზე '+' დაჭერით."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Usage Notes"
+msgstr "გამოყენების შენიშვნები"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "ამ ჯგუფის ყველა რუკაზე ასევე მოქმედებს შემდეგი გლობალური პარამეტრები (ჯგუფი გადაფარავს გლობალურს, რუკა გადაფარავს ჯგუფს, მაგრამ ორივე გადაფარავს SET ბრძანებებს რუკის კონფიგურაციის ფაილში)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "ამ რუკაზე ასევე მოქმედებს შემდეგი გლობალური და ჯგუფის პარამეტრები (ჯგუფი გადაფარავს გლობალურს, რუკა გადაფარავს ჯგუფს, მაგრამ ორივე გადაფარავს SET ბრძანებებს რუკის კონფიგურაციის ფაილში)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Group Settings [ Group: %s ]"
+msgstr "ჯგუფის პარამეტრები [ ჯგუფი: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Group"
+msgstr "ჯგუფის გარეშე"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Action"
+msgstr "ქმედება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name"
+msgstr "სახელი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Value"
+msgstr "მნიშვნელობა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit this definition"
+msgstr "ამ განსაზღვრების ჩასწორება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Remove this definition from this Map"
+msgstr "ამ განსაზღვრების ამოღება რუკიდან"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Group Admin"
+msgstr "ჯგუფების ადმინისტრირებაზე დაბრუნება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Map Admin"
+msgstr "რუკების ადმინისტრირებაზე დაბრუნება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Settings Found"
+msgstr "პარამეტრები ვერ მოიძებნა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map ID"
+msgstr "რუკის ID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Setting ID"
+msgstr "პარამეტრის ID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The name of the map-global SET variable"
+msgstr "რუკის გლობალური SET ცვლადის სახელი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "What to set it to"
+msgstr "მისანიჭებელი მნიშვნელობა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
+msgstr "ჩასწორება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Setting for all Maps"
+msgstr "გლობალური პარამეტრი ყველა რუკისთვის"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Map Setting [ Weathermap: %s ]"
+msgstr "რუკის პარამეტრი [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Group for Weathermap [ %s ]"
+msgstr "რუკის ჯგუფის ჩასწორება Weathermap-ისთვის [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Choose an existing Group"
+msgstr "აირჩიეთ არსებული ჯგუფი"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Or Create a New Group using the %s Group Management interface %s"
+msgstr "ან შექმენით ახალი ჯგუფი %s ჯგუფების მართვის ინტერფეისის %s გამოყენებით"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Adding a Group"
+msgstr "ჯგუფის დამატება"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Editing Group: %s"
+msgstr "ჯგუფის ჩასწორება: %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name:"
+msgstr "ჯგუფის სახელი:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Update"
+msgstr "განახლება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Add"
+msgstr "დამატება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Map Groups"
+msgstr "რუკის ჯგუფების ჩასწორება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name"
+msgstr "ჯგუფის სახელი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename this Group"
+msgstr "ამ ჯგუფის სახელის გადარქმევა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Group Settings"
+msgstr "ჯგუფის პარამეტრების ჩასწორება"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Groups are defined"
+msgstr "ჯგუფები არ არის განსაზღვრული"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename Weathermap Group"
+msgstr "Weathermap ჯგუფის სახელის გადარქმევა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enter a new name for the Weathermap Group."
+msgstr "შეიყვანეთ ახალი სახელი Weathermap ჯგუფისთვის."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "New Group Name"
+msgstr "ახალი ჯგუფის სახელი"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename"
+msgstr "სახელის გადარქმევა"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the last remaining Map Group."
+msgstr "ბოლო დარჩენილი რუკის ჯგუფის წაშლა შეუძლებელია."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr "რუკის სათაური ზედმეტად გრძელია. ეკრანირების შემდეგ გამოიყენეთ მაქსიმუმ 4088 ბაიტი."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The New Map File name %s already exists!"
+msgstr "ახალი რუკის ფაილის სახელი %s უკვე არსებობს!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Source Map File name is not readable or does not exist!"
+msgstr "საწყისი რუკის ფაილის სახელი არ იკითხება ან არ არსებობს!"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created from %s"
+msgstr "ახალი რუკის ფაილი %s შეიქმნა %s-დან"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created."
+msgstr "ახალი რუკის ფაილი %s შეიქმნა."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You must include a Map File name to Create"
+msgstr "შესაქმნელად უნდა მიუთითოთ რუკის ფაილის სახელი"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermap named \"%s\""
+msgstr "ქსელის Weathermap სახელით \"%s\""
+
+#: weathermap-cacti-plugin.php
+msgid "This map hasn't been created yet."
+msgstr "ეს რუკა ჯერ არ შექმნილა."
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Maps"
+msgstr "რუკების მართვა"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
+msgstr "ქსელის Weathermap-ები [ %sავტომატური ციკლი%s ]"
+
+#: weathermap-cacti-plugin.php
+msgid "(thumbnail for map not created yet)"
+msgstr "(რუკის მინიატურა ჯერ არ შექმნილა)"
+
+#: weathermap-cacti-plugin.php
+msgid "(Live View)"
+msgstr "(ცოცხალი ხედი)"
+
+#: weathermap-cacti-plugin.php
+msgid "You Have No Maps"
+msgstr "თქვენ არ გაქვთ რუკები"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
+msgstr "განრიგში რუკის დასამატებლად გადადით %s მართვა...Weathermap-ების გვერდზე %s და დაამატეთ ერთი."
+
+#: weathermap-cacti-plugin.php
+msgid "Network Weathermaps"
+msgstr "ქსელის Weathermap-ები"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
+msgstr "ნაჩვენებია %s %s (%s %s-დან). მიმდინარეობს ამ ჯგუფის ყველა ხელმისაწვდომი რუკის ციკლური ჩვენება."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps."
+msgstr "ნაჩვენებია %s %s (%s %s-დან). მიმდინარეობს ყველა ხელმისაწვდომი რუკის ციკლური ჩვენება."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Powered by %s PHP Weathermap Version %s %s"
+msgstr "მუშაობს %s PHP Weathermap ვერსია %s %s-ზე"
+
+#: weathermap-cacti-plugin.php
+msgid "Go to the Map Management page"
+msgstr "რუკების მართვის გვერდზე გადასვლა"
+
+#: weathermap-cacti-plugin.php
+msgid "Weathermap Management"
+msgstr "Weathermap-ის მართვა"
+
+#: weathermap-cacti-plugin.php
+msgid "Map to View"
+msgstr "სანახავი რუკა"
+
+#: weathermap-cacti-plugin.php
+msgid "All Maps"
+msgstr "ყველა რუკა"
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr "ციკლის შეჩერება"
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr "წინა"
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr "პაუზა / გაგრძელება"
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr "შემდეგი"
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr "სრული ეკრანიდან გასვლა"
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr "სრული ეკრანი"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr "შემდეგი რუკა %s წმ-ში"
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
+msgstr "დაპაუზებულია"

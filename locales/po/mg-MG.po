@@ -1,0 +1,3088 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-08 18:47-0800\n"
+"PO-Revision-Date: 2026-11-27 18:00-0800\n"
+"Last-Translator: The Cacti Group <developers@cacti.net>\n"
+"Language-Team: Malagasy <developers@cacti.net>\n"
+"Language: mg_MG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr "Misafidiana rakitra PNG, JPG na GIF hatramin'ny 5 MB."
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr "Ampiasao ny POST mba hitahirizana ny fanovana."
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr "Niova ity sarintany ity hatramin'ny nanokafanao azy. Avereno sokafana ny mpanonta alohan'ny hitahirizanao ny fanovanao."
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr "Tsy afaka mamaky ny fikirakirana sarintany."
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.history.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr "Tsy afaka nanidy ny fikirakirana sarintany."
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr "Mbola tondroin'ny fikirakirana sarintany ity sary ity."
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
+msgstr "Tsy afaka namafa ny sary."
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr "Tsy mety ny fandrindrana loko."
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr "Tsy afaka nitahiry ny fikirakirana sarintany."
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr "Tsy mety ny sokajin-tsary."
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr "Tsy azo tantanina eto ny rohy marika (symbolic links)."
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr "Tsy mety ny anaran'ny rakitra sary."
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr "Tsy afaka manamarina ny fanondroana fikirakirana."
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr "Be loatra ny fikirakirana tafiditra mba hojerena."
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr "Tsy azo soratana ny lahatahirin-tsary."
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr "Misafidiana sary PNG, JPG na GIF hatramin'ny 4 tapitrisa piksel."
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr "Tsy afaka novakiana ny sary."
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr "Tsy afaka namandrika anaran-drakitra sary."
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
+msgstr "Tsy afaka nitahiry ny sary."
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr "Misafidiana loko mety."
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr "Tsy mety ny fandrindrana fitepona."
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr "Mila loko tokana ny lafika."
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr "Mitazona andalana maridrefy eo anelanelan'ny 1 sy 200."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr "Ny maridrefy %s dia nofaritana tao amin'ny fikirakirana tafiditra ary vakiana ihany eto. Ovao kosa ny rakitra loharanony."
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr "Tsy mety ny anaran'ny maridrefy."
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr "Tsy mety ny elanelan'ny maridrefy."
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr "Tsy mahazo lehibe noho ny fiafarany ny fanombohan'ny elanelana."
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr "Tsy mety ny mariky ny maridrefy."
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr "Tsy afaka manomboka amin'ny isa feno telo ny marika loko tokana. Manampia teny eo aloha na misafidiana loko fiafaran'ny fiovan-doko."
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr "Mila sanda azo tehirizina tsy misy fanamarihana boribory ny fetran'ny maridrefy. Mampiasà hatramin'ny tarehimarika enina aorian'ny faingo sy singa sakan-dalana marina."
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr "Elanelana miverimberina ao amin'ny maridrefy."
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr "Mila loko roa ny fiovan-doko."
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr "Mitazona elanelana fifamoivoizana DEFAULT iray farafahakeliny."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr "Mbola misy zavatra ao amin'ny sarintany mampiasa ny maridrefy %s."
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt (font %s)"
+msgstr "%s — %s pt (endri-tsoratra %s)"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr "Manga (#0000FF)"
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr "Manga matroka (#003366)"
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr "Manga mpanjaka (#0040C0)"
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr "Maitso manga (#007070)"
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr "Maitso (#008000)"
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr "Volomparasy (#8000C0)"
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr "Lavenona matroka (#333333)"
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr "Mena (#C00000)"
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr "Mainty (#000000)"
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr "Fotsy (#FFFFFF)"
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr "Fifanohirana mandeha ho azy amin'ny lokon'ny rohy"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt"
+msgstr "%s — %s pt"
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr "Endri-tsoratra tafiditra ao"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr "Endri-tsoratra Fanamarihana Rohy"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Style"
+msgstr "Endrika Fanamarihana Rohy"
+
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr "Afovoany"
+
+#: lib/editor.comment-style.php
+msgid "Edge"
+msgstr "Sisiny"
+
+#: lib/editor.comment-style.php
+msgid "Edge places comments beside the link; Centre places them over the arrow."
+msgstr "Ny Sisiny dia mametraka fanamarihana eo akaikin'ny rohy; ny Afovoany dia mametraka azy eo ambonin'ny zana-tsipìka."
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr "Araho ny fiolan'ny rohy"
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr "Fanamarihana Rohy"
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr "Mampiasa endri-tsoratra TrueType. Ny fiolahana tery na ny lahatsoratra lava noho ny rohy dia mampiasa lahatsoratra mahitsy."
+
+#: lib/editor.comment-style.php
+msgid "Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments."
+msgstr "Toerana manaraka ny rohy: ny 0% no tendro voalohany ary ny 100% no faharoa. Mamindra ny mariky ny fifamoivoizana ireto, fa tsy ny fanamarihana."
+
+#: lib/editor.comment-style.php
+msgid "Traffic Label Positions"
+msgstr "Toeran'ny Mariky ny Fifamoivoizana"
+
+#: lib/editor.comment-style.php
+msgid "IN"
+msgstr "MIDITRA"
+
+#: lib/editor.comment-style.php
+msgid "OUT"
+msgstr "MIVOAKA"
+
+#: lib/editor.comment-style.php
+msgid "Comment Style"
+msgstr "Endrika Fanamarihana"
+
+#: lib/editor.comment-style.php
+msgid "Use map default"
+msgstr "Ampiasao ny voafaritra mialoha amin'ny sarintany"
+
+#: lib/editor.comment-style.php
+msgid "Custom positions"
+msgstr "Toerana manokana"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr "Fafao ny rakitra fikirakirana %s"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr "Tena tianao hofafana tanteraka tokoa ve ny rakitra fikirakirana \"%s\"?"
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr "Ilaina ny fotoam-pivoriana mavitrika ho an'ny Ahemory sy Avereno."
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr "Tsy afaka namorona fitahirizana tantaran'ny sarintany manokana."
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr "Tsy manokana ny fitahirizana tantaran'ny sarintany."
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr "Tsy mety ny fitahirizana tantaran'ny sarintany."
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr "Manampy tendro"
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr "Manao dika mitovy tendro"
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr "Mamafa tendro"
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr "Mamindra tendro na fanamarihana"
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr "Manampy rohy"
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr "Mamafa rohy"
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr "Mamindra teboka fivilian'ny rohy"
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr "Mandamina rohy"
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr "Mandamina ny rohy rehetra"
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr "Mandamina ireo rohy"
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr "Manova fanamarihana"
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr "Manafoana fandaminana rohy"
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr "Manova rohy"
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr "Manova tendro"
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr "Manova fikirakirana manta an'ny rohy"
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr "Manova fikirakirana manta an'ny tendro"
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr "Manova toetran'ny sarintany"
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr "Manova endriky ny sarintany"
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr "Manova lokon'ny sarintany"
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr "Mamindra fanazavana"
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr "Mamindra marik'ora"
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr "Manova sarintany"
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr "Tsy misy tantara mifanaraka tavela. Avereno sokafana ny mpanonta."
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr "Tsy afaka mamerina ity sarintany ity. Mety niova ny fikirakirana na ny sary. Avereno sokafana ny mpanonta."
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr "Fangatahana tantara tsy mety."
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr "Niova ity sarintany ity. Avereno sokafana ny mpanonta alohan'ny hampiasana ny Ahemory na Avereno."
+
+#: lib/editor.inc.php
+msgid "Next results"
+msgstr "Vokatra manaraka"
+
+#: lib/editor.inc.php
+msgid "Previous results"
+msgstr "Vokatra teo aloha"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr "Tonga soa eto amin'ny Mpanonta PHP Weathermap %s"
+
+#: lib/editor.inc.php
+msgid "Use the editor to manage nodes, links, notes, colours and image uploads. Edit Raw Configuration provides settings beyond the forms. See the local documentation for workflows and configuration details."
+msgstr "Ampiasao ny mpanonta hitantanana tendro, rohy, fanamarihana, loko ary fampakarana sary. Ny Manova Fikirakirana Manta dia manome fandrindrana mihoatra ny taratasy fenoina. Jereo ny antontan-taratasy eo an-toerana raha mila ny fizotry ny asa sy ny antsipirian'ny fikirakirana."
+
+#: lib/editor.inc.php
+msgid "Do you want to:"
+msgstr "Tianao ve ny:"
+
+#: lib/editor.inc.php
+msgid "Create A New Map:"
+msgstr "Mamorona Sarintany Vaovao:"
+
+#: lib/editor.inc.php
+msgid "Named:"
+msgstr "Mitondra ny anarana:"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-mgmt.php
+msgid "Create"
+msgstr "Mamorona"
+
+#: lib/editor.inc.php
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
+msgstr "Fanamarihana: tsy maintsy mifarana amin'ny .conf ny anaran-drakitra ary tsy misy mpanasaraka lalana na tarehintsoratra fanaraha-maso"
+
+#: lib/editor.inc.php
+msgid "Create Copy"
+msgstr "Mamorona Dika Mitovy"
+
+#: lib/editor.inc.php
+msgid "Ok"
+msgstr "Ekena"
+
+#: lib/editor.inc.php
+msgid "Operation successful"
+msgstr "Nahomby ny asa natao"
+
+#: lib/editor.inc.php
+msgid "The Operation was successful.  Details are below."
+msgstr "Nahomby ny asa natao. Ny antsipiriany dia eto ambany."
+
+#: lib/editor.inc.php
+msgid "Pause"
+msgstr "Ajanony vetivety"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to move the node to."
+msgstr "Tsindrio eo amin'ny sarintany izay tianao hamindrana ny tendro."
+
+#: lib/editor.inc.php
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Tsindrio eo amin'ny sarintany izay teboka tianao hivilian'ny rohy."
+
+#: lib/editor.inc.php
+msgid "Click on the first node for the start of the link."
+msgstr "Tsindrio eo amin'ny tendro voalohany hanombohan'ny rohy."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Tsindrio eo amin'ny sarintany izay tianao hametrahana ny marik'ora."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the legend."
+msgstr "Tsindrio eo amin'ny sarintany izay tianao hametrahana ny fanazavana."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a new node."
+msgstr "Tsindrio eo amin'ny sarintany izay tianao hanampiana tendro vaovao."
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr "−"
+
+#: lib/editor.inc.php
+msgid "No images in this library yet."
+msgstr "Tsy mbola misy sary ato amin'ity tranomboky ity."
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
+msgstr "Misafidiana PNG, JPG na GIF hampiakarina."
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr "Tsy nahomby ny fangatahana. Andramo indray azafady."
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr "Tsy nahomby ny fampakarana."
+
+#: lib/editor.inc.php
+msgid "No gradient"
+msgstr "Tsy misy fiovan-doko"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr "Loko manokana"
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr "Esory ny elanelana"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr "Fafao ny %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr "Hamafa ny sary \"%s\" ao amin'ny mpizara ve?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr "Sary: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr "Voampakatra ny %s"
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr "Marika Ihany"
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr "Tsy misy lafika"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr "Ampiasain'ny: %s"
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr "Tsy ampiasain'ny sarintany"
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr "Tsy misy elanelana DEFAULT. Jereo ny Fandrindrana mandroso raha mila maridrefy misy anarana."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr "Manokana (%s)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr "Ahemory"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr "Avereno"
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr "Tsy misy fanovana sarintany hahemotra na haverina."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr "Ahemory: dingana %s; Avereno: dingana %s."
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr "Tehirizo na foano ny boaty fifanakalozan-kevitra misokatra alohan'ny hampiasana ny Ahemory na Avereno."
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
+msgstr "Mila fitahirizana fotoam-pivoriana ao amin'ny mpitety web ny Ahemory sy Avereno."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr "Tsy afaka nitahiry ny fanovana. Andramo indray azafady."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr "Lokon'ny Lafiky ny Sarintany"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr "Lokon'ny Sisin'ny Rohy"
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr "Ny maridrefy avy amin'ny fikirakirana tafiditra dia vakiana ihany eto. Ovao ny rakitra loharanony mba hanovana azy ireo."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr "Maridrefy"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr "Avy amin'ny (matetika %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr "Hatramin'ny (matetika %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr "Marika"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr "Loko"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr "Fiafaran'ny Fiovan-doko"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr "Mainty"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr "Manga"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr "Maitso"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr "Volondavenona"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr "Tsy misy"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr "Volomboasary"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr "Volomparasy"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr "Mena"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr "Fotsy"
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr "Mikaroka sary famantarana…"
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr "Mikaroka sary famantarana tendro"
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr "Sary famantarana tendro"
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr "Misafidiana sary famantarana"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr "Sary famantarana mifanaraka: %s"
+
+#: lib/editor.inc.php
+msgid "No matching icons"
+msgstr "Tsy misy sary famantarana mifanaraka"
+
+#: lib/editor.inc.php
+msgid "Current interface"
+msgstr "Fifandraisana ankehitriny"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Advanced settings"
+msgstr "Fandrindrana mandroso"
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr "Afeno ny fandrindrana mandroso"
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr "Ampiasao ny fifandraisana"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Traffic interface"
+msgstr "Fifandraisana fifamoivoizana"
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr "Mikaroka fitaovana na fifandraisana"
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr "Tsy misy fifandraisana voafidy"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr "Tsindrio eo amin'ny sarintany izay tianao hanampiana fanamarihana."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr "Fanamarihana"
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr "Fanamafisana Famafana Fanamarihana"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr "Fafao ny Fanamarihana"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr "Hamafa ny fanamarihana \"%s\" ve?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr "Kisary ankehitriny: %s"
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr "Fikirakirana manokana — jereo ny Fandrindrana mandroso"
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr "Misafidiana fifandraisana eto ambany"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr "Sakan-dalana miditra ao amin'ny %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr "Sakan-dalana mivoaka avy amin'ny %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr "Kisary %s — voafidy ny angona, ny toerana aleha rehefa tsindriana ary ny kisary miseho rehefa lalovana. Tehirizo mba hampiharina."
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr "Aseho voalohany rehefa lalovana. Ny Ampiasao ny fifandraisana no mametraka izany mandeha ho azy; ovao ihany raha mila URL topimaso manokana."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr "Fifamoivoizana natambatra avy amin'ny loharano %s"
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr "Nampiana tao amin'ny totalin'ny sarintany ny loharanom-pifamoivoizana. Tsy niova ny kisary rehefa lalovana sy rehefa tsindriana. Tehirizo mba hampiharina."
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr "Efa tafiditra ity loharano ity. Misafidiana loharano hafa ato amin'ity boaty fikarohana ity mba hanampiana bebe kokoa."
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr "Esory ny loharano"
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr "Nesorina ny loharano refesina. Tsy niova ny kisary rehefa lalovana sy rehefa tsindriana. Tehirizo mba hampiharina."
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr "Tsy misy loharanom-pifamoivoizana refesina voafidy."
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr "Misafidiana fifandraisana fanampiny avy amin'ny vokatry ny fikarohana etsy ambony, avy eo tsindrio ny Manampy loharanom-pifamoivoizana."
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr "Voafidy ny fifandraisana fanampiny. Ny Manampy loharanom-pifamoivoizana dia mitazona ny fifandraisana fototra sy ny loharano hafa."
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr "Loharano fototra — ampiasao ny \"Ampiasao ny fifandraisana\" etsy ambony mba hanovana"
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr "Fidio aloha ny fifandraisana fifamoivoizana fototra ao amin'ny taratasy fenoina fototra."
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr "Manampy loharanom-pifamoivoizana fanampiny"
+
+#: lib/editor.inc.php
+msgid "Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link."
+msgstr "Amboary ny toeran'ny mariky ny fifamoivoizana, na mampiasà loharano sy URL manokana. Avelao tsy hiova ny loharano sy URL ho an'ny rohy fifamoivoizana tsotra."
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr "Niova ny loharanom-pifamoivoizana manokana. Tehirizo mba hampiharina. Tsy niova ny kisary rehefa lalovana sy ny toerana aleha rehefa tsindriana."
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr "URL sary fanampiny iray farafahabetsany. Io ihany no topimaso tantanina ao amin'ny Kisary fanampiny miseho rehefa lalovana."
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr "Loharanom-pifamoivoizana"
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr "Tsy voatery: ampio fifandraisana hafa ao amin'ny totalin'ny sarintany. Ovao ao amin'ny taratasy fenoina fototra ny fifandraisana fototra; esory eto ambany ny loharano fanampiny. Tsy miova ny kisary rehefa lalovana sy rehefa tsindriana. Tsy maintsy amboarina manokana ao amin'ny Cacti ny kisary mitambatra mifanaraka aminy. Ny Tehirizo no mampihatra ny fanovana."
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr "Kisary fanampiny"
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr "Tsy misy rakitra RRD voatanisa ho an'ity kisary ity"
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr "Kisary manokana miseho rehefa lalovana"
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr "Esory ny kisary"
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr "Kisary fanampiny iray farafahabetsany. Soloy na esory izy mba hisafidianana iray hafa."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr "Kisary fanampiny miseho rehefa lalovana"
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr "Toerana aleha rehefa tsindriana"
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr "Matetika avela eo amin'ny kisary fifamoivoizana ity. Ovao ihany raha hanokatra kisary na pejy hafa rehefa manindry ny rohy. Tsy manova ny fifamoivoizana refesina na ny kisary miseho rehefa lalovana izany."
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr "Endrika ivelany"
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr "Fahafahana, ohatra 100M na 1G."
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr "Lahatsoratra manaraka ny rohy; ny isan-jato no mametraka ny toerany."
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr "Endrika ivelany sy fanamarihana"
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr "Fanampiana"
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr "Misafidiana fifandraisana fifamoivoizana sy fahafahana, avy eo Tehirizo. Ny Kisary fanampiny miseho rehefa lalovana dia manampy topimaso tsy voatery. Ny Fandrindrana mandroso dia ahitana loharanom-pifamoivoizana sy URL manokana. Ny Manova Fikirakirana Manta dia manova mivantana ny rafitra soratry ny sarintany."
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr "Soraty ny fitaovana na fifandraisana, na jereo daholo"
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr "Jereo daholo"
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr "Misafidiana fifandraisana fototra, avy eo tsindrio ny \"Ampiasao ny fifandraisana\". Tazomina ny loharano fanampiny sy ny kisary miseho rehefa lalovana. Ny Tehirizo no mampihatra ny fanovana."
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr "Mitady fitaovana sy fifandraisana..."
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr "Fifandraisana manokana na tsy misy"
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr "Tsy misy ny anaran'ny fifandraisana"
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr "Anarana aseho"
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr "Sary famantarana"
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr "Karazana kisary"
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr "Kisary miseho rehefa lalovana"
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr "Fafao ny Tendro"
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr "Ho an'ny tendro ampiasaina ho marika na sary famantarana eo amin'ny tendron'ny rohy, dia ampy ny fanaraha-maso fototra. Ny Mandroso dia manampy kisary miseho rehefa lalovana toy ny CPU, tadidy na fifamoivoizana, toerana aleha manokana rehefa tsindriana ary ny ID anatiny an'ny tendro."
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr "Anarana aseho sy sary famantarana: Fidio izay miseho eo amin'ny sarintany. Ny toeran'ny anarana aseho dia mametraka ny anarana eo ambonin'ny sary famantarana. Ny toerana eo amin'ny sarintany (X, Y) dia mametraka ny toeram-pandrindran'ny tendro; ny Afindra dia ahafahanao mametraka ny tendro eo amin'ny sarintany."
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr "Kisary miseho rehefa lalovana: Sivano araka ny karazana kisary ary mikaroha kisary. Ny Manampy dia mampiditra kisary hafa; ny Soloina dia manolo ireo kisary miseho rehefa lalovana efa misy. Ny Tehirizo no mampihatra ny fanovanao."
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr "Mandroso: Ny anarana anatiny no mamantatra ny tendro ao amin'ny fikirakirana sarintany. Ny URL Fampahalalana no mametraka ny toerana aleha rehefa tsindriana; ny URL Kisary Miseho Rehefa Lalovana no mametraka ny sary aseho rehefa lalovana. Ampiasao ireto ho an'ny toerana aleha manokana na kisary ivelany."
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr "Mikaroka fitaovana na kisary"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr "Kisary miseho rehefa lalovana: %s"
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr "kisary tsy misy"
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr "sary manokana"
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr "Tsy misy kisary miseho rehefa lalovana voaomana"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr "ID anatiny an'ny rohy: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr "Tendro: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr "Hanesotra ny rohy eo anelanelan'ny %1$s sy %2$s ve?"
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr "Hijanona ihany ireo tendro sy kisary Cacti."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s from this map?"
+msgstr "Hamafa ny %s ao amin'ity sarintany ity ve?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %s."
+msgstr "Rohy mifandray hesorina: %s."
+
+#: lib/editor.inc.php
+msgid "The Cacti device and its graphs will remain."
+msgstr "Hijanona ihany ny fitaovana Cacti sy ny kisariny."
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "FAMPITANDREMANA: Ny fanindriana ny 'Fafao ny Tendro' dia hamafa ity Tendro ity."
+
+#: lib/editor.inc.php
+msgid "Delete Node Confirmation"
+msgstr "Fanamafisana Famafana Tendro"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "FAMPITANDREMANA: Ny fanindriana ny 'Fafao ny Rohy' dia hamafa ity Rohy ity."
+
+#: lib/editor.inc.php
+msgid "Delete Link Confirmation"
+msgstr "Fanamafisana Famafana Rohy"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cancel"
+msgstr "Foano"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Link"
+msgstr "Fafao ny Rohy"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Position"
+msgstr "Toerana"
+
+#: lib/editor.inc.php
+msgid "Node Actions"
+msgstr "Hetsika Tendro"
+
+#: lib/editor.inc.php
+msgid "Link Actions"
+msgstr "Hetsika Rohy"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Move"
+msgstr "Afindra"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Clone"
+msgstr "Dika mitovy"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr "Ovao ny Fikirakirana Manta"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete"
+msgstr "Fafao"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Via"
+msgstr "Fiviliana"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Tidy"
+msgstr "Alamino"
+
+#: lib/editor.inc.php
+msgid "Properties"
+msgstr "Toetra"
+
+#: lib/editor.inc.php
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Aiza no tokony hakan'ny Weathermap angona ho an'ity rohy ity? Mety ho rakitra RRD izany, na HTML misy fanamarihana manokana ao anatiny (matetika avy amin'ny MRTG)."
+
+#: lib/editor.inc.php
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "Ny sakan'ny zana-tsipìkan'ny rohy hosoritana, amin'ny piksel."
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "Raha mampiasa ny endrika HTML 'overlib' ianao dia ity no URL hosokafana rehefa manindry ny rohy"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "Raha mampiasa ny endrika HTML 'overlib' ianao dia ity no URL-n'ny sary haseho rehefa mandalo eo ambonin'ny rohy"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the first node to the second node"
+msgstr "Ny sakan-dalana avy amin'ny tendro voalohany mankany amin'ny tendro faharoa"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "Ny sakan-dalana avy amin'ny tendro faharoa mankany amin'ny tendro voalohany (raha hafa izany)"
+
+#: lib/editor.inc.php
+msgid "The text that will appear alongside the link"
+msgstr "Ny lahatsoratra hiseho eo akaikin'ny rohy"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "Raha mampiasa ny endrika HTML 'overlib' ianao dia ity no URL hosokafana rehefa manindry ny tendro"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "Raha mampiasa ny endrika HTML 'overlib' ianao dia ity no URL-n'ny sary haseho rehefa mandalo eo ambonin'ny tendro"
+
+#: lib/editor.inc.php
+msgid "How far from the left to position the node, in pixels"
+msgstr "Hatraiza avy eo ankavia no hametrahana ny tendro, amin'ny piksel"
+
+#: lib/editor.inc.php
+msgid "How far from the top to position the node, in pixels"
+msgstr "Hatraiza avy eo ambony no hametrahana ny tendro, amin'ny piksel"
+
+#: lib/editor.inc.php
+msgid "The text that appears on the node"
+msgstr "Ny lahatsoratra miseho eo amin'ny tendro"
+
+#: lib/editor.inc.php
+msgid "The name used for this node when defining links"
+msgstr "Ny anarana ampiasaina ho an'ity tendro ity rehefa mamaritra rohy"
+
+#: lib/editor.inc.php
+msgid "Change to a different file, or start creating a new one."
+msgstr "Mifindrà amin'ny rakitra hafa, na manomboha mamorona iray vaovao."
+
+#: lib/editor.inc.php
+msgid "Add a new node to the map"
+msgstr "Manampy tendro vaovao eo amin'ny sarintany"
+
+#: lib/editor.inc.php
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "Manampy rohy vaovao eo amin'ny sarintany, amin'ny fampifandraisana tendro roa."
+
+#: lib/editor.inc.php
+msgid "Select a different map to edit, or start a new one."
+msgstr "Misafidiana sarintany hafa hovaina, na manomboha iray vaovao."
+
+#: lib/editor.inc.php
+msgid "This is where help appears for links"
+msgstr "Eto no isehoan'ny fanampiana ho an'ny rohy"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for maps"
+msgstr "Eto no isehoan'ny fanampiana ho an'ny sarintany"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for nodes"
+msgstr "Eto no isehoan'ny fanampiana ho an'ny tendro"
+
+#: lib/editor.inc.php
+msgid "or click a Node or Link to edit its properties"
+msgstr "na tsindrio ny Tendro na Rohy iray hanovana ny toetrany"
+
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
+msgid "Docs"
+msgstr "Antontan-taratasy"
+
+#: lib/viewer.controls.php
+msgid "Manage Weathermaps"
+msgstr "Tantano ny Weathermaps"
+
+#: lib/viewer.controls.php setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Settings"
+msgstr "Fandrindrana Sarintany"
+
+#: lib/viewer.controls.php
+msgid "Map Permissions"
+msgstr "Fahazoan-dalana Sarintany"
+
+#: lib/viewer.controls.php setup.php
+msgid "Edit Map"
+msgstr "Ovao ny Sarintany"
+
+#: setup.php
+msgid "Weathermap"
+msgstr "Weathermap"
+
+#: setup.php weathermap-cacti-plugin.php
+msgid "Network Weathermap"
+msgstr "Weathermap Tambajotra"
+
+#: setup.php
+msgid "Debug Mode"
+msgstr "Fomba Fanalana Olana"
+
+#: setup.php
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr "Raha te hahita fampahalalana momba ny sata amin'ny antsipiriany ao amin'ny tantaran'ny Cacti momba ny fizotry ny famoronana weathermap ianao, mariho ity boaty ity."
+
+#: setup.php
+msgid "Info URL Style"
+msgstr "Endrika URL Fampahalalana"
+
+#: setup.php
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr "Rehefa manampy Kisary ho an'ny Tendro na Rohy, aiza no tianao hitodihana rehefa tsindriana amin'ny alalan'ny URL Fampahalalana?  Raha mampiasa ny Fijery Kisary Mahazatra ianao dia afaka manana Kisary maro.  Ho an'ny Fijery ny grafika ara-potoana dia Kisary iray ihany no azonao ananana."
+
+#: setup.php
+msgid "Standard Graph View"
+msgstr "Fijery Kisary Mahazatra"
+
+#: setup.php
+msgid "Time Graph View"
+msgstr "Fijery ny grafika ara-potoana"
+
+#: setup.php
+msgid "Page style"
+msgstr "Endriky ny pejy"
+
+#: setup.php
+msgid "How to display multiple maps."
+msgstr "Fomba fampisehoana sarintany maromaro."
+
+#: setup.php
+msgid "Thumbnail Overview"
+msgstr "Topimaso Sary Kely"
+
+#: setup.php
+msgid "Full Images"
+msgstr "Sary Feno"
+
+#: setup.php
+msgid "Show Only First"
+msgstr "Ny Voalohany Ihany no Aseho"
+
+#: setup.php
+msgid "Thumbnail Maximum Size"
+msgstr "Habe Ambony Indrindra ho an'ny Sary Kely"
+
+#: setup.php
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr "Ny sakany na ny haavony ambony indrindra ho an'ny sary kely amin'ny fijery sary kely, amin'ny piksel. Manan-kery aorian'ny fihodinana manaraka an'ny mpanangona."
+
+#: setup.php
+msgid "Hover Graph Default Width"
+msgstr "Sakan'ny Kisary Miseho Rehefa Lalovana Voafaritra Mialoha"
+
+#: setup.php
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Ny sakany voafaritra mialoha ho an'ny Kisary RRDtool miseho rehefa mandalo eo ambonin'ny Rohy ianao."
+
+#: setup.php
+msgid "Hover Graph Default Height"
+msgstr "Haavon'ny Kisary Miseho Rehefa Lalovana Voafaritra Mialoha"
+
+#: setup.php
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Ny haavony voafaritra mialoha ho an'ny Kisary RRDtool miseho rehefa mandalo eo ambonin'ny Rohy ianao."
+
+#: setup.php
+msgid "Hover Graph Style"
+msgstr "Endriky ny Kisary Miseho Rehefa Lalovana"
+
+#: setup.php
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
+msgstr "Rehefa mandalo eo ambonin'ny Rohy na Tendro, inona no endriky ny Kisary haseho?"
+
+#: setup.php
+msgid "Thumbnail Graphs"
+msgstr "Kisary Sary Kely"
+
+#: setup.php
+msgid "Full Graphs"
+msgstr "Kisary Feno"
+
+#: setup.php
+msgid "Map Processing Timeout"
+msgstr "Fetr'ora Fanodinana Sarintany"
+
+#: setup.php
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr "Hafiriana no avela alohan'ny hahataperan'ny fe-potoana ho an'ny fizotry ny famoronana sarintany isan-potoana."
+
+#: setup.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d minitra"
+
+#: setup.php
+msgid "Refresh Time"
+msgstr "Fotoana Fanavaozana"
+
+#: setup.php
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "Impiry no havaozina ny pejy amin'ny fomba Fihodinana. Ny Mandeha ho azy dia mahatonga ny sarintany rehetra misy hifanaraka ao anatin'ny 5 minitra."
+
+#: setup.php
+msgid "Automatic"
+msgstr "Mandeha ho azy"
+
+#: setup.php
+#, php-format
+msgid "%d Seconds"
+msgstr "%d Segondra"
+
+#: setup.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d minitra"
+
+#: setup.php
+msgid "Output Format"
+msgstr "Endriky ny vokatra"
+
+#: setup.php
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr "Inona no endrika tianao kokoa ho an'ny sary sarintany sy sary kely vokarina?"
+
+#: setup.php
+msgid "PNG (default)"
+msgstr "PNG (voafaritra mialoha)"
+
+#: setup.php
+msgid "JPEG"
+msgstr "JPEG"
+
+#: setup.php
+msgid "GIF"
+msgstr "GIF"
+
+#: setup.php
+msgid "Map Rendering Interval"
+msgstr "Elanelana Famokarana Sarintany"
+
+#: setup.php
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr "Impiry no tianao hanovan'ny Weathermap ny kajy ho an'ny sarintaniny? Tsy tokony hikitika ity ianao raha tsy fantatrao izay ataonao! Ilaina indrindra izy ity ho an'ny olona manana fandaminana fanangonana tsy mahazatra."
+
+#: setup.php
+msgid "Never (manual updates)"
+msgstr "Tsy mihitsy (fanavaozana tanana)"
+
+#: setup.php
+msgid "Every Poller Cycle (default)"
+msgstr "Isaky ny Fihodinana Mpanangona (voafaritra mialoha)"
+
+#: setup.php
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr "Isaky ny Fihodinana Mpanangona %d"
+
+#: setup.php
+msgid "Show Weathermap Help Links"
+msgstr "Asehoy ny Rohy Fanampiana Weathermap"
+
+#: setup.php
+msgid "If checked, all Weathermap pages will include a link to documentation."
+msgstr "Raha voamarika, ny pejy Weathermap rehetra dia ahitana rohy mankany amin'ny antontan-taratasy."
+
+#: setup.php
+msgid "Show 'All' Tab"
+msgstr "Asehoy ny Tabilao 'Rehetra'"
+
+#: setup.php
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr "Rehefa mampiasa vondrona, ampio tabilao 'Sarintany Rehetra' ao amin'ny tsipika tabilao."
+
+#: setup.php
+msgid "No (default)"
+msgstr "Tsia (voafaritra mialoha)"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Yes"
+msgstr "Eny"
+
+#: setup.php
+msgid "Show Map Selector"
+msgstr "Asehoy ny Mpifidy Sarintany"
+
+#: setup.php
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr "Asehoy ny boaty mpifidy sarintany eo amin'ny fijery sarintany efijery feno."
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "No"
+msgstr "Tsia"
+
+#: setup.php
+msgid "Yes (default)"
+msgstr "Eny (voafaritra mialoha)"
+
+#: setup.php
+msgid "Quiet Logging"
+msgstr "Firaketana Mangina"
+
+#: setup.php
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr "Araka ny voafaritra mialoha, na dia amin'ny haavo firaketana LOW aza, dia mirakitra hetsika mahazatra ny Weathermap. Ity dia mahatonga azy hirakitra hadisoana IHANY amin'ny fomba LOW."
+
+#: setup.php
+msgid "Chatty (default)"
+msgstr "Miresaka be (voafaritra mialoha)"
+
+#: setup.php
+msgid "Quiet"
+msgstr "Mangina"
+
+#: setup.php
+msgid "Weathermaps"
+msgstr "Weathermaps"
+
+#: setup.php
+msgid "Weathermap Groups"
+msgstr "Vondrona Weathermap"
+
+#: setup.php
+msgid "Management"
+msgstr "Fitantanana"
+
+#: setup.php
+msgid "View Weathermaps"
+msgstr "Jereo ny Weathermaps"
+
+#: setup.php
+msgid "Edit Weathermaps"
+msgstr "Ovao ny Weathermaps"
+
+#: setup.php
+msgid "Manage Weathermap"
+msgstr "Tantano ny Weathermap"
+
+#: setup.php
+msgid "General Administration"
+msgstr "Fitantanana ankapobeny"
+
+#: setup.php
+msgid "Normal User"
+msgstr "Mpampiasa tsotra"
+
+#: setup.php weathermap-cacti-plugin.php
+#, php-format
+msgid "Map for config file: %s"
+msgstr "Sarintany ho an'ny rakitra fikirakirana: %s"
+
+#: setup.php
+msgid "Choose which weathermap to add to the tree."
+msgstr "Fidio izay weathermap hampidirina ao amin'ny hazo."
+
+#: setup.php
+msgid "Map"
+msgstr "Sarintany"
+
+#: setup.php
+msgid "How should the map be displayed?"
+msgstr "Ahoana no tokony hampisehoana ny sarintany?"
+
+#: setup.php
+msgid "Style"
+msgstr "Endrika"
+
+#: setup.php
+msgid "Thumbnail"
+msgstr "Sary Kely"
+
+#: setup.php
+msgid "Full Size"
+msgstr "Habe Feno"
+
+#: setup.php
+msgid "View Map Image"
+msgstr "Jereo ny Sarin'ny Sarintany"
+
+#: setup.php
+msgid "View Map Thumbnail"
+msgstr "Jereo ny Sary Kelin'ny Sarintany"
+
+#: setup.php
+msgid "Add Map"
+msgstr "Manampy Sarintany"
+
+#: setup.php
+msgid "View Configuration"
+msgstr "Jereo ny Fikirakirana"
+
+#: setup.php
+msgid "Weathermap Editor"
+msgstr "Mpanonta Weathermap"
+
+#: setup.php
+msgid "Edit Permissions"
+msgstr "Ovao ny Fahazoan-dalana"
+
+#: setup.php
+msgid "Map Settings Delete"
+msgstr "Famafana Fandrindrana Sarintany"
+
+#: setup.php
+msgid "Map Settings Update"
+msgstr "Fanavaozana Fandrindrana Sarintany"
+
+#: setup.php
+msgid "Map Settings Add"
+msgstr "Fanampiana Fandrindrana Sarintany"
+
+#: setup.php
+msgid "Permissions Edit"
+msgstr "Fanovana Fahazoan-dalana"
+
+#: setup.php
+msgid "Add User"
+msgstr "Manampy Mpampiasa"
+
+#: setup.php
+msgid "Delete User"
+msgstr "Fafao ny Mpampiasa"
+
+#: setup.php
+msgid "Delete Map"
+msgstr "Fafao ny Sarintany"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Up"
+msgstr "Akisaho Miakatra ny Sarintany"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Down"
+msgstr "Akisaho Midina ny Vondrona"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Up"
+msgstr "Akisaho Miakatra ny Vondrona"
+
+#: setup.php
+msgid "Group Edit"
+msgstr "Fanovana Vondrona"
+
+#: setup.php
+msgid "Group Update"
+msgstr "Fanavaozana Vondrona"
+
+#: setup.php
+msgid "Activate Map"
+msgstr "Alefaso ny Sarintany"
+
+#: setup.php
+msgid "Deactivate Map"
+msgstr "Ajanony ny Sarintany"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Now"
+msgstr "Amboary Indray Ankehitriny"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Change Group"
+msgstr "Ovao ny Vondrona"
+
+#: setup.php
+msgid "Group Admin"
+msgstr "Fitantanana Vondrona"
+
+#: setup.php
+msgid "Group Admin Delete"
+msgstr "Famafana Fitantanana Vondrona"
+
+#: setup.php
+msgid "Manage"
+msgstr "Tantano"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr "Fandrindrana"
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr "Mihodina mandeha ho azy"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "Local Documentation"
+msgstr "Antontan-taratasy Eo an-toerana"
+
+#: setup.php
+#, php-format
+msgid "This is version %s"
+msgstr "Ity ny dikan-teny %s"
+
+#: setup.php
+msgid "Weathermap Website"
+msgstr "Tranonkala Weathermap"
+
+#: weathermap-cacti-plugin-editor.php
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "Mpanonta PHP Weathermap %s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr "Miverina any amin'ny Sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
+msgstr "Miverina any amin'ny Fitantanana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Change<br>File"
+msgstr "Ovao ny<br>Rakitra"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Node"
+msgstr "Ampio<br>Tendro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Link"
+msgstr "Ampio<br>Rohy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr "Ampio<br>Fanamarihana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Legend"
+msgstr "Toerana<br>Fanazavana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Timestamp"
+msgstr "Toerana<br>Marik'ora"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Properties"
+msgstr "Toetran'ny<br>Sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Style"
+msgstr "Endriky ny<br>Sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Colors"
+msgstr "Tantano ny<br>Loko"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Images"
+msgstr "Tantano ny<br>Sary"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Editor<br>Settings"
+msgstr "Fandrindrana<br>Mpanonta"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>---, ---"
+msgstr "Toerana<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
+msgstr "Misafidiana singa menio na tsindrio havanana na tsindrio eo amin'ny Tendro na Rohy hanovana ny toetrany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Debug"
+msgstr "Manala olana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy ALL"
+msgstr "Alamino Indray REHETRA"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy"
+msgstr "Alamino indray"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Un-tidy"
+msgstr "Foano ny fandaminana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Do Nothing"
+msgstr "Tsy Manao Na Inona Na Inona"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "mapfile"
+msgstr "mapfile"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "action"
+msgstr "action"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param"
+msgstr "param"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param2"
+msgstr "param2"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "debug"
+msgstr "debug"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "See config"
+msgstr "Jereo ny fikirakirana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr "Lahatsoratra"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr "Havia"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr "Havanana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr "Fampifanarahana lahatsoratra"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr "Endri-tsoratra"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr "Lokon'ny fanamarihana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr "Tehirizo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Properties"
+msgstr "Toetran'ny Tendro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr "Toerana eo amin'ny sarintany (X, Y)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Internal Name"
+msgstr "Anarana Anatiny"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr "Ambany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr "Manokana (fikirakirana manta)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr "Toeran'ny anarana aseho"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr "Afovoany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr "Ambony indrindra"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Icon Filename"
+msgstr "Anaran-drakitry ny Sary Famantarana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Info URL(s)"
+msgstr "URL Fampahalalana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover Graph URL(s)"
+msgstr "URL Kisary Miseho Rehefa Lalovana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Template"
+msgstr "Modely kisary"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "All"
+msgstr "Rehetra"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Selector"
+msgstr "Mpifidy Kisary"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "Azonao ovaina eto ny Tendro Weathermap.  Ny tsanganana Toerana no toerana X,Y eo amin'ny Sarintany.  Ny Anarana Anatiny no ID tokana omena ny Tendro.  Ny Marika no anarana ivelany an'ny Tendro omenao ny mpampiasa.  Ny Anaran-drakitry ny Sary Famantarana no Sary tianao hanehoana ny Zavatra Tendro.  Ny URL Fampahalalana dia rohy azonao omena rehefa manindry ny Tendro Sarintany mavitrika.  Ny URL Kisary Miseho Rehefa Lalovana dia URL Kisary Cacti na hafa izay hiseho rehefa mandalo eo ambonin'ny Tendro.  Ny Mpifidy Kisary dia mpanampy hisafidianana Kisary Cacti ho an'ny URL Kisary.   Misy toetra Tendro hafa maro azo atao.  Na izany aza, amin'izao fotoana izao dia ireo voalaza etsy ambony ireo ihany no tohananay."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Properties"
+msgstr "Toetran'ny Rohy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Into"
+msgstr "Miditra ao amin'ny"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Maximum Bandwidth"
+msgstr "Sakan-dalana Ambony Indrindra"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Out of"
+msgstr "Mivoaka avy amin'ny"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Via Style"
+msgstr "Endriky ny Fiviliana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Curved"
+msgstr "Miolaka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Angled"
+msgstr "Misy zoro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr "Loharanom-pifamoivoizana refesina"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Data Source Selector"
+msgstr "Mpifidy Loharanon'angona"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr "Manampy loharanom-pifamoivoizana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Width"
+msgstr "Sakan'ny Rohy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr "URL toerana aleha rehefa tsindriana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr "URL kisary fototra miseho rehefa lalovana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr "Aseho voalohany. Apetraky ny Ampiasao ny fifandraisana; miseho eo ambaniny ny kisary fanampiny."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr "Maneho hatramin'ny kisary roa miseho rehefa lalovana: ny kisary fifamoivoizana fototra sy topimaso fanampiny iray toy ny CPU, fahatarana na hafa. Ny Soloina dia tsy manova afa-tsy ny kisary fanampiny."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr "URL kisary fanampiny"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr "URL kisary fanampiny miseho rehefa lalovana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr "Sivano araka ny karazana kisary"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr "Misafidiana kisary miseho rehefa lalovana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr "Manampy kisary miseho rehefa lalovana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr "Soloy ny kisary miseho rehefa lalovana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "IN Comment"
+msgstr "Fanamarihana MIDITRA"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "OUT Comment"
+msgstr "Fanamarihana MIVOAKA"
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
+msgstr ""
+"<p><strong>Sakan-dalana:</strong> Apetraho ny fahafahana ampiasaina hikajiana ny taham-pampiasana, ohatra 100M na 1G. Tohanana ny K, M, G ary T. Fidio ny Mitovy amin'ny &quot;Miditra&quot; rehefa mitovy ny fahafahana amin'ny lalana roa.</p>\n"
+"<p><strong>Fifandraisana fifamoivoizana:</strong> Mikaroha araka ny fitaovana, seranana na famaritana, na safidio ny Jereo daholo. Fidio ny fifandraisana iray, avy eo tsindrio ny Ampiasao ny fifandraisana hametrahana ny loharano refesina fototra, ny toerana aleha rehefa tsindriana ary ny kisary fototra miseho rehefa lalovana. Tazomina ny loharano refesina fanampiny sy ny kisary miseho rehefa lalovana.</p>\n"
+"<p><strong>Endrika ivelany sy fanamarihana:</strong> Ny Endriky ny Fiviliana no mifehy ny fiolahana miolaka na misy zoro; ny Sakan'ny Rohy no mifehy ny hatevin'ny zana-tsipìka. Ny Fanamarihana MIDITRA sy Fanamarihana MIVOAKA dia manampy lahatsoratra manaraka ny lalana tsirairay. Ny isan-jato no mametraka ny toeran'ny lahatsoratra manaraka ny rohy. Ny Endrika Fanamarihana dia mametraka fanamarihana eo akaikin'ny rohy (Sisiny) na eo ambonin'ny zana-tsipìka (Afovoany); ny Ampiasao ny voafaritra mialoha amin'ny sarintany dia manaraka ny Endriky ny Sarintany.</p>\n"
+"<p><strong>Kisary fanampiny miseho rehefa lalovana:</strong> Maneho kisary roa farafahabetsany rehefa lalovana: ny kisary fifamoivoizana fototra ary iray fanampiny, toy ny CPU, fahatarana na fifandraisana hafa. Ny Sivano araka ny karazana kisary dia mametra ny safidy. Ny Manampy kisary miseho rehefa lalovana dia manampy ilay fanampiny; ny Soloy ny kisary miseho rehefa lalovana dia manova azy; ny Esory ny kisary dia manala azy. Tsy miova ny kisary fifamoivoizana fototra, ny fifamoivoizana refesina ary ny toerana aleha rehefa tsindriana ny rohy. Ao amin'ny mpijery, ny topimaso Cacti tsirairay dia manokatra ny kisary fenony manokana rehefa tsindriana.</p>\n"
+"<p><strong>Fandrindrana mandroso:</strong> Fanaraha-maso tsy voatery hamindrana ny mariky ny fifamoivoizana MIDITRA/MIVOAKA, hanambarana loharano refesina, hanovana ny toerana aleha rehefa tsindriana ary hampidirana URL sary manokana miseho rehefa lalovana. Ny toeran'ny mariky ny fifamoivoizana dia mamindra ny boaty taham-pampiasana manaraka ny rohy, tsy miankina amin'ny toeran'ny fanamarihana. Ny Ampiasao ny voafaritra mialoha amin'ny sarintany dia manaraka ny Endriky ny Sarintany. Ny rohy fifamoivoizana mahazatra dia matetika tsy mila fanovana eto.</p>\n"
+"<p><strong>Fanambarana loharanom-pifamoivoizana:</strong> Ny Manampy loharanom-pifamoivoizana dia manampy fifandraisana hafa ao amin'ny totalin'ny sarintany, misaraka ho an'ny MIDITRA sy MIVOAKA. Ny Esory ny loharano dia manala loharano fanampiny. Ovao ny loharano fototra amin'ny alalan'ny Ampiasao ny fifandraisana etsy ambony. Ampitahaina amin'ny sakan-dalana voaomana ny fifamoivoizana natambatra mba hikajiana ny taham-pampiasana. Tsy misy kisary Cacti natambatra foronina mandeha ho azy; mamorona kisary mitambatra mifanaraka ao amin'ny Cacti ary ampidiro ny URL tsindriana sy lalovana raha ilaina. Matetika mazava kokoa ny rohy sarintany misaraka ho an'ny fifandraisana fototra sy tahiry.</p>\n"
+"<p><strong>Loharano sy URL ampidirina tanana:</strong> Ny boaty lahatsoratra loharano dia manova ny lisitra feno an'ny loharano refesina, tafiditra ao ny loharano fototra. Ny URL toerana aleha rehefa tsindriana no mifehy izay aleha rehefa tsindriana ny rohy sarintany. Ny URL kisary fototra miseho rehefa lalovana no mametraka ny topimaso voalohany; ny URL kisary fanampiny dia manaiky URL sary fanampiny iray. Tantanina ao amin'ny Kisary fanampiny miseho rehefa lalovana koa ity fanampiny ity.</p>\n"
+"<p><strong>Alamino sy Fiviliana:</strong> Ny Alamino dia manitsy ny fandaminana ny rohy. Ny Fiviliana dia ahafahanao mametraka teboka fiolahana eo amin'ny sarintany.</p>\n"
+"<p><strong>Ovao ny Fikirakirana Manta:</strong> Ovao ny rafitra soratry ny sarintany ambany ho an'ny fandrindrana mihoatra ity taratasy fenoina ity.</p>"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Properties"
+msgstr "Toetran'ny Sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr "Antsipirian'ny Sarintany"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Title"
+msgstr "Lohatenin'ny Sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Text"
+msgstr "Lahatsoratry ny Fanazavana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Timestamp Text"
+msgstr "Lahatsoratry ny Marik'ora"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr "Lafika sy Lamba Fisoritana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr "Sary Lafika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr "(tsy misy sary azo ampiasaina)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr "--TSY MISY LAFIKA--"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr "Ampiasao ny Lokon'ny Lafiky ny Sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
+msgstr "Aseho rehefa tsy misy sary, na manerana ireo faritra mangarahara ao aminy."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr "Fandrefesana ny lafika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr "Mifanaraka amin'ny sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr "Avelatra hifanaraka amin'ny sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr "Ampiasao ny haben'ny sary"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Size"
+msgstr "Haben'ny Sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "pixels"
+msgstr "piksel"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Capacity"
+msgstr "Fahafahan'ny Rohy Voafaritra Mialoha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Bandwidth"
+msgstr "Sakan-dalan'ny Rohy Voafaritra Mialoha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec in"
+msgstr "bit/seg miditra"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec out"
+msgstr "bit/seg mivoaka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style."
+msgstr "Apetraho ny lohateny, ny fanazavana, ny marik'ora, ny lafika ary ny haben'ny lamba fisoritan'ny sarintany, miampy ny sakan-dalana voafaritra mialoha ho an'ny rohy. Refesina amin'ny piksel ny haben'ny sarintany; ao amin'ny Endriky ny Sarintany ny endrika ivelany voafaritra mialoha ho an'ny rohy."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Style"
+msgstr "Endriky ny Sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Defaults"
+msgstr "Voafaritra Mialoha ho an'ny Sarintany"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "HTML Style"
+msgstr "Endrika HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Dynamic HTML"
+msgstr "HTML Mavitrika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Static HTML"
+msgstr "HTML Tsy Miova"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Key Style"
+msgstr "Endriky ny Fanazavana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Classic"
+msgstr "Klasika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Horizontal"
+msgstr "Mitsivalana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Vertical"
+msgstr "Mitsangana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Inverted"
+msgstr "Mivadika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Tags"
+msgstr "Marika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Font"
+msgstr "Endri-tsoratry ny Fanazavana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Defaults"
+msgstr "Voafaritra Mialoha ho an'ny Tendro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Font"
+msgstr "Endri-tsoratry ny Tendro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance Defaults"
+msgstr "Voafaritra Mialoha ho an'ny Endrika Ivelany Rohy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
+msgstr "Sakan'ny Rohy Voafaritra Mialoha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Labels"
+msgstr "Mariky ny Rohy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bits/sec"
+msgstr "Bits/seg"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Percentage"
+msgstr "Isan-jato"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Arrow Style"
+msgstr "Endriky ny Zana-tsipìka"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Compact"
+msgstr "Fohy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Label Font"
+msgstr "Endri-tsoratry ny Mariky ny Fifamoivoizana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr "Mampiasa piksel ny refin'ny fandalovana. Apetraho 0 raha habe mandeha ho azy. Ny sakany no mametra ny haben'ny topimaso; ny haavony dia soso-kevitra taloha ary mety tsy hanova ny haavo aseho. Afaka mamaritra ny haben'ny sariny manokana ny URL Kisary."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr "Sakan'ny Fandalovana Tendro (piksel)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr "Haavon'ny Fandalovana Tendro (piksel)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr "Sakan'ny Fandalovana Rohy (piksel)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
+msgstr "Haavon'ny Fandalovana Rohy (piksel)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr "Tantano ny Loko"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr "Endrika Ivelany Rohy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Comment Colour"
+msgstr "Lokon'ny Fanamarihana Rohy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr " Mitepo ny rohy amin'ny 80%+"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr "Ny rohy manana taham-pampiasana 80% na mihoatra dia mitepo amin'ny lokon'ny fifamoivoizany."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr "Lokon'ny Vesatry ny Fifamoivoizana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr "Loko voaomana mialoha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr "Manokana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr "Voafaritra mialoha (Klasika)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr "Maitso / Mavo / Mena"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr "Ranomandry Ririnina"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr "Maitso Maoderina"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr "Manga Ranomasina"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr "Volomparasy / Volomboasary / Mena"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr "Mavo Fiposahan'ny Masoandro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr "Mampiseho ny habetsaky ny sakan-dalan'ny rohy ampiasaina ny loko. Ohatra, ny 75% dia midika hoe telo ampahefatry ny fahafahany."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr "Manolo ny maridrefy fifamoivoizana DEFAULT ny loko voaomana mialoha rehefa mitahiry ianao. Tazomina ny maridrefy hafa misy anarana."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr "Elanelana loko iray ny andalana tsirairay. Ny Avy amin'ny sy Hatramin'ny no fetrany, ny Loko no famenoana, ary ny Fiafaran'ny Fiovan-doko dia mifangaro mankany amin'ny loko hafa. Ny Marika dia manampy lahatsoratra fanazavana tsy voatery. Ny anaran'ny maridrefy no manambatra elanelana; ny DEFAULT no maridrefy fifamoivoizana mahazatra. Afaka mampiasa singa hafa ny maridrefy manokana."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr "Manampy elanelana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr "Mampiasa ny singa voaomana ho an'ny rohy na tendro tsirairay ny elanelan'ny maridrefy; matetika mampiasa isan-jato ny rohy fifamoivoizana."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr "Tantano ny Sary"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr "Sary Famantarana Tendro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr "Mampakatra Sary Famantarana Tendro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr "Mampakatra sary famantarana tendro"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr "Sary famantarana tendro efa misy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr "Sary Lafika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr "Mampakatra Lafika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr "Mampakatra lafika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr "Sary lafika efa misy"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr "Akatony"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
+msgstr "Rakitra PNG, JPG/JPEG na GIF hatramin'ny 5 MB sy 4 tapitrisa piksel. Ny fampakarana GIF dia mampiasa ny sary voalohany. Tehirizina avy hatrany ny fampakarana. Tsy azo fafana ny sary tondroin'ny fikirakirana sarintany."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr "Ovao ny fikirakirana manta ho an'ity zavatra sarintany ity."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr "Mandroso: tehirizina mivantana ao amin'ny fikirakirana sarintany tsy misy fanamarinana rafitra soratra ny fanovana. Ampiasao ny Toetra ho an'ny fanaraha-maso fanovana mahazatra."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr "Sosona ambony"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
+msgstr "Fametrahana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate"
+msgstr "Dika mitovy"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable"
+msgstr "Ajanony"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable"
+msgstr "Alefa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Grant Access"
+msgstr "Fanomezana fahazoana miditra"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Revoke Access"
+msgstr "Fanafoanana ny fahazoana miditra"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No such file."
+msgstr "Tsy misy rakitra toy izany."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s deleted."
+msgstr "Voafafa ny rakitra fikirakirana %s."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr "Ampiasain'ny sarintany ny rakitra fikirakirana %s. Esory aloha io sarintany io."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr "Tsy afaka namafa ny rakitra fikirakirana."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "All Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Vita ny fanamboarana indray ny Sarintany Rehetra tao anatin'ny %0.2f Segondra!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Editor directory permissions are not correct!"
+msgstr "Tsy mety ny fahazoan-dalana amin'ny lahatahiry mpanonta!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
+msgstr "Tsy maintsy manana fahazoana miditra ao amin'ny lahatahiry fikirakirana WeatherMap ny kaontin'ny Serivisy Web izay tsy ananany.  Ahitsio ity olana ity, ary avereno alefa ny Mpanonta"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Weathermap Permission Error"
+msgstr "Hadisoana Fahazoan-dalana Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Continue"
+msgstr "Tohizo"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Vita ny fanamboarana indray ny Sarintany Voafidy %d tao anatin'ny %0.2f Segondra!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to delete the following Weather Map."
+msgid_plural "Click 'Continue' to delete following Weather Maps."
+msgstr[0] "Tsindrio ny 'Tohizo' hamafana ity Sarintany Weathermap manaraka ity."
+msgstr[1] "Tsindrio ny 'Tohizo' hamafana ireto Sarintany Weathermap manaraka ireto."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete Weather Map"
+msgid_plural "Delete Weather Maps"
+msgstr[0] "Fafao ny Sarintany Weathermap"
+msgstr[1] "Fafao ireo Sarintany Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Tsindrio ny 'Tohizo' hanaovana dika mitovy ity Sarintany Weathermap manaraka ity. Azonao ovaina raha tianao ny endriky ny lohateny ho an'ny Sarintany Weathermap vaovao."
+msgstr[1] "Tsindrio ny 'Tohizo' hanaovana dika mitovy ireto Sarintany Weathermap manaraka ireto. Azonao ovaina raha tianao ny endriky ny lohateny ho an'ireo Sarintany Weathermap vaovao."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title Format:"
+msgstr "Endriky ny Lohateny:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File Format:"
+msgstr "Endriky ny Rakitra Fikirakirana:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate Weather Map"
+msgid_plural "Duplicate Weather Maps"
+msgstr[0] "Dika Mitovy Sarintany Weathermap"
+msgstr[1] "Dika Mitovy ireo Sarintany Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Tsindrio ny 'Tohizo' hampijanona ity Sarintany Weathermap manaraka ity. Azonao ovaina raha tianao ny endriky ny lohateny ho an'ny Sarintany Weathermap vaovao."
+msgstr[1] "Tsindrio ny 'Tohizo' hampijanona ireto Sarintany Weathermap manaraka ireto. Azonao ovaina raha tianao ny endriky ny lohateny ho an'ireo Sarintany Weathermap vaovao."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable Weather Map"
+msgid_plural "Disable Weather Maps"
+msgstr[0] "Ajanony ny Sarintany Weathermap"
+msgstr[1] "Ajanony ireo Sarintany Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Tsindrio ny 'Tohizo' handefasana ity Sarintany Weathermap manaraka ity. Azonao ovaina raha tianao ny endriky ny lohateny ho an'ny Sarintany Weathermap vaovao."
+msgstr[1] "Tsindrio ny 'Tohizo' handefasana ireto Sarintany Weathermap manaraka ireto. Azonao ovaina raha tianao ny endriky ny lohateny ho an'ireo Sarintany Weathermap vaovao."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable Weather Map"
+msgid_plural "Enable Weather Maps"
+msgstr[0] "Alefaso ny Sarintany Weathermap"
+msgstr[1] "Alefaso ireo Sarintany Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Tsindrio ny 'Tohizo' hanamboarana indray ity Sarintany Weathermap manaraka ity. Azonao ovaina raha tianao ny endriky ny lohateny ho an'ny Sarintany Weathermap vaovao."
+msgstr[1] "Tsindrio ny 'Tohizo' hanamboarana indray ireto Sarintany Weathermap manaraka ireto. Azonao ovaina raha tianao ny endriky ny lohateny ho an'ireo Sarintany Weathermap vaovao."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Weather Map"
+msgid_plural "Rebuild Weather Maps"
+msgstr[0] "Amboary Indray ny Sarintany Weathermap"
+msgstr[1] "Amboary Indray ireo Sarintany Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weather Maps [ Run Details: %s ]"
+msgstr "Sarintany Weathermap [ Antsipirian'ny Fandehanana: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Search"
+msgstr "Fikarohana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Maps"
+msgstr "Sarintany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Default"
+msgstr "Voafaritra mialoha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: use filter settings"
+msgid "Go"
+msgstr "Alefa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: reset filter settings"
+msgid "Clear"
+msgstr "Fafao"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Settings"
+msgstr "Fandrindrana Vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Map Settings"
+msgstr "Fandrindrana Sarintany Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Settings"
+msgstr "Fandrindrana Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild All"
+msgstr "Amboary Indray Rehetra"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild all maps now in background"
+msgstr "Amboary indray ny sarintany rehetra any ambadika ankehitriny"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
+msgstr "Mampiasa ny fanampiny Boost ianao hanavaozana ny rakitra RRD. Satria mampitarazoka ny fanoratana angona ao amin'ny rakitra izany, dia miteraka olana amin'ny fanavaozana Weathermap. Azonao vahana izany amin'ny fampiasana ny fanohanana 'poller_output' an'ny Weathermap, izay maka mivantana ny angona avy amin'ny mpanangona. %s Azonao alefa amin'ny ankapobeny izany amin'ny fanindriana eto %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
+msgstr "Tamin'ny fandehanany farany, TSY nahavita ny fandehanany ny Weathermap. Tsy nahomby izy nandritra ny fanodinana ny '%s'"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
+msgstr "<strong>Mety</strong> nisy fiantraikany tamin'ny fanampiny hafa mandeha mandritra ny fizotry ny mpanangona izany."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
+msgstr "Tokony hampijanona ity Sarintany ity ianao, na hitady ny olana. Anisan'ny antony mety ho izy ny olan'ny memory_limit. Mety ahitana fampahalalana bebe kokoa ny tantara."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title"
+msgstr "Lohateny"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File"
+msgstr "Rakitra Fikirakirana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "ID"
+msgstr "ID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group"
+msgstr "Vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enabled"
+msgstr "Mavitrika"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Sort Order"
+msgstr "Filaharan'ny Fandaminana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Order"
+msgstr "Filaharana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Accessible By"
+msgstr "Azon'iza Idirana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Duration"
+msgstr "Faharetana Farany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Runtime"
+msgstr "Faharetan'ny fampandehanana farany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Anyone"
+msgstr "Na iza na iza"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to start editor with this file"
+msgstr "Tsindrio hanombohana ny mpanonta miaraka amin'ity rakitra ity"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Check cacti.log for this Map"
+msgstr "Jereo ny cacti.log ho an'ity Sarintany ity"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to change group"
+msgstr "Tsindrio hanovana vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Deactivate"
+msgstr "Tsindrio hampijanona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Activate"
+msgstr "Tsindrio handefasana"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Specials"
+msgstr "%d Manokana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Standard"
+msgstr "Mahazatra"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Down"
+msgstr "Akisaho Midina ny Sarintany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to edit permissions"
+msgstr "Tsindrio hanovana fahazoan-dalana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users"
+msgstr "Tsy misy Mpampiasa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Users"
+msgstr "Mpampiasa Rehetra"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Groups"
+msgstr "Vondrona %d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 Group"
+msgstr "Vondrona 1"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Users"
+msgstr "Mpampiasa %d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 User"
+msgstr "Mpampiasa 1"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Weathermaps Found"
+msgstr "Tsy nisy Weathermaps hita"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
+msgstr "Tsy misy lahatahiry mitondra ny anarana %s.  Tsy maintsy mamorona azy ianao, ary mametraka azy ho azon'ny mpizara web vakiana. Raha te hampakatra rakitra fikirakirana avy ao anatin'ny Cacti ianao, dia tsy maintsy <i>azo soratana</i> amin'ny mpizara web koa izy."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Existing Configuration Files"
+msgstr "Rakitra Fikirakirana Efa Misy"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Num Files"
+msgstr "Isan'ny Rakitra"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Maps"
+msgstr "Manana Sarintany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Go"
+msgstr "Alefa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Set/Refresh Filters"
+msgstr "Hametraka/Hanavao sivana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear"
+msgstr "Fafao"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear Filters"
+msgstr "Esory ny sivana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Options"
+msgstr "Safidy Famoronana"
+
+#: weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "New Map"
+msgstr "Sarintany Vaovao"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name including .conf"
+msgstr "Anarana miaraka amin'ny .conf"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr "Lohatenin'ny sarintany tsy voatery"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Source Map"
+msgstr "Sarintany Loharano"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Empty File"
+msgstr "Rakitra Foana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Actions"
+msgstr "Hetsika"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Date"
+msgstr "Daty namoronana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Modified"
+msgstr "Fanovana farany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Size"
+msgstr "Habe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config Files"
+msgstr "Rakitra Fikirakirana"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Add the configuration file %s to Weathermap"
+msgstr "Ampio ao amin'ny Weathermap ny rakitra fikirakirana %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid " Copy"
+msgstr " Dika mitovy"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Duplicate the configuration file %s and add to Weathermap as %s"
+msgstr "Ataovy dika mitovy ny rakitra fikirakirana %s ary ampio ao amin'ny Weathermap amin'ny anarana %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "View the configuration file %s in a new window"
+msgstr "Jereo ao amin'ny varavarankely vaovao ny rakitra fikirakirana %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "NOTE: Already in use. Click duplicate to create a new file."
+msgstr "FANAMARIHANA: Efa ampiasaina. Tsindrio ny dika mitovy hamoronana rakitra vaovao."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No files were found in the configs directory."
+msgstr "Tsy nisy rakitra hita tao amin'ny lahatahiry configs."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s is not in the config directory."
+msgstr "Tsy ao amin'ny lahatahiry fikirakirana ny lalana %s."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Preview of %s"
+msgstr "Topimason'ny %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s does not appear to exist in the config directory"
+msgstr "Toa tsy misy ao amin'ny lahatahiry fikirakirana ny lalana %s."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Path mismatch"
+msgstr "Tsy mifanaraka ny lalana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr "Tsy misy ny rakitra fikirakirana. Andramo indray azafady."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "(No Title)"
+msgstr "(Tsy misy Lohateny)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr "Ny Sarintany vaovao mitondra ny anarana %s dia tsy nahita ny rakitra fikirakirana %s hatao dika mitovy"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr "Tsy afaka nisoratra anarana ny sarintany vaovao."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr "Tsy afaka namorona ny dika mitovin'ny sarintany. Andramo indray azafady."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
+msgstr "Ny Sarintany vaovao mitondra ny anarana %s dia noforonina tamin'ny fampiasana ny rakitra fikirakirana %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weathermap Permissions for Map [ %s ]"
+msgstr "Fahazoan-dalana Weathermap ho an'ny Sarintany [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Type"
+msgstr "Karazana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users"
+msgstr "Mpampiasa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Groups"
+msgstr "Vondron'ny mpampiasa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rows"
+msgstr "Andalana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Permissions"
+msgstr "Manana Fahazoan-dalana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users or Groups"
+msgstr "Mpampiasa na Vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Account Type"
+msgstr "Karazana Kaonty"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User/Group"
+msgstr "Mpampiasa/Vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Login Realm"
+msgstr "Faritra Fidirana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "UID/GID"
+msgstr "UID/GID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Full Name/Description"
+msgstr "Anarana Feno/Famaritana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Allowed"
+msgstr "Avela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User"
+msgstr "Mpampiasa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Group"
+msgstr "Vondron'ny Mpampiasa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "N/A"
+msgstr "Tsy misy"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Local"
+msgstr "Eto an-toerana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Web Basic"
+msgstr "Web Fototra"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "LDAP/AD"
+msgstr "LDAP/AD"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Not Permitted"
+msgstr "Tsy Avela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Permitted"
+msgstr "Avela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users have Access to this Map"
+msgstr "Tsy misy Mpampiasa manana Fahazoana miditra amin'ity Sarintany ity"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Settings [ All Maps ]"
+msgstr "Fandrindrana Ankapobeny [ Sarintany Rehetra ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
+msgstr "Tsy mbola misy Fandrindrana ho an'ny Sarintany Rehetra. Afaka manampy ianao amin'ny fanindriana ny marika fanampiana '+' eo ambony ankavanana, na misafidiana Sarintany tokana avy amin'ny efijery fitantanana hanampiana Fandrindrana ho an'izany Sarintany izany."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Group Settings [ Group: %s ]"
+msgstr "Ovao ny Fandrindrana Vondrona [ Vondrona: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Tsy mbola misy Fandrindrana isaky ny Vondrona ho an'ity Vondrona ity. Afaka manampy ianao amin'ny fanindriana ny marika fanampiana '+' eo ambony ankavanana."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Settings [ Weathermap: %s ]"
+msgstr "Ovao ny Fandrindrana Sarintany [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Tsy mbola misy fandrindrana isaky ny Sarintany ho an'ity Sarintany ity. Afaka manampy ianao amin'ny fanindriana ny marika fanampiana '+' eo ambony ankavanana."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Usage Notes"
+msgstr "Fanamarihana Fampiasana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Voakasik'ireto Fandrindrana Ankapobeny manaraka ireto koa ny Sarintany Rehetra ao amin'ity Vondrona ity (ny Vondrona manafoana ny Ankapobeny, ny Sarintany manafoana ny Vondrona, saingy SAMY manafoana ny baiko SET ao anatin'ny Rakitra Fikirakirana Sarintany izy ROA)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Voakasik'ireto Fandrindrana Ankapobeny sy Vondrona manaraka ireto koa ity Sarintany ity (ny Vondrona manafoana ny Ankapobeny, ny Sarintany manafoana ny Vondrona, saingy SAMY manafoana ny baiko SET ao anatin'ny Rakitra Fikirakirana Sarintany izy ROA)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Group Settings [ Group: %s ]"
+msgstr "Fandrindrana Vondrona [ Vondrona: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Group"
+msgstr "Tsy misy Vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Action"
+msgstr "Hetsika"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name"
+msgstr "Anarana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Value"
+msgstr "Sanda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit this definition"
+msgstr "Ovao ity famaritana ity"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Remove this definition from this Map"
+msgstr "Esory ao amin'ity Sarintany ity ity famaritana ity"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Group Admin"
+msgstr "Miverina any amin'ny Fitantanana Vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Map Admin"
+msgstr "Miverina any amin'ny Fitantanana Sarintany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Settings Found"
+msgstr "Tsy nisy Fandrindrana hita"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map ID"
+msgstr "ID-n'ny Sarintany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Setting ID"
+msgstr "ID-n'ny Fandrindrana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The name of the map-global SET variable"
+msgstr "Ny anaran'ny variable SET ankapobeny amin'ny sarintany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "What to set it to"
+msgstr "Ny sanda hapetraka aminy"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
+msgstr "Ovao"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Setting for all Maps"
+msgstr "Fandrindrana Ankapobeny ho an'ny Sarintany rehetra"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Map Setting [ Weathermap: %s ]"
+msgstr "Fandrindrana Sarintany [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Group for Weathermap [ %s ]"
+msgstr "Ovao ny Vondrona Sarintany ho an'ny Weathermap [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Choose an existing Group"
+msgstr "Misafidiana Vondrona efa misy"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Or Create a New Group using the %s Group Management interface %s"
+msgstr "Na Mamorona Vondrona Vaovao amin'ny fampiasana ny %s fifandraisana Fitantanana Vondrona %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Adding a Group"
+msgstr "Manampy Vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Editing Group: %s"
+msgstr "Manova Vondrona: %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name:"
+msgstr "Anaran'ny Vondrona:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Update"
+msgstr "Fanavaozana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Add"
+msgstr "Manampy"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Map Groups"
+msgstr "Ovao ny Vondrona Sarintany"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name"
+msgstr "Anaran'ny vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename this Group"
+msgstr "Ovao anarana ity Vondrona ity"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Group Settings"
+msgstr "Ovao ny Fandrindrana Vondrona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Groups are defined"
+msgstr "Tsy misy Vondrona voafaritra"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename Weathermap Group"
+msgstr "Ovao anarana ny Vondrona Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enter a new name for the Weathermap Group."
+msgstr "Ampidiro ny anarana vaovao ho an'ny Vondrona Weathermap."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "New Group Name"
+msgstr "Anaran'ny Vondrona Vaovao"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename"
+msgstr "Ovao anarana"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the last remaining Map Group."
+msgstr "Tsy afaka namafa ny Vondrona Sarintany farany tavela."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr "Lava loatra ny lohatenin'ny sarintany. Mampiasà 4088 oktety farafahabetsany aorian'ny fialana (escaping)."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The New Map File name %s already exists!"
+msgstr "Efa misy ny anaran'ny Rakitra Sarintany Vaovao %s!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Source Map File name is not readable or does not exist!"
+msgstr "Tsy azo vakiana na tsy misy ny anaran'ny Rakitra Sarintany Loharano!"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created from %s"
+msgstr "Ny rakitra Sarintany Vaovao %s dia noforonina avy amin'ny %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created."
+msgstr "Noforonina ny rakitra Sarintany Vaovao %s."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You must include a Map File name to Create"
+msgstr "Tsy maintsy mampiditra anaran'ny Rakitra Sarintany ianao mba Hamoronana"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermap named \"%s\""
+msgstr "Weathermap Tambajotra mitondra ny anarana \"%s\""
+
+#: weathermap-cacti-plugin.php
+msgid "This map hasn't been created yet."
+msgstr "Tsy mbola noforonina ity sarintany ity."
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Maps"
+msgstr "Tantano ny Sarintany"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
+msgstr "Weathermaps Tambajotra [ %sMihodina Mandeha Ho Azy%s ]"
+
+#: weathermap-cacti-plugin.php
+msgid "(thumbnail for map not created yet)"
+msgstr "(tsy mbola noforonina ny sary kely ho an'ny sarintany)"
+
+#: weathermap-cacti-plugin.php
+msgid "(Live View)"
+msgstr "(Fijery Mivantana)"
+
+#: weathermap-cacti-plugin.php
+msgid "You Have No Maps"
+msgstr "Tsy Manana Sarintany Ianao"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
+msgstr "Hanampiana sarintany ao amin'ny fandaharam-potoana, mandehana any amin'ny pejy %s Tantano...Weathermaps %s ary manampia iray."
+
+#: weathermap-cacti-plugin.php
+msgid "Network Weathermaps"
+msgstr "Weathermaps Tambajotra"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
+msgstr "Mampiseho %s %s amin'ny %s %s. Mihodina amin'ny sarintany rehetra misy ao amin'ity vondrona ity."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps."
+msgstr "Mampiseho %s %s amin'ny %s %s. Mihodina amin'ny sarintany rehetra misy."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Powered by %s PHP Weathermap Version %s %s"
+msgstr "Ampandehanin'ny %s PHP Weathermap Dikan-teny %s %s"
+
+#: weathermap-cacti-plugin.php
+msgid "Go to the Map Management page"
+msgstr "Mandehana any amin'ny pejy Fitantanana Sarintany"
+
+#: weathermap-cacti-plugin.php
+msgid "Weathermap Management"
+msgstr "Fitantanana Weathermap"
+
+#: weathermap-cacti-plugin.php
+msgid "Map to View"
+msgstr "Sarintany Hojerena"
+
+#: weathermap-cacti-plugin.php
+msgid "All Maps"
+msgstr "Sarintany Rehetra"
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr "Ajanony ny fihodinana"
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr "Teo aloha"
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr "Ajanony vetivety / tohizo"
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr "Manaraka"
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr "Mivoaha amin'ny efijery feno"
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr "Efijery feno"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr "Sarintany manaraka afaka %ss"
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
+msgstr "Najanona vetivety"

@@ -1,0 +1,3078 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-08 18:47-0800\n"
+"PO-Revision-Date: 2026-11-27 18:00-0800\n"
+"Last-Translator: The Cacti Group <developers@cacti.net>\n"
+"Language-Team: Yoruba <developers@cacti.net>\n"
+"Language: yo_NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr "Yan fáìlì PNG, JPG tàbí GIF tó tó 5 MB."
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr "Lo POST láti fi àwọn àyípadà pamọ́."
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr "Máàpù yìí ti yípadà láti ìgbà tí o ṣí i. Tún olóòtú gbé wọlé kí o tó fi àwọn àyípadà rẹ pamọ́."
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr "A kò lè ka ìṣètò máàpù náà."
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.history.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr "A kò lè ti àwọn ìṣètò máàpù pa."
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr "Ìṣètò máàpù kan ṣì ń tọ́ka sí àwòrán yìí."
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
+msgstr "A kò lè pa àwòrán náà rẹ́."
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr "Àwọn ètò àwọ̀ kò tọ́."
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr "A kò lè fi ìṣètò máàpù náà pamọ́."
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr "Ìsọ̀rí àwòrán kò tọ́."
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr "A kò lè ṣàkóso àwọn ìjápọ̀ àmì níbí."
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr "Orúkọ fáìlì àwòrán kò tọ́."
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr "A kò lè ṣàyẹ̀wò àwọn ìtọ́kasí ìṣètò."
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr "Àwọn ìṣètò tí a fi kún un pọ̀ jù láti ṣàyẹ̀wò."
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr "A kò lè kọ sínú fọ́ódà àwòrán."
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr "Yan àwòrán PNG, JPG tàbí GIF tó tó mílíọ̀nù mẹ́rin píkísẹ́ẹ̀lì."
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr "A kò lè ka àwòrán náà."
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr "A kò lè ya orúkọ fáìlì àwòrán sọ́tọ̀."
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
+msgstr "A kò lè fi àwòrán náà pamọ́."
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr "Yan àwọ̀ tó tọ́."
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr "Ètò ìlù kò tọ́."
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr "Àwọ̀ ẹ̀yìn nílò àwọ̀ líle kan."
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr "Pa láàárín ìlà ìwọ̀n 1 sí 200 mọ́."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr "A ṣàlàyé ìwọ̀n %s nínú ìṣètò tí a fi kún un ó sì jẹ́ kíkà-nìkan níbí. Ṣàtúnṣe fáìlì orísun rẹ̀ dípò bẹ́ẹ̀."
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr "Orúkọ ìwọ̀n kò tọ́."
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr "Ààlà ìwọ̀n kò tọ́."
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr "Ìbẹ̀rẹ̀ ààlà kò gbọ́dọ̀ ju òpin rẹ̀ lọ."
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr "Àkọlé ìwọ̀n kò tọ́."
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr "Àkọlé àwọ̀ líle kò lè bẹ̀rẹ̀ pẹ̀lú nọ́ńbà odidi mẹ́ta. Fi ọ̀rọ̀ kan kún un ní àkọ́kọ́ tàbí yan àwọ̀ òpin ìyípadà-àwọ̀."
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr "Àwọn òpin ìwọ̀n nílò àwọn iye tí a lè fipamọ́ láìsí ìyípo. Lo títí dé ìpín mẹ́fà lẹ́yìn àmì-ìdádúró àti àwọn ẹ̀ka ìgbàlódé pàtó."
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr "Ààlà àdàkọ nínú ìwọ̀n kan."
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr "Àwọn ìyípadà-àwọ̀ nílò àwọ̀ méjì."
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr "Pa ó kéré jù ààlà ìrìn-àjò DEFAULT kan mọ́."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr "Ohun èlò máàpù kan ṣì ń lo ìwọ̀n %s."
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt (font %s)"
+msgstr "%s — %s pt (fọ́ọ̀ntì %s)"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr "Búlúù (#0000FF)"
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr "Búlúù dúdú (#003366)"
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr "Búlúù ọba (#0040C0)"
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr "Àwọ̀ tíìlì (#007070)"
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr "Àwọ̀ ewé (#008000)"
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr "Pọ́pù (#8000C0)"
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr "Àwọ̀ èédú (#333333)"
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr "Pupa (#C00000)"
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr "Dúdú (#000000)"
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr "Funfun (#FFFFFF)"
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr "Ìyàtọ̀ aládàáṣe pẹ̀lú àwọ̀ ìjápọ̀"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt"
+msgstr "%s — %s pt"
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr "Àwọn fọ́ọ̀ntì tí a dìpọ̀ mọ́"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr "Fọ́ọ̀ntì Àríwísí Ìjápọ̀"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Style"
+msgstr "Àṣà Àríwísí Ìjápọ̀"
+
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr "Àárín"
+
+#: lib/editor.comment-style.php
+msgid "Edge"
+msgstr "Etí"
+
+#: lib/editor.comment-style.php
+msgid "Edge places comments beside the link; Centre places them over the arrow."
+msgstr "Etí ń gbé àwọn àríwísí sí ẹ̀gbẹ́ ìjápọ̀; Àárín ń gbé wọn sórí ọfà."
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr "Tẹ̀lé ìtẹ̀ ìjápọ̀"
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr "Àwọn Àríwísí Ìjápọ̀"
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr "Ó ń lo fọ́ọ̀ntì TrueType. Àwọn ìtẹ̀ tó fún pọ̀ tàbí ọ̀rọ̀ tó gùn ju ìjápọ̀ lọ ń lo ọ̀rọ̀ títọ́."
+
+#: lib/editor.comment-style.php
+msgid "Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments."
+msgstr "Àwọn ipò lẹ́gbẹ̀ẹ́ ìjápọ̀: 0% ni nóòdù àkọ́kọ́ àti 100% ni èkejì. Àwọn wọ̀nyí ń sún àwọn àkọlé ìrìn-àjò, kì í ṣe àwọn àríwísí."
+
+#: lib/editor.comment-style.php
+msgid "Traffic Label Positions"
+msgstr "Àwọn Ipò Àkọlé Ìrìn-àjò"
+
+#: lib/editor.comment-style.php
+msgid "IN"
+msgstr "WỌLÉ"
+
+#: lib/editor.comment-style.php
+msgid "OUT"
+msgstr "JÁDE"
+
+#: lib/editor.comment-style.php
+msgid "Comment Style"
+msgstr "Àṣà Àríwísí"
+
+#: lib/editor.comment-style.php
+msgid "Use map default"
+msgstr "Lo àìyípadà máàpù"
+
+#: lib/editor.comment-style.php
+msgid "Custom positions"
+msgstr "Àwọn ipò àdáni"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr "Pa fáìlì ìṣètò %s rẹ́"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr "Ǹjẹ́ ó dá ọ lójú pé o fẹ́ pa fáìlì ìṣètò \"%s\" rẹ́ pátápátá?"
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr "Ìgbà ìṣiṣẹ́ tó ń lọ lọ́wọ́ ṣe pàtàkì fún Dápadà àti Túnṣe."
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr "A kò lè ṣẹ̀dá ìpamọ́ ìtàn máàpù àdáni."
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr "Ìpamọ́ ìtàn máàpù kì í ṣe àdáni."
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr "Ìpamọ́ ìtàn máàpù kò tọ́."
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr "Fi nóòdù kún un"
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr "Ṣe ẹ̀dà nóòdù"
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr "Pa nóòdù rẹ́"
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr "Sún nóòdù tàbí àkọsílẹ̀"
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr "Fi ìjápọ̀ kún un"
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr "Pa ìjápọ̀ rẹ́"
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr "Sún ojú-ọ̀nà ìjápọ̀"
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr "Tún ìjápọ̀ ṣe"
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr "Tún gbogbo àwọn ìjápọ̀ ṣe"
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr "Tún àwọn ìjápọ̀ ṣe"
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr "Ṣàtúnṣe àkọsílẹ̀"
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr "Tú àtúnṣe àwọn ìjápọ̀"
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr "Ṣàtúnṣe ìjápọ̀"
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr "Ṣàtúnṣe nóòdù"
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr "Ṣàtúnṣe ìṣètò ìjápọ̀ àìṣàtúnṣe"
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr "Ṣàtúnṣe ìṣètò nóòdù àìṣàtúnṣe"
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr "Ṣàtúnṣe àwọn ohun-ìní máàpù"
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr "Ṣàtúnṣe àṣà máàpù"
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr "Ṣàtúnṣe àwọn àwọ̀ máàpù"
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr "Sún àlàyé-àmì"
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr "Sún àmì-àkókò"
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr "Ṣàtúnṣe máàpù"
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr "Kò sí ìtàn tó bá mu kù mọ́. Tún olóòtú gbé wọlé."
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr "A kò lè dá máàpù yìí padà. Ìṣètò tàbí àwòrán kan lè ti yípadà. Tún olóòtú gbé wọlé."
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr "Ìbéèrè ìtàn kò tọ́."
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr "Máàpù yìí ti yípadà. Tún olóòtú gbé wọlé kí o tó lo Dápadà tàbí Túnṣe."
+
+#: lib/editor.inc.php
+msgid "Next results"
+msgstr "Àwọn àbájáde tókàn"
+
+#: lib/editor.inc.php
+msgid "Previous results"
+msgstr "Àwọn àbájáde tẹ́lẹ̀"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr "Káàbọ̀ sí Olóòtú PHP Weathermap %s"
+
+#: lib/editor.inc.php
+msgid "Use the editor to manage nodes, links, notes, colours and image uploads. Edit Raw Configuration provides settings beyond the forms. See the local documentation for workflows and configuration details."
+msgstr "Lo olóòtú láti ṣàkóso àwọn nóòdù, àwọn ìjápọ̀, àwọn àkọsílẹ̀, àwọn àwọ̀ àti àwọn ìgbésókè àwòrán. Ṣàtúnṣe Ìṣètò Àìṣàtúnṣe ń pèsè àwọn ètò tó rékọjá àwọn fọ́ọ̀mù. Wo ìwé àlàyé abẹ́lé fún àwọn ìṣàn-iṣẹ́ àti àwọn àlàyé ìṣètò."
+
+#: lib/editor.inc.php
+msgid "Do you want to:"
+msgstr "Ǹjẹ́ o fẹ́:"
+
+#: lib/editor.inc.php
+msgid "Create A New Map:"
+msgstr "Ṣẹ̀dá Máàpù Tuntun Kan:"
+
+#: lib/editor.inc.php
+msgid "Named:"
+msgstr "Tí A Pè Ní:"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-mgmt.php
+msgid "Create"
+msgstr "Ṣẹ̀dá"
+
+#: lib/editor.inc.php
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
+msgstr "Àkíyèsí: àwọn orúkọ fáìlì gbọ́dọ̀ parí pẹ̀lú .conf wọn kò sì gbọ́dọ̀ ní àwọn olùpín ọ̀nà tàbí àwọn àmì-ọ̀rọ̀ ìṣàkóso"
+
+#: lib/editor.inc.php
+msgid "Create Copy"
+msgstr "Ṣẹ̀dá Ẹ̀dà"
+
+#: lib/editor.inc.php
+msgid "Ok"
+msgstr "Ó dára"
+
+#: lib/editor.inc.php
+msgid "Operation successful"
+msgstr "Iṣẹ́ náà yege"
+
+#: lib/editor.inc.php
+msgid "The Operation was successful.  Details are below."
+msgstr "Iṣẹ́ náà yege.  Àwọn àlàyé wà nísàlẹ̀."
+
+#: lib/editor.inc.php
+msgid "Pause"
+msgstr "Dúró díẹ̀"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to move the node to."
+msgstr "Tẹ orí máàpù ibi tí o fẹ́ sún nóòdù náà sí."
+
+#: lib/editor.inc.php
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Tẹ orí máàpù ojú-ọ̀nà tí o fẹ́ darí ìjápọ̀ gbà."
+
+#: lib/editor.inc.php
+msgid "Click on the first node for the start of the link."
+msgstr "Tẹ orí nóòdù àkọ́kọ́ fún ìbẹ̀rẹ̀ ìjápọ̀ náà."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Tẹ orí máàpù ibi tí o fẹ́ fi àmì-àkókò sí."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the legend."
+msgstr "Tẹ orí máàpù ibi tí o fẹ́ fi àlàyé-àmì sí."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a new node."
+msgstr "Tẹ orí máàpù ibi tí o fẹ́ fi nóòdù tuntun kún un."
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr "−"
+
+#: lib/editor.inc.php
+msgid "No images in this library yet."
+msgstr "Kò tíì sí àwọn àwòrán nínú ilé-ìkàwé yìí."
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
+msgstr "Yan PNG, JPG tàbí GIF kan láti gbé sókè."
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr "Ìbéèrè náà kùnà. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr "Ìgbésókè kùnà."
+
+#: lib/editor.inc.php
+msgid "No gradient"
+msgstr "Kò sí ìyípadà-àwọ̀"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr "Àwọ̀ àdáni"
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr "Yọ ààlà kúrò"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr "Pa %s rẹ́"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr "Pa àwòrán \"%s\" rẹ́ kúrò lórí sáfà?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr "Àwọn àwòrán: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr "A gbé %s sókè"
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr "Àkọlé Nìkan"
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr "Kò sí àwọ̀ ẹ̀yìn"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr "Èyí tó ń lò ó: %s"
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr "Máàpù kankan kò lò ó"
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr "Kò sí àwọn ààlà DEFAULT. Wo Àwọn ètò àfikún fún àwọn ìwọ̀n tí a fún ní orúkọ."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr "Àdáni (%s)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr "Dápadà"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr "Túnṣe"
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr "Kò sí àwọn àyípadà máàpù láti dápadà tàbí túnṣe."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr "Dápadà: ìgbésẹ̀ %s; Túnṣe: ìgbésẹ̀ %s."
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr "Fipamọ́ tàbí fagilé àpótí ìjíròrò tó ṣí sílẹ̀ kí o tó lo Dápadà tàbí Túnṣe."
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
+msgstr "Dápadà àti Túnṣe nílò ìpamọ́ ìgbà ìṣiṣẹ́ aṣàwákiri."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr "A kò lè fi àwọn àyípadà pamọ́. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr "Àwọ̀ Ẹ̀yìn Máàpù"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr "Àwọ̀ Etí Ìjápọ̀"
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr "Àwọn ìwọ̀n láti inú àwọn ìṣètò tí a fi kún un jẹ́ kíkà-nìkan níbí. Ṣàtúnṣe àwọn fáìlì orísun wọn láti yí wọn padà."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr "Ìwọ̀n"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr "Láti (lọ́pọ̀lọpọ̀ %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr "Sí (lọ́pọ̀lọpọ̀ %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr "Àkọlé"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr "Àwọ̀"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr "Òpin Ìyípadà-àwọ̀"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr "Dúdú"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr "Búlúù"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr "Àwọ̀ ewé"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr "Àwọ̀ eérú"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr "Kò Sí"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr "Àwọ̀ osàn"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr "Pọ́pù"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr "Pupa"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr "Funfun"
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr "Ṣàwárí àwọn àmì-àwòrán…"
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr "Ṣàwárí àwọn àmì-àwòrán nóòdù"
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr "Àwọn àmì-àwòrán nóòdù"
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr "Yan àmì-àwòrán kan"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr "Àwọn àmì-àwòrán tó bá mu: %s"
+
+#: lib/editor.inc.php
+msgid "No matching icons"
+msgstr "Kò sí àmì-àwòrán tó bá mu"
+
+#: lib/editor.inc.php
+msgid "Current interface"
+msgstr "Ìsopọ̀ lọ́wọ́lọ́wọ́"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Advanced settings"
+msgstr "Àwọn ètò àfikún"
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr "Fi àwọn ètò àfikún pamọ́"
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr "Lo ìsopọ̀"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Traffic interface"
+msgstr "Ìsopọ̀ ìrìn-àjò dátà"
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr "Ṣàwárí ẹ̀rọ tàbí ìsopọ̀"
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr "A kò yan ìsopọ̀ kankan"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr "Tẹ orí máàpù ibi tí o fẹ́ fi àkọsílẹ̀ kún un."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr "Àkọsílẹ̀"
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr "Ìjẹ́rìí Ìparẹ́ Àkọsílẹ̀"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr "Pa Àkọsílẹ̀ Rẹ́"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr "Pa àkọsílẹ̀ \"%s\" rẹ́?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr "Gíráàfù lọ́wọ́lọ́wọ́: %s"
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr "Ìṣètò àdáni — wo Àwọn ètò àfikún"
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr "Yan ìsopọ̀ kan nísàlẹ̀"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr "Ìgbàlódé wọlé sí %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr "Ìgbàlódé jáde láti %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr "Gíráàfù %s — a ti yan dátà, ibi-àfojúsùn títẹ̀ àti gíráàfù àfihàn-òkè. Fipamọ́ láti mú ṣẹ."
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr "A fi hàn lákọ̀ọ́kọ́ nígbà tí a bá gbé èkúté lé e. Lo ìsopọ̀ ń ṣètò èyí ní aládàáṣe; yí i padà nìkan fún URL àwòkọ́ àdáni."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr "Ìrìn-àjò dátà àpapọ̀ láti àwọn orísun %s"
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr "A ti fi orísun ìrìn-àjò dátà kún àpapọ̀ máàpù. Àwọn gíráàfù àfihàn-òkè àti títẹ̀ kò yípadà. Fipamọ́ láti mú ṣẹ."
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr "Orísun yìí ti wà nínú rẹ̀ tẹ́lẹ̀. Yan orísun mìíràn nínú àpótí ìṣàwárí yìí láti fi púpọ̀ sí i kún un."
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr "Yọ orísun kúrò"
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr "A ti yọ orísun tí a wọ̀n kúrò. Àwọn gíráàfù àfihàn-òkè àti títẹ̀ kò yípadà. Fipamọ́ láti mú ṣẹ."
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr "A kò yan orísun ìrìn-àjò dátà tí a wọ̀n kankan."
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr "Yan ìsopọ̀ àfikún kan láti inú àwọn àbájáde ìṣàwárí lókè, lẹ́yìn náà tẹ Fi orísun ìrìn-àjò dátà kún un."
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr "A ti yan ìsopọ̀ àfikún. Fi orísun ìrìn-àjò dátà kún un ń pa ìsopọ̀ àkọ́kọ́ àti àwọn orísun míràn mọ́."
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr "Orísun àkọ́kọ́ — lo \"Lo ìsopọ̀\" lókè láti yípadà"
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr "Yan ìsopọ̀ ìrìn-àjò dátà àkọ́kọ́ nínú fọ́ọ̀mù àkọ́kọ́ lákọ̀ọ́kọ́."
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr "Fi àwọn orísun ìrìn-àjò dátà àfikún kún un"
+
+#: lib/editor.inc.php
+msgid "Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link."
+msgstr "Ṣàtúnṣe àwọn ipò àkọlé ìrìn-àjò dátà, tàbí lo àwọn orísun àdáni àti àwọn URL. Fi àwọn orísun àti àwọn URL sílẹ̀ láìyípadà fún ìjápọ̀ ìrìn-àjò dátà déédéé."
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr "Àwọn orísun ìrìn-àjò dátà àdáni ti yípadà. Fipamọ́ láti mú ṣẹ. Àwọn gíráàfù àfihàn-òkè àti ibi-àfojúsùn títẹ̀ kò yípadà."
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr "URL àwòrán àfikún kan tó pọ̀ jùlọ. Èyí ni àwòkọ́ kan náà tí a ń ṣàkóso lábẹ́ Àwọn gíráàfù àfihàn-òkè àfikún."
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr "Àwọn orísun ìrìn-àjò dátà"
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr "Àṣàyàn: fi àwọn ìsopọ̀ míràn kún àpapọ̀ máàpù. Yí ìsopọ̀ àkọ́kọ́ padà nínú fọ́ọ̀mù àkọ́kọ́; yọ àwọn orísun àfikún kúrò nísàlẹ̀. Àwọn gíráàfù àfihàn-òkè àti títẹ̀ kò yípadà. A gbọ́dọ̀ ṣètò gíráàfù àpapọ̀ tó bá mu lọ́tọ̀ nínú Cacti. Fipamọ́ ń mú àwọn àyípadà ṣẹ."
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr "Gíráàfù àfikún"
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr "Kò sí fáìlì RRD tí a ṣe àtòjọ fún gíráàfù yìí"
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr "Gíráàfù àfihàn-òkè àdáni"
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr "Yọ gíráàfù kúrò"
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr "Gíráàfù àfikún kan tó pọ̀ jùlọ. Rọ́pò tàbí yọ ọ́ kúrò láti yan òmíràn."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr "Àwọn gíráàfù àfihàn-òkè àfikún"
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr "Ibi-àfojúsùn títẹ̀"
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr "Lọ́pọ̀lọpọ̀ fi èyí sílẹ̀ sí gíráàfù ìrìn-àjò dátà. Yí i padà nìkan láti ṣí gíráàfù tàbí ojú-ewé mìíràn nígbà tí o bá tẹ ìjápọ̀ náà. Èyí kò yí ìrìn-àjò dátà tí a wọ̀n tàbí àwọn gíráàfù àfihàn-òkè padà."
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr "Ìrísí"
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr "Agbára, fún àpẹẹrẹ 100M tàbí 1G."
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr "Ọ̀rọ̀ lẹ́gbẹ̀ẹ́ ìjápọ̀; ìpín-ọgọ́rùn-ún ń ṣètò ipò rẹ̀."
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr "Ìrísí àti àwọn àríwísí"
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr "Ìrànlọ́wọ́"
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr "Yan ìsopọ̀ ìrìn-àjò dátà àti agbára, lẹ́yìn náà Fipamọ́. Àwọn gíráàfù àfihàn-òkè àfikún ń fi àwọn àwòkọ́ àṣàyàn kún un. Àwọn ètò àfikún ní àwọn orísun ìrìn-àjò dátà àdáni àti àwọn URL. Ṣàtúnṣe Ìṣètò Àìṣàtúnṣe ń ṣàtúnṣe gírámà máàpù ní tààrà."
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr "Tẹ ẹ̀rọ tàbí ìsopọ̀ kan, tàbí wá gbogbo rẹ̀"
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr "Wá gbogbo rẹ̀"
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr "Yan ìsopọ̀ àkọ́kọ́ kan, lẹ́yìn náà tẹ \"Lo ìsopọ̀\". A pa àwọn orísun àfikún àti àwọn gíráàfù àfihàn-òkè mọ́. Fipamọ́ ń mú àwọn àyípadà ṣẹ."
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr "Ó ń wá ẹ̀rọ àti ìsopọ̀..."
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr "Ìsopọ̀ àdáni tàbí tí kò sí"
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr "Orúkọ ìsopọ̀ kò sí"
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr "Orúkọ ìfihàn"
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr "Àmì-àwòrán"
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr "Irú gíráàfù"
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr "Àwọn gíráàfù àfihàn-òkè"
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr "Pa Nóòdù Rẹ́"
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr "Fún nóòdù tí a lò gẹ́gẹ́ bí àkọlé tàbí àmì-àwòrán ní òpin ìjápọ̀ kan, àwọn ìṣàkóso àkọ́kọ́ ti tó. Àfikún ń fi àwọn gíráàfù àfihàn-òkè bíi CPU, ìrántí tàbí ìrìn-àjò dátà, àwọn ibi-àfojúsùn títẹ̀ àdáni àti ID nóòdù inú kún un."
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr "Orúkọ ìfihàn àti àmì-àwòrán: Yan ohun tó ń hàn lórí máàpù. Ipò orúkọ ìfihàn ń gbé orúkọ náà sórí àmì-àwòrán. Ipò máàpù (X, Y) ń ṣètò àwọn kọ́ọ́dínéètì nóòdù; Sún ń jẹ́ kí o gbé nóòdù sí orí máàpù."
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr "Àwọn gíráàfù àfihàn-òkè: Sẹ̀ nípa irú gíráàfù kí o sì ṣàwárí gíráàfù kan. Fi kún un ń fi gíráàfù mìíràn kún un; Rọ́pò ń rọ́pò àwọn gíráàfù àfihàn-òkè tó wà tẹ́lẹ̀. Fipamọ́ ń mú àwọn àyípadà rẹ ṣẹ."
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr "Àfikún: Orúkọ inú ń dá nóòdù mọ̀ nínú ìṣètò máàpù. Àwọn URL Àlàyé ń ṣètò ibi-àfojúsùn títẹ̀; Àwọn URL Gíráàfù Àfihàn-òkè ń ṣètò àwọn àwòrán tó hàn nígbà tí a bá gbé èkúté lé e. Lo àwọn wọ̀nyí fún àwọn ibi-àfojúsùn àdáni tàbí àwọn gíráàfù òde."
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr "Ṣàwárí ẹ̀rọ tàbí gíráàfù"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr "Àwọn gíráàfù àfihàn-òkè: %s"
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr "gíráàfù tí kò sí"
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr "àwọn àwòrán àdáni"
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr "A kò ṣètò gíráàfù àfihàn-òkè kankan"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr "ID ìjápọ̀ inú: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr "Nóòdù: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr "Yọ ìjápọ̀ tó wà láàárín %1$s àti %2$s kúrò?"
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr "Àwọn nóòdù àti àwọn gíráàfù Cacti yóò ṣì wà."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s from this map?"
+msgstr "Pa %s rẹ́ kúrò lórí máàpù yìí?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %s."
+msgstr "Àwọn ìjápọ̀ tó sopọ̀ láti yọ kúrò: %s."
+
+#: lib/editor.inc.php
+msgid "The Cacti device and its graphs will remain."
+msgstr "Ẹ̀rọ Cacti àti àwọn gíráàfù rẹ̀ yóò ṣì wà."
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "ÌKÌLỌ̀: Títẹ 'Pa Nóòdù Rẹ́' yóò pa Nóòdù yìí rẹ́."
+
+#: lib/editor.inc.php
+msgid "Delete Node Confirmation"
+msgstr "Ìjẹ́rìí Ìparẹ́ Nóòdù"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "ÌKÌLỌ̀: Títẹ 'Pa Ìjápọ̀ Rẹ́' yóò pa Ìjápọ̀ yìí rẹ́."
+
+#: lib/editor.inc.php
+msgid "Delete Link Confirmation"
+msgstr "Ìjẹ́rìí Ìparẹ́ Ìjápọ̀"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cancel"
+msgstr "Fagilé"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Link"
+msgstr "Pa Ìjápọ̀ Rẹ́"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Position"
+msgstr "Ipò"
+
+#: lib/editor.inc.php
+msgid "Node Actions"
+msgstr "Àwọn Ìgbésẹ̀ Nóòdù"
+
+#: lib/editor.inc.php
+msgid "Link Actions"
+msgstr "Àwọn Ìgbésẹ̀ Ìjápọ̀"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Move"
+msgstr "Sún"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Clone"
+msgstr "Ṣe ẹ̀dà"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr "Ṣàtúnṣe Ìṣètò Àìṣàtúnṣe"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete"
+msgstr "Pa rẹ́"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Via"
+msgstr "Gbà"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Tidy"
+msgstr "Túnṣe"
+
+#: lib/editor.inc.php
+msgid "Properties"
+msgstr "Àwọn Ohun-ìní"
+
+#: lib/editor.inc.php
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Níbo ni Weathermap yẹ kí ó ti gba dátà fún ìjápọ̀ yìí? Èyí lè jẹ́ fáìlì RRD, tàbí HTML kan pẹ̀lú àwọn àríwísí pàtàkì nínú rẹ̀ (lọ́pọ̀lọpọ̀ láti MRTG)."
+
+#: lib/editor.inc.php
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "Bí ọfà ìjápọ̀ yóò ṣe fẹ̀ tó nígbà tí a bá yà á, ní píkísẹ́ẹ̀lì."
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "Tí o bá ń lo àṣà HTML 'overlib' nígbà náà èyí ni URL tí yóò ṣí nígbà tí o bá tẹ orí ìjápọ̀ náà"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "Tí o bá ń lo àṣà HTML 'overlib' nígbà náà èyí ni URL àwòrán tí yóò hàn nígbà tí o bá gbé èkúté lé orí ìjápọ̀ náà"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the first node to the second node"
+msgstr "Ìgbàlódé láti nóòdù àkọ́kọ́ sí nóòdù kejì"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "Ìgbàlódé láti nóòdù kejì sí nóòdù àkọ́kọ́ (tí ìyẹn bá yàtọ̀)"
+
+#: lib/editor.inc.php
+msgid "The text that will appear alongside the link"
+msgstr "Ọ̀rọ̀ tí yóò hàn lẹ́gbẹ̀ẹ́ ìjápọ̀ náà"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "Tí o bá ń lo àṣà HTML 'overlib' nígbà náà èyí ni URL tí yóò ṣí nígbà tí o bá tẹ orí nóòdù náà"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "Tí o bá ń lo àṣà HTML 'overlib' nígbà náà èyí ni URL àwòrán tí yóò hàn nígbà tí o bá gbé èkúté lé orí nóòdù náà"
+
+#: lib/editor.inc.php
+msgid "How far from the left to position the node, in pixels"
+msgstr "Bí a ṣe fẹ́ gbé nóòdù náà jìnnà tó láti apá òsì, ní píkísẹ́ẹ̀lì"
+
+#: lib/editor.inc.php
+msgid "How far from the top to position the node, in pixels"
+msgstr "Bí a ṣe fẹ́ gbé nóòdù náà jìnnà tó láti òkè, ní píkísẹ́ẹ̀lì"
+
+#: lib/editor.inc.php
+msgid "The text that appears on the node"
+msgstr "Ọ̀rọ̀ tí ó hàn lórí nóòdù náà"
+
+#: lib/editor.inc.php
+msgid "The name used for this node when defining links"
+msgstr "Orúkọ tí a lò fún nóòdù yìí nígbà tí a bá ń ṣàlàyé àwọn ìjápọ̀"
+
+#: lib/editor.inc.php
+msgid "Change to a different file, or start creating a new one."
+msgstr "Yípadà sí fáìlì mìíràn, tàbí bẹ̀rẹ̀ sí í ṣẹ̀dá tuntun kan."
+
+#: lib/editor.inc.php
+msgid "Add a new node to the map"
+msgstr "Fi nóòdù tuntun kan kún máàpù náà"
+
+#: lib/editor.inc.php
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "Fi ìjápọ̀ tuntun kan kún máàpù náà, nípa síso nóòdù méjì pọ̀."
+
+#: lib/editor.inc.php
+msgid "Select a different map to edit, or start a new one."
+msgstr "Yan máàpù mìíràn láti ṣàtúnṣe, tàbí bẹ̀rẹ̀ tuntun kan."
+
+#: lib/editor.inc.php
+msgid "This is where help appears for links"
+msgstr "Ibí ni ìrànlọ́wọ́ ti ń hàn fún àwọn ìjápọ̀"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for maps"
+msgstr "Ibí ni ìrànlọ́wọ́ ti ń hàn fún àwọn máàpù"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for nodes"
+msgstr "Ibí ni ìrànlọ́wọ́ ti ń hàn fún àwọn nóòdù"
+
+#: lib/editor.inc.php
+msgid "or click a Node or Link to edit its properties"
+msgstr "tàbí tẹ Nóòdù tàbí Ìjápọ̀ kan láti ṣàtúnṣe àwọn ohun-ìní rẹ̀"
+
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
+msgid "Docs"
+msgstr "Àwọn Ìwé Àlàyé"
+
+#: lib/viewer.controls.php
+msgid "Manage Weathermaps"
+msgstr "Ṣàkóso Àwọn Weathermap"
+
+#: lib/viewer.controls.php setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Settings"
+msgstr "Àwọn Ètò Máàpù"
+
+#: lib/viewer.controls.php
+msgid "Map Permissions"
+msgstr "Àwọn Ìyọ̀ǹda Máàpù"
+
+#: lib/viewer.controls.php setup.php
+msgid "Edit Map"
+msgstr "Ṣàtúnṣe Máàpù"
+
+#: setup.php
+msgid "Weathermap"
+msgstr "Weathermap"
+
+#: setup.php weathermap-cacti-plugin.php
+msgid "Network Weathermap"
+msgstr "Weathermap Nẹ́tíwọ́ọ̀kì"
+
+#: setup.php
+msgid "Debug Mode"
+msgstr "Ipò Wádìí Àṣìṣe"
+
+#: setup.php
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr "Tí o bá fẹ́ rí àlàyé ipò kíkún nínú àkọsílẹ̀ Cacti rẹ nípa ìlànà ìṣẹ̀dá weathermap, ṣàmì sí àpótí yìí."
+
+#: setup.php
+msgid "Info URL Style"
+msgstr "Àṣà URL Àlàyé"
+
+#: setup.php
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr "Nígbà tí o bá ń fi Àwọn Gíráàfù kún Nóòdù tàbí Ìjápọ̀ kan, ibi títẹ̀ wo ni o fẹ́ darí sí nípa lílo URL Àlàyé? Tí o bá ń lo Ìwò Gíráàfù Déédéé, o lè ní Àwọn Gíráàfù púpọ̀. Fún Ìwò Gíráfù Àkókò, o lè ní Gíráàfù kan ṣoṣo."
+
+#: setup.php
+msgid "Standard Graph View"
+msgstr "Ìwò Gíráàfù Déédéé"
+
+#: setup.php
+msgid "Time Graph View"
+msgstr "Ìwò Gíráfù Àkókò"
+
+#: setup.php
+msgid "Page style"
+msgstr "Àṣà ojú-ewé"
+
+#: setup.php
+msgid "How to display multiple maps."
+msgstr "Bí a ṣe ń fi àwọn máàpù púpọ̀ hàn."
+
+#: setup.php
+msgid "Thumbnail Overview"
+msgstr "Àkópọ̀ Àwòrán Kékeré"
+
+#: setup.php
+msgid "Full Images"
+msgstr "Àwọn Àwòrán Kíkún"
+
+#: setup.php
+msgid "Show Only First"
+msgstr "Fi Àkọ́kọ́ Nìkan Hàn"
+
+#: setup.php
+msgid "Thumbnail Maximum Size"
+msgstr "Ìwọ̀n Tó Pọ̀ Jùlọ fún Àwòrán Kékeré"
+
+#: setup.php
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr "Ìbú tàbí gíga tó pọ̀ jùlọ fún àwọn àwòrán kékeré nínú ìwò àwòrán kékeré, ní píkísẹ́ẹ̀lì. Yóò bẹ̀rẹ̀ sí í ṣiṣẹ́ lẹ́yìn ìṣiṣẹ́ olùkójọpọ̀ tókàn."
+
+#: setup.php
+msgid "Hover Graph Default Width"
+msgstr "Ìbú Àìyípadà Gíráàfù Àfihàn-òkè"
+
+#: setup.php
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Ìbú àìyípadà ti Àwọn Gíráàfù RRDtool tí ó ń hàn nígbà tí o bá gbé èkúté lé orí Ìjápọ̀ kan."
+
+#: setup.php
+msgid "Hover Graph Default Height"
+msgstr "Gíga Àìyípadà Gíráàfù Àfihàn-òkè"
+
+#: setup.php
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Gíga àìyípadà ti Àwọn Gíráàfù RRDtool tí ó ń hàn nígbà tí o bá gbé èkúté lé orí Ìjápọ̀ kan."
+
+#: setup.php
+msgid "Hover Graph Style"
+msgstr "Àṣà Gíráàfù Àfihàn-òkè"
+
+#: setup.php
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
+msgstr "Nígbà tí a bá gbé èkúté lé orí Àwọn Ìjápọ̀ tàbí Àwọn Nóòdù, irú àṣà Gíráàfù wo ni a fẹ́ fi hàn?"
+
+#: setup.php
+msgid "Thumbnail Graphs"
+msgstr "Àwọn Gíráàfù Àwòrán Kékeré"
+
+#: setup.php
+msgid "Full Graphs"
+msgstr "Àwọn Gíráàfù Kíkún"
+
+#: setup.php
+msgid "Map Processing Timeout"
+msgstr "Òpin Àkókò Ìṣiṣẹ́ Máàpù"
+
+#: setup.php
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr "Bí àkókò ṣe pọ̀ tó tí a yẹ kí a gbà láàyè ṣáájú kí ìlànà ìṣẹ̀dá máàpù onígbà-dé-ìgbà tó parí àkókò rẹ̀."
+
+#: setup.php
+#, php-format
+msgid "%d Minutes"
+msgstr "Ìṣẹ́jú %d"
+
+#: setup.php
+msgid "Refresh Time"
+msgstr "Àkókò Ìsọdọ̀tun"
+
+#: setup.php
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "Ìgbà mélòó ni láti sọ ojú-ewé dọ̀tun ní ipò Ìyípo. Aládàáṣe ń jẹ́ kí gbogbo àwọn máàpù tó wà bá ìṣẹ́jú 5 mu."
+
+#: setup.php
+msgid "Automatic"
+msgstr "Aládàáṣe"
+
+#: setup.php
+#, php-format
+msgid "%d Seconds"
+msgstr "Ìṣẹ́jú-àáyá %d"
+
+#: setup.php
+#, php-format
+msgid "%d Minute"
+msgstr "Ìṣẹ́jú %d"
+
+#: setup.php
+msgid "Output Format"
+msgstr "Ìrísí Àbájáde"
+
+#: setup.php
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr "Irú ìrísí wo ni o fẹ́ràn fún àwọn àwòrán máàpù àti àwọn àwòrán kékeré tí a ṣẹ̀dá?"
+
+#: setup.php
+msgid "PNG (default)"
+msgstr "PNG (àìyípadà)"
+
+#: setup.php
+msgid "JPEG"
+msgstr "JPEG"
+
+#: setup.php
+msgid "GIF"
+msgstr "GIF"
+
+#: setup.php
+msgid "Map Rendering Interval"
+msgstr "Àlàfo-àkókò Ìfihàn Máàpù"
+
+#: setup.php
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr "Ìgbà mélòó ni o fẹ́ kí Weathermap tún ṣirò àwọn máàpù rẹ̀? O kò gbọ́dọ̀ fọwọ́ kan èyí àyàfi tí o bá mọ ohun tí o ń ṣe! Ó ṣe pàtàkì jùlọ fún àwọn ènìyàn tí wọ́n ní ìṣètò ìkójọpọ̀ tí kì í ṣe déédéé."
+
+#: setup.php
+msgid "Never (manual updates)"
+msgstr "Kò ṣẹlẹ̀ rí (àwọn ìmúdójúìwọ̀n ọwọ́)"
+
+#: setup.php
+msgid "Every Poller Cycle (default)"
+msgstr "Gbogbo Ìyípo Olùkójọpọ̀ (àìyípadà)"
+
+#: setup.php
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr "Gbogbo Ìyípo Olùkójọpọ̀ %d"
+
+#: setup.php
+msgid "Show Weathermap Help Links"
+msgstr "Fi Àwọn Ìjápọ̀ Ìrànlọ́wọ́ Weathermap Hàn"
+
+#: setup.php
+msgid "If checked, all Weathermap pages will include a link to documentation."
+msgstr "Tí a bá ṣàmì sí i, gbogbo àwọn ojú-ewé Weathermap yóò ní ìjápọ̀ sí ìwé àlàyé."
+
+#: setup.php
+msgid "Show 'All' Tab"
+msgstr "Fi Táàbù 'Gbogbo' Hàn"
+
+#: setup.php
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr "Nígbà tí o bá ń lo àwọn ẹgbẹ́, fi táàbù 'Gbogbo Àwọn Máàpù' kún ọ̀pá táàbù."
+
+#: setup.php
+msgid "No (default)"
+msgstr "Rárá (àìyípadà)"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Yes"
+msgstr "Bẹ́ẹ̀ Ni"
+
+#: setup.php
+msgid "Show Map Selector"
+msgstr "Fi Olùyàn Máàpù Hàn"
+
+#: setup.php
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr "Fi àpótí olùyàn máàpù hàn lórí ìwò máàpù ìbòjú-kíkún."
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "No"
+msgstr "Rárá"
+
+#: setup.php
+msgid "Yes (default)"
+msgstr "Bẹ́ẹ̀ Ni (àìyípadà)"
+
+#: setup.php
+msgid "Quiet Logging"
+msgstr "Àkọsílẹ̀ Ìdákẹ́jẹ́ẹ́"
+
+#: setup.php
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr "Ní àìyípadà, kódà ní ìpele àkọsílẹ̀ KÉKERÉ (LOW), Weathermap ń kọ ìṣiṣẹ́ déédéé sílẹ̀. Èyí ń jẹ́ kí ó kọ àwọn àṣìṣe nìkan sílẹ̀ ní tòótọ́ ní ipò KÉKERÉ (LOW)."
+
+#: setup.php
+msgid "Chatty (default)"
+msgstr "Aláròyé (àìyípadà)"
+
+#: setup.php
+msgid "Quiet"
+msgstr "Ìdákẹ́jẹ́ẹ́"
+
+#: setup.php
+msgid "Weathermaps"
+msgstr "Àwọn Weathermap"
+
+#: setup.php
+msgid "Weathermap Groups"
+msgstr "Àwọn Ẹgbẹ́ Weathermap"
+
+#: setup.php
+msgid "Management"
+msgstr "Ìṣàkóso"
+
+#: setup.php
+msgid "View Weathermaps"
+msgstr "Wo Àwọn Weathermap"
+
+#: setup.php
+msgid "Edit Weathermaps"
+msgstr "Ṣàtúnṣe Àwọn Weathermap"
+
+#: setup.php
+msgid "Manage Weathermap"
+msgstr "Ṣàkóso Weathermap"
+
+#: setup.php
+msgid "General Administration"
+msgstr "Ìṣàkóso Gbogbogbòò"
+
+#: setup.php
+msgid "Normal User"
+msgstr "Olùlò Déédéé"
+
+#: setup.php weathermap-cacti-plugin.php
+#, php-format
+msgid "Map for config file: %s"
+msgstr "Máàpù fún fáìlì ìṣètò: %s"
+
+#: setup.php
+msgid "Choose which weathermap to add to the tree."
+msgstr "Yan weathermap tí o fẹ́ fi kún igi náà."
+
+#: setup.php
+msgid "Map"
+msgstr "Máàpù"
+
+#: setup.php
+msgid "How should the map be displayed?"
+msgstr "Báwo ni a ṣe yẹ kí a fi máàpù náà hàn?"
+
+#: setup.php
+msgid "Style"
+msgstr "Àṣà"
+
+#: setup.php
+msgid "Thumbnail"
+msgstr "Àwòrán Kékeré"
+
+#: setup.php
+msgid "Full Size"
+msgstr "Ìwọ̀n Kíkún"
+
+#: setup.php
+msgid "View Map Image"
+msgstr "Wo Àwòrán Máàpù"
+
+#: setup.php
+msgid "View Map Thumbnail"
+msgstr "Wo Àwòrán Kékeré Máàpù"
+
+#: setup.php
+msgid "Add Map"
+msgstr "Fi Máàpù Kún Un"
+
+#: setup.php
+msgid "View Configuration"
+msgstr "Wo Ìṣètò"
+
+#: setup.php
+msgid "Weathermap Editor"
+msgstr "Olóòtú Weathermap"
+
+#: setup.php
+msgid "Edit Permissions"
+msgstr "Ṣàtúnṣe Àwọn Ìyọ̀ǹda"
+
+#: setup.php
+msgid "Map Settings Delete"
+msgstr "Pa Àwọn Ètò Máàpù Rẹ́"
+
+#: setup.php
+msgid "Map Settings Update"
+msgstr "Ìmúdójúìwọ̀n Àwọn Ètò Máàpù"
+
+#: setup.php
+msgid "Map Settings Add"
+msgstr "Fi Àwọn Ètò Máàpù Kún Un"
+
+#: setup.php
+msgid "Permissions Edit"
+msgstr "Ṣàtúnṣe Àwọn Ìyọ̀ǹda"
+
+#: setup.php
+msgid "Add User"
+msgstr "Fi Olùlò Kún Un"
+
+#: setup.php
+msgid "Delete User"
+msgstr "Pa Olùlò Rẹ́"
+
+#: setup.php
+msgid "Delete Map"
+msgstr "Pa Máàpù Rẹ́"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Up"
+msgstr "Sún Máàpù Sókè"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Down"
+msgstr "Sún Ẹgbẹ́ Sílẹ̀"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Up"
+msgstr "Sún Ẹgbẹ́ Sókè"
+
+#: setup.php
+msgid "Group Edit"
+msgstr "Ṣàtúnṣe Ẹgbẹ́"
+
+#: setup.php
+msgid "Group Update"
+msgstr "Ìmúdójúìwọ̀n Ẹgbẹ́"
+
+#: setup.php
+msgid "Activate Map"
+msgstr "Mú Máàpù Ṣiṣẹ́"
+
+#: setup.php
+msgid "Deactivate Map"
+msgstr "Dá Máàpù Dúró"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Now"
+msgstr "Tún Kọ́ Nísinsìnyí"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Change Group"
+msgstr "Yí Ẹgbẹ́ Padà"
+
+#: setup.php
+msgid "Group Admin"
+msgstr "Ìṣàkóso Ẹgbẹ́"
+
+#: setup.php
+msgid "Group Admin Delete"
+msgstr "Pa Ìṣàkóso Ẹgbẹ́ Rẹ́"
+
+#: setup.php
+msgid "Manage"
+msgstr "Ṣàkóso"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr "Àwọn Ètò"
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr "Yípo ní aládàáṣe"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "Local Documentation"
+msgstr "Ìwé Àlàyé Abẹ́lé"
+
+#: setup.php
+#, php-format
+msgid "This is version %s"
+msgstr "Èyí ni ẹ̀dà %s"
+
+#: setup.php
+msgid "Weathermap Website"
+msgstr "Ojú-òpó Wẹ́ẹ̀bù Weathermap"
+
+#: weathermap-cacti-plugin-editor.php
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "Olóòtú PHP Weathermap %s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr "Padà sí Máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
+msgstr "Padà sí Ìṣàkóso"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Change<br>File"
+msgstr "Yí<br>Fáìlì Padà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Node"
+msgstr "Fi Nóòdù<br>Kún Un"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Link"
+msgstr "Fi Ìjápọ̀<br>Kún Un"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr "Fi Àkọsílẹ̀<br>Kún Un"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Legend"
+msgstr "Ipò<br>Àlàyé-àmì"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Timestamp"
+msgstr "Ipò<br>Àmì-àkókò"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Properties"
+msgstr "Àwọn Ohun-ìní<br>Máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Style"
+msgstr "Àṣà<br>Máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Colors"
+msgstr "Ṣàkóso<br>Àwọn Àwọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Images"
+msgstr "Ṣàkóso<br>Àwọn Àwòrán"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Editor<br>Settings"
+msgstr "Àwọn Ètò<br>Olóòtú"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>---, ---"
+msgstr "Ipò<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
+msgstr "Yan ohun èlò àtòjọ kan tàbí tẹ-ọ̀tún tàbí tẹ orí Nóòdù tàbí Ìjápọ̀ kan láti ṣàtúnṣe àwọn ohun-ìní rẹ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Debug"
+msgstr "Wádìí Àṣìṣe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy ALL"
+msgstr "Tún GBOGBO ṣe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy"
+msgstr "Túnṣe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Un-tidy"
+msgstr "Tú àtúnṣe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Do Nothing"
+msgstr "Má Ṣe Nǹkankan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "mapfile"
+msgstr "fáìlì máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "action"
+msgstr "ìṣe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param"
+msgstr "párámítà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param2"
+msgstr "párámítà2"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "debug"
+msgstr "wádìí àṣìṣe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "See config"
+msgstr "Wo ìṣètò"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr "Ọ̀rọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr "Òsì"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr "Ọ̀tún"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr "Ìtòlẹ́sẹẹsẹ ọ̀rọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr "Fọ́ọ̀ntì"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr "Àwọ̀ àkọsílẹ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr "Fipamọ́"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Properties"
+msgstr "Àwọn Ohun-ìní Nóòdù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr "Ipò máàpù (X, Y)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Internal Name"
+msgstr "Orúkọ Inú"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr "Ìsàlẹ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr "Àdáni (ìṣètò àìṣàtúnṣe)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr "Ipò orúkọ ìfihàn"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr "Àárín"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr "Òkè"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Icon Filename"
+msgstr "Orúkọ Fáìlì Àmì-àwòrán"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Info URL(s)"
+msgstr "Àwọn URL Àlàyé"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover Graph URL(s)"
+msgstr "Àwọn URL Gíráàfù Àfihàn-òkè"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Template"
+msgstr "Àdàkọ Gíráàfù"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "All"
+msgstr "Gbogbo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Selector"
+msgstr "Olùyàn Gíráàfù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "O lè ṣàtúnṣe Nóòdù Weathermap láti ibí. Àwọn ọ̀wọ́n Ipò ni ipò X,Y lórí Máàpù. Orúkọ Inú ni ID àrà ọ̀tọ̀ tí a fún Nóòdù náà. Àkọlé ni orúkọ òde ti Nóòdù tí o pèsè fún àwọn olùlò. Orúkọ Fáìlì Àmì-àwòrán ni Àwòrán tí o fẹ́ kó dúró fún Ohun èlò Nóòdù náà. INFO URL jẹ́ ìjápọ̀ tí o lè pèsè nígbà tí a bá tẹ orí Nóòdù Máàpù tó ń ṣiṣẹ́. Àwọn URL Gíráàfù Àfihàn-òkè jẹ́ àwọn URL Gíráàfù Cacti tàbí àwọn mìíràn tí yóò hàn nígbà tí a bá gbé èkúté lé orí Nóòdù náà. Olùyàn Gíráàfù jẹ́ olùrànlọ́wọ́ fún yíyan Àwọn Gíráàfù Cacti fún àwọn URL Gíráàfù náà. Àwọn ohun-ìní Nóòdù mìíràn púpọ̀ ló ṣeé ṣe. Síbẹ̀síbẹ̀, lónìí a ń ṣe àtìlẹ́yìn fún àwọn tí a fi kún un lókè nìkan."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Properties"
+msgstr "Àwọn Ohun-ìní Ìjápọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Into"
+msgstr "Wọlé sí"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Maximum Bandwidth"
+msgstr "Ìgbàlódé Tó Pọ̀ Jùlọ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Out of"
+msgstr "Jáde láti"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Via Style"
+msgstr "Àṣà Ojú-ọ̀nà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Curved"
+msgstr "Títẹ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Angled"
+msgstr "Onígun"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr "Àwọn orísun ìrìn-àjò dátà tí a wọ̀n"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Data Source Selector"
+msgstr "Olùyàn Orísun Dátà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr "Fi orísun ìrìn-àjò dátà kún un"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Width"
+msgstr "Ìbú Ìjápọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr "URL ibi-àfojúsùn títẹ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr "URL gíráàfù àfihàn-òkè àkọ́kọ́"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr "A fi hàn lákọ̀ọ́kọ́. Lo ìsopọ̀ ló ń ṣètò rẹ̀; àwọn gíráàfù àfikún ń hàn nísàlẹ̀ rẹ̀."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr "Fi títí dé àwọn gíráàfù àfihàn-òkè méjì hàn: gíráàfù ìrìn-àjò dátà àkọ́kọ́ àti àwòkọ́ àfikún kan ti CPU, ìfàlẹ̀ tàbí òmíràn. Rọ́pò ń yí gíráàfù àfikún nìkan padà."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr "Àwọn URL gíráàfù àfikún"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr "Àwọn URL gíráàfù àfihàn-òkè àfikún"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr "Sẹ̀ nípa irú gíráàfù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr "Yan gíráàfù àfihàn-òkè"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr "Fi gíráàfù àfihàn-òkè kún un"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr "Rọ́pò àwọn gíráàfù àfihàn-òkè"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "IN Comment"
+msgstr "Àríwísí WỌLÉ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "OUT Comment"
+msgstr "Àríwísí JÁDE"
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
+msgstr ""
+"<p><strong>Ìgbàlódé:</strong> Ṣètò agbára tí a lò láti ṣirò ìlò, fún àpẹẹrẹ 100M tàbí 1G. A ṣe àtìlẹ́yìn fún K, M, G àti T. Yan Kanna bíi &quot;Wọlé&quot; nígbà tí àwọn ìtọ́sọ́nà méjèèjì bá ní agbára kan náà.</p>\n"
+"<p><strong>Ìsopọ̀ ìrìn-àjò dátà:</strong> Ṣàwárí nípa ẹ̀rọ, pọ́ọ̀tì tàbí àpèjúwe, tàbí yan Wá gbogbo rẹ̀. Yan ìsopọ̀ kan, lẹ́yìn náà tẹ Lo ìsopọ̀ láti ṣètò orísun àkọ́kọ́ tí a wọ̀n, ibi-àfojúsùn títẹ̀ àti gíráàfù àfihàn-òkè àkọ́kọ́. A pa àwọn orísun àfikún tí a wọ̀n àti àwọn gíráàfù àfihàn-òkè mọ́.</p>\n"
+"<p><strong>Ìrísí àti àwọn àríwísí:</strong> Àṣà Ojú-ọ̀nà ń darí àwọn ìtẹ̀ títẹ̀ tàbí onígun; Ìbú Ìjápọ̀ ń darí sísanra ọfà. Àríwísí WỌLÉ àti Àríwísí JÁDE ń fi ọ̀rọ̀ kún ìtọ́sọ́nà kọ̀ọ̀kan. Ìpín-ọgọ́rùn-ún ń ṣètò ipò ọ̀rọ̀ náà lẹ́gbẹ̀ẹ́ ìjápọ̀. Àṣà Àríwísí ń gbé àwọn àríwísí sí ẹ̀gbẹ́ ìjápọ̀ (Etí) tàbí sórí ọfà (Àárín); Lo àìyípadà máàpù ń tẹ̀lé Àṣà Máàpù.</p>\n"
+"<p><strong>Àwọn gíráàfù àfihàn-òkè àfikún:</strong> Fi òpin gíráàfù àfihàn-òkè méjì hàn: gíráàfù ìrìn-àjò dátà àkọ́kọ́ àti àfikún kan, bíi CPU, ìfàlẹ̀ tàbí ìsopọ̀ mìíràn. Sẹ̀ nípa irú gíráàfù ń dín àwọn yíyàn kù. Fi gíráàfù àfihàn-òkè kún un ń fi àfikún náà kún un; Rọ́pò àwọn gíráàfù àfihàn-òkè ń yí i padà; Yọ gíráàfù kúrò ń yọ ọ́ kúrò. Gíráàfù ìrìn-àjò dátà àkọ́kọ́, ìrìn-àjò dátà tí a wọ̀n àti ibi-àfojúsùn títẹ̀ ìjápọ̀ kò yípadà. Nínú olùwòran, àwòkọ́ Cacti kọ̀ọ̀kan ń ṣí gíráàfù kíkún tirẹ̀ nígbà tí a bá tẹ̀ ẹ́.</p>\n"
+"<p><strong>Àwọn ètò àfikún:</strong> Àwọn ìṣàkóso àṣàyàn fún sísún àwọn àkọlé ìrìn-àjò dátà WỌLÉ/JÁDE, dídàpọ̀ àwọn orísun tí a wọ̀n, yíyí ibi-àfojúsùn títẹ̀ padà àti títẹ àwọn URL àwòrán àfihàn-òkè àdáni. Àwọn ipò àkọlé ìrìn-àjò dátà ń sún àwọn àpótí ìlò lẹ́gbẹ̀ẹ́ ìjápọ̀, lọ́tọ̀ sí àwọn ipò àríwísí. Lo àìyípadà máàpù ń tẹ̀lé Àṣà Máàpù. Ìjápọ̀ ìrìn-àjò dátà déédéé kì í sábà nílò àyípadà kankan níbí.</p>\n"
+"<p><strong>Dídàpọ̀ àwọn orísun ìrìn-àjò dátà:</strong> Fi orísun ìrìn-àjò dátà kún un ń fi ìsopọ̀ mìíràn kún àpapọ̀ máàpù, lọ́tọ̀ fún WỌLÉ àti JÁDE. Yọ orísun kúrò ń yọ orísun àfikún kan kúrò. Yí orísun àkọ́kọ́ padà nípa lílo Lo ìsopọ̀ lókè. A fi ìrìn-àjò dátà àpapọ̀ wé ìgbàlódé tí a ṣètò láti ṣirò ìlò. A kò ṣẹ̀dá gíráàfù Cacti àpapọ̀ kankan ní aládàáṣe; ṣẹ̀dá gíráàfù àpapọ̀ tó bá mu nínú Cacti kí o sì tẹ àwọn URL títẹ̀ àti àfihàn-òkè rẹ̀ tí ó bá ṣe pàtàkì. Àwọn ìjápọ̀ máàpù ọ̀tọ̀ọ̀tọ̀ máa ń yéni jù fún àwọn ìsopọ̀ àkọ́kọ́ àti ìpamọ́.</p>\n"
+"<p><strong>Àwọn orísun ọwọ́ àti àwọn URL:</strong> Àpótí ọ̀rọ̀ orísun ń ṣàtúnṣe àtòjọ orísun-tí-a-wọ̀n pátápátá, pẹ̀lú orísun àkọ́kọ́. URL ibi-àfojúsùn títẹ̀ ń darí ibi tí títẹ ìjápọ̀ máàpù ń lọ. URL gíráàfù àfihàn-òkè àkọ́kọ́ ń ṣètò àwòkọ́ àkọ́kọ́; Àwọn URL gíráàfù àfikún ń gba URL àwòrán àfikún kan. A tún ń ṣàkóso àfikún yìí lábẹ́ Àwọn gíráàfù àfihàn-òkè àfikún.</p>\n"
+"<p><strong>Túnṣe àti Gbà:</strong> Túnṣe ń ṣàtúnṣe ìtòlẹ́sẹẹsẹ ìjápọ̀. Gbà ń jẹ́ kí o fi ojú ìtẹ̀ kan sí orí máàpù.</p>\n"
+"<p><strong>Ṣàtúnṣe Ìṣètò Àìṣàtúnṣe:</strong> Ṣàtúnṣe gírámà máàpù ìpìlẹ̀ fún àwọn ètò tó rékọjá fọ́ọ̀mù yìí.</p>"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Properties"
+msgstr "Àwọn Ohun-ìní Máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr "Àwọn Àlàyé Máàpù"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Title"
+msgstr "Àkọlé Máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Text"
+msgstr "Ọ̀rọ̀ Àlàyé-àmì"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Timestamp Text"
+msgstr "Ọ̀rọ̀ Àmì-àkókò"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr "Àwọ̀ Ẹ̀yìn àti Kánfáàsì"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr "Àwòrán Ẹ̀yìn"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr "(kò sí àwòrán kankan)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr "--KÒ SÍ ÀWỌ̀ Ẹ̀YÌN--"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr "Lo Àwọ̀ Ẹ̀yìn Máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
+msgstr "A fi hàn láìsí àwòrán, tàbí nípasẹ̀ àwọn apá rẹ̀ tó ṣeé rí kọjá."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr "Ìwọ̀n àwòrán ẹ̀yìn"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr "Bá máàpù mu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr "Nà sí máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr "Lo ìwọ̀n àwòrán"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Size"
+msgstr "Ìwọ̀n Máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "pixels"
+msgstr "píkísẹ́ẹ̀lì"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Capacity"
+msgstr "Agbára Ìjápọ̀ Àìyípadà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Bandwidth"
+msgstr "Ìgbàlódé Ìjápọ̀ Àìyípadà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec in"
+msgstr "bìtì/ìṣẹ́jú-àáyá wọlé"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec out"
+msgstr "bìtì/ìṣẹ́jú-àáyá jáde"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style."
+msgstr "Ṣètò àkọlé máàpù, àlàyé-àmì, àmì-àkókò, àwọ̀ ẹ̀yìn àti ìwọ̀n kánfáàsì, pẹ̀lú ìgbàlódé àìyípadà fún àwọn ìjápọ̀. A ń wọn ìwọ̀n máàpù ní píkísẹ́ẹ̀lì; àwọn àìyípadà ìrísí ìjápọ̀ wà nínú Àṣà Máàpù."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Style"
+msgstr "Àṣà Máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Defaults"
+msgstr "Àwọn Àìyípadà Máàpù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "HTML Style"
+msgstr "Àṣà HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Dynamic HTML"
+msgstr "HTML Alágbára"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Static HTML"
+msgstr "HTML Àìyípadà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Key Style"
+msgstr "Àṣà Kọ́kọ́rọ́"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Classic"
+msgstr "Àtìjọ́"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Horizontal"
+msgstr "Níbùú"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Vertical"
+msgstr "Níróòró"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Inverted"
+msgstr "Tí A Dà Rúdò"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Tags"
+msgstr "Àwọn Àmì"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Font"
+msgstr "Fọ́ọ̀ntì Àlàyé-àmì"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Defaults"
+msgstr "Àwọn Àìyípadà Nóòdù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Font"
+msgstr "Fọ́ọ̀ntì Nóòdù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance Defaults"
+msgstr "Àwọn Àìyípadà Ìrísí Ìjápọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
+msgstr "Ìbú Ìjápọ̀ Àìyípadà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Labels"
+msgstr "Àwọn Àkọlé Ìjápọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bits/sec"
+msgstr "Àwọn bìtì/ìṣẹ́jú-àáyá"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Percentage"
+msgstr "Ìpín-ọgọ́rùn-ún"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Arrow Style"
+msgstr "Àṣà Ọfà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Compact"
+msgstr "Kékéré"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Label Font"
+msgstr "Fọ́ọ̀ntì Àkọlé Ìrìn-àjò"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr "Àwọn ìwọ̀n àfihàn-òkè ń lo píkísẹ́ẹ̀lì. Ṣètò 0 fún ìwọ̀n aládàáṣe. Ìbú ń ṣe òpin ìwọ̀n àwòkọ́; gíga jẹ́ àmọ̀ràn àtìjọ́ ó sì lè má yí gíga tó hàn padà. Àwọn URL Gíráàfù lè tọ́ka sí ìwọ̀n àwòrán tiwọn."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr "Ìbú Àfihàn-òkè Nóòdù (píkísẹ́ẹ̀lì)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr "Gíga Àfihàn-òkè Nóòdù (píkísẹ́ẹ̀lì)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr "Ìbú Àfihàn-òkè Ìjápọ̀ (píkísẹ́ẹ̀lì)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
+msgstr "Gíga Àfihàn-òkè Ìjápọ̀ (píkísẹ́ẹ̀lì)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr "Ṣàkóso Àwọn Àwọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr "Ìrísí Ìjápọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Comment Colour"
+msgstr "Àwọ̀ Àríwísí Ìjápọ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr " Lù àwọn ìjápọ̀ ní 80%+"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr "Àwọn ìjápọ̀ tí ìlò wọn tó 80% tàbí jù bẹ́ẹ̀ lọ ń lù ní àwọ̀ ìrìn-àjò dátà wọn."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr "Àwọn Àwọ̀ Ẹrù Ìrìn-àjò Dátà"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr "Àwọ̀ tí a ṣètò tẹ́lẹ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr "Àdáni"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr "Àìyípadà (Àtìjọ́)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr "Àwọ̀ ewé / Àwọ̀ ẹyẹ̀ / Pupa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr "Yìnyín Àárín Ìgbà Òtútù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr "Àwọn Àwọ̀ Ewé Ìgbàlódé"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr "Àwọn Búlúù Òkun"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr "Pọ́pù / Àwọ̀ Osàn / Pupa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr "Àwọ̀ Ẹyẹ̀ Ìlà-oòrùn"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr "Àwọn àwọ̀ ń fi hàn bí a ṣe ń lo ìgbàlódé ìjápọ̀ kan tó. Fún àpẹẹrẹ, 75% túmọ̀ sí ìdámẹ́ta nínú mẹ́rin agbára rẹ̀."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr "Àwọn ètò tẹ́lẹ̀ ń rọ́pò ìwọ̀n ìrìn-àjò dátà DEFAULT nígbà tí o bá Fipamọ́. A pa àwọn ìwọ̀n míràn tí a fún ní orúkọ mọ́."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr "Ìlà kọ̀ọ̀kan jẹ́ ààlà àwọ̀ kan. Láti àti Sí ni àwọn òpin rẹ̀, Àwọ̀ ni kíkún inú rẹ̀, àti Òpin Ìyípadà-àwọ̀ ń dapọ̀ lọ sí àwọ̀ mìíràn. Àkọlé ń fi ọ̀rọ̀ àlàyé-àmì àṣàyàn kún un. Àwọn orúkọ ìwọ̀n ń pín àwọn ààlà sí ẹgbẹ́; DEFAULT ni ìwọ̀n ìrìn-àjò dátà déédéé. Àwọn ìwọ̀n àdáni lè lo àwọn ẹ̀ka míràn."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr "Fi ààlà kún un"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr "Àwọn ààlà ìwọ̀n ń lo àwọn ẹ̀ka tí a ṣètò fún ìjápọ̀ tàbí nóòdù kọ̀ọ̀kan; àwọn ìjápọ̀ ìrìn-àjò dátà máa ń lo àwọn ìpín-ọgọ́rùn-ún lọ́pọ̀lọpọ̀."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr "Ṣàkóso Àwọn Àwòrán"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr "Àwọn Àmì-àwòrán Nóòdù"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr "Gbé Àmì-àwòrán Nóòdù Sókè"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr "Gbé àmì-àwòrán nóòdù sókè"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr "Àwọn àmì-àwòrán nóòdù tó wà tẹ́lẹ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr "Àwọn Àwòrán Ẹ̀yìn"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr "Gbé Àwòrán Ẹ̀yìn Sókè"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr "Gbé àwòrán ẹ̀yìn sókè"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr "Àwọn àwòrán ẹ̀yìn tó wà tẹ́lẹ̀"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr "Padé"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
+msgstr "Àwọn fáìlì PNG, JPG/JPEG tàbí GIF tó tó 5 MB àti mílíọ̀nù mẹ́rin píkísẹ́ẹ̀lì. Àwọn ìgbésókè GIF ń lo férémù àkọ́kọ́. A fi àwọn ìgbésókè pamọ́ lẹ́sẹ̀kẹsẹ̀. A kò lè pa àwọn àwòrán tí ìṣètò máàpù kan ń tọ́ka sí rẹ́."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr "Ṣàtúnṣe ìṣètò àìṣàtúnṣe fún ohun èlò máàpù yìí."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr "Àfikún: a fi àwọn àyípadà pamọ́ ní tààrà sí ìṣètò máàpù láìsí ìfìdí múlẹ̀ gírámà. Lo Àwọn Ohun-ìní fún àwọn ìṣàkóso àtúnṣe déédéé."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr "Àwọn Àṣàbò"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
+msgstr "Ìgbékalẹ̀"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate"
+msgstr "Ẹ̀dà"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable"
+msgstr "Dá Dúró"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable"
+msgstr "Mú Ṣiṣẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Grant Access"
+msgstr "Fún Ní Ààyè"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Revoke Access"
+msgstr "Gba Ààyè Padà"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No such file."
+msgstr "Kò sí irú fáìlì bẹ́ẹ̀."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s deleted."
+msgstr "A ti pa fáìlì ìṣètò %s rẹ́."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr "Máàpù kan ń lo fáìlì ìṣètò %s. Yọ máàpù yẹn kúrò lákọ̀ọ́kọ́."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr "A kò lè pa fáìlì ìṣètò náà rẹ́."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "All Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "A ti Tún Gbogbo Àwọn Máàpù Kọ́ ní Ìṣẹ́jú-àáyá %0.2f!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Editor directory permissions are not correct!"
+msgstr "Àwọn ìyọ̀ǹda fọ́ódà olóòtú kò tọ́!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
+msgstr "Àkọọ́lẹ̀ Iṣẹ́ Wẹ́ẹ̀bù gbọ́dọ̀ ní ààyè sí fọ́ódà ìṣètò WeatherMap èyí tí kò ní. Tún ìṣòro yìí ṣe, lẹ́yìn náà tún Olóòtú bẹ̀rẹ̀"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Weathermap Permission Error"
+msgstr "Àṣìṣe Ìyọ̀ǹda Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Continue"
+msgstr "Tẹ̀síwájú"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "A ti Tún Àwọn Máàpù %d Tí A Yàn Kọ́ ní Ìṣẹ́jú-àáyá %0.2f!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to delete the following Weather Map."
+msgid_plural "Click 'Continue' to delete following Weather Maps."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti pa Àwọn Máàpù Weathermap wọ̀nyí rẹ́."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete Weather Map"
+msgid_plural "Delete Weather Maps"
+msgstr[0] "Pa Àwọn Máàpù Weathermap Rẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti ṣe ẹ̀dà Àwọn Máàpù Weathermap wọ̀nyí. O lè yí ìrísí àkọlé padà fún Àwọn Máàpù Weathermap tuntun ní àṣàyàn."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title Format:"
+msgstr "Ìrísí Àkọlé:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File Format:"
+msgstr "Ìrísí Fáìlì Ìṣètò:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate Weather Map"
+msgid_plural "Duplicate Weather Maps"
+msgstr[0] "Ṣe Ẹ̀dà Àwọn Máàpù Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti dá Àwọn Máàpù Weathermap wọ̀nyí dúró. O lè yí ìrísí àkọlé padà fún Àwọn Máàpù Weathermap tuntun ní àṣàyàn."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable Weather Map"
+msgid_plural "Disable Weather Maps"
+msgstr[0] "Dá Àwọn Máàpù Weathermap Dúró"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti mú Àwọn Máàpù Weathermap wọ̀nyí ṣiṣẹ́. O lè yí ìrísí àkọlé padà fún Àwọn Máàpù Weathermap tuntun ní àṣàyàn."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable Weather Map"
+msgid_plural "Enable Weather Maps"
+msgstr[0] "Mú Àwọn Máàpù Weathermap Ṣiṣẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Tẹ 'Tẹ̀síwájú' láti Tún Àwọn Máàpù Weathermap wọ̀nyí Kọ́. O lè yí ìrísí àkọlé padà fún Àwọn Máàpù Weathermap tuntun ní àṣàyàn."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Weather Map"
+msgid_plural "Rebuild Weather Maps"
+msgstr[0] "Tún Àwọn Máàpù Weathermap Kọ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weather Maps [ Run Details: %s ]"
+msgstr "Àwọn Máàpù Weathermap [ Àwọn Àlàyé Ìṣiṣẹ́: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Search"
+msgstr "Ṣàwárí"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Maps"
+msgstr "Àwọn Máàpù"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Default"
+msgstr "Àìyípadà"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: use filter settings"
+msgid "Go"
+msgstr "Lọ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: reset filter settings"
+msgid "Clear"
+msgstr "Nu Kúrò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Settings"
+msgstr "Àwọn Ètò Ẹgbẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Map Settings"
+msgstr "Àwọn Ètò Máàpù Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Settings"
+msgstr "Àwọn Ètò Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild All"
+msgstr "Tún Gbogbo Kọ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild all maps now in background"
+msgstr "Tún gbogbo àwọn máàpù kọ́ nísinsìnyí ní abẹ́lẹ̀"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
+msgstr "O ń lo àfikún Boost láti mú àwọn fáìlì RRD dójúìwọ̀n. Nítorí èyí ń fa ìdádúró fún kíkọ dátà sínú àwọn fáìlì náà, ó ń fa ìṣòro pẹ̀lú àwọn ìmúdójúìwọ̀n Weathermap. O lè yanjú èyí nípa lílo àtìlẹ́yìn 'poller_output' ti Weathermap, tó ń gba dátà ní tààrà láti ọ̀dọ̀ olùkójọpọ̀. %s O lè mú èyí ṣiṣẹ́ ní gbogbogbòò nípa títẹ ibí %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
+msgstr "Ìgbà tó kẹ́yìn tí ó ṣiṣẹ́, Weathermap KÒ parí ìṣiṣẹ́ rẹ̀. Ó kùnà nígbà ìṣiṣẹ́ fún '%s'"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
+msgstr "Èyí <strong>lè</strong> ti nípa lórí àwọn àfikún míràn tí ó ń ṣiṣẹ́ nígbà ìlànà olùkójọpọ̀."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
+msgstr "O yẹ kí o dá Máàpù yìí dúró, tàbí kí o wádìí àṣìṣe. Àwọn okùnfà tó ṣeé ṣe pẹ̀lú àwọn ìṣòro memory_limit. Àkọsílẹ̀ lè ní àlàyé púpọ̀ sí i."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title"
+msgstr "Àkọlé"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File"
+msgstr "Fáìlì Ìṣètò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "ID"
+msgstr "ID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group"
+msgstr "Ẹgbẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enabled"
+msgstr "Ṣiṣẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Sort Order"
+msgstr "Ètò Ìtòjọ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Order"
+msgstr "Ètò Àtòjọ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Accessible By"
+msgstr "Tí Ó Wà Lárọ̀ọ́wọ́tó Fún"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Duration"
+msgstr "Àkókò Tó Gbà Tó Kẹ́yìn"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Runtime"
+msgstr "Àkókò Ìṣiṣẹ́ Tó Kẹ́yìn"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Anyone"
+msgstr "Ẹnikẹ́ni"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to start editor with this file"
+msgstr "Tẹ láti bẹ̀rẹ̀ olóòtú pẹ̀lú fáìlì yìí"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Check cacti.log for this Map"
+msgstr "Ṣàyẹ̀wò cacti.log fún Máàpù yìí"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to change group"
+msgstr "Tẹ láti yí ẹgbẹ́ padà"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Deactivate"
+msgstr "Tẹ láti Dá Dúró"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Activate"
+msgstr "Tẹ láti Mú Ṣiṣẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Specials"
+msgstr "Àwọn Pàtàkì %d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Standard"
+msgstr "Déédéé"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Down"
+msgstr "Sún Máàpù Sílẹ̀"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to edit permissions"
+msgstr "Tẹ láti ṣàtúnṣe àwọn ìyọ̀ǹda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users"
+msgstr "Kò Sí Olùlò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Users"
+msgstr "Gbogbo Àwọn Olùlò"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Groups"
+msgstr "Àwọn Ẹgbẹ́ %d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 Group"
+msgstr "Ẹgbẹ́ 1"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Users"
+msgstr "Àwọn Olùlò %d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 User"
+msgstr "Olùlò 1"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Weathermaps Found"
+msgstr "A Kò Rí Weathermap Kankan"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
+msgstr "Kò sí fọ́ódà tí a pè ní %s. O gbọ́dọ̀ ṣẹ̀dá rẹ̀, kí o sì ṣètò rẹ̀ kí sáfà wẹ́ẹ̀bù lè kà á. Tí o bá fẹ́ gbé àwọn fáìlì ìṣètò sókè láti inú Cacti, nígbà náà sáfà wẹ́ẹ̀bù gbọ́dọ̀ lè <i>kọ sínú rẹ̀</i> pẹ̀lú."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Existing Configuration Files"
+msgstr "Àwọn Fáìlì Ìṣètò Tó Wà Tẹ́lẹ̀"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Num Files"
+msgstr "Iye Fáìlì"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Maps"
+msgstr "Ní Àwọn Máàpù"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Go"
+msgstr "Lọ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Set/Refresh Filters"
+msgstr "Ṣètò/Sọ Àwọn Àlẹ̀mọ́ Dọ̀tun"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear"
+msgstr "Nu Kúrò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear Filters"
+msgstr "Pa Àwọn Àlẹ̀mọ́ Rẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Options"
+msgstr "Àwọn Àṣàyàn Ìṣẹ̀dá"
+
+#: weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "New Map"
+msgstr "Máàpù Tuntun"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name including .conf"
+msgstr "Orúkọ pẹ̀lú .conf"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr "Àkọlé máàpù àṣàyàn"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Source Map"
+msgstr "Máàpù Orísun"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Empty File"
+msgstr "Fáìlì Òfo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Actions"
+msgstr "Àwọn Ìgbésẹ̀"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Date"
+msgstr "Ọjọ́ Ìṣẹ̀dá"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Modified"
+msgstr "Àtúnṣe Tí Ó Kẹ́yìn"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Size"
+msgstr "Ìwọ̀n"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config Files"
+msgstr "Àwọn Fáìlì Ìṣètò"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Add the configuration file %s to Weathermap"
+msgstr "Fi fáìlì ìṣètò %s kún Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid " Copy"
+msgstr " Ṣe ẹ̀dà"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Duplicate the configuration file %s and add to Weathermap as %s"
+msgstr "Ṣe ẹ̀dà fáìlì ìṣètò %s kí o sì fi kún Weathermap gẹ́gẹ́ bí %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "View the configuration file %s in a new window"
+msgstr "Wo fáìlì ìṣètò %s nínú fèrèsé tuntun kan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "NOTE: Already in use. Click duplicate to create a new file."
+msgstr "ÀKÍYÈSÍ: Ó ti wà ní lílò tẹ́lẹ̀. Tẹ ṣe ẹ̀dà láti ṣẹ̀dá fáìlì tuntun kan."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No files were found in the configs directory."
+msgstr "A kò rí fáìlì kankan nínú fọ́ódà configs."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s is not in the config directory."
+msgstr "Ọ̀nà %s kò sí nínú fọ́ódà ìṣètò."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Preview of %s"
+msgstr "Àwòkọ́ ti %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s does not appear to exist in the config directory"
+msgstr "Ọ̀nà %s kò jọ pé ó wà nínú fọ́ódà ìṣètò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Path mismatch"
+msgstr "Àìbáramu ọ̀nà"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr "Fáìlì ìṣètò kò sí. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "(No Title)"
+msgstr "(Kò Sí Àkọlé)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr "Máàpù tuntun tí orúkọ rẹ̀ jẹ́ %s kò lè rí fáìlì ìṣètò %s láti ṣe ẹ̀dà rẹ̀"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr "A kò lè forúkọsílẹ̀ máàpù tuntun náà."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr "A kò lè ṣẹ̀dá ẹ̀dà máàpù náà. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
+msgstr "A ti ṣẹ̀dá Máàpù tuntun tí orúkọ rẹ̀ jẹ́ %s nípa lílo fáìlì ìṣètò %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weathermap Permissions for Map [ %s ]"
+msgstr "Àwọn Ìyọ̀ǹda Weathermap fún Máàpù [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Type"
+msgstr "Irú"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users"
+msgstr "Àwọn Olùlò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Groups"
+msgstr "Àwọn Ẹgbẹ́ Olùlò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rows"
+msgstr "Àwọn Ìlà"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Permissions"
+msgstr "Ní Àwọn Ìyọ̀ǹda"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users or Groups"
+msgstr "Àwọn Olùlò tàbí Àwọn Ẹgbẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Account Type"
+msgstr "Irú Àkọọ́lẹ̀"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User/Group"
+msgstr "Olùlò/Ẹgbẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Login Realm"
+msgstr "Agbègbè Ìwọlé"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "UID/GID"
+msgstr "UID/GID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Full Name/Description"
+msgstr "Orúkọ Kíkún/Àpèjúwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Allowed"
+msgstr "Tí A Gbà Láàyè"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User"
+msgstr "Olùlò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Group"
+msgstr "Ẹgbẹ́ Olùlò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "N/A"
+msgstr "Kò Sí"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Local"
+msgstr "Abẹ́lé"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Web Basic"
+msgstr "Ìpìlẹ̀ Wẹ́ẹ̀bù"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "LDAP/AD"
+msgstr "LDAP/AD"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Not Permitted"
+msgstr "A Kò Gbà Láàyè"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Permitted"
+msgstr "A Gbà Láàyè"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users have Access to this Map"
+msgstr "Kò Sí Olùlò Kankan Tó Ní Ààyè sí Máàpù Yìí"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Settings [ All Maps ]"
+msgstr "Àwọn Ètò Àgbáyé [ Gbogbo Àwọn Máàpù ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
+msgstr "Kò tíì sí Àwọn Ètò fún Gbogbo Àwọn Máàpù. O lè fi díẹ̀ kún un nípa títẹ àmì àfikún '+' ní òkè-ọ̀tún, tàbí yan Máàpù kan ṣoṣo láti ojú-ìṣàkóso láti fi Àwọn Ètò kún un fún Máàpù yẹn."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Group Settings [ Group: %s ]"
+msgstr "Ṣàtúnṣe Àwọn Ètò Ẹgbẹ́ [ Ẹgbẹ́: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Kò tíì sí Àwọn Ètò fún Ẹgbẹ́ kọ̀ọ̀kan fún Ẹgbẹ́ yìí. O lè fi díẹ̀ kún un nípa títẹ àmì àfikún '+' ní òkè-ọ̀tún."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Settings [ Weathermap: %s ]"
+msgstr "Ṣàtúnṣe Àwọn Ètò Máàpù [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Kò tíì sí àwọn ètò fún Máàpù kọ̀ọ̀kan fún Máàpù yìí. O lè fi díẹ̀ kún un nípa títẹ àmì àfikún '+' ní òkè-ọ̀tún."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Usage Notes"
+msgstr "Àwọn Àkọsílẹ̀ Ìlò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Gbogbo Àwọn Máàpù nínú Ẹgbẹ́ yìí tún ní ìpa láti ọ̀dọ̀ Àwọn Ètò Àgbáyé wọ̀nyí (Ẹgbẹ́ ń borí Àgbáyé, Máàpù ń borí Ẹgbẹ́, ṣùgbọ́n MÉJÈÈJÌ ń borí àwọn àṣẹ SET nínú Fáìlì Ìṣètò Máàpù)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Máàpù yìí tún ní ìpa láti ọ̀dọ̀ Àwọn Ètò Àgbáyé àti Ẹgbẹ́ wọ̀nyí (Ẹgbẹ́ ń borí Àgbáyé, Máàpù ń borí Ẹgbẹ́, ṣùgbọ́n MÉJÈÈJÌ ń borí àwọn àṣẹ SET nínú Fáìlì Ìṣètò Máàpù)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Group Settings [ Group: %s ]"
+msgstr "Àwọn Ètò Ẹgbẹ́ [ Ẹgbẹ́: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Group"
+msgstr "Kò Sí Ẹgbẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Action"
+msgstr "Ìṣe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name"
+msgstr "Orúkọ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Value"
+msgstr "Iye"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit this definition"
+msgstr "Ṣàtúnṣe ìtumọ̀ yìí"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Remove this definition from this Map"
+msgstr "Yọ ìtumọ̀ yìí kúrò nínú Máàpù yìí"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Group Admin"
+msgstr "Padà sí Ìṣàkóso Ẹgbẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Map Admin"
+msgstr "Padà sí Ìṣàkóso Máàpù"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Settings Found"
+msgstr "A Kò Rí Ètò Kankan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map ID"
+msgstr "ID Máàpù"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Setting ID"
+msgstr "ID Ètò"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The name of the map-global SET variable"
+msgstr "Orúkọ oníyípadà SET àgbáyé-máàpù náà"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "What to set it to"
+msgstr "Ohun láti ṣètò rẹ̀ sí"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
+msgstr "Ṣàtúnṣe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Setting for all Maps"
+msgstr "Ètò Àgbáyé fún gbogbo Àwọn Máàpù"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Map Setting [ Weathermap: %s ]"
+msgstr "Ètò Máàpù [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Group for Weathermap [ %s ]"
+msgstr "Ṣàtúnṣe Ẹgbẹ́ Máàpù fún Weathermap [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Choose an existing Group"
+msgstr "Yan Ẹgbẹ́ kan tó wà tẹ́lẹ̀"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Or Create a New Group using the %s Group Management interface %s"
+msgstr "Tàbí Ṣẹ̀dá Ẹgbẹ́ Tuntun kan nípa lílo ojú-ìṣàkóso %s Ìṣàkóso Ẹgbẹ́ %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Adding a Group"
+msgstr "Fífi Ẹgbẹ́ kan Kún Un"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Editing Group: %s"
+msgstr "Ṣíṣàtúnṣe Ẹgbẹ́: %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name:"
+msgstr "Orúkọ Ẹgbẹ́:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Update"
+msgstr "Ìmúdójúìwọ̀n"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Add"
+msgstr "Fi kún un"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Map Groups"
+msgstr "Ṣàtúnṣe Àwọn Ẹgbẹ́ Máàpù"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name"
+msgstr "Orúkọ Ẹgbẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename this Group"
+msgstr "Tún sọ orúkọ Ẹgbẹ́ yìí"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Group Settings"
+msgstr "Ṣàtúnṣe Àwọn Ètò Ẹgbẹ́"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Groups are defined"
+msgstr "A kò ṣàlàyé Ẹgbẹ́ kankan"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename Weathermap Group"
+msgstr "Tún Sọ Orúkọ Ẹgbẹ́ Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enter a new name for the Weathermap Group."
+msgstr "Tẹ orúkọ tuntun kan fún Ẹgbẹ́ Weathermap náà."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "New Group Name"
+msgstr "Orúkọ Ẹgbẹ́ Tuntun"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename"
+msgstr "Tún sọ orúkọ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the last remaining Map Group."
+msgstr "A kò lè pa Ẹgbẹ́ Máàpù tó kù kẹ́yìn rẹ́."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr "Àkọlé máàpù gùn jù. Lo ó pọ̀ jù báìtì 4088 lẹ́yìn yíyọkúrò."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The New Map File name %s already exists!"
+msgstr "Orúkọ Fáìlì Máàpù Tuntun %s ti wà tẹ́lẹ̀!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Source Map File name is not readable or does not exist!"
+msgstr "Orúkọ Fáìlì Máàpù Orísun kò ṣeé kà tàbí kò sí!"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created from %s"
+msgstr "A ti ṣẹ̀dá fáìlì Máàpù Tuntun %s láti %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created."
+msgstr "A ti ṣẹ̀dá fáìlì Máàpù Tuntun %s."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You must include a Map File name to Create"
+msgstr "O gbọ́dọ̀ fi orúkọ Fáìlì Máàpù kún un láti Ṣẹ̀dá"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermap named \"%s\""
+msgstr "Weathermap Nẹ́tíwọ́ọ̀kì tí a pè ní \"%s\""
+
+#: weathermap-cacti-plugin.php
+msgid "This map hasn't been created yet."
+msgstr "A kò tíì ṣẹ̀dá máàpù yìí."
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Maps"
+msgstr "Ṣàkóso Àwọn Máàpù"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
+msgstr "Àwọn Weathermap Nẹ́tíwọ́ọ̀kì [ %sYípo Ní Aládàáṣe%s ]"
+
+#: weathermap-cacti-plugin.php
+msgid "(thumbnail for map not created yet)"
+msgstr "(a kò tíì ṣẹ̀dá àwòrán kékeré fún máàpù)"
+
+#: weathermap-cacti-plugin.php
+msgid "(Live View)"
+msgstr "(Ìwò Lọ́wọ́lọ́wọ́)"
+
+#: weathermap-cacti-plugin.php
+msgid "You Have No Maps"
+msgstr "O Kò Ní Máàpù Kankan"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
+msgstr "Láti fi máàpù kan kún ìṣètò-àkókò, lọ sí ojú-ewé %s Ṣàkóso...Àwọn Weathermap %s kí o sì fi ọ̀kan kún un."
+
+#: weathermap-cacti-plugin.php
+msgid "Network Weathermaps"
+msgstr "Àwọn Weathermap Nẹ́tíwọ́ọ̀kì"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
+msgstr "Ó ń fi %s %s hàn nínú %s %s. Ó ń yípo gbogbo àwọn máàpù tó wà nínú ẹgbẹ́ yìí."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps."
+msgstr "Ó ń fi %s %s hàn nínú %s %s. Ó ń yípo gbogbo àwọn máàpù tó wà."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Powered by %s PHP Weathermap Version %s %s"
+msgstr "Tí %s PHP Weathermap Ẹ̀dà %s %s ṣe agbára rẹ̀"
+
+#: weathermap-cacti-plugin.php
+msgid "Go to the Map Management page"
+msgstr "Lọ sí ojú-ewé Ìṣàkóso Máàpù"
+
+#: weathermap-cacti-plugin.php
+msgid "Weathermap Management"
+msgstr "Ìṣàkóso Weathermap"
+
+#: weathermap-cacti-plugin.php
+msgid "Map to View"
+msgstr "Máàpù láti Wò"
+
+#: weathermap-cacti-plugin.php
+msgid "All Maps"
+msgstr "Gbogbo Àwọn Máàpù"
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr "Dá ìyípo dúró"
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr "Tẹ́lẹ̀"
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr "Dúró díẹ̀ / tẹ̀síwájú"
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr "Tókàn"
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr "Jáde kúrò ní ìbòjú-kíkún"
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr "Ìbòjú-kíkún"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr "Máàpù tókàn ní ìṣẹ́jú-àáyá %s"
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
+msgstr "Ti dúró díẹ̀"
