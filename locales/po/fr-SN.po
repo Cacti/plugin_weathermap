@@ -1,0 +1,3088 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-08 18:47-0800\n"
+"PO-Revision-Date: 2026-11-27 18:00-0800\n"
+"Last-Translator: The Cacti Group <developers@cacti.net>\n"
+"Language-Team: French (Senegal) <developers@cacti.net>\n"
+"Language: fr_SN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr "Choisissez un fichier PNG, JPG ou GIF d'au plus 5 Mo."
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr "Utilisez POST pour enregistrer les modifications."
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr "Cette carte a été modifiée depuis son ouverture. Rechargez l'éditeur avant d'enregistrer vos modifications."
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr "Impossible de lire la configuration de la carte."
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.history.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr "Impossible de verrouiller les configurations de carte."
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr "Cette image est encore référencée par une configuration de carte."
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
+msgstr "Impossible de supprimer l'image."
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr "Paramètres de couleur invalides."
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr "Impossible d'enregistrer la configuration de la carte."
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr "Catégorie d'image invalide."
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr "Les liens symboliques ne peuvent pas être gérés ici."
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr "Nom de fichier d'image invalide."
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr "Impossible de vérifier les références de configuration."
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr "Trop de configurations incluses à vérifier."
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr "Le répertoire d'images n'est pas accessible en écriture."
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr "Choisissez une image PNG, JPG ou GIF d'au plus 4 millions de pixels."
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr "L'image n'a pas pu être lue."
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr "Impossible de réserver un nom de fichier d'image."
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
+msgstr "Impossible d'enregistrer l'image."
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr "Choisissez une couleur valide."
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr "Paramètre de pulsation invalide."
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr "L'arrière-plan nécessite une couleur unie."
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr "Conservez entre 1 et 200 lignes d'échelle."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr "L'échelle %s est définie dans une configuration incluse et est en lecture seule ici. Modifiez plutôt son fichier source."
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr "Nom d'échelle invalide."
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr "Plage d'échelle invalide."
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr "Le début de la plage ne doit pas dépasser sa fin."
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr "Étiquette d'échelle invalide."
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr "Une étiquette de couleur unie ne peut pas commencer par trois entiers. Ajoutez d'abord un mot ou choisissez une couleur de fin de dégradé."
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr "Les bornes d'échelle nécessitent des valeurs pouvant être enregistrées sans arrondi. Utilisez jusqu'à six décimales et des unités de bande passante exactes."
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr "Plage en double dans une échelle."
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr "Les dégradés nécessitent deux couleurs."
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr "Conservez au moins une plage de trafic DEFAULT."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr "Un objet de carte utilise encore l'échelle %s."
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt (font %s)"
+msgstr "%s - %s pt (police %s)"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr "Bleu (#0000FF)"
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr "Bleu foncé (#003366)"
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr "Bleu roi (#0040C0)"
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr "Bleu sarcelle (#007070)"
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr "Vert (#008000)"
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr "Violet (#8000C0)"
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr "Anthracite (#333333)"
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr "Rouge (#C00000)"
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr "Noir (#000000)"
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr "Blanc (#FFFFFF)"
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr "Contraste automatique avec la couleur du lien"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt"
+msgstr "%s - %s pt"
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr "Polices intégrées"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr "Police des commentaires de lien"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Style"
+msgstr "Style des commentaires de lien"
+
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr "Centre"
+
+#: lib/editor.comment-style.php
+msgid "Edge"
+msgstr "Bord"
+
+#: lib/editor.comment-style.php
+msgid "Edge places comments beside the link; Centre places them over the arrow."
+msgstr "Bord place les commentaires à côté du lien ; Centre les place sur la flèche."
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr "Suivre la courbe du lien"
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr "Commentaires de lien"
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr "Utilise une police TrueType. Les courbes serrées ou les textes plus longs que le lien utilisent un texte droit."
+
+#: lib/editor.comment-style.php
+msgid "Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments."
+msgstr "Positions le long du lien : 0 % correspond au premier nœud et 100 % au second. Cela déplace les étiquettes de trafic, pas les commentaires."
+
+#: lib/editor.comment-style.php
+msgid "Traffic Label Positions"
+msgstr "Positions des étiquettes de trafic"
+
+#: lib/editor.comment-style.php
+msgid "IN"
+msgstr "Entrée"
+
+#: lib/editor.comment-style.php
+msgid "OUT"
+msgstr "Sortie"
+
+#: lib/editor.comment-style.php
+msgid "Comment Style"
+msgstr "Style de commentaire"
+
+#: lib/editor.comment-style.php
+msgid "Use map default"
+msgstr "Utiliser la valeur par défaut de la carte"
+
+#: lib/editor.comment-style.php
+msgid "Custom positions"
+msgstr "Positions personnalisées"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr "Supprimer le fichier de configuration %s"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr "Voulez-vous vraiment supprimer définitivement le fichier de configuration « %s » ?"
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr "Une session active est requise pour Annuler et Rétablir."
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr "Impossible de créer le stockage privé d'historique de carte."
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr "Le stockage d'historique de carte n'est pas privé."
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr "Stockage d'historique de carte invalide."
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr "Ajouter un nœud"
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr "Cloner le nœud"
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr "Supprimer le nœud"
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr "Déplacer un nœud ou une note"
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr "Ajouter un lien"
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr "Supprimer le lien"
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr "Déplacer un point de passage du lien"
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr "Aligner le lien"
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr "Aligner tous les liens"
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr "Aligner les liens"
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr "Modifier la note"
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr "Désaligner les liens"
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr "Modifier le lien"
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr "Modifier le nœud"
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr "Modifier la configuration brute du lien"
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr "Modifier la configuration brute du nœud"
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr "Modifier les propriétés de la carte"
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr "Modifier le style de la carte"
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr "Modifier les couleurs de la carte"
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr "Déplacer la légende"
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr "Déplacer l'horodatage"
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr "Modifier la carte"
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr "Aucun historique correspondant ne subsiste. Rechargez l'éditeur."
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr "Impossible de restaurer cette carte. Une configuration ou une image a peut-être changé. Rechargez l'éditeur."
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr "Requête d'historique invalide."
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr "Cette carte a changé. Rechargez l'éditeur avant d'utiliser Annuler ou Rétablir."
+
+#: lib/editor.inc.php
+msgid "Next results"
+msgstr "Résultats suivants"
+
+#: lib/editor.inc.php
+msgid "Previous results"
+msgstr "Résultats précédents"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr "Bienvenue dans l’éditeur de %s PHP Weathermap"
+
+#: lib/editor.inc.php
+msgid "Use the editor to manage nodes, links, notes, colours and image uploads. Edit Raw Configuration provides settings beyond the forms. See the local documentation for workflows and configuration details."
+msgstr "Utilisez l'éditeur pour gérer les nœuds, les liens, les notes, les couleurs et les téléversements d'images. Modifier la configuration brute donne accès aux paramètres au-delà des formulaires. Consultez la documentation locale pour les procédures et les détails de configuration."
+
+#: lib/editor.inc.php
+msgid "Do you want to:"
+msgstr "Voulez-vous :"
+
+#: lib/editor.inc.php
+msgid "Create A New Map:"
+msgstr "Créez une nouvelle carte :"
+
+#: lib/editor.inc.php
+msgid "Named:"
+msgstr "Nommé:"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-mgmt.php
+msgid "Create"
+msgstr "Créer"
+
+#: lib/editor.inc.php
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
+msgstr "Remarque : les noms de fichiers doivent se terminer par .conf et ne contenir ni séparateur de chemin ni caractère de contrôle"
+
+#: lib/editor.inc.php
+msgid "Create Copy"
+msgstr "Créer une copie"
+
+#: lib/editor.inc.php
+msgid "Ok"
+msgstr "Ok"
+
+#: lib/editor.inc.php
+msgid "Operation successful"
+msgstr "Opération réussie"
+
+#: lib/editor.inc.php
+msgid "The Operation was successful.  Details are below."
+msgstr "L'opération a réussi.  Les détails sont ci-dessous."
+
+#: lib/editor.inc.php
+msgid "Pause"
+msgstr "Pause"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to move the node to."
+msgstr "Cliquez sur la carte vers laquelle vous souhaitez déplacer le nœud."
+
+#: lib/editor.inc.php
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Cliquez sur la carte à partir de quel point vous souhaitez rediriger le lien."
+
+#: lib/editor.inc.php
+msgid "Click on the first node for the start of the link."
+msgstr "Cliquez sur le premier nœud pour le début du lien."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Cliquez sur la carte où vous souhaitez mettre l’horodatage."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the legend."
+msgstr "Cliquez sur la carte où vous souhaitez mettre la légende."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a new node."
+msgstr "Cliquez sur la carte où vous souhaitez ajouter un nouveau nœud."
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr "−"
+
+#: lib/editor.inc.php
+msgid "No images in this library yet."
+msgstr "Aucune image dans cette bibliothèque pour le moment."
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
+msgstr "Choisissez une image PNG, JPG ou GIF à téléverser."
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr "La requête a échoué. Veuillez réessayer."
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr "Échec du téléversement."
+
+#: lib/editor.inc.php
+msgid "No gradient"
+msgstr "Aucun dégradé"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr "Couleur personnalisée"
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr "Supprimer la plage"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr "Supprimer %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr "Supprimer l'image « %s » du serveur ?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr "Images : %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr "%s téléversé"
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr "Étiquette uniquement"
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr "Aucun arrière-plan"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr "Utilisé par : %s"
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr "Non utilisé par une carte"
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr "Aucune plage DEFAULT. Voir Paramètres avancés pour les échelles nommées."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr "Personnalisé (%s)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr "Annuler"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr "Rétablir"
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr "Aucune modification de carte à annuler ou rétablir."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr "Annuler : %s étapes ; Rétablir : %s étapes."
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr "Enregistrez ou annulez la boîte de dialogue ouverte avant d'utiliser Annuler ou Rétablir."
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
+msgstr "Annuler et Rétablir nécessitent le stockage de session du navigateur."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr "Impossible d'enregistrer les modifications. Veuillez réessayer."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr "Couleur d'arrière-plan de la carte"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr "Couleur de bordure des liens"
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr "Les échelles issues de configurations incluses sont en lecture seule ici. Modifiez leurs fichiers sources pour les changer."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr "Échelle"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr "De (en général %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr "À (en général %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr "Label"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr "Couleur"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr "Fin du dégradé"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr "Noir"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr "Bleu"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr "Vert"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr "Gris"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr "Aucun"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr "Orange"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr "Violet"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr "Rouge"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr "Blanc"
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr "Rechercher des icônes…"
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr "Rechercher des icônes de nœud"
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr "Icônes de nœud"
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr "Choisir une icône"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr "Icônes correspondantes : %s"
+
+#: lib/editor.inc.php
+msgid "No matching icons"
+msgstr "Aucune icône correspondante"
+
+#: lib/editor.inc.php
+msgid "Current interface"
+msgstr "Interface actuelle"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Advanced settings"
+msgstr "Paramètres avancés"
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr "Masquer les paramètres avancés"
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr "Utiliser l'interface"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Traffic interface"
+msgstr "Interface de trafic"
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr "Rechercher un équipement ou une interface"
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr "Aucune interface sélectionnée"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr "Cliquez sur la carte à l'endroit où vous souhaitez ajouter une note."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr "Note"
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr "Confirmation de suppression de la note"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr "Supprimer la note"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr "Supprimer la note « %s » ?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr "Graphique actuel : %s"
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr "Configuration personnalisée : voir Paramètres avancés"
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr "Choisissez une interface ci-dessous"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr "Bande passante entrante vers %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr "Bande passante sortante depuis %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr "Graphique %s : données, destination du clic et graphique au survol sélectionnés. Enregistrez pour appliquer."
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr "Affiché en premier au survol. Utiliser l'interface le définit automatiquement ; ne le modifiez que pour une URL d'aperçu personnalisée."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr "Trafic combiné de %s sources"
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr "Source de trafic ajoutée au total de la carte. Les graphiques au survol et au clic restent inchangés. Enregistrez pour appliquer."
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr "Cette source est déjà incluse. Sélectionnez une autre source dans cette zone de recherche pour en ajouter davantage."
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr "Retirer la source"
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr "Source mesurée retirée. Les graphiques au survol et au clic restent inchangés. Enregistrez pour appliquer."
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr "Aucune source de trafic mesurée sélectionnée."
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr "Choisissez une interface supplémentaire dans les résultats de recherche ci-dessus, puis cliquez sur Ajouter une source de trafic."
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr "Interface supplémentaire sélectionnée. Ajouter une source de trafic conserve l'interface principale et les autres sources."
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr "Source principale : utilisez « Utiliser l'interface » en haut pour modifier"
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr "Choisissez d'abord l'interface de trafic principale dans le formulaire principal."
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr "Ajouter des sources de trafic supplémentaires"
+
+#: lib/editor.inc.php
+msgid "Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link."
+msgstr "Ajustez les positions des étiquettes de trafic ou utilisez des sources et URL personnalisées. Laissez les sources et URL inchangées pour un lien de trafic normal."
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr "Sources de trafic personnalisées modifiées. Enregistrez pour appliquer. Les graphiques au survol et la destination du clic restent inchangés."
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr "Une URL d'image supplémentaire au maximum. Il s'agit du même aperçu géré dans Graphiques supplémentaires au survol."
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr "Sources de trafic"
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr "Facultatif : ajoutez d'autres interfaces au total de la carte. Modifiez l'interface principale dans le formulaire principal ; retirez les sources supplémentaires ci-dessous. Les graphiques au survol et au clic restent inchangés. Un graphique agrégé correspondant doit être configuré séparément dans Cacti. Enregistrer applique les modifications."
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr "Graphique supplémentaire"
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr "Aucun fichier RRD répertorié pour ce graphique"
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr "Graphique personnalisé au survol"
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr "Retirer le graphique"
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr "Un graphique supplémentaire au maximum. Remplacez-le ou retirez-le pour en choisir un autre."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr "Graphiques supplémentaires au survol"
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr "Destination du clic"
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr "Laissez généralement cette option sur le graphique de trafic. Ne la modifiez que pour ouvrir un autre graphique ou une autre page lors d'un clic sur le lien. Cela ne modifie ni le trafic mesuré ni les graphiques au survol."
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr "Apparence"
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr "Capacité, par exemple 100M ou 1G."
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr "Texte le long du lien ; le pourcentage définit sa position."
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr "Apparence et commentaires"
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr "Aide"
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr "Choisissez une interface de trafic et une capacité, puis cliquez sur Enregistrer. Graphiques supplémentaires au survol ajoute des aperçus facultatifs. Paramètres avancés contient les sources de trafic et URL personnalisées. Modifier la configuration brute édite directement la syntaxe de la carte."
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr "Saisissez un équipement ou une interface, ou parcourez tout"
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr "Tout parcourir"
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr "Choisissez une interface principale, puis cliquez sur « Utiliser l'interface ». Les sources supplémentaires et les graphiques au survol sont conservés. Enregistrer applique les modifications."
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr "Recherche de l'équipement et de l'interface..."
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr "Interface personnalisée ou indisponible"
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr "Nom d'interface indisponible"
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr "Nom affiché"
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr "Icône"
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr "Type de graphique"
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr "Graphiques au survol"
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr "Supprimer le nœud"
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr "Pour un nœud utilisé comme étiquette ou icône à l'extrémité d'un lien, les contrôles principaux suffisent. Paramètres avancés ajoute des graphiques au survol tels que le processeur, la mémoire ou le trafic, des destinations de clic personnalisées et l'ID interne du nœud."
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr "Nom affiché et icône : choisissez ce qui apparaît sur la carte. Position du nom affiché place le nom par rapport à l'icône. Position sur la carte (X, Y) définit les coordonnées du nœud ; Déplacer vous permet de positionner le nœud sur la carte."
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr "Graphiques au survol : filtrez par type de graphique et recherchez un graphique. Ajouter inclut un graphique supplémentaire ; Remplacer remplace les graphiques au survol existants. Enregistrer applique vos modifications."
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr "Avancé : le nom interne identifie le nœud dans la configuration de la carte. Les URL d'information définissent la destination du clic ; les URL de graphique au survol définissent les images affichées au survol. Utilisez-les pour des destinations personnalisées ou des graphiques externes."
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr "Rechercher un équipement ou un graphique"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr "Graphiques au survol : %s"
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr "graphique indisponible"
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr "images personnalisées"
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr "Aucun graphique au survol configuré"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr "ID interne du lien : %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr "Nœud : %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr "Supprimer le lien entre %1$s et %2$s ?"
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr "Les nœuds et les graphiques Cacti seront conservés."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s from this map?"
+msgstr "Supprimer %s de cette carte ?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %s."
+msgstr "Liens connectés à supprimer : %s."
+
+#: lib/editor.inc.php
+msgid "The Cacti device and its graphs will remain."
+msgstr "L'équipement Cacti et ses graphiques seront conservés."
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "AVERTISSEMENT : Appuyez sur « Supprimer le nœud » pour supprimer ce nœud."
+
+#: lib/editor.inc.php
+msgid "Delete Node Confirmation"
+msgstr "Confirmation de la suppression du nœud"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "AVERTISSEMENT : Appuyez sur « Supprimer le lien » pour supprimer ce lien."
+
+#: lib/editor.inc.php
+msgid "Delete Link Confirmation"
+msgstr "Confirmation de suppression du lien"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cancel"
+msgstr "Annuler"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Link"
+msgstr "Supprimer"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Position"
+msgstr "Position"
+
+#: lib/editor.inc.php
+msgid "Node Actions"
+msgstr "Actions de nœud"
+
+#: lib/editor.inc.php
+msgid "Link Actions"
+msgstr "Actions du lien"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Move"
+msgstr "Déplacer"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Clone"
+msgstr "Dupliquer"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr "Modifier la configuration brute"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete"
+msgstr "Supprimer"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Via"
+msgstr "Par"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Tidy"
+msgstr "Ordonné"
+
+#: lib/editor.inc.php
+msgid "Properties"
+msgstr "Propriétés"
+
+#: lib/editor.inc.php
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Où Weathermap devrait-il obtenir des données pour ce lien ? Il peut s’agir soit d’un fichier RRD, soit d’un HTML contenant des commentaires spéciaux (normalement de MRTG)."
+
+#: lib/editor.inc.php
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "La largeur de la flèche de lien qui sera dessinée, en pixels."
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "Si vous utilisez le style HTML 'overlib', c’est l’URL qui sera ouverte lorsque vous cliquerez sur le lien"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "Si vous utilisez le style HTML 'overlib', il s’agit de l’URL de l’image qui s’affichera lorsque vous survolerez le lien"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the first node to the second node"
+msgstr "La bande passante entre le premier nœud et le deuxième nœud"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "La bande passante entre le deuxième nœud et le premier nœud (si celui-ci est différent)"
+
+#: lib/editor.inc.php
+msgid "The text that will appear alongside the link"
+msgstr "Le texte qui apparaîtra à côté du lien"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "Si vous utilisez le style HTML 'overlib', c’est l’URL qui s’ouvrira lorsque vous cliquerez sur le nœud"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "Si vous utilisez le style HTML 'overlib', il s’agit de l’URL de l’image qui s’affichera lorsque vous survolerez le nœud"
+
+#: lib/editor.inc.php
+msgid "How far from the left to position the node, in pixels"
+msgstr "À quelle distance de la gauche positionner le nœud, en pixels"
+
+#: lib/editor.inc.php
+msgid "How far from the top to position the node, in pixels"
+msgstr "À quelle distance du haut positionner le nœud, en pixels"
+
+#: lib/editor.inc.php
+msgid "The text that appears on the node"
+msgstr "Le texte qui apparaît sur le nœud"
+
+#: lib/editor.inc.php
+msgid "The name used for this node when defining links"
+msgstr "Nom utilisé pour ce nœud lors de la définition des liens"
+
+#: lib/editor.inc.php
+msgid "Change to a different file, or start creating a new one."
+msgstr "Passez à un autre fichier ou commencez à en créer un nouveau."
+
+#: lib/editor.inc.php
+msgid "Add a new node to the map"
+msgstr "Ajouter un nouveau nœud à la carte"
+
+#: lib/editor.inc.php
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "Ajoutez un nouveau lien à la carte, en joignant deux nœuds."
+
+#: lib/editor.inc.php
+msgid "Select a different map to edit, or start a new one."
+msgstr "Sélectionnez une autre carte à modifier ou créez-en une nouvelle."
+
+#: lib/editor.inc.php
+msgid "This is where help appears for links"
+msgstr "C’est ici qu’apparaît l’aide pour les liens"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for maps"
+msgstr "C’est ici qu’apparaît l’aide pour les cartes"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for nodes"
+msgstr "C’est là que l’aide s’affiche pour les nœuds"
+
+#: lib/editor.inc.php
+msgid "or click a Node or Link to edit its properties"
+msgstr "ou cliquez sur un nœud ou un lien pour modifier ses propriétés"
+
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
+msgid "Docs"
+msgstr "Documentation"
+
+#: lib/viewer.controls.php
+msgid "Manage Weathermaps"
+msgstr "Gérer les cartes Weathermap"
+
+#: lib/viewer.controls.php setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Settings"
+msgstr "Paramètres de la carte"
+
+#: lib/viewer.controls.php
+msgid "Map Permissions"
+msgstr "Autorisations de la carte"
+
+#: lib/viewer.controls.php setup.php
+msgid "Edit Map"
+msgstr "Modifier la carte"
+
+#: setup.php
+msgid "Weathermap"
+msgstr "Carte météorologique"
+
+#: setup.php weathermap-cacti-plugin.php
+msgid "Network Weathermap"
+msgstr "Carte météorologique du réseau"
+
+#: setup.php
+msgid "Debug Mode"
+msgstr "Mode débogage"
+
+#: setup.php
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr "Si vous souhaitez afficher dans votre journal Cacti des informations d'état détaillées sur le processus de génération de Weathermap, cochez cette case."
+
+#: setup.php
+msgid "Info URL Style"
+msgstr "Style d'URL d'information"
+
+#: setup.php
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr "Lors de l'ajout de graphiques pour un nœud ou un lien, vers quelle vue souhaitez-vous rediriger à l'aide de l'URL d'information ? Avec la vue graphique standard, vous pouvez afficher plusieurs graphiques. Avec la vue graphique temporelle, vous ne pouvez en afficher qu'un seul."
+
+#: setup.php
+msgid "Standard Graph View"
+msgstr "Vue graphique standard"
+
+#: setup.php
+msgid "Time Graph View"
+msgstr "Voir Graphique"
+
+#: setup.php
+msgid "Page style"
+msgstr "Style de page"
+
+#: setup.php
+msgid "How to display multiple maps."
+msgstr "Comment afficher plusieurs cartes."
+
+#: setup.php
+msgid "Thumbnail Overview"
+msgstr "Vue d’ensemble des vignettes"
+
+#: setup.php
+msgid "Full Images"
+msgstr "Image entière"
+
+#: setup.php
+msgid "Show Only First"
+msgstr "Afficher uniquement en premier"
+
+#: setup.php
+msgid "Thumbnail Maximum Size"
+msgstr "Taille maximale de la vignette"
+
+#: setup.php
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr "Largeur ou hauteur maximale des vignettes en mode miniatures, en pixels. Prend effet après la prochaine exécution de l’interrogeur."
+
+#: setup.php
+msgid "Hover Graph Default Width"
+msgstr "Largeur par défaut du graphique de survol"
+
+#: setup.php
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "La largeur par défaut des graphiques RRDtool qui apparaissent lorsque vous survolez un lien."
+
+#: setup.php
+msgid "Hover Graph Default Height"
+msgstr "Hauteur par défaut du graphique de survol"
+
+#: setup.php
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "La hauteur par défaut des graphiques RRDtool qui apparaissent lorsque vous survolez un lien."
+
+#: setup.php
+msgid "Hover Graph Style"
+msgstr "Style de graphique de survol"
+
+#: setup.php
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
+msgstr "Lors du survol des liens ou des nœuds, quel style de graphique doit être affiché ?"
+
+#: setup.php
+msgid "Thumbnail Graphs"
+msgstr "Graphiques miniatures"
+
+#: setup.php
+msgid "Full Graphs"
+msgstr "Graphiques complets"
+
+#: setup.php
+msgid "Map Processing Timeout"
+msgstr "Délai d'expiration du traitement de carte"
+
+#: setup.php
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr "Durée maximale autorisée avant l'expiration du processus périodique de génération de carte."
+
+#: setup.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d minutes"
+
+#: setup.php
+msgid "Refresh Time"
+msgstr "Temps d’actualisation"
+
+#: setup.php
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "Fréquence d’actualisation de la page en mode Cycle. L’automatique permet à toutes les cartes disponibles de tenir en 5 minutes."
+
+#: setup.php
+msgid "Automatic"
+msgstr "Automatique"
+
+#: setup.php
+#, php-format
+msgid "%d Seconds"
+msgstr "%d secondes"
+
+#: setup.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d Minute"
+
+#: setup.php
+msgid "Output Format"
+msgstr "Format de sortie"
+
+#: setup.php
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr "Quel format préférez-vous pour les images et les vignettes de la carte générée ?"
+
+#: setup.php
+msgid "PNG (default)"
+msgstr "PNG (par défaut)"
+
+#: setup.php
+msgid "JPEG"
+msgstr "JPEG"
+
+#: setup.php
+msgid "GIF"
+msgstr "GIF"
+
+#: setup.php
+msgid "Map Rendering Interval"
+msgstr "Intervalle de rendu de la carte"
+
+#: setup.php
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr "À quelle fréquence voulez-vous que Weathermap recalcule ses cartes ? Vous ne devriez pas y toucher à moins que vous ne sachiez ce que vous faites ! Il est principalement nécessaire pour les personnes ayant des configurations de sondage non standard."
+
+#: setup.php
+msgid "Never (manual updates)"
+msgstr "Jamais (mises à jour manuelles)"
+
+#: setup.php
+msgid "Every Poller Cycle (default)"
+msgstr "Chaque cycle de l’interrogeur (par défaut)"
+
+#: setup.php
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr "Tous les cycles %d Poller"
+
+#: setup.php
+msgid "Show Weathermap Help Links"
+msgstr "Afficher les liens d’aide de la carte météo"
+
+#: setup.php
+msgid "If checked, all Weathermap pages will include a link to documentation."
+msgstr "Si cette case est cochée, toutes les pages de la carte météo incluront un lien vers la documentation."
+
+#: setup.php
+msgid "Show 'All' Tab"
+msgstr "Afficher l’onglet 'Tout'"
+
+#: setup.php
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr "Lorsque vous utilisez des groupes, ajoutez un onglet « Toutes les cartes » à la barre d’onglets."
+
+#: setup.php
+msgid "No (default)"
+msgstr "Non (par défaut)"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Yes"
+msgstr "Oui"
+
+#: setup.php
+msgid "Show Map Selector"
+msgstr "Afficher le sélecteur de carte"
+
+#: setup.php
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr "Affichez un sélecteur de carte déroulante dans la vue cartographique en plein écran."
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "No"
+msgstr "Non"
+
+#: setup.php
+msgid "Yes (default)"
+msgstr "Oui (par défaut)"
+
+#: setup.php
+msgid "Quiet Logging"
+msgstr "Exploitation forestière silencieuse"
+
+#: setup.php
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr "Par défaut, même dans la journalisation de niveau FAIBLE, Weathermap enregistre l’activité normale. Cela fait qu’il n’enregistre VRAIMENT que les erreurs en mode LOW."
+
+#: setup.php
+msgid "Chatty (default)"
+msgstr "Bavard (par défaut)"
+
+#: setup.php
+msgid "Quiet"
+msgstr "Silencieux"
+
+#: setup.php
+msgid "Weathermaps"
+msgstr "Cartes météo"
+
+#: setup.php
+msgid "Weathermap Groups"
+msgstr "Groupes de cartes météo"
+
+#: setup.php
+msgid "Management"
+msgstr "Gestion"
+
+#: setup.php
+msgid "View Weathermaps"
+msgstr "Voir les cartes météo"
+
+#: setup.php
+msgid "Edit Weathermaps"
+msgstr "Modifier les cartes météo"
+
+#: setup.php
+msgid "Manage Weathermap"
+msgstr "Gérer la carte météo"
+
+#: setup.php
+msgid "General Administration"
+msgstr "Administration générale"
+
+#: setup.php
+msgid "Normal User"
+msgstr "Utilisateur normal"
+
+#: setup.php weathermap-cacti-plugin.php
+#, php-format
+msgid "Map for config file: %s"
+msgstr "Carte pour le fichier de configuration : %s"
+
+#: setup.php
+msgid "Choose which weathermap to add to the tree."
+msgstr "Choisissez la carte météo à ajouter à l’arbre."
+
+#: setup.php
+msgid "Map"
+msgstr "Carte"
+
+#: setup.php
+msgid "How should the map be displayed?"
+msgstr "Comment la carte doit-elle être affichée ?"
+
+#: setup.php
+msgid "Style"
+msgstr "Style"
+
+#: setup.php
+msgid "Thumbnail"
+msgstr "Miniature"
+
+#: setup.php
+msgid "Full Size"
+msgstr "Taille originale"
+
+#: setup.php
+msgid "View Map Image"
+msgstr "Voir l’image de la carte"
+
+#: setup.php
+msgid "View Map Thumbnail"
+msgstr "Afficher la vignette de la carte"
+
+#: setup.php
+msgid "Add Map"
+msgstr "Ajouter une carte"
+
+#: setup.php
+msgid "View Configuration"
+msgstr "Afficher la configuration"
+
+#: setup.php
+msgid "Weathermap Editor"
+msgstr "Éditeur de carte météo"
+
+#: setup.php
+msgid "Edit Permissions"
+msgstr "Modifier les autorisations"
+
+#: setup.php
+msgid "Map Settings Delete"
+msgstr "Supprimer les paramètres de la carte"
+
+#: setup.php
+msgid "Map Settings Update"
+msgstr "Mise à jour des paramètres de la carte"
+
+#: setup.php
+msgid "Map Settings Add"
+msgstr "Ajouter des paramètres de carte"
+
+#: setup.php
+msgid "Permissions Edit"
+msgstr "Autorisations Modifier"
+
+#: setup.php
+msgid "Add User"
+msgstr "Ajouter un utilisateur"
+
+#: setup.php
+msgid "Delete User"
+msgstr "Supprimer utilisateur"
+
+#: setup.php
+msgid "Delete Map"
+msgstr "Supprimer la carte"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Up"
+msgstr "Déplacer la carte vers le haut"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Down"
+msgstr "Déplacer le groupe vers le bas"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Up"
+msgstr "Déplacer le groupe vers le haut"
+
+#: setup.php
+msgid "Group Edit"
+msgstr "Modification de groupe"
+
+#: setup.php
+msgid "Group Update"
+msgstr "Mise à jour du groupe"
+
+#: setup.php
+msgid "Activate Map"
+msgstr "Activer la carte"
+
+#: setup.php
+msgid "Deactivate Map"
+msgstr "Désactiver la carte"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Now"
+msgstr "Reconstruire maintenant"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Change Group"
+msgstr "Changer de groupe"
+
+#: setup.php
+msgid "Group Admin"
+msgstr "Groupe administrateur"
+
+#: setup.php
+msgid "Group Admin Delete"
+msgstr "Supprimer l’administrateur de groupe"
+
+#: setup.php
+msgid "Manage"
+msgstr "Gérer"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr "Paramètres"
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr "Défilement automatique"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "Local Documentation"
+msgstr "Documentation locale"
+
+#: setup.php
+#, php-format
+msgid "This is version %s"
+msgstr "Version %s."
+
+#: setup.php
+msgid "Weathermap Website"
+msgstr "Site Web de la carte météorologique"
+
+#: weathermap-cacti-plugin-editor.php
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "Éditeur de cartes météo PHP %s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr "Retour à la carte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
+msgstr "Retour à la gestion"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Change<br>File"
+msgstr "Changement<br>Lime"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Node"
+msgstr "Ajouter<br>Noeud"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Link"
+msgstr "Ajouter<br>Lien"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr "Ajouter<br>Note"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Legend"
+msgstr "Position<br>Légende"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Timestamp"
+msgstr "Position<br>Horodatage"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Properties"
+msgstr "Carte<br>Propriétés"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Style"
+msgstr "Carte<br>Style"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Colors"
+msgstr "Gérer<br>Couleurs"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Images"
+msgstr "Gérer<br>Images"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Editor<br>Settings"
+msgstr "Éditeur<br>Paramètres"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>---, ---"
+msgstr "Position<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
+msgstr "Sélectionnez un élément de menu, ou faites un clic droit ou un clic sur un nœud ou un lien pour modifier ses propriétés"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Debug"
+msgstr "Débogage"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy ALL"
+msgstr "Tout ranger"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy"
+msgstr "Ranger"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Un-tidy"
+msgstr "Désordonné"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Do Nothing"
+msgstr "Ne Rien Faire"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "mapfile"
+msgstr "mapfile"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "action"
+msgstr "action"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param"
+msgstr "Param"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param2"
+msgstr "param2"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "debug"
+msgstr "débogage"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "See config"
+msgstr "Voir la configuration"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr "Texte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr "Gauche"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr "Droite"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr "Alignement du texte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr "Police"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr "Couleur de la note"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Properties"
+msgstr "Propriétés du nœud"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr "Position sur la carte (X, Y)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Internal Name"
+msgstr "Nom interne"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr "Bas"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr "Personnalisé (configuration brute)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr "Position du nom affiché"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr "Milieu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr "Haut"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Icon Filename"
+msgstr "Icône Nom de fichier"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Info URL(s)"
+msgstr "URL(s) d’information"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover Graph URL(s)"
+msgstr "Hover Graph URL(s)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Template"
+msgstr "Modèle de graphique"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "All"
+msgstr "Tout"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Selector"
+msgstr "Sélecteur de graphe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "Vous pouvez modifier le nœud Weathermap à partir d’ici.  Les colonnes Position sont la position X,Y sur la carte.  Le nom interne est l’ID unique attribué au nœud.  L’étiquette est le nom externe du nœud que vous fournissez aux utilisateurs.  L’icône Nom de fichier est le graphique que vous souhaitez représenter l’objet Node.  L’URL INFO est un lien que vous pouvez fournir en cliquant sur le nœud de carte actif.  Les URL du Hover Graph sont des Cactus ou d’autres URL de Graphs qui peuvent apparaître lorsque vous survolez le nœud.  Le sélecteur de graphiques est une aide pour sélectionner les graphiques Cactu pour les URL du graphique.   Il existe plusieurs autres propriétés Node possibles.  Cependant, aujourd’hui, nous ne soutenons que ceux inclus ci-dessus."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Properties"
+msgstr "Propriétés du lien"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Into"
+msgstr "Entrant"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Maximum Bandwidth"
+msgstr "Bande passante maximale"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Out of"
+msgstr "Sortant"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Via Style"
+msgstr "Style de tracé"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Curved"
+msgstr "Courbé"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Angled"
+msgstr "Angulaire"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr "Source(s) de trafic mesurée(s)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Data Source Selector"
+msgstr "Sélecteur de source de données"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr "Ajouter une source de trafic"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Width"
+msgstr "Largeur du lien"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr "URL de destination du clic"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr "URL du graphique principal au survol"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr "Affiché en premier. Défini par Utiliser l'interface ; les graphiques supplémentaires apparaissent en dessous."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr "Affiche jusqu'à deux graphiques au survol : le graphique de trafic principal et un aperçu supplémentaire (CPU, latence ou autre). Remplacer ne modifie que le graphique supplémentaire."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr "URL de graphique(s) supplémentaire(s)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr "URL des graphiques supplémentaires au survol"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr "Filtrer par type de graphique"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr "Choisir un graphique au survol"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr "Ajouter un graphique au survol"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr "Remplacer les graphiques au survol"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "IN Comment"
+msgstr "Commentaire IN"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "OUT Comment"
+msgstr "OUT Commentaire"
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
+msgstr ""
+"<p><strong>Bande passante :</strong> Définissez la capacité utilisée pour calculer l'utilisation, par exemple 100M ou 1G. Les unités K, M, G et T sont prises en charge. Sélectionnez Identique à &quot;Entrée&quot; lorsque les deux sens ont la même capacité.</p>\n"
+"<p><strong>Interface de trafic :</strong> Recherchez par équipement, port ou description, ou sélectionnez Tout parcourir. Choisissez une interface, puis cliquez sur Utiliser l'interface pour définir la source mesurée principale, la destination du clic et le graphique principal au survol. Les sources mesurées et graphiques au survol supplémentaires sont conservés.</p>\n"
+"<p><strong>Apparence et commentaires :</strong> Style de tracé choisit des coudes courbés ou angulaires ; Largeur du lien définit l'épaisseur de la flèche. Commentaire IN et Commentaire OUT ajoutent du texte pour chaque sens. Le pourcentage détermine la position du texte le long du lien. Style de commentaire place les commentaires à côté du lien (Bord) ou sur la flèche (Centre) ; Utiliser la valeur par défaut de la carte suit Style de la carte.</p>\n"
+"<p><strong>Graphiques supplémentaires au survol :</strong> Affichez au maximum deux graphiques au survol : le graphique de trafic principal et un graphique supplémentaire, tel que le processeur, la latence ou une autre interface. Filtrer par type de graphique réduit les choix. Ajouter un graphique au survol ajoute le graphique supplémentaire ; Remplacer les graphiques au survol le modifie ; Retirer le graphique le supprime. Le graphique de trafic principal, le trafic mesuré et la destination du clic du lien restent inchangés. Dans la visionneuse, chaque aperçu Cacti ouvre son propre graphique complet lors d'un clic.</p>\n"
+"<p><strong>Paramètres avancés :</strong> Contrôles facultatifs pour déplacer les étiquettes de trafic IN/OUT, combiner des sources mesurées, modifier la destination du clic et saisir des URL personnalisées d'images au survol. Les positions des étiquettes de trafic déplacent les encadrés d'utilisation le long du lien, indépendamment des positions des commentaires. Utiliser la valeur par défaut de la carte suit Style de la carte. Un lien de trafic normal ne nécessite généralement aucune modification ici.</p>\n"
+"<p><strong>Combinaison de sources de trafic :</strong> Ajouter une source de trafic ajoute une autre interface au total de la carte, séparément pour IN et OUT. Retirer la source supprime une source supplémentaire. Modifiez la source principale à l'aide de Utiliser l'interface en haut. Le trafic combiné est comparé à la bande passante configurée pour calculer l'utilisation. Aucun graphique Cacti combiné n'est créé automatiquement ; créez un graphique agrégé correspondant dans Cacti et saisissez ses URL de clic et de survol si nécessaire. Des liens de carte distincts sont généralement plus clairs pour des connexions principale et de secours.</p>\n"
+"<p><strong>Sources manuelles et URL :</strong> Le champ de source modifie la liste complète des sources mesurées, y compris la source principale. URL de destination du clic détermine la page ouverte lors d'un clic sur le lien de la carte. URL du graphique principal au survol définit le premier aperçu ; URL de graphique(s) supplémentaire(s) accepte une URL d'image supplémentaire. Cet aperçu supplémentaire est également géré sous Graphiques supplémentaires au survol.</p>\n"
+"<p><strong>Aligner et Via :</strong> Aligner ajuste le tracé du lien. Via vous permet de placer un point de passage sur la carte.</p>\n"
+"<p><strong>Modifier la configuration brute :</strong> Modifiez directement la syntaxe sous-jacente de la carte pour les paramètres non couverts par ce formulaire.</p>"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Properties"
+msgstr "Carte des biens"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr "Détails de la carte"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Title"
+msgstr "Titre de la carte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Text"
+msgstr "Texte de légende"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Timestamp Text"
+msgstr "Texte d’horodatage"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr "Arrière-plan et zone de dessin"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr "Image d'arrière-plan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr "(aucune image disponible)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr "--AUCUN ARRIÈRE-PLAN--"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr "Utiliser la couleur d'arrière-plan de la carte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
+msgstr "Affichée sans image ou à travers ses zones transparentes."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr "Redimensionnement de l'arrière-plan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr "Ajuster à la carte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr "Étirer à la carte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr "Utiliser la taille de l'image"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Size"
+msgstr "Dimension de la carte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "pixels"
+msgstr "pixels"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Capacity"
+msgstr "Capacité par défaut des liens"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Bandwidth"
+msgstr "Bande passante de liaison par défaut"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec in"
+msgstr "bit/sec en entrée"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec out"
+msgstr "sortie bit/sec"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style."
+msgstr "Définissez le titre de la carte, la légende, l'horodatage, l'arrière-plan et la taille de la zone de dessin, ainsi que la bande passante par défaut des liens. Les dimensions de la carte sont mesurées en pixels ; les paramètres d'apparence par défaut des liens se trouvent dans Style de la carte."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Style"
+msgstr "Style de la carte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Defaults"
+msgstr "Valeurs par défaut de la carte"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "HTML Style"
+msgstr "HTML Style"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Dynamic HTML"
+msgstr "HTML dynamique"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Static HTML"
+msgstr "HTML statique"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Key Style"
+msgstr "Style de légende"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Classic"
+msgstr "Classique"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Horizontal"
+msgstr "Horizontal"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Vertical"
+msgstr "Vertical"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Inverted"
+msgstr "Inversé"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Tags"
+msgstr "Étiquettes"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Font"
+msgstr "Police de légende"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Defaults"
+msgstr "Valeurs par défaut des nœuds"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Font"
+msgstr "Police de nœud"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance Defaults"
+msgstr "Apparence par défaut des liens"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
+msgstr "Largeur de lien par défaut"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Labels"
+msgstr "Étiquettes de lien"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bits/sec"
+msgstr "Bits/s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Percentage"
+msgstr "Pourcentage"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Arrow Style"
+msgstr "Style des flèches"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Compact"
+msgstr "Compact"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Label Font"
+msgstr "Police des étiquettes de trafic"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr "Les dimensions au survol sont exprimées en pixels. Définissez 0 pour un dimensionnement automatique. La largeur limite la taille de l'aperçu ; la hauteur est une indication héritée qui peut ne pas modifier la hauteur affichée. Les URL de graphiques peuvent spécifier leurs propres dimensions d'image."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr "Largeur au survol des nœuds (pixels)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr "Hauteur au survol des nœuds (pixels)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr "Largeur au survol des liens (pixels)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
+msgstr "Hauteur au survol des liens (pixels)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr "Gérer les couleurs"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr "Apparence des liens"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Comment Colour"
+msgstr "Couleur des commentaires de lien"
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr " Faire pulser les liens à 80 %+"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr "Les liens atteignant 80 % d'utilisation ou plus pulsent dans leur couleur de trafic."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr "Couleurs de charge de trafic"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr "Préréglage de couleurs"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr "Personnalisé"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr "Par défaut (Classique)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr "Vert / Ambre / Rouge"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr "Glace hivernale"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr "Verts modernes"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr "Bleus océan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr "Violet / Orange / Rouge"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr "Ambre levant"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr "Les couleurs indiquent la proportion de bande passante utilisée sur un lien. Par exemple, 75 % représente les trois quarts de sa capacité."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr "Les préréglages remplacent l'échelle de trafic DEFAULT lors de l'enregistrement. Les autres échelles nommées sont conservées."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr "Chaque ligne correspond à une plage de couleurs. De et À définissent ses bornes, Couleur définit le remplissage et Fin du dégradé crée un fondu vers une autre couleur. Étiquette ajoute un texte facultatif dans la légende. Les noms d'échelle regroupent les plages ; DEFAULT est l'échelle de trafic habituelle. Les échelles personnalisées peuvent utiliser d'autres unités."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr "Ajouter une plage"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr "Les plages d'échelle utilisent les unités configurées pour chaque lien ou nœud ; les liens de trafic utilisent normalement des pourcentages."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr "Gérer les images"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr "Icônes de nœud"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr "Téléverser une icône de nœud"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr "Téléverser une icône de nœud"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr "Icônes de nœud existantes"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr "Images d'arrière-plan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr "Téléverser un arrière-plan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr "Téléverser un arrière-plan"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr "Images d'arrière-plan existantes"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr "Fermer"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
+msgstr "Fichiers PNG, JPG/JPEG ou GIF jusqu'à 5 Mo et 4 millions de pixels. Les fichiers GIF utilisent la première image. Les téléversements sont enregistrés immédiatement. Les images référencées par une configuration de carte ne peuvent pas être supprimées."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr "Modifiez la configuration brute de cet objet de carte."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr "Avancé : les modifications sont enregistrées directement dans la configuration de la carte sans validation de syntaxe. Utilisez Propriétés pour les contrôles d'édition habituels."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr "Superpositions"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
+msgstr "Placement"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate"
+msgstr "Dupliquer"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable"
+msgstr "Désactiver"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable"
+msgstr "Activer"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Grant Access"
+msgstr "Accorder l'accès"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Revoke Access"
+msgstr "Révoquer l'accès"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No such file."
+msgstr "Il n’y a pas de fichier de ce type."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s deleted."
+msgstr "Fichier de configuration %s supprimé."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr "Le fichier de configuration %s est utilisé par une carte. Supprimez d'abord cette carte."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr "Impossible de supprimer le fichier de configuration."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "All Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Toutes les cartes ont été reconstruites en %0.2f secondes !"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Editor directory permissions are not correct!"
+msgstr "Les autorisations du répertoire de l’éditeur ne sont pas correctes !"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
+msgstr "Le compte de service Web doit avoir accès au répertoire de configuration de WeatherMap, ce qu’il n’a pas.  Corrigez ce problème, puis relancez l’éditeur"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Weathermap Permission Error"
+msgstr "Erreur d’autorisation de la carte météo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Continue"
+msgstr "Continuer"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Les %d cartes sélectionnées ont été reconstruites en %0.2f secondes !"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to delete the following Weather Map."
+msgid_plural "Click 'Continue' to delete following Weather Maps."
+msgstr[0] "Cliquez sur 'Continuer' pour supprimer la carte météo suivante."
+msgstr[1] "Cliquez sur 'Continuer' pour supprimer les cartes météo suivantes."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete Weather Map"
+msgid_plural "Delete Weather Maps"
+msgstr[0] "Supprimer la carte météo"
+msgstr[1] "Supprimer des cartes météo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Cliquez sur « Continuer » pour dupliquer la carte météo suivante. Vous pouvez éventuellement modifier le format du titre de la nouvelle carte météorologique."
+msgstr[1] "Cliquez sur « Continuer » pour dupliquer les cartes météo suivantes. Vous pouvez éventuellement modifier le format du titre des nouvelles cartes météorologiques."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title Format:"
+msgstr "Format du titre :"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File Format:"
+msgstr "Format du fichier de configuration :"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate Weather Map"
+msgid_plural "Duplicate Weather Maps"
+msgstr[0] "Dupliquer la carte météo"
+msgstr[1] "Dupliquer les cartes météorologiques"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Cliquez sur « Continuer » pour désactiver la carte météo suivante. Vous pouvez éventuellement modifier le format du titre de la nouvelle carte météorologique."
+msgstr[1] "Cliquez sur « Continuer » pour désactiver les cartes météo suivantes. Vous pouvez éventuellement modifier le format du titre des nouvelles cartes météorologiques."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable Weather Map"
+msgid_plural "Disable Weather Maps"
+msgstr[0] "Désactiver la carte météo"
+msgstr[1] "Désactiver les cartes météo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Cliquez sur 'Continuer' pour activer la carte météo suivante. Vous pouvez éventuellement modifier le format du titre de la nouvelle carte météorologique."
+msgstr[1] "Cliquez sur « Continuer » pour activer les cartes météo suivantes. Vous pouvez éventuellement modifier le format du titre des nouvelles cartes météorologiques."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable Weather Map"
+msgid_plural "Enable Weather Maps"
+msgstr[0] "Activer la carte météo"
+msgstr[1] "Activer les cartes météo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Cliquez sur « Continuer » pour reconstruire la carte météo suivante. Vous pouvez éventuellement modifier le format du titre de la nouvelle carte météorologique."
+msgstr[1] "Cliquez sur « Continuer » pour reconstruire les cartes météo suivantes. Vous pouvez éventuellement modifier le format du titre des nouvelles cartes météorologiques."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Weather Map"
+msgid_plural "Rebuild Weather Maps"
+msgstr[0] "Reconstruire la carte météo"
+msgstr[1] "Reconstruire des cartes météo"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weather Maps [ Run Details: %s ]"
+msgstr "Cartes météo [ Détails de la course : %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Search"
+msgstr "Rechercher"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Maps"
+msgstr "Cartes"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Default"
+msgstr "Défaut"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: use filter settings"
+msgid "Go"
+msgstr "Appliquer"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: reset filter settings"
+msgid "Clear"
+msgstr "Effacer"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Settings"
+msgstr "Paramètres du groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Map Settings"
+msgstr "Paramètres de la carte météo Cacti"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Settings"
+msgstr "Paramètres de la carte météo de Cacti"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild All"
+msgstr "Tout reconstruire"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild all maps now in background"
+msgstr "Reconstruire toutes les cartes maintenant en arrière-plan"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
+msgstr "Vous utilisez le plugin Boost pour mettre à jour les fichiers RRD. Étant donné que cela retarde l’écriture des données dans les fichiers, cela entraîne des problèmes avec les mises à jour de Weathermap. Vous pouvez résoudre ce problème en utilisant la prise en charge « poller_output » de Weathermap, qui récupère les données directement à partir de l’enquêteur. %s Vous pouvez l’activer dans le monde entier en cliquant ici %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
+msgstr "La dernière fois qu’il a fonctionné, Weathermap n’a PAS terminé son exécution. Il a échoué lors du traitement de '%s'"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
+msgstr "Cela <strong>peut</strong> avoir affecté d’autres plug-ins qui s’exécutent pendant le processus d’interrogation."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
+msgstr "Vous devez soit désactiver cette carte, soit rechercher des erreurs. Les causes possibles incluent des problèmes memory_limit. Le journal peut contenir plus d’informations."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title"
+msgstr "Titre"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File"
+msgstr "Fichier de Configuration"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "ID"
+msgstr "ID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group"
+msgstr "Groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enabled"
+msgstr "Activé"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Sort Order"
+msgstr "Ordre de tri"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Order"
+msgstr "Commande"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Accessible By"
+msgstr "Accessible par"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Duration"
+msgstr "Dernière durée"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Runtime"
+msgstr "Durée de cycle"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Anyone"
+msgstr "Tout le monde"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to start editor with this file"
+msgstr "Cliquez pour démarrer l’éditeur avec ce fichier"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Check cacti.log for this Map"
+msgstr "Consultez cacti.log cette carte"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to change group"
+msgstr "Cliquez pour changer de groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Deactivate"
+msgstr "Cliquez pour désactiver"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Activate"
+msgstr "Cliquez pour activer"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Specials"
+msgstr "%d Offres spéciales"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Standard"
+msgstr "Standard"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Down"
+msgstr "Déplacer la carte vers le bas"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to edit permissions"
+msgstr "Cliquez pour modifier les autorisations"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users"
+msgstr "Aucun utilisateur"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Users"
+msgstr "Tous les utilisateurs"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Groups"
+msgstr "%d Groupes"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 Group"
+msgstr "1 Groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Users"
+msgstr "%d Utilisateurs"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 User"
+msgstr "1 Utilisateur"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Weathermaps Found"
+msgstr "Aucune carte météo trouvée"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
+msgstr "Il n’y a pas de répertoire nommé %s.  Vous devez le créer et le configurer pour qu’il soit lisible par le serveur web. Si vous souhaitez télécharger des fichiers de configuration à partir de Cacti, ils doivent également être <i>accessibles en écriture</i> par le serveur Web."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Existing Configuration Files"
+msgstr "Fichiers de configuration existants"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Num Files"
+msgstr "Num Fichiers"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Maps"
+msgstr "Dispose de cartes"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Go"
+msgstr "Go"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Set/Refresh Filters"
+msgstr "Définir/Rafraîchir les filtres"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear"
+msgstr "Effacer"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear Filters"
+msgstr "Supprimer les filtres"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Options"
+msgstr "Créer des options"
+
+#: weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "New Map"
+msgstr "Nouvelle carte"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name including .conf"
+msgstr "Nom incluant .conf"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr "Titre facultatif de la carte"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Source Map"
+msgstr "Carte de base"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Empty File"
+msgstr "Fichier Vide"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Actions"
+msgstr "Actions"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Date"
+msgstr "Date de création"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Modified"
+msgstr "Dernière modification"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Size"
+msgstr "Taille"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config Files"
+msgstr "Fichiers de configuration"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Add the configuration file %s to Weathermap"
+msgstr "Ajouter le fichier de configuration %s à Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid " Copy"
+msgstr " Copier"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Duplicate the configuration file %s and add to Weathermap as %s"
+msgstr "Dupliquez le fichier de configuration %s et ajoutez-le à Weathermap en tant que %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "View the configuration file %s in a new window"
+msgstr "Afficher le fichier de configuration %s dans une nouvelle fenêtre"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "NOTE: Already in use. Click duplicate to create a new file."
+msgstr "REMARQUE : Déjà en cours d’utilisation. Cliquez sur dupliquer pour créer un nouveau fichier."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No files were found in the configs directory."
+msgstr "Aucun fichier n’a été trouvé dans le répertoire configs."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s is not in the config directory."
+msgstr "Le chemin d’accès %s n’est pas dans le répertoire config."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Preview of %s"
+msgstr "Aperçu de %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s does not appear to exist in the config directory"
+msgstr "Le chemin d’accès %s ne semble pas exister dans le répertoire config"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Path mismatch"
+msgstr "Incompatibilité de chemin"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr "Le fichier de configuration est indisponible. Veuillez réessayer."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "(No Title)"
+msgstr "(Sans titre)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr "La nouvelle carte portant le nom %s n’a pas pu localiser le fichier de configuration %s à copier"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr "Impossible d'enregistrer la nouvelle carte."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr "Impossible de créer la copie de la carte. Veuillez réessayer."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
+msgstr "La nouvelle carte portant le nom %s a été créée à l’aide du fichier de configuration %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weathermap Permissions for Map [ %s ]"
+msgstr "Autorisations de la carte météo pour la carte [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Type"
+msgstr "Type"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Groups"
+msgstr "Groupes d'utilisateurs"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rows"
+msgstr "Lignes"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Permissions"
+msgstr "Dispose d’autorisations"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users or Groups"
+msgstr "Utilisateurs ou groupes"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Account Type"
+msgstr "Type de compte"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User/Group"
+msgstr "Utilisateur/Groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Login Realm"
+msgstr "Royaume de connexion"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "UID/GID"
+msgstr "UID/GID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Full Name/Description"
+msgstr "Nom complet/Description"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Allowed"
+msgstr "Autorisé"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User"
+msgstr "Utilisateur"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Group"
+msgstr "Groupe d'utilisateurs"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "N/A"
+msgstr "N/A"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Local"
+msgstr "Local"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Web Basic"
+msgstr "Web Basic"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "LDAP/AD"
+msgstr "LDAP/AD"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Not Permitted"
+msgstr "Non permis"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Permitted"
+msgstr "Autorisé"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users have Access to this Map"
+msgstr "Aucun utilisateur n’a accès à cette carte"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Settings [ All Maps ]"
+msgstr "Paramètres globaux [ Toutes les cartes ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
+msgstr "Il n’y a pas encore de paramètres pour toutes les cartes. Vous pouvez en ajouter en appuyant sur le signe plus « + » en haut à droite, ou choisir une seule carte dans l’écran de gestion pour ajouter des paramètres pour cette carte."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Group Settings [ Group: %s ]"
+msgstr "Modifier les paramètres du groupe [ Groupe : %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Il n’y a pas encore de paramètres par groupe pour ce groupe. Vous pouvez en ajouter en appuyant sur le signe plus '+' en haut à droite."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Settings [ Weathermap: %s ]"
+msgstr "Modifier les paramètres de la carte [ Carte météo : %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Il n’y a pas encore de paramètres par carte pour cette carte. Vous pouvez en ajouter en appuyant sur le signe plus '+' en haut à droite."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Usage Notes"
+msgstr "Notes d’utilisation"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Toutes les cartes de ce groupe sont également affectées par les paramètres globaux suivants (le groupe remplace le global, la carte remplace le groupe, mais les deux remplacent les commandes SET dans le fichier de configuration de la carte)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Cette carte est également affectée par les paramètres globaux et de groupe suivants (le groupe remplace le global, la carte remplace le groupe, mais les deux remplacent les commandes SET dans le fichier de configuration de la carte)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Group Settings [ Group: %s ]"
+msgstr "Paramètres de groupe [ Groupe : %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Group"
+msgstr "Aucun groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Action"
+msgstr "Action"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name"
+msgstr "Nom"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Value"
+msgstr "Valeur"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit this definition"
+msgstr "Modifier cette définition"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Remove this definition from this Map"
+msgstr "Supprimer cette définition de cette carte"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Group Admin"
+msgstr "Retour à l’administrateur de groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Map Admin"
+msgstr "Retour à l’administrateur de la carte"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Settings Found"
+msgstr "Aucun paramètre n’a été trouvé"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map ID"
+msgstr "ID de la carte"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Setting ID"
+msgstr "ID de réglage"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The name of the map-global SET variable"
+msgstr "Le nom de la variable SET map-global"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "What to set it to"
+msgstr "Ce qu’il faut régler"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
+msgstr "Editer"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Setting for all Maps"
+msgstr "Paramètre global pour toutes les cartes"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Map Setting [ Weathermap: %s ]"
+msgstr "Paramètres de la carte [ Carte météorologique : %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Group for Weathermap [ %s ]"
+msgstr "Modifier le groupe de cartes pour la carte météo [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Choose an existing Group"
+msgstr "Choisir un groupe existant"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Or Create a New Group using the %s Group Management interface %s"
+msgstr "Vous pouvez également créer un nouveau groupe à l’aide de l’interface de gestion des groupes %s %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Adding a Group"
+msgstr "Ajout d’un groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Editing Group: %s"
+msgstr "Groupe d’édition : %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name:"
+msgstr "Nom du groupe:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Add"
+msgstr "Ajouter"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Map Groups"
+msgstr "Modifier les groupes de cartes"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name"
+msgstr "Nom du groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename this Group"
+msgstr "Renommer ce groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Group Settings"
+msgstr "Modifier les paramètres du groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Groups are defined"
+msgstr "Aucun groupe n’est défini"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename Weathermap Group"
+msgstr "Renommer le groupe Weathermap (Carte météorologique)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enter a new name for the Weathermap Group."
+msgstr "Entrez un nouveau nom pour le groupe Weathermap."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "New Group Name"
+msgstr "Nom du nouveau groupe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename"
+msgstr "Renommer"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the last remaining Map Group."
+msgstr "Impossible de supprimer le dernier groupe de cartes restant."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr "Le titre de la carte est trop long. Utilisez au maximum 4088 octets après échappement."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The New Map File name %s already exists!"
+msgstr "Le nouveau nom de fichier de mappage %s existe déjà !"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Source Map File name is not readable or does not exist!"
+msgstr "Le nom du fichier de mappage source n’est pas lisible ou n’existe pas !"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created from %s"
+msgstr "Un nouveau fichier de mappage %s créé à partir de %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created."
+msgstr "Un nouveau fichier de mappage %s créé."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You must include a Map File name to Create"
+msgstr "Vous devez inclure un nom de fichier de mappage à créer"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermap named \"%s\""
+msgstr "Carte réseau Weathermap nommée « %s »"
+
+#: weathermap-cacti-plugin.php
+msgid "This map hasn't been created yet."
+msgstr "Cette carte n’a pas encore été créée."
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Maps"
+msgstr "Gérer les cartes"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
+msgstr "Cartes météo réseau [ %sCycle automatique%s ]"
+
+#: weathermap-cacti-plugin.php
+msgid "(thumbnail for map not created yet)"
+msgstr "(vignette de la carte pas encore créée)"
+
+#: weathermap-cacti-plugin.php
+msgid "(Live View)"
+msgstr "(Affichage en direct)"
+
+#: weathermap-cacti-plugin.php
+msgid "You Have No Maps"
+msgstr "Vous n’avez pas de cartes"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
+msgstr "Pour ajouter une carte à la planification, accédez à la %s Gérer... La page Cartes météo %s et ajoutez-en une."
+
+#: weathermap-cacti-plugin.php
+msgid "Network Weathermaps"
+msgstr "Cartes météo du réseau"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
+msgstr "Affichage de %s %s de %s %s. Parcourir toutes les cartes disponibles dans ce groupe."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps."
+msgstr "Affichage de %s %s de %s %s. Parcourir toutes les cartes disponibles."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Powered by %s PHP Weathermap Version %s %s"
+msgstr "Propulsé par %s PHP Weathermap Version %s %s"
+
+#: weathermap-cacti-plugin.php
+msgid "Go to the Map Management page"
+msgstr "Accéder à la page de gestion des cartes"
+
+#: weathermap-cacti-plugin.php
+msgid "Weathermap Management"
+msgstr "Gestion de la carte météo"
+
+#: weathermap-cacti-plugin.php
+msgid "Map to View"
+msgstr "Carte à voir"
+
+#: weathermap-cacti-plugin.php
+msgid "All Maps"
+msgstr "Toutes les cartes"
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr "Arrêter le défilement"
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr "Précédent"
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr "Pause / reprendre"
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr "Suivant"
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr "Quitter le plein écran"
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr "Plein écran"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr "Carte suivante dans %s s"
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
+msgstr "En pause"

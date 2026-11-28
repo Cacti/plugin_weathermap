@@ -1,0 +1,3088 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-08 18:47-0800\n"
+"PO-Revision-Date: 2026-11-27 18:00-0800\n"
+"Last-Translator: The Cacti Group <developers@cacti.net>\n"
+"Language-Team: Xhosa <developers@cacti.net>\n"
+"Language: xh_ZA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr "Khetha ifayile ye-PNG, JPG okanye GIF ukuya kwi-5 MB."
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr "Sebenzisa i-POST ukugcina utshintsho."
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr "Le mephu itshintshile ukusukela oko uyivulileyo. Layisha umhleli kwakhona phambi kokugcina utshintsho lwakho."
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr "Ayikwazi ukufunda uqwalaselo lwemephu."
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.history.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr "Ayikwazanga ukutshixa uqwalaselo lwemephu."
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr "Lo mfanekiso usabhekiswa kuwo luqwalaselo lwemephu."
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
+msgstr "Ayikwazanga ukucima umfanekiso."
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr "Iisetingi zombala azisebenzi."
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr "Ayikwazanga ukugcina uqwalaselo lwemephu."
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr "Udidi lomfanekiso alusebenzi."
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr "Amakhonkco okufuzisela (symbolic links) akanakulawulwa apha."
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr "Igama lefayile yomfanekiso alisebenzi."
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr "Ayikwazi ukukhangela iireferensi zoqwalaselo."
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr "Uqwalaselo olubandakanyiweyo luninzi kakhulu ukuze luhlolwe."
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr "Ulawulo lwemifanekiso alubhaleki."
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr "Khetha umfanekiso we-PNG, JPG okanye GIF ukuya kwizigidi ezi-4 zeepikseli."
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr "Umfanekiso awukwazanga ukufundwa."
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr "Ayikwazanga ukubekela bucala igama lefayile yomfanekiso."
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
+msgstr "Ayikwazanga ukugcina umfanekiso."
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr "Khetha umbala osebenzayo."
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr "Isetingi yokudanyaza ayisebenzi."
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr "Umva ufuna umbala oqinileyo omnye."
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr "Gcina phakathi komqolo o-1 nama-200 wesikali."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr "Isikali %s sichazwe kuqwalaselo olubandakanyiweyo kwaye sifundeka kuphela apha. Hlela ifayile yaso engumthombo endaweni yoko."
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr "Igama lesikali alisebenzi."
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr "Umda wesikali awusebenzi."
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr "Isiqalo somda masibe singabi sikhulu kunesiphelo sawo."
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr "Ileyibhile yesikali ayisebenzi."
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr "Ileyibhile yombala oqinileyo ayinakuqala ngamanani amathathu apheleleyo. Yongeza igama kuqala okanye khetha umbala wokuphela kwenguquko yombala."
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr "Imida yesikali ifuna amaxabiso anokugcinwa ngaphandle kokurawundwa. Sebenzisa ukuya kwiindawo ezintandathu zedesimali kunye neeyunithi ze-bandwidth ezichanekileyo."
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr "Umda ophindaphindiweyo kwisikali."
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr "Iinguquko zombala zifuna imibala emibini."
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr "Gcina ubuncinci umda omnye wetrefikhi o-DEFAULT."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr "Into yemephu isasebenzisa isikali %s."
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt (font %s)"
+msgstr "%s — %s pt (ifonti %s)"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr "Luhlaza okwesibhakabhaka (#0000FF)"
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr "Luhlaza okwesibhakabhaka okumnyama (#003366)"
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr "Luhlaza okwesibhakabhaka wobukhosi (#0040C0)"
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr "Luhlaza onombala wamanzi (#007070)"
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr "Luhlaza (#008000)"
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr "Mfusa (#8000C0)"
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr "Mnyama onjengamalahle (#333333)"
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr "Bomvu (#C00000)"
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr "Mnyama (#000000)"
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr "Mhlophe (#FFFFFF)"
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr "Umahluko ozenzekelayo kunye nombala wekhonkco"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt"
+msgstr "%s — %s pt"
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr "Iifonti ezibandakanyiweyo"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr "Ifonti yeNkcazo yeKhonkco"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Style"
+msgstr "Isimbo seNkcazo yeKhonkco"
+
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr "Embindini"
+
+#: lib/editor.comment-style.php
+msgid "Edge"
+msgstr "Ecaleni"
+
+#: lib/editor.comment-style.php
+msgid "Edge places comments beside the link; Centre places them over the arrow."
+msgstr "Ecaleni ibeka iinkcazo ecaleni kwekhonkco; Embindini izibeka phezu kotolo."
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr "Landela ukugoba kwekhonkco"
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr "Iinkcazo zeKhonkco"
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr "Isebenzisa ifonti ye-TrueType. Ukugoba okuxineneyo okanye umbhalo omde kuneKhonkco kusebenzisa umbhalo othe tye."
+
+#: lib/editor.comment-style.php
+msgid "Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments."
+msgstr "Iindawo ecaleni kwekhonkco: u-0% yinodi yokuqala kwaye u-100% yeyesibini. Ezi zishenxisa iileyibhile zetrefikhi, hayi iinkcazo."
+
+#: lib/editor.comment-style.php
+msgid "Traffic Label Positions"
+msgstr "Iindawo zeeLeyibhile zeTrefikhi"
+
+#: lib/editor.comment-style.php
+msgid "IN"
+msgstr "NGENA"
+
+#: lib/editor.comment-style.php
+msgid "OUT"
+msgstr "PHUMA"
+
+#: lib/editor.comment-style.php
+msgid "Comment Style"
+msgstr "Isimbo seNkcazo"
+
+#: lib/editor.comment-style.php
+msgid "Use map default"
+msgstr "Sebenzisa okungagqibekanga kwemephu"
+
+#: lib/editor.comment-style.php
+msgid "Custom positions"
+msgstr "Iindawo ngokwezifiso"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr "Cima ifayile yoqwalaselo %s"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr "Uqinisekile ukuba ufuna ukucima ngokusisigxina ifayile yoqwalaselo ethi \"%s\"?"
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr "Iseshoni esebenzayo iyafuneka ukuze Urhoxise kwaye Uphinde isenzo."
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr "Ayikwazanga ukwenza ugcino lwembali yemephu oluyimfihlo."
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr "Ugcino lwembali yemephu aluyomfihlo."
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr "Ugcino lwembali yemephu alusebenzi."
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr "Yongeza inodi"
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr "Kopa inodi"
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr "Cima inodi"
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr "Shenxisa inodi okanye inqaku"
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr "Yongeza ikhonkco"
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr "Cima ikhonkco"
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr "Shenxisa indawo yokudlula yekhonkco"
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr "Lungelelanisa ikhonkco"
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr "Lungelelanisa onke amakhonkco"
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr "Lungelelanisa amakhonkco"
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr "Hlela inqaku"
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr "Susa ulungelelwaniso lwamakhonkco"
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr "Hlela ikhonkco"
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr "Hlela inodi"
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr "Hlela uqwalaselo lwekhonkco olungahluzwanga"
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr "Hlela uqwalaselo lwenodi olungahluzwanga"
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr "Hlela iimpawu zemephu"
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr "Hlela isimbo semephu"
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr "Hlela imibala yemephu"
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr "Shenxisa isikhokelo seempawu"
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr "Shenxisa uphawu lwexesha"
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr "Hlela imephu"
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr "Akukho mbali ihambelanayo isaseleyo. Layisha umhleli kwakhona."
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr "Ayikwazi ukubuyisela le mephu. Uqwalaselo okanye umfanekiso usenokuba utshintshile. Layisha umhleli kwakhona."
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr "Isicelo sembali asisebenzi."
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr "Le mephu itshintshile. Layisha umhleli kwakhona phambi kokusebenzisa u-Rhoxisa isenzo okanye u-Phinda isenzo."
+
+#: lib/editor.inc.php
+msgid "Next results"
+msgstr "Iziphumo ezilandelayo"
+
+#: lib/editor.inc.php
+msgid "Previous results"
+msgstr "Iziphumo zangaphambili"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr "Wamkelekile kuMhleli we-PHP Weathermap %s"
+
+#: lib/editor.inc.php
+msgid "Use the editor to manage nodes, links, notes, colours and image uploads. Edit Raw Configuration provides settings beyond the forms. See the local documentation for workflows and configuration details."
+msgstr "Sebenzisa umhleli ukulawula iinodi, amakhonkco, amanqaku, imibala kunye nokulayishwa kwemifanekiso. Hlela Uqwalaselo Olungahluzwanga inika iisetingi ezingaphaya kweefom. Jonga amaxwebhu asekuhlaleni ukuze ufumane iinkqubo zokusebenza kunye neenkcukacha zoqwalaselo."
+
+#: lib/editor.inc.php
+msgid "Do you want to:"
+msgstr "Ngaba ufuna uku:"
+
+#: lib/editor.inc.php
+msgid "Create A New Map:"
+msgstr "Yenza Imephu Entsha:"
+
+#: lib/editor.inc.php
+msgid "Named:"
+msgstr "Enesihloko esithi:"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-mgmt.php
+msgid "Create"
+msgstr "Yenza"
+
+#: lib/editor.inc.php
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
+msgstr "Qaphela: amagama eefayile kufuneka aphele ngo-.conf kwaye angabi nabahluli bendlela okanye iimpawu zolawulo"
+
+#: lib/editor.inc.php
+msgid "Create Copy"
+msgstr "Yenza Ikopi"
+
+#: lib/editor.inc.php
+msgid "Ok"
+msgstr "Kulungile"
+
+#: lib/editor.inc.php
+msgid "Operation successful"
+msgstr "Umsebenzi uphumelele"
+
+#: lib/editor.inc.php
+msgid "The Operation was successful.  Details are below."
+msgstr "Umsebenzi uphumelele. Iinkcukacha zingezantsi."
+
+#: lib/editor.inc.php
+msgid "Pause"
+msgstr "Nqumama"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to move the node to."
+msgstr "Cofa kwimephu apho ungathanda ukushenxisela khona inodi."
+
+#: lib/editor.inc.php
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Cofa kwimephu kwindawo ofuna ukujikisa ikhonkco ngayo."
+
+#: lib/editor.inc.php
+msgid "Click on the first node for the start of the link."
+msgstr "Cofa kwinodi yokuqala yesiqalo sekhonkco."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Cofa kwimephu apho ungathanda ukubeka khona uphawu lwexesha."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the legend."
+msgstr "Cofa kwimephu apho ungathanda ukubeka khona isikhokelo seempawu."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a new node."
+msgstr "Cofa kwimephu apho ungathanda ukongeza khona inodi entsha."
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr "−"
+
+#: lib/editor.inc.php
+msgid "No images in this library yet."
+msgstr "Akukho mifanekiso kweli thala leencwadi okwangoku."
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
+msgstr "Khetha i-PNG, JPG okanye GIF yokulayisha."
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr "Isicelo asiphumelelanga. Nceda uzame kwakhona."
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr "Ukulayisha akuphumelelanga."
+
+#: lib/editor.inc.php
+msgid "No gradient"
+msgstr "Akukho nguquko yombala"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr "Umbala ngokwezifiso"
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr "Susa umda"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr "Cima %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr "Cima umfanekiso \"%s\" kwiseva?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr "Imifanekiso: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr "Ilayishiwe %s"
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr "Ileyibhile Kuphela"
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr "Akukho mva"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr "Isetyenziswa yi: %s"
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr "Ayisetyenziswa yimephu"
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr "Akukho mida ye-DEFAULT. Jonga iisetingi eziphucukileyo ukuze ufumane izikali ezinamagama."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr "Ngokwezifiso (%s)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr "Rhoxisa isenzo"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr "Phinda isenzo"
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr "Akukho tshintsho lwemephu lokurhoxisa okanye lokuphinda."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr "Rhoxisa isenzo: amanyathelo ayi-%s; Phinda isenzo: amanyathelo ayi-%s."
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr "Gcina okanye rhoxisa ibhokisi evuliweyo phambi kokusebenzisa u-Rhoxisa isenzo okanye u-Phinda isenzo."
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
+msgstr "U-Rhoxisa isenzo no-Phinda isenzo zifuna ugcino lweseshoni yebhrawuza."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr "Ayikwazi ukugcina utshintsho. Nceda uzame kwakhona."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr "Umbala Ongemva weMephu"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr "Umbala Womda weKhonkco"
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr "Izikali ezivela kuqwalaselo olubandakanyiweyo zifundeka kuphela apha. Hlela iifayile zazo ezingumthombo ukuze uzitshintshe."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr "Isikali"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr "Ukususela (ngesiqhelo %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr "Ukuya ku (ngesiqhelo %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr "Ileyibhile"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr "Umbala"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr "Isiphelo Senguquko Yombala"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr "Mnyama"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr "Luhlaza okwesibhakabhaka"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr "Luhlaza"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr "Ngwevu"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr "Akukho"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr "Orenji"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr "Mfusa"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr "Bomvu"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr "Mhlophe"
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr "Khangela ii-ayikhoni…"
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr "Khangela ii-ayikhoni zenodi"
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr "Ii-ayikhoni zenodi"
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr "Khetha i-ayikhoni"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr "Ii-ayikhoni ezihambelanayo: %s"
+
+#: lib/editor.inc.php
+msgid "No matching icons"
+msgstr "Akukho zi-ayikhoni zihambelanayo"
+
+#: lib/editor.inc.php
+msgid "Current interface"
+msgstr "Ujongano lwangoku"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Advanced settings"
+msgstr "Iisetingi eziphucukileyo"
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr "Fihla iisetingi eziphucukileyo"
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr "Sebenzisa ujongano"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Traffic interface"
+msgstr "Ujongano lwetrefikhi"
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr "Khangela isixhobo okanye ujongano"
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr "Akukho jongano lukhethiweyo"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr "Cofa kwimephu apho ungathanda ukongeza khona inqaku."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr "Inqaku"
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr "Isiqinisekiso Sokucima Inqaku"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr "Cima Inqaku"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr "Cima inqaku \"%s\"?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr "Igrafu yangoku: %s"
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr "Uqwalaselo ngokwezifiso — jonga Iisetingi eziphucukileyo"
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr "Khetha ujongano ngezantsi"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr "I-bandwidth engena ku-%s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr "I-bandwidth ephuma ku-%s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr "Igrafu %s — idatha, indawo yokuya ekucofweni kunye negrafu yokuhova zikhethiwe. Gcina ukuze usebenzise."
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr "Iboniswa kuqala xa uhova. Sebenzisa ujongano iyiseta ngokuzenzekelayo; yitshintshe kuphela kwi-URL yomboniso wangaphambili ngokwezifiso."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr "Itrefikhi edityanisiweyo evela kwimithombo eyi-%s"
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr "Umthombo wetrefikhi wongezwe kwisixa semephu. Iigrafu zokuhova nezokucofa azitshintshanga. Gcina ukuze usebenzise."
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr "Lo mthombo sele ubandakanyiwe. Khetha umthombo owahlukileyo kule bhokisi yokukhangela ukuze wongeze eminye."
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr "Susa umthombo"
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr "Umthombo olinganisiweyo ususiwe. Iigrafu zokuhova nezokucofa azitshintshanga. Gcina ukuze usebenzise."
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr "Akukho mithombo yetrefikhi elinganisiweyo ekhethiweyo."
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr "Khetha ujongano olongezelelweyo kwiziphumo zokukhangela ezingentla, uze ucofe u-Yongeza umthombo wetrefikhi."
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr "Ujongano olongezelelweyo lukhethiwe. Yongeza umthombo wetrefikhi igcina ujongano oluphambili neminye imithombo."
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr "Umthombo ophambili — sebenzisa u-\"Sebenzisa ujongano\" phezulu ukuze utshintshe"
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr "Khetha ujongano lwetrefikhi oluphambili kwifom engundoqo kuqala."
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr "Yongeza imithombo yetrefikhi eyongezelelweyo"
+
+#: lib/editor.inc.php
+msgid "Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link."
+msgstr "Lungisa iindawo zeeleyibhile zetrefikhi, okanye sebenzisa imithombo nee-URL ngokwezifiso. Shiya imithombo nee-URL zingatshintshwanga kwikhonkco letrefikhi eliqhelekileyo."
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr "Imithombo yetrefikhi ngokwezifiso itshintshiwe. Gcina ukuze usebenzise. Iigrafu zokuhova nendawo yokuya ekucofweni azitshintshanga."
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr "Ubuninzi be-URL enye yomfanekiso eyongezelelweyo. Lo ngumboniso wangaphambili ofanayo olawulwa phantsi ko-Iigrafu zokuhova ezongezelelweyo."
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr "Imithombo yetrefikhi"
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr "Ayinyanzelekanga: yongeza olunye ujongano kwisixa semephu. Tshintsha ujongano oluphambili kwifom engundoqo; susa imithombo eyongezelelweyo ngezantsi. Iigrafu zokuhova nezokucofa zihlala zingatshintshanga. Igrafu edibeneyo ehambelanayo kufuneka iqwalaselwe ngokwahlukeneyo kwi-Cacti. Gcina isebenzisa utshintsho."
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr "Igrafu eyongezelelweyo"
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr "Akukho fayile ye-RRD edweliswe kule grafu"
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr "Igrafu yokuhova ngokwezifiso"
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr "Susa igrafu"
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr "Ubuninzi begrafu enye eyongezelelweyo. Yitshintshe okanye uyisuse ukuze ukhethe enye."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr "Iigrafu zokuhova ezongezelelweyo"
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr "Indawo yokuya ekucofweni"
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr "Ngesiqhelo shiya oku kusetelwe kwigrafu yetrefikhi. Yitshintshe kuphela ukuze uvule igrafu okanye iphepha elahlukileyo xa ucofa ikhonkco. Oku akutshintshi itrefikhi elinganisiweyo okanye iigrafu zokuhova."
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr "Imbonakalo"
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr "Umthamo, umzekelo i-100M okanye i-1G."
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr "Umbhalo ecaleni kwekhonkco; ipesenti iseta indawo yawo."
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr "Imbonakalo neenkcazo"
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr "Uncedo"
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr "Khetha ujongano lwetrefikhi nomthamo, uze Ucofe u-Gcina. Iigrafu zokuhova ezongezelelweyo zongeza imiboniso yangaphambili enganyanzelekanga. Iisetingi eziphucukileyo ziqulathe imithombo yetrefikhi ngokwezifiso nee-URL. Hlela Uqwalaselo Olungahluzwanga ihlela isintaksi yemephu ngqo."
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr "Chwetheza isixhobo okanye ujongano, okanye khangela konke"
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr "Khangela konke"
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr "Khetha ujongano oluphambili, uze ucofe u-\"Sebenzisa ujongano\". Imithombo eyongezelelweyo neegrafu zokuhova ziyagcinwa. Gcina isebenzisa utshintsho."
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr "Ikhangela isixhobo nojongano..."
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr "Ujongano ngokwezifiso okanye olungafumanekiyo"
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr "Igama lojongano alifumaneki"
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr "Igama lokuboniswa"
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr "I-ayikhoni"
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr "Uhlobo lwegrafu"
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr "Iigrafu zokuhova"
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr "Cima Inodi"
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr "Kwinodi esetyenziswa njengeleyibhile okanye i-ayikhoni ekupheleni kwekhonkco, izilawuli eziphambili zanele. Eziphucukileyo zongeza iigrafu zokuhova ezifana ne-CPU, imemori okanye itrefikhi, iindawo zokuya ekucofweni ngokwezifiso kunye ne-ID yenodi yangaphakathi."
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr "Igama lokuboniswa ne-ayikhoni: Khetha okuboniswa kwimephu. Indawo yegama lokuboniswa ibeka igama phezu kwe-ayikhoni. Indawo yemephu (X, Y) iseta iikhoyodineyithi zenodi; Shenxisa ikuvumela ukuba ubeke inodi kwimephu."
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr "Iigrafu zokuhova: Hluza ngokohlobo lwegrafu uze ukhangele igrafu. Yongeza ifaka enye igrafu; Tshintsha ithatha indawo yeegrafu zokuhova ezikhoyo. Gcina isebenzisa utshintsho lwakho."
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr "Eziphucukileyo: Igama langaphakathi lichonga inodi kuqwalaselo lwemephu. Ii-URL zoLwazi ziseta indawo yokuya ekucofweni; Ii-URL zeGrafu yoKuhova ziseta imifanekiso eboniswa xa uhova. Sebenzisa ezi kwiindawo zokuya ngokwezifiso okanye iigrafu zangaphandle."
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr "Khangela isixhobo okanye igrafu"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr "Iigrafu zokuhova: %s"
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr "igrafu engafumanekiyo"
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr "imifanekiso ngokwezifiso"
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr "Akukho zigrafu zokuhova ziqwalaselweyo"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr "I-ID yekhonkco yangaphakathi: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr "Inodi: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr "Susa ikhonkco eliphakathi kwe-%1$s ne-%2$s?"
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr "Iinodi kunye neegrafu ze-Cacti ziya kuhlala zikhona."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s from this map?"
+msgstr "Cima u-%s kule mephu?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %s."
+msgstr "Amakhonkco aqhagamshelweyo aza kususwa: %s."
+
+#: lib/editor.inc.php
+msgid "The Cacti device and its graphs will remain."
+msgstr "Isixhobo se-Cacti kunye neegrafu zaso ziya kuhlala zikhona."
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "ISILUMKISO: Ukucofa u-'Cima Inodi' kuya kucima le Nodi."
+
+#: lib/editor.inc.php
+msgid "Delete Node Confirmation"
+msgstr "Isiqinisekiso Sokucima Inodi"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "ISILUMKISO: Ukucofa u-'Cima Ikhonkco' kuya kucima eli Khonkco."
+
+#: lib/editor.inc.php
+msgid "Delete Link Confirmation"
+msgstr "Isiqinisekiso Sokucima Ikhonkco"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cancel"
+msgstr "Rhoxisa"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Link"
+msgstr "Cima Ikhonkco"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Position"
+msgstr "Indawo"
+
+#: lib/editor.inc.php
+msgid "Node Actions"
+msgstr "Izenzo zeNodi"
+
+#: lib/editor.inc.php
+msgid "Link Actions"
+msgstr "Izenzo zeKhonkco"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Move"
+msgstr "Shenxisa"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Clone"
+msgstr "Kopa"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr "Hlela Uqwalaselo Olungahluzwanga"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete"
+msgstr "Cima"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Via"
+msgstr "Indawo yokudlula"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Tidy"
+msgstr "Lungelelanisa"
+
+#: lib/editor.inc.php
+msgid "Properties"
+msgstr "Iimpawu"
+
+#: lib/editor.inc.php
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "I-Weathermap mayifumane phi idatha yeli khonkco? Oku kunokuba yifayile ye-RRD, okanye i-HTML eneenkcazo ezikhethekileyo kuyo (ngesiqhelo evela kwi-MRTG)."
+
+#: lib/editor.inc.php
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "Ububanzi botolo lwekhonkco obuya kuzotywa, ngeepikseli."
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "Ukuba usebenzisa isimbo se-HTML esithi 'overlib' ke le yi-URL eya kuvulwa xa ucofa kwikhonkco"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "Ukuba usebenzisa isimbo se-HTML esithi 'overlib' ke le yi-URL yomfanekiso oya kuboniswa xa uhova phezu kwekhonkco"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the first node to the second node"
+msgstr "I-bandwidth esuka kwinodi yokuqala ukuya kwinodi yesibini"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "I-bandwidth esuka kwinodi yesibini ukuya kwinodi yokuqala (ukuba yahlukile)"
+
+#: lib/editor.inc.php
+msgid "The text that will appear alongside the link"
+msgstr "Umbhalo oya kuvela ecaleni kwekhonkco"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "Ukuba usebenzisa isimbo se-HTML esithi 'overlib' ke le yi-URL eya kuvulwa xa ucofa kwinodi"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "Ukuba usebenzisa isimbo se-HTML esithi 'overlib' ke le yi-URL yomfanekiso oya kuboniswa xa uhova phezu kwenodi"
+
+#: lib/editor.inc.php
+msgid "How far from the left to position the node, in pixels"
+msgstr "Umgama ovela ekhohlo wokubeka inodi, ngeepikseli"
+
+#: lib/editor.inc.php
+msgid "How far from the top to position the node, in pixels"
+msgstr "Umgama ovela phezulu wokubeka inodi, ngeepikseli"
+
+#: lib/editor.inc.php
+msgid "The text that appears on the node"
+msgstr "Umbhalo ovela kwinodi"
+
+#: lib/editor.inc.php
+msgid "The name used for this node when defining links"
+msgstr "Igama elisetyenziselwa le nodi xa kuchazwa amakhonkco"
+
+#: lib/editor.inc.php
+msgid "Change to a different file, or start creating a new one."
+msgstr "Tshintshela kwifayile eyahlukileyo, okanye uqale ukwenza entsha."
+
+#: lib/editor.inc.php
+msgid "Add a new node to the map"
+msgstr "Yongeza inodi entsha kwimephu"
+
+#: lib/editor.inc.php
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "Yongeza ikhonkco elitsha kwimephu, ngokudibanisa iinodi ezimbini kunye."
+
+#: lib/editor.inc.php
+msgid "Select a different map to edit, or start a new one."
+msgstr "Khetha imephu eyahlukileyo yokuyihlela, okanye uqale entsha."
+
+#: lib/editor.inc.php
+msgid "This is where help appears for links"
+msgstr "Apha kulapho uncedo lwamakhonkco luvela khona"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for maps"
+msgstr "Apha kulapho uncedo lweemephu luvela khona"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for nodes"
+msgstr "Apha kulapho uncedo lweenodi luvela khona"
+
+#: lib/editor.inc.php
+msgid "or click a Node or Link to edit its properties"
+msgstr "okanye cofa kwiNodi okanye kwiKhonkco ukuze uhlele iimpawu zayo"
+
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
+msgid "Docs"
+msgstr "Amaxwebhu"
+
+#: lib/viewer.controls.php
+msgid "Manage Weathermaps"
+msgstr "Lawula Ii-Weathermap"
+
+#: lib/viewer.controls.php setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Settings"
+msgstr "Iisetingi zeMephu"
+
+#: lib/viewer.controls.php
+msgid "Map Permissions"
+msgstr "Iimvume zeMephu"
+
+#: lib/viewer.controls.php setup.php
+msgid "Edit Map"
+msgstr "Hlela Imephu"
+
+#: setup.php
+msgid "Weathermap"
+msgstr "Weathermap"
+
+#: setup.php weathermap-cacti-plugin.php
+msgid "Network Weathermap"
+msgstr "I-Weathermap yeNethiwekhi"
+
+#: setup.php
+msgid "Debug Mode"
+msgstr "Imowudi yoKulungisa Iimpazamo"
+
+#: setup.php
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr "Ukuba unqwenela ukubona ulwazi lwemeko oluneenkcukacha kwilogi yakho ye-Cacti malunga nenkqubo yokwenza i-weathermap, khangela eli bhokisi."
+
+#: setup.php
+msgid "Info URL Style"
+msgstr "Isimbo se-Info URL"
+
+#: setup.php
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr "Xa usongeza Iigrafu zeNodi okanye zeKhonkco, ufuna ukuthunyelwa phi xa ucofa usebenzisa i-Info URL? Ukuba usebenzisa Imbonakalo yeGrafu eQhelekileyo, ungaba neeGrafu ezininzi. KwiMbonakalo yeGrafu yeXesha, ungaba neGrafu enye kuphela."
+
+#: setup.php
+msgid "Standard Graph View"
+msgstr "Imbonakalo yeGrafu eQhelekileyo"
+
+#: setup.php
+msgid "Time Graph View"
+msgstr "Imbonakalo yegrafu yexesha"
+
+#: setup.php
+msgid "Page style"
+msgstr "Isimbo sephepha"
+
+#: setup.php
+msgid "How to display multiple maps."
+msgstr "Indlela yokubonisa iimephu ezininzi."
+
+#: setup.php
+msgid "Thumbnail Overview"
+msgstr "Imbonakalo Yeemifanekiso Emincinci"
+
+#: setup.php
+msgid "Full Images"
+msgstr "Imifanekiso Egcweleyo"
+
+#: setup.php
+msgid "Show Only First"
+msgstr "Bonisa Eyokuqala Kuphela"
+
+#: setup.php
+msgid "Thumbnail Maximum Size"
+msgstr "Ubungakanani Obukhulu Bomfanekiso Omncinci"
+
+#: setup.php
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr "Ububanzi okanye ubude obukhulu bemifanekiso emincinci kwimbonakalo yemifanekiso emincinci, ngeepikseli. Buqala ukusebenza emva kokusebenza kwe-poller okulandelayo."
+
+#: setup.php
+msgid "Hover Graph Default Width"
+msgstr "Ububanzi Obungagqibekanga BeGrafu Yokuhova"
+
+#: setup.php
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Ububanzi obungagqibekanga beeGrafu ze-RRDtool ezivela xa uhova phezu kweKhonkco."
+
+#: setup.php
+msgid "Hover Graph Default Height"
+msgstr "Ubude Obungagqibekanga BeGrafu Yokuhova"
+
+#: setup.php
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Ubude obungagqibekanga beeGrafu ze-RRDtool ezivela xa uhova phezu kweKhonkco."
+
+#: setup.php
+msgid "Hover Graph Style"
+msgstr "Isimbo seGrafu Yokuhova"
+
+#: setup.php
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
+msgstr "Xa uhova phezu kwamaKhonkco okanye iiNodi, sisiphi isimbo seGrafu esifanele siboniswe?"
+
+#: setup.php
+msgid "Thumbnail Graphs"
+msgstr "Iigrafu Ezincinci"
+
+#: setup.php
+msgid "Full Graphs"
+msgstr "Iigrafu Ezigcweleyo"
+
+#: setup.php
+msgid "Map Processing Timeout"
+msgstr "Ixesha Lokuphelelwa Lokuqhuba Imephu"
+
+#: setup.php
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr "Lingakanani ixesha elifanele livunyelwe phambi kokuphelelwa kwexesha lenkqubo yokwenza iimephu yamaxesha athile."
+
+#: setup.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d Imizuzu"
+
+#: setup.php
+msgid "Refresh Time"
+msgstr "Ixesha Lokuhlaziya"
+
+#: setup.php
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "Ukuba kufuneka uhlaziye iphepha kangaphi kwimowudi yokuJikeleza. Okuzenzekelayo kwenza zonke iimephu ezikhoyo zingene kwimizuzu emi-5."
+
+#: setup.php
+msgid "Automatic"
+msgstr "Okuzenzekelayo"
+
+#: setup.php
+#, php-format
+msgid "%d Seconds"
+msgstr "Imizuzwana eyi-%d"
+
+#: setup.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d Umzuzu"
+
+#: setup.php
+msgid "Output Format"
+msgstr "Ifomati yeZiphumo"
+
+#: setup.php
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr "Yeyiphi ifomati oyikhethayo kwimifanekiso yemephu eyenziweyo nakwimifanekiso emincinci?"
+
+#: setup.php
+msgid "PNG (default)"
+msgstr "PNG (okungagqibekanga)"
+
+#: setup.php
+msgid "JPEG"
+msgstr "JPEG"
+
+#: setup.php
+msgid "GIF"
+msgstr "GIF"
+
+#: setup.php
+msgid "Map Rendering Interval"
+msgstr "Isithuba Sokuzoba Imephu"
+
+#: setup.php
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr "Kufuneka i-Weathermap iphinde ibale kangaphi iimephu zayo? Akufuneki uyichukumise le nto ngaphandle kokuba uyazi into oyenzayo! Ifuneka kakhulu kubantu abaneesetingi ze-poller ezingaqhelekanga."
+
+#: setup.php
+msgid "Never (manual updates)"
+msgstr "Nakanye (uhlaziyo lwesandla)"
+
+#: setup.php
+msgid "Every Poller Cycle (default)"
+msgstr "KuMjikelo ngamnye we-Poller (okungagqibekanga)"
+
+#: setup.php
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr "Kuyo yonke iMijikelo ye-Poller eyi-%d"
+
+#: setup.php
+msgid "Show Weathermap Help Links"
+msgstr "Bonisa Amakhonkco oNcedo lwe-Weathermap"
+
+#: setup.php
+msgid "If checked, all Weathermap pages will include a link to documentation."
+msgstr "Ukuba ikhangelwe, onke amaphepha e-Weathermap aya kubandakanya ikhonkco eliya kumaxwebhu."
+
+#: setup.php
+msgid "Show 'All' Tab"
+msgstr "Bonisa Ithebhu ethi 'Konke'"
+
+#: setup.php
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr "Xa usebenzisa amaqela, yongeza ithebhu ethi 'Zonke Iimephu' kwibha yeethebhu."
+
+#: setup.php
+msgid "No (default)"
+msgstr "Hayi (okungagqibekanga)"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Yes"
+msgstr "Ewe"
+
+#: setup.php
+msgid "Show Map Selector"
+msgstr "Bonisa Umkhethi weMephu"
+
+#: setup.php
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr "Bonisa umkhethi wemephu we-combo-box kwimbonakalo yemephu yesikrini esigcweleyo."
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "No"
+msgstr "Hayi"
+
+#: setup.php
+msgid "Yes (default)"
+msgstr "Ewe (okungagqibekanga)"
+
+#: setup.php
+msgid "Quiet Logging"
+msgstr "Ukuloga Okuzolileyo"
+
+#: setup.php
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr "Ngokungagqibekanga, nakwinqanaba eliphantsi (LOW) lokuloga, i-Weathermap iloga imisebenzi eqhelekileyo. Oku kuyenza iloge kuphela iimpazamo KAKHULU kwimowudi ye-LOW."
+
+#: setup.php
+msgid "Chatty (default)"
+msgstr "Inencoko eninzi (okungagqibekanga)"
+
+#: setup.php
+msgid "Quiet"
+msgstr "Ezolileyo"
+
+#: setup.php
+msgid "Weathermaps"
+msgstr "Ii-Weathermap"
+
+#: setup.php
+msgid "Weathermap Groups"
+msgstr "Amaqela e-Weathermap"
+
+#: setup.php
+msgid "Management"
+msgstr "Ulawulo"
+
+#: setup.php
+msgid "View Weathermaps"
+msgstr "Jonga Ii-Weathermap"
+
+#: setup.php
+msgid "Edit Weathermaps"
+msgstr "Hlela Ii-Weathermap"
+
+#: setup.php
+msgid "Manage Weathermap"
+msgstr "Lawula i-Weathermap"
+
+#: setup.php
+msgid "General Administration"
+msgstr "Ulawulo Jikelele"
+
+#: setup.php
+msgid "Normal User"
+msgstr "UMsebenzisi oQhelekileyo"
+
+#: setup.php weathermap-cacti-plugin.php
+#, php-format
+msgid "Map for config file: %s"
+msgstr "Imephu yefayile yoqwalaselo: %s"
+
+#: setup.php
+msgid "Choose which weathermap to add to the tree."
+msgstr "Khetha ukuba yeyiphi i-weathermap oza kuyongeza kumthi."
+
+#: setup.php
+msgid "Map"
+msgstr "Imephu"
+
+#: setup.php
+msgid "How should the map be displayed?"
+msgstr "Imephu mayiboniswe njani?"
+
+#: setup.php
+msgid "Style"
+msgstr "Isimbo"
+
+#: setup.php
+msgid "Thumbnail"
+msgstr "Umfanekiso omncinci"
+
+#: setup.php
+msgid "Full Size"
+msgstr "Ubungakanani Obupheleleyo"
+
+#: setup.php
+msgid "View Map Image"
+msgstr "Jonga Umfanekiso weMephu"
+
+#: setup.php
+msgid "View Map Thumbnail"
+msgstr "Jonga Umfanekiso Omncinci weMephu"
+
+#: setup.php
+msgid "Add Map"
+msgstr "Yongeza Imephu"
+
+#: setup.php
+msgid "View Configuration"
+msgstr "Jonga Uqwalaselo"
+
+#: setup.php
+msgid "Weathermap Editor"
+msgstr "Umhleli we-Weathermap"
+
+#: setup.php
+msgid "Edit Permissions"
+msgstr "Hlela Iimvume"
+
+#: setup.php
+msgid "Map Settings Delete"
+msgstr "Cima Iisetingi zeMephu"
+
+#: setup.php
+msgid "Map Settings Update"
+msgstr "Hlaziya Iisetingi zeMephu"
+
+#: setup.php
+msgid "Map Settings Add"
+msgstr "Yongeza Iisetingi zeMephu"
+
+#: setup.php
+msgid "Permissions Edit"
+msgstr "Ukuhlela Iimvume"
+
+#: setup.php
+msgid "Add User"
+msgstr "Yongeza Umsebenzisi"
+
+#: setup.php
+msgid "Delete User"
+msgstr "Cima Umsebenzisi"
+
+#: setup.php
+msgid "Delete Map"
+msgstr "Cima Imephu"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Up"
+msgstr "Shenxisa Imephu Phezulu"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Down"
+msgstr "Shenxisa Iqela Ezantsi"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Up"
+msgstr "Shenxisa Iqela Phezulu"
+
+#: setup.php
+msgid "Group Edit"
+msgstr "Ukuhlela Iqela"
+
+#: setup.php
+msgid "Group Update"
+msgstr "Uhlaziyo Lweqela"
+
+#: setup.php
+msgid "Activate Map"
+msgstr "Vula Imephu"
+
+#: setup.php
+msgid "Deactivate Map"
+msgstr "Vala Imephu"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Now"
+msgstr "Yakha Kwakhona Ngoku"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Change Group"
+msgstr "Tshintsha Iqela"
+
+#: setup.php
+msgid "Group Admin"
+msgstr "Ulawulo Lweqela"
+
+#: setup.php
+msgid "Group Admin Delete"
+msgstr "Cima Ulawulo Lweqela"
+
+#: setup.php
+msgid "Manage"
+msgstr "Lawula"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr "Iisetingi"
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr "Jikeleza ngokuzenzekelayo"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "Local Documentation"
+msgstr "Amaxwebhu Asekuhlaleni"
+
+#: setup.php
+#, php-format
+msgid "This is version %s"
+msgstr "Le yinguqulelo %s"
+
+#: setup.php
+msgid "Weathermap Website"
+msgstr "Iwebhusayithi ye-Weathermap"
+
+#: weathermap-cacti-plugin-editor.php
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "Umhleli we-PHP Weathermap %s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr "Buyela kwiMephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
+msgstr "Buyela kuLawulo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Change<br>File"
+msgstr "Tshintsha<br>Ifayile"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Node"
+msgstr "Yongeza<br>Inodi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Link"
+msgstr "Yongeza<br>Ikhonkco"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr "Yongeza<br>Inqaku"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Legend"
+msgstr "Beka<br>Isikhokelo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Timestamp"
+msgstr "Beka<br>Uphawu lwexesha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Properties"
+msgstr "Iimpawu<br>zeMephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Style"
+msgstr "Isimbo<br>seMephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Colors"
+msgstr "Lawula<br>Imibala"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Images"
+msgstr "Lawula<br>Imifanekiso"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Editor<br>Settings"
+msgstr "Iisetingi<br>zoMhleli"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>---, ---"
+msgstr "Indawo<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
+msgstr "Khetha into yemenyu okanye cofa ekunene okanye cofa kwiNodi okanye kwiKhonkco ukuze uhlele iimpawu zayo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Debug"
+msgstr "Lungisa iimpazamo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy ALL"
+msgstr "Phinda ulungelelanise ZONKE"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy"
+msgstr "Phinda ulungelelanise"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Un-tidy"
+msgstr "Susa ulungelelwaniso"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Do Nothing"
+msgstr "Ungenzi Nto"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "mapfile"
+msgstr "ifayile yemephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "action"
+msgstr "isenzo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param"
+msgstr "ipharamitha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param2"
+msgstr "ipharamitha2"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "debug"
+msgstr "ulungiso lweempazamo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "See config"
+msgstr "Jonga uqwalaselo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr "Umbhalo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr "Ekhohlo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr "Ekunene"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr "Ulungelelwaniso lombhalo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr "Ifonti"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr "Umbala wenqaku"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr "Gcina"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Properties"
+msgstr "Iimpawu zeNodi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr "Indawo yemephu (X, Y)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Internal Name"
+msgstr "Igama Langaphakathi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr "Ezantsi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr "Ngokwezifiso (uqwalaselo olungahluzwanga)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr "Indawo yegama lokuboniswa"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr "Phakathi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr "Phezulu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Icon Filename"
+msgstr "Igama leFayile ye-Ayikhoni"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Info URL(s)"
+msgstr "Ii-URL zoLwazi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover Graph URL(s)"
+msgstr "Ii-URL zeGrafu yoKuhova"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Template"
+msgstr "Itempleyiti Yegrafu"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "All"
+msgstr "Konke"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Selector"
+msgstr "Umkhethi weGrafu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "Ungaguqula Inodi ye-Weathermap ukusuka apha. Iikholamu zeNdawo yindawo ka-X,Y kwiMephu. Igama Langaphakathi yi-ID eyodwa enikwe Inodi. Ileyibhile ligama langaphandle leNodi olinika abasebenzisi. Igama leFayile ye-Ayikhoni ngumfanekiso ofuna umele Into yeNodi. I-INFO URL likhonkco onokulinika xa ucofa kwiNodi yeMephu esebenzayo. Ii-URL zeGrafu yoKuhova zii-URL ze-Cacti okanye zezinye Iigrafu eziya kuvela xa uhova phezu kweNodi. Umkhethi weGrafu ngumncedisi wokukhetha Iigrafu ze-Cacti zee-URL zeGrafu. Kukho ezinye iimpawu zeNodi ezininzi ezinokwenzeka. Nangona kunjalo, namhlanje sixhasa kuphela ezo zibandakanyiweyo ngentla."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Properties"
+msgstr "Iimpawu zeKhonkco"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Into"
+msgstr "Ingena ku"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Maximum Bandwidth"
+msgstr "I-Bandwidth Enkulu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Out of"
+msgstr "Iphuma ku"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Via Style"
+msgstr "Isimbo Sendawo Yokudlula"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Curved"
+msgstr "Igobile"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Angled"
+msgstr "Inengalo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr "Umthombo(imithombo) wetrefikhi elinganisiweyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Data Source Selector"
+msgstr "Umkhethi woMthombo weDatha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr "Yongeza umthombo wetrefikhi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Width"
+msgstr "Ububanzi beKhonkco"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr "I-URL yendawo yokuya ekucofweni"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr "I-URL yegrafu yokuhova engundoqo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr "Iboniswa kuqala. Isetwa ngu-Sebenzisa ujongano; iigrafu ezongezelelweyo zivela ngezantsi kwayo."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr "Bonisa ukuya kwiigrafu zokuhova ezimbini: igrafu yetrefikhi engundoqo kunye nomboniso wangaphambili owongezelelweyo we-CPU, ukubambezeleka okanye omnye. Tshintsha iguqula kuphela igrafu eyongezelelweyo."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr "Ii-URL zegrafu eyongezelelweyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr "Ii-URL zeegrafu zokuhova ezongezelelweyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr "Hluza ngokohlobo lwegrafu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr "Khetha igrafu yokuhova"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr "Yongeza igrafu yokuhova"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr "Tshintsha iigrafu zokuhova"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "IN Comment"
+msgstr "Inkcazo yoNGENA"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "OUT Comment"
+msgstr "Inkcazo yoPHUMA"
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
+msgstr ""
+"<p><strong>I-Bandwidth:</strong> Seta umthamo osetyenziselwa ukubala ukusetyenziswa, umzekelo i-100M okanye i-1G. U-K, M, G kunye no-T bayaxhaswa. Khetha Iyafana no-&quot;Ngena&quot; xa zombini izikhokelo zinomthamo olinganayo.</p>\n"
+"<p><strong>Ujongano lwetrefikhi:</strong> Khangela ngesixhobo, iphothi okanye inkcazo, okanye khetha u-Khangela konke. Khetha ujongano, uze ucofe u-Sebenzisa ujongano ukuze usete umthombo olinganisiweyo ophambili, indawo yokuya ekucofweni kunye negrafu yokuhova engundoqo. Imithombo elinganisiweyo eyongezelelweyo neegrafu zokuhova ziyagcinwa.</p>\n"
+"<p><strong>Imbonakalo neenkcazo:</strong> Isimbo Sendawo Yokudlula silawula amagophe agobileyo okanye anengalo; Ububanzi beKhonkco bulawula ukutyeba kotolo. Inkcazo yoNGENA kunye neNkcazo yoPHUMA zongeza umbhalo kwicala ngalinye. Ipesenti iseta indawo yombhalo ecaleni kwekhonkco. Isimbo seNkcazo sibeka iinkcazo ecaleni kwekhonkco (Ecaleni) okanye phezu kotolo (Embindini); Sebenzisa okungagqibekanga kwemephu ilandela Isimbo seMephu.</p>\n"
+"<p><strong>Iigrafu zokuhova ezongezelelweyo:</strong> Bonisa ubuninzi beegrafu zokuhova ezimbini: igrafu yetrefikhi engundoqo kunye nenye eyongezelelweyo, efana ne-CPU, ukubambezeleka okanye olunye ujongano. Hluza ngokohlobo lwegrafu inciphisa ukhetho. Yongeza igrafu yokuhova yongeza eyongezelelweyo; Tshintsha iigrafu zokuhova iyayiguqula; Susa igrafu iyayisusa. Igrafu yetrefikhi engundoqo, itrefikhi elinganisiweyo nendawo yokuya ekucofweni kwekhonkco zihlala zingatshintshanga. Kumjongi, umboniso ngamnye we-Cacti uvula igrafu yawo epheleleyo xa ucofiwe.</p>\n"
+"<p><strong>Iisetingi eziphucukileyo:</strong> Izilawuli ezinganyanzelekanga zokushenxisa iileyibhile zetrefikhi ze-NGENA/PHUMA, ukudibanisa imithombo elinganisiweyo, ukutshintsha indawo yokuya ekucofweni kunye nokufaka ii-URL zemifanekiso yokuhova ngokwezifiso. Iindawo zeeleyibhile zetrefikhi zishenxisa iibhokisi zokusetyenziswa ecaleni kwekhonkco, ngokuzimeleyo kwiindawo zeenkcazo. Sebenzisa okungagqibekanga kwemephu ilandela Isimbo seMephu. Ikhonkco letrefikhi eliqhelekileyo alifane lifune utshintsho apha.</p>\n"
+"<p><strong>Ukudibanisa imithombo yetrefikhi:</strong> Yongeza umthombo wetrefikhi yongeza olunye ujongano kwisixa semephu, ngokwahlukeneyo ku-NGENA naku-PHUMA. Susa umthombo isusa umthombo owongezelelweyo. Tshintsha umthombo ophambili usebenzisa u-Sebenzisa ujongano phezulu. Itrefikhi edityanisiweyo ithelekiswa ne-bandwidth eqwalaselweyo ukuze kubalwe ukusetyenziswa. Akukho grafu ye-Cacti edityanisiweyo eyenziwa ngokuzenzekelayo; yenza igrafu edibeneyo ehambelanayo kwi-Cacti uze ufake ii-URL zayo zokucofa nezokuhova ukuba ziyimfuneko. Amakhonkco emephu ahlukeneyo adla ngokucaca ngakumbi kuqhagamshelwano oluphambili nolokuxhasa.</p>\n"
+"<p><strong>Imithombo yesandla nee-URL:</strong> Ibhokisi yombhalo yomthombo ihlela uluhlu olupheleleyo lwemithombo elinganisiweyo, kubandakanya umthombo ophambili. I-URL yendawo yokuya ekucofweni ilawula apho ukucofa ikhonkco lemephu kuya khona. I-URL yegrafu yokuhova engundoqo iseta umboniso wangaphambili wokuqala; Ii-URL zegrafu eyongezelelweyo zamkela i-URL enye yomfanekiso eyongezelelweyo. Le yongezelelweyo ikwalawulwa phantsi ko-Iigrafu zokuhova ezongezelelweyo.</p>\n"
+"<p><strong>Lungelelanisa kunye neNdawo yokudlula:</strong> Lungelelanisa ihlengahlengisa ubeko lwekhonkco. Indawo yokudlula ikuvumela ukuba ubeke indawo yokugoba kwimephu.</p>\n"
+"<p><strong>Hlela Uqwalaselo Olungahluzwanga:</strong> Hlela isintaksi yemephu engaphantsi ukuze ufumane iisetingi ezingaphaya kwale fom.</p>"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Properties"
+msgstr "Iimpawu zeMephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr "Iinkcukacha zeMephu"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Title"
+msgstr "Isihloko seMephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Text"
+msgstr "Umbhalo weSikhokelo seempawu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Timestamp Text"
+msgstr "Umbhalo woPhawu lwexesha"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr "Umva neKhenvasi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr "Umfanekiso Ongemva"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr "(akukho mifanekiso ifumanekayo)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr "--AKUKHO MVA--"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr "Sebenzisa Umbala Ongemva weMephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
+msgstr "Iboniswa ngaphandle komfanekiso, okanye kwiindawo zawo ezibonakalisa ngaphaya."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr "Ubungakanani bomva"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr "Linganisa nemephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr "Nweba uyilinganise nemephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr "Sebenzisa ubungakanani bomfanekiso"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Size"
+msgstr "Ubungakanani beMephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "pixels"
+msgstr "iipikseli"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Capacity"
+msgstr "Umthamo weKhonkco Ongagqibekanga"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Bandwidth"
+msgstr "I-Bandwidth yeKhonkco Engagqibekanga"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec in"
+msgstr "ibhithi/umzuzwana engenayo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec out"
+msgstr "ibhithi/umzuzwana ephumayo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style."
+msgstr "Seta isihloko semephu, isikhokelo seempawu, uphawu lwexesha, umva kunye nobungakanani bekhenvasi, kunye ne-bandwidth engagqibekanga yamakhonkco. Imilinganiselo yemephu ilinganiswa ngeepikseli; okungagqibekanga kwembonakalo yekhonkco kukwiSimbo seMephu."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Style"
+msgstr "Isimbo seMephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Defaults"
+msgstr "Okungagqibekanga kweMephu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "HTML Style"
+msgstr "Isimbo se-HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Dynamic HTML"
+msgstr "I-HTML Eguquguqukayo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Static HTML"
+msgstr "I-HTML Engatshintshiyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Key Style"
+msgstr "Isimbo seSikhokelo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Classic"
+msgstr "Eklasikhi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Horizontal"
+msgstr "Ngokuthe tyaba"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Vertical"
+msgstr "Ngokuthe nkqo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Inverted"
+msgstr "Ijikwe ngomva"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Tags"
+msgstr "Iithegi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Font"
+msgstr "Ifonti yeSikhokelo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Defaults"
+msgstr "Okungagqibekanga kweNodi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Font"
+msgstr "Ifonti yeNodi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance Defaults"
+msgstr "Okungagqibekanga kweMbonakalo yeKhonkco"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
+msgstr "Ububanzi beKhonkco Obungagqibekanga"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Labels"
+msgstr "Iileyibhile zeKhonkco"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bits/sec"
+msgstr "Iibhithi/umzuzwana"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Percentage"
+msgstr "Ipesenti"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Arrow Style"
+msgstr "Isimbo soTolo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Compact"
+msgstr "Ixineneyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Label Font"
+msgstr "Ifonti yeLeyibhile yeTrefikhi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr "Imilinganiselo yokuhova isebenzisa iipikseli. Seta u-0 ukuze ube nobungakanani obuzenzekelayo. Ububanzi bumisela umda wobungakanani bomboniso wangaphambili; ubude buyindlela yakudala yokwalatha kwaye isenokungabutshintshi ubude obubonisiweyo. Ii-URL zegrafu zinokuchaza imilinganiselo yazo yomfanekiso."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr "Ububanzi Bokuhova beNodi (iipikseli)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr "Ubude Bokuhova beNodi (iipikseli)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr "Ububanzi Bokuhova beKhonkco (iipikseli)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
+msgstr "Ubude Bokuhova beKhonkco (iipikseli)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr "Lawula Imibala"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr "Imbonakalo yeKhonkco"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Comment Colour"
+msgstr "Umbala weNkcazo yeKhonkco"
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr " Danyaza amakhonkco ku-80%+"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr "Amakhonkco akwi-80% yokusetyenziswa okanye ngaphezulu adanyaza ngombala wawo wetrefikhi."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr "Imibala yoMthwalo weTrefikhi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr "Imibala eselungisiwe"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr "Ngokwezifiso"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr "Okungagqibekanga (Eklasikhi)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr "Luhlaza / Mthubi onjenge-amber / Bomvu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr "Umkhenkce Wasebusika"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr "Uhlaza Lwangoku"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr "Luhlaza Okolwandle"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr "Mfusa / Orenji / Bomvu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr "I-Amber Yokuphuma Kwelanga"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr "Imibala ibonisa ukuba ingakanani i-bandwidth yekhonkco esetyenziswayo. Umzekelo, i-75% ithetha iziqingatha ezithathu ezinesine zomthamo walo."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr "Imibala eselungisiwe ithatha indawo yesikali setrefikhi se-DEFAULT xa ucofa u-Gcina. Ezinye izikali ezinamagama ziyagcinwa."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr "Umqolo ngamnye ngumda wombala. Ukususela kunye no-Ukuya ku yimida yawo, Umbala yeyokuzalisa, kwaye Isiphelo Senguquko Yombala sidibanisa ukuya komnye umbala. Ileyibhile yongeza umbhalo wesikhokelo onganyanzelekanga. Amagama ezikali ahlanganisa imida; i-DEFAULT sisikali setrefikhi esiqhelekileyo. Izikali ngokwezifiso zinokusebenzisa ezinye iiyunithi."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr "Yongeza umda"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr "Imida yesikali isebenzisa iiyunithi eziqwalaselwe kwikhonkco ngalinye okanye kwinodi nganye; amakhonkco etrefikhi adla ngokusebenzisa iipesenti."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr "Lawula Imifanekiso"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr "Ii-ayikhoni zeNodi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr "Layisha I-ayikhoni yeNodi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr "Layisha i-ayikhoni yenodi"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr "Ii-ayikhoni zenodi ezikhoyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr "Imifanekiso Engemva"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr "Layisha Umva"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr "Layisha umva"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr "Imifanekiso engemva ekhoyo"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr "Vala"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
+msgstr "Iifayile ze-PNG, JPG/JPEG okanye GIF ukuya kwi-5 MB kunye nezigidi ezi-4 zeepikseli. Ukulayishwa kwe-GIF kusebenzisa ifreyimu yokuqala. Okulayishiweyo kugcinwa ngoko nangoko. Imifanekiso ekubhekiswa kuyo luqwalaselo lwemephu ayinakucinywa."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr "Hlela uqwalaselo olungahluzwanga lwale nto yemephu."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr "Eziphucukileyo: utshintsho lugcinwa ngqo kuqwalaselo lwemephu ngaphandle kokuqinisekiswa kwesintaksi. Sebenzisa Iimpawu ukuze ufumane izilawuli zokuhlela eziqhelekileyo."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr "Imaleko Engaphezulu"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
+msgstr "Ukubekwa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate"
+msgstr "Yenza ikopi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable"
+msgstr "Khubaza"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable"
+msgstr "Yenza isebenze"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Grant Access"
+msgstr "Nika Ufikelelo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Revoke Access"
+msgstr "Rhoxisa Ufikelelo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No such file."
+msgstr "Akukho fayile injalo."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s deleted."
+msgstr "Ifayile yoqwalaselo %s icinyiwe."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr "Ifayile yoqwalaselo %s isetyenziswa yimephu. Susa loo mephu kuqala."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr "Ayikwazi ukucima ifayile yoqwalaselo."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "All Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Zonke Iimephu Zakhiwe Kwakhona kwimizuzwana eyi-%0.2f!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Editor directory permissions are not correct!"
+msgstr "Iimvume zolawulo lomhleli azichanekanga!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
+msgstr "I-akhawunti yeNkonzo yeWebhu kufuneka ibe nofikelelo kulawulo loqwalaselo lwe-WeatherMap engenalo. Lungisa lo mba, uze uphinde uvule Umhleli"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Weathermap Permission Error"
+msgstr "Impazamo yeMvume ye-Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Continue"
+msgstr "Qhubeka"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Iimephu Ezikhethiweyo eziyi-%d Zakhiwe Kwakhona kwimizuzwana eyi-%0.2f!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to delete the following Weather Map."
+msgid_plural "Click 'Continue' to delete following Weather Maps."
+msgstr[0] "Cofa u-'Qhubeka' ukuze ucime le Mephu ye-Weather ilandelayo."
+msgstr[1] "Cofa u-'Qhubeka' ukuze ucime ezi Mephu ze-Weather zilandelayo."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete Weather Map"
+msgid_plural "Delete Weather Maps"
+msgstr[0] "Cima Imephu ye-Weather"
+msgstr[1] "Cima Iimephu ze-Weather"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Cofa u-'Qhubeka' ukuze wenze ikopi yale Mephu ye-Weather ilandelayo. Ungatshintsha ifomati yesihloko yeMephu ye-Weather entsha ukuba uyathanda."
+msgstr[1] "Cofa u-'Qhubeka' ukuze wenze ikopi yezi Mephu ze-Weather zilandelayo. Ungatshintsha ifomati yesihloko yeeMephu ze-Weather ezintsha ukuba uyathanda."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title Format:"
+msgstr "Ifomati yeSihloko:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File Format:"
+msgstr "Ifomati yeFayile yoQwalaselo:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate Weather Map"
+msgid_plural "Duplicate Weather Maps"
+msgstr[0] "Yenza Ikopi yeMephu ye-Weather"
+msgstr[1] "Yenza Ikopi yeeMephu ze-Weather"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Cofa u-'Qhubeka' ukuze ukhubaze le Mephu ye-Weather ilandelayo. Ungatshintsha ifomati yesihloko yeMephu ye-Weather entsha ukuba uyathanda."
+msgstr[1] "Cofa u-'Qhubeka' ukuze ukhubaze ezi Mephu ze-Weather zilandelayo. Ungatshintsha ifomati yesihloko yeeMephu ze-Weather ezintsha ukuba uyathanda."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable Weather Map"
+msgid_plural "Disable Weather Maps"
+msgstr[0] "Khubaza Imephu ye-Weather"
+msgstr[1] "Khubaza Iimephu ze-Weather"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Cofa u-'Qhubeka' ukuze wenze le Mephu ye-Weather ilandelayo isebenze. Ungatshintsha ifomati yesihloko yeMephu ye-Weather entsha ukuba uyathanda."
+msgstr[1] "Cofa u-'Qhubeka' ukuze wenze ezi Mephu ze-Weather zilandelayo zisebenze. Ungatshintsha ifomati yesihloko yeeMephu ze-Weather ezintsha ukuba uyathanda."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable Weather Map"
+msgid_plural "Enable Weather Maps"
+msgstr[0] "Yenza Imephu ye-Weather Isebenze"
+msgstr[1] "Yenza Iimephu ze-Weather Zisebenze"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Cofa u-'Qhubeka' ukuze Wakhe Kwakhona le Mephu ye-Weather ilandelayo. Ungatshintsha ifomati yesihloko yeMephu ye-Weather entsha ukuba uyathanda."
+msgstr[1] "Cofa u-'Qhubeka' ukuze Wakhe Kwakhona ezi Mephu ze-Weather zilandelayo. Ungatshintsha ifomati yesihloko yeeMephu ze-Weather ezintsha ukuba uyathanda."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Weather Map"
+msgid_plural "Rebuild Weather Maps"
+msgstr[0] "Yakha Kwakhona Imephu ye-Weather"
+msgstr[1] "Yakha Kwakhona Iimephu ze-Weather"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weather Maps [ Run Details: %s ]"
+msgstr "Iimephu ze-Weather [ Iinkcukacha Zokusebenza: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Search"
+msgstr "Khangela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Maps"
+msgstr "Iimephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Default"
+msgstr "Okungagqibekanga"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: use filter settings"
+msgid "Go"
+msgstr "Hamba"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: reset filter settings"
+msgid "Clear"
+msgstr "Sula"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Settings"
+msgstr "Iisetingi zeQela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Map Settings"
+msgstr "Iisetingi zeMephu ye-Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Settings"
+msgstr "Iisetingi ze-Cacti Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild All"
+msgstr "Yakha Zonke Kwakhona"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild all maps now in background"
+msgstr "Yakha kwakhona zonke iimephu ngoku ngasemva"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
+msgstr "Usebenzisa i-plugin ye-Boost ukuhlaziya iifayile ze-RRD. Ngenxa yokuba oku kulibazisa ukubhalwa kwedatha kwiifayile, kubangela iingxaki ngohlaziyo lwe-Weathermap. Ungayisombulula le ngxaki ngokusebenzisa inkxaso ye-'poller_output' ye-Weathermap, ethatha idatha ngqo kwi-poller. %s Ungayenza isebenze ngokubanzi ngokucofa apha %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
+msgstr "Kwixesha lokugqibela isebenza, i-Weathermap AYIWUGQIBANGA umsebenzi wayo. Isilele ngexesha lokulungisa u-'%s'"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
+msgstr "Oku <strong>kunokuba</strong> kuchaphazele ezinye ii-plugin ezisebenza ngexesha lenkqubo ye-poller."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
+msgstr "Kufuneka ukhubaze le Mephu, okanye ukhangele impazamo. Izizathu ezinokwenzeka zibandakanya imiba ye-memory_limit. Ilogi inokuba nolwazi oluninzi."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title"
+msgstr "Isihloko"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File"
+msgstr "Ifayile yoQwalaselo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "ID"
+msgstr "ID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group"
+msgstr "Iqela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enabled"
+msgstr "Ivuliwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Sort Order"
+msgstr "Ulandelelwano Lokuhlela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Order"
+msgstr "Ulandelelwano"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Accessible By"
+msgstr "Ifikeleleka Ngu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Duration"
+msgstr "Ubude Bexesha Lokugqibela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Runtime"
+msgstr "Ixesha lokuSebenza lokuGqibela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Anyone"
+msgstr "Nabani na"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to start editor with this file"
+msgstr "Cofa ukuze uqale umhleli ngale fayile"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Check cacti.log for this Map"
+msgstr "Khangela i-cacti.log yale Mephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to change group"
+msgstr "Cofa ukuze utshintshe iqela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Deactivate"
+msgstr "Cofa ukuze Uyivale"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Activate"
+msgstr "Cofa ukuze Uyivule"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Specials"
+msgstr "%d Ezikhethekileyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Standard"
+msgstr "Eqhelekileyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Down"
+msgstr "Shenxisa Imephu Ezantsi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to edit permissions"
+msgstr "Cofa ukuze uhlele iimvume"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users"
+msgstr "Akukho Basebenzisi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Users"
+msgstr "Bonke Abasebenzisi"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Groups"
+msgstr "Amaqela ayi-%d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 Group"
+msgstr "Iqela eli-1"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Users"
+msgstr "Abasebenzisi abayi-%d"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 User"
+msgstr "Umsebenzisi o-1"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Weathermaps Found"
+msgstr "Akukho Zimephu ze-Weathermap Zifunyenweyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
+msgstr "Akukho lawulo lunegama elithi %s. Kufuneka ulwenze, kwaye ulusete ukuze lufundeke yiseva yewebhu. Ukuba ufuna ukulayisha iifayile zoqwalaselo ngaphakathi kwi-Cacti, kufuneka <i>lubhaleke</i> yiseva yewebhu nayo."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Existing Configuration Files"
+msgstr "Iifayile zoQwalaselo Ezikhoyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Num Files"
+msgstr "Inani leeFayile"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Maps"
+msgstr "IneeMephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Go"
+msgstr "Hamba"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Set/Refresh Filters"
+msgstr "Seta/Hlaziya Izihluzo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear"
+msgstr "Sula"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear Filters"
+msgstr "Sula Izihluzo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Options"
+msgstr "Iinketho Zokwenza"
+
+#: weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "New Map"
+msgstr "Imephu Entsha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name including .conf"
+msgstr "Igama kubandakanya u-.conf"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr "Isihloko semephu esinganyanzelekanga"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Source Map"
+msgstr "Imephu Engumthombo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Empty File"
+msgstr "Ifayile Engenanto"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Actions"
+msgstr "Izenzo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Date"
+msgstr "Umhla Wokwenziwa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Modified"
+msgstr "Iguqulwe Ekugqibeleni"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Size"
+msgstr "Ubungakanani"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config Files"
+msgstr "Iifayile zoQwalaselo"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Add the configuration file %s to Weathermap"
+msgstr "Yongeza ifayile yoqwalaselo %s kwi-Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid " Copy"
+msgstr " Kopa"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Duplicate the configuration file %s and add to Weathermap as %s"
+msgstr "Yenza ikopi yefayile yoqwalaselo %s uze uyongeze kwi-Weathermap njengo-%s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "View the configuration file %s in a new window"
+msgstr "Jonga ifayile yoqwalaselo %s kwifestile entsha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "NOTE: Already in use. Click duplicate to create a new file."
+msgstr "QAPHELA: Sele isetyenziswa. Cofa u-yenza ikopi ukuze wenze ifayile entsha."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No files were found in the configs directory."
+msgstr "Akukho zifayile zifunyenweyo kulawulo loqwalaselo."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s is not in the config directory."
+msgstr "Indlela %s ayikho kulawulo loqwalaselo."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Preview of %s"
+msgstr "Umboniso wangaphambili we-%s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s does not appear to exist in the config directory"
+msgstr "Indlela %s ayibonakali ikhona kulawulo loqwalaselo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Path mismatch"
+msgstr "Ukungahambelani kwendlela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr "Ifayile yoqwalaselo ayifumaneki. Nceda uzame kwakhona."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "(No Title)"
+msgstr "(Akukho Sihloko)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr "Imephu Entsha enegama elithi %s ayikwazanga ukufumana ifayile yoqwalaselo %s yokuyikopa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr "Ayikwazanga ukubhalisa imephu entsha."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr "Ayikwazanga ukwenza ikopi yemephu. Nceda uzame kwakhona."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
+msgstr "Imephu Entsha enegama elithi %s yenziwe kusetyenziswa ifayile yoqwalaselo %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weathermap Permissions for Map [ %s ]"
+msgstr "Iimvume ze-Weathermap zeMephu [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Type"
+msgstr "Uhlobo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users"
+msgstr "Abasebenzisi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Groups"
+msgstr "Amaqela Abasebenzisi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rows"
+msgstr "Imiqolo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Permissions"
+msgstr "IneeMvume"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users or Groups"
+msgstr "Abasebenzisi okanye Amaqela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Account Type"
+msgstr "Uhlobo lwe-Akhawunti"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User/Group"
+msgstr "Umsebenzisi/Iqela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Login Realm"
+msgstr "Ummandla Wokungena"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "UID/GID"
+msgstr "UID/GID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Full Name/Description"
+msgstr "Igama Elipheleleyo/Inkcazo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Allowed"
+msgstr "Ivunyelwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User"
+msgstr "Umsebenzisi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Group"
+msgstr "Iqela Labasebenzisi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "N/A"
+msgstr "Akusebenzi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Local"
+msgstr "Yasekhaya"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Web Basic"
+msgstr "Okusisiseko kweWebhu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "LDAP/AD"
+msgstr "LDAP/AD"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Not Permitted"
+msgstr "Ayivunyelwanga"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Permitted"
+msgstr "Ivunyelwe"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users have Access to this Map"
+msgstr "Akukho Basebenzisi abanoFikelelo kule Mephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Settings [ All Maps ]"
+msgstr "Iisetingi Jikelele [ Zonke Iimephu ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
+msgstr "Akukho Zisetingi Zazo Zonke Iimephu okwangoku. Ungazongeza ezinye ngokucofa uphawu lokudibanisa '+' ngaphezulu ekunene, okanye ukhethe Imephu enye kwisikrini solawulo ukuze wongeze Iisetingi zaloo Mephu."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Group Settings [ Group: %s ]"
+msgstr "Hlela Iisetingi zeQela [ Iqela: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Akukho Zisetingi zeQela ngalinye kweli Qela okwangoku. Ungazongeza ezinye ngokucofa uphawu lokudibanisa '+' ngaphezulu ekunene."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Settings [ Weathermap: %s ]"
+msgstr "Hlela Iisetingi zeMephu [ I-Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Akukho zisetingi zeMephu nganye kule Mephu okwangoku. Ungazongeza ezinye ngokucofa uphawu lokudibanisa '+' ngaphezulu ekunene."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Usage Notes"
+msgstr "Amanqaku Okusebenzisa"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Zonke Iimephu kweli Qela zikwachaphazeleka zezi Setingi Jikelele zilandelayo (Iqela litshintsha ezijikelele, Imephu itshintsha ezeQela, kodwa ZOMBINI zitshintsha imiyalelo ye-SET ngaphakathi kwiFayile yoQwalaselo yeMephu)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "Le Mephu ikwachaphazeleka zezi Setingi Jikelele nezeQela zilandelayo (Iqela litshintsha ezijikelele, Imephu itshintsha ezeQela, kodwa ZOMBINI zitshintsha imiyalelo ye-SET ngaphakathi kwiFayile yoQwalaselo yeMephu)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Group Settings [ Group: %s ]"
+msgstr "Iisetingi zeQela [ Iqela: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Group"
+msgstr "Akukho Qela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Action"
+msgstr "Isenzo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name"
+msgstr "Igama"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Value"
+msgstr "Ixabiso"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit this definition"
+msgstr "Hlela le nkcazelo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Remove this definition from this Map"
+msgstr "Susa le nkcazelo kule Mephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Group Admin"
+msgstr "Buyela kuLawulo Lweqela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Map Admin"
+msgstr "Buyela kuLawulo Lwemephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Settings Found"
+msgstr "Akukho Zisetingi Zifunyenweyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map ID"
+msgstr "I-ID yeMephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Setting ID"
+msgstr "I-ID yeSetingi"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The name of the map-global SET variable"
+msgstr "Igama le-SET variable jikelele yemephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "What to set it to"
+msgstr "Into emayisetwe kuyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
+msgstr "Hlela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Setting for all Maps"
+msgstr "Isetingi Jikelele yazo zonke Iimephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Map Setting [ Weathermap: %s ]"
+msgstr "Isetingi yeMephu [ I-Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Group for Weathermap [ %s ]"
+msgstr "Hlela Iqela leMephu le-Weathermap [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Choose an existing Group"
+msgstr "Khetha Iqela elikhoyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Or Create a New Group using the %s Group Management interface %s"
+msgstr "Okanye Yenza Iqela Elitsha usebenzisa %s ujongano loLawulo Lweqela %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Adding a Group"
+msgstr "Ukongeza Iqela"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Editing Group: %s"
+msgstr "Ukuhlela Iqela: %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name:"
+msgstr "Igama leQela:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Update"
+msgstr "Uhlaziyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Add"
+msgstr "Yongeza"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Map Groups"
+msgstr "Hlela Amaqela eMephu"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name"
+msgstr "Igama leQela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename this Group"
+msgstr "Thiya ngokutsha eli Qela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Group Settings"
+msgstr "Hlela Iisetingi zeQela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Groups are defined"
+msgstr "Akukho Maqela achaziweyo"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename Weathermap Group"
+msgstr "Thiya ngokutsha Iqela le-Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enter a new name for the Weathermap Group."
+msgstr "Ngenisa igama elitsha leQela le-Weathermap."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "New Group Name"
+msgstr "Igama Elitsha Leqela"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename"
+msgstr "Thiya ngokutsha"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the last remaining Map Group."
+msgstr "Ayikwazi ukucima Iqela leMephu lokugqibela eliseleyo."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr "Isihloko semephu side kakhulu. Sebenzisa ubuninzi beebhayithi ezingama-4088 emva kokubalekwa kweempawu."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The New Map File name %s already exists!"
+msgstr "Igama leFayile yeMephu Entsha elithi %s sele likhona!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Source Map File name is not readable or does not exist!"
+msgstr "Igama leFayile yeMephu Engumthombo alifundeki okanye alikho!"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created from %s"
+msgstr "Ifayile yeMephu Entsha %s yenziwe ukusuka ku-%s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created."
+msgstr "Ifayile yeMephu Entsha %s yenziwe."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You must include a Map File name to Create"
+msgstr "Kufuneka ubandakanye igama leFayile yeMephu ukuze uyenze"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermap named \"%s\""
+msgstr "I-Weathermap yeNethiwekhi enegama elithi \"%s\""
+
+#: weathermap-cacti-plugin.php
+msgid "This map hasn't been created yet."
+msgstr "Le mephu ayikadalwa okwangoku."
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Maps"
+msgstr "Lawula Iimephu"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
+msgstr "Ii-Weathermap zeNethiwekhi [ %sJikeleza Ngokuzenzekelayo%s ]"
+
+#: weathermap-cacti-plugin.php
+msgid "(thumbnail for map not created yet)"
+msgstr "(umfanekiso omncinci wemephu awukadalwa okwangoku)"
+
+#: weathermap-cacti-plugin.php
+msgid "(Live View)"
+msgstr "(Imbonakalo Ephilayo)"
+
+#: weathermap-cacti-plugin.php
+msgid "You Have No Maps"
+msgstr "Awunazimephu"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
+msgstr "Ukuze wongeze imephu kwishedyuli, yiya kwiphepha elithi %s Lawula...Ii-Weathermap %s uze wongeze enye."
+
+#: weathermap-cacti-plugin.php
+msgid "Network Weathermaps"
+msgstr "Ii-Weathermap zeNethiwekhi"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
+msgstr "Ibonisa %s %s kweziyi-%s %s. Ijikeleza zonke iimephu ezikhoyo kweli qela."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps."
+msgstr "Ibonisa %s %s kweziyi-%s %s. Ijikeleza zonke iimephu ezikhoyo."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Powered by %s PHP Weathermap Version %s %s"
+msgstr "Ixhaswa yi-%s PHP Weathermap Inguqulelo %s %s"
+
+#: weathermap-cacti-plugin.php
+msgid "Go to the Map Management page"
+msgstr "Yiya kwiphepha loLawulo Lwemephu"
+
+#: weathermap-cacti-plugin.php
+msgid "Weathermap Management"
+msgstr "Ulawulo lwe-Weathermap"
+
+#: weathermap-cacti-plugin.php
+msgid "Map to View"
+msgstr "Imephu Emayijongwe"
+
+#: weathermap-cacti-plugin.php
+msgid "All Maps"
+msgstr "Zonke Iimephu"
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr "Yeka ukujikeleza"
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr "Ngaphambili"
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr "Nqumama / qhubeka"
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr "Okulandelayo"
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr "Phuma kwisikrini esigcweleyo"
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr "Isikrini esigcweleyo"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr "Imephu elandelayo kwi-%ss"
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
+msgstr "Inqumisiwe"

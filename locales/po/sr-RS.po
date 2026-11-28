@@ -1,0 +1,3098 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-08 18:47-0800\n"
+"PO-Revision-Date: 2026-11-27 18:00-0800\n"
+"Last-Translator: The Cacti Group <developers@cacti.net>\n"
+"Language-Team: Serbian <developers@cacti.net>\n"
+"Language: sr-RS\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF file up to 5 MB."
+msgstr "Изаберите PNG, JPG или GIF датотеку до 5 MB."
+
+#: lib/editor.actions.php
+msgid "Use POST to save changes."
+msgstr "Користите POST за чување измена."
+
+#: lib/editor.actions.php lib/editor.inc.php
+msgid "This map has changed since you opened it. Reload the editor before saving your changes."
+msgstr "Ова мапа је промењена откако сте је отворили. Поново учитајте уређивач пре чувања измена."
+
+#: lib/editor.actions.php
+msgid "Cannot read the map configuration."
+msgstr "Није могуће прочитати конфигурацију мапе."
+
+#: lib/editor.actions.php lib/editor.assets.php lib/editor.history.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not lock map configurations."
+msgstr "Није могуће закључати конфигурације мапа."
+
+#: lib/editor.actions.php
+msgid "This image is still referenced by a map configuration."
+msgstr "Ову слику још увек користи нека конфигурација мапе."
+
+#: lib/editor.actions.php
+msgid "Could not delete the image."
+msgstr "Није могуће обрисати слику."
+
+#: lib/editor.actions.php
+msgid "Invalid colour settings."
+msgstr "Неисправна подешавања боја."
+
+#: lib/editor.actions.php weathermap-cacti-plugin-mgmt.php
+msgid "Could not save the map configuration."
+msgstr "Није могуће сачувати конфигурацију мапе."
+
+#: lib/editor.assets.php
+msgid "Invalid image category."
+msgstr "Неисправна категорија слике."
+
+#: lib/editor.assets.php
+msgid "Symbolic links cannot be managed here."
+msgstr "Симболичким везама се не може управљати овде."
+
+#: lib/editor.assets.php
+msgid "Invalid image filename."
+msgstr "Неисправан назив датотеке слике."
+
+#: lib/editor.assets.php
+msgid "Cannot check configuration references."
+msgstr "Није могуће проверити референце конфигурације."
+
+#: lib/editor.assets.php
+msgid "Too many included configurations to check."
+msgstr "Превише укључених конфигурација за проверу."
+
+#: lib/editor.assets.php
+msgid "The image directory is not writable."
+msgstr "Директоријум за слике није уписив."
+
+#: lib/editor.assets.php
+msgid "Choose a PNG, JPG or GIF image up to 4 million pixels."
+msgstr "Изаберите PNG, JPG или GIF слику до 4 милиона пиксела."
+
+#: lib/editor.assets.php
+msgid "The image could not be read."
+msgstr "Слику није могуће прочитати."
+
+#: lib/editor.assets.php
+msgid "Could not reserve an image filename."
+msgstr "Није могуће резервисати назив датотеке слике."
+
+#: lib/editor.assets.php
+msgid "Could not save the image."
+msgstr "Није могуће сачувати слику."
+
+#: lib/editor.colours.php
+msgid "Choose a valid colour."
+msgstr "Изаберите исправну боју."
+
+#: lib/editor.colours.php
+msgid "Invalid pulse setting."
+msgstr "Неисправно подешавање пулсирања."
+
+#: lib/editor.colours.php
+msgid "The background needs a solid colour."
+msgstr "Позадина захтева пуну боју."
+
+#: lib/editor.colours.php
+msgid "Keep between 1 and 200 scale rows."
+msgstr "Задржите између 1 и 200 редова скале."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "Scale %s is defined in an included configuration and is read-only here. Edit its source file instead."
+msgstr "Скала %s је дефинисана у укљученој конфигурацији и овде је само за читање. Уместо тога измените њену изворну датотеку."
+
+#: lib/editor.colours.php
+msgid "Invalid scale name."
+msgstr "Неисправан назив скале."
+
+#: lib/editor.colours.php
+msgid "Invalid scale range."
+msgstr "Неисправан опсег скале."
+
+#: lib/editor.colours.php
+msgid "Range start must be no greater than its end."
+msgstr "Почетак опсега не сме бити већи од његовог краја."
+
+#: lib/editor.colours.php
+msgid "Invalid scale label."
+msgstr "Неисправна ознака скале."
+
+#: lib/editor.colours.php
+msgid "A solid colour label cannot begin with three integers. Add a word first or choose a gradient end colour."
+msgstr "Ознака пуне боје не може почињати са три цела броја. Прво додајте реч или изаберите крајњу боју прелива."
+
+#: lib/editor.colours.php
+msgid "Scale bounds need values that can be saved without rounding. Use up to six decimal places and exact bandwidth units."
+msgstr "Границе скале захтевају вредности које се могу сачувати без заокруживања. Користите до шест децималних места и тачне јединице пропусног опсега."
+
+#: lib/editor.colours.php
+msgid "Duplicate range in a scale."
+msgstr "Дуплирани опсег у скали."
+
+#: lib/editor.colours.php
+msgid "Gradients need two colours."
+msgstr "Преливи захтевају две боје."
+
+#: lib/editor.colours.php
+msgid "Keep at least one DEFAULT traffic range."
+msgstr "Задржите бар један DEFAULT опсег саобраћаја."
+
+#: lib/editor.colours.php
+#, php-format
+msgid "A map object still uses scale %s."
+msgstr "Објекат мапе још увек користи скалу %s."
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt (font %s)"
+msgstr "%s — %s pt (фонт %s)"
+
+#: lib/editor.comment-style.php
+msgid "Blue (#0000FF)"
+msgstr "Плава (#0000FF)"
+
+#: lib/editor.comment-style.php
+msgid "Dark blue (#003366)"
+msgstr "Тамноплава (#003366)"
+
+#: lib/editor.comment-style.php
+msgid "Royal blue (#0040C0)"
+msgstr "Краљевскоплава (#0040C0)"
+
+#: lib/editor.comment-style.php
+msgid "Teal (#007070)"
+msgstr "Тиркизнозелена (#007070)"
+
+#: lib/editor.comment-style.php
+msgid "Green (#008000)"
+msgstr "Зелена (#008000)"
+
+#: lib/editor.comment-style.php
+msgid "Purple (#8000C0)"
+msgstr "Љубичаста (#8000C0)"
+
+#: lib/editor.comment-style.php
+msgid "Charcoal (#333333)"
+msgstr "Тамносива (#333333)"
+
+#: lib/editor.comment-style.php
+msgid "Red (#C00000)"
+msgstr "Црвена (#C00000)"
+
+#: lib/editor.comment-style.php
+msgid "Black (#000000)"
+msgstr "Црна (#000000)"
+
+#: lib/editor.comment-style.php
+msgid "White (#FFFFFF)"
+msgstr "Бела (#FFFFFF)"
+
+#: lib/editor.comment-style.php
+msgid "Automatic contrast with link colour"
+msgstr "Аутоматски контраст у односу на боју везе"
+
+#: lib/editor.comment-style.php
+#, php-format
+msgid "%s — %s pt"
+msgstr "%s — %s pt"
+
+#: lib/editor.comment-style.php
+msgid "Bundled fonts"
+msgstr "Уграђени фонтови"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Font"
+msgstr "Фонт коментара везе"
+
+#: lib/editor.comment-style.php
+msgid "Link Comment Style"
+msgstr "Стил коментара везе"
+
+#: lib/editor.comment-style.php weathermap-cacti-plugin-editor.php
+msgid "Centre"
+msgstr "Центар"
+
+#: lib/editor.comment-style.php
+msgid "Edge"
+msgstr "Ивица"
+
+#: lib/editor.comment-style.php
+msgid "Edge places comments beside the link; Centre places them over the arrow."
+msgstr "Ивица поставља коментаре поред везе; Центар их поставља преко стрелице."
+
+#: lib/editor.comment-style.php
+msgid "Follow link curve"
+msgstr "Прати кривину везе"
+
+#: lib/editor.comment-style.php
+msgid "Link Comments"
+msgstr "Коментари везе"
+
+#: lib/editor.comment-style.php
+msgid "Uses a TrueType font. Tight bends or text longer than the link use straight text."
+msgstr "Користи TrueType фонт. Оштри прегиби или текст дужи од везе користе раван текст."
+
+#: lib/editor.comment-style.php
+msgid "Positions along the link: 0% is the first node and 100% is the second. These move the traffic labels, not the comments."
+msgstr "Положаји дуж везе: 0% је први чвор, а 100% је други. Ово помера ознаке саобраћаја, а не коментаре."
+
+#: lib/editor.comment-style.php
+msgid "Traffic Label Positions"
+msgstr "Положаји ознака саобраћаја"
+
+#: lib/editor.comment-style.php
+msgid "IN"
+msgstr "УЛАЗ"
+
+#: lib/editor.comment-style.php
+msgid "OUT"
+msgstr "ИЗЛАЗ"
+
+#: lib/editor.comment-style.php
+msgid "Comment Style"
+msgstr "Стил коментара"
+
+#: lib/editor.comment-style.php
+msgid "Use map default"
+msgstr "Користи подразумевано за мапу"
+
+#: lib/editor.comment-style.php
+msgid "Custom positions"
+msgstr "Прилагођени положаји"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Delete configuration file %s"
+msgstr "Обриши конфигурациону датотеку %s"
+
+#: lib/editor.config-delete.php
+#, php-format
+msgid "Are you sure you want to permanently delete the configuration file \"%s\"?"
+msgstr "Да ли сте сигурни да желите трајно да обришете конфигурациону датотеку \"%s\"?"
+
+#: lib/editor.history.php
+msgid "An active session is required for Undo and Redo."
+msgstr "Активна сесија је неопходна за опозив (Undo) и понављање (Redo)."
+
+#: lib/editor.history.php
+msgid "Could not create private map history storage."
+msgstr "Није могуће креирати приватно складиште историје мапе."
+
+#: lib/editor.history.php
+msgid "Map history storage is not private."
+msgstr "Складиште историје мапе није приватно."
+
+#: lib/editor.history.php
+msgid "Invalid map history storage."
+msgstr "Неисправно складиште историје мапе."
+
+#: lib/editor.history.php
+msgid "Add node"
+msgstr "Додај чвор"
+
+#: lib/editor.history.php
+msgid "Clone node"
+msgstr "Клонирај чвор"
+
+#: lib/editor.history.php
+msgid "Delete node"
+msgstr "Обриши чвор"
+
+#: lib/editor.history.php
+msgid "Move node or note"
+msgstr "Премести чвор или напомену"
+
+#: lib/editor.history.php
+msgid "Add link"
+msgstr "Додај везу"
+
+#: lib/editor.history.php
+msgid "Delete link"
+msgstr "Обриши везу"
+
+#: lib/editor.history.php
+msgid "Move link via point"
+msgstr "Премести међутачку везе"
+
+#: lib/editor.history.php
+msgid "Tidy link"
+msgstr "Уреди везу"
+
+#: lib/editor.history.php
+msgid "Tidy all links"
+msgstr "Уреди све везе"
+
+#: lib/editor.history.php
+msgid "Tidy links"
+msgstr "Уреди везе"
+
+#: lib/editor.history.php
+msgid "Edit note"
+msgstr "Измени напомену"
+
+#: lib/editor.history.php
+msgid "Untidy links"
+msgstr "Поништи уређивање веза"
+
+#: lib/editor.history.php
+msgid "Edit link"
+msgstr "Измени везу"
+
+#: lib/editor.history.php
+msgid "Edit node"
+msgstr "Измени чвор"
+
+#: lib/editor.history.php
+msgid "Edit raw link configuration"
+msgstr "Измени изворну конфигурацију везе"
+
+#: lib/editor.history.php
+msgid "Edit raw node configuration"
+msgstr "Измени изворну конфигурацију чвора"
+
+#: lib/editor.history.php
+msgid "Edit map properties"
+msgstr "Измени својства мапе"
+
+#: lib/editor.history.php
+msgid "Edit map style"
+msgstr "Измени стил мапе"
+
+#: lib/editor.history.php
+msgid "Edit map colours"
+msgstr "Измени боје мапе"
+
+#: lib/editor.history.php
+msgid "Move legend"
+msgstr "Премести легенду"
+
+#: lib/editor.history.php
+msgid "Move timestamp"
+msgstr "Премести временску ознаку"
+
+#: lib/editor.history.php
+msgid "Edit map"
+msgstr "Измени мапу"
+
+#: lib/editor.history.php
+msgid "No matching history remains. Reload the editor."
+msgstr "Нема преостале одговарајуће историје. Поново учитајте уређивач."
+
+#: lib/editor.history.php
+msgid "Unable to restore this map. A configuration or image may have changed. Reload the editor."
+msgstr "Није могуће вратити ову мапу. Конфигурација или слика су можда промењене. Поново учитајте уређивач."
+
+#: lib/editor.history.php
+msgid "Invalid history request."
+msgstr "Неисправан захтев за историју."
+
+#: lib/editor.history.php
+msgid "This map has changed. Reload the editor before using Undo or Redo."
+msgstr "Ова мапа је промењена. Поново учитајте уређивач пре коришћења опозива или понављања."
+
+#: lib/editor.inc.php
+msgid "Next results"
+msgstr "Следећи резултати"
+
+#: lib/editor.inc.php
+msgid "Previous results"
+msgstr "Претходни резултати"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Welcome to the PHP Weathermap %s Editor"
+msgstr "Добро дошли у PHP Weathermap %s уређивач"
+
+#: lib/editor.inc.php
+msgid "Use the editor to manage nodes, links, notes, colours and image uploads. Edit Raw Configuration provides settings beyond the forms. See the local documentation for workflows and configuration details."
+msgstr "Користите уређивач за управљање чворовима, везама, напоменама, бојама и отпремањем слика. Измена изворне конфигурације пружа подешавања изван образаца. Погледајте локалну документацију за токове рада и детаље конфигурације."
+
+#: lib/editor.inc.php
+msgid "Do you want to:"
+msgstr "Да ли желите да:"
+
+#: lib/editor.inc.php
+msgid "Create A New Map:"
+msgstr "Креирате нову мапу:"
+
+#: lib/editor.inc.php
+msgid "Named:"
+msgstr "Под називом:"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-mgmt.php
+msgid "Create"
+msgstr "Креирај"
+
+#: lib/editor.inc.php
+msgid "Note: filenames must end in .conf and contain no path separators or control characters"
+msgstr "Напомена: називи датотека морају да се завршавају са .conf и не смеју садржати раздвајаче путање нити контролне знакове"
+
+#: lib/editor.inc.php
+msgid "Create Copy"
+msgstr "Креирај копију"
+
+#: lib/editor.inc.php
+msgid "Ok"
+msgstr "У реду"
+
+#: lib/editor.inc.php
+msgid "Operation successful"
+msgstr "Операција је успешна"
+
+#: lib/editor.inc.php
+msgid "The Operation was successful.  Details are below."
+msgstr "Операција је била успешна.  Детаљи су испод."
+
+#: lib/editor.inc.php
+msgid "Pause"
+msgstr "Пауза"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to move the node to."
+msgstr "Кликните на мапу где желите да преместите чвор."
+
+#: lib/editor.inc.php
+msgid "Click on the map via which point you want to redirect link."
+msgstr "Кликните на мапу преко које тачке желите да преусмерите везу."
+
+#: lib/editor.inc.php
+msgid "Click on the first node for the start of the link."
+msgstr "Кликните на први чвор за почетак везе."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the timestamp."
+msgstr "Кликните на мапу где желите да поставите временску ознаку."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to put the legend."
+msgstr "Кликните на мапу где желите да поставите легенду."
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a new node."
+msgstr "Кликните на мапу где желите да додате нови чвор."
+
+#: lib/editor.inc.php
+msgid "−"
+msgstr "−"
+
+#: lib/editor.inc.php
+msgid "No images in this library yet."
+msgstr "Још увек нема слика у овој библиотеци."
+
+#: lib/editor.inc.php
+msgid "Choose a PNG, JPG or GIF to upload."
+msgstr "Изаберите PNG, JPG или GIF датотеку за отпремање."
+
+#: lib/editor.inc.php
+msgid "The request failed. Please try again."
+msgstr "Захтев није успео. Покушајте поново."
+
+#: lib/editor.inc.php
+msgid "Upload failed."
+msgstr "Отпремање није успело."
+
+#: lib/editor.inc.php
+msgid "No gradient"
+msgstr "Без прелива"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Custom colour"
+msgstr "Прилагођена боја"
+
+#: lib/editor.inc.php
+msgid "Remove range"
+msgstr "Уклони опсег"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s"
+msgstr "Обриши %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete image \"%s\" from the server?"
+msgstr "Обрисати слику \"%s\" са сервера?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Images: %s"
+msgstr "Слике: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Uploaded %s"
+msgstr "Отпремљено %s"
+
+#: lib/editor.inc.php
+msgid "Label Only"
+msgstr "Само ознака"
+
+#: lib/editor.inc.php
+msgid "No background"
+msgstr "Без позадине"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Used by: %s"
+msgstr "Користи: %s"
+
+#: lib/editor.inc.php
+msgid "Not used by a map"
+msgstr "Не користи је ниједна мапа"
+
+#: lib/editor.inc.php
+msgid "No DEFAULT ranges. See Advanced settings for named scales."
+msgstr "Нема DEFAULT опсега. Погледајте Напредна подешавања за именоване скале."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Custom (%s)"
+msgstr "Прилагођено (%s)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Undo"
+msgstr "Опозови"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Redo"
+msgstr "Понови"
+
+#: lib/editor.inc.php
+msgid "No map changes to undo or redo."
+msgstr "Нема измена мапе за опозив или понављање."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Undo: %s steps; Redo: %s steps."
+msgstr "Опозив: %s корака; Понављање: %s корака."
+
+#: lib/editor.inc.php
+msgid "Save or cancel the open dialog before using Undo or Redo."
+msgstr "Сачувајте или откажите отворени дијалог пре коришћења опозива или понављања."
+
+#: lib/editor.inc.php
+msgid "Undo and Redo require browser session storage."
+msgstr "Опозив и понављање захтевају складиште сесије прегледача."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Unable to save changes. Please try again."
+msgstr "Није могуће сачувати измене. Покушајте поново."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Map Background Colour"
+msgstr "Боја позадине мапе"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Link Border Colour"
+msgstr "Боја ивице везе"
+
+#: lib/editor.inc.php
+msgid "Scales from included configurations are read-only here. Edit their source files to change them."
+msgstr "Скале из укључених конфигурација овде су само за читање. Измените њихове изворне датотеке да бисте их променили."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Scale"
+msgstr "Скала"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "From (usually %)"
+msgstr "Од (обично %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "To (usually %)"
+msgstr "До (обично %)"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Label"
+msgstr "Ознака"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Colour"
+msgstr "Боја"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Gradient End"
+msgstr "Крај прелива"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Black"
+msgstr "Црна"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Blue"
+msgstr "Плава"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Green"
+msgstr "Зелена"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Grey"
+msgstr "Сива"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "None"
+msgstr "Ниједан"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Orange"
+msgstr "Наранџаста"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Purple"
+msgstr "Љубичаста"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Red"
+msgstr "Црвена"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "White"
+msgstr "Бела"
+
+#: lib/editor.inc.php
+msgid "Search icons…"
+msgstr "Претражи иконе…"
+
+#: lib/editor.inc.php
+msgid "Search node icons"
+msgstr "Претражи иконе чворова"
+
+#: lib/editor.inc.php
+msgid "Node icons"
+msgstr "Иконе чворова"
+
+#: lib/editor.inc.php
+msgid "Choose an icon"
+msgstr "Изаберите икону"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Matching icons: %s"
+msgstr "Подударне иконе: %s"
+
+#: lib/editor.inc.php
+msgid "No matching icons"
+msgstr "Нема подударних икона"
+
+#: lib/editor.inc.php
+msgid "Current interface"
+msgstr "Тренутни интерфејс"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Advanced settings"
+msgstr "Напредна подешавања"
+
+#: lib/editor.inc.php
+msgid "Hide advanced settings"
+msgstr "Сакриј напредна подешавања"
+
+#: lib/editor.inc.php
+msgid "Use interface"
+msgstr "Користи интерфејс"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Traffic interface"
+msgstr "Интерфејс саобраћаја"
+
+#: lib/editor.inc.php
+msgid "Search device or interface"
+msgstr "Претражи уређај или интерфејс"
+
+#: lib/editor.inc.php
+msgid "No interface selected"
+msgstr "Није изабран ниједан интерфејс"
+
+#: lib/editor.inc.php
+msgid "Click on the map where you would like to add a note."
+msgstr "Кликните на мапу где желите да додате напомену."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Note"
+msgstr "Напомена"
+
+#: lib/editor.inc.php
+msgid "Delete Note Confirmation"
+msgstr "Потврда брисања напомене"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Note"
+msgstr "Обриши напомену"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete note \"%s\"?"
+msgstr "Обрисати напомену \"%s\"?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Current graph: %s"
+msgstr "Тренутни графикон: %s"
+
+#: lib/editor.inc.php
+msgid "Custom configuration — see Advanced settings"
+msgstr "Прилагођена конфигурација — погледајте Напредна подешавања"
+
+#: lib/editor.inc.php
+msgid "Choose an interface below"
+msgstr "Изаберите интерфејс испод"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth into %s"
+msgstr "Пропусни опсег ка %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Bandwidth out of %s"
+msgstr "Пропусни опсег из %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Graph %s — data, click destination and hover graph selected. Save to apply."
+msgstr "Графикон %s — подаци, одредиште клика и графикон при преласку мишем су изабрани. Сачувајте за примену."
+
+#: lib/editor.inc.php
+msgid "Shown first on hover. Use interface sets this automatically; change it only for a custom preview URL."
+msgstr "Приказује се први при преласку мишем. Опција „Користи интерфејс“ ово поставља аутоматски; мењајте само за прилагођени URL прегледа."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Combined traffic from %s sources"
+msgstr "Комбиновани саобраћај из %s извора"
+
+#: lib/editor.inc.php
+msgid "Traffic source added to the map total. Hover and click graphs are unchanged. Save to apply."
+msgstr "Извор саобраћаја је додат у збир мапе. Графикони при преласку мишем и на клик су непромењени. Сачувајте за примену."
+
+#: lib/editor.inc.php
+msgid "This source is already included. Select a different source in this search box to add more."
+msgstr "Овај извор је већ укључен. Изаберите други извор у овом пољу за претрагу да додате још."
+
+#: lib/editor.inc.php
+msgid "Remove source"
+msgstr "Уклони извор"
+
+#: lib/editor.inc.php
+msgid "Measured source removed. Hover and click graphs are unchanged. Save to apply."
+msgstr "Мерени извор је уклоњен. Графикони при преласку мишем и на клик су непромењени. Сачувајте за примену."
+
+#: lib/editor.inc.php
+msgid "No measured traffic sources selected."
+msgstr "Није изабран ниједан мерени извор саобраћаја."
+
+#: lib/editor.inc.php
+msgid "Choose an additional interface from the search results above, then click Add traffic source."
+msgstr "Изаберите додатни интерфејс из резултата претраге изнад, а затим кликните на „Додај извор саобраћаја“."
+
+#: lib/editor.inc.php
+msgid "Additional interface selected. Add traffic source keeps the primary interface and other sources."
+msgstr "Додатни интерфејс је изабран. „Додај извор саобраћаја“ задржава примарни интерфејс и остале изворе."
+
+#: lib/editor.inc.php
+msgid "Primary source — use \"Use interface\" at the top to change"
+msgstr "Примарни извор — користите „Користи интерфејс“ на врху за измену"
+
+#: lib/editor.inc.php
+msgid "Choose the primary traffic interface in the main form first."
+msgstr "Прво изаберите примарни интерфејс саобраћаја у главном обрасцу."
+
+#: lib/editor.inc.php
+msgid "Add additional traffic sources"
+msgstr "Додај додатне изворе саобраћаја"
+
+#: lib/editor.inc.php
+msgid "Adjust traffic label positions, or use custom sources and URLs. Leave sources and URLs unchanged for a normal traffic link."
+msgstr "Подесите положаје ознака саобраћаја или користите прилагођене изворе и URL-ове. Оставите изворе и URL-ове непромењене за обичну везу саобраћаја."
+
+#: lib/editor.inc.php
+msgid "Custom traffic sources changed. Save to apply. Hover graphs and click destination are unchanged."
+msgstr "Прилагођени извори саобраћаја су измењени. Сачувајте за примену. Графикони при преласку мишем и одредиште клика су непромењени."
+
+#: lib/editor.inc.php
+msgid "One additional image URL maximum. This is the same preview managed under Additional hover graphs."
+msgstr "Максимално један додатни URL слике. Ово је исти преглед којим се управља под „Додатни графикони при преласку мишем“."
+
+#: lib/editor.inc.php
+msgid "Traffic sources"
+msgstr "Извори саобраћаја"
+
+#: lib/editor.inc.php
+msgid "Optional: add other interfaces to the map total. Change the primary interface in the main form; remove extra sources below. Hover and click graphs stay unchanged. A matching aggregate graph must be configured separately in Cacti. Save applies changes."
+msgstr "Опционо: додајте друге интерфејсе у збир мапе. Промените примарни интерфејс у главном обрасцу; уклоните додатне изворе испод. Графикони при преласку мишем и на клик остају непромењени. Одговарајући збирни графикон мора се посебно подесити у систему Cacti. Дугме Сачувај примењује измене."
+
+#: lib/editor.inc.php
+msgid "Additional graph"
+msgstr "Додатни графикон"
+
+#: lib/editor.inc.php
+msgid "No RRD file listed for this graph"
+msgstr "За овај графикон није наведена RRD датотека"
+
+#: lib/editor.inc.php
+msgid "Custom hover graph"
+msgstr "Прилагођени графикон при преласку мишем"
+
+#: lib/editor.inc.php
+msgid "Remove graph"
+msgstr "Уклони графикон"
+
+#: lib/editor.inc.php
+msgid "One additional graph maximum. Replace or remove it to choose another."
+msgstr "Максимално један додатни графикон. Замените га или уклоните да бисте изабрали други."
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Additional hover graphs"
+msgstr "Додатни графикони при преласку мишем"
+
+#: lib/editor.inc.php
+msgid "Click destination"
+msgstr "Одредиште клика"
+
+#: lib/editor.inc.php
+msgid "Usually leave this set to the traffic graph. Change it only to open a different graph or page when clicking the link. This does not change measured traffic or hover graphs."
+msgstr "Обично оставите ово подешено на графикон саобраћаја. Мењајте само да бисте отворили други графикон или страницу кликом на везу. Ово не мења мерени саобраћај нити графиконе при преласку мишем."
+
+#: lib/editor.inc.php
+msgid "Appearance"
+msgstr "Изглед"
+
+#: lib/editor.inc.php
+msgid "Capacity, for example 100M or 1G."
+msgstr "Капацитет, на пример 100M или 1G."
+
+#: lib/editor.inc.php
+msgid "Text along the link; the percentage sets its position."
+msgstr "Текст дуж везе; проценат одређује његов положај."
+
+#: lib/editor.inc.php
+msgid "Appearance and comments"
+msgstr "Изглед и коментари"
+
+#: lib/editor.inc.php
+msgid "Help"
+msgstr "Помоћ"
+
+#: lib/editor.inc.php
+msgid "Choose a traffic interface and capacity, then Save. Additional hover graphs adds optional previews. Advanced settings contains custom traffic sources and URLs. Edit Raw Configuration edits map syntax directly."
+msgstr "Изаберите интерфејс саобраћаја и капацитет, а затим кликните на Сачувај. „Додатни графикони при преласку мишем“ додаје опционе прегледе. „Напредна подешавања“ садржи прилагођене изворе саобраћаја и URL-ове. „Измени изворну конфигурацију“ директно мења синтаксу мапе."
+
+#: lib/editor.inc.php
+msgid "Type a device or interface, or browse all"
+msgstr "Унесите уређај или интерфејс, или прегледајте све"
+
+#: lib/editor.inc.php
+msgid "Browse all"
+msgstr "Прегледај све"
+
+#: lib/editor.inc.php
+msgid "Choose a primary interface, then click \"Use interface\". Additional sources and hover graphs are kept. Save applies changes."
+msgstr "Изаберите примарни интерфејс, а затим кликните на „Користи интерфејс“. Додатни извори и графикони при преласку мишем се задржавају. Сачувај примењује измене."
+
+#: lib/editor.inc.php
+msgid "Looking up device and interface..."
+msgstr "Тражење уређаја и интерфејса..."
+
+#: lib/editor.inc.php
+msgid "Custom or unavailable interface"
+msgstr "Прилагођен или недоступан интерфејс"
+
+#: lib/editor.inc.php
+msgid "Interface name unavailable"
+msgstr "Назив интерфејса није доступан"
+
+#: lib/editor.inc.php
+msgid "Display name"
+msgstr "Приказани назив"
+
+#: lib/editor.inc.php
+msgid "Icon"
+msgstr "Икона"
+
+#: lib/editor.inc.php
+msgid "Graph type"
+msgstr "Тип графикона"
+
+#: lib/editor.inc.php
+msgid "Hover graphs"
+msgstr "Графикони при преласку мишем"
+
+#: lib/editor.inc.php
+msgid "Delete Node"
+msgstr "Обриши чвор"
+
+#: lib/editor.inc.php
+msgid "For a node used as a label or icon at the end of a link, the main controls are enough. Advanced adds hover graphs such as CPU, memory or traffic, custom click destinations and the internal node ID."
+msgstr "За чвор који се користи као ознака или икона на крају везе, главне контроле су довољне. Напредна подешавања додају графиконе при преласку мишем као што су CPU, меморија или саобраћај, прилагођена одредишта клика и интерни ID чвора."
+
+#: lib/editor.inc.php
+msgid "Display name and icon: Choose what appears on the map. Display name position places the name over the icon. Map position (X, Y) sets the node coordinates; Move lets you place the node on the map."
+msgstr "Приказани назив и икона: изаберите шта се приказује на мапи. Положај приказаног назива поставља назив преко иконе. Положај на мапи (X, Y) поставља координате чвора; Премести вам омогућава да поставите чвор на мапу."
+
+#: lib/editor.inc.php
+msgid "Hover graphs: Filter by graph type and search for a graph. Add includes another graph; Replace replaces the existing hover graphs. Save applies your changes."
+msgstr "Графикони при преласку мишем: филтрирајте по типу графикона и потражите графикон. Додај укључује још један графикон; Замени замењује постојеће графиконе при преласку мишем. Сачувај примењује измене."
+
+#: lib/editor.inc.php
+msgid "Advanced: The internal name identifies the node in the map configuration. Info URLs set the click destination; Hover Graph URLs set the images shown on hover. Use these for custom destinations or external graphs."
+msgstr "Напредно: интерни назив идентификује чвор у конфигурацији мапе. Инфо URL-ови постављају одредиште клика; URL-ови графикона при преласку мишем постављају слике које се приказују при преласку мишем. Користите их за прилагођена одредишта или спољне графиконе."
+
+#: lib/editor.inc.php
+msgid "Search device or graph"
+msgstr "Претражи уређај или графикон"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Hover graphs: %s"
+msgstr "Графикони при преласку мишем: %s"
+
+#: lib/editor.inc.php
+msgid "unavailable graph"
+msgstr "недоступан графикон"
+
+#: lib/editor.inc.php
+msgid "custom images"
+msgstr "прилагођене слике"
+
+#: lib/editor.inc.php
+msgid "No hover graphs configured"
+msgstr "Нису конфигурисани графикони при преласку мишем"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Internal link ID: %s"
+msgstr "Интерни ID везе: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Node: %s"
+msgstr "Чвор: %s"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Remove the link between %1$s and %2$s?"
+msgstr "Уклонити везу између %1$s и %2$s?"
+
+#: lib/editor.inc.php
+msgid "The nodes and Cacti graphs will remain."
+msgstr "Чворови и Cacti графикони ће остати."
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Delete %s from this map?"
+msgstr "Обрисати %s са ове мапе?"
+
+#: lib/editor.inc.php
+#, php-format
+msgid "Connected links to remove: %s."
+msgstr "Повезане везе за уклањање: %s."
+
+#: lib/editor.inc.php
+msgid "The Cacti device and its graphs will remain."
+msgstr "Cacti уређај и његови графикони ће остати."
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Node' will delete this Node."
+msgstr "УПОЗОРЕЊЕ: Притиском на 'Обриши чвор' обрисаћете овај чвор."
+
+#: lib/editor.inc.php
+msgid "Delete Node Confirmation"
+msgstr "Потврда брисања чвора"
+
+#: lib/editor.inc.php
+msgid "WARNING: Pressing 'Delete Link' will delete this Link."
+msgstr "УПОЗОРЕЊЕ: Притиском на 'Обриши везу' обрисаћете ову везу."
+
+#: lib/editor.inc.php
+msgid "Delete Link Confirmation"
+msgstr "Потврда брисања везе"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cancel"
+msgstr "Откажи"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Delete Link"
+msgstr "Обриши везу"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Position"
+msgstr "Положај"
+
+#: lib/editor.inc.php
+msgid "Node Actions"
+msgstr "Радње чвора"
+
+#: lib/editor.inc.php
+msgid "Link Actions"
+msgstr "Радње везе"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Move"
+msgstr "Премести"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Clone"
+msgstr "Клонирај"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Edit Raw Configuration"
+msgstr "Измени изворну конфигурацију"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete"
+msgstr "Обриши"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Via"
+msgstr "Међутачка"
+
+#: lib/editor.inc.php weathermap-cacti-plugin-editor.php
+msgid "Tidy"
+msgstr "Уреди"
+
+#: lib/editor.inc.php
+msgid "Properties"
+msgstr "Својства"
+
+#: lib/editor.inc.php
+msgid "Where should Weathermap get data for this link? This can either be an RRD file, or an HTML with special comments in it (normally from MRTG)."
+msgstr "Одакле Weathermap треба да преузима податке за ову везу? То може бити RRD датотека или HTML са посебним коментарима (обично из MRTG-а)."
+
+#: lib/editor.inc.php
+msgid "How wide the link arrow will be drawn, in pixels."
+msgstr "Колико широко ће стрелица везе бити исцртана, у пикселима."
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the link"
+msgstr "Ако користите 'overlib' HTML стил, ово је URL који ће се отворити када кликнете на везу"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the link"
+msgstr "Ако користите 'overlib' HTML стил, ово је URL слике која ће се приказати када пређете мишем преко везе"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the first node to the second node"
+msgstr "Пропусни опсег од првог чвора ка другом чвору"
+
+#: lib/editor.inc.php
+msgid "The bandwidth from the second node to the first node (if that is different)"
+msgstr "Пропусни опсег од другог чвора ка првом чвору (ако је различит)"
+
+#: lib/editor.inc.php
+msgid "The text that will appear alongside the link"
+msgstr "Текст који ће се појавити дуж везе"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL that will be opened when you click on the node"
+msgstr "Ако користите 'overlib' HTML стил, ово је URL који ће се отворити када кликнете на чвор"
+
+#: lib/editor.inc.php
+msgid "If you are using the 'overlib' HTML style then this is the URL of the image that will be shown when you hover over the node"
+msgstr "Ако користите 'overlib' HTML стил, ово је URL слике која ће се приказати када пређете мишем преко чвора"
+
+#: lib/editor.inc.php
+msgid "How far from the left to position the node, in pixels"
+msgstr "Колико удаљено од леве ивице поставити чвор, у пикселима"
+
+#: lib/editor.inc.php
+msgid "How far from the top to position the node, in pixels"
+msgstr "Колико удаљено од горње ивице поставити чвор, у пикселима"
+
+#: lib/editor.inc.php
+msgid "The text that appears on the node"
+msgstr "Текст који се приказује на чвору"
+
+#: lib/editor.inc.php
+msgid "The name used for this node when defining links"
+msgstr "Назив који се користи за овај чвор приликом дефинисања веза"
+
+#: lib/editor.inc.php
+msgid "Change to a different file, or start creating a new one."
+msgstr "Пређите на другу датотеку или започните креирање нове."
+
+#: lib/editor.inc.php
+msgid "Add a new node to the map"
+msgstr "Додај нови чвор на мапу"
+
+#: lib/editor.inc.php
+msgid "Add a new link to the map, by joining two nodes together."
+msgstr "Додај нову везу на мапу спајањем два чвора."
+
+#: lib/editor.inc.php
+msgid "Select a different map to edit, or start a new one."
+msgstr "Изаберите другу мапу за измену или започните нову."
+
+#: lib/editor.inc.php
+msgid "This is where help appears for links"
+msgstr "Овде се приказује помоћ за везе"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for maps"
+msgstr "Овде се приказује помоћ за мапе"
+
+#: lib/editor.inc.php
+msgid "This is where help appears for nodes"
+msgstr "Овде се приказује помоћ за чворове"
+
+#: lib/editor.inc.php
+msgid "or click a Node or Link to edit its properties"
+msgstr "или кликните на чвор или везу да измените својства"
+
+#: lib/viewer.controls.php weathermap-cacti-plugin-mgmt.php
+msgid "Docs"
+msgstr "Документација"
+
+#: lib/viewer.controls.php
+msgid "Manage Weathermaps"
+msgstr "Управљање Weathermap мапама"
+
+#: lib/viewer.controls.php setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Settings"
+msgstr "Подешавања мапе"
+
+#: lib/viewer.controls.php
+msgid "Map Permissions"
+msgstr "Дозволе мапе"
+
+#: lib/viewer.controls.php setup.php
+msgid "Edit Map"
+msgstr "Измени мапу"
+
+#: setup.php
+msgid "Weathermap"
+msgstr "Weathermap"
+
+#: setup.php weathermap-cacti-plugin.php
+msgid "Network Weathermap"
+msgstr "Мрежна Weathermap мапа"
+
+#: setup.php
+msgid "Debug Mode"
+msgstr "Режим отклањања грешака"
+
+#: setup.php
+msgid "If you wish to see detailed status information in your Cacti log about the weathermap generation process, check this box."
+msgstr "Ако желите да видите детаљне информације о статусу процеса генерисања Weathermap мапа у свом Cacti дневнику, означите ово поље."
+
+#: setup.php
+msgid "Info URL Style"
+msgstr "Стил Инфо URL-а"
+
+#: setup.php
+msgid "When adding Graphs for a Node or Link, what click through do you wish to redirect to using the Info URL?  If using the Standard Graph View, you can have multiple Graphs.  For the Time Graph View, you may only have one Graph."
+msgstr "Када додајете графиконе за чвор или везу, на који приказ желите да преусмери клик преко Инфо URL-а? Ако користите Стандардни приказ графикона, можете имати више графикона. За Временски приказ графикона можете имати само један графикон."
+
+#: setup.php
+msgid "Standard Graph View"
+msgstr "Стандардни приказ графикона"
+
+#: setup.php
+msgid "Time Graph View"
+msgstr "Временски приказ графикона"
+
+#: setup.php
+msgid "Page style"
+msgstr "Стил странице"
+
+#: setup.php
+msgid "How to display multiple maps."
+msgstr "Како приказати више мапа."
+
+#: setup.php
+msgid "Thumbnail Overview"
+msgstr "Преглед сличица"
+
+#: setup.php
+msgid "Full Images"
+msgstr "Пуне слике"
+
+#: setup.php
+msgid "Show Only First"
+msgstr "Прикажи само прву"
+
+#: setup.php
+msgid "Thumbnail Maximum Size"
+msgstr "Максимална величина сличице"
+
+#: setup.php
+msgid "The maximum width or height for thumbnails in thumbnail view, in pixels. Takes effect after the next poller run."
+msgstr "Максимална ширина или висина сличица у приказу сличица, у пикселима. Ступа на снагу након следећег покретања прикупљача."
+
+#: setup.php
+msgid "Hover Graph Default Width"
+msgstr "Подразумевана ширина графикона при преласку мишем"
+
+#: setup.php
+msgid "The default width of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Подразумевана ширина RRDtool графикона који се појављују када пређете мишем преко везе."
+
+#: setup.php
+msgid "Hover Graph Default Height"
+msgstr "Подразумевана висина графикона при преласку мишем"
+
+#: setup.php
+msgid "The default height of the RRDtool Graphs that appear when you hover on a Link."
+msgstr "Подразумевана висина RRDtool графикона који се појављују када пређете мишем преко везе."
+
+#: setup.php
+msgid "Hover Graph Style"
+msgstr "Стил графикона при преласку мишем"
+
+#: setup.php
+msgid "When hovering over the Links or Nodes, what style of Graph is to be displayed?"
+msgstr "Када прелазите мишем преко веза или чворова, који стил графикона треба приказати?"
+
+#: setup.php
+msgid "Thumbnail Graphs"
+msgstr "Сличице графикона"
+
+#: setup.php
+msgid "Full Graphs"
+msgstr "Пуни графикони"
+
+#: setup.php
+msgid "Map Processing Timeout"
+msgstr "Временско ограничење обраде мапе"
+
+#: setup.php
+msgid "How much time should be allowed before timing out the periodic map generation process."
+msgstr "Колико времена треба дозволити пре истека временског ограничења за периодично генерисање мапа."
+
+#: setup.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d минута"
+
+#: setup.php
+msgid "Refresh Time"
+msgstr "Време освежавања"
+
+#: setup.php
+msgid "How often to refresh the page in Cycle mode. Automatic makes all available maps fit into 5 minutes."
+msgstr "Колико често освежавати страницу у режиму смењивања. Аутоматски распоређује све доступне мапе у оквиру 5 минута."
+
+#: setup.php
+msgid "Automatic"
+msgstr "Аутоматски"
+
+#: setup.php
+#, php-format
+msgid "%d Seconds"
+msgstr "%d секунди"
+
+#: setup.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d минут"
+
+#: setup.php
+msgid "Output Format"
+msgstr "Излазни формат"
+
+#: setup.php
+msgid "What format do you prefer for the generated map images and thumbnails?"
+msgstr "Који формат преферирате за генерисане слике мапа и сличице?"
+
+#: setup.php
+msgid "PNG (default)"
+msgstr "PNG (подразумевано)"
+
+#: setup.php
+msgid "JPEG"
+msgstr "JPEG"
+
+#: setup.php
+msgid "GIF"
+msgstr "GIF"
+
+#: setup.php
+msgid "Map Rendering Interval"
+msgstr "Интервал исцртавања мапа"
+
+#: setup.php
+msgid "How often do you want Weathermap to recalculate it's maps? You should not touch this unless you know what you are doing! It is mainly needed for people with non-standard polling setups."
+msgstr "Колико често желите да Weathermap поново израчунава своје мапе? Не дирајте ово осим ако не знате шта радите! Углавном је потребно за нестандардна подешавања прикупљања података."
+
+#: setup.php
+msgid "Never (manual updates)"
+msgstr "Никада (ручна ажурирања)"
+
+#: setup.php
+msgid "Every Poller Cycle (default)"
+msgstr "Сваки циклус прикупљача (подразумевано)"
+
+#: setup.php
+#, php-format
+msgid "Every %d Poller Cycles"
+msgstr "Сваких %d циклуса прикупљача"
+
+#: setup.php
+msgid "Show Weathermap Help Links"
+msgstr "Прикажи везе помоћи за Weathermap"
+
+#: setup.php
+msgid "If checked, all Weathermap pages will include a link to documentation."
+msgstr "Ако је означено, све Weathermap странице ће садржати везу ка документацији."
+
+#: setup.php
+msgid "Show 'All' Tab"
+msgstr "Прикажи картицу 'Све'"
+
+#: setup.php
+msgid "When using groups, add an 'All Maps' tab to the tab bar."
+msgstr "Када користите групе, додаје картицу 'Све мапе' у траку картица."
+
+#: setup.php
+msgid "No (default)"
+msgstr "Не (подразумевано)"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Yes"
+msgstr "Да"
+
+#: setup.php
+msgid "Show Map Selector"
+msgstr "Прикажи бирач мапа"
+
+#: setup.php
+msgid "Show a combo-box map selector on the full-screen map view."
+msgstr "Приказује падајућу листу за избор мапе у приказу мапе преко целог екрана."
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "No"
+msgstr "Не"
+
+#: setup.php
+msgid "Yes (default)"
+msgstr "Да (подразумевано)"
+
+#: setup.php
+msgid "Quiet Logging"
+msgstr "Тихо бележење у дневник"
+
+#: setup.php
+msgid "By default, even in LOW level logging, Weathermap logs normal activity. This makes it REALLY log only errors in LOW mode."
+msgstr "Подразумевано, чак и на НИСКОМ (LOW) нивоу дневника, Weathermap бележи уобичајене активности. Ова опција чини да у НИСКОМ режиму заиста бележи само грешке."
+
+#: setup.php
+msgid "Chatty (default)"
+msgstr "Детаљно (подразумевано)"
+
+#: setup.php
+msgid "Quiet"
+msgstr "Тихо"
+
+#: setup.php
+msgid "Weathermaps"
+msgstr "Weathermap мапе"
+
+#: setup.php
+msgid "Weathermap Groups"
+msgstr "Weathermap групе"
+
+#: setup.php
+msgid "Management"
+msgstr "Управљање"
+
+#: setup.php
+msgid "View Weathermaps"
+msgstr "Приказ Weathermap мапа"
+
+#: setup.php
+msgid "Edit Weathermaps"
+msgstr "Измена Weathermap мапа"
+
+#: setup.php
+msgid "Manage Weathermap"
+msgstr "Управљање додатком Weathermap"
+
+#: setup.php
+msgid "General Administration"
+msgstr "Општа администрација"
+
+#: setup.php
+msgid "Normal User"
+msgstr "Обичан корисник"
+
+#: setup.php weathermap-cacti-plugin.php
+#, php-format
+msgid "Map for config file: %s"
+msgstr "Мапа за конфигурациону датотеку: %s"
+
+#: setup.php
+msgid "Choose which weathermap to add to the tree."
+msgstr "Изаберите коју Weathermap мапу желите да додате у стабло."
+
+#: setup.php
+msgid "Map"
+msgstr "Мапа"
+
+#: setup.php
+msgid "How should the map be displayed?"
+msgstr "Како мапа треба да буде приказана?"
+
+#: setup.php
+msgid "Style"
+msgstr "Стил"
+
+#: setup.php
+msgid "Thumbnail"
+msgstr "Сличица"
+
+#: setup.php
+msgid "Full Size"
+msgstr "Пуна величина"
+
+#: setup.php
+msgid "View Map Image"
+msgstr "Прикажи слику мапе"
+
+#: setup.php
+msgid "View Map Thumbnail"
+msgstr "Прикажи сличицу мапе"
+
+#: setup.php
+msgid "Add Map"
+msgstr "Додај мапу"
+
+#: setup.php
+msgid "View Configuration"
+msgstr "Прикажи конфигурацију"
+
+#: setup.php
+msgid "Weathermap Editor"
+msgstr "Уређивач Weathermap мапа"
+
+#: setup.php
+msgid "Edit Permissions"
+msgstr "Измени дозволе"
+
+#: setup.php
+msgid "Map Settings Delete"
+msgstr "Брисање подешавања мапе"
+
+#: setup.php
+msgid "Map Settings Update"
+msgstr "Ажурирање подешавања мапе"
+
+#: setup.php
+msgid "Map Settings Add"
+msgstr "Додавање подешавања мапе"
+
+#: setup.php
+msgid "Permissions Edit"
+msgstr "Измена дозвола"
+
+#: setup.php
+msgid "Add User"
+msgstr "Додај корисника"
+
+#: setup.php
+msgid "Delete User"
+msgstr "Обриши корисника"
+
+#: setup.php
+msgid "Delete Map"
+msgstr "Обриши мапу"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Up"
+msgstr "Помери мапу нагоре"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Down"
+msgstr "Помери групу надоле"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Move Group Up"
+msgstr "Помери групу нагоре"
+
+#: setup.php
+msgid "Group Edit"
+msgstr "Измена групе"
+
+#: setup.php
+msgid "Group Update"
+msgstr "Ажурирање групе"
+
+#: setup.php
+msgid "Activate Map"
+msgstr "Активирај мапу"
+
+#: setup.php
+msgid "Deactivate Map"
+msgstr "Деактивирај мапу"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Now"
+msgstr "Поново генериши одмах"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Change Group"
+msgstr "Промени групу"
+
+#: setup.php
+msgid "Group Admin"
+msgstr "Администрација група"
+
+#: setup.php
+msgid "Group Admin Delete"
+msgstr "Брисање администрације група"
+
+#: setup.php
+msgid "Manage"
+msgstr "Управљај"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php
+msgid "Settings"
+msgstr "Подешавања"
+
+#: setup.php
+msgid "Automatically cycle"
+msgstr "Аутоматски смењуј"
+
+#: setup.php weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "Local Documentation"
+msgstr "Локална документација"
+
+#: setup.php
+#, php-format
+msgid "This is version %s"
+msgstr "Ово је верзија %s"
+
+#: setup.php
+msgid "Weathermap Website"
+msgstr "Веб-сајт Weathermap"
+
+#: weathermap-cacti-plugin-editor.php
+#, php-format
+msgid "PHP Weathermap Editor %s"
+msgstr "PHP Weathermap уређивач %s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Map"
+msgstr "Повратак на мапу"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Return to Manage"
+msgstr "Повратак на управљање"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Change<br>File"
+msgstr "Промени<br>датотеку"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Node"
+msgstr "Додај<br>чвор"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Link"
+msgstr "Додај<br>везу"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add<br>Note"
+msgstr "Додај<br>напомену"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Legend"
+msgstr "Постави<br>легенду"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>Timestamp"
+msgstr "Постави<br>време"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Properties"
+msgstr "Својства<br>мапе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map<br>Style"
+msgstr "Стил<br>мапе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Colors"
+msgstr "Управљај<br>бојама"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage<br>Images"
+msgstr "Управљај<br>сликама"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Editor<br>Settings"
+msgstr "Подешавања<br>уређивача"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Position<br>---, ---"
+msgstr "Положај<br>---, ---"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Select a menu item or either right-click or click on a Node or Link to edit its properties"
+msgstr "Изаберите ставку менија или кликните левим или десним тастером миша на чвор или везу да измените својства"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Debug"
+msgstr "Отклони грешке"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy ALL"
+msgstr "Поново уреди СВЕ"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Re-tidy"
+msgstr "Поново уреди"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Un-tidy"
+msgstr "Поништи уређивање"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Do Nothing"
+msgstr "Не ради ништа"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "mapfile"
+msgstr "датотека мапе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "action"
+msgstr "радња"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param"
+msgstr "параметар"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "param2"
+msgstr "параметар 2"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "debug"
+msgstr "отклањање грешака"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "See config"
+msgstr "Погледај конфигурацију"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text"
+msgstr "Текст"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Left"
+msgstr "Лево"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Right"
+msgstr "Десно"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Text alignment"
+msgstr "Поравнање текста"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Font"
+msgstr "Фонт"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Note colour"
+msgstr "Боја напомене"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Save"
+msgstr "Сачувај"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Properties"
+msgstr "Својства чвора"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map position (X, Y)"
+msgstr "Положај на мапи (X, Y)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Internal Name"
+msgstr "Интерни назив"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bottom"
+msgstr "Доле"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom (raw configuration)"
+msgstr "Прилагођено (изворна конфигурација)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Display name position"
+msgstr "Положај приказаног назива"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Middle"
+msgstr "Средина"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Top"
+msgstr "Врх"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Icon Filename"
+msgstr "Назив датотеке иконе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Info URL(s)"
+msgstr "Инфо URL(-ови)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover Graph URL(s)"
+msgstr "URL(-ови) графикона при преласку мишем"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Template"
+msgstr "Шаблон графикона"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "All"
+msgstr "Све"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Graph Selector"
+msgstr "Бирач графикона"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "You can modify the Weathermap Node from here.  The Position columns are the X,Y position on the Map.  The Internal Name is the unique ID given to the Node.  The Label is the external name of the Node that you provide to users.  The Icon Filename is the Graphic that you want to represent the Node Object.  The INFO URL is a link that you can provide when clicking on the active Map Node.  The Hover Graph URL's are Cacti or other Graphs URL's that can will appear when hovering over the Node.  The Graph Selector is a helper for selecting Cacti Graphs for the Graph URL's.   There are several other Node properties possible.  However, today we are only supporting those included above."
+msgstr "Овде можете изменити Weathermap чвор. Поља положаја представљају X,Y координате на мапи. Интерни назив је јединствени ID додељен чвору. Ознака је спољни назив чвора који се приказује корисницима. Назив датотеке иконе је графика која представља чвор. Инфо URL је веза која се отвара кликом на активни чвор мапе. URL-ови графикона при преласку мишем су URL-ови Cacti или других графикона који се приказују при преласку мишем преко чвора. Бирач графикона је помоћник за избор Cacti графикона за URL-ове графикона. Постоје и друга својства чвора, али су тренутно подржана само наведена изнад."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Properties"
+msgstr "Својства везе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Into"
+msgstr "Улаз у"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Maximum Bandwidth"
+msgstr "Максимални пропусни опсег"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Out of"
+msgstr "Излаз из"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Via Style"
+msgstr "Стил међутачке"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Curved"
+msgstr "Закривљено"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Angled"
+msgstr "Под углом"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Measured traffic source(s)"
+msgstr "Мерени извор(и) саобраћаја"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Data Source Selector"
+msgstr "Бирач извора података"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add traffic source"
+msgstr "Додај извор саобраћаја"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Width"
+msgstr "Ширина везе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Click destination URL"
+msgstr "URL одредишта клика"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Main hover graph URL"
+msgstr "URL главног графикона при преласку мишем"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown first. Set by Use interface; additional graphs appear below it."
+msgstr "Приказује се први. Поставља га опција „Користи интерфејс“; додатни графикони се приказују испод њега."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Show up to two hover graphs: the main traffic graph and one additional CPU, latency or other preview. Replace changes only the additional graph."
+msgstr "Прикажи највише два графикона при преласку мишем: главни графикон саобраћаја и један додатни преглед (CPU, кашњење или друго). „Замени“ мења само додатни графикон."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional graph URL(s)"
+msgstr "URL(-ови) додатног графикона"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Additional hover graph URLs"
+msgstr "URL-ови додатних графикона при преласку мишем"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Filter by graph type"
+msgstr "Филтрирај по типу графикона"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Choose hover graph"
+msgstr "Изабери графикон при преласку мишем"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add hover graph"
+msgstr "Додај графикон при преласку мишем"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Replace hover graphs"
+msgstr "Замени графиконе при преласку мишем"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "IN Comment"
+msgstr "Улазни коментар"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "OUT Comment"
+msgstr "Излазни коментар"
+
+#: weathermap-cacti-plugin-editor.php
+msgid ""
+"<p><strong>Bandwidth:</strong> Set the capacity used to calculate utilisation, for example 100M or 1G. K, M, G and T are supported. Select Same As &quot;In&quot; when both directions have equal capacity.</p>\n"
+"<p><strong>Traffic interface:</strong> Search by device, port or description, or select Browse all. Choose an interface, then click Use interface to set the primary measured source, click destination and main hover graph. Additional measured sources and hover graphs are kept.</p>\n"
+"<p><strong>Appearance and comments:</strong> Via Style controls curved or angled bends; Link Width controls arrow thickness. IN Comment and OUT Comment add text along each direction. The percentage sets the text position along the link. Comment Style places comments beside the link (Edge) or over the arrow (Centre); Use map default follows Map Style.</p>\n"
+"<p><strong>Additional hover graphs:</strong> Show a maximum of two hover graphs: the main traffic graph and one extra, such as CPU, latency or another interface. Filter by graph type narrows the choices. Add hover graph adds the extra; Replace hover graphs changes it; Remove graph removes it. The main traffic graph, measured traffic and link click destination stay unchanged. In the viewer, each Cacti preview opens its own full graph when clicked.</p>\n"
+"<p><strong>Advanced settings:</strong> Optional controls for moving the IN/OUT traffic labels, combining measured sources, changing the click destination and entering custom hover image URLs. Traffic label positions move the utilisation boxes along the link, independently of comment positions. Use map default follows Map Style. A normal traffic link usually needs no changes here.</p>\n"
+"<p><strong>Combining traffic sources:</strong> Add traffic source adds another interface to the map total, separately for IN and OUT. Remove source removes an additional source. Change the primary source using Use interface at the top. The combined traffic is compared with the configured bandwidth to calculate utilisation. No combined Cacti graph is created automatically; create a matching aggregate graph in Cacti and enter its click and hover URLs if needed. Separate map links are usually clearer for primary and backup connections.</p>\n"
+"<p><strong>Manual sources and URLs:</strong> The source text box edits the complete measured-source list, including the primary source. Click destination URL controls where clicking the map link goes. Main hover graph URL sets the first preview; Additional graph URL(s) accepts one extra image URL. This extra is also managed under Additional hover graphs.</p>\n"
+"<p><strong>Tidy and Via:</strong> Tidy adjusts the link layout. Via lets you place a bend point on the map.</p>\n"
+"<p><strong>Edit Raw Configuration:</strong> Edit the underlying map syntax for settings beyond this form.</p>"
+msgstr ""
+"<p><strong>Пропусни опсег:</strong> Подесите капацитет који се користи за израчунавање искоришћености, на пример 100M или 1G. Подржане су јединице K, M, G и T. Изаберите Исто као &quot;Улаз&quot; када оба смера имају исти капацитет.</p>\n"
+"<p><strong>Интерфејс саобраћаја:</strong> Претражите по уређају, порту или опису, или изаберите Прегледај све. Изаберите интерфејс, затим кликните на Користи интерфејс да поставите примарни мерени извор, одредиште клика и главни графикон при преласку мишем. Додатни мерени извори и графикони при преласку мишем се задржавају.</p>\n"
+"<p><strong>Изглед и коментари:</strong> Стил међутачке контролише закривљене или прегибе под углом; Ширина везе контролише дебљину стрелице. Улазни коментар и Излазни коментар додају текст дуж сваког смера. Проценат одређује положај текста дуж везе. Стил коментара поставља коментаре поред везе (Ивица) или преко стрелице (Центар); Користи подразумевано за мапу прати Стил мапе.</p>\n"
+"<p><strong>Додатни графикони при преласку мишем:</strong> Приказују највише два графикона при преласку мишем: главни графикон саобраћаја и један додатни, као што су CPU, кашњење или други интерфејс. Филтрирај по типу графикона сужава избор. Додај графикон при преласку мишем додаје додатни; Замени графиконе при преласку мишем га мења; Уклони графикон га уклања. Главни графикон саобраћаја, мерени саобраћај и одредиште клика везе остају непромењени. У приказивачу сваки Cacti преглед кликом отвара сопствени пуни графикон.</p>\n"
+"<p><strong>Напредна подешавања:</strong> Опционе контроле за померање ознака УЛАЗ/ИЗЛАЗ саобраћаја, комбиновање мерених извора, измену одредишта клика и унос прилагођених URL-ова слика при преласку мишем. Положаји ознака саобраћаја померају оквире искоришћености дуж везе независно од положаја коментара. Користи подразумевано за мапу прати Стил мапе. За обичну везу саобраћаја овде обично нису потребне измене.</p>\n"
+"<p><strong>Комбиновање извора саобраћаја:</strong> Додај извор саобраћаја додаје још један интерфејс у збир мапе, одвојено за УЛАЗ и ИЗЛАЗ. Уклони извор уклања додатни извор. Примарни извор промените помоћу Користи интерфејс на врху. Комбиновани саобраћај се пореди са подешеним пропусним опсегом ради израчунавања искоришћености. Збирни Cacti графикон се не креира аутоматски; креирајте одговарајући збирни графикон у систему Cacti и по потреби унесите његове URL-ове за клик и прелазак мишем. Одвојене везе на мапи су обично прегледније за примарне и резервне везе.</p>\n"
+"<p><strong>Ручни извори и URL-ови:</strong> Текстуално поље извора мења комплетну листу мерених извора, укључујући примарни извор. URL одредишта клика контролише где води клик на везу мапе. URL главног графикона при преласку мишем поставља први преглед; URL(-ови) додатног графикона прихвата један додатни URL слике. Овим додатком се такође управља под Додатни графикони при преласку мишем.</p>\n"
+"<p><strong>Уреди и Међутачка:</strong> Уреди прилагођава распоред везе. Међутачка вам омогућава да поставите тачку прелома на мапи.</p>\n"
+"<p><strong>Измени изворну конфигурацију:</strong> Измените основну синтаксу мапе за подешавања изван овог обрасца.</p>"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Properties"
+msgstr "Својства мапе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Details"
+msgstr "Детаљи мапе"
+
+#: weathermap-cacti-plugin-editor.php weathermap-cacti-plugin-mgmt.php
+msgid "Map Title"
+msgstr "Наслов мапе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Text"
+msgstr "Текст легенде"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Timestamp Text"
+msgstr "Текст временске ознаке"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background and Canvas"
+msgstr "Позадина и платно"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Image"
+msgstr "Позадинска слика"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "(no images are available)"
+msgstr "(нема доступних слика)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "--NO BACKGROUND--"
+msgstr "--БЕЗ ПОЗАДИНЕ--"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use Map Background Colour"
+msgstr "Користи боју позадине мапе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Shown without an image, or through its transparent areas."
+msgstr "Приказује се без слике или кроз њене провидне делове."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background sizing"
+msgstr "Димензионисање позадине"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Fit to map"
+msgstr "Прилагоди мапи"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Stretch to map"
+msgstr "Развуци на мапу"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Use image size"
+msgstr "Користи величину слике"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Size"
+msgstr "Величина мапе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "pixels"
+msgstr "пиксела"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Capacity"
+msgstr "Подразумевани капацитет везе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Bandwidth"
+msgstr "Подразумевани пропусни опсег везе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec in"
+msgstr "bit/s улаз"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "bit/sec out"
+msgstr "bit/s излаз"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Set the map’s title, legend, timestamp, background and canvas size, plus the default bandwidth for links. Map dimensions are measured in pixels; link appearance defaults are in Map Style."
+msgstr "Подесите наслов мапе, легенду, временску ознаку, позадину и величину платна, као и подразумевани пропусни опсег за везе. Димензије мапе се мере у пикселима; подразумевани изглед веза налази се у Стилу мапе."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Style"
+msgstr "Стил мапе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Map Defaults"
+msgstr "Подразумевана подешавања мапе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "HTML Style"
+msgstr "HTML стил"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Dynamic HTML"
+msgstr "Динамички HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Static HTML"
+msgstr "Статички HTML"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Key Style"
+msgstr "Стил легенде"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Classic"
+msgstr "Класична"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Horizontal"
+msgstr "Хоризонтално"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Vertical"
+msgstr "Вертикално"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Inverted"
+msgstr "Обрнуто"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Tags"
+msgstr "Ознаке"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Legend Font"
+msgstr "Фонт легенде"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Defaults"
+msgstr "Подразумевана подешавања чвора"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Font"
+msgstr "Фонт чвора"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance Defaults"
+msgstr "Подразумевани изглед веза"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default Link Width"
+msgstr "Подразумевана ширина везе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Labels"
+msgstr "Ознаке веза"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Bits/sec"
+msgstr "Bit/s"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Percentage"
+msgstr "Проценат"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Arrow Style"
+msgstr "Стил стрелице"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Compact"
+msgstr "Компактно"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Label Font"
+msgstr "Фонт ознаке саобраћаја"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Hover dimensions use pixels. Set 0 for automatic sizing. Width limits the preview size; height is a legacy hint and may not change the displayed height. Graph URLs can specify their own image dimensions."
+msgstr "Димензије при преласку мишем су у пикселима. Поставите 0 за аутоматску величину. Ширина ограничава величину прегледа; висина је наслеђена сугестија и можда неће променити приказану висину. URL-ови графикона могу одредити сопствене димензије слике."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Width (pixels)"
+msgstr "Ширина при преласку мишем за чвор (пиксели)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Hover Height (pixels)"
+msgstr "Висина при преласку мишем за чвор (пиксели)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Width (pixels)"
+msgstr "Ширина при преласку мишем за везу (пиксели)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Hover Height (pixels)"
+msgstr "Висина при преласку мишем за везу (пиксели)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Colors"
+msgstr "Управљање бојама"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Appearance"
+msgstr "Изглед везе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Link Comment Colour"
+msgstr "Боја коментара везе"
+
+#: weathermap-cacti-plugin-editor.php
+msgid " Pulse links at 80%+"
+msgstr " Пулсирај везе на 80%+"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Links at 80% utilisation or above pulse in their traffic colour."
+msgstr "Везе са искоришћеношћу од 80% или више пулсирају у својој боји саобраћаја."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Traffic Load Colours"
+msgstr "Боје оптерећења саобраћаја"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colour preset"
+msgstr "Унапред подешена шема боја"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Custom"
+msgstr "Прилагођено"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Default (Classic)"
+msgstr "Подразумевано (класично)"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Green / Amber / Red"
+msgstr "Зелена / ћилибарна / црвена"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Midwinter Ice"
+msgstr "Зимски лед"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Modern Greens"
+msgstr "Модерне зелене"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Ocean Blues"
+msgstr "Океанске плаве"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Purple / Orange / Red"
+msgstr "Љубичаста / наранџаста / црвена"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Sunrise Amber"
+msgstr "Јутарњи ћилибар"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Colours show how much of a link's bandwidth is being used. For example, 75% means three quarters of its capacity."
+msgstr "Боје показују колико је пропусног опсега везе искоришћено. На пример, 75% значи три четвртине капацитета."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Presets replace the DEFAULT traffic scale when you Save. Other named scales are kept."
+msgstr "Унапред подешене шеме замењују DEFAULT скалу саобраћаја када кликнете на Сачувај. Остале именоване скале се задржавају."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Each row is a colour range. From and To are its limits, Colour is the fill, and Gradient End blends towards another colour. Label adds optional legend text. Scale names group ranges; DEFAULT is the usual traffic scale. Custom scales can use other units."
+msgstr "Сваки ред представља опсег боја. „Од“ и „До“ су границе, „Боја“ је испуна, а „Крај прелива“ прелази ка другој боји. „Ознака“ додаје опциони текст легенде. Називи скала групишу опсеге; DEFAULT је уобичајена скала саобраћаја. Прилагођене скале могу користити друге јединице."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Add range"
+msgstr "Додај опсег"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Scale ranges use the units configured for each link or node; traffic links normally use percentages."
+msgstr "Опсези скале користе јединице подешене за сваку везу или чвор; везе саобраћаја обично користе проценте."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Manage Images"
+msgstr "Управљање сликама"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Node Icons"
+msgstr "Иконе чворова"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Node Icon"
+msgstr "Отпреми икону чвора"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload node icon"
+msgstr "Отпреми икону чвора"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing node icons"
+msgstr "Постојеће иконе чворова"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Background Images"
+msgstr "Позадинске слике"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload Background"
+msgstr "Отпреми позадину"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Upload background"
+msgstr "Отпреми позадину"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Existing background images"
+msgstr "Постојеће позадинске слике"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Close"
+msgstr "Затвори"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "PNG, JPG/JPEG or GIF files up to 5 MB and 4 million pixels. GIF uploads use the first frame. Uploads are saved immediately. Images referenced by a map configuration cannot be deleted."
+msgstr "PNG, JPG/JPEG или GIF датотеке до 5 MB и 4 милиона пиксела. GIF отпремања користе први кадар. Отпремања се одмах чувају. Слике које користи конфигурација мапе не могу се обрисати."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Edit the raw configuration for this map object."
+msgstr "Измените изворну конфигурацију за овај објекат мапе."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Advanced: changes are saved directly to the map configuration without syntax validation. Use Properties for the normal editing controls."
+msgstr "Напредно: измене се чувају директно у конфигурацију мапе без провере синтаксе. Користите Својства за уобичајене контроле уређивања."
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Overlays"
+msgstr "Преклапања"
+
+#: weathermap-cacti-plugin-editor.php
+msgid "Placement"
+msgstr "Постављање"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate"
+msgstr "Дуплирај"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable"
+msgstr "Онемогући"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable"
+msgstr "Омогући"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Grant Access"
+msgstr "Одобри приступ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Revoke Access"
+msgstr "Опозови приступ"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No such file."
+msgstr "Датотека не постоји."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s deleted."
+msgstr "Конфигурациона датотека %s је обрисана."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Configuration file %s is used by a map. Remove that map first."
+msgstr "Конфигурациону датотеку %s користи мапа. Прво уклоните ту мапу."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the configuration file."
+msgstr "Није могуће обрисати конфигурациону датотеку."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "All Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Све мапе су поново генерисане за %0.2f секунди!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Editor directory permissions are not correct!"
+msgstr "Дозволе директоријума уређивача нису исправне!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Web Service account must have access to the WeatherMap config directory which it does not have.  Correct this issue, and then relaunch the Editor"
+msgstr "Налог веб-сервиса мора имати приступ конфигурационом директоријуму Weathermap, што тренутно нема. Исправите овај проблем, а затим поново покрените уређивач"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Weathermap Permission Error"
+msgstr "Грешка дозвола за Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Continue"
+msgstr "Настави"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The %d Selected Maps have been Rebuilt in %0.2f Seconds!"
+msgstr "Изабране мапе (%d) су поново генерисане за %0.2f секунди!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to delete the following Weather Map."
+msgid_plural "Click 'Continue' to delete following Weather Maps."
+msgstr[0] "Кликните на 'Настави' да обришете следећу Weathermap мапу."
+msgstr[1] "Кликните на 'Настави' да обришете следеће Weathermap мапе."
+msgstr[2] "Кликните на 'Настави' да обришете следеће Weathermap мапе."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Delete Weather Map"
+msgid_plural "Delete Weather Maps"
+msgstr[0] "Обриши Weathermap мапу"
+msgstr[1] "Обриши Weathermap мапе"
+msgstr[2] "Обриши Weathermap мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to duplicate the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to duplicate following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Кликните на 'Настави' да дуплирате следећу Weathermap мапу. Опционо можете променити формат наслова за нову Weathermap мапу."
+msgstr[1] "Кликните на 'Настави' да дуплирате следеће Weathermap мапе. Опционо можете променити формат наслова за нове Weathermap мапе."
+msgstr[2] "Кликните на 'Настави' да дуплирате следеће Weathermap мапе. Опционо можете променити формат наслова за нове Weathermap мапе."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title Format:"
+msgstr "Формат наслова:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File Format:"
+msgstr "Формат конфигурационе датотеке:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Duplicate Weather Map"
+msgid_plural "Duplicate Weather Maps"
+msgstr[0] "Дуплирај Weathermap мапу"
+msgstr[1] "Дуплирај Weathermap мапе"
+msgstr[2] "Дуплирај Weathermap мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to disable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to disable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Кликните на 'Настави' да онемогућите следећу Weathermap мапу. Опционо можете променити формат наслова за нову Weathermap мапу."
+msgstr[1] "Кликните на 'Настави' да онемогућите следеће Weathermap мапе. Опционо можете променити формат наслова за нове Weathermap мапе."
+msgstr[2] "Кликните на 'Настави' да онемогућите следеће Weathermap мапе. Опционо можете променити формат наслова за нове Weathermap мапе."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Disable Weather Map"
+msgid_plural "Disable Weather Maps"
+msgstr[0] "Онемогући Weathermap мапу"
+msgstr[1] "Онемогући Weathermap мапе"
+msgstr[2] "Онемогући Weathermap мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to enable the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to enable following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Кликните на 'Настави' да омогућите следећу Weathermap мапу. Опционо можете променити формат наслова за нову Weathermap мапу."
+msgstr[1] "Кликните на 'Настави' да омогућите следеће Weathermap мапе. Опционо можете променити формат наслова за нове Weathermap мапе."
+msgstr[2] "Кликните на 'Настави' да омогућите следеће Weathermap мапе. Опционо можете променити формат наслова за нове Weathermap мапе."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enable Weather Map"
+msgid_plural "Enable Weather Maps"
+msgstr[0] "Омогући Weathermap мапу"
+msgstr[1] "Омогући Weathermap мапе"
+msgstr[2] "Омогући Weathermap мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click 'Continue' to Rebuild the following Weather Map. You can optionally change the title format for the new Weather Map."
+msgid_plural "Click 'Continue' to Rebuild the following Weather Maps. You can optionally change the title format for the new Weather Maps."
+msgstr[0] "Кликните на 'Настави' да поново генеришете следећу Weathermap мапу. Опционо можете променити формат наслова за нову Weathermap мапу."
+msgstr[1] "Кликните на 'Настави' да поново генеришете следеће Weathermap мапе. Опционо можете променити формат наслова за нове Weathermap мапе."
+msgstr[2] "Кликните на 'Настави' да поново генеришете следеће Weathermap мапе. Опционо можете променити формат наслова за нове Weathermap мапе."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild Weather Map"
+msgid_plural "Rebuild Weather Maps"
+msgstr[0] "Поново генериши Weathermap мапу"
+msgstr[1] "Поново генериши Weathermap мапе"
+msgstr[2] "Поново генериши Weathermap мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weather Maps [ Run Details: %s ]"
+msgstr "Weathermap мапе [ Детаљи извршавања: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Search"
+msgstr "Претражи"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Maps"
+msgstr "Мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Default"
+msgstr "Подразумевано"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: use filter settings"
+msgid "Go"
+msgstr "Иди"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgctxt "Button: reset filter settings"
+msgid "Clear"
+msgstr "Очисти"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Settings"
+msgstr "Подешавања групе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Map Settings"
+msgstr "Cacti Weathermap подешавања мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Cacti Weathermap Settings"
+msgstr "Cacti Weathermap подешавања"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild All"
+msgstr "Поново генериши све"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rebuild all maps now in background"
+msgstr "Поново генериши све мапе одмах у позадини"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "You are using the Boost plugin to update RRD files. Because this delays data being written to the files, it causes issues with Weathermap updates. You can resolve this by using Weathermap's 'poller_output' support, which grabs data directly from the poller. %s You can enable that globally by clicking here %s"
+msgstr "Користите додатак Boost за ажурирање RRD датотека. Пошто то одлаже уписивање података у датотеке, изазива проблеме са ажурирањем Weathermap мапа. То можете решити коришћењем Weathermap подршке 'poller_output', која преузима податке директно из прикупљача. %s То можете глобално омогућити кликом овде %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Last time it ran, Weathermap did NOT complete it's run. It failed during processing for '%s'"
+msgstr "Приликом последњег покретања, Weathermap НИЈЕ завршио своје извршавање. Неуспех се догодио током обраде за '%s'"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This <strong>may</strong> have affected other plugins that run during the poller process."
+msgstr "Ово је <strong>можда</strong> утицало на друге додатке који се извршавају током рада прикупљача."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You should either disable this Map, or fault-find. Possible causes include memory_limit issues. The log may have more information."
+msgstr "Требало би да онемогућите ову мапу или пронађете узрок грешке. Могући узроци укључују проблеме са memory_limit. Дневник може садржати више информација."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Title"
+msgstr "Наслов"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config File"
+msgstr "Конфигурациона датотека"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "ID"
+msgstr "ID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group"
+msgstr "Група"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enabled"
+msgstr "Омогућено"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Sort Order"
+msgstr "Редослед сортирања"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Order"
+msgstr "Редослед"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Accessible By"
+msgstr "Доступно за"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Duration"
+msgstr "Последње трајање"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Runtime"
+msgstr "Последње трајање извршавања"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Anyone"
+msgstr "Сви"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to start editor with this file"
+msgstr "Кликните да покренете уређивач са овом датотеком"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Check cacti.log for this Map"
+msgstr "Провери cacti.log за ову мапу"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to change group"
+msgstr "Кликните за промену групе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Deactivate"
+msgstr "Кликните за деактивацију"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to Activate"
+msgstr "Кликните за активацију"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Specials"
+msgstr "%d посебних"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Standard"
+msgstr "Стандардно"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Move Map Down"
+msgstr "Помери мапу надоле"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Click to edit permissions"
+msgstr "Кликните за измену дозвола"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users"
+msgstr "Нема корисника"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Users"
+msgstr "Сви корисници"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Groups"
+msgstr "%d група"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 Group"
+msgstr "1 група"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "%d Users"
+msgstr "%d корисника"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "1 User"
+msgstr "1 корисник"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Weathermaps Found"
+msgstr "Није пронађена ниједна Weathermap мапа"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "There is no directory named %s.  You must create it, and set it to be readable by the webserver. If you want to upload configuration files from inside Cacti, then it must be <i>writable</i> by the webserver too."
+msgstr "Не постоји директоријум под називом %s. Морате га креирати и подесити да буде читљив за веб-сервер. Ако желите да отпремате конфигурационе датотеке из система Cacti, он мора бити и <i>уписив</i> за веб-сервер."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Existing Configuration Files"
+msgstr "Постојеће конфигурационе датотеке"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Num Files"
+msgstr "Број датотека"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Maps"
+msgstr "Има мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Go"
+msgstr "Иди"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Set/Refresh Filters"
+msgstr "Постави/освежи филтере"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear"
+msgstr "Очисти"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Clear Filters"
+msgstr "Очисти филтере"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Options"
+msgstr "Опције креирања"
+
+#: weathermap-cacti-plugin-mgmt.php weathermap-cacti-plugin.php
+msgid "New Map"
+msgstr "Нова мапа"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name including .conf"
+msgstr "Назив укључујући .conf"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Optional map title"
+msgstr "Опциони наслов мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Source Map"
+msgstr "Изворна мапа"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Empty File"
+msgstr "Празна датотека"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Actions"
+msgstr "Радње"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Create Date"
+msgstr "Датум креирања"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Last Modified"
+msgstr "Последња измена"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Size"
+msgstr "Величина"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Config Files"
+msgstr "Конфигурационе датотеке"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Add the configuration file %s to Weathermap"
+msgstr "Додај конфигурациону датотеку %s у Weathermap"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid " Copy"
+msgstr " Копирај"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Duplicate the configuration file %s and add to Weathermap as %s"
+msgstr "Дуплирај конфигурациону датотеку %s и додај у Weathermap као %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "View the configuration file %s in a new window"
+msgstr "Прикажи конфигурациону датотеку %s у новом прозору"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "NOTE: Already in use. Click duplicate to create a new file."
+msgstr "НАПОМЕНА: Већ је у употреби. Кликните на дуплирај да креирате нову датотеку."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No files were found in the configs directory."
+msgstr "Није пронађена ниједна датотека у директоријуму конфигурација."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s is not in the config directory."
+msgstr "Путања %s се не налази у директоријуму конфигурација."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Preview of %s"
+msgstr "Преглед датотеке %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The path %s does not appear to exist in the config directory"
+msgstr "Изгледа да путања %s не постоји у директоријуму конфигурација"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Path mismatch"
+msgstr "Неслагање путање"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The configuration file is unavailable. Please retry."
+msgstr "Конфигурациона датотека није доступна. Покушајте поново."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "(No Title)"
+msgstr "(Без наслова)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was unable to locate the config file %s to copy"
+msgstr "Нова мапа са називом %s није успела да пронађе конфигурациону датотеку %s за копирање"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not register the new map."
+msgstr "Није могуће регистровати нову мапу."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Could not create the map copy. Please try again."
+msgstr "Није могуће креирати копију мапе. Покушајте поново."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The new Map with the name %s was created using config file %s"
+msgstr "Нова мапа са називом %s је креирана помоћу конфигурационе датотеке %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Weathermap Permissions for Map [ %s ]"
+msgstr "Weathermap дозволе за мапу [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Type"
+msgstr "Тип"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users"
+msgstr "Корисници"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Groups"
+msgstr "Корисничке групе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rows"
+msgstr "Редови"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Has Permissions"
+msgstr "Има дозволе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Users or Groups"
+msgstr "Корисници или групе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Account Type"
+msgstr "Тип налога"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User/Group"
+msgstr "Корисник/група"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Login Realm"
+msgstr "Област пријаве"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "UID/GID"
+msgstr "UID/GID"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Full Name/Description"
+msgstr "Пуно име/опис"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Allowed"
+msgstr "Дозвољено"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User"
+msgstr "Корисник"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "User Group"
+msgstr "Корисничка група"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "N/A"
+msgstr "Н/Д"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Local"
+msgstr "Локално"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Web Basic"
+msgstr "Основна веб аутентификација"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "LDAP/AD"
+msgstr "LDAP/AD"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Not Permitted"
+msgstr "Није дозвољено"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Permitted"
+msgstr "Дозвољено"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Users have Access to this Map"
+msgstr "Ниједан корисник нема приступ овој мапи"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Settings [ All Maps ]"
+msgstr "Глобална подешавања [ Све мапе ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no Settings for All Maps yet. You can add some by pressing the plus sign '+' in the top-right, or choose a single Map from the management screen to add Settings for that Map."
+msgstr "Још увек нема подешавања за све мапе. Можете их додати притиском на знак плус '+' у горњем десном углу или изабрати појединачну мапу на екрану за управљање да додате подешавања за ту мапу."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Group Settings [ Group: %s ]"
+msgstr "Измена подешавања групе [ Група: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Group Settings for this Group yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Још увек нема подешавања по групи за ову групу. Можете их додати притиском на знак плус '+' у горњем десном углу."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Settings [ Weathermap: %s ]"
+msgstr "Измена подешавања мапе [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "There are no per Map settings for this Map yet. You can add some by pressing the plus sign '+' in the top-right."
+msgstr "Још увек нема подешавања по мапи за ову мапу. Можете их додати притиском на знак плус '+' у горњем десном углу."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Usage Notes"
+msgstr "Напомене за употребу"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "All Maps in this Group are also affected by the following Global Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "На све мапе у овој групи утичу и следећа глобална подешавања (група надјачава глобална, мапа надјачава групу, али ОБА надјачавају SET команде унутар конфигурационе датотеке мапе)"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "This Map is also affected by the following Global and Group Settings (Group overrides Global, Map overrides Group, but BOTH override SET commands within the Map Config File)"
+msgstr "На ову мапу утичу и следећа глобална и групна подешавања (група надјачава глобална, мапа надјачава групу, али ОБА надјачавају SET команде унутар конфигурационе датотеке мапе)"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Group Settings [ Group: %s ]"
+msgstr "Подешавања групе [ Група: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Group"
+msgstr "Без групе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Action"
+msgstr "Радња"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Name"
+msgstr "Назив"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Value"
+msgstr "Вредност"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit this definition"
+msgstr "Измени ову дефиницију"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Remove this definition from this Map"
+msgstr "Уклони ову дефиницију са ове мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Group Admin"
+msgstr "Назад на администрацију група"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Back to Map Admin"
+msgstr "Назад на администрацију мапа"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Settings Found"
+msgstr "Нису пронађена подешавања"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map ID"
+msgstr "ID мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Setting ID"
+msgstr "ID подешавања"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The name of the map-global SET variable"
+msgstr "Назив глобалне SET променљиве мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "What to set it to"
+msgstr "На шта је поставити"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit"
+msgstr "Измени"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Global Setting for all Maps"
+msgstr "Глобално подешавање за све мапе"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Map Setting [ Weathermap: %s ]"
+msgstr "Подешавање мапе [ Weathermap: %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Edit Map Group for Weathermap [ %s ]"
+msgstr "Измена групе мапе за Weathermap [ %s ]"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Choose an existing Group"
+msgstr "Изаберите постојећу групу"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Or Create a New Group using the %s Group Management interface %s"
+msgstr "Или креирајте нову групу помоћу %s интерфејса за управљање групама %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Adding a Group"
+msgstr "Додавање групе"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "Editing Group: %s"
+msgstr "Измена групе: %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name:"
+msgstr "Назив групе:"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Update"
+msgstr "Ажурирање"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Add"
+msgstr "Додај"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Map Groups"
+msgstr "Измени групе мапа"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Group Name"
+msgstr "Назив групе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename this Group"
+msgstr "Преименуј ову групу"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Edit Group Settings"
+msgstr "Измени подешавања групе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "No Groups are defined"
+msgstr "Није дефинисана ниједна група"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename Weathermap Group"
+msgstr "Преименуј Weathermap групу"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Enter a new name for the Weathermap Group."
+msgstr "Унесите нови назив за Weathermap групу."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "New Group Name"
+msgstr "Нови назив групе"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Rename"
+msgstr "Преименуј"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Unable to delete the last remaining Map Group."
+msgstr "Није могуће обрисати последњу преосталу групу мапа."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "Map title is too long. Use at most 4088 bytes after escaping."
+msgstr "Наслов мапе је предугачак. Користите највише 4088 бајтова након ескејповања."
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "The New Map File name %s already exists!"
+msgstr "Назив нове датотеке мапе %s већ постоји!"
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "The Source Map File name is not readable or does not exist!"
+msgstr "Изворна датотека мапе није читљива или не постоји!"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created from %s"
+msgstr "Нова датотека мапе %s је креирана из %s"
+
+#: weathermap-cacti-plugin-mgmt.php
+#, php-format
+msgid "New Map file %s created."
+msgstr "Нова датотека мапе %s је креирана."
+
+#: weathermap-cacti-plugin-mgmt.php
+msgid "You must include a Map File name to Create"
+msgstr "Морате навести назив датотеке мапе за креирање"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermap named \"%s\""
+msgstr "Мрежна Weathermap мапа под називом \"%s\""
+
+#: weathermap-cacti-plugin.php
+msgid "This map hasn't been created yet."
+msgstr "Ова мапа још није креирана."
+
+#: weathermap-cacti-plugin.php
+msgid "Manage Maps"
+msgstr "Управљање мапама"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Network Weathermaps [ %sAutomatically Cycle%s ]"
+msgstr "Мрежне Weathermap мапе [ %sАутоматски смењуј%s ]"
+
+#: weathermap-cacti-plugin.php
+msgid "(thumbnail for map not created yet)"
+msgstr "(сличица за мапу још није креирана)"
+
+#: weathermap-cacti-plugin.php
+msgid "(Live View)"
+msgstr "(Приказ уживо)"
+
+#: weathermap-cacti-plugin.php
+msgid "You Have No Maps"
+msgstr "Немате мапа"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "To add a map to the schedule, go to the %s Manage...Weathermaps page %s and add one."
+msgstr "Да бисте додали мапу у распоред, идите на %s страницу Управљање...Weathermap мапе %s и додајте је."
+
+#: weathermap-cacti-plugin.php
+msgid "Network Weathermaps"
+msgstr "Мрежне Weathermap мапе"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps in this group."
+msgstr "Приказано %s %s од %s %s. Смењивање свих доступних мапа у овој групи."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Showing %s %s of %s %s. Cycling all available maps."
+msgstr "Приказано %s %s од %s %s. Смењивање свих доступних мапа."
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Powered by %s PHP Weathermap Version %s %s"
+msgstr "Покреће %s PHP Weathermap верзија %s %s"
+
+#: weathermap-cacti-plugin.php
+msgid "Go to the Map Management page"
+msgstr "Иди на страницу за управљање мапама"
+
+#: weathermap-cacti-plugin.php
+msgid "Weathermap Management"
+msgstr "Управљање додатком Weathermap"
+
+#: weathermap-cacti-plugin.php
+msgid "Map to View"
+msgstr "Мапа за приказ"
+
+#: weathermap-cacti-plugin.php
+msgid "All Maps"
+msgstr "Све мапе"
+
+#: weathermap-cacti-plugin.php
+msgid "Stop cycling"
+msgstr "Заустави смењивање"
+
+#: weathermap-cacti-plugin.php
+msgid "Previous"
+msgstr "Претходно"
+
+#: weathermap-cacti-plugin.php
+msgid "Pause / resume"
+msgstr "Паузирај / настави"
+
+#: weathermap-cacti-plugin.php
+msgid "Next"
+msgstr "Следеће"
+
+#: weathermap-cacti-plugin.php
+msgid "Exit full screen"
+msgstr "Изађи из режима целог екрана"
+
+#: weathermap-cacti-plugin.php
+msgid "Full screen"
+msgstr "Цео екран"
+
+#: weathermap-cacti-plugin.php
+#, php-format
+msgid "Next map in %ss"
+msgstr "Следећа мапа за %s с"
+
+#: weathermap-cacti-plugin.php
+msgid "Paused"
+msgstr "Паузирано"
