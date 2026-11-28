@@ -49,6 +49,7 @@
  */
 
 include_once(__DIR__ . '/../ds-common.php');
+include_once(__DIR__ . '/../WeatherMapRrdCommand.class.php');
 
 class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	/**
@@ -110,7 +111,18 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	 * @return bool        true when the value holds no quote and no backslash
 	 */
 	function wmrrd_options_are_safe($options) {
-		return strpbrk((string) $options, "\"'\\") === false;
+		return WeatherMapRrdCommand::optionsAreSafe($options);
+	}
+
+	/**
+	 * Decide whether an RRD file path is a valid absolute path free of control
+	 * characters and shell metacharacters.
+	 *
+	 * @param  mixed $rrdfile Candidate RRD filesystem path.
+	 * @return bool  True when the path is safe to pass to rrdtool.
+	 */
+	function wmrrd_path_is_valid($rrdfile) {
+		return WeatherMapRrdCommand::isValidPath($rrdfile);
 	}
 
 	/**
@@ -298,60 +310,34 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	function wmrrd_read_from_real_rrdtool_aggregate($rrdfile,$cf,$aggregatefn,$start,$end,$dsnames, &$data, &$map, &$data_time,&$item) {
 		wm_debug('RRD ReadData: VDEF style, for ' . $item->my_type() . ' ' . $item->name);
 
-		$extra_options = $map->get_hint('rrd_options');
+		if (!WeatherMapRrdCommand::isValidPath($rrdfile)) {
+			$msg = 'RRD ReadData: rejected invalid RRD file path (' . json_encode($rrdfile) . ') [WMRRD13]';
+			wm_warn($msg);
+			cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
 
-		// Assemble an array of command args.
-		// In a real programming language, we'd be able to pass this directly to exec()
-		// However, this will at least allow us to put quotes around args that need them
-		$args   = [];
-		$args[] = 'graph';
-		$args[] = '/dev/null';
-		$args[] = '-f';
-		$args[] = "'%s %lu %lu'";
-		$args[] = '--start';
-		$args[] = $start;
-		$args[] = '--end';
-		$args[] = $end;
-
-		// assemble an appropriate RRDtool command line, skipping any '-' DS names.
-		// $command = $map->rrdtool . " graph /dev/null -f ''  --start $start --end $end ";
-
-		if ($dsnames[IN] != '-') {
-			// $command .= "DEF:in=$rrdfile:".$dsnames[IN].":$cf ";
-			// $command .= "VDEF:agg_in=in,$aggregatefn ";
-			// $command .= "PRINT:agg_in:'IN %lf' ";
-
-			$args[] = "DEF:in=$rrdfile:" . $dsnames[IN] . ":$cf";
-			$args[] = "VDEF:agg_in=in,$aggregatefn";
-			$args[] = "PRINT:agg_in:'IN %lf'";
+			return;
 		}
 
-		if ($dsnames[OUT] != '-') {
-			// $command .= "DEF:out=$rrdfile:".$dsnames[OUT].":$cf ";
-			// $command .= "VDEF:agg_out=out,$aggregatefn ";
-			// $command .= "PRINT:agg_out:'OUT %lf' ";
+		$extra_options    = $map->get_hint('rrd_options');
+		$options_rejected = false;
+		$builder          = new WeatherMapRrdCommand();
+		$command          = $builder->buildAggregateCommand(
+			(string) $map->rrdtool,
+			$rrdfile,
+			(string) $cf,
+			(string) $aggregatefn,
+			(string) $start,
+			(string) $end,
+			(string) $dsnames[IN],
+			(string) $dsnames[OUT],
+			$extra_options !== null ? (string) $extra_options : null,
+			$options_rejected
+		);
 
-			$args[] = "DEF:out=$rrdfile:" . $dsnames[OUT] . ":$cf";
-			$args[] = "VDEF:agg_out=out,$aggregatefn";
-			$args[] = "PRINT:agg_out:'OUT %lf'";
-		}
-
-		$command = cacti_escapeshellarg($map->rrdtool);
-
-		foreach ($args as $arg) {
-			$command .= ' ' . cacti_escapeshellarg($arg);
-		}
-
-		if ($extra_options !== '' && $extra_options !== null) {
-			if (!$this->wmrrd_options_are_safe($extra_options)) {
-				$msg = 'RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]';
-				wm_warn($msg);
-				cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
-			} else {
-				foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $opt) {
-					$command .= ' ' . cacti_escapeshellarg($opt);
-				}
-			}
+		if ($options_rejected) {
+			$msg = 'RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]';
+			wm_warn($msg);
+			cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
 		}
 
 		wm_debug("RRD ReadData: Running: $command");
@@ -435,6 +421,14 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 	function wmrrd_read_from_real_rrdtool($rrdfile, $cf, $start, $end, $dsnames, &$data, &$map, &$data_time, &$item) {
 		wm_debug('RRD ReadData: traditional style');
 
+		if (!WeatherMapRrdCommand::isValidPath($rrdfile)) {
+			$msg = 'RRD ReadData: rejected invalid RRD file path (' . json_encode($rrdfile) . ') [WMRRD13]';
+			wm_warn($msg);
+			cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
+
+			return;
+		}
+
 		// we get the last 800 seconds of data - this might be 1 or 2 lines, depending on when in the
 		// cacti polling cycle we get run. This ought to stop the 'some lines are grey' problem that some
 		// people were seeing
@@ -443,37 +437,24 @@ class WeatherMapDataSource_rrd extends WeatherMapDataSource {
 		//     *THEN* GET THE LAST LINE WHERE THOSE TWO DS ARE VALID, *THEN* DO ANY PROCESSING.
 		//  - this allows for early failure, and also tolerance of empty data in other parts of an rrd (like smokeping uptime)
 
-		$extra_options = $map->get_hint('rrd_options');
+		$extra_options    = $map->get_hint('rrd_options');
+		$values           = [];
+		$options_rejected = false;
+		$builder          = new WeatherMapRrdCommand();
+		$command          = $builder->buildFetchCommand(
+			(string) $map->rrdtool,
+			$rrdfile,
+			(string) $cf,
+			(string) $start,
+			(string) $end,
+			$extra_options !== null ? (string) $extra_options : null,
+			$options_rejected
+		);
 
-		$values = [];
-		$args   = [];
-
-		// ### $command = '"'.$map->rrdtool . '" fetch "'.$rrdfile.'" AVERAGE --start '.$start.' --end '.$end;
-		// $command=$map->rrdtool . " fetch $rrdfile $cf --start $start --end $end $extra_options";
-		$args[] = 'fetch';
-		$args[] = $rrdfile;
-		$args[] = $cf;
-		$args[] = '--start';
-		$args[] = $start;
-		$args[] = '--end';
-		$args[] = $end;
-
-		$command = cacti_escapeshellarg($map->rrdtool);
-
-		foreach ($args as $arg) {
-			$command .= ' ' . cacti_escapeshellarg($arg);
-		}
-
-		if ($extra_options !== '' && $extra_options !== null) {
-			if (!$this->wmrrd_options_are_safe($extra_options)) {
-				$msg = 'RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]';
-				wm_warn($msg);
-				cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
-			} else {
-				foreach (preg_split('/\s+/', (string) $extra_options, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $opt) {
-					$command .= ' ' . cacti_escapeshellarg($opt);
-				}
-			}
+		if ($options_rejected) {
+			$msg = 'RRD ReadData: rrd_options contains quote or backslash characters and was skipped to prevent argument corruption. Use only space-separated single-token flags. [WMRRD04]';
+			wm_warn($msg);
+			cacti_log('WEATHERMAP: ' . $msg, false, 'POLLER', POLLER_VERBOSITY_LOW);
 		}
 
 		wm_debug("RRD ReadData: Running: $command");

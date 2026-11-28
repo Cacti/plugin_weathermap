@@ -91,6 +91,7 @@ set_default_action('');
 $editor_return_context = get_nfilter_request_var('return_to') === 'manage' ? 'manage' : 'map';
 
 if (isset_request_var('action')) {
+	$raw_action = get_nfilter_request_var('action');
 	$action = wm_editor_sanitize_action(get_nfilter_request_var('action'), [
 		'history_status', 'undo', 'redo', 'graphs', 'datasources', 'newmap', 'newmapcopy', 'font_samples', 'draw',
 		'show_config', 'fetch_config', 'set_link_config', 'set_node_config',
@@ -100,6 +101,10 @@ if (isset_request_var('action')) {
 		'delete_link', 'add_node', 'editor_settings', 'delete_node',
 		'clone_node', 'load_area_data', 'load_map_javascript', 'nothing'
 	]);
+
+	if (!wm_editor_action_is_permitted($raw_action, $action)) {
+		exit();
+	}
 }
 
 if (isset_request_var('mapname')) {
@@ -264,12 +269,14 @@ switch($action) {
 	case 'load_map_javascript':
 		getMapJavaScript($mapfile);
 		exit;
+	case '':
 	case 'nothing':
 		break;
 	default:
+		http_response_code(400);
 		cacti_log('WARNING: Invalid action ' . $action, false, 'WEATHERMAP');
 
-		break;
+		exit();
 }
 
 $map = new WeatherMap;

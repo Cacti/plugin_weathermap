@@ -8,11 +8,12 @@ Issues derived from SECURITY-AUDIT.md.
 **Priority**: low (the injection fixes in Issues #2 and #3 were applied in place and no longer depend on it)
 **Labels**: refactor, tech-debt
 **Branch**: `refactor/1-shell-command-seams`
-**Evidence**: lib/datasources/WeatherMapDataSource_fping.php:124; lib/datasources/WeatherMapDataSource_rrd.php:339–359, 461–474
+**Status**: resolved in lib/WeatherMapFpingCommand.class.php and lib/WeatherMapRrdCommand.class.php
+**Evidence**: lib/datasources/WeatherMapDataSource_fping.php, lib/datasources/WeatherMapDataSource_rrd.php
 **Acceptance criteria**:
-- [ ] The fping popen call is wrapped in a class that accepts a pre-built command string
-- [ ] The rrdtool command assembly is a class that builds the command string from typed args
-- [ ] Both classes instantiable without Cacti bootstrap
+- [x] The fping popen call is wrapped in a class that accepts a pre-built command string
+- [x] The rrdtool command assembly is a class that builds the command string from typed args
+- [x] Both classes instantiable without Cacti bootstrap
 
 **Dependencies**: none
 
@@ -37,11 +38,11 @@ Issues derived from SECURITY-AUDIT.md.
 **Priority**: low
 **Labels**: security, tech-debt
 **Branch**: `security/3-fix-rrd-arg-quoting`
-**Status**: partly remediated in lib/datasources/WeatherMapDataSource_rrd.php:339–359, 461–474
+**Status**: remediated in lib/datasources/WeatherMapDataSource_rrd.php and lib/WeatherMapRrdCommand.class.php
 **Evidence**: WM-CMD-02
 **Acceptance criteria**:
 - [x] Manual double-quote wrapping replaced with `cacti_escapeshellarg()` per argument
-- [ ] `$rrdfile` validated as absolute filesystem path with no shell metacharacters
+- [x] `$rrdfile` validated as absolute filesystem path with no shell metacharacters
 
 **Dependencies**: none
 
@@ -51,11 +52,12 @@ Issues derived from SECURITY-AUDIT.md.
 **Priority**: low
 **Labels**: security, tech-debt
 **Branch**: `security/4-sanitize-conffile-backslash`
-**Evidence**: lib/editor.inc.php:232–246 (WM-PATH-01)
+**Status**: remediated in lib/MapnameValidator.class.php and lib/editor.inc.php
+**Evidence**: lib/editor.inc.php (WM-PATH-01)
 **Acceptance criteria**:
-- [ ] `wm_editor_sanitize_conffile` rejects filenames containing `\`
-- [ ] Path traversal test WM-PATH-01 (backslash case) todo removed
-- [ ] Existing positive test cases remain green
+- [x] `wm_editor_sanitize_conffile` rejects filenames containing `\`
+- [x] Path traversal test WM-PATH-01 (backslash case) todo removed
+- [x] Existing positive test cases remain green
 
 **Dependencies**: none
 
@@ -65,11 +67,12 @@ Issues derived from SECURITY-AUDIT.md.
 **Priority**: medium
 **Labels**: security, tech-debt
 **Branch**: `security/5-validate-editor-action`
-**Evidence**: weathermap-cacti-plugin-editor.php:91 — `$action = get_nfilter_request_var('action')` without allowed-list validation
+**Status**: remediated in weathermap-cacti-plugin-editor.php and lib/editor.inc.php
+**Evidence**: weathermap-cacti-plugin-editor.php:93–109
 **Acceptance criteria**:
-- [ ] `$action` validated against an explicit list of valid editor action strings
-- [ ] Unknown actions produce a logged warning and abort
-- [ ] PHPStan level 6 passes
+- [x] `$action` validated against an explicit list of valid editor action strings
+- [x] Unknown actions produce a logged warning and abort
+- [x] PHPStan level 6 passes
 
 **Dependencies**: none
 
@@ -79,11 +82,12 @@ Issues derived from SECURITY-AUDIT.md.
 **Priority**: low
 **Labels**: refactor, tech-debt
 **Branch**: `refactor/6-mapname-validator-class`
-**Evidence**: lib/editor.inc.php:232–246
+**Status**: resolved in lib/MapnameValidator.class.php (matching plugin lib/ class layout)
+**Evidence**: lib/MapnameValidator.class.php, lib/editor.inc.php
 **Acceptance criteria**:
-- [ ] `src/Config/MapnameValidator.php` wraps `wm_editor_sanitize_conffile` logic
-- [ ] All existing sanitization cases covered by unit tests
-- [ ] PHPStan level 6 passes
+- [x] `lib/MapnameValidator.class.php` wraps `wm_editor_sanitize_conffile` logic
+- [x] All existing sanitization cases covered by unit tests
+- [x] PHPStan level 6 passes
 
 **Dependencies**: none
 

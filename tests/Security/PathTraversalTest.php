@@ -1,78 +1,48 @@
 <?php
+/*
+ +-------------------------------------------------------------------------+
+ | Copyright (C) 2004-2026 The Cacti Group                                 |
+ +-------------------------------------------------------------------------+
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+*/
+
+require_once dirname(__DIR__, 2) . '/lib/MapnameValidator.class.php';
+require_once dirname(__DIR__, 2) . '/lib/editor.inc.php';
 
 /**
- * Path traversal surface tests for plugin_weathermap.
+ * Path traversal surface tests for plugin_weathermap (WM-PATH-01).
  *
- * Finding WM-PATH-01: lib/editor.inc.php (wm_editor_sanitize_conffile)
- *   wm_editor_sanitize_conffile enforces:
- *     1. Must end in '.conf'
- *     2. Must not contain '/'  (CVE-2013-3739)
- *     3. Must not contain '\'  (Windows path traversal defense-in-depth — added fix)
- *     4. Passes through wm_editor_sanitize_uri (strips dangerous URI chars)
- *
- *   PHP 8.4 is required, so null-byte injection risk (PHP < 8.0) is absent.
+ * Exercises both MapnameValidator::sanitize() and wm_editor_sanitize_conffile()
+ * directly to verify .conf extension enforcement, forward-slash rejection,
+ * Windows backslash rejection, and control-character rejection.
  */
-
 describe('Weathermap map config path traversal guards (WM-PATH-01)', function (): void {
-	/**
-	 * Reimplementation of wm_editor_sanitize_conffile logic for isolated testing.
-	 * Mirrors the production function including the backslash fix from WM-PATH-01.
-	 */
-	function sanitize_conffile_stub(string $filename): string {
-		// Must end in .conf
-		if (substr($filename, -5, 5) !== '.conf') {
-			return '';
-		}
+	it('allows valid config filenames through the sanitizer', function (string $filename): void {
+		expect(wm_editor_sanitize_conffile($filename))->toBe($filename)
+			->and(MapnameValidator::sanitize($filename))->toBe($filename)
+			->and(MapnameValidator::isValid($filename))->toBeTrue();
+	})->with([
+		'simple conf'             => ['my-map.conf'],
+		'hyphens and underscores' => ['site_network-01.conf'],
+	]);
 
-		// Must not contain forward slash (blocks Unix path traversal — CVE-2013-3739)
-		if (strstr($filename, '/') !== false) {
-			return '';
-		}
-
-		// Defense-in-depth: reject Windows path separators.
-		if (strstr($filename, '\\') !== false) {
-			return '';
-		}
-
-		return $filename;
-	}
-
-	it('allows a clean conf filename through the sanitizer', function (): void {
-		$result = sanitize_conffile_stub('my-map.conf');
-		expect($result)->toBe('my-map.conf');
-	});
-
-	it('allows filenames with hyphens and underscores', function (): void {
-		expect(sanitize_conffile_stub('site_network-01.conf'))->toBe('site_network-01.conf');
-	});
-
-	it('rejects filenames that do not end in .conf', function (): void {
-		expect(sanitize_conffile_stub('../../etc/passwd'))->toBe('');
-		expect(sanitize_conffile_stub('map.conf.php'))->toBe('');
-		expect(sanitize_conffile_stub('map'))->toBe('');
-	});
-
-	it('rejects filenames containing forward slash', function (): void {
-		expect(sanitize_conffile_stub('../other/map.conf'))->toBe('');
-		expect(sanitize_conffile_stub('/absolute/path.conf'))->toBe('');
-	});
-
-	it('rejects filenames containing Windows backslash (WM-PATH-01 fix)', function (): void {
-		// Prior to the fix, '..\\configs\\other.conf' passed because only '/' was checked.
-		// The backslash check now closes this gap for Windows host deployments.
-		expect(sanitize_conffile_stub('..\\configs\\other.conf'))->toBe('');
-		expect(sanitize_conffile_stub('..\\..\\windows\\system32\\evil.conf'))->toBe('');
-		expect(sanitize_conffile_stub('sub\\map.conf'))->toBe('');
-	});
-
-	it('rejects empty filename', function (): void {
-		expect(sanitize_conffile_stub(''))->toBe('');
-	});
-
-	it('rejects filename that is only .conf extension', function (): void {
-		// Edge case: substr('.conf', -5, 5) === '.conf' passes the extension check.
-		// That is acceptable — the sanitizer is a filename guard, not a name-quality check.
-		$result = sanitize_conffile_stub('.conf');
-		expect($result)->toBe('.conf');
-	});
+	it('rejects traversal paths, Windows backslashes, non-.conf names, and controls (WM-PATH-01)', function (string $filename): void {
+		expect(wm_editor_sanitize_conffile($filename))->toBe('')
+			->and(MapnameValidator::isValid($filename))->toBeFalse();
+	})->with([
+		'non-conf traversal'    => ['../../etc/passwd'],
+		'double extension'      => ['map.conf.php'],
+		'missing extension'     => ['map'],
+		'unix relative path'    => ['../other/map.conf'],
+		'unix absolute path'    => ['/absolute/path.conf'],
+		'windows relative path' => ['..\\configs\\other.conf'],
+		'windows deep traversal' => ['..\\..\\windows\\system32\\evil.conf'],
+		'windows subdir path'   => ['sub\\map.conf'],
+		'empty string'          => [''],
+		'bare extension'        => ['.conf'],
+		'nul byte'              => ["map\0.conf"],
+		'line feed'             => ["map\n.conf"],
+		'carriage return'       => ["map\r.conf"],
+	]);
 });
